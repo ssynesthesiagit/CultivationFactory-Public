@@ -23,10 +23,11 @@ def main() -> int:
     parser.add_argument("--idempotency-key", required=True)
     parser.add_argument(
         "--browser",
-        default=r"C:\Users\ssyne\AppData\Local\ms-playwright\chromium-1228\chrome-win64\chrome.exe",
+        default=os.environ.get("TIANXIA_BROWSER_EXECUTABLE", ""),
     )
     args = parser.parse_args()
-    os.environ["TIANXIA_BROWSER_EXECUTABLE"] = args.browser
+    if args.browser:
+        os.environ["TIANXIA_BROWSER_EXECUTABLE"] = args.browser
 
     context: dict[str, Any] = {}
     app = create_app(

@@ -192,7 +192,7 @@ try {
     Copy-Item -LiteralPath (Join-Path $RepoRoot 'win1_p1\BOUNDED_DELTA.md') -Destination (Join-Path $EvidenceRoot 'BOUNDED_DELTA.md')
     $Identity = [ordered]@{
       schema='Tianxia.WIN1P1.SourceBuildIdentity.v1'; state='WIN1_P1_ISOLATED_NATIVE_WINDOWS_OWNER_TEST_BUILD_READY'
-      repository='ssynesthesiagit/CultivationFactory'; branch=$Branch; build_commit=$Head
+      repository='ssynesthesiagit/CultivationFactory-Public'; branch=$Branch; build_commit=$Head
       accepted_merge_commit=$AcceptedMergeCommit; accepted_pr_head=$CandidateHead
       accepted_app_files=$Baseline.application_source.file_count; accepted_app_bytes=$Baseline.application_source.total_bytes
       accepted_source_tree_sha256=$Baseline.application_source.source_tree_commitment_sha256
