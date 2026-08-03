@@ -1,0 +1,67 @@
+{
+  "$id": "https://tianxia.invalid/schemas/Tianxia_Character_Package_GM_Metadata_v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "canonical_project_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "character_package_schema": {
+      "type": "string"
+    },
+    "content_lock_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "gm_model": {
+      "additionalProperties": false,
+      "properties": {
+        "minimum_consumer_version": {
+          "type": "string"
+        },
+        "path": {
+          "const": "Tianxia_GM_Character_Model_v2.json"
+        },
+        "producer_version": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "profile": {
+          "const": "canonical_v2"
+        },
+        "schema": {
+          "const": "Tianxia_GM_Character_Model_v2"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "schema",
+        "profile",
+        "minimum_consumer_version",
+        "producer_version"
+      ],
+      "type": "object"
+    },
+    "migration_history": {
+      "type": "array"
+    }
+  },
+  "required": [
+    "character_package_schema",
+    "gm_model",
+    "canonical_project_hash",
+    "content_lock_hash"
+  ],
+  "title": "Character Package GM Metadata v2",
+  "type": "object"
+}

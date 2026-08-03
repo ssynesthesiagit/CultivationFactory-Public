@@ -1,0 +1,129 @@
+{
+  "$id": "https://tianxia.invalid/schemas/Tianxia_GM_Model_Metadata_Profile_v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "canonical_project_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "character_id": {
+      "type": "string"
+    },
+    "character_package_schema": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "content_lock_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deterministic_serialization": {
+      "additionalProperties": false,
+      "properties": {
+        "encoding": {
+          "const": "UTF-8"
+        },
+        "key_order": {
+          "const": "lexicographic"
+        },
+        "newline": {
+          "const": "LF"
+        },
+        "whitespace": {
+          "const": "compact"
+        }
+      },
+      "required": [
+        "encoding",
+        "key_order",
+        "whitespace",
+        "newline"
+      ],
+      "type": "object"
+    },
+    "gm_model_schema": {
+      "const": "Tianxia_GM_Character_Model_v2"
+    },
+    "migration_history": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "adapter_id": {
+            "type": "string"
+          },
+          "source_model_path": {
+            "type": "string"
+          },
+          "source_model_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "source_package_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "source_profile": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "adapter_id",
+          "source_profile",
+          "source_package_sha256"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "minimum_consumer_version": {
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+].*)?$",
+      "type": "string"
+    },
+    "model_profile": {
+      "enum": [
+        "canonical_v2",
+        "migrated_legacy_phase2h_v1",
+        "migrated_fire_qi_c2c1_v1",
+        "migrated_fire_qi_runtime_ready_v1"
+      ]
+    },
+    "package_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "producer_version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "project_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_checkpoint": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "character_package_schema",
+    "gm_model_schema",
+    "model_profile",
+    "producer_version",
+    "minimum_consumer_version",
+    "source_checkpoint",
+    "content_lock_hash",
+    "canonical_project_hash",
+    "deterministic_serialization"
+  ],
+  "title": "Tianxia GM Model Metadata/Profile v2",
+  "type": "object"
+}

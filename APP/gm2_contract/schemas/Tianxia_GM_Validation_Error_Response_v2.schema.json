@@ -1,0 +1,45 @@
+{
+  "$id": "https://tianxia.invalid/schemas/Tianxia_GM_Validation_Error_Response_v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "details": {
+      "type": "object"
+    },
+    "error_code": {
+      "enum": [
+        "GM2_UNSUPPORTED_SCHEMA",
+        "GM2_UNSUPPORTED_PROFILE",
+        "GM2_STRUCTURALLY_INVALID_MODEL",
+        "GM2_CONFLICTING_IDENTITIES",
+        "GM2_MISSING_REQUIRED_MODEL",
+        "GM2_INCOMPLETE_STAGE1_PROJECT",
+        "GM2_UNSUPPORTED_FIELD",
+        "GM2_MODEL_NOT_GM_READY",
+        "GM2_CONSUMER_TOO_OLD",
+        "GM2_AMBIGUOUS_MODEL_AUTHORITY",
+        "GM2_PACKAGE_CHECKSUM_INVALID",
+        "GM2_PACKAGE_UNSAFE"
+      ]
+    },
+    "owner_message": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema": {
+      "const": "Tianxia_GM_Validation_Error_Response_v2"
+    },
+    "status": {
+      "const": "REJECTED"
+    }
+  },
+  "required": [
+    "schema",
+    "status",
+    "error_code",
+    "owner_message",
+    "details"
+  ],
+  "title": "GM Model Validation Error Response v2",
+  "type": "object"
+}

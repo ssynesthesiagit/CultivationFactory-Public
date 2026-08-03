@@ -1,0 +1,75 @@
+{
+  "$defs": {
+    "Position": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "minimum": 0,
+          "title": "X",
+          "type": "integer"
+        },
+        "y": {
+          "minimum": 0,
+          "title": "Y",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "title": "Position",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Immutable combatant footprint authority.\n\nCoordinates are relative to an actor's stable top-left anchor cell.  This\ndefinition is mechanical data; token art and CSS scaling cannot modify it.",
+  "properties": {
+    "anchor_semantics": {
+      "const": "TOP_LEFT",
+      "default": "TOP_LEFT",
+      "title": "Anchor Semantics",
+      "type": "string"
+    },
+    "footprint_id": {
+      "title": "Footprint Id",
+      "type": "string"
+    },
+    "height_cells": {
+      "minimum": 1,
+      "title": "Height Cells",
+      "type": "integer"
+    },
+    "occupied_relative_cells": {
+      "items": {
+        "$ref": "#/$defs/Position"
+      },
+      "title": "Occupied Relative Cells",
+      "type": "array"
+    },
+    "schema": {
+      "const": "TianxiaActorFootprint.v1",
+      "default": "TianxiaActorFootprint.v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "source_definition_id": {
+      "title": "Source Definition Id",
+      "type": "string"
+    },
+    "width_cells": {
+      "minimum": 1,
+      "title": "Width Cells",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "footprint_id",
+    "width_cells",
+    "height_cells",
+    "occupied_relative_cells",
+    "source_definition_id"
+  ],
+  "title": "ActorFootprintDefinition",
+  "type": "object"
+}

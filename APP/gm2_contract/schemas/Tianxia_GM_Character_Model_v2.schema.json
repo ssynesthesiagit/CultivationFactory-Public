@@ -1,0 +1,956 @@
+{
+  "$defs": {
+    "Action": {
+      "additionalProperties": false,
+      "properties": {
+        "cost": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "economy": {
+          "type": "string"
+        },
+        "effect": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "range": {
+          "type": "string"
+        },
+        "roll_or_save": {
+          "type": "string"
+        },
+        "runtime_contract": {
+          "const": "excluded_from_gm_transport"
+        },
+        "source": {
+          "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/SourceReference"
+        },
+        "stable_id": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "trigger": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "stable_id",
+        "name",
+        "economy",
+        "source"
+      ],
+      "type": "object"
+    },
+    "DisplayRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "acquisition_route": {
+          "type": "string"
+        },
+        "details": {
+          "type": "object"
+        },
+        "full_description": {
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "short_description": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/SourceReference"
+        },
+        "stable_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "stable_id",
+        "name",
+        "source"
+      ],
+      "type": "object"
+    },
+    "FieldState": {
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "type": "string"
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "present",
+            "absent",
+            "unavailable",
+            "not_applicable",
+            "explicit_none"
+          ]
+        },
+        "value": {}
+      },
+      "required": [
+        "state"
+      ],
+      "type": "object"
+    },
+    "Resource": {
+      "additionalProperties": false,
+      "properties": {
+        "current": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "maximum": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "path_id": {
+          "type": "string"
+        },
+        "recovery": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/SourceReference"
+        },
+        "stable_id": {
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "present",
+            "absent",
+            "unavailable",
+            "not_applicable",
+            "explicit_none"
+          ]
+        }
+      },
+      "required": [
+        "stable_id",
+        "name",
+        "current",
+        "maximum",
+        "state",
+        "source"
+      ],
+      "type": "object"
+    },
+    "SourceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "type": "string"
+        },
+        "package_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "record_id": {
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "package_sha256",
+        "path"
+      ],
+      "type": "object"
+    },
+    "Talent": {
+      "additionalProperties": false,
+      "properties": {
+        "acquisition_route": {
+          "type": "string"
+        },
+        "details": {
+          "type": "object"
+        },
+        "full_description": {
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "ordinary_advancement_cost": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "short_description": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/SourceReference"
+        },
+        "stable_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "training_slot_cost": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "stable_id",
+        "name",
+        "source",
+        "ordinary_advancement_cost",
+        "training_slot_cost"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "ability_scores": {
+      "additionalProperties": false,
+      "properties": {
+        "CHA": {
+          "additionalProperties": false,
+          "properties": {
+            "modifier": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "score": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "state": {
+              "enum": [
+                "present",
+                "absent",
+                "unavailable",
+                "not_applicable"
+              ]
+            }
+          },
+          "required": [
+            "score",
+            "modifier",
+            "state"
+          ],
+          "type": "object"
+        },
+        "CON": {
+          "additionalProperties": false,
+          "properties": {
+            "modifier": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "score": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "state": {
+              "enum": [
+                "present",
+                "absent",
+                "unavailable",
+                "not_applicable"
+              ]
+            }
+          },
+          "required": [
+            "score",
+            "modifier",
+            "state"
+          ],
+          "type": "object"
+        },
+        "DEX": {
+          "additionalProperties": false,
+          "properties": {
+            "modifier": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "score": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "state": {
+              "enum": [
+                "present",
+                "absent",
+                "unavailable",
+                "not_applicable"
+              ]
+            }
+          },
+          "required": [
+            "score",
+            "modifier",
+            "state"
+          ],
+          "type": "object"
+        },
+        "INT": {
+          "additionalProperties": false,
+          "properties": {
+            "modifier": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "score": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "state": {
+              "enum": [
+                "present",
+                "absent",
+                "unavailable",
+                "not_applicable"
+              ]
+            }
+          },
+          "required": [
+            "score",
+            "modifier",
+            "state"
+          ],
+          "type": "object"
+        },
+        "STR": {
+          "additionalProperties": false,
+          "properties": {
+            "modifier": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "score": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "state": {
+              "enum": [
+                "present",
+                "absent",
+                "unavailable",
+                "not_applicable"
+              ]
+            }
+          },
+          "required": [
+            "score",
+            "modifier",
+            "state"
+          ],
+          "type": "object"
+        },
+        "WIS": {
+          "additionalProperties": false,
+          "properties": {
+            "modifier": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "score": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "state": {
+              "enum": [
+                "present",
+                "absent",
+                "unavailable",
+                "not_applicable"
+              ]
+            }
+          },
+          "required": [
+            "score",
+            "modifier",
+            "state"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "STR",
+        "DEX",
+        "CON",
+        "INT",
+        "WIS",
+        "CHA"
+      ],
+      "type": "object"
+    },
+    "actions": {
+      "items": {
+        "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/Action"
+      },
+      "type": "array"
+    },
+    "automatic_base_abilities": {
+      "items": {
+        "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/DisplayRecord"
+      },
+      "type": "array"
+    },
+    "combat": {
+      "additionalProperties": false,
+      "properties": {
+        "armor_class": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "attack_bonus": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "hit_points": {
+          "additionalProperties": false,
+          "properties": {
+            "current": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "maximum": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "current",
+            "maximum"
+          ],
+          "type": "object"
+        },
+        "initiative_bonus": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "runtime_contract": {
+          "const": "not_duplicated"
+        },
+        "save_dc": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "saving_throws": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "ability": {
+                "enum": [
+                  "STR",
+                  "DEX",
+                  "CON",
+                  "INT",
+                  "WIS",
+                  "CHA"
+                ]
+              },
+              "bonus": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "state": {
+                "enum": [
+                  "present",
+                  "absent",
+                  "unavailable",
+                  "not_applicable"
+                ]
+              }
+            },
+            "required": [
+              "ability",
+              "bonus",
+              "state"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "speed_ft": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "hit_points",
+        "armor_class",
+        "speed_ft",
+        "attack_bonus",
+        "save_dc",
+        "initiative_bonus",
+        "saving_throws",
+        "runtime_contract"
+      ],
+      "type": "object"
+    },
+    "companions": {
+      "items": {
+        "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/DisplayRecord"
+      },
+      "type": "array"
+    },
+    "cultivation": {
+      "additionalProperties": false,
+      "properties": {
+        "active_path_expressions": {
+          "items": {
+            "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/DisplayRecord"
+          },
+          "type": "array"
+        },
+        "cultivation_level": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "foundation": {
+          "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/FieldState"
+        },
+        "foundation_expressions": {
+          "items": {
+            "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/DisplayRecord"
+          },
+          "type": "array"
+        },
+        "paths": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "advancement_state": {
+                "enum": [
+                  "advancing",
+                  "dormant"
+                ]
+              },
+              "ap_authorization": {
+                "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/FieldState"
+              },
+              "attainment_level": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "key_ability": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "path_id": {
+                "enum": [
+                  "tianxia.path.body_refining",
+                  "tianxia.path.qi_cultivation",
+                  "tianxia.path.spirit_awakening"
+                ]
+              },
+              "primary": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "path_id",
+              "name",
+              "attainment_level",
+              "advancement_state",
+              "primary",
+              "key_ability",
+              "ap_authorization"
+            ],
+            "type": "object"
+          },
+          "minItems": 3,
+          "type": "array"
+        },
+        "primary_method": {
+          "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/FieldState"
+        },
+        "realm": {
+          "type": "string"
+        },
+        "resources": {
+          "items": {
+            "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/Resource"
+          },
+          "type": "array"
+        },
+        "subpaths_traditions": {
+          "items": {
+            "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/DisplayRecord"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "cultivation_level",
+        "realm",
+        "paths",
+        "primary_method",
+        "subpaths_traditions",
+        "foundation_expressions",
+        "resources",
+        "foundation",
+        "active_path_expressions"
+      ],
+      "type": "object"
+    },
+    "equipment": {
+      "items": {
+        "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/DisplayRecord"
+      },
+      "type": "array"
+    },
+    "field_states": {
+      "additionalProperties": {
+        "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/FieldState"
+      },
+      "type": "object"
+    },
+    "forged_techniques": {
+      "items": {
+        "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/DisplayRecord"
+      },
+      "type": "array"
+    },
+    "identity": {
+      "additionalProperties": false,
+      "properties": {
+        "character_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "concept": {
+          "type": "string"
+        },
+        "creature_type": {
+          "type": "string"
+        },
+        "display_name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "species": {
+          "type": "string"
+        },
+        "title": {
+          "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/FieldState"
+        }
+      },
+      "required": [
+        "character_id",
+        "display_name",
+        "species",
+        "creature_type",
+        "title",
+        "concept"
+      ],
+      "type": "object"
+    },
+    "incomplete_surfaces": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "type": "string"
+          },
+          "source_path": {
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "absent",
+              "unavailable",
+              "not_applicable",
+              "explicit_none"
+            ]
+          },
+          "surface": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "surface",
+          "state",
+          "reason"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "metadata": {
+      "$ref": "Tianxia_GM_Model_Metadata_Profile_v2.schema.json"
+    },
+    "methods": {
+      "items": {
+        "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/DisplayRecord"
+      },
+      "type": "array"
+    },
+    "provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "selected_model_path": {
+          "type": "string"
+        },
+        "selected_model_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "source_package_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "source_references": {
+          "items": {
+            "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/SourceReference"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "source_package_sha256",
+        "selected_model_path",
+        "selected_model_sha256",
+        "source_references"
+      ],
+      "type": "object"
+    },
+    "reactions": {
+      "items": {
+        "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/Action"
+      },
+      "type": "array"
+    },
+    "readiness": {
+      "additionalProperties": false,
+      "properties": {
+        "combat_runtime_separate": {
+          "const": true
+        },
+        "contract_valid": {
+          "type": "boolean"
+        },
+        "diagnostics": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "severity": {
+                "enum": [
+                  "info",
+                  "warning",
+                  "error"
+                ]
+              },
+              "source_path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "severity",
+              "code",
+              "message"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "gm_ready": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "gm_ready",
+        "contract_valid",
+        "combat_runtime_separate",
+        "diagnostics"
+      ],
+      "type": "object"
+    },
+    "recorded_arts": {
+      "items": {
+        "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/DisplayRecord"
+      },
+      "type": "array"
+    },
+    "schema": {
+      "const": "Tianxia_GM_Character_Model_v2"
+    },
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "skills": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "ability": {
+            "type": "string"
+          },
+          "bonus": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "proficiency": {
+            "type": "string"
+          },
+          "source": {
+            "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/SourceReference"
+          },
+          "state": {
+            "enum": [
+              "present",
+              "absent",
+              "unavailable",
+              "not_applicable"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "ability",
+          "bonus",
+          "state",
+          "source"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "spheres": {
+      "items": {
+        "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/DisplayRecord"
+      },
+      "type": "array"
+    },
+    "states": {
+      "items": {
+        "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/DisplayRecord"
+      },
+      "type": "array"
+    },
+    "talents": {
+      "items": {
+        "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Character_Model_v2.schema.json#/$defs/Talent"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema",
+    "schema_version",
+    "metadata",
+    "identity",
+    "cultivation",
+    "combat",
+    "ability_scores",
+    "skills",
+    "spheres",
+    "automatic_base_abilities",
+    "talents",
+    "actions",
+    "reactions",
+    "methods",
+    "recorded_arts",
+    "forged_techniques",
+    "equipment",
+    "states",
+    "companions",
+    "provenance",
+    "readiness",
+    "incomplete_surfaces",
+    "field_states"
+  ],
+  "title": "Tianxia GM Character Model v2",
+  "type": "object"
+}

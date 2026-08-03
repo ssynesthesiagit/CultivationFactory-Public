@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Stage1_Prompt_Envelope_v2.schema.json",
+  "title": "Tianxia Foundry Stage 1 Blueprint Intent Prompt Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "prompt_id",
+    "project_id",
+    "project_revision",
+    "catalog_build_id",
+    "content_lock_hash",
+    "stage_id",
+    "user_locks",
+    "decision_slots",
+    "decision_state_contract",
+    "authored_fields",
+    "forbidden_authority_rules",
+    "response_schema_version"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "TianxiaFoundry.Stage1PromptEnvelope.v2"
+    },
+    "prompt_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "project_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "catalog_build_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content_lock_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "stage_id": {
+      "const": "stage_1_source_blueprint"
+    },
+    "user_locks": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "decision_state_contract": {
+      "const": [
+        "selected",
+        "explicit_none",
+        "blocked_missing_authority",
+        "deferred_with_reason"
+      ]
+    },
+    "decision_slots": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 30,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "slot_id",
+          "label",
+          "min_selections",
+          "max_selections",
+          "allow_none",
+          "coverage_state",
+          "choices"
+        ],
+        "properties": {
+          "slot_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "min_selections": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "max_selections": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "allow_none": {
+            "type": "boolean"
+          },
+          "coverage_state": {
+            "enum": [
+              "offered",
+              "blocked_missing_authority"
+            ]
+          },
+          "blocked_reason_code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "blocked_reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "choice_id",
+                "name",
+                "description",
+                "content_type",
+                "authority",
+                "publication_state",
+                "source",
+                "content_binding",
+                "prerequisites",
+                "acquisition_channels",
+                "parent_relationships",
+                "availability",
+                "incompatibilities"
+              ],
+              "properties": {
+                "choice_id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": {
+                  "type": "string"
+                },
+                "content_type": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "authority": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "publication_state": {
+                  "enum": [
+                    "published",
+                    "validated"
+                  ]
+                },
+                "source": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "path",
+                    "anchor",
+                    "source_hash"
+                  ],
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "anchor": {
+                      "type": "string"
+                    },
+                    "source_hash": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  }
+                },
+                "content_binding": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "pack_id",
+                    "pack_version",
+                    "pack_hash",
+                    "record_hash"
+                  ],
+                  "properties": {
+                    "pack_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pack_version": {
+                      "type": "string"
+                    },
+                    "pack_hash": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    "record_hash": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  }
+                },
+                "prerequisites": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "acquisition_channels": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "parent_relationships": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "availability": {
+                  "type": "object"
+                },
+                "incompatibilities": {
+                  "type": "array",
+                  "items": {}
+                }
+              }
+            }
+          },
+          "required_choice_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            }
+          }
+        }
+      }
+    },
+    "authored_fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field_id",
+          "label",
+          "max_length",
+          "required"
+        ],
+        "properties": {
+          "field_id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "max_length": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "required": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "forbidden_authority_rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "response_schema_version": {
+      "const": "TianxiaFoundry.AIClipboard.Stage1.v2"
+    }
+  }
+}
