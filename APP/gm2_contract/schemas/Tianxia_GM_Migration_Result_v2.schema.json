@@ -1,0 +1,126 @@
+{
+  "$id": "https://tianxia.invalid/schemas/Tianxia_GM_Migration_Result_v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "defaults_or_omissions": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "type": "string"
+          },
+          "source_path": {
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "absent",
+              "unavailable",
+              "not_applicable",
+              "explicit_none"
+            ]
+          },
+          "target_path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "target_path",
+          "state",
+          "reason"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "diagnostics": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "error": {
+      "$ref": "https://tianxia.invalid/schemas/Tianxia_GM_Validation_Error_Response_v2.schema.json"
+    },
+    "field_mappings": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "operation": {
+            "type": "string"
+          },
+          "source_path": {
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "copied",
+              "renamed",
+              "restructured",
+              "absent",
+              "unavailable",
+              "not_applicable",
+              "explicit_none"
+            ]
+          },
+          "target_path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_path",
+          "target_path",
+          "state",
+          "operation"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "model": {
+      "type": "object"
+    },
+    "normalized_view": {
+      "type": "object"
+    },
+    "package_audit": {
+      "type": "object"
+    },
+    "package_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "Tianxia_GM_Migration_Result_v2"
+    },
+    "selected_candidate": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "source_profile": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "MIGRATED",
+        "DIRECT_V2",
+        "REJECTED"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "status",
+    "source_profile",
+    "package_sha256",
+    "selected_candidate",
+    "field_mappings",
+    "defaults_or_omissions",
+    "diagnostics"
+  ],
+  "title": "GM Model Migration Result v2",
+  "type": "object"
+}

@@ -1,0 +1,55 @@
+{
+  "$id": "https://tianxia.invalid/schemas/Tianxia_GM_Normalized_View_Model_v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "core_stats": {
+      "type": "object"
+    },
+    "cultivation": {
+      "type": "object"
+    },
+    "diagnostics": {
+      "type": "array"
+    },
+    "identity": {
+      "type": "object"
+    },
+    "paths": {
+      "type": "array"
+    },
+    "renderable": {
+      "type": "boolean"
+    },
+    "schema": {
+      "const": "Tianxia_GM_Normalized_View_Model_v2"
+    },
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "sections": {
+      "additionalProperties": {
+        "type": "array"
+      },
+      "type": "object"
+    },
+    "source_model_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "schema_version",
+    "source_model_hash",
+    "identity",
+    "core_stats",
+    "paths",
+    "sections",
+    "diagnostics",
+    "renderable",
+    "cultivation"
+  ],
+  "title": "Normalized GM View Model v2",
+  "type": "object"
+}

@@ -1,0 +1,459 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Rules_Catalog_Record.schema.json",
+  "title": "Tianxia Rules Catalog Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_id",
+    "content_type",
+    "display_name",
+    "publication",
+    "content_binding",
+    "source",
+    "legality",
+    "grants",
+    "execution_templates",
+    "display_projection",
+    "compatibility",
+    "revision_history",
+    "regression_tests",
+    "record_hash"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "TianxiaFoundry.RulesCatalogRecord.v1"
+    },
+    "record_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "content_type": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300
+    },
+    "aliases": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "published_version"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "draft",
+            "validated",
+            "published",
+            "deprecated"
+          ]
+        },
+        "published_version": {
+          "type": "string"
+        },
+        "replaced_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "content_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pack_id",
+        "pack_version",
+        "pack_hash"
+      ],
+      "properties": {
+        "pack_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "pack_version": {
+          "type": "string"
+        },
+        "pack_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "source_hash",
+        "anchor"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "path": {
+          "type": "string"
+        },
+        "anchor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "line_ranges": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "integer",
+                "minimum": 1
+              }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "source_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_text": {
+          "type": "string"
+        }
+      }
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 8000
+    },
+    "legality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "acquisition_channels",
+        "prerequisites",
+        "incompatibilities",
+        "minimum_cl",
+        "realm_rules",
+        "source_cl",
+        "suppression"
+      ],
+      "properties": {
+        "acquisition_channels": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+          }
+        },
+        "prerequisites": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "kind",
+              "target_id",
+              "operator"
+            ],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "target_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "operator": {
+                "enum": [
+                  "requires",
+                  "one_of",
+                  "all_of",
+                  "not",
+                  "minimum",
+                  "maximum"
+                ]
+              },
+              "value": {}
+            },
+            "additionalProperties": false
+          }
+        },
+        "incompatibilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+          }
+        },
+        "minimum_cl": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "realm_rules": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "source_cl": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "suppression": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+      }
+    },
+    "grants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "grant_type",
+          "target_id",
+          "operation"
+        ],
+        "properties": {
+          "grant_type": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+          },
+          "target_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+          },
+          "operation": {
+            "enum": [
+              "create",
+              "add",
+              "replace",
+              "unlock",
+              "modify",
+              "permit"
+            ]
+          },
+          "value": {},
+          "condition": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "execution_templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "template_id",
+          "template_type",
+          "payload"
+        ],
+        "properties": {
+          "template_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+          },
+          "template_type": {
+            "enum": [
+              "action",
+              "state",
+              "resource",
+              "modifier",
+              "procedure",
+              "passive_statistic",
+              "permission",
+              "companion",
+              "item_projection"
+            ]
+          },
+          "payload": {
+            "type": "object"
+          },
+          "created_record_id_pattern": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "display_projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "short_description",
+        "full_description",
+        "surfaces"
+      ],
+      "properties": {
+        "short_description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "full_description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "surfaces": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "sort_key": {
+          "type": "string"
+        }
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "factory",
+        "gm_screen"
+      ],
+      "properties": {
+        "factory": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "gm_screen": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "revision_history": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "summary"
+        ],
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "previous_record_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "regression_tests": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "test_id",
+          "kind",
+          "expected"
+        ],
+        "properties": {
+          "test_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+          },
+          "input": {
+            "type": "object"
+          },
+          "expected": {}
+        }
+      }
+    },
+    "record_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

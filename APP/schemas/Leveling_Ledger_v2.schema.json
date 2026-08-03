@@ -1,0 +1,2755 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Leveling_Ledger_v2.schema.json",
+  "title": "Rules-Causal Leveling Ledger v2",
+  "$defs": {
+    "causalAbsenceResolution": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "reason_code",
+            "reason",
+            "source_backed",
+            "resolution_event_id",
+            "authority_record_id"
+          ],
+          "properties": {
+            "state": {
+              "const": "none"
+            },
+            "reason_code": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "source_backed": {
+              "const": true
+            },
+            "resolution_event_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "authority_record_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "reason_code",
+            "reason",
+            "source_backed",
+            "as_of_event_id"
+          ],
+          "properties": {
+            "state": {
+              "const": "not_yet_acquired"
+            },
+            "reason_code": {
+              "const": "no_acquisition_event_through_level"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "source_backed": {
+              "const": true
+            },
+            "as_of_event_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            }
+          }
+        }
+      ]
+    },
+    "simpleNoneState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "reason_code",
+        "reason"
+      ],
+      "properties": {
+        "state": {
+          "const": "none"
+        },
+        "reason_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sourceEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "source_hash",
+        "source_anchor",
+        "source_path"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "source_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_anchor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_path": {
+          "type": "string"
+        }
+      }
+    },
+    "recordDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "display_name",
+        "content_type",
+        "acquisition_event_id",
+        "acquisition_kind",
+        "legal_channel",
+        "source_record_ids",
+        "source_evidence"
+      ],
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "acquisition_event_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "acquisition_kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "legal_channel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "source_record_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          }
+        },
+        "source_evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/sourceEvidence"
+          }
+        }
+      }
+    },
+    "recordDetailOrNone": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/recordDetail"
+        },
+        {
+          "$ref": "#/$defs/simpleNoneState"
+        }
+      ]
+    },
+    "abilityScores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "STR",
+        "DEX",
+        "CON",
+        "INT",
+        "WIS",
+        "CHA"
+      ],
+      "properties": {
+        "STR": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "DEX": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "CON": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "INT": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "WIS": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "CHA": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        }
+      }
+    },
+    "abilityModifiers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "STR",
+        "DEX",
+        "CON",
+        "INT",
+        "WIS",
+        "CHA"
+      ],
+      "properties": {
+        "STR": {
+          "type": "integer",
+          "minimum": -5,
+          "maximum": 10
+        },
+        "DEX": {
+          "type": "integer",
+          "minimum": -5,
+          "maximum": 10
+        },
+        "CON": {
+          "type": "integer",
+          "minimum": -5,
+          "maximum": 10
+        },
+        "INT": {
+          "type": "integer",
+          "minimum": -5,
+          "maximum": 10
+        },
+        "WIS": {
+          "type": "integer",
+          "minimum": -5,
+          "maximum": 10
+        },
+        "CHA": {
+          "type": "integer",
+          "minimum": -5,
+          "maximum": 10
+        }
+      }
+    },
+    "authorityComponent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "record_id",
+        "record_hash",
+        "source_anchor",
+        "formula_id",
+        "value"
+      ],
+      "properties": {
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "record_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_anchor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "formula_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "value": {
+          "type": "integer"
+        }
+      }
+    },
+    "simplePresentResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "record_ids",
+        "acquisition_event_ids",
+        "entries"
+      ],
+      "properties": {
+        "state": {
+          "const": "present"
+        },
+        "record_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          }
+        },
+        "acquisition_event_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          }
+        },
+        "entries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/recordDetail"
+          }
+        }
+      }
+    },
+    "manualPresentResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "record_ids",
+        "acquisition_event_ids",
+        "entries"
+      ],
+      "properties": {
+        "state": {
+          "const": "present"
+        },
+        "record_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          }
+        },
+        "acquisition_event_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          }
+        },
+        "entries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_id",
+              "display_name",
+              "technique_name",
+              "acquisition_event_id",
+              "training_source_record_id",
+              "training_source_access_event_id",
+              "parent_manual_record_id",
+              "parent_manual_name",
+              "dm_facing_line",
+              "associated_sphere_record_ids",
+              "associated_sphere_names",
+              "reproduced_component_record_ids",
+              "reproduced_component_names",
+              "expression_kind",
+              "difficulty",
+              "computed_learning_dc",
+              "linked_action_id",
+              "fixed_expression_warning",
+              "execution"
+            ],
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              "display_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "technique_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "acquisition_event_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              "training_source_record_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              "training_source_access_event_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              "parent_manual_record_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              "parent_manual_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "dm_facing_line": {
+                "type": "string",
+                "pattern": "^Sphere of [^—]+ — [^—]+ — [^—]+ — (Difficulty [0-9]+|DC [0-9]+ \\(specific override\\))$"
+              },
+              "associated_sphere_record_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                }
+              },
+              "associated_sphere_names": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "reproduced_component_record_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                }
+              },
+              "reproduced_component_names": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "expression_kind": {
+                "enum": [
+                  "exact_base_ability",
+                  "exact_named_talent",
+                  "base_plus_ordered_augments",
+                  "published_sphere_package",
+                  "published_multi_sphere_expression",
+                  "preserved_forged_expression"
+                ]
+              },
+              "difficulty": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "computed_learning_dc": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "linked_action_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              "fixed_expression_warning": {
+                "type": "string",
+                "minLength": 1
+              },
+              "execution": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "name",
+                  "action_id",
+                  "timing",
+                  "cost",
+                  "range",
+                  "target",
+                  "roll_save_check",
+                  "effect",
+                  "failure",
+                  "duration",
+                  "limit",
+                  "counterplay"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "action_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "timing": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "cost": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "range": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "target": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "roll_save_check": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "effect": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "failure": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "duration": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "limit": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "counterplay": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "recordedArt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "display_name",
+        "parent_manual_record_id",
+        "parent_manual_name",
+        "lineage_source",
+        "technique_name",
+        "dm_facing_line",
+        "associated_sphere_record_ids",
+        "associated_sphere_names",
+        "reproduced_component_record_ids",
+        "reproduced_component_names",
+        "expression_kind",
+        "learning_dc",
+        "study_time",
+        "allowed_study_abilities",
+        "requirements",
+        "execution",
+        "execution_derivation",
+        "linked_action_id",
+        "fixed_expression_warning",
+        "learned_at_cl",
+        "acquisition_event_id",
+        "record_hash"
+      ],
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parent_manual_record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "parent_manual_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lineage_source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "technique_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dm_facing_line": {
+          "type": "string",
+          "pattern": "^Sphere of [^—]+ — [^—]+ — [^—]+ — (Difficulty [0-9]+|DC [0-9]+ \\(specific override\\))$"
+        },
+        "associated_sphere_record_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          }
+        },
+        "associated_sphere_names": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "reproduced_component_record_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          }
+        },
+        "reproduced_component_names": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "expression_kind": {
+          "enum": [
+            "exact_base_ability",
+            "exact_named_talent",
+            "base_plus_ordered_augments",
+            "published_sphere_package",
+            "published_multi_sphere_expression",
+            "preserved_forged_expression"
+          ]
+        },
+        "learning_dc": {
+          "type": "object",
+          "minProperties": 2
+        },
+        "study_time": {
+          "type": "object",
+          "minProperties": 2
+        },
+        "allowed_study_abilities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "STR",
+              "DEX",
+              "CON",
+              "INT",
+              "WIS",
+              "CHA"
+            ]
+          }
+        },
+        "requirements": {
+          "type": "array"
+        },
+        "execution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "action_id",
+            "name",
+            "timing",
+            "cost",
+            "range",
+            "target",
+            "roll_save_check",
+            "effect",
+            "failure",
+            "duration",
+            "limit",
+            "counterplay"
+          ],
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "timing": {
+              "type": "string",
+              "minLength": 1
+            },
+            "cost": {
+              "type": "string",
+              "minLength": 1
+            },
+            "range": {
+              "type": "string",
+              "minLength": 1
+            },
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "roll_save_check": {
+              "type": "string",
+              "minLength": 1
+            },
+            "effect": {
+              "type": "string",
+              "minLength": 1
+            },
+            "failure": {
+              "type": "string",
+              "minLength": 1
+            },
+            "duration": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limit": {
+              "type": "string",
+              "minLength": 1
+            },
+            "counterplay": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "execution_derivation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "derivation_kind",
+            "source_execution_record_id",
+            "component_record_ids",
+            "source_template_hash",
+            "compiled_payload_hash"
+          ],
+          "properties": {
+            "derivation_kind": {
+              "type": "string",
+              "minLength": 1
+            },
+            "source_execution_record_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "component_record_ids": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              }
+            },
+            "source_template_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "compiled_payload_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "linked_action_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "fixed_expression_warning": {
+          "type": "string",
+          "minLength": 1
+        },
+        "learned_at_cl": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "acquisition_event_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "record_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "project_revision",
+    "content_lock_hash",
+    "event_head_hash",
+    "target_cl",
+    "rows",
+    "final_state_hash",
+    "generated_at_rule"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "TianxiaFoundry.LevelingLedger.v2"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "project_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "content_lock_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "event_head_hash": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "target_cl": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "cl",
+          "pb",
+          "hp",
+          "resources",
+          "ability_scores",
+          "ability_modifiers",
+          "ability_score_effects",
+          "background",
+          "background_detail",
+          "background_sphere",
+          "background_sphere_detail",
+          "background_talent",
+          "background_talent_detail",
+          "origin_insight",
+          "origin_insight_detail",
+          "sect_trial_sphere",
+          "sect_trial_sphere_detail",
+          "sect_trial_talent",
+          "sect_trial_talent_detail",
+          "ai_bootstrap_sphere",
+          "ai_bootstrap_sphere_detail",
+          "ai_bootstrap_talent",
+          "ai_bootstrap_talent_detail",
+          "paths",
+          "path_details",
+          "subpaths",
+          "subpath_resolution",
+          "method",
+          "method_detail",
+          "foundation",
+          "foundation_detail",
+          "level_talent",
+          "trained_choice_capacity",
+          "training_transactions",
+          "new_sphere_entitlements",
+          "cultivation_insights_after_level",
+          "cultivation_insight_details",
+          "training_sources_after_level",
+          "training_source_details",
+          "known_spheres_after_level",
+          "known_sphere_details",
+          "known_talents_after_level",
+          "known_talent_details",
+          "recorded_arts_after_level",
+          "manuals_resolution",
+          "forged_techniques_after_level",
+          "forged_techniques_resolution",
+          "equipment_after_level",
+          "equipment_resolution",
+          "level_acquisitions",
+          "level_acquisition_events",
+          "legality",
+          "row_hash"
+        ],
+        "properties": {
+          "cl": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20
+          },
+          "pb": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 6
+          },
+          "hp": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "base",
+              "contribution",
+              "gain",
+              "level_formula_gain",
+              "retroactive_con_adjustment",
+              "retroactive_con_per_level",
+              "retroactive_con_affected_levels",
+              "prior_total",
+              "total",
+              "formula_id",
+              "formula_expression",
+              "formula_inputs",
+              "arithmetic",
+              "adjustment_event_ids",
+              "retroactive_con_adjustment_details",
+              "authority_components"
+            ],
+            "properties": {
+              "base": {
+                "type": "integer"
+              },
+              "contribution": {
+                "type": "integer"
+              },
+              "gain": {
+                "type": "integer"
+              },
+              "level_formula_gain": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "retroactive_con_adjustment": {
+                "type": "integer"
+              },
+              "retroactive_con_per_level": {
+                "type": "integer"
+              },
+              "retroactive_con_affected_levels": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 20
+              },
+              "prior_total": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "total": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "formula_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              "formula_expression": {
+                "type": "string",
+                "minLength": 1
+              },
+              "formula_inputs": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "cl",
+                  "pb",
+                  "con_score",
+                  "con_modifier"
+                ],
+                "properties": {
+                  "cl": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 20
+                  },
+                  "pb": {
+                    "type": "integer",
+                    "minimum": 2,
+                    "maximum": 6
+                  },
+                  "con_score": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 30
+                  },
+                  "con_modifier": {
+                    "type": "integer",
+                    "minimum": -5,
+                    "maximum": 10
+                  }
+                }
+              },
+              "arithmetic": {
+                "type": "string",
+                "pattern": "^-?[0-9]+ \\+ -?[0-9]+ \\+ -?[0-9]+ = -?[0-9]+$"
+              },
+              "adjustment_event_ids": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                }
+              },
+              "retroactive_con_adjustment_details": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "event_id",
+                    "con_score_before",
+                    "con_score_after",
+                    "con_modifier_before",
+                    "con_modifier_after",
+                    "modifier_delta",
+                    "affected_levels",
+                    "total_adjustment"
+                  ],
+                  "properties": {
+                    "event_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 240
+                    },
+                    "con_score_before": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 30
+                    },
+                    "con_score_after": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 30
+                    },
+                    "con_modifier_before": {
+                      "type": "integer",
+                      "minimum": -5,
+                      "maximum": 10
+                    },
+                    "con_modifier_after": {
+                      "type": "integer",
+                      "minimum": -5,
+                      "maximum": 10
+                    },
+                    "modifier_delta": {
+                      "type": "integer",
+                      "minimum": -15,
+                      "maximum": 15
+                    },
+                    "affected_levels": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 20
+                    },
+                    "total_adjustment": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              },
+              "authority_components": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "$ref": "#/$defs/authorityComponent"
+                }
+              }
+            }
+          },
+          "resources": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "base_value",
+                "method_delta",
+                "foundation_delta",
+                "equipment_delta",
+                "maximum",
+                "current_before",
+                "current_after",
+                "formula_id",
+                "formula_expression",
+                "formula_inputs",
+                "maximum_arithmetic",
+                "modifier_details",
+                "authority_components"
+              ],
+              "properties": {
+                "base_value": {
+                  "type": "integer"
+                },
+                "method_delta": {
+                  "type": "integer"
+                },
+                "foundation_delta": {
+                  "type": "integer"
+                },
+                "equipment_delta": {
+                  "type": "integer"
+                },
+                "maximum": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "current_before": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "current_after": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "formula_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "formula_expression": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "formula_inputs": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "cl",
+                    "pb",
+                    "key_ability",
+                    "key_ability_score",
+                    "key_ability_modifier"
+                  ],
+                  "properties": {
+                    "cl": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 20
+                    },
+                    "pb": {
+                      "type": "integer",
+                      "minimum": 2,
+                      "maximum": 6
+                    },
+                    "key_ability": {
+                      "enum": [
+                        "STR",
+                        "DEX",
+                        "CON",
+                        "INT",
+                        "WIS",
+                        "CHA"
+                      ]
+                    },
+                    "key_ability_score": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 30
+                    },
+                    "key_ability_modifier": {
+                      "type": "integer",
+                      "minimum": -5,
+                      "maximum": 10
+                    }
+                  }
+                },
+                "maximum_arithmetic": {
+                  "type": "string",
+                  "pattern": "^-?[0-9]+ \\+ -?[0-9]+ \\+ -?[0-9]+ \\+ -?[0-9]+ = -?[0-9]+$"
+                },
+                "modifier_details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "role",
+                      "value",
+                      "formula_id",
+                      "formula_expression",
+                      "authority"
+                    ],
+                    "properties": {
+                      "role": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 240
+                      },
+                      "value": {
+                        "type": "integer"
+                      },
+                      "formula_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 240
+                      },
+                      "formula_expression": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "authority": {
+                        "$ref": "#/$defs/recordDetail"
+                      }
+                    }
+                  }
+                },
+                "authority_components": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/$defs/authorityComponent"
+                  }
+                }
+              }
+            }
+          },
+          "ability_scores": {
+            "type": "object",
+            "required": [
+              "STR",
+              "DEX",
+              "CON",
+              "INT",
+              "WIS",
+              "CHA"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "STR": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 30
+              },
+              "DEX": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 30
+              },
+              "CON": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 30
+              },
+              "INT": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 30
+              },
+              "WIS": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 30
+              },
+              "CHA": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 30
+              }
+            }
+          },
+          "ability_modifiers": {
+            "type": "object",
+            "required": [
+              "STR",
+              "DEX",
+              "CON",
+              "INT",
+              "WIS",
+              "CHA"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "STR": {
+                "type": "integer",
+                "minimum": -5,
+                "maximum": 10
+              },
+              "DEX": {
+                "type": "integer",
+                "minimum": -5,
+                "maximum": 10
+              },
+              "CON": {
+                "type": "integer",
+                "minimum": -5,
+                "maximum": 10
+              },
+              "INT": {
+                "type": "integer",
+                "minimum": -5,
+                "maximum": 10
+              },
+              "WIS": {
+                "type": "integer",
+                "minimum": -5,
+                "maximum": 10
+              },
+              "CHA": {
+                "type": "integer",
+                "minimum": -5,
+                "maximum": 10
+              }
+            }
+          },
+          "ability_score_effects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "event_id",
+                "kind",
+                "record_id",
+                "display_name",
+                "legal_channel",
+                "selected_increments",
+                "scores_before",
+                "scores_after",
+                "modifiers_after",
+                "hp_retroactive_con_adjustment",
+                "source_record_ids"
+              ],
+              "properties": {
+                "event_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "kind": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "record_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "display_name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "legal_channel": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "selected_increments": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "STR": {
+                      "type": "integer"
+                    },
+                    "DEX": {
+                      "type": "integer"
+                    },
+                    "CON": {
+                      "type": "integer"
+                    },
+                    "INT": {
+                      "type": "integer"
+                    },
+                    "WIS": {
+                      "type": "integer"
+                    },
+                    "CHA": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "scores_before": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/abilityScores"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "scores_after": {
+                  "$ref": "#/$defs/abilityScores"
+                },
+                "modifiers_after": {
+                  "$ref": "#/$defs/abilityModifiers"
+                },
+                "hp_retroactive_con_adjustment": {
+                  "type": "integer"
+                },
+                "source_record_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  }
+                }
+              }
+            }
+          },
+          "background": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "background_detail": {
+            "$ref": "#/$defs/recordDetailOrNone"
+          },
+          "background_sphere": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "background_sphere_detail": {
+            "$ref": "#/$defs/recordDetailOrNone"
+          },
+          "background_talent": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "background_talent_detail": {
+            "$ref": "#/$defs/recordDetailOrNone"
+          },
+          "origin_insight": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "origin_insight_detail": {
+            "$ref": "#/$defs/recordDetailOrNone"
+          },
+          "sect_trial_sphere": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "sect_trial_sphere_detail": {
+            "$ref": "#/$defs/recordDetailOrNone"
+          },
+          "sect_trial_talent": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "sect_trial_talent_detail": {
+            "$ref": "#/$defs/recordDetailOrNone"
+          },
+          "paths": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            }
+          },
+          "path_details": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/recordDetail"
+            }
+          },
+          "subpaths": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            }
+          },
+          "subpath_resolution": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/simplePresentResolution"
+              },
+              {
+                "$ref": "#/$defs/causalAbsenceResolution"
+              }
+            ]
+          },
+          "method": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "record_id",
+                  "event_id"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "acquired"
+                  },
+                  "record_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "event_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "record_id",
+                  "event_id"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "active"
+                  },
+                  "record_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "event_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  }
+                }
+              },
+              {
+                "$ref": "#/$defs/causalAbsenceResolution"
+              }
+            ]
+          },
+          "method_detail": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "selection",
+                  "activation_event_id",
+                  "resource_modifier_active"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "acquired"
+                  },
+                  "selection": {
+                    "$ref": "#/$defs/recordDetail"
+                  },
+                  "activation_event_id": {
+                    "type": "null"
+                  },
+                  "resource_modifier_active": {
+                    "const": false
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "selection",
+                  "activation_event_id"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "active"
+                  },
+                  "selection": {
+                    "$ref": "#/$defs/recordDetail"
+                  },
+                  "activation_event_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  }
+                }
+              },
+              {
+                "$ref": "#/$defs/causalAbsenceResolution"
+              }
+            ]
+          },
+          "foundation": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "record_id",
+                  "event_id",
+                  "expression_record_id",
+                  "path_id",
+                  "stage"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "acquired"
+                  },
+                  "record_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "event_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "expression_record_id": {
+                    "type": "null"
+                  },
+                  "path_id": {
+                    "type": "null"
+                  },
+                  "stage": {
+                    "type": "null"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "record_id",
+                  "event_id",
+                  "expression_record_id",
+                  "path_id",
+                  "stage"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "expressed"
+                  },
+                  "record_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "event_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "expression_record_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "path_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "stage": {
+                    "type": "null"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "record_id",
+                  "event_id",
+                  "expression_record_id",
+                  "path_id",
+                  "stage",
+                  "stage_event_id"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "active"
+                  },
+                  "record_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "event_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "expression_record_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "path_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "stage": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "stage_event_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  }
+                }
+              },
+              {
+                "$ref": "#/$defs/causalAbsenceResolution"
+              }
+            ]
+          },
+          "foundation_detail": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "selection",
+                  "expression_event_id",
+                  "stage_event_id",
+                  "resource_modifier_active"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "acquired"
+                  },
+                  "selection": {
+                    "$ref": "#/$defs/recordDetail"
+                  },
+                  "expression_event_id": {
+                    "type": "null"
+                  },
+                  "stage_event_id": {
+                    "type": "null"
+                  },
+                  "resource_modifier_active": {
+                    "const": false
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "selection",
+                  "expression",
+                  "path",
+                  "expression_event_id",
+                  "stage_event_id",
+                  "resource_modifier_active"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "expressed"
+                  },
+                  "selection": {
+                    "$ref": "#/$defs/recordDetail"
+                  },
+                  "expression": {
+                    "$ref": "#/$defs/recordDetail"
+                  },
+                  "path": {
+                    "$ref": "#/$defs/recordDetail"
+                  },
+                  "expression_event_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "stage_event_id": {
+                    "type": "null"
+                  },
+                  "resource_modifier_active": {
+                    "const": false
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "selection",
+                  "expression",
+                  "path",
+                  "stage",
+                  "stage_event_id"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "active"
+                  },
+                  "selection": {
+                    "$ref": "#/$defs/recordDetail"
+                  },
+                  "expression": {
+                    "$ref": "#/$defs/recordDetail"
+                  },
+                  "path": {
+                    "$ref": "#/$defs/recordDetail"
+                  },
+                  "stage": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "stage_event_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  }
+                }
+              },
+              {
+                "$ref": "#/$defs/causalAbsenceResolution"
+              }
+            ]
+          },
+          "level_talent": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "capacity",
+              "used",
+              "record_ids",
+              "event_ids",
+              "entries",
+              "source_rule_id"
+            ],
+            "properties": {
+              "capacity": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "used": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "record_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                }
+              },
+              "event_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                }
+              },
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/recordDetail"
+                }
+              },
+              "source_rule_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              }
+            }
+          },
+          "trained_choice_capacity": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "capacity",
+              "successful_used",
+              "failed_attempts",
+              "remaining",
+              "source_rule_id"
+            ],
+            "properties": {
+              "capacity": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "successful_used": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "failed_attempts": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "remaining": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "source_rule_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              }
+            }
+          },
+          "training_transactions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "schema_version",
+                "attempt_id",
+                "retry_of_attempt_id",
+                "character_cl",
+                "training_type",
+                "target_record_id",
+                "target_record_hash",
+                "training_source_record_id",
+                "training_source_record_hash",
+                "training_source_access_event_id",
+                "selected_ability",
+                "study_time_mode",
+                "study_time_value",
+                "time_die_result",
+                "pb_input",
+                "ability_modifier_input",
+                "training_days_formula_id",
+                "computed_training_days",
+                "recorded_art_difficulty",
+                "recorded_arts_learned_this_cl_before",
+                "learning_dc_mode",
+                "dc_die_result",
+                "dc_formula_id",
+                "dc_inputs",
+                "computed_dc",
+                "check_die_result",
+                "check_formula_id",
+                "check_ability",
+                "check_ability_modifier_input",
+                "check_pb_input",
+                "computed_check_total",
+                "result",
+                "slot_cost",
+                "acquisition_event_id"
+              ],
+              "properties": {
+                "schema_version": {
+                  "const": "TianxiaFoundry.Stage2TrainingTransaction.v2"
+                },
+                "attempt_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "retry_of_attempt_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "character_cl": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 20
+                },
+                "training_type": {
+                  "enum": [
+                    "new_sphere",
+                    "known_sphere_talent",
+                    "recorded_art",
+                    "published_other"
+                  ]
+                },
+                "target_record_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "target_record_hash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "training_source_record_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "training_source_record_hash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "training_source_access_event_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "selected_ability": {
+                  "enum": [
+                    "STR",
+                    "DEX",
+                    "CON",
+                    "INT",
+                    "WIS",
+                    "CHA"
+                  ]
+                },
+                "study_time_mode": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "study_time_value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "time_die_result": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1,
+                  "maximum": 6
+                },
+                "pb_input": {
+                  "type": "integer",
+                  "minimum": 2,
+                  "maximum": 6
+                },
+                "ability_modifier_input": {
+                  "type": "integer",
+                  "minimum": -5,
+                  "maximum": 10
+                },
+                "training_days_formula_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "computed_training_days": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "recorded_art_difficulty": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "recorded_arts_learned_this_cl_before": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "learning_dc_mode": {
+                  "enum": [
+                    "ordinary_training",
+                    "difficulty_formula",
+                    "explicit_dc_override"
+                  ]
+                },
+                "dc_die_result": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1,
+                  "maximum": 4
+                },
+                "dc_formula_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "dc_inputs": {
+                  "type": "object"
+                },
+                "computed_dc": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "check_die_result": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 20
+                },
+                "check_formula_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "check_ability": {
+                  "enum": [
+                    "STR",
+                    "DEX",
+                    "CON",
+                    "INT",
+                    "WIS",
+                    "CHA"
+                  ]
+                },
+                "check_ability_modifier_input": {
+                  "type": "integer",
+                  "minimum": -5,
+                  "maximum": 10
+                },
+                "check_pb_input": {
+                  "type": "integer",
+                  "minimum": 2,
+                  "maximum": 6
+                },
+                "computed_check_total": {
+                  "type": "integer",
+                  "minimum": -20,
+                  "maximum": 100
+                },
+                "result": {
+                  "enum": [
+                    "success",
+                    "failure"
+                  ]
+                },
+                "slot_cost": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "acquisition_event_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "new_sphere_entitlements": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "cultivation_insights_after_level": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            }
+          },
+          "cultivation_insight_details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/recordDetail"
+            }
+          },
+          "training_sources_after_level": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            }
+          },
+          "training_source_details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/recordDetail"
+            }
+          },
+          "known_spheres_after_level": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            }
+          },
+          "known_sphere_details": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/recordDetail"
+            }
+          },
+          "known_talents_after_level": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            }
+          },
+          "known_talent_details": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/recordDetail"
+            }
+          },
+          "recorded_arts_after_level": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/$defs/recordedArt"
+            }
+          },
+          "manuals_resolution": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/manualPresentResolution"
+              },
+              {
+                "$ref": "#/$defs/causalAbsenceResolution"
+              }
+            ]
+          },
+          "forged_techniques_after_level": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              {
+                "$ref": "#/$defs/causalAbsenceResolution"
+              }
+            ]
+          },
+          "forged_techniques_resolution": {
+            "$ref": "#/$defs/causalAbsenceResolution"
+          },
+          "equipment_after_level": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            }
+          },
+          "equipment_resolution": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/simplePresentResolution"
+              },
+              {
+                "$ref": "#/$defs/causalAbsenceResolution"
+              }
+            ]
+          },
+          "level_acquisitions": {
+            "type": "object",
+            "minProperties": 1,
+            "propertyNames": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "additionalProperties": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              }
+            }
+          },
+          "level_acquisition_events": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "event_id",
+                "kind",
+                "record_id",
+                "display_name",
+                "content_type",
+                "legal_channel",
+                "source_record_ids"
+              ],
+              "properties": {
+                "event_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "kind": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "record_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "display_name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "content_type": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "legal_channel": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "source_record_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  }
+                }
+              }
+            }
+          },
+          "legality": {
+            "type": "object",
+            "required": [
+              "status",
+              "blocker_count",
+              "event_count"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "valid",
+                  "blocked"
+                ]
+              },
+              "blocker_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "event_count": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          },
+          "row_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "ai_bootstrap_sphere": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "ai_bootstrap_sphere_detail": {
+            "$ref": "#/$defs/recordDetailOrNone"
+          },
+          "ai_bootstrap_talent": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "ai_bootstrap_talent_detail": {
+            "$ref": "#/$defs/recordDetailOrNone"
+          }
+        }
+      }
+    },
+    "final_state_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "generated_at_rule": {
+      "const": "deterministic-no-wall-clock"
+    }
+  }
+}

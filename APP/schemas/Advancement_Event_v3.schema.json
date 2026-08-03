@@ -1,0 +1,1237 @@
+{
+  "$id": "https://tianxia.local/foundry/schemas/Advancement_Event_v3.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "advancement": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "starting_state",
+                  "background_acquisition",
+                  "background_sphere_acquisition",
+                  "background_talent_acquisition",
+                  "origin_insight_acquisition",
+                  "cultivation_insight_acquisition",
+                  "path_acquisition",
+                  "sect_trial_sphere_acquisition",
+                  "sect_trial_talent_acquisition",
+                  "ai_bootstrap_sphere_acquisition",
+                  "ai_bootstrap_talent_acquisition",
+                  "level_advance",
+                  "ability_score_change",
+                  "level_talent_acquisition",
+                  "subpath_acquisition",
+                  "method_acquisition",
+                  "method_activation",
+                  "foundation_acquisition",
+                  "sphere_training_attempt",
+                  "talent_training_attempt",
+                  "manual_training_attempt",
+                  "training_source_access",
+                  "equipment_acquisition",
+                  "printed_rule_grant",
+                  "forged_technique_creation"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "foundation_expression"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 2,
+                "minProperties": 2,
+                "required": [
+                  "foundation_record_id",
+                  "path_id"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "foundation_stage"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 1,
+                "minProperties": 1,
+                "required": [
+                  "stage"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "new_sphere_bonus_talent_acquisition"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 1,
+                "minProperties": 1,
+                "required": [
+                  "entitlement_event_id"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "typed_none"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 1,
+                "minProperties": 1,
+                "required": [
+                  "target"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "non_sphere_method_access"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 12,
+                "minProperties": 5,
+                "required": [
+                  "authority_type",
+                  "method_id",
+                  "amount_awarded",
+                  "creation_authority",
+                  "operation_hash"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "non_sphere_restricted_access"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 6,
+                "minProperties": 6,
+                "required": [
+                  "authority_type",
+                  "path_id",
+                  "selection_id",
+                  "amount_awarded",
+                  "creation_authority",
+                  "operation_hash"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "non_sphere_ap_award"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 6,
+                "minProperties": 6,
+                "required": [
+                  "authority_type",
+                  "method_id",
+                  "target_cl",
+                  "amount_awarded",
+                  "creation_authority",
+                  "operation_hash"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "non_sphere_compatibility_adjudication"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 7,
+                "minProperties": 7,
+                "required": [
+                  "authority_type",
+                  "method_id",
+                  "foundation_id",
+                  "adjudication_outcome",
+                  "amount_awarded",
+                  "creation_authority",
+                  "operation_hash"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "non_sphere_repair_completion"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 8,
+                "minProperties": 8,
+                "required": [
+                  "authority_type",
+                  "method_id",
+                  "foundation_id",
+                  "repair_interface",
+                  "repair_practice_name",
+                  "amount_awarded",
+                  "creation_authority",
+                  "operation_hash"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "non_sphere_transformation_completion"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 8,
+                "minProperties": 8,
+                "required": [
+                  "authority_type",
+                  "method_id",
+                  "foundation_id",
+                  "transformation_route",
+                  "completion_type",
+                  "amount_awarded",
+                  "creation_authority",
+                  "operation_hash"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "non_sphere_background_choice"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 6,
+                "minProperties": 6,
+                "required": [
+                  "authority_type",
+                  "background_id",
+                  "route_ids",
+                  "amount_awarded",
+                  "creation_authority",
+                  "operation_hash"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "canonical_talent_acquisition_provenance",
+                  "canonical_talent_equipment_authority"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 10,
+                "minProperties": 10,
+                "required": [
+                  "authority_type",
+                  "canonical_content_id",
+                  "binding_type",
+                  "binding_id",
+                  "catalog_record_commitment_sha256",
+                  "character_id",
+                  "issuance_route",
+                  "amount_awarded",
+                  "creation_authority",
+                  "operation_hash"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "authority_bindings": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "causal_event_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "pack_hash": {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              "pack_id": {
+                "maxLength": 240,
+                "minLength": 1,
+                "type": "string"
+              },
+              "pack_version": {
+                "type": "string"
+              },
+              "record_hash": {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              "record_id": {
+                "maxLength": 240,
+                "minLength": 1,
+                "type": "string"
+              },
+              "role": {
+                "maxLength": 240,
+                "minLength": 1,
+                "type": "string"
+              },
+              "source_anchor": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "source_hash": {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              "source_id": {
+                "maxLength": 240,
+                "minLength": 1,
+                "type": "string"
+              },
+              "source_path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "role",
+              "record_id",
+              "record_hash",
+              "pack_id",
+              "pack_version",
+              "pack_hash",
+              "source_id",
+              "source_hash",
+              "source_anchor",
+              "source_path",
+              "causal_event_id"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "calculation": {
+          "additionalProperties": false,
+          "properties": {
+            "formula": {
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            "inputs": {
+              "type": "object"
+            },
+            "outputs": {
+              "type": "object"
+            },
+            "rule_id": {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            "trace": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "rule_id",
+            "formula",
+            "inputs",
+            "outputs",
+            "trace"
+          ],
+          "type": "object"
+        },
+        "details": {
+          "additionalProperties": false,
+          "properties": {
+            "amount_awarded": {
+              "minimum": 1,
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "authority_type": {
+              "enum": [
+                "method_access",
+                "subpath_access",
+                "ap_award",
+                "compatibility_adjudication",
+                "repair_completion",
+                "transformation_completion",
+                "background_choice",
+                "talent_acquisition_provenance",
+                "equipment_authority"
+              ]
+            },
+            "background_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "creation_authority": {
+              "const": "AUTHENTICATED_PROJECT_AUTHORITY_SERVICE"
+            },
+            "entitlement_event_id": {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            "foundation_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "foundation_record_id": {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            "method_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "access_tier": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "route_type": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "route_label": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "owner_annotation": {
+              "type": "string"
+            },
+            "source_reference": {
+              "minProperties": 1,
+              "type": "object"
+            },
+            "route_commitment_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "method_registry_commitment_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "operation_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "path_id": {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            "selection_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "stage": {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            "target": {
+              "enum": [
+                "method",
+                "foundation",
+                "manuals",
+                "equipment",
+                "subpaths",
+                "forged_techniques"
+              ]
+            },
+            "target_cl": {
+              "maximum": 20,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "adjudication_outcome": {
+              "type": "string",
+              "enum": [
+                "WORKABLE",
+                "WORKABLE_WITH_FRICTION",
+                "STRAINED",
+                "NATURAL_AFFINITY"
+              ]
+            },
+            "repair_interface": {
+              "type": "string",
+              "minLength": 1
+            },
+            "repair_practice_name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "transformation_route": {
+              "type": "string",
+              "minLength": 1
+            },
+            "completion_type": {
+              "type": "string",
+              "enum": [
+                "FOUNDATION_CHALLENGE",
+                "GM_AUTHORED_TRANSFORMATION_EVENT"
+              ]
+            },
+            "route_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "canonical_content_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "binding_type": {
+              "enum": [
+                "predicate",
+                "clause"
+              ]
+            },
+            "binding_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "catalog_record_commitment_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "character_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "issuance_route": {
+              "enum": [
+                "initial_character_finalization",
+                "post_creation_acquisition"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "kind": {
+          "enum": [
+            "starting_state",
+            "background_acquisition",
+            "background_sphere_acquisition",
+            "background_talent_acquisition",
+            "origin_insight_acquisition",
+            "cultivation_insight_acquisition",
+            "path_acquisition",
+            "sect_trial_sphere_acquisition",
+            "sect_trial_talent_acquisition",
+            "ai_bootstrap_sphere_acquisition",
+            "ai_bootstrap_talent_acquisition",
+            "level_advance",
+            "ability_score_change",
+            "level_talent_acquisition",
+            "subpath_acquisition",
+            "method_acquisition",
+            "method_activation",
+            "foundation_acquisition",
+            "foundation_expression",
+            "foundation_stage",
+            "training_source_access",
+            "sphere_training_attempt",
+            "talent_training_attempt",
+            "manual_training_attempt",
+            "new_sphere_bonus_talent_acquisition",
+            "equipment_acquisition",
+            "printed_rule_grant",
+            "forged_technique_creation",
+            "typed_none",
+            "non_sphere_method_access",
+            "non_sphere_restricted_access",
+            "non_sphere_ap_award",
+            "non_sphere_compatibility_adjudication",
+            "non_sphere_repair_completion",
+            "non_sphere_transformation_completion",
+            "non_sphere_background_choice",
+            "canonical_talent_acquisition_provenance",
+            "canonical_talent_equipment_authority"
+          ]
+        },
+        "none_state": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "reason_code": {
+                  "maxLength": 240,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "source_backed": {
+                  "const": true
+                },
+                "state": {
+                  "const": "none"
+                }
+              },
+              "required": [
+                "state",
+                "reason_code",
+                "reason",
+                "source_backed"
+              ],
+              "type": "object"
+            }
+          ]
+        },
+        "target_cl": {
+          "maximum": 20,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "training_transaction": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "ability_modifier_input": {
+                  "maximum": 10,
+                  "minimum": -5,
+                  "type": "integer"
+                },
+                "acquisition_event_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "attempt_id": {
+                  "maxLength": 240,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "character_cl": {
+                  "maximum": 20,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "check_ability": {
+                  "enum": [
+                    "STR",
+                    "DEX",
+                    "CON",
+                    "INT",
+                    "WIS",
+                    "CHA"
+                  ]
+                },
+                "check_ability_modifier_input": {
+                  "maximum": 10,
+                  "minimum": -5,
+                  "type": "integer"
+                },
+                "check_die_result": {
+                  "maximum": 20,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "check_formula_id": {
+                  "maxLength": 240,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "check_pb_input": {
+                  "maximum": 6,
+                  "minimum": 2,
+                  "type": "integer"
+                },
+                "computed_check_total": {
+                  "maximum": 100,
+                  "minimum": -20,
+                  "type": "integer"
+                },
+                "computed_dc": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "computed_training_days": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "dc_die_result": {
+                  "maximum": 4,
+                  "minimum": 1,
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "dc_formula_id": {
+                  "maxLength": 240,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "dc_inputs": {
+                  "type": "object"
+                },
+                "learning_dc_mode": {
+                  "enum": [
+                    "ordinary_training",
+                    "difficulty_formula",
+                    "explicit_dc_override"
+                  ]
+                },
+                "pb_input": {
+                  "maximum": 6,
+                  "minimum": 2,
+                  "type": "integer"
+                },
+                "recorded_art_difficulty": {
+                  "minimum": 0,
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "recorded_arts_learned_this_cl_before": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "result": {
+                  "enum": [
+                    "success",
+                    "failure"
+                  ]
+                },
+                "retry_of_attempt_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "schema_version": {
+                  "const": "TianxiaFoundry.Stage2TrainingTransaction.v2"
+                },
+                "selected_ability": {
+                  "enum": [
+                    "STR",
+                    "DEX",
+                    "CON",
+                    "INT",
+                    "WIS",
+                    "CHA"
+                  ]
+                },
+                "slot_cost": {
+                  "maximum": 3,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "study_time_mode": {
+                  "maxLength": 240,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "study_time_value": {
+                  "minimum": 0,
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "target_record_hash": {
+                  "pattern": "^[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "target_record_id": {
+                  "maxLength": 240,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "time_die_result": {
+                  "maximum": 6,
+                  "minimum": 1,
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "training_days_formula_id": {
+                  "maxLength": 240,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "training_source_access_event_id": {
+                  "maxLength": 240,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "training_source_record_hash": {
+                  "pattern": "^[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "training_source_record_id": {
+                  "maxLength": 240,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "training_type": {
+                  "enum": [
+                    "new_sphere",
+                    "known_sphere_talent",
+                    "recorded_art",
+                    "published_other"
+                  ]
+                }
+              },
+              "required": [
+                "schema_version",
+                "attempt_id",
+                "retry_of_attempt_id",
+                "character_cl",
+                "training_type",
+                "target_record_id",
+                "target_record_hash",
+                "training_source_record_id",
+                "training_source_record_hash",
+                "training_source_access_event_id",
+                "selected_ability",
+                "study_time_mode",
+                "study_time_value",
+                "time_die_result",
+                "pb_input",
+                "ability_modifier_input",
+                "training_days_formula_id",
+                "computed_training_days",
+                "recorded_art_difficulty",
+                "recorded_arts_learned_this_cl_before",
+                "learning_dc_mode",
+                "dc_die_result",
+                "dc_formula_id",
+                "dc_inputs",
+                "computed_dc",
+                "check_die_result",
+                "check_formula_id",
+                "check_ability",
+                "check_ability_modifier_input",
+                "check_pb_input",
+                "computed_check_total",
+                "result",
+                "slot_cost",
+                "acquisition_event_id"
+              ],
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "target_cl",
+        "details",
+        "calculation",
+        "authority_bindings"
+      ],
+      "type": "object"
+    },
+    "content_binding": {
+      "additionalProperties": false,
+      "properties": {
+        "catalog_build_id": {
+          "maxLength": 240,
+          "minLength": 1,
+          "type": "string"
+        },
+        "pack_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        "pack_id": {
+          "maxLength": 240,
+          "minLength": 1,
+          "type": "string"
+        },
+        "pack_version": {
+          "type": "string"
+        },
+        "record_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pack_id",
+        "pack_version",
+        "pack_hash",
+        "record_hash",
+        "catalog_build_id"
+      ],
+      "type": "object"
+    },
+    "created_at": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "created_records": {
+      "items": {
+        "maxLength": 240,
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "effective_point": {
+      "additionalProperties": false,
+      "properties": {
+        "character_cl": {
+          "maximum": 20,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "kind": {
+          "enum": [
+            "level",
+            "background_creation",
+            "sect_trial",
+            "manual_training",
+            "foundation_awakening",
+            "foundation_refinement",
+            "foundation_perfection",
+            "loot_acquisition",
+            "downtime_forging",
+            "migration",
+            "other"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "order": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "kind",
+        "character_cl",
+        "order"
+      ],
+      "type": "object"
+    },
+    "event_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "event_id": {
+      "maxLength": 240,
+      "minLength": 1,
+      "type": "string"
+    },
+    "event_type": {
+      "enum": [
+        "acquire",
+        "evolve",
+        "replace",
+        "retire",
+        "author_metadata",
+        "lock_change",
+        "migration"
+      ]
+    },
+    "idempotency_key": {
+      "maxLength": 240,
+      "minLength": 1,
+      "type": "string"
+    },
+    "legal_channel": {
+      "maxLength": 240,
+      "minLength": 1,
+      "type": "string"
+    },
+    "previous_event_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "project_id": {
+      "maxLength": 240,
+      "minLength": 1,
+      "type": "string"
+    },
+    "project_revision": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "retired_records": {
+      "items": {
+        "maxLength": 240,
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "schema_version": {
+      "const": "TianxiaFoundry.AdvancementEvent.v3"
+    },
+    "sequence": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "source_evidence": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "source_anchor": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "source_hash": {
+            "pattern": "^[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "source_id": {
+            "maxLength": 240,
+            "minLength": 1,
+            "type": "string"
+          },
+          "source_path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id",
+          "source_hash",
+          "source_anchor",
+          "source_path"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "state_after_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "state_before_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "subject": {
+      "additionalProperties": false,
+      "properties": {
+        "content_type": {
+          "maxLength": 240,
+          "minLength": 1,
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "record_id": {
+          "maxLength": 240,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "record_id",
+        "content_type"
+      ],
+      "type": "object"
+    },
+    "updated_records": {
+      "items": {
+        "maxLength": 240,
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "event_id",
+    "project_id",
+    "project_revision",
+    "sequence",
+    "event_type",
+    "effective_point",
+    "legal_channel",
+    "subject",
+    "content_binding",
+    "source_evidence",
+    "created_records",
+    "updated_records",
+    "retired_records",
+    "idempotency_key",
+    "previous_event_hash",
+    "state_before_hash",
+    "state_after_hash",
+    "event_hash",
+    "created_at",
+    "advancement"
+  ],
+  "title": "Tianxia Advancement Event v3 — Rules-Causal Stage 2",
+  "type": "object"
+}
