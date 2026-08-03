@@ -418,6 +418,17 @@ function populateMethodAccessPlan() {
     const option = document.createElement("option"); option.value = value.choice_id; option.textContent = value.label; option.title = value.description || ""; route.appendChild(option);
   }
   if (Array.from(route.options).some(option => option.value === prior)) route.value = prior;
+  updateMethodLearningNoteRequirement();
+}
+
+function updateMethodLearningNoteRequirement() {
+  const routeId = document.getElementById("sheetMethodRouteChoice")?.value || "";
+  const option = methodChoiceFor()?.method_planning?.owner_route_options?.find(row => row.choice_id === routeId);
+  const required = option?.requires_explanation === true;
+  const note = document.getElementById("sheetMethodLearningNote");
+  const label = document.getElementById("sheetMethodLearningNoteLabel");
+  if (note) note.required = required;
+  if (label) label.textContent = required ? "Explanation (required for Custom)" : "Optional note";
 }
 
 function methodRouteChoiceForSubmission() {
@@ -714,7 +725,35 @@ function renderSphereTalentWorkspace() {
       for (const ability of baseAbilities) {
         const item = document.createElement("li");
         item.dataset.baseAbilityId = ability.base_ability_id;
-        item.textContent = `${ability.display_name} — Granted automatically; cannot be removed; costs 0 talent, advancement, or training slots.`;
+        const details = document.createElement("details"); details.className = "base-ability-detail";
+        const summary = document.createElement("summary");
+        summary.textContent = `${ability.display_name} — automatic Sphere component`;
+        const grant = document.createElement("p");
+        grant.textContent = "Granted automatically; cannot be removed; costs 0 talent, advancement, or training slots.";
+        const fields = document.createElement("dl"); fields.className = "base-ability-fields";
+        const fieldRows = [
+          ["Action type", ability.action_type], ["Combat bucket", ability.factory_combat_bucket],
+          ["Factory routing", ability.factory_routing], ["Range", ability.range], ["Cost", ability.cost],
+          ["Target", ability.target], ["Trigger", ability.trigger], ["Effect", ability.effect],
+          ["Use limit", ability.use_limit], ["Scaling", Array.isArray(ability.scaling) ? ability.scaling.join(" ") : ability.scaling],
+          ["Tags", Array.isArray(ability.tags) ? ability.tags.join(", ") : ability.tags],
+          ["Source", ability.source_reference?.source_section || ability.source_reference?.source_path],
+        ];
+        for (const [term, value] of fieldRows) {
+          const dt = document.createElement("dt"); dt.textContent = term;
+          const dd = document.createElement("dd");
+          dd.textContent = value === null || value === undefined || value === "" || (Array.isArray(value) && !value.length)
+            ? "Not separately stated in the authenticated source block."
+            : String(value);
+          fields.append(dt, dd);
+        }
+        details.append(summary, grant, fields);
+        item.appendChild(details);
+        grants.appendChild(item);
+      }
+      if (!baseAbilities.length) {
+        const item = document.createElement("li"); item.className = "base-ability-none";
+        item.textContent = "No automatic base ability is present in the current canonical source projection for this Sphere.";
         grants.appendChild(item);
       }
       card.append(activate, remove, associated, grants);
@@ -844,7 +883,8 @@ function renderChoiceChips(slotId) {
     chip.className = "choice-chip";
     chip.title = choice.description || choice.name;
     const label = document.createElement("span");
-    label.textContent = choice.name;
+    const insightType = choice.insight_authority?.authority_type;
+    label.textContent = insightType ? `${choice.name} — ${insightType}` : choice.name;
     const remove = document.createElement("button");
     remove.type = "button";
     remove.setAttribute("aria-label", `Remove ${choice.name}`);
@@ -988,7 +1028,7 @@ function restoreCharacterSheet(locks) {
   if (planning.method_exact_choice_id) document.getElementById("sheetMethod").value = planning.method_exact_choice_id;
   populateMethodPlanning();
   const savedMethodPlan = locks["character_sheet.method_access_plan"] || {};
-  const savedRoute = methodChoiceFor()?.method_planning?.owner_route_options?.find(option => option.description === savedMethodPlan.route_type);
+  const savedRoute = methodChoiceFor()?.method_planning?.owner_route_options?.find(option => option.typed_route === savedMethodPlan.route_type || option.description === savedMethodPlan.route_type);
   if (savedRoute) document.getElementById("sheetMethodRouteChoice").value = savedRoute.choice_id;
   const learningNote = document.getElementById("sheetMethodLearningNote");
   if (learningNote) learningNote.value = savedMethodPlan.owner_annotation || "";
@@ -1019,7 +1059,8 @@ async function loadCharacterBuilderOptions() {
     populateMethodPlanning();
     document.getElementById("sheetMethod").onchange = () => { clearMethodAccessInputs(); populateMethodPlanning(); evaluateGuidedReadiness(); };
     for (const option of document.querySelectorAll('input[name="sheetMethodMode"]')) option.onchange = () => { clearMethodAccessInputs(); populateMethodPlanning(); refreshMethodPathChoices({announce: true, preserve: true}); evaluateGuidedReadiness(); };
-    document.getElementById("sheetMethodRouteChoice").onchange = evaluateGuidedReadiness;
+    document.getElementById("sheetMethodRouteChoice").onchange = () => { updateMethodLearningNoteRequirement(); evaluateGuidedReadiness(); };
+    document.getElementById("sheetMethodLearningNote").oninput = evaluateGuidedReadiness;
     document.getElementById("guidedLevel").addEventListener("change", () => {
       renderSphereTalentWorkspace();
       evaluateGuidedReadiness();
@@ -1043,7 +1084,17 @@ async function loadCharacterBuilderOptions() {
       const help = document.getElementById(helpIds[slotId]);
       if (help) help.textContent = categoryAvailabilityText(category);
     }
-    document.getElementById("sheetInsightAuthorityFilter").onchange = event => {
+    const insightFilter = document.getElementById("sheetInsightAuthorityFilter");
+    const insightChoices = categoryFor("insight_priorities")?.choices || [];
+    for (const option of insightFilter.options) {
+      if (!option.value) continue;
+      const count = insightChoices.filter(choice => choice.insight_authority?.authority_type === option.value).length;
+      option.textContent = `${option.value} (${count})`;
+      if (option.value === "General" && count === 0) option.title = "No explicitly General records exist in the current canonical source projection.";
+    }
+    const generalCount = insightChoices.filter(choice => choice.insight_authority?.authority_type === "General").length;
+    if (generalCount === 0) document.getElementById("sheetInsightHelp").textContent = "General: 0 explicitly General source records. No choices were invented; Sphere and Path classifications remain unchanged.";
+    insightFilter.onchange = event => {
       const category = categoryFor("insight_priorities");
       const authorityType = event.target.value;
       const filtered = (category?.choices || []).filter(choice => !authorityType || choice.insight_authority?.authority_type === authorityType);
@@ -1226,6 +1277,10 @@ function evaluateGuidedReadiness() {
     if (methodPlanningMode() !== "AUTO" && !methodChoiceFor()) blockers.push({fieldId: "sheetMethod", message: "Choose a Method or choose for me."});
     if (selectedMethod && !selectedMethod.method_planning?.direct_initial_acquisition_available) {
       if (!methodRouteChoiceForSubmission()) blockers.push({fieldId: "sheetMethodRouteChoice", message: "Choose how this character learned the selected Method."});
+      const route = selectedMethod.method_planning?.owner_route_options?.find(row => row.choice_id === methodRouteChoiceForSubmission());
+      if (route?.requires_explanation && !document.getElementById("sheetMethodLearningNote")?.value.trim()) {
+        blockers.push({fieldId: "sheetMethodLearningNote", message: "Describe the Custom Method learning route."});
+      }
     }
     const selectedPaths = selectedPathIds();
     const grantedPathIds = new Set(selectedMethod?.related_choice_ids || []);
@@ -1357,7 +1412,21 @@ function renderGuidedCandidate(run) {
   appendCandidateLine(host, "Automatic base abilities", automatic.length ? automatic.join("; ") : "None projected or see evidence below");
   appendCandidateLine(host, "Ordinary acquired talents", ordinary.length ? ordinary.join("; ") : "None projected or see evidence below");
   if ((run.blockers || []).length) appendCandidateLine(host, "Exact blockers", run.blockers.map(row => `${row.code}: ${row.message}`).join(" | "), "error");
-  document.getElementById("guidedReviewDetail").textContent = pretty(run);
+  document.getElementById("guidedReviewDetail").textContent = pretty({
+    status: run.status,
+    quality: run.quality,
+    blockers: run.blockers || [],
+    warnings: run.warnings || [],
+    dry_run: {
+      schema: run.dry_run?.schema,
+      candidate_identity: run.dry_run?.candidate_identity,
+      independent_compilations: run.dry_run?.independent_compilations,
+      deterministic: run.dry_run?.deterministic,
+      identities: run.dry_run?.identities,
+      artifact_surfaces: Object.keys(run.dry_run?.artifacts || {}).sort(),
+      typed_choice_snapshot_sha256: run.dry_run?.typed_choice_snapshot?.snapshot_sha256,
+    },
+  });
   document.getElementById("guidedFinalize").disabled = !clean;
   setGuidedStatus(clean ? "Complete candidate is clean and has not been committed. Review once, then Finalize, Revise, or Cancel." : "The complete candidate needs review. No canonical mutation occurred.", !clean);
   setGuidedStep(3);
@@ -1433,17 +1502,27 @@ async function startGuidedCompleteBuild() {
 }
 
 document.querySelectorAll('input[name="guidedExecutionMode"]').forEach(input => input.addEventListener("change", updateGuidedModeUI));
+let guidedProviderDirty = false;
+let guidedProviderStatus = null;
+function providerStatusMessage(status, dirty = false) {
+  const saved = status?.readiness_reason || "Saved DeepSeek readiness is unknown.";
+  const prefix = dirty ? "Settings not saved. " : "";
+  const key = status?.secret?.present ? "Protected key stored." : "No protected key stored.";
+  return `${prefix}${saved} ${key} Manual Chat remains available without DeepSeek.`;
+}
 async function loadGuidedProviderStatus() {
   const host = document.getElementById("guidedProviderStatus");
   try {
     const status = await api("/api/ai-provider");
+    guidedProviderStatus = status;
     const settings = status.settings || {};
     document.getElementById("guidedProviderEndpoint").value = settings.endpoint || "https://api.deepseek.com/chat/completions";
     document.getElementById("guidedProviderModel").value = settings.model || "deepseek-v4-flash";
     document.getElementById("guidedProviderEnabled").checked = !!settings.enabled;
     document.getElementById("guidedProviderAcknowledged").checked = !!settings.data_sharing_acknowledged;
     document.getElementById("guidedProviderActor").value = settings.acknowledged_by || "";
-    host.textContent = `DeepSeek ${status.ready ? "ready" : "not ready"}; key ${status.secret?.present ? "stored" : "not stored"}; Manual Chat remains available without a key.`;
+    guidedProviderDirty = false;
+    host.textContent = providerStatusMessage(status);
     return status;
   } catch (error) { host.textContent = plainAPIError(error, "Provider status could not be loaded."); return null; }
 }
@@ -1472,9 +1551,18 @@ document.getElementById("guidedProviderDeleteKey").onclick = async () => {
 document.getElementById("guidedProviderTest").onclick = async () => {
   const host = document.getElementById("guidedProviderStatus");
   host.textContent = "Testing the configured DeepSeek connection once…";
-  try { const result = await api("/api/ai-provider/test", {method: "POST", body: "{}"}); host.textContent = `Connection ${result.status}; model ${result.model}; no secret was returned.`; }
-  catch (error) { host.textContent = plainAPIError(error, "DeepSeek connection test failed."); }
+  try { await api("/api/ai-provider/test", {method: "POST", body: "{}"}); await loadGuidedProviderStatus(); }
+  catch (error) { await loadGuidedProviderStatus(); host.textContent = `${host.textContent} ${plainAPIError(error, "DeepSeek connection test failed.")}`; }
 };
+["guidedProviderModel", "guidedProviderEnabled", "guidedProviderAcknowledged", "guidedProviderActor"].forEach(id => {
+  const input = document.getElementById(id);
+  const eventName = input.type === "checkbox" ? "change" : "input";
+  input.addEventListener(eventName, () => {
+    guidedProviderDirty = true;
+    const host = document.getElementById("guidedProviderStatus");
+    host.textContent = providerStatusMessage(guidedProviderStatus, true);
+  });
+});
 loadGuidedProviderStatus();
 document.getElementById("guidedStartBuild").onclick = startGuidedCompleteBuild;
 document.getElementById("guidedDownloadCompleteRequest").onclick = window.TianxiaCompleteRequestSave.createController({
@@ -1845,6 +1933,7 @@ document.getElementById("refreshAll").onclick = async () => { await Promise.allS
 let stage1PromptData = null;
 let stage1Attempt = null;
 let aiProviderStatus = null;
+let aiProviderDirty = false;
 
 function updateAIProviderControls() {
   document.getElementById("runAIProvider").disabled = !(
@@ -1862,7 +1951,8 @@ async function loadAIProviderStatus() {
   document.getElementById("aiProviderTimeout").value = settings.timeout_seconds;
   document.getElementById("aiProviderAcknowledged").checked = settings.data_sharing_acknowledged;
   if (settings.acknowledged_by) document.getElementById("aiProviderActor").value = settings.acknowledged_by;
-  document.getElementById("aiProviderStatus").textContent = pretty(aiProviderStatus);
+  aiProviderDirty = false;
+  document.getElementById("aiProviderStatus").textContent = providerStatusMessage(aiProviderStatus);
   updateAIProviderControls();
   return aiProviderStatus;
 }
@@ -2185,7 +2275,30 @@ async function renderCharacterLibrary() {
     combatState.textContent = portable
       ? "Combat Sheet ready · Combat runtime ready · Pre-encounter · Setup required: current Qi, current Martial Focus, opponent/teams, battlefield choice, token placement, initiative, and controllers"
       : "No verified portable combat-runtime package installed";
-    card.append(name, status, build, detail, combatState); card.onclick = () => openOwnerCharacterSheet(character.project_id); host.appendChild(card);
+    card.append(name, status, build, detail, combatState);
+    card.onclick = async () => {
+      selectedProject = character.project_id;
+      stage1PromptData = null;
+      stage1Attempt = null;
+      document.getElementById("approveCommitStage1").disabled = true;
+      updateAIProviderControls();
+      document.getElementById("stage1Prompt").value = "";
+      const stage = await api(`/api/projects/${character.project_id}/stage1/status`);
+      if (stage.current_prompt_id) {
+        stage1PromptData = {
+          prompt_id: stage.current_prompt_id,
+          project_id: stage.project_id,
+          project_revision: stage.project_revision,
+        };
+      }
+      document.getElementById("stage1Result").textContent = pretty(stage);
+      renderSelectedStage1State(character, stage);
+      await refreshSelectedProject();
+      await refreshStage2Status();
+      await openOwnerCharacterSheet(character.project_id);
+      await renderCharacterLibrary();
+    };
+    host.appendChild(card);
   }
   return characters;
 }
@@ -2197,7 +2310,16 @@ loadProjects = async function() {
   const body = document.getElementById("projectRows"); clearNode(body);
   for (const row of rows) {
     const tr = document.createElement("tr"); appendTextCell(tr, row.working_name); appendTextCell(tr, row.revision); appendTextCell(tr, `${row.builder_lifecycle?.display_label || "Saved / existing"} · ${row.status}`);
-    tr.onclick = async () => { selectedProject = row.project_id; stage1PromptData = null; stage1Attempt = null; document.getElementById("approveCommitStage1").disabled = true; updateAIProviderControls(); document.getElementById("stage1Prompt").value = ""; document.getElementById("stage1Result").textContent = pretty(await api(`/api/projects/${row.project_id}/stage1/status`)); await refreshSelectedProject(); await refreshStage2Status(); await openOwnerCharacterSheet(row.project_id); };
+    tr.onclick = async () => {
+      selectedProject = row.project_id; stage1PromptData = null; stage1Attempt = null;
+      document.getElementById("approveCommitStage1").disabled = true; updateAIProviderControls();
+      document.getElementById("stage1Prompt").value = "";
+      const stage = await api(`/api/projects/${row.project_id}/stage1/status`);
+      if (stage.current_prompt_id) stage1PromptData = {prompt_id: stage.current_prompt_id, project_id: stage.project_id, project_revision: stage.project_revision};
+      document.getElementById("stage1Result").textContent = pretty(stage);
+      renderSelectedStage1State(row, stage);
+      await refreshSelectedProject(); await refreshStage2Status(); await openOwnerCharacterSheet(row.project_id);
+    };
     body.appendChild(tr);
   }
   if (charactersResult.status === "rejected") {
@@ -2268,8 +2390,7 @@ document.getElementById("saveAIProviderConfig").onclick = async () => {
         acknowledged_by: document.getElementById("aiProviderActor").value.trim() || null
       })
     });
-    document.getElementById("aiProviderStatus").textContent = pretty(aiProviderStatus);
-    updateAIProviderControls();
+    await loadAIProviderStatus();
   } catch (e) { document.getElementById("aiProviderStatus").textContent = e.message; }
 };
 
@@ -2280,8 +2401,7 @@ document.getElementById("saveAIProviderKey").onclick = async () => {
       method: "POST", body: JSON.stringify({api_key: input.value})
     });
     input.value = "";
-    document.getElementById("aiProviderStatus").textContent = pretty(aiProviderStatus);
-    updateAIProviderControls();
+    await loadAIProviderStatus();
   } catch (e) { input.value = ""; document.getElementById("aiProviderStatus").textContent = e.message; }
 };
 
@@ -2289,10 +2409,19 @@ document.getElementById("deleteAIProviderKey").onclick = async () => {
   try {
     aiProviderStatus = await api("/api/ai-provider/key", {method: "DELETE"});
     document.getElementById("aiProviderKey").value = "";
-    document.getElementById("aiProviderStatus").textContent = pretty(aiProviderStatus);
-    updateAIProviderControls();
+    await loadAIProviderStatus();
   } catch (e) { document.getElementById("aiProviderStatus").textContent = e.message; }
 };
+
+["aiProviderEnabled", "aiProviderModel", "aiProviderThinking", "aiProviderMaxTokens", "aiProviderTimeout", "aiProviderAcknowledged", "aiProviderActor"].forEach(id => {
+  const input = document.getElementById(id);
+  const eventName = input.type === "checkbox" || input.tagName === "SELECT" ? "change" : "input";
+  input.addEventListener(eventName, () => {
+    aiProviderDirty = true;
+    document.getElementById("aiProviderStatus").textContent = providerStatusMessage(aiProviderStatus, true);
+    document.getElementById("runAIProvider").disabled = true;
+  });
+});
 
 document.getElementById("runAIProvider").onclick = async () => {
   if (!stage1PromptData || !aiProviderStatus || !aiProviderStatus.ready) return;
@@ -5475,6 +5604,24 @@ loadNonSphereAuthorityPanel().catch(() => {});
 // W3-P1 owner staging, Save As, continuation, and read-only demo boundary.
 let ownerStagedArtifact = null;
 const ownerArtifactResult = document.getElementById("ownerArtifactResult");
+function renderSelectedStage1State(project, stage) {
+  const name = project?.working_name || project?.name || "Selected character";
+  const heading = document.getElementById("stage1ContinuationHeading");
+  const summary = document.getElementById("stage1ContinuationSummary");
+  const status = document.getElementById("xiangContinuationStatus");
+  if (heading) heading.textContent = `${name} — Stage 1`;
+  if (!summary || !status) return;
+  if (stage.stage1_sealed) {
+    summary.innerHTML = "<strong>Stage 1 plan sealed.</strong> This exact selected project can continue to the first legal advancement action.";
+    status.textContent = `Sealed for project revision ${stage.project_revision}.`;
+  } else if (stage.request_prepared) {
+    summary.innerHTML = "<strong>Stage 1 request prepared.</strong> Reuse the sealed request, then import, validate, and approve one response before continuation.";
+    status.textContent = `Request ready for project revision ${stage.project_revision}.`;
+  } else {
+    summary.innerHTML = "<strong>Ready to prepare Stage 1.</strong> Staging a Chat request will create one request for this exact project and revision.";
+    status.textContent = `No Stage 1 request exists yet for project revision ${stage.project_revision}.`;
+  }
+}
 function ownerSelectedMatchId() { return combatMatch?.match_id || document.querySelector("[data-match-id].selected")?.dataset.matchId || null; }
 for (const button of document.querySelectorAll("[data-artifact-kind]")) {
   button.addEventListener("click", async () => {
@@ -5485,6 +5632,19 @@ for (const button of document.querySelectorAll("[data-artifact-kind]")) {
       ownerStagedArtifact = await api("/api/owner-artifacts/stage", {method:"POST", body:JSON.stringify(payload)});
       document.getElementById("ownerSaveAs").disabled = false;
       ownerArtifactResult.textContent = `${friendlyLabel(kind)} staged: ${ownerStagedArtifact.filename}\n${ownerStagedArtifact.bytes} bytes\n${ownerStagedArtifact.sha256}`;
+      if (kind === "chat_request" && selectedProject && ownerStagedArtifact.source_result?.prompt_id) {
+        const [stage, projectEnvelope] = await Promise.all([
+          api(`/api/projects/${encodeURIComponent(selectedProject)}/stage1/status`),
+          api(`/api/projects/${encodeURIComponent(selectedProject)}`),
+        ]);
+        stage1PromptData = {
+          prompt_id: ownerStagedArtifact.source_result.prompt_id,
+          project_id: selectedProject,
+          project_revision: stage.project_revision,
+        };
+        renderSelectedStage1State(projectEnvelope.project || projectEnvelope, stage);
+        updateAIProviderControls();
+      }
     } catch (error) {
       ownerStagedArtifact = null;
       document.getElementById("ownerSaveAs").disabled = true;
@@ -5512,10 +5672,16 @@ if (developerMode) developerMode.addEventListener("click", () => {
 const xiangPrepare = document.getElementById("xiangPrepareAdvancement");
 if (xiangPrepare) xiangPrepare.addEventListener("click", async () => {
   const status = document.getElementById("xiangContinuationStatus");
-  if (!selectedProject) { status.textContent = "Select Xiang Yahui’s Stage 1 project first."; return; }
+  if (!selectedProject) { status.textContent = "Select a character project first."; return; }
   try {
     const stage = await api(`/api/projects/${encodeURIComponent(selectedProject)}/stage1/status`);
-    if (!stage.blueprint_head) throw new Error("The selected project does not have a sealed Stage 1 plan.");
+    renderSelectedStage1State({working_name: document.getElementById("stage1ContinuationHeading")?.textContent?.split(" — ")[0]}, stage);
+    if (!stage.stage1_sealed) {
+      status.textContent = stage.request_prepared
+        ? "The Stage 1 request is ready. Import, validate, and approve its response before continuing."
+        : "Prepare or stage the Stage 1 request for this selected project first.";
+      return;
+    }
     showScreen("projects");
     document.getElementById("stage2Panel")?.scrollIntoView({behavior:"smooth",block:"start"});
     status.textContent = "Stage 1 Plan Sealed. Prepare the typed advancement choices below; no character data has been changed.";

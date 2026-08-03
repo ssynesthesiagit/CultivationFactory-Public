@@ -133,9 +133,14 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .choice-collection > p { min-height: 2.5em; margin: .25rem 0 .65rem; color: #625d50; }
 .choice-adder { display: grid; grid-template-columns: 1fr auto; gap: .4rem; }
 .choice-adder button { background: #285d4f; color: white; border: 0; border-radius: .35rem; font-weight: 800; }
-.choice-chips { display: flex; flex-wrap: wrap; gap: .4rem; min-height: 1.8rem; margin-top: .55rem; }
-.choice-chip { display: inline-flex; align-items: center; gap: .35rem; padding: .35rem .45rem .35rem .65rem; border: 1px solid #6d725e; border-radius: 999px; background: #edf0df; color: #2b3127; font-size: .88rem; }
+.choice-chips { display: flex; flex-wrap: wrap; column-gap: .55rem; row-gap: .7rem; min-height: 1.8rem; margin-top: .7rem; align-items: flex-start; }
+.choice-chip { display: inline-flex; align-items: center; gap: .35rem; padding: .35rem .45rem .35rem .65rem; margin: 0; border: 1px solid #6d725e; border-radius: 999px; background: #edf0df; color: #2b3127; font-size: .88rem; line-height: 1.35; }
 .choice-chip button { padding: .05rem .3rem; border: 0; background: transparent; color: inherit; font-weight: 900; }
+.automatic-base-abilities { display: grid; gap: .55rem; margin: .65rem 0 0; padding-left: 1.2rem; }
+.base-ability-detail summary { cursor: pointer; font-weight: 700; }
+.base-ability-fields { display: grid; grid-template-columns: minmax(7rem, auto) 1fr; gap: .25rem .65rem; margin: .55rem 0; }
+.base-ability-fields dt { font-weight: 700; }
+.base-ability-fields dd { margin: 0; white-space: pre-wrap; }
 .availability-note { display: block; margin-top: .45rem; color: #6f695b; line-height: 1.35; }
 .sheet-footer-note { margin: 1rem 1.25rem; padding: .8rem 1rem; border-left: .3rem solid #977332; background: rgb(151 115 50 / .1); }
 .sheet-footer-note p { margin: .25rem 0 0; }

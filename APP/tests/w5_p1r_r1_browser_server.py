@@ -74,6 +74,7 @@ def main() -> None:
         data_sharing_acknowledged=True,
         acknowledged_by="W5-P1R-R1 real browser acceptance",
     )
+    app.state.ai_provider.test_connection()
     uvicorn.run(app, host="127.0.0.1", port=args.port, log_level="warning")
 
 

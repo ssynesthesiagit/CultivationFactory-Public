@@ -67,6 +67,37 @@ jobs:
           $Work = Join-Path $env:RUNNER_TEMP "win1-p1-work"
           .\win1_p1\Invoke-Win1P1Build.ps1 -OutputRoot $Output -WorkRoot $Work -PythonExe (Get-Command python).Source -NodeExe $Node
 
+      - name: Install immutable first-cycle browser dependencies
+        id: browser_dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --disable-pip-version-check -r APP\requirements\requirements-dev.txt
+          python -m playwright install chromium
+
+      - name: Prove clean-extracted package execution boundary
+        id: package_boundary
+        shell: pwsh
+        run: |
+          $Output = Join-Path $env:RUNNER_TEMP "win1-p1-output"
+          $Extracted = Join-Path $env:RUNNER_TEMP "win1-p1-clean-extracted"
+          $Evidence = Join-Path $Output "Evidence\native-first-cycle"
+          New-Item -ItemType Directory -Force -Path $Evidence | Out-Null
+          python win1_p1\native_first_cycle_boundary.py `
+            --repository $env:GITHUB_WORKSPACE `
+            --delivery-zip (Join-Path $Output "Tianxia_WIN1_P1_Owner_Test.zip") `
+            --extract-root $Extracted `
+            --output (Join-Path $Evidence "package-execution-boundary.json")
+
+      - name: Run complete owner browser first cycle
+        id: native_first_cycle
+        shell: pwsh
+        working-directory: APP
+        run: |
+          $Output = Join-Path $env:RUNNER_TEMP "win1-p1-output"
+          $Data = Join-Path $env:RUNNER_TEMP "win1-p1-clean-extracted\OwnerTestData"
+          $Evidence = Join-Path $Output "Evidence\native-first-cycle"
+          python tests\win1_p1r2r2_browser_harness.py --data $Data --output-root $Evidence
+
       - name: Upload bounded owner-test delivery and evidence
         id: evidence_upload
         if: always()
@@ -93,6 +124,9 @@ jobs:
             artifact_digest = "${{ steps.evidence_upload.outputs['artifact-digest'] }}"
             artifact_url = "${{ steps.evidence_upload.outputs['artifact-url'] }}"
             build_outcome = "${{ steps.native_build.outcome }}"
+            browser_dependencies_outcome = "${{ steps.browser_dependencies.outcome }}"
+            package_boundary_outcome = "${{ steps.package_boundary.outcome }}"
+            native_first_cycle_outcome = "${{ steps.native_first_cycle.outcome }}"
             upload_outcome = "${{ steps.evidence_upload.outcome }}"
           }
           New-Item -ItemType Directory -Force -Path "$env:RUNNER_TEMP\win1-p1-receipt" | Out-Null

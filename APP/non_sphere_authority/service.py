@@ -291,42 +291,34 @@ class NonSphereAuthorityService:
             })
         return {"schema": "Tianxia.NonSpherePathCatalog.v1", "records": records, "count": 3}
 
-    @staticmethod
-    def _method_route_owner_label(route: str) -> str:
-        """Translate source-authored route prose into a short game-facing label."""
-        text = str(route or "").casefold()
-        rules = (
-            (("teacher", "physician", "mentor", "supervised"), "Personal teacher"),
-            (("scripture", "manual", "text", "inscription"), "Scripture or manual"),
-            (("inheritance", "lineage", "ancestor", "clan"), "Lineage or inheritance"),
-            (("sect", "school", "hall", "monastery", "shrine"), "Sect or school training"),
-            (("wandering", "encounter", "scout"), "Wandering encounter"),
-            (("recovery", "repair", "correction", "transformation"), "Recovery or transformation"),
-            (("oath", "covenant", "trial", "service", "reward"), "Oath, trial, or service"),
-        )
-        for keywords, label in rules:
-            if any(keyword in text for keyword in keywords):
-                return label
-        if re.search(r"\bother\b", text):
-            return "Other documented route"
-        return "Published learning route"
-
     def method_owner_route_options(self, method: dict[str, Any]) -> list[dict[str, str]]:
-        """Project canonical Method routes into simple non-authoritative choices."""
-        options = []
-        labels: dict[str, int] = {}
-        for index, raw_route in enumerate((method.get("acquisition") or {}).get("routes") or []):
-            route = str(raw_route or "").strip()
-            if not route:
-                continue
-            base_label = self._method_route_owner_label(route)
-            labels[base_label] = labels.get(base_label, 0) + 1
-            label = base_label if labels[base_label] == 1 else f"{base_label} {labels[base_label]}"
-            options.append({
-                "choice_id": f"route-{index + 1}",
-                "label": label,
-                "description": route,
-            })
+        """Project source-backed routes into stable owner-facing provenance types."""
+        acquisition = method.get("acquisition") or {}
+        routes = [str(value or "").strip() for value in acquisition.get("routes") or [] if str(value or "").strip()]
+        if not routes:
+            return []
+        combined = " ".join([str(acquisition.get("access_tier") or ""), *routes]).casefold()
+        definitions = (
+            ("PERSONAL_TEACHER", "Personal teacher", ("teacher", "physician", "mentor", "supervised")),
+            ("INHERITANCE", "Inheritance", ("inheritance", "lineage", "ancestor", "clan")),
+            ("OATH_TRIAL_OR_SERVICE", "Oath, trial, or service", ("oath", "covenant", "trial", "service", "reward")),
+        )
+        options: list[dict[str, str]] = []
+        for route_type, label, keywords in definitions:
+            matching = [route for route in routes if any(keyword in route.casefold() for keyword in keywords)]
+            if not matching and any(keyword in combined for keyword in keywords):
+                matching = list(routes)
+            if matching:
+                options.append({
+                    "choice_id": "route-" + route_type.casefold().replace("_", "-"),
+                    "label": label, "description": matching[0], "typed_route": route_type,
+                    "source_route_sha256": sha256_json(matching), "requires_explanation": False,
+                })
+        options.append({
+            "choice_id": "route-custom", "label": "Custom", "description": routes[0],
+            "typed_route": "CUSTOM_DOCUMENTED_ROUTE", "source_route_sha256": sha256_json(routes),
+            "requires_explanation": True,
+        })
         return options
 
     def resolve_initial_method_access(
@@ -361,13 +353,20 @@ class NonSphereAuthorityService:
                     message,
                     details={"method_id": method_id, "available_choice_count": len(options)},
                 )
-            route_index = int(selected["choice_id"].split("-", 1)[1]) - 1
-            route_type = str((acquisition.get("routes") or [])[route_index]).strip()
+            if selected.get("requires_explanation") and not str(owner_annotation or "").strip():
+                raise FoundryError(
+                    "CHARACTER_METHOD_CUSTOM_EXPLANATION_REQUIRED",
+                    "Describe the custom learning route for this Method.",
+                    details={"method_id": method_id, "route_choice": selected["choice_id"]},
+                )
+            route_type = selected["typed_route"]
             route_label = selected["label"]
+        source_route_sha256 = selected.get("source_route_sha256") if not self.method_initial_creation_satisfied(method) else sha256_json(acquisition.get("routes") or [])
         route_commitment = sha256_json({
             "method_id": method_id,
             "access_tier": access_tier,
             "route_type": route_type,
+            "source_route_sha256": source_route_sha256,
         })
         return {
             "schema": "TianxiaFoundry.MethodAccessPlan.v2",
@@ -377,6 +376,7 @@ class NonSphereAuthorityService:
             "route_label": route_label,
             "owner_annotation": str(owner_annotation or "").strip(),
             "source_reference": source_reference,
+            "source_route_sha256": source_route_sha256,
             "route_commitment_sha256": route_commitment,
             "method_registry_commitment_sha256": self.method_registry_commitment_sha256,
             "status": "COMPLETE_SERVER_AUTHORITY",
@@ -872,6 +872,7 @@ class NonSphereAuthorityService:
                 "route_label": str,
                 "owner_annotation": str,
                 "source_reference": dict,
+                "source_route_sha256": str,
                 "route_commitment_sha256": str,
                 "method_registry_commitment_sha256": str,
             },
@@ -918,7 +919,7 @@ class NonSphereAuthorityService:
             acquisition = method.get("acquisition") or {}
             open_route = self.method_initial_creation_satisfied(method) and targets["route_type"] == "PUBLISHED_OPEN_INITIAL_AUTHORITY"
             owner_options = self.method_owner_route_options(method)
-            matched_option = next((row for row in owner_options if row["description"] == targets["route_type"]), None)
+            matched_option = next((row for row in owner_options if row.get("typed_route") == targets["route_type"]), None)
             expected_source_reference = {
                 "registry_schema": self.method_registry.get("schema"),
                 "registry_version": self.method_registry.get("version"),
@@ -929,11 +930,13 @@ class NonSphereAuthorityService:
                 "method_id": method_id,
                 "access_tier": acquisition.get("access_tier") or "UNRESOLVED",
                 "route_type": targets["route_type"],
+                "source_route_sha256": targets["source_route_sha256"],
             })
             invalid = (
                 targets["access_tier"] != (acquisition.get("access_tier") or "UNRESOLVED")
                 or (not open_route and matched_option is None)
                 or targets["route_label"] != ("Open sect training" if open_route else (matched_option or {}).get("label"))
+                or targets["source_route_sha256"] != (sha256_json(acquisition.get("routes") or []) if open_route else (matched_option or {}).get("source_route_sha256"))
                 or targets["source_reference"] != expected_source_reference
                 or targets["route_commitment_sha256"] != expected_route_commitment
                 or targets["method_registry_commitment_sha256"] != self.method_registry_commitment_sha256
@@ -1464,7 +1467,15 @@ class NonSphereAuthorityService:
                 raise FoundryError("NS1R_EVIDENCE_SOURCE_SCHEMA_INVALID", "The source event is not valid under the accepted canonical advancement-event schema.")
             from contracts.canonical import canonical_event_hash
             from project_store.service import ProjectStore
-            ProjectStore(self.db)._validate_or_raise(doc, boundary="non_sphere_evidence_resolve", family="advancement_event", key=source_identity, conn=conn)
+            # Resolution is also invoked while an AP allocation owns the write
+            # transaction. Revalidate purely here; the event's canonical write
+            # boundary already persisted its validation receipt atomically.
+            ProjectStore(self.db)._validate_or_raise(
+                doc,
+                boundary="non_sphere_evidence_resolve",
+                family="advancement_event",
+                key=source_identity,
+            )
             details=doc.get("advancement",{}).get("details",{})
             authority_type=details.get("authority_type")
             expected_kind=self.AUTHORITY_EVENT_KINDS.get(authority_type)
@@ -1927,8 +1938,9 @@ class NonSphereAuthorityService:
         access = choice.get("access") or {}
         if access.get("access_source_record_required") and not self.has_exact_access_record(
             records,
-            record_type=access.get("source_record_type"),
-            target_record_id=selection_id,
+            "subpath_access",
+            selection_id=selection_id,
+            path_id=path_id,
         ):
             raise FoundryError(
                 "NS1R_RESTRICTED_TRADITION_ACCESS_REQUIRED",

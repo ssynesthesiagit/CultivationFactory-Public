@@ -38,6 +38,12 @@ def free_port() -> int:
 
 def provider_handler(behavior_file: Path, provider_log: Path):
     def handler(request: httpx.Request) -> httpx.Response:
+        provider_request = json.loads(request.content)
+        if provider_request["messages"][1]["content"] == 'Return exactly {"connection":"ok"}.':
+            return httpx.Response(200, json={
+                "choices": [{"message": {"content": '{"connection":"ok"}'}, "finish_reason": "stop"}],
+                "usage": {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2},
+            })
         behavior = behavior_file.read_text(encoding="utf-8").strip()
         with provider_log.open("a", encoding="utf-8") as stream:
             stream.write(f"{behavior}\n")
@@ -81,6 +87,7 @@ def serve_real_application(data_root: str, port: int, behavior_file: str, provid
         data_sharing_acknowledged=True,
         acknowledged_by="W5-P1R-R1 real browser acceptance",
     )
+    app.state.ai_provider.test_connection()
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 
 

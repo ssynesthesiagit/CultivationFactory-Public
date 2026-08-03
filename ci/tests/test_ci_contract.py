@@ -75,10 +75,10 @@ class CIContractTests(unittest.TestCase):
         )
         self.assertEqual(
             baseline["catalog"]["registry_commitment_sha256"],
-            "3bc84ab1bb80301fbbb49aa28c561af0aeec77b281bc4cca9b0c4e3860861102",
+            "b53d36b6da5f3d8ead46e01cd07bbfc0f80e35043e7f3ef0f2e11d5fb79e35df",
         )
-        self.assertEqual(baseline["application_source"]["file_count"], 1731)
-        self.assertEqual(baseline["application_source"]["total_bytes"], 273974629)
+        self.assertEqual(baseline["application_source"]["file_count"], 1732)
+        self.assertEqual(baseline["application_source"]["total_bytes"], 274091337)
 
     def test_failure_classifications_are_exact(self) -> None:
         self.assertEqual(

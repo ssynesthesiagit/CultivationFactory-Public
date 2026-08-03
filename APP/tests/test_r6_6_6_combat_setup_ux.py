@@ -143,6 +143,11 @@ def test_api_auto_uses_provider_only_for_listed_intent_then_runtime_validates(tm
     def handler(request: httpx.Request) -> httpx.Response:
         payload = json.loads(request.content)
         prompt = payload["messages"][1]["content"]
+        if prompt == 'Return exactly {"connection":"ok"}.':
+            return httpx.Response(200, json={
+                "choices": [{"message": {"content": '{"connection":"ok"}'}, "finish_reason": "stop"}],
+                "usage": {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2},
+            })
         frame = json.loads(prompt.split("\n\n", 1)[1])
         candidate = frame["legal_candidates"][0]
         completion = {
@@ -184,7 +189,9 @@ def test_api_auto_uses_provider_only_for_listed_intent_then_runtime_validates(tm
             },
         )
         assert configured.status_code == 200, configured.text
-        assert configured.json()["ready"] is True
+        assert configured.json()["readiness_state"] == "CONNECTION_NOT_TESTED"
+        tested = client.post("/api/ai-provider/test", headers=headers, json={})
+        assert tested.status_code == 200, tested.text
         catalog = client.get("/api/combat/catalog").json()
         modes = {row["runtime_entity_id"]: "API_AUTO" for row in _primary(catalog)}
         created = client.post(

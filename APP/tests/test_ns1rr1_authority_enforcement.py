@@ -10,7 +10,13 @@ from app.api import create_app
 from app.core import Database, FoundryError, Settings, canonical_json, utcnow
 from non_sphere_authority import NonSphereAuthorityService
 from non_sphere_authority.service import COMPACT_TO_CANONICAL
-from tests.ns1r_evidence_helpers import access_evidence, ap_award, commit_authority_event
+from tests.ns1r_evidence_helpers import (
+    access_evidence,
+    ap_award,
+    commit_authority_event,
+    install_authority_test_pack,
+    lock_authority_test_pack,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 BODY = "tianxia.path.body_refining"
@@ -32,6 +38,7 @@ def insert_project(db: Database, project_id: str, target_cl: int = 10) -> None:
              "rival/boss", canonical_json(doc), "NOT_BUILT", "NOT_COMPILED", "NOT_VERIFIED", None, "0" * 64,
              "Tianxia.CharacterProject.v3", "legacy-unverified"),
         )
+    lock_authority_test_pack(db, project_id, target_cl)
 
 
 
@@ -41,7 +48,9 @@ def authority(tmp_path: Path) -> tuple[NonSphereAuthorityService, Database]:
     settings.ensure_dirs()
     db = Database(settings)
     db.migrate()
-    return NonSphereAuthorityService(db), db
+    service = NonSphereAuthorityService(db)
+    install_authority_test_pack(db, service)
+    return service, db
 
 
 def test_all_102_method_acquisition_dispositions(authority):
