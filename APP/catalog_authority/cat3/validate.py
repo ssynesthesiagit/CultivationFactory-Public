@@ -125,8 +125,8 @@ def validate(source_root: Path) -> dict[str, Any]:
 
     base_rows = authority["automatic_base_abilities"]
     runtime_components = {row["runtime_component_id"] for row in base_rows}
-    assert len(base_rows) == 126
-    assert len(runtime_components) == 125
+    assert len(base_rows) == 132
+    assert len(runtime_components) == 131
     aliases = authority["automatic_base_ability_aliases"]
     assert len(aliases) == 1
     assert aliases[0]["legacy_id"] == "TAL_DARK_DARKNESS"

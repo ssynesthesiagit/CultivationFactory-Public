@@ -387,7 +387,7 @@ def test_desktop_bridge_does_not_publicly_expose_native_window_graph():
     assert bridge._launcher is owner
 
 
-def _complete_request_fixture(*, full_size: bool = False) -> tuple[bytes, str, dict]:
+def _complete_request_fixture(*, full_size: bool = False, receipt_v2: bool = False) -> tuple[bytes, str, dict]:
     project_id = "project-native-save"
     snapshot = {"snapshot_sha256": "a" * 64}
     unsigned = {
@@ -400,7 +400,11 @@ def _complete_request_fixture(*, full_size: bool = False) -> tuple[bytes, str, d
         "forbidden_planner_fields": [],
         "policy": {"planner_prose_is_mechanical_authority": False, "automatic_retries": False},
     }
-    request = {**unsigned, "request_sha256": launcher.sha256_json(unsigned)}
+    request = {
+        **unsigned,
+        "request_sha256": launcher.sha256_json(unsigned),
+        "idempotency_binding_sha256": "f" * 64,
+    }
     binding = {
         "schema": "TianxiaFoundry.CharacterCreationRequestBinding.v1",
         "project_id": project_id,
@@ -432,8 +436,13 @@ def _complete_request_fixture(*, full_size: bool = False) -> tuple[bytes, str, d
         for name in sorted(entries):
             archive.writestr(name, entries[name])
     filename = f"CG1_COMPLETE_REQUEST_{project_id}_{request['request_sha256'][:12]}.zip"
+    member_inventory = [
+        {"name": name, "bytes": len(entries[name]), "sha256": hashlib.sha256(entries[name]).hexdigest()}
+        for name in sorted(entries)
+    ]
+    payload = output.getvalue()
     run = {
-        "schema": "TianxiaFoundry.CompleteRequestSaveReceipt.v1",
+        "schema": "TianxiaFoundry.CompleteRequestSaveReceipt.v2" if receipt_v2 else "TianxiaFoundry.CompleteRequestSaveReceipt.v1",
         "run_id": "cg1.run." + "d" * 32,
         "project_id": project_id,
         "starting_revision": 7,
@@ -444,7 +453,15 @@ def _complete_request_fixture(*, full_size: bool = False) -> tuple[bytes, str, d
         },
         "filename": filename,
     }
-    return output.getvalue(), filename, run
+    if receipt_v2:
+        run.update({
+            "request_payload_sha256": request["request_sha256"],
+            "content_set_sha256": launcher.sha256_json(member_inventory),
+            "final_zip_sha256": hashlib.sha256(payload).hexdigest(),
+            "final_zip_bytes": len(payload),
+            "member_inventory": member_inventory,
+        })
+    return payload, filename, run
 
 
 class _ControlledLoopbackHandler(http.server.BaseHTTPRequestHandler):
@@ -814,7 +831,7 @@ main().catch(error => { console.error(error); process.exitCode = 1; });
 
 
 def test_complete_request_native_save_validation_binds_zip_to_project_and_revision():
-    payload, filename, run = _complete_request_fixture()
+    payload, filename, run = _complete_request_fixture(receipt_v2=True)
     result = launcher._validate_complete_request_zip(payload, filename, run)
     assert result["bytes"] == len(payload)
     assert result["zip_crc"] == "PASS"
@@ -822,6 +839,20 @@ def test_complete_request_native_save_validation_binds_zip_to_project_and_revisi
     assert result["manifest"] == "PASS"
     assert result["project_id"] == run["project_id"]
     assert result["project_revision"] == run["starting_revision"]
+    assert result["request_payload_sha256"] == run["request_payload_sha256"]
+    assert result["content_set_sha256"] == run["content_set_sha256"]
+
+
+def test_complete_request_v2_receipt_rejects_changed_member_even_with_rebuilt_inner_sums():
+    payload, filename, run = _complete_request_fixture(receipt_v2=True)
+    entries = _zip_entries(payload)
+    entries["PROMPT_INSTRUCTIONS.md"] += b"changed"
+    entries["SHA256SUMS.txt"] = "".join(
+        f"{hashlib.sha256(entries[name]).hexdigest()}  {name}\n"
+        for name in sorted(entries) if name != "SHA256SUMS.txt"
+    ).encode("ascii")
+    with pytest.raises(RuntimeError, match="server-issued payload"):
+        launcher._validate_complete_request_zip(_zip_with_entries(entries), filename, run)
 
 
 def test_complete_request_native_save_rejects_cross_revision_or_unsafe_archive():

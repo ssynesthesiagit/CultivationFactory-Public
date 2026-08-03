@@ -253,7 +253,10 @@ class CoreCatalogImporter:
         for record in records:
             rid = record["record_id"]
             entry = entries.get(rid)
-            is_cat3 = str((record.get("raw_record") or {}).get("compiler_version", "")).startswith("CAT3-P1")
+            projected_raw = (
+                (record.get("compatibility") or {}).get("factory", {}).get("raw_projection", {}).get("raw_record")
+            ) or {}
+            is_cat3 = str(((record.get("raw_record") or projected_raw)).get("compiler_version", "")).startswith("CAT3-P1")
             if entry:
                 catalog_source = record.get("source") or {}
                 authority_source = entry.get("source") or {}
@@ -266,7 +269,25 @@ class CoreCatalogImporter:
                     raise FoundryError("TYPED_AUTHORITY_SOURCE_BINDING_MISMATCH", "The typed authority entry is not bound to the exact canonical catalog source.", details={"record_id": rid, "catalog_source": record.get("source"), "authority_source": entry.get("source")})
                 record = deepcopy(record)
                 compatibility = deepcopy(record.get("compatibility") or {})
-                compatibility.setdefault("factory", {})["stage2_authority"] = deepcopy(entry["stage2_authority"])
+                merged_stage2_authority = deepcopy(entry["stage2_authority"])
+                if is_cat3 and record.get("content_type") == "talent":
+                    merged_stage2_authority["access_category"] = projected_raw.get("access_category", "Open")
+                    merged_stage2_authority["acquisition_provenance_predicate_ids"] = [
+                        p["predicate_id"]
+                        for p in projected_raw.get("typed_prerequisites", [])
+                        if isinstance(p, dict)
+                        and p.get("scope") == "acquisition"
+                        and p.get("kind") == "acquisition_provenance"
+                        and isinstance(p.get("predicate_id"), str)
+                    ]
+                    if (
+                        projected_raw.get("acquisition_provenance_required") is True
+                        and not merged_stage2_authority["acquisition_provenance_predicate_ids"]
+                    ):
+                        merged_stage2_authority["acquisition_provenance_predicate_ids"] = [
+                            f"implicit:{rid}:acquisition_provenance"
+                        ]
+                compatibility.setdefault("factory", {})["stage2_authority"] = merged_stage2_authority
                 record["compatibility"] = compatibility
                 record["raw_record"] = deepcopy(record.get("raw_record") or {})
                 record["raw_record"]["compatibility"] = deepcopy(compatibility)
@@ -301,7 +322,9 @@ class CoreCatalogImporter:
                 record["record_hash"] = sha256_json({k: v for k, v in record.items() if k not in {"record_hash", "selected_authority"}})
                 seen.add(rid)
             elif is_cat3:
-                raw = record.get("raw_record") or {}
+                raw = record.get("raw_record") or (
+                    (record.get("compatibility") or {}).get("factory", {}).get("raw_projection", {}).get("raw_record")
+                ) or {}
                 content_type = record.get("content_type")
                 stage2_authority: dict[str, Any] | None = None
                 if content_type == "sphere":

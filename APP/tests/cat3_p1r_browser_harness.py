@@ -177,6 +177,11 @@ def stage(message: str) -> None:
 def provider_handler(context: dict[str, Any]):
     def handler(request: httpx.Request) -> httpx.Response:
         provider_request = json.loads(request.content)
+        if provider_request["messages"][1]["content"] == 'Return exactly {"connection":"ok"}.':
+            return httpx.Response(200, json={
+                "choices": [{"message": {"content": '{"connection":"ok"}'}, "finish_reason": "stop"}],
+                "usage": {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2},
+            })
         prompt = json.loads(provider_request["messages"][1]["content"])
         complete_request = prompt["complete_request"]
         app = context["app"]
@@ -226,6 +231,7 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
         data_sharing_acknowledged=True,
         acknowledged_by="CAT3-P1R deterministic browser acceptance",
     )
+    app.state.ai_provider.test_connection()
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as port_probe:
         port_probe.bind(("127.0.0.1", 0))

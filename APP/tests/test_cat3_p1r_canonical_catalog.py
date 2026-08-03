@@ -126,8 +126,8 @@ def test_prerequisite_talent_chain_and_unresolved_fail_closed():
 def test_dark_base_source_rows_preserved_but_runtime_unique():
     service = _service()
     diagnostics = service.diagnostics()["automatic_base_abilities"]
-    assert diagnostics["source_row_count"] == 126
-    assert diagnostics["unique_component_count"] == 125
+    assert diagnostics["source_row_count"] == 132
+    assert diagnostics["unique_component_count"] == 131
     dark = service.get_sphere("Dark")["automatic_base_abilities"]
     assert [row["base_ability_id"] for row in dark].count("DARK_BASE_DARKNESS") == 1
     assert diagnostics["aliases"][0]["legacy_id"] == "TAL_DARK_DARKNESS"

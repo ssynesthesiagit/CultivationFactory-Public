@@ -158,7 +158,7 @@
           "then": {
             "properties": {
               "details": {
-                "maxProperties": 12,
+                "maxProperties": 13,
                 "minProperties": 5,
                 "required": [
                   "authority_type",
@@ -551,6 +551,10 @@
             "source_reference": {
               "minProperties": 1,
               "type": "object"
+            },
+            "source_route_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
             },
             "route_commitment_sha256": {
               "pattern": "^[a-f0-9]{64}$",

@@ -17,12 +17,12 @@ HIDDEN_TOOL_CACHE = "tianxia.background_talent.scoundrel.hidden_tool_cache"
 HIDDEN_TOOL_CACHE_STAGE2 = "TAL_SCOUNDREL_HIDDEN_TOOL_CACHE"
 STREET_HARDENED = "tianxia.origin_insight.street_hardened"
 FIRE = "tianxia.sphere.fire"
-FIRE_TALENTS = (
+ADVANCEMENT_TALENTS = (
     "FIRE_TAL_FLAME_LASH",
     "FIRE_TAL_BURNING_WEAPON",
-    "FIRE_TAL_FIRE_WARD",
-    "FIRE_TAL_COMBUSTIVE_STEP",
-    "FIRE_TAL_HEAT_HAZE",
+    "TAL_SCOUNDREL_CLEANED_OUT",
+    "TAL_SCOUNDREL_DOUBLE_DIP",
+    "TAL_SCOUNDREL_FANCY_FOOTWORK",
     "FIRE_TAL_FIREBALL_ART",
 )
 STARTING_SCORES = {"STR": 8, "DEX": 14, "CON": 14, "INT": 15, "WIS": 12, "CHA": 8}
@@ -38,7 +38,7 @@ SELECTIONS = {
     "sphere_priorities": [FIRE],
     # Only the current creator-selectable subset is locked as blueprint intent.
     # The remaining accepted Fire progression is resolved by Stage 2 authority.
-    "advancement_skeleton": [FIRE_TALENTS[0], FIRE_TALENTS[1], FIRE_TALENTS[5]],
+    "advancement_skeleton": [ADVANCEMENT_TALENTS[0], ADVANCEMENT_TALENTS[1], ADVANCEMENT_TALENTS[5]],
 }
 
 
@@ -76,8 +76,8 @@ def create_fresh_project(db: Database, *, project_id: str | None = None) -> dict
         ability_scores=deepcopy(STARTING_SCORES),
         selections=deepcopy(SELECTIONS),
         canonical_sphere_ids=[FIRE],
-        sphere_free_talent_grants={FIRE: FIRE_TALENTS[0]},
-        ordinary_talent_ids=[FIRE_TALENTS[1], FIRE_TALENTS[5]],
+        sphere_free_talent_grants={FIRE: ADVANCEMENT_TALENTS[0]},
+        ordinary_talent_ids=[ADVANCEMENT_TALENTS[1], ADVANCEMENT_TALENTS[5]],
         background_route_ids={
             "background_route_record_id": "tianxia.background_talent.scoundrel.hidden_tool_cache",
             "background_talent_choice_id": HIDDEN_TOOL_CACHE,
@@ -160,19 +160,19 @@ def stage2_choices() -> list[dict[str, Any]]:
         _choice("origin_insight_acquisition", 1, STREET_HARDENED, "origin-selection"),
         _choice("path_acquisition", 1, QI_PATH, "path-selection"),
         _choice("ai_bootstrap_sphere_acquisition", 1, FIRE, "ai-bootstrap-free-cl1-sphere"),
-        _choice("ai_bootstrap_talent_acquisition", 1, FIRE_TALENTS[0], "ai-bootstrap-free-cl1-talent"),
+        _choice("ai_bootstrap_talent_acquisition", 1, ADVANCEMENT_TALENTS[0], "ai-bootstrap-free-cl1-talent"),
         _choice("level_advance", 1, "tianxia.path.qi_cultivation.feature.qi_sensing", "level-advance"),
-        _choice("level_talent_acquisition", 1, FIRE_TALENTS[1], "level-choice"),
+        _choice("level_talent_acquisition", 1, ADVANCEMENT_TALENTS[1], "level-choice"),
         _choice("level_advance", 2, "tianxia.path.qi_cultivation.feature.meridian_regulation", "level-advance"),
-        _choice("level_talent_acquisition", 2, FIRE_TALENTS[2], "level-choice"),
+        _choice("level_talent_acquisition", 2, ADVANCEMENT_TALENTS[2], "level-choice"),
         _choice("level_advance", 3, "tianxia.path.qi_cultivation.feature.qi_cultivation_subpath", "level-advance"),
         _choice("subpath_acquisition", 3, CINDER_HEART, "subpath-selection"),
-        _choice("level_talent_acquisition", 3, FIRE_TALENTS[3], "level-choice"),
+        _choice("level_talent_acquisition", 3, ADVANCEMENT_TALENTS[3], "level-choice"),
         _choice("level_advance", 4, "tianxia.path.qi_cultivation.feature.ability_score_improvement_or_cultivation_insight", "level-advance"),
         _choice("ability_score_change", 4, "tianxia.path.qi_cultivation.feature.ability_score_improvement_or_cultivation_insight", "level-choice", {"deltas": {"INT": 2}}),
-        _choice("level_talent_acquisition", 4, FIRE_TALENTS[4], "level-choice"),
+        _choice("level_talent_acquisition", 4, ADVANCEMENT_TALENTS[4], "level-choice"),
         _choice("level_advance", 5, "tianxia.path.qi_cultivation.feature.qi_armor", "level-advance"),
-        _choice("level_talent_acquisition", 5, FIRE_TALENTS[5], "level-choice"),
+        _choice("level_talent_acquisition", 5, ADVANCEMENT_TALENTS[5], "level-choice"),
         *[
             _choice(
                 "typed_none",

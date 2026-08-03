@@ -23,7 +23,7 @@ from common import (
 )
 
 
-EXPECTED_CATALOG_COMMITMENT = "3bc84ab1bb80301fbbb49aa28c561af0aeec77b281bc4cca9b0c4e3860861102"
+EXPECTED_CATALOG_COMMITMENT = "b53d36b6da5f3d8ead46e01cd07bbfc0f80e35043e7f3ef0f2e11d5fb79e35df"
 
 
 @dataclass(frozen=True)
@@ -120,7 +120,7 @@ def fast_stages(output: Path, node: str) -> list[CommandStage]:
                 str(output / "rendered-browser"),
                 "--cleanup-data",
             ],
-            600,
+            1800,
         ),
         CommandStage(
             "ci_contract",

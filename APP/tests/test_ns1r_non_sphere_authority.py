@@ -7,7 +7,13 @@ from pathlib import Path
 import pytest
 from app.core import Database, FoundryError, Settings, canonical_json, utcnow
 from non_sphere_authority.service import CANONICAL_TO_COMPACT, NonSphereAuthorityService
-from tests.ns1r_evidence_helpers import access_evidence, ap_award, commit_authority_event
+from tests.ns1r_evidence_helpers import (
+    access_evidence,
+    ap_award,
+    commit_authority_event,
+    install_authority_test_pack,
+    lock_authority_test_pack,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 BODY = "tianxia.path.body_refining"
@@ -38,6 +44,7 @@ def insert_project(db: Database, project_id: str, target_cl: int = 10) -> None:
                 None, "0" * 64, "Tianxia.CharacterProject.v3", "legacy-unverified",
             ),
         )
+    lock_authority_test_pack(db, project_id, target_cl)
 
 
 @pytest.fixture()
@@ -46,7 +53,9 @@ def authority(tmp_path: Path) -> tuple[NonSphereAuthorityService, Database]:
     settings.ensure_dirs()
     db = Database(settings)
     db.migrate()
-    return NonSphereAuthorityService(db), db
+    service = NonSphereAuthorityService(db)
+    install_authority_test_pack(db, service)
+    return service, db
 
 
 def test_authority_identity_counts_and_no_pairwise(authority):
@@ -174,10 +183,16 @@ def test_cl3_path_ownership_restricted_access_and_target_cl_preservation(authori
     service.initialize_for_project("spirit-tradition", target_cl=10, path_ids=[SPIRIT], method_id="METHOD-005", access_source_records=access_evidence(db, service, "spirit-tradition", "METHOD-005"))
     service.allocate_advancement("spirit-tradition", {SPIRIT: 2}, evidence_id=ap_award(db,service,"spirit-tradition","METHOD-005",10,2), idempotency_key="test.ap.spirit.cl3")
     restricted = next(row for row in service.subpaths.values() if row["owning_path_id"] == SPIRIT and row["access"].get("access_source_record_required"))
-    state = service.select_subpath("spirit-tradition", SPIRIT, restricted["canonical_id"])
+    subpath_access = commit_authority_event(
+        db, service, "spirit-tradition", "subpath_access", {"selection_id": restricted["canonical_id"]}
+    )
+    state = service.select_subpath(
+        "spirit-tradition", SPIRIT, restricted["canonical_id"], access_source_records=[subpath_access]
+    )
     selected_path = next(row for row in state["paths"] if row["path_id"] == SPIRIT)
     assert selected_path["subpath_or_tradition_id"] == restricted["canonical_id"]
-    assert selected_path["subpath_or_tradition_acquisition_provenance"]["content_type"] == "Spirit Tradition"
+    expected_type = "Spirit Tradition" if restricted.get("option_type") == "tradition" else "Spirit Awakening Subpath"
+    assert selected_path["subpath_or_tradition_acquisition_provenance"]["content_type"] == expected_type
     assert selected_path["subpath_or_tradition_acquisition_provenance"]["access_category"] != "Open"
 
 
@@ -259,13 +274,18 @@ def test_cat2_catalog_exact_preservation():
     background_routes = json.loads((data / "background_origin_talent_routes.v1.json").read_text(encoding="utf-8"))
     status = json.loads((ROOT / "PACKAGE_VERSION.json").read_text(encoding="utf-8"))
     assert len(spheres["records"]) == status["canonical_sphere_count"] == 85
-    assert len(talents["records"]) == status["canonical_talent_count"] == 1748
-    assert len(memberships["records"]) == status["canonical_membership_count"] == 1748
-    assert len(background_routes["records"]) == status["background_only_talent_route_count"] == 77
-    assert status["automatic_base_ability_unique_count"] == 125
-    assert status["quarantined_candidate_count"] == 25
+    # CAT1 remains an immutable legacy overlay; PACKAGE_VERSION tracks the current CAT3 authority.
+    assert len(talents["records"]) == 1748
+    assert len(memberships["records"]) == 1748
+    assert status["canonical_talent_count"] == status["canonical_membership_count"] == 2985
+    assert len(background_routes["records"]) == 77
+    assert status["automatic_base_ability_unique_count"] == 131
+    assert status["quarantined_candidate_count"] == 7
     factory = ROOT / "BundledContent" / "Tianxia_Factory_HF05ZVK_R1H_Phase2I_HF2.zip"
-    assert hashlib.sha256(factory.read_bytes()).hexdigest() == status["producer_corpus_sha256"]
+    input_verification = json.loads(
+        (ROOT / "catalog_authority" / "cat1" / "evidence" / "INPUT_VERIFICATION.json").read_text(encoding="utf-8")
+    )
+    assert hashlib.sha256(factory.read_bytes()).hexdigest() == input_verification["archives"]["authority"]["expected_sha256"]
 
 
 def test_initial_multi_path_attainment_and_subpaths_persist_from_builder_authority(authority):

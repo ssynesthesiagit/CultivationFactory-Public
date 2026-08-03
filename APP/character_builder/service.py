@@ -618,6 +618,7 @@ class CharacterBuilderService:
         background_authority = authority.backgrounds
         route_authority_by_id: dict[str, dict[str, Any]] = {}
         insight_authority_by_id: dict[str, dict[str, Any]] = {}
+        insight_authority_by_name: dict[str, list[dict[str, Any]]] = {}
         for background_id, background in background_authority.items():
             exact = authority.background_route_authority.get(background_id, {})
             for route in exact.get("route_options", []):
@@ -625,9 +626,14 @@ class CharacterBuilderService:
                     **deepcopy(route), "background_id": background_id,
                 }
             for insight in exact.get("origin_insight_options", []):
-                insight_authority_by_id[insight["origin_insight_choice_id"]] = {
+                enriched_insight = {
                     **deepcopy(insight), "background_id": background_id,
+                    "background_source": deepcopy(background.get("source") or {}),
                 }
+                insight_authority_by_id[insight["origin_insight_choice_id"]] = enriched_insight
+                insight_authority_by_name.setdefault(
+                    _normalized_visible_name(insight["display_name"]), []
+                ).append(enriched_insight)
 
         # Preserve the accepted CAT2 option inventories exactly. NS1R-R1 only
         # decorates those records with the shared authority needed for exact
@@ -667,6 +673,39 @@ class CharacterBuilderService:
 
         insight_category = by_slot.get("insight_priorities")
         if insight_category is not None:
+            for choice in insight_category.get("choices", []):
+                exact_insights = insight_authority_by_name.get(_normalized_visible_name(choice["name"]), [])
+                if choice.get("content_type") == "origin_insight" and exact_insights:
+                    background_ids = sorted({row["background_id"] for row in exact_insights})
+                    choice["insight_group"] = "background_origin_insights"
+                    choice["insight_group_label"] = "Background / Origin Insights"
+                    choice["insight_authority"] = {
+                        "schema": "TianxiaFoundry.InsightSourceAuthority.v1",
+                        "record_id": choice["choice_id"],
+                        "authority_type": "Background-Origin",
+                        "binding_records": [{
+                            "authority_type": "Background-Origin",
+                            "field": "background",
+                            "binding_id": background_id,
+                            "binding_role": "controlling",
+                        } for background_id in background_ids],
+                        "prerequisites": "",
+                        "preference_only": True,
+                        "classification_code": "EXPLICIT_BACKGROUND_ORIGIN_INSIGHT_AUTHORITY",
+                        "reason": "The accepted Background authority explicitly lists this suggested Origin Insight.",
+                        "source_reference": {
+                            "source_file": "non_sphere_authority/authority/Background_Core_Authority_v1.json",
+                            "source_status": "accepted_authority",
+                            "source_record_id": choice["choice_id"],
+                            "background_ids": background_ids,
+                            "source_occurrences": [{
+                                "background_id": row["background_id"],
+                                **deepcopy(row["background_source"]),
+                            } for row in exact_insights],
+                        },
+                    }
+                    choice["ns1r_exact_origin_insight_authority"] = deepcopy(exact_insights)
+                    choice["canonical_non_sphere_authority"] = True
             insight_category["grouped_projection"] = "typed_insight_metadata"
             insight_category["groups"] = [
                 {"id": "general_insights", "label": "General Insights"},
@@ -745,22 +784,6 @@ class CharacterBuilderService:
                 )
                 choices = [choice for choice in choices if _authority_disposition(choice) != "source_authority_gap"]
             choices = _dedupe_choice_rows(choices)
-            if config["slot_id"] == "insight_priorities":
-                for choice in choices:
-                    if not choice.get("insight_authority"):
-                        choice["insight_group"] = "unresolved_insights"
-                        choice["insight_group_label"] = "Unresolved Insights"
-                        choice["insight_authority"] = {
-                            "schema": "TianxiaFoundry.InsightSourceAuthority.v1",
-                            "record_id": choice["choice_id"],
-                            "authority_type": "Unresolved",
-                            "binding_records": [],
-                            "prerequisites": "",
-                            "preference_only": True,
-                            "classification_code": "UNRESOLVED_INSIGHT_CLASSIFICATION",
-                            "reason": "No explicit typed Insight source-authority record was available.",
-                            "source_reference": {},
-                        }
             choices.sort(key=lambda item: (_normalized_visible_name(item["name"]), item["choice_id"]))
             categories.append({
                 **config,
@@ -771,6 +794,23 @@ class CharacterBuilderService:
             })
         categories, canonical_sphere_talent_index = self._canonicalize_sphere_talent_options(categories)
         categories, non_sphere_authority_status = self._decorate_non_sphere_options(categories)
+        insight_category = next((row for row in categories if row["slot_id"] == "insight_priorities"), None)
+        if insight_category is not None:
+            for choice in insight_category.get("choices", []):
+                if not choice.get("insight_authority"):
+                    choice["insight_group"] = "unresolved_insights"
+                    choice["insight_group_label"] = "Unresolved Insights"
+                    choice["insight_authority"] = {
+                        "schema": "TianxiaFoundry.InsightSourceAuthority.v1",
+                        "record_id": choice["choice_id"],
+                        "authority_type": "Unresolved",
+                        "binding_records": [],
+                        "prerequisites": "",
+                        "preference_only": True,
+                        "classification_code": "UNRESOLVED_INSIGHT_CLASSIFICATION",
+                        "reason": "No explicit typed Insight source-authority record was available.",
+                        "source_reference": {},
+                    }
         path_category = next((row for row in categories if row["slot_id"] == "path_choice"), {"choices": []})
         subpath_category = next((row for row in categories if row["slot_id"] == "subpath_choice"), {"choices": []})
         path_ids = {choice["choice_id"] for choice in path_category.get("choices", [])}

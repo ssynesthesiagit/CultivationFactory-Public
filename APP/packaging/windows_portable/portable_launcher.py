@@ -452,9 +452,11 @@ def _validate_complete_request_zip(
         or snapshot.get("snapshot_sha256") != (run_request.get("typed_choice_snapshot") or {}).get("snapshot_sha256")
     ):
         raise RuntimeError("The complete request ZIP is not bound to the current project, revision, or typed choice snapshot.")
-    unsigned_request = dict(request)
-    unsigned_request.pop("request_sha256", None)
-    if sha256_json(unsigned_request) != request_sha256:
+    canonical_request_payload = dict(request)
+    canonical_request_payload.pop("request_sha256", None)
+    canonical_request_payload.pop("idempotency_binding_sha256", None)
+    request_payload_sha256 = sha256_json(canonical_request_payload)
+    if request_payload_sha256 != request_sha256:
         raise RuntimeError("The complete request ZIP request hash does not match its contents.")
     if response_schema.get("request_sha256") != request_sha256 or response_schema.get("schema") != "TianxiaFoundry.CharacterCreationPlan.v2":
         raise RuntimeError("The complete request ZIP response schema is not bound to this request.")
@@ -470,9 +472,25 @@ def _validate_complete_request_zip(
     actual = {name: hashlib.sha256(value).hexdigest() for name, value in entries.items() if name != "SHA256SUMS.txt"}
     if declared != actual:
         raise RuntimeError("The complete request ZIP checksum manifest does not match its contents.")
+    member_inventory = [
+        {"name": name, "bytes": len(entries[name]), "sha256": hashlib.sha256(entries[name]).hexdigest()}
+        for name in sorted(entries)
+    ]
+    content_set_sha256 = sha256_json(member_inventory)
+    final_zip_sha256 = hashlib.sha256(payload).hexdigest()
+    if run.get("schema") == "TianxiaFoundry.CompleteRequestSaveReceipt.v2" and (
+        run.get("request_payload_sha256") != request_payload_sha256
+        or run.get("content_set_sha256") != content_set_sha256
+        or run.get("final_zip_sha256") != final_zip_sha256
+        or int(run.get("final_zip_bytes") or -1) != len(payload)
+        or run.get("member_inventory") != member_inventory
+    ):
+        raise RuntimeError("The complete request ZIP does not match the server-issued payload, content-set, or final ZIP commitment.")
     return {
         "bytes": len(payload),
-        "sha256": hashlib.sha256(payload).hexdigest(),
+        "sha256": final_zip_sha256,
+        "request_payload_sha256": request_payload_sha256,
+        "content_set_sha256": content_set_sha256,
         "filename": filename,
         "project_id": project_id,
         "project_revision": starting_revision,
@@ -597,7 +615,7 @@ class DesktopBridge:
                 if len(receipt_payload) > 256 * 1024:
                     raise RuntimeError("The Factory returned an oversized complete-request save receipt.")
                 run = json.loads(receipt_payload.decode("utf-8"))
-            if run.get("schema") != "TianxiaFoundry.CompleteRequestSaveReceipt.v1":
+            if run.get("schema") not in {"TianxiaFoundry.CompleteRequestSaveReceipt.v1", "TianxiaFoundry.CompleteRequestSaveReceipt.v2"}:
                 raise RuntimeError("The Factory returned an invalid complete-request save receipt.")
             run_id_from_response = run.get("run_id")
             if run_id_from_response != run_id:

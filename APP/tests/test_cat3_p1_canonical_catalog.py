@@ -9,6 +9,7 @@ from app.core import FoundryError
 from canonical_catalog import CanonicalCatalogAuthorityService
 from catalog_authority.cat3.validate import validate
 from non_sphere_authority.service import NonSphereAuthorityService
+from tests.ns1r_evidence_helpers import install_authority_test_pack
 from tests.test_ns1r_non_sphere_authority import BODY, insert_project
 
 
@@ -20,7 +21,7 @@ def test_generated_authority_acceptance():
     assert report["counts"]["canonical_spheres"] == 85
     assert report["counts"]["canonical_talents"] > 1748
     assert report["counts"]["quarantined_records"] >= 6
-    assert report["counts"]["automatic_base_ability_unique_components"] == 125
+    assert report["counts"]["automatic_base_ability_unique_components"] == 131
     assert len(report["formerly_empty_spheres_restored"]) == 25
 
 
@@ -113,8 +114,9 @@ def test_cl_gate_and_restricted_selection_records_provenance():
 
 
 def test_heaven_thunder_is_body_subpath_at_cl3_without_access_row(fresh_db):
-    insert_project(fresh_db, "cat3-heaven-thunder", target_cl=3)
     service = NonSphereAuthorityService(fresh_db)
+    install_authority_test_pack(fresh_db, service)
+    insert_project(fresh_db, "cat3-heaven-thunder", target_cl=3)
     choice = service.subpaths["tianxia.subpath.body.heaven_thunder_drum_body"]
     assert choice["option_type"] == "subpath"
     assert choice["owning_path_id"] == BODY
