@@ -1,0 +1,344 @@
+{
+  "schema_version": "TianxiaFoundry.CanonicalRuntimeObjectMap.v1",
+  "phase": "4A-HF1",
+  "canonical_hashing": {
+    "json_encoding": "UTF-8 JSON with sorted keys and separators ',' ':'; ensure_ascii=false",
+    "network_schema_resolution": false
+  },
+  "objects": [
+    {
+      "family": "character_project",
+      "canonical_schema_version": "TianxiaFoundry.CharacterProject.v1",
+      "schema_file": "schemas/Character_Project.schema.json",
+      "canonical_storage": "projects.project_json",
+      "internal_storage": [
+        "projects scalar columns",
+        "project_content_locks",
+        "project_locked_records",
+        "snapshots",
+        "validation_findings"
+      ],
+      "serializer": "contracts.canonical.canonical_project_document",
+      "parser": "project_store.service.ProjectStore.get_project/import_project",
+      "validate_before_persist": [
+        "project_create",
+        "project_commit_update",
+        "project_import_persist"
+      ],
+      "validate_after_reconstruct": [
+        "project_get",
+        "project_reconstruct",
+        "project_export",
+        "project_import_parse"
+      ],
+      "hash_boundary": "SHA-256 over the entire canonical CharacterProject document",
+      "legacy_preservation": "projects.legacy_project_json"
+    },
+    {
+      "family": "advancement_event",
+      "canonical_schema_version": "TianxiaFoundry.AdvancementEvent.v1",
+      "schema_file": "schemas/Advancement_Event.schema.json",
+      "canonical_storage": "events.event_json",
+      "internal_storage": [
+        "draft_events",
+        "events scalar chain columns",
+        "canonical_object_validations",
+        "event_hash_mappings"
+      ],
+      "serializer": "contracts.canonical.canonical_event_from_draft",
+      "parser": "project_store.service.ProjectStore.timeline/replay/import_project",
+      "validate_before_persist": [
+        "draft_validate",
+        "draft_approve",
+        "event_commit_before_insert",
+        "event_import_parse"
+      ],
+      "validate_after_reconstruct": [
+        "event_reload",
+        "event_timeline",
+        "event_replay",
+        "event_export",
+        "event_import_persist"
+      ],
+      "hash_boundary": "SHA-256 over the canonical event excluding event_hash",
+      "legacy_preservation": [
+        "events.legacy_event_json",
+        "events.legacy_event_hash",
+        "migration.contract_reconciliation",
+        "event_hash_mappings"
+      ]
+    },
+    {
+      "family": "rules_catalog_record",
+      "canonical_schema_version": "TianxiaFoundry.RulesCatalogRecord.v1",
+      "schema_file": "schemas/Rules_Catalog_Record.schema.json",
+      "canonical_storage": "catalog_records.data_json",
+      "internal_storage": [
+        "catalog_records scalar indexes",
+        "catalog_dependencies",
+        "catalog_conflicts",
+        "catalog_fts"
+      ],
+      "serializer": "contracts.canonical.normalize_core_catalog_record",
+      "parser": "catalog.service.CatalogService.get",
+      "validate_before_persist": [
+        "core_catalog_rebuild",
+        "content_pack_install",
+        "content_pack_state_change"
+      ],
+      "validate_after_reconstruct": [
+        "catalog_get",
+        "project_record_lock",
+        "record_export",
+        "record_import"
+      ],
+      "hash_boundary": "SHA-256 over the canonical record excluding record_hash",
+      "legacy_preservation": [
+        "catalog_records.raw_projection_json",
+        "compatibility.factory.raw_projection"
+      ]
+    },
+    {
+      "family": "content_pack_manifest",
+      "canonical_schema_version": "TianxiaFoundry.ContentPackManifest.v1",
+      "schema_file": "schemas/Content_Pack_Manifest.schema.json",
+      "canonical_storage": "content_packs.manifest_json",
+      "internal_storage": [
+        "content_packs lifecycle columns",
+        "content_pack_dependencies",
+        "content_pack_installations"
+      ],
+      "serializer": "identity after canonical JSON validation",
+      "parser": "content_packs.service.ContentPackManager.validate/install",
+      "validate_before_persist": [
+        "content_pack_validate",
+        "content_pack_install"
+      ],
+      "validate_after_reconstruct": [
+        "content_pack_inspect"
+      ],
+      "hash_boundary": "Manifest content_hash and declared file hashes; installed package hash retained separately",
+      "lifecycle_boundary": "superseded and retired are internal installation lifecycle states; the immutable source manifest remains draft, validated, or published"
+    },
+    {
+      "family": "stage1_prompt_envelope",
+      "canonical_schema_version": "TianxiaFoundry.Stage1PromptEnvelope.v2",
+      "schema_file": "schemas/Stage1_Prompt_Envelope_v2.schema.json",
+      "canonical_storage": "stage1_prompt_exchanges.envelope_json",
+      "internal_storage": [
+        "stage1_prompt_exchanges.prompt_bytes",
+        "stage1_prompt_exchanges.prompt_sha256"
+      ],
+      "serializer": "stage1.service.Stage1ClipboardService.build_envelope/_prompt_text",
+      "parser": "POST /api/projects/{project_id}/stage1/prompt and GET /api/stage1/prompts/{prompt_id}",
+      "validate_before_persist": [
+        "stage1_prompt_generate"
+      ],
+      "validate_after_reconstruct": [
+        "stage1_prompt_get",
+        "stage1_response_validate"
+      ],
+      "hash_boundary": "prompt_sha256 is SHA-256 over the exact UTF-8 prompt bytes; prompt_id is deterministically derived from the immutable project revision, content lock, decision slots, and authored-field contract",
+      "ownership_boundary": "The Foundry alone builds the envelope and calculates IDs and hashes; the AI receives an immutable offered subset and has no catalog-write authority"
+    },
+    {
+      "family": "stage1_clipboard_response",
+      "canonical_schema_version": "TianxiaFoundry.AIClipboard.Stage1.v2",
+      "schema_file": "schemas/Stage1_Clipboard_Response_v2.schema.json",
+      "canonical_storage": "stage1_response_attempts.response_json after validation; accepted response identity is retained in ai_stage_responses",
+      "internal_storage": [
+        "stage1_response_attempts.exact_response_bytes",
+        "stage1_response_attempts.exact_response_sha256",
+        "stage1_response_attempts.response_payload_sha256",
+        "stage1_response_attempts.validation_json"
+      ],
+      "serializer": "identity after local SchemaRegistry and offered-subset validation",
+      "parser": "POST /api/stage1/prompts/{prompt_id}/responses/validate",
+      "validate_before_persist": [
+        "stage1_response_schema",
+        "stage1_prompt_binding",
+        "stage1_all_slot_decisions",
+        "stage1_offered_subset"
+      ],
+      "validate_after_reconstruct": [
+        "stage1_attempt_get",
+        "stage1_approve_commit_revalidation"
+      ],
+      "hash_boundary": "exact_response_sha256 covers the exact pasted UTF-8 bytes; computed response_payload_sha256 is calculated locally and any AI-supplied payload hash is non-authoritative",
+      "ownership_boundary": "The clipboard response is untrusted planner input. It may choose only offered IDs and author bounded prose; it cannot create advancement events, mechanics, IDs, or authoritative hashes"
+    },
+    {
+      "family": "stage1_clipboard_exchange",
+      "canonical_schema_version": "TianxiaFoundry.Stage1ClipboardExchange.v2",
+      "schema_file": "schemas/Stage1_Clipboard_Exchange_v2.schema.json",
+      "canonical_storage": "deterministic API read model assembled from stage1_prompt_exchanges, stage1_response_attempts, decision batches, approvals, and commit results",
+      "internal_storage": [
+        "no independent mutable exchange row"
+      ],
+      "serializer": "stage1.service.Stage1ClipboardService._attempt_result",
+      "parser": "GET /api/stage1/attempts/{attempt_id}",
+      "validate_before_persist": [],
+      "validate_after_reconstruct": [
+        "stage1_attempt_get",
+        "stage1_approve_commit_entry"
+      ],
+      "hash_boundary": "Every embedded prompt, response, decision batch, and commit retains its own hash boundary; the exchange is a validated projection rather than an independent authority",
+      "ownership_boundary": "System-owned read model; callers cannot submit an exchange object"
+    },
+    {
+      "family": "stage1_blueprint_decision_batch",
+      "canonical_schema_version": "TianxiaFoundry.BlueprintDecisionBatch.v1",
+      "schema_file": "schemas/Blueprint_Decision_Batch.schema.json",
+      "canonical_storage": "stage1_decision_batches plus ordered stage1_blueprint_decisions",
+      "internal_storage": [
+        "stage1_batch_transitions",
+        "stage1_approvals"
+      ],
+      "serializer": "stage1.service.Stage1ClipboardService._persist_batch/_decision_objects",
+      "parser": "stage1 attempt validation and approve-and-commit workflow",
+      "validate_before_persist": [
+        "stage1_decision_object",
+        "stage1_decision_batch"
+      ],
+      "validate_after_reconstruct": [
+        "stage1_attempt_get",
+        "stage1_approve_commit_revalidation"
+      ],
+      "hash_boundary": "batch_hash covers exact response identity, project and content-lock binding, ordered decisions, authored notes, and rationale; each decision_hash covers its canonical decision JSON",
+      "ownership_boundary": "System-owned translation of a valid v2 response. Decisions are blueprint intent only and never draft or committed advancement events"
+    },
+    {
+      "family": "stage1_blueprint_decision",
+      "canonical_schema_version": "TianxiaFoundry.BlueprintDecision.v1",
+      "schema_file": "schemas/Blueprint_Decision.schema.json",
+      "canonical_storage": "stage1_blueprint_decisions.decision_json",
+      "internal_storage": [
+        "stage1_blueprint_decisions scalar columns",
+        "record_snapshots_json",
+        "decision_hash"
+      ],
+      "serializer": "stage1.service.Stage1ClipboardService._decision_objects",
+      "parser": "stage1.service.Stage1ClipboardService._load_decisions",
+      "validate_before_persist": [
+        "stage1_decision_create"
+      ],
+      "validate_after_reconstruct": [
+        "stage1_approve_commit_revalidation"
+      ],
+      "hash_boundary": "decision_id is content-derived and decision_hash is SHA-256 over the complete canonical decision; selected records retain exact pack, record, source, and choice-snapshot hashes",
+      "ownership_boundary": "The Foundry creates the decision from one validated all-slot response; the AI cannot author snapshots, hashes, ordinals, or batch identity"
+    },
+    {
+      "family": "stage1_blueprint_intent_commit",
+      "canonical_schema_version": "TianxiaFoundry.BlueprintIntentState.v1",
+      "schema_file": "schemas/Blueprint_Intent_State.schema.json",
+      "canonical_storage": "stage1_blueprint_commits.intent_state_json",
+      "internal_storage": [
+        "stage1_blueprint_commits append-only hash chain",
+        "stage1_blueprint_heads",
+        "stage1_blueprint_commit_results",
+        "stage1_blueprint_projections"
+      ],
+      "serializer": "stage1.service.Stage1ClipboardService.approve_and_commit/resume_projection",
+      "parser": "GET /api/projects/{project_id}/stage1/status and Stage 2 blueprint-intent reader",
+      "validate_before_persist": [
+        "stage1_atomic_approval_commit",
+        "stage1_intent_state"
+      ],
+      "validate_after_reconstruct": [
+        "stage1_head_replay",
+        "stage1_projection_resume"
+      ],
+      "hash_boundary": "intent_state_hash covers the immutable intent payload; commit_hash chains project, sequence, batch, previous commit, revision, approver, and intent state; stage1_blueprint_heads is only the current pointer; projection_hash covers the deterministic non-mechanical projection",
+      "ownership_boundary": "A named human approves one complete system-owned batch atomically. The commit increments project revision but must leave the advancement-event count and head hash unchanged; projection has mechanical_authority=false"
+    },
+    {
+      "family": "service_contracts",
+      "canonical_schema_version": "TianxiaFoundry.ServiceContracts.v1",
+      "schema_file": "schemas/Service_API_Contracts.schema.json",
+      "canonical_storage": "contracts/Service_API_Contracts.json",
+      "internal_storage": [
+        "FastAPI routes",
+        "Pydantic transport models"
+      ],
+      "serializer": "static versioned contract document",
+      "parser": "GET /api/contracts",
+      "validate_before_persist": [
+        "release regression gate"
+      ],
+      "validate_after_reconstruct": [
+        "service contract endpoint"
+      ],
+      "hash_boundary": "Release file SHA-256",
+      "error_contract": "TianxiaFoundry.ServiceError.v1"
+    }
+  ],
+  "phase4a_stage2": {
+    "advancement_event_v2": {
+      "canonical_schema_version": "TianxiaFoundry.AdvancementEvent.v2",
+      "schema_file": "schemas/Advancement_Event_v2.schema.json",
+      "hash_boundary": "all fields except event_hash",
+      "storage": "events.event_json",
+      "migration": "011_stage2_advancement_ledger.sql"
+    },
+    "proposal": {
+      "canonical_schema_version": "TianxiaFoundry.Stage2AdvancementProposal.v1",
+      "schema_file": "schemas/Stage2_Advancement_Proposal.schema.json",
+      "authority": "bounded human/test input only; never mechanics"
+    },
+    "leveling_ledger": {
+      "canonical_schema_version": "TianxiaFoundry.LevelingLedger.v1",
+      "schema_file": "schemas/Leveling_Ledger_v1.schema.json",
+      "authority": "deterministic projection from complete v2 event replay"
+    },
+    "blocker_report": {
+      "canonical_schema_version": "TianxiaFoundry.Stage2BlockerReport.v1",
+      "schema_file": "schemas/Stage2_Blocker_Report.schema.json"
+    },
+    "reconciliation": {
+      "canonical_schema_version": "TianxiaFoundry.Stage2ReconciliationReport.v1",
+      "schema_file": "schemas/Stage2_Reconciliation_Report.schema.json"
+    },
+    "field_provenance": {
+      "canonical_schema_version": "TianxiaFoundry.Stage2FieldProvenanceMap.v1",
+      "schema_file": "schemas/Stage2_Field_Provenance_Map.schema.json",
+      "authority": "deterministic leaf-pointer mapping from ledger fields to event, locked record, source evidence, acquisition channel, and calculation inputs"
+    }
+  },
+  "phase4a_hf1_rules_causal": {
+    "proposal": {
+      "canonical_schema_version": "TianxiaFoundry.Stage2AdvancementProposal.v2",
+      "schema_file": "schemas/Stage2_Advancement_Proposal_v2.schema.json",
+      "authority": "bounded human/test proposal; published IDs and recorded die/check inputs only; no authored mechanics or derived outputs"
+    },
+    "advancement_event": {
+      "canonical_schema_version": "TianxiaFoundry.AdvancementEvent.v3",
+      "schema_file": "schemas/Advancement_Event_v3.schema.json",
+      "hash_boundary": "all canonical fields except event_hash",
+      "storage": "events.event_json",
+      "migration": "012_phase4a_hf1_rules_causality.sql",
+      "compatibility": "AdvancementEvent.v1 and v2 remain readable; HF1 proposals write v3 only"
+    },
+    "safe_formula": {
+      "canonical_schema_version": "TianxiaFoundry.SafeFormula.v1",
+      "schema_file": "schemas/Stage2_Safe_Formula.schema.json",
+      "authority": "schema-validated non-executable AST interpreted by stage2.formulas; eval and arbitrary expressions prohibited"
+    },
+    "training_transaction": {
+      "canonical_schema_version": "TianxiaFoundry.Stage2TrainingTransaction.v1",
+      "schema_file": "schemas/Stage2_Training_Transaction.schema.json",
+      "storage": "stage2_training_transactions.transaction_json",
+      "authority": "deterministic application output from published training rules plus bounded die/check inputs"
+    },
+    "leveling_ledger": {
+      "canonical_schema_version": "TianxiaFoundry.LevelingLedger.v2",
+      "schema_file": "schemas/Leveling_Ledger_v2.schema.json",
+      "authority": "deterministic CL1-current-level projection from complete AdvancementEvent.v3 replay"
+    },
+    "project_scoped_forged_technique": {
+      "canonical_schema_version": "TianxiaFoundry.ProjectForgedTechnique.v1",
+      "schema_file": "schemas/Project_Scoped_Forged_Technique.schema.json",
+      "status": "schema reserved; compiler intentionally deferred and forging fails closed in HF1"
+    }
+  }
+}

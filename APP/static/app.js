@@ -3285,6 +3285,7 @@ function renderCombatBackgroundSetup() {
   const selected = combatVisualAssets?.maps?.find(row => row.asset_id === combatVisualAssets.default_map_asset_id) || combatVisualAssets?.maps?.[0];
   const image = document.getElementById("combatBackgroundPreview");
   if (selected?.public_url) image.src = selected.public_url;
+  else image.removeAttribute("src");
   image.dataset.assetId = selected?.asset_id || "";
   const custom = selected?.source === "owner_upload";
   document.getElementById("combatBackgroundReset").disabled = !custom;
@@ -3293,14 +3294,18 @@ function renderCombatBackgroundSetup() {
     mode.value = selected.calibration.fit_mode || "COVER_DECORATIVE";
   }
   const fit = selected?.calibration?.fit_mode;
-  const alignment = fit === "EXACT_PLAYABLE_RECT"
+  const alignment = !selected
+    ? "The typed battlefield grid remains authoritative."
+    : fit === "EXACT_PLAYABLE_RECT"
     ? "Exact gridless-map alignment is declared for new matches."
     : fit === "CONTAIN_DECORATIVE"
       ? "The image is decorative and may show margins."
       : "The image is decorative and may be cropped.";
   document.getElementById("combatBackgroundStatus").textContent = custom
     ? `Using uploaded background: ${selected.original_filename || "custom image"}. ${alignment} It will be copied into each new match.`
-    : `Using the built-in arena. ${alignment} The application grid and typed mechanics remain authoritative.`;
+    : selected
+      ? `Using the built-in arena. ${alignment} The application grid and typed mechanics remain authoritative.`
+      : `No built-in artwork is published. Using the accessible CSS grid and generated fallback tokens. ${alignment}`;
 }
 
 function combatFileBase64(file) {

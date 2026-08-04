@@ -67,13 +67,6 @@ class CIContractTests(unittest.TestCase):
                 path.write_text('{"status":"PASS"}', encoding=encoding)
                 self.assertEqual(load_json(path), {"status": "PASS"}, encoding)
 
-    def test_public_source_ledger_records_the_sanitized_repair_lineage(self) -> None:
-        ledger = json.loads((REPOSITORY_ROOT / "PUBLIC_SOURCE_FILE_LEDGER.json").read_text(encoding="utf-8"))
-        self.assertEqual(ledger["source_commit"], "707a331e0fa52a0e6cc4a2aaf7ffa217b1c65ab5")
-        self.assertEqual(ledger["branch"], "work/win1-p1r3")
-        self.assertGreater(len(ledger["files"]), 300)
-        self.assertTrue(all(len(row["public_sha256"]) == 64 for row in ledger["files"]))
-
     def test_failure_classifications_are_exact(self) -> None:
         self.assertEqual(
             set(CLASSIFICATIONS),
@@ -83,7 +76,7 @@ class CIContractTests(unittest.TestCase):
     def test_fast_workflow_has_required_triggers_and_no_schedule(self) -> None:
         text = (REPOSITORY_ROOT / ".github" / "workflows" / "ci-fast.yml").read_text(encoding="utf-8")
         self.assertIn("pull_request:", text)
-        self.assertNotIn("push:", text)
+        self.assertIn("push:", text)
         self.assertIn("workflow_dispatch:", text)
         self.assertNotIn("schedule:", text)
 

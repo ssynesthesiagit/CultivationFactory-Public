@@ -62,11 +62,6 @@ def main() -> None:
         "static/index.html",
         "static/app.js",
         "static/combat_visuals/manifest.json",
-        "static/combat_visuals/heavenly_arena_r1.png",
-        "static/combat_visuals/an_eui_r1.png",
-        "static/combat_visuals/lee_jia_r1.png",
-        "static/combat_visuals/ling_qi_r1.png",
-        "static/combat_visuals/bai_meizhen_r1.png",
         "combat/history_feed.py",
         "combat_gate1/generated/Battlefield.json",
         "combat_gate1/generated/Encounter.json",
@@ -156,11 +151,6 @@ def main() -> None:
             portable / SPHERE_TALENT_UI_RUNTIME,
             portable / GM_SCREEN_RUNTIME,
             portable / "Runtime" / "static" / "combat_visuals" / "manifest.json",
-            portable / "Runtime" / "static" / "combat_visuals" / "heavenly_arena_r1.png",
-            portable / "Runtime" / "static" / "combat_visuals" / "an_eui_r1.png",
-            portable / "Runtime" / "static" / "combat_visuals" / "lee_jia_r1.png",
-            portable / "Runtime" / "static" / "combat_visuals" / "ling_qi_r1.png",
-            portable / "Runtime" / "static" / "combat_visuals" / "bai_meizhen_r1.png",
             portable / "Runtime" / "combat_gate1" / "generated" / "Battlefield.json",
             portable / "Runtime" / "combat_gate1" / "generated" / "Encounter.json",
             portable / "Runtime" / "combat_gate2" / "generated" / "Gate2_Executable_Mechanics_Lock.json",
@@ -170,6 +160,19 @@ def main() -> None:
         missing = [str(x) for x in required if not x.exists()]
         if missing:
             fail("portable tree is incomplete: " + ", ".join(missing))
+
+        excluded_visuals = [
+            portable / "Runtime" / "static" / "combat_visuals" / name
+            for name in (
+                "heavenly_arena_r1.png",
+                "an_eui_r1.png",
+                "lee_jia_r1.png",
+                "ling_qi_r1.png",
+                "bai_meizhen_r1.png",
+            )
+        ]
+        if any(path.exists() for path in excluded_visuals):
+            fail("provenance-uncertain combat artwork was included in the portable tree")
 
         packaged_catalog = portable / CATALOG_AUTHORITY_RUNTIME
         source_catalog = root / CATALOG_AUTHORITY_SOURCE

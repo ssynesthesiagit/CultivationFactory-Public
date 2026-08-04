@@ -1,10 +1,16 @@
-# Content license
+# Content ownership and license
 
-Project-original Tianxia rules, setting text, catalogues, and game data that are
-explicitly marked `RESOLVED_INCLUDED_CONTENT` in `SOURCE_RIGHTS_LEDGER.json` are
-licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
-International (CC BY-NC-SA 4.0):
-https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en
+The software source is available under the MIT License in `LICENSE`.
 
-No such content is included in this blocked candidate snapshot. This notice does
-not grant rights in excluded, uncertain, or third-party material.
+Project-original and owner-directed AI-original Tianxia rules, setting text,
+catalogues, examples, and game data in this candidate remain copyright-
+controlled by the owner, ssynesthesiagit. They are not granted under the MIT
+License and are not granted under CC BY-NC-SA 4.0 by this file. No permission is
+given to copy, adapt, redistribute, train on, or commercially exploit those
+materials except as separately authorized in writing by the owner or by an
+explicit file-level license.
+
+Third-party material, directly copied passages, commercial rules text,
+uncertain source archives, personal data, and provenance-uncertain artwork are
+excluded. The provenance notice describes those exclusions; their presence in
+historical source does not grant any rights.

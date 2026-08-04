@@ -1,0 +1,40 @@
+{
+  "does_not_require": [
+    "training_sources",
+    "composite_playbooks",
+    "dao_i_ching_tactical_profile",
+    "ai_behavior_profile",
+    "executable_action_definitions",
+    "typed_burn",
+    "typed_fire_terrain",
+    "combat_procedures",
+    "gm_screen_candidate_artifacts"
+  ],
+  "failure_policy": "FAIL_CLOSED_WITHOUT_READY_PROMOTION",
+  "legacy_policy": "Historical complete v1 ledgers retain their validated GM export compatibility; advancement eligibility alone is never a GM export gate.",
+  "profile_id": "tianxia.character_sheet.ready.c2b1",
+  "requires": [
+    "complete_identity_and_core_statistics",
+    "complete_background_origin",
+    "complete_path_subpath",
+    "complete_sphere_talent_presentation",
+    "complete_cl1_cl5_advancement_history",
+    "correct_explicit_none_presentation",
+    "section_level_provenance",
+    "capability_visibility",
+    "no_forbidden_placeholders",
+    "no_object_stringification",
+    "no_array_truncation",
+    "no_false_gm_or_combat_readiness"
+  ],
+  "schema_version": "TianxiaFoundry.CharacterSheetReadinessProfile.v1",
+  "seal_sha256": "6a70fdd37b3ea504dd38f906e233c911fadb687aa74b09fdd7704e2fed848bc2",
+  "stage": "CHARACTER_SHEET_READY",
+  "stage_semantics": {
+    "advancement": "ADVANCEMENT_READY",
+    "character_sheet": "CHARACTER_SHEET_READY",
+    "combat": "NOT_ATTEMPTED",
+    "gm_screen": "NOT_ATTEMPTED"
+  },
+  "version": "1.0.0"
+}
