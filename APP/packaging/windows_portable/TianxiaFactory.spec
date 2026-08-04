@@ -15,6 +15,7 @@ datas = [
     (str(ROOT / "combat" / "pre_encounter.py"), "combat"),
     (str(ROOT / "combat" / "character_runtime_adapter.py"), "combat"),
     (str(ROOT / "catalog_authority" / "cat3" / "generated"), "catalog_authority/cat3/generated"),
+    (str(ROOT / "catalog_authority" / "cat1" / "data"), "catalog_authority/cat1/data"),
     (str(ROOT / "non_sphere_authority" / "authority"), "non_sphere_authority/authority"),
     (str(ROOT / "projector" / "contracts"), "projector/contracts"),
     (str(ROOT / "authority"), "authority"),
