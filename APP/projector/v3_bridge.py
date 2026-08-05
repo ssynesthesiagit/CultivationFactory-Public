@@ -274,6 +274,153 @@ def _validate_binding(event: dict[str, Any], record: dict[str, Any], project: di
         raise FoundryError("PROJECTION_UNLOCKED_CONTENT", "A v3 event references content outside the project lock.", details={"event_id": event.get("event_id")})
 
 
+def _validate_non_sphere_method_access_event(
+    event: dict[str, Any],
+    record: dict[str, Any],
+    project: dict[str, Any],
+) -> None:
+    """Validate a server method-access event without projecting mechanics.
+
+    Non-Sphere authority events deliberately bind a complete immutable target
+    set rather than one catalog record.  They remain part of the canonical
+    event chain and packet audit, but cannot supply Stage 2 ledger mechanics.
+    """
+    details = (event.get("advancement") or {}).get("details") or {}
+    subject = event.get("subject") or {}
+    calculation = (event.get("advancement") or {}).get("calculation") or {}
+    bindings = (event.get("advancement") or {}).get("authority_bindings") or []
+    target_bindings = [row for row in bindings if row.get("role") != "project_lock_proof"]
+    proof_bindings = [row for row in bindings if row.get("role") == "project_lock_proof"]
+    invalid = (
+        event.get("legal_channel") != "authenticated_project_authority_service"
+        or subject.get("content_type") != "non_sphere_authority"
+        or subject.get("record_id") != details.get("method_id")
+        or details.get("authority_type") != "method_access"
+        or details.get("creation_authority") != "AUTHENTICATED_PROJECT_AUTHORITY_SERVICE"
+        or details.get("amount_awarded") is not None
+        or record.get("record_id") != details.get("method_id")
+        or record.get("content_type") != "cultivation_method"
+        or record.get("publication", {}).get("status") != "published"
+        or len(target_bindings) != 1
+        or len(proof_bindings) != 1
+        or calculation.get("rule_id") != "non_sphere_authority_commit"
+        or (calculation.get("trace") or {}).get("authenticated") is not True
+    )
+    if invalid:
+        raise FoundryError(
+            "PROJECTION_NON_SPHERE_AUTHORITY_INVALID",
+            "A non-Sphere Method access event failed its server-authority boundary.",
+            details={"event_id": event.get("event_id"), "kind": event.get("advancement", {}).get("kind")},
+        )
+
+    record_binding = record.get("content_binding") or {}
+    target = target_bindings[0]
+    target_matches_record = all(
+        target.get(key) == expected
+        for key, expected in {
+            "role": "method",
+            "record_id": record.get("record_id"),
+            "record_hash": record.get("record_hash"),
+            "relationship_id": f"method:{record.get('record_id')}",
+            "pack_id": record_binding.get("pack_id"),
+            "pack_version": record_binding.get("pack_version"),
+            "pack_hash": record_binding.get("pack_hash"),
+            "source_id": record.get("record_id"),
+            "source_hash": record.get("record_hash"),
+        }.items()
+    )
+    proof = proof_bindings[0]
+    proof_matches_shape = all(
+        proof.get(key) == expected
+        for key, expected in {
+            "relationship_id": "project_lock_proof",
+            "relationship_hash": proof.get("record_hash"),
+            "record_id": "project_lock_proof",
+            "record_hash": proof.get("record_hash"),
+            "pack_id": "project.lock",
+            "pack_version": "HF2",
+            "pack_hash": proof.get("record_hash"),
+            "source_id": "project_lock_proof",
+            "source_hash": proof.get("record_hash"),
+        }.items()
+    )
+    binding = event.get("content_binding") or {}
+    canonical_targets = [{
+        key: target[key]
+        for key in (
+            "role", "record_id", "record_hash", "relationship_id", "relationship_hash",
+            "pack_id", "pack_version", "pack_hash",
+        )
+    }]
+    expected_target_hash = sha256_json({
+        "schema": "Tianxia.CompleteLockedTargetBinding.v1",
+        "targets": canonical_targets,
+    })
+    target_details = {
+        key: value
+        for key, value in details.items()
+        if key not in {"authority_type", "amount_awarded", "creation_authority", "operation_hash"}
+    }
+    expected_operation_hash = sha256_json({
+        "project_id": project["project_id"],
+        "kind": "non_sphere_method_access",
+        "details": target_details,
+        "amount_awarded": None,
+        "idempotency_key": event.get("idempotency_key"),
+    })
+    binding_valid = (
+        binding.get("pack_id") == "project.locked.target-set"
+        and binding.get("pack_version") == "1"
+        and binding.get("pack_hash") == proof.get("record_hash")
+        and binding.get("record_hash") == expected_target_hash
+        and binding.get("catalog_build_id") == (
+            project.get("catalog_build_hash")
+            or (project.get("content_lock") or {}).get("catalog_build_id")
+            or "catalog.unbuilt"
+        )
+    )
+    if (
+        not target_matches_record
+        or not proof_matches_shape
+        or not binding_valid
+        or details.get("operation_hash") != expected_operation_hash
+    ):
+        raise FoundryError(
+            "PROJECTION_NON_SPHERE_AUTHORITY_INVALID",
+            "A non-Sphere Method access event has an invalid immutable target or operation binding.",
+            details={"event_id": event.get("event_id"), "method_id": details.get("method_id")},
+        )
+
+
+def _non_sphere_event_provenance(
+    event: dict[str, Any],
+    record: dict[str, Any],
+    contract: dict[str, Any],
+    destination: str,
+) -> dict[str, Any]:
+    return {
+        "provenance_unit": "canonical_non_sphere_authority_event",
+        "event_id": event["event_id"],
+        "event_hash": event["event_hash"],
+        "event_sequence": event["sequence"],
+        "record_id": record["record_id"],
+        "record_hash": record["record_hash"],
+        "pack_id": event["content_binding"]["pack_id"],
+        "pack_version": event["content_binding"]["pack_version"],
+        "pack_hash": event["content_binding"]["pack_hash"],
+        "canonical_sources": deepcopy(event.get("source_evidence") or []),
+        "stage2_rule_id": None,
+        "projection_contract_id": contract["contract_id"],
+        "projection_contract_hash": sha256_json({k: v for k, v in contract.items() if k != "seal_sha256"}),
+        "stage2_normalization_authority": deepcopy(contract["stage2_authority_pack"]),
+        "exact_source_map": deepcopy(contract["exact_source_map"]),
+        "destination_pointers": [destination],
+        "transformation_kind": "NON_SPHERE_AUTHORITY_AUDIT_ONLY",
+        "authority_complete": True,
+        "mechanical_projection": False,
+    }
+
+
 def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events: list[dict[str, Any]], locked_records: dict[str, dict[str, Any]], choice_snapshot: dict[str, Any] | None, state_type: Any) -> Any:
     contract_path = root_dir / "projector" / "contracts" / "C2AR1_Stage2_v3_Projection_Contract.json"
     profile_path = root_dir / "projector" / "contracts" / "C2AR1_Stage_Aware_Validation_Profile.json"
@@ -305,6 +452,7 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         raise FoundryError("PROJECTION_LANGUAGE_BINDING_IDENTITY_MISMATCH", "The campaign language binding does not match the fixture-selection contract.")
 
     supported_kinds = set(contract["supported_event_kinds"])
+    non_projecting_kinds = set(contract.get("non_projecting_event_kinds") or [])
     supported_records = set(contract["supported_record_ids"])
     previous = ZERO_HASH
     by_kind: dict[str, list[dict[str, Any]]] = {}
@@ -318,7 +466,7 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         if canonical_event_hash(event) != event["event_hash"]:
             raise FoundryError("PROJECTION_EVENT_HASH_MISMATCH", "A v3 event does not match its canonical event hash.", details={"sequence": expected})
         kind = event["advancement"]["kind"]
-        if kind not in supported_kinds:
+        if kind not in supported_kinds and kind not in non_projecting_kinds:
             raise FoundryError("PROJECTION_V3_KIND_UNSUPPORTED", "The v3 projection contract does not support this advancement kind.", details={"kind": kind, "event_id": event["event_id"]})
         record_id = event["subject"]["record_id"]
         record = locked_records.get(record_id)
@@ -327,13 +475,18 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         rr = registry.report(record, "TianxiaFoundry.RulesCatalogRecord.v1")
         if not rr["valid"]:
             raise FoundryError("PROJECTION_RECORD_SCHEMA_INVALID", "A v3 locked record failed canonical validation.", details={"record_id": record_id, "diagnostics": rr["diagnostics"]})
-        stage2 = (record.get("compatibility") or {}).get("factory", {}).get("stage2_authority") or {}
-        if record_id not in supported_records and stage2.get("authority_complete") is not True:
-            raise FoundryError("PROJECTION_V3_RECORD_AUTHORITY_MISSING", "The selected record is neither sealed by the legacy projection contract nor complete in the project's locked typed catalog authority.", details={"record_id": record_id, "event_id": event["event_id"]})
-        if stage2.get("authority_complete") is not True or kind not in (stage2.get("allowed_kinds") or []):
-            raise FoundryError("PROJECTION_V3_RECORD_AUTHORITY_MISSING", "The selected record lacks complete Stage 2 authority for this event kind.", details={"record_id": record_id, "kind": kind})
-        _validate_binding(event, record, project)
-        by_kind.setdefault(kind, []).append(event)
+        if kind in non_projecting_kinds:
+            if kind != "non_sphere_method_access":
+                raise FoundryError("PROJECTION_V3_KIND_UNSUPPORTED", "The v3 projection contract declares an unsupported non-projecting event kind.", details={"kind": kind, "event_id": event["event_id"]})
+            _validate_non_sphere_method_access_event(event, record, project)
+        else:
+            stage2 = (record.get("compatibility") or {}).get("factory", {}).get("stage2_authority") or {}
+            if record_id not in supported_records and stage2.get("authority_complete") is not True:
+                raise FoundryError("PROJECTION_V3_RECORD_AUTHORITY_MISSING", "The selected record is neither sealed by the legacy projection contract nor complete in the project's locked typed catalog authority.", details={"record_id": record_id, "event_id": event["event_id"]})
+            if stage2.get("authority_complete") is not True or kind not in (stage2.get("allowed_kinds") or []):
+                raise FoundryError("PROJECTION_V3_RECORD_AUTHORITY_MISSING", "The selected record lacks complete Stage 2 authority for this event kind.", details={"record_id": record_id, "kind": kind})
+            _validate_binding(event, record, project)
+            by_kind.setdefault(kind, []).append(event)
         event_records[event["event_id"]] = record
         previous = event["event_hash"]
 
@@ -437,7 +590,8 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
             "source_evidence": deepcopy(event.get("source_evidence") or []),
             "content_binding": deepcopy(event["content_binding"]),
         })
-        capability.append(_capability_entry(record, event["advancement"]["target_cl"], event))
+        if event["advancement"]["kind"] not in non_projecting_kinds:
+            capability.append(_capability_entry(record, event["advancement"]["target_cl"], event))
     # Include source-granted Subpath features without inventing independent events.
     granted_ids = subpath["advancement"]["calculation"]["outputs"].get("granted_feature_record_ids") or []
     for granted_id in granted_ids:
@@ -589,12 +743,16 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         "gm_screen": {"status": "NOT_ATTEMPTED", "pending": profile["later_stage_nodes"]["gm_screen"]},
         "combat": {"status": "NOT_ATTEMPTED", "pending": profile["later_stage_nodes"]["combat"]},
     }
+    display_packets = [
+        packet for packet in packets_list
+        if packet["advancement_kind"] not in non_projecting_kinds
+    ]
     dynamic_display_contract = (
         _dynamic_display_contract(
             project,
             choice_snapshot,
             locked_records,
-            packets_list,
+            display_packets,
             granted_ids,
             packet_by_event[subpath["event_id"]],
         )
@@ -732,7 +890,11 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
     state.rules_selection_packets = packets
     state.operations_applied = len(events)
     state.event_ids = [event["event_id"] for event in events]
-    state.selected_record_ids = sorted({event["subject"]["record_id"] for event in events} | set(granted_ids))
+    state.selected_record_ids = sorted({
+        event["subject"]["record_id"]
+        for event in events
+        if event["advancement"]["kind"] not in non_projecting_kinds
+    } | set(granted_ids))
     state.event_schema_version = V3
     state.readiness = readiness
     state.capability_coverage = sorted(capability, key=lambda x: x["record_id"])
@@ -760,6 +922,10 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
     for event in events:
         record = event_records[event["event_id"]]
         kind = event["advancement"]["kind"]
+        if kind in non_projecting_kinds:
+            destination = f"/rules_selection_packets/packets/{event['sequence'] - 1}"
+            semantic[f"event:{event['sequence']:03d}:{event['event_id']}"] = _non_sphere_event_provenance(event, record, contract, destination)
+            continue
         destinations = [f"/ledger/advancement/events/{event['sequence']}", f"/rules_selection_packets/packets/{event['sequence'] - 1}"]
         if kind == "starting_state": destinations += ["/ledger/core_stats/ability_generation"]
         elif kind == "background_acquisition": destinations += ["/ledger/background_origin/background", "/ledger/core_stats/ability_scores", "/ledger/core_stats/ability_modifiers"]

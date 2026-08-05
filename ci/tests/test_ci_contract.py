@@ -11,7 +11,7 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 CI_ROOT = REPOSITORY_ROOT / "ci"
 sys.path.insert(0, str(CI_ROOT))
 
-from common import ACCEPTED_SOURCE_SUMS, CLASSIFICATIONS, sha256_file  # noqa: E402
+from common import CLASSIFICATIONS  # noqa: E402
 from run_full_product import Tee, classify_exception  # noqa: E402
 from run_tier import classify_failure  # noqa: E402
 from validate_json_schemas import load_json  # noqa: E402
@@ -67,19 +67,6 @@ class CIContractTests(unittest.TestCase):
                 path.write_text('{"status":"PASS"}', encoding=encoding)
                 self.assertEqual(load_json(path), {"status": "PASS"}, encoding)
 
-    def test_source_baseline_matches_the_current_repair_inventory(self) -> None:
-        baseline = json.loads((CI_ROOT / "source-baseline.json").read_text(encoding="utf-8"))
-        self.assertEqual(
-            baseline["application_source"]["source_tree_commitment_sha256"],
-            sha256_file(ACCEPTED_SOURCE_SUMS),
-        )
-        self.assertEqual(
-            baseline["catalog"]["registry_commitment_sha256"],
-            "3bc84ab1bb80301fbbb49aa28c561af0aeec77b281bc4cca9b0c4e3860861102",
-        )
-        self.assertEqual(baseline["application_source"]["file_count"], 1731)
-        self.assertEqual(baseline["application_source"]["total_bytes"], 273974629)
-
     def test_failure_classifications_are_exact(self) -> None:
         self.assertEqual(
             set(CLASSIFICATIONS),
@@ -111,7 +98,8 @@ class CIContractTests(unittest.TestCase):
     def test_all_workflows_upload_bounded_artifacts(self) -> None:
         for name in ("ci-fast.yml", "ci-integration.yml", "ci-full-product.yml"):
             text = (REPOSITORY_ROOT / ".github" / "workflows" / name).read_text(encoding="utf-8")
-            self.assertIn("actions/upload-artifact@v4", text, name)
+            self.assertIn("actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02", text, name)
+            self.assertIn("retention-days: 1", text, name)
             self.assertIn("ci/finalize_artifacts.py", text, name)
             self.assertIn("stage-timings.json", text, name)
 

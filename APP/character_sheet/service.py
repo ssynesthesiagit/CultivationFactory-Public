@@ -232,7 +232,9 @@ class CharacterSheetService:
         required = {
             str(packet.get("record_id"))
             for packet in packets.get("packets") or []
-            if isinstance(packet, dict) and packet.get("record_id")
+            if isinstance(packet, dict)
+            and packet.get("record_id")
+            and packet.get("advancement_kind") != "non_sphere_method_access"
         }
         for feature in ledger.get("features") or []:
             if isinstance(feature, dict) and feature.get("feature_id"):

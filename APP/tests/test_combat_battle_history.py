@@ -42,27 +42,20 @@ def _exact_intent(session, step_index: int) -> ActionIntent:
     )
 
 
-def test_visual_manifest_packages_supplied_map_and_stable_id_tokens() -> None:
+def test_visual_manifest_declares_public_safe_fallback_without_uncertain_artwork() -> None:
     root = ROOT / "static/combat_visuals"
     manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["schema"] == "TianxiaFactoryBattleVisualAssets.v1"
-    assert manifest["default_map_asset_id"] == "battlemap:heavenly_arena:r1"
-    assert manifest["maps"][0]["calibration"]["fit_mode"] == "COVER_DECORATIVE"
-    assert manifest["maps"][0]["calibration"]["schema"] == "TianxiaBattleMapCalibration.v2"
-    expected_ids = {
-        "an_eui_early_book1_cl5",
-        "lee_jia_early_book1_cl5",
-        "ling_qi_early_outer_sect_cl5",
-        "bai_meizhen_early_outer_sect_cl5",
+    assert manifest["default_map_asset_id"] is None
+    assert manifest["maps"] == []
+    assert manifest["tokens"] == []
+    assert manifest["artwork_policy"]["status"] == "EXCLUDED_PENDING_POSITIVE_PROVENANCE"
+    assert set(manifest["artwork_policy"]["excluded_legacy_paths"]) == {
+        "heavenly_arena_r1.png", "an_eui_r1.png", "lee_jia_r1.png", "ling_qi_r1.png", "bai_meizhen_r1.png"
     }
-    bound_ids = {actor_id for row in manifest["tokens"] for actor_id in row["stable_actor_ids"]}
-    assert bound_ids == expected_ids
     assert manifest["fallback"]["kind"] == "INITIALS"
     assert "Cui" in manifest["fallback"]["note"]
-    for row in [*manifest["maps"], *manifest["tokens"]]:
-        path = root / row["file"]
-        assert path.is_file()
-        assert hashlib.sha256(path.read_bytes()).hexdigest() == row["sha256"]
+    assert not list(root.glob("*.png"))
     script = (ROOT / "static/app.js").read_text(encoding="utf-8")
     assert "stable_actor_ids || []).includes(actorId)" in script
     assert "fallback:initials" in script

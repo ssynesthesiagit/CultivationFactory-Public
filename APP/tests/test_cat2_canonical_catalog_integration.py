@@ -52,8 +52,8 @@ def test_cat2_exact_authority_counts_and_descriptions():
     assert status["canonical_membership_count"] == status["canonical_talent_count"]
     assert status["background_only_route_count"] == 77
     assert status["quarantined_count"] == 7
-    assert status["automatic_base_ability_source_row_count"] == 126
-    assert status["automatic_base_ability_unique_count"] == 125
+    assert status["automatic_base_ability_source_row_count"] == 132
+    assert status["automatic_base_ability_unique_count"] == 131
     talents = service.list_talents()["records"]
     assert len(talents) == status["canonical_talent_count"]
     talent_names = {row["display_name"] for row in talents}

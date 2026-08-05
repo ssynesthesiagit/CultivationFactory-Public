@@ -1,0 +1,1163 @@
+{
+  "schema_version": "HF05ZVK-R1F.PathIndex.P2A.v1",
+  "index_release": "Phase 2A — Machine-Readable Path Indexes",
+  "canonical_id": "tianxia.path.qi_cultivation",
+  "display_name": "Qi Cultivation",
+  "publication_revision": "R19",
+  "publication_status": "current_canonical_player_path",
+  "source": {
+    "factory_path": "09_RULES/Source_Text/Paths/Qi/Tianxia_Qi_Cultivation_Player_Path_Chapter_R19.md",
+    "corpus_path": "Canonical/Paths/Qi/Tianxia_Qi_Cultivation_Player_Path_Chapter_R19.md",
+    "sha256": "81a025df185c416a4d4774b781a2b6f2970af06903f44e4fccbe6818d23a7799",
+    "bytes": 140945,
+    "line_count": 3328
+  },
+  "path_profile": {
+    "key_ability": {
+      "options": [
+        "Intelligence",
+        "Charisma"
+      ],
+      "selection_timing": "choose at CL1",
+      "modifier_label": "chosen Qi Cultivation key ability modifier"
+    },
+    "hit_die": "d8",
+    "cultivation_points": "Qi",
+    "primary_roles": "Martial combatant, hybrid weapon-and-technique cultivator, ranged combatant, controller, healer, artisan, scholar, and supernatural specialist",
+    "saving_throw_proficiencies": "None",
+    "armor_training": "Light armor",
+    "weapon_training": "Simple weapons",
+    "skills": "Choose two: Arcana, History, Insight, Investigation, Medicine, Nature, Perception, Persuasion, Religion"
+  },
+  "cultivation_math": {
+    "save_dc": "8 + Proficiency Bonus + chosen Qi Cultivation key ability modifier",
+    "attack_modifier": "Proficiency Bonus + chosen Qi Cultivation key ability modifier",
+    "cultivation_check": "d20 + Proficiency Bonus + chosen Qi Cultivation key ability modifier",
+    "source_section": {
+      "source_heading": "Cultivation Math",
+      "source_line_start": 70,
+      "source_line_end": 80,
+      "source_markdown": "### Cultivation Math\n\n**Cultivation Save DC**  \n`8 + Proficiency Bonus + Qi Cultivation key ability modifier`\n\n**Cultivation Attack Modifier**  \n`Proficiency Bonus + Qi Cultivation key ability modifier`\n\n**Cultivation Check**  \n`d20 + Proficiency Bonus + Qi Cultivation key ability modifier`\n",
+      "summary": "Cultivation Save DC 8 + Proficiency Bonus + Qi Cultivation key ability modifier"
+    }
+  },
+  "resource_rules": {
+    "canonical_id": "tianxia.resource.qi",
+    "name": "Qi",
+    "maximum_formula": "Qi Cultivation CL × chosen key ability modifier",
+    "minimum_formula": "2 × Qi Cultivation CL",
+    "short_rest": {
+      "amount": "Qi equal to Qi Cultivation CL",
+      "limit": "once per long rest"
+    },
+    "long_rest": {
+      "amount": "half maximum Qi, rounded down",
+      "limit": "none beyond completing the rest"
+    },
+    "full_cultivation_session": {
+      "amount": "all missing Qi",
+      "duration": "2 uninterrupted hours",
+      "limit": "once per long rest"
+    },
+    "zero_consequence": "When current Qi is reduced from above 0 to exactly 0, gain 1 level of Exhaustion.",
+    "source_section": {
+      "source_heading": "Qi",
+      "source_line_start": 95,
+      "source_line_end": 124,
+      "source_markdown": "## Qi\n\nQi represents refined spiritual energy stored within meridians, dantian, breath, blood, Golden Core, Nascent Soul, elemental affinities, prepared techniques, items, weapons, armor, and internal formations.\n\n### Maximum Qi\n\n`Qi Cultivation CL × Qi Cultivation key ability modifier`\n\nYour maximum Qi cannot be lower than:\n\n`2 × Qi Cultivation CL`\n\n### Recovering Qi\n\n| Recovery Method | Qi Recovered | Limit |\n|---|---:|---|\n| **Short Rest** | Qi equal to your CL | Once per long rest |\n| **Long Rest** | Half your maximum Qi | No additional limit |\n| **Full Cultivation Session** | All missing Qi | Once per long rest |\n\nA Full Cultivation Session requires 2 uninterrupted hours, a reasonably calm environment, and sufficient ambient spiritual energy or an appropriate substitute. It may occur during an eligible meditative long rest.\n\n### Reaching 0 Qi\n\nWhen you are reduced from more than 0 Qi to exactly 0 Qi, gain 1 level of Exhaustion.\n\nRepeatedly reaching 0 Qi can add further Exhaustion under the universal Cultivation Point rules.\n\n---\n",
+      "summary": "Qi represents refined spiritual energy stored within meridians, dantian, breath, blood, Golden Core, Nascent Soul, elemental affinities, prepared techniques, items, weapons, armor, and internal formations."
+    }
+  },
+  "source_cl_rules": {
+    "normal_effective_cl": "Qi Cultivation CL",
+    "default_source_cl": "effective Qi Cultivation CL",
+    "key_rule": "Source CL determines authority and interaction; it does not replace printed attacks, saves, Anchors, costs, or recovery.",
+    "source_section": {
+      "source_heading": "Effective CL and Source CL",
+      "source_line_start": 89,
+      "source_line_end": 94,
+      "source_markdown": "### Effective CL and Source CL\n\nYour normal effective CL is your Qi Cultivation CL. Realm Suppression or another explicit rule can lower the effective CL used by a feature. Source CL determines authority and interaction; it does not replace attack rolls, saving throws, Anchors, costs, or recovery procedures printed by the Source Rule.\n\n---\n",
+      "summary": "Your normal effective CL is your Qi Cultivation CL. Realm Suppression or another explicit rule can lower the effective CL used by a feature. Source CL determines authority and interaction; it does not replace attack rolls, saving throws, Anchors, costs, or recovery procedures printed by the Source Rule."
+    }
+  },
+  "realm_suppression": {
+    "heading": "Realm Suppression — Qi Summary",
+    "suppresses": [
+      "features gained above suppressed CL",
+      "higher-CL scaling",
+      "higher-CL Subpath and Insight access",
+      "Domain Armament and Golden Core expressions unavailable at suppressed CL"
+    ],
+    "preserves": [
+      "Hit Points",
+      "Hit Dice",
+      "maximum Qi",
+      "passive Foundation quality",
+      "existing created consequences unless their Source Rule says otherwise"
+    ],
+    "special": [
+      "Realm Suppression cannot refund costs, erase setup requirements, avoid Variant conversion, or lower the authority of an already-created consequence."
+    ],
+    "source_section": {
+      "source_heading": "Realm Suppression — Qi Summary",
+      "source_line_start": 989,
+      "source_line_end": 1012,
+      "source_markdown": "## Realm Suppression — Qi Summary\n\nWhen the universal Realm Suppression rule is active, use the suppressed CL and its Proficiency Bonus for Qi features barred or scaled by the suppressed Realm.\n\nWhile suppressed, you cannot activate or benefit from:\n\n- Qi Path or Subpath features whose minimum CL exceeds the suppressed CL.\n- Higher-Realm Cultivation Insights, Sphere talents, Recorded Arts, Forged Techniques, Immortal Arts, Method powers, Foundation powers, or item powers barred by Realm Suppression.\n- A higher-CL version of a scaling effect when a lower-CL version exists.\n\nRealm Suppression does **not** reduce:\n\n- Hit Points or Hit Dice.\n- Maximum Qi.\n- Path-chassis durability already embodied by the cultivator.\n- A Foundation's passive physical quality unless the Foundation says otherwise.\n- Existing injury, Corruption, debt, contract, karma, severance, or other consequences.\n\nAn active effect you can no longer legally maintain ends unless it has become an independent Asset, Anchor, injury, contract, or other persistent source under its printed rule. Effects that remain use the suppressed Source CL unless an independent source has its own fixed Source CL.\n\nRealm Suppression cannot be used to refund costs, erase setup requirements, avoid a Variant conversion, or make a created consequence count as lower authority after the fact.\n\n---\n",
+      "summary": "When the universal Realm Suppression rule is active, use the suppressed CL and its Proficiency Bonus for Qi features barred or scaled by the suppressed Realm."
+    }
+  },
+  "realm_integration": [
+    {
+      "realm": "Mortal, CL1–4",
+      "expression": "Qi perception, technique potency, defensive circulation, meridian regulation"
+    },
+    {
+      "realm": "Foundation, CL5–9",
+      "expression": "Ranged Qi defense, safe descent, external Domain Armament"
+    },
+    {
+      "realm": "Core Formation, CL10–14",
+      "expression": "Golden Core Form, cost efficiency, advanced armament projection, remote origin"
+    },
+    {
+      "realm": "Nascent Soul, CL15–19",
+      "expression": "Autonomous circulation, reinforced Concentration, perfect perception, perfected Golden Core"
+    },
+    {
+      "realm": "Immortal, CL20",
+      "expression": "Continuous Qi, twin armaments, permanent gaze, multiple perfected Core forms"
+    }
+  ],
+  "progression": [
+    {
+      "cl": 1,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.cultivated_response",
+          "display_name": "Cultivated Response"
+        },
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.qi_sensing",
+          "display_name": "Qi Sensing"
+        },
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.qi_technique_potency",
+          "display_name": "Qi Technique Potency"
+        }
+      ]
+    },
+    {
+      "cl": 2,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.meridian_regulation",
+          "display_name": "Meridian Regulation"
+        }
+      ]
+    },
+    {
+      "cl": 3,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.qi_cultivation_subpath",
+          "display_name": "Qi Cultivation Subpath"
+        }
+      ]
+    },
+    {
+      "cl": 4,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 5,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.qi_armor",
+          "display_name": "Qi Armor"
+        }
+      ]
+    },
+    {
+      "cl": 6,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.subpath_feature",
+          "display_name": "Subpath Feature"
+        }
+      ]
+    },
+    {
+      "cl": 7,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.featherfall",
+          "display_name": "Featherfall"
+        }
+      ]
+    },
+    {
+      "cl": 8,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 9,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament",
+          "display_name": "Domain Armament"
+        }
+      ]
+    },
+    {
+      "cl": 10,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.golden_core_form",
+          "display_name": "Golden Core Form"
+        },
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.subpath_feature",
+          "display_name": "Subpath Feature"
+        }
+      ]
+    },
+    {
+      "cl": 11,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.golden_core_efficiency",
+          "display_name": "Golden Core Efficiency"
+        }
+      ]
+    },
+    {
+      "cl": 12,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 13,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament_link",
+          "display_name": "Domain Armament Link"
+        }
+      ]
+    },
+    {
+      "cl": 14,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.subpath_feature",
+          "display_name": "Subpath Feature"
+        }
+      ]
+    },
+    {
+      "cl": 15,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.nascent_soul",
+          "display_name": "Nascent Soul"
+        }
+      ]
+    },
+    {
+      "cl": 16,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 17,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.nine_heavens_gaze",
+          "display_name": "Nine Heavens Gaze"
+        },
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.perfected_golden_core",
+          "display_name": "Perfected Golden Core"
+        },
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament_damage_increase",
+          "display_name": "Domain Armament damage increase"
+        }
+      ]
+    },
+    {
+      "cl": 18,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.subpath_feature",
+          "display_name": "Subpath Feature"
+        }
+      ]
+    },
+    {
+      "cl": 19,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 20,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.immortal_of_qi",
+          "display_name": "Immortal of Qi"
+        },
+        {
+          "canonical_id": "tianxia.path.qi_cultivation.feature.second_golden_core_form",
+          "display_name": "Second Golden Core Form"
+        }
+      ]
+    }
+  ],
+  "features": [
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.cultivated_response",
+      "display_name": "Cultivated Response",
+      "aliases": [],
+      "feature_kind": "defensive_discipline",
+      "minimum_cl": 1,
+      "granted_at_cl": [
+        1
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL1 — Cultivated Response",
+          "source_line_start": 181,
+          "source_line_end": 220,
+          "source_markdown": "## CL1 — Cultivated Response\n\nChoose one Defensive Discipline.\n\n### Reflexive Circulation\n\nYour discipline applies to Dexterity saving throws.\n\n### Calculated Circulation\n\nYour discipline applies to Intelligence saving throws.\n\n### Imperious Circulation\n\nYour discipline applies to Charisma saving throws.\n\n#### Response Procedure\n\n**Reaction**  \n**Trigger:** You fail the selected saving throw.  \n**Cost:** 1 Qi  \n**Limit:** Once per round\n\nAdd your Proficiency Bonus to the saving throw, potentially turning failure into success.\n\nCultivated Response:\n\n- Is not saving throw proficiency.\n- Is activated after you learn that the roll failed.\n- Cannot modify a death saving throw.\n- Cannot modify a breakthrough check.\n- Cannot modify a training check.\n- Cannot modify the same saving throw more than once.\n\nAt CL15, learn a second Defensive Discipline.\n\nAt CL20, learn all three.\n\n---\n",
+          "summary": "Choose one Defensive Discipline."
+        }
+      ],
+      "source_rules_text": "## CL1 — Cultivated Response\n\nChoose one Defensive Discipline.\n\n### Reflexive Circulation\n\nYour discipline applies to Dexterity saving throws.\n\n### Calculated Circulation\n\nYour discipline applies to Intelligence saving throws.\n\n### Imperious Circulation\n\nYour discipline applies to Charisma saving throws.\n\n#### Response Procedure\n\n**Reaction**  \n**Trigger:** You fail the selected saving throw.  \n**Cost:** 1 Qi  \n**Limit:** Once per round\n\nAdd your Proficiency Bonus to the saving throw, potentially turning failure into success.\n\nCultivated Response:\n\n- Is not saving throw proficiency.\n- Is activated after you learn that the roll failed.\n- Cannot modify a death saving throw.\n- Cannot modify a breakthrough check.\n- Cannot modify a training check.\n- Cannot modify the same saving throw more than once.\n\nAt CL15, learn a second Defensive Discipline.\n\nAt CL20, learn all three.\n\n---\n",
+      "effective_rules_text": "## CL1 — Cultivated Response\n\nChoose one Defensive Discipline.\n\n### Reflexive Circulation\n\nYour discipline applies to Dexterity saving throws.\n\n### Calculated Circulation\n\nYour discipline applies to Intelligence saving throws.\n\n### Imperious Circulation\n\nYour discipline applies to Charisma saving throws.\n\n#### Response Procedure\n\n**Reaction**  \n**Trigger:** You fail the selected saving throw.  \n**Cost:** 1 Qi  \n**Limit:** Once per round\n\nAdd your Proficiency Bonus to the saving throw, potentially turning failure into success.\n\nCultivated Response:\n\n- Is not saving throw proficiency.\n- Is activated after you learn that the roll failed.\n- Cannot modify a death saving throw.\n- Cannot modify a breakthrough check.\n- Cannot modify a training check.\n- Cannot modify the same saving throw more than once.\n\nAt CL15, learn a second Defensive Discipline.\n\nAt CL20, learn all three.\n\n---\n",
+      "components": [
+        {
+          "title": "Reflexive Circulation",
+          "slug": "reflexive_circulation",
+          "heading_level": 3,
+          "source_line": 185,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.cultivated_response.component.reflexive_circulation"
+        },
+        {
+          "title": "Calculated Circulation",
+          "slug": "calculated_circulation",
+          "heading_level": 3,
+          "source_line": 189,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.cultivated_response.component.calculated_circulation"
+        },
+        {
+          "title": "Imperious Circulation",
+          "slug": "imperious_circulation",
+          "heading_level": 3,
+          "source_line": 193,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.cultivated_response.component.imperious_circulation"
+        },
+        {
+          "title": "Response Procedure",
+          "slug": "response_procedure",
+          "heading_level": 4,
+          "source_line": 197,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.cultivated_response.component.response_procedure"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.qi_sensing",
+      "display_name": "Qi Sensing",
+      "aliases": [],
+      "feature_kind": "sense_feature",
+      "minimum_cl": 1,
+      "granted_at_cl": [
+        1
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL1 — Qi Sensing",
+          "source_line_start": 221,
+          "source_line_end": 289,
+          "source_markdown": "## CL1 — Qi Sensing\n\nQi Sensing is always active unless suppressed.\n\n### Passive Sensing\n\nWithin 30 feet, perceive the presence of active supernatural energy from:\n\n- Path and Subpath features.\n- Sphere talents.\n- Formations.\n- Talismans.\n- Cultivated items.\n- Active spirits.\n- Concentrated Cultivation Points.\n- Transformations.\n- Active curses.\n- Active seals.\n- Possession.\n- Corruption.\n- Strong residues created during the previous hour.\n\nQi Sensing is blocked by:\n\n- 1 foot of stone.\n- 1 inch of common metal.\n- A thin sheet of lead.\n- 3 feet of wood or packed earth.\n- A sealed Formation or effect explicitly blocking Qi perception.\n\nPassive Qi Sensing does not automatically reveal:\n\n- The exact technique.\n- Exact statistics.\n- A precise occupied space for an Invisible creature.\n- A dormant inheritance.\n- A secret property.\n- A successful concealment effect.\n\n### Analyze Qi\n\n**Action**  \n**Range:** 30 feet\n\nChoose one detected effect, creature, item, or residue.\n\nLearn:\n\n- Its broad category.\n- Its active supernatural tags.\n- Whether its Source CL is lower than, equal to, or higher than yours.\n- Whether it is active, dormant, damaged, unstable, or suppressed.\n\nFor a concealed effect, make a Cultivation Check against its save DC.\n\nIf it has no save DC, use:\n\n`8 + source Proficiency Bonus + source key ability modifier`\n\nOn failure:\n\n- You know concealed power is present.\n- You do not learn its exact nature or location.\n- You cannot retry until the effect changes or a new scene begins.\n\nWhen the check succeeds, the AI GM must provide the listed information and cannot withhold it for dramatic convenience.\n\n---\n",
+          "summary": "Qi Sensing is always active unless suppressed."
+        }
+      ],
+      "source_rules_text": "## CL1 — Qi Sensing\n\nQi Sensing is always active unless suppressed.\n\n### Passive Sensing\n\nWithin 30 feet, perceive the presence of active supernatural energy from:\n\n- Path and Subpath features.\n- Sphere talents.\n- Formations.\n- Talismans.\n- Cultivated items.\n- Active spirits.\n- Concentrated Cultivation Points.\n- Transformations.\n- Active curses.\n- Active seals.\n- Possession.\n- Corruption.\n- Strong residues created during the previous hour.\n\nQi Sensing is blocked by:\n\n- 1 foot of stone.\n- 1 inch of common metal.\n- A thin sheet of lead.\n- 3 feet of wood or packed earth.\n- A sealed Formation or effect explicitly blocking Qi perception.\n\nPassive Qi Sensing does not automatically reveal:\n\n- The exact technique.\n- Exact statistics.\n- A precise occupied space for an Invisible creature.\n- A dormant inheritance.\n- A secret property.\n- A successful concealment effect.\n\n### Analyze Qi\n\n**Action**  \n**Range:** 30 feet\n\nChoose one detected effect, creature, item, or residue.\n\nLearn:\n\n- Its broad category.\n- Its active supernatural tags.\n- Whether its Source CL is lower than, equal to, or higher than yours.\n- Whether it is active, dormant, damaged, unstable, or suppressed.\n\nFor a concealed effect, make a Cultivation Check against its save DC.\n\nIf it has no save DC, use:\n\n`8 + source Proficiency Bonus + source key ability modifier`\n\nOn failure:\n\n- You know concealed power is present.\n- You do not learn its exact nature or location.\n- You cannot retry until the effect changes or a new scene begins.\n\nWhen the check succeeds, the AI GM must provide the listed information and cannot withhold it for dramatic convenience.\n\n---\n",
+      "effective_rules_text": "## CL1 — Qi Sensing\n\nQi Sensing is always active unless suppressed.\n\n### Passive Sensing\n\nWithin 30 feet, perceive the presence of active supernatural energy from:\n\n- Path and Subpath features.\n- Sphere talents.\n- Formations.\n- Talismans.\n- Cultivated items.\n- Active spirits.\n- Concentrated Cultivation Points.\n- Transformations.\n- Active curses.\n- Active seals.\n- Possession.\n- Corruption.\n- Strong residues created during the previous hour.\n\nQi Sensing is blocked by:\n\n- 1 foot of stone.\n- 1 inch of common metal.\n- A thin sheet of lead.\n- 3 feet of wood or packed earth.\n- A sealed Formation or effect explicitly blocking Qi perception.\n\nPassive Qi Sensing does not automatically reveal:\n\n- The exact technique.\n- Exact statistics.\n- A precise occupied space for an Invisible creature.\n- A dormant inheritance.\n- A secret property.\n- A successful concealment effect.\n\n### Analyze Qi\n\n**Action**  \n**Range:** 30 feet\n\nChoose one detected effect, creature, item, or residue.\n\nLearn:\n\n- Its broad category.\n- Its active supernatural tags.\n- Whether its Source CL is lower than, equal to, or higher than yours.\n- Whether it is active, dormant, damaged, unstable, or suppressed.\n\nFor a concealed effect, make a Cultivation Check against its save DC.\n\nIf it has no save DC, use:\n\n`8 + source Proficiency Bonus + source key ability modifier`\n\nOn failure:\n\n- You know concealed power is present.\n- You do not learn its exact nature or location.\n- You cannot retry until the effect changes or a new scene begins.\n\nWhen the check succeeds, the AI GM must provide the listed information and cannot withhold it for dramatic convenience.\n\n---\n",
+      "components": [
+        {
+          "title": "Passive Sensing",
+          "slug": "passive_sensing",
+          "heading_level": 3,
+          "source_line": 225,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.qi_sensing.component.passive_sensing"
+        },
+        {
+          "title": "Analyze Qi",
+          "slug": "analyze_qi",
+          "heading_level": 3,
+          "source_line": 260,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.qi_sensing.component.analyze_qi"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.qi_technique_potency",
+      "display_name": "Qi Technique Potency",
+      "aliases": [],
+      "feature_kind": "technique_chassis",
+      "minimum_cl": 1,
+      "granted_at_cl": [
+        1
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL1 — Qi Technique Potency",
+          "source_line_start": 290,
+          "source_line_end": 316,
+          "source_markdown": "## CL1 — Qi Technique Potency\n\nOnce per activation, when a Qi-powered feature deals damage, add your Qi Cultivation key ability modifier to one damage roll.\n\nQualifying features include:\n\n- Qi Cultivation Path features.\n- Qi Cultivation Subpath features.\n- Qi-powered Sphere talents.\n- Recorded Arts using Qi.\n- Forged Techniques using Qi.\n- Immortal Arts using Qi.\n- Weapon attacks explicitly delivering a Qi-powered cultivation technique.\n\nAn ordinary weapon attack does not qualify merely because the attacker is a Qi Cultivator.\n\nWhen a weapon-delivered technique deals both weapon damage and technique damage, apply Qi Technique Potency to either:\n\n- One weapon-damage roll; or\n- One technique-damage roll.\n\nDo not apply it to both.\n\nFor a Barrage, volley, chain, multi-projectile activation, or technique applied through multiple attacks, Qi Technique Potency applies once across the entire activation.\n\n---\n",
+          "summary": "Once per activation, when a Qi-powered feature deals damage, add your Qi Cultivation key ability modifier to one damage roll."
+        }
+      ],
+      "source_rules_text": "## CL1 — Qi Technique Potency\n\nOnce per activation, when a Qi-powered feature deals damage, add your Qi Cultivation key ability modifier to one damage roll.\n\nQualifying features include:\n\n- Qi Cultivation Path features.\n- Qi Cultivation Subpath features.\n- Qi-powered Sphere talents.\n- Recorded Arts using Qi.\n- Forged Techniques using Qi.\n- Immortal Arts using Qi.\n- Weapon attacks explicitly delivering a Qi-powered cultivation technique.\n\nAn ordinary weapon attack does not qualify merely because the attacker is a Qi Cultivator.\n\nWhen a weapon-delivered technique deals both weapon damage and technique damage, apply Qi Technique Potency to either:\n\n- One weapon-damage roll; or\n- One technique-damage roll.\n\nDo not apply it to both.\n\nFor a Barrage, volley, chain, multi-projectile activation, or technique applied through multiple attacks, Qi Technique Potency applies once across the entire activation.\n\n---\n",
+      "effective_rules_text": "## CL1 — Qi Technique Potency\n\nOnce per activation, when a Qi-powered feature deals damage, add your Qi Cultivation key ability modifier to one damage roll.\n\nQualifying features include:\n\n- Qi Cultivation Path features.\n- Qi Cultivation Subpath features.\n- Qi-powered Sphere talents.\n- Recorded Arts using Qi.\n- Forged Techniques using Qi.\n- Immortal Arts using Qi.\n- Weapon attacks explicitly delivering a Qi-powered cultivation technique.\n\nAn ordinary weapon attack does not qualify merely because the attacker is a Qi Cultivator.\n\nWhen a weapon-delivered technique deals both weapon damage and technique damage, apply Qi Technique Potency to either:\n\n- One weapon-damage roll; or\n- One technique-damage roll.\n\nDo not apply it to both.\n\nFor a Barrage, volley, chain, multi-projectile activation, or technique applied through multiple attacks, Qi Technique Potency applies once across the entire activation.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.meridian_regulation",
+      "display_name": "Meridian Regulation",
+      "aliases": [],
+      "feature_kind": "defensive_feature",
+      "minimum_cl": 2,
+      "granted_at_cl": [
+        2
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL2 — Meridian Regulation",
+          "source_line_start": 346,
+          "source_line_end": 389,
+          "source_markdown": "## CL2 — Meridian Regulation\n\n**Action**  \n**Range:** Touch  \n**Cost:** 1 Qi\n\nChoose one poison, disease, or directly caused physical impairment affecting the target.\n\nThe effect must:\n\n- Have a printed saving throw DC.\n- Not have the Curse, Tribulation, Foundation Injury, Hidden Injury, Possession, Permanent, or Soul Damage tag.\n\n### Effect with Repeat Saves\n\nThe target immediately repeats the saving throw with Advantage.\n\nOn success, apply the effect’s normal successful-save result.\n\n### Effect without Repeat Saves\n\nThe target makes a Constitution saving throw with Advantage against the effect’s printed DC.\n\nOn success, suppress one penalty until the end of the target’s next turn:\n\n- Poisoned.\n- Speed reduction.\n- Disadvantage on attack rolls.\n- Disadvantage on ability checks.\n- Disadvantage on saving throws.\n- Inability to take Reactions.\n\nMeridian Regulation does not automatically:\n\n- Remove the underlying effect.\n- End its duration.\n- Cure the disease or poison.\n- Remove Exhaustion.\n- Restore Hit Points.\n- Stop ongoing damage.\n- Remove a higher-authority effect.\n\n---\n",
+          "summary": "Action Range: Touch Cost: 1 Qi"
+        }
+      ],
+      "source_rules_text": "## CL2 — Meridian Regulation\n\n**Action**  \n**Range:** Touch  \n**Cost:** 1 Qi\n\nChoose one poison, disease, or directly caused physical impairment affecting the target.\n\nThe effect must:\n\n- Have a printed saving throw DC.\n- Not have the Curse, Tribulation, Foundation Injury, Hidden Injury, Possession, Permanent, or Soul Damage tag.\n\n### Effect with Repeat Saves\n\nThe target immediately repeats the saving throw with Advantage.\n\nOn success, apply the effect’s normal successful-save result.\n\n### Effect without Repeat Saves\n\nThe target makes a Constitution saving throw with Advantage against the effect’s printed DC.\n\nOn success, suppress one penalty until the end of the target’s next turn:\n\n- Poisoned.\n- Speed reduction.\n- Disadvantage on attack rolls.\n- Disadvantage on ability checks.\n- Disadvantage on saving throws.\n- Inability to take Reactions.\n\nMeridian Regulation does not automatically:\n\n- Remove the underlying effect.\n- End its duration.\n- Cure the disease or poison.\n- Remove Exhaustion.\n- Restore Hit Points.\n- Stop ongoing damage.\n- Remove a higher-authority effect.\n\n---\n",
+      "effective_rules_text": "## CL2 — Meridian Regulation\n\n**Action**  \n**Range:** Touch  \n**Cost:** 1 Qi\n\nChoose one poison, disease, or directly caused physical impairment affecting the target.\n\nThe effect must:\n\n- Have a printed saving throw DC.\n- Not have the Curse, Tribulation, Foundation Injury, Hidden Injury, Possession, Permanent, or Soul Damage tag.\n\n### Effect with Repeat Saves\n\nThe target immediately repeats the saving throw with Advantage.\n\nOn success, apply the effect’s normal successful-save result.\n\n### Effect without Repeat Saves\n\nThe target makes a Constitution saving throw with Advantage against the effect’s printed DC.\n\nOn success, suppress one penalty until the end of the target’s next turn:\n\n- Poisoned.\n- Speed reduction.\n- Disadvantage on attack rolls.\n- Disadvantage on ability checks.\n- Disadvantage on saving throws.\n- Inability to take Reactions.\n\nMeridian Regulation does not automatically:\n\n- Remove the underlying effect.\n- End its duration.\n- Cure the disease or poison.\n- Remove Exhaustion.\n- Restore Hit Points.\n- Stop ongoing damage.\n- Remove a higher-authority effect.\n\n---\n",
+      "components": [
+        {
+          "title": "Effect with Repeat Saves",
+          "slug": "effect_with_repeat_saves",
+          "heading_level": 3,
+          "source_line": 359,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.meridian_regulation.component.effect_with_repeat_saves"
+        },
+        {
+          "title": "Effect without Repeat Saves",
+          "slug": "effect_without_repeat_saves",
+          "heading_level": 3,
+          "source_line": 365,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.meridian_regulation.component.effect_without_repeat_saves"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.qi_cultivation_subpath",
+      "display_name": "Qi Cultivation Subpath",
+      "aliases": [],
+      "feature_kind": "subpath_selection",
+      "minimum_cl": 3,
+      "granted_at_cl": [
+        3
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "Qi Cultivation Subpaths",
+          "source_line_start": 164,
+          "source_line_end": 180,
+          "source_markdown": "## Qi Cultivation Subpaths\n\nAt CL3, choose one Qi Cultivation Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Catalog classification | Meaning |\n|---|---|\n| **Open School** | Commonly teachable or institutionally available. Open access does not imply low power. |\n| **Restricted Scripture** | Controlled technical, political, military, medical, inherited, or hazardous instruction. |\n| **Rare Inheritance** | Uncommon structural access, bloodline, vessel, destiny, treasure, or singular transmission. A **Rare Variant** is a parent-lineage conversion inside this category. |\n| **Forbidden Variant** | A parent-lineage conversion carrying a prohibited, condemned, hazardous, predatory, or politically unacceptable price. Forbidden is not automatically Daemonic. |\n| **Secret Law** | Qualitatively superior law-level authority requiring explicit access and its printed initiation price. |\n| **Daemonic** | A mechanical tag used only when the Source Rule interacts with Corruption, daemonic energy, purification, or anti-daemonic rules. It is orthogonal to social accusations of being “demonic.” |\n\nA character normally has one Subpath progression. Parent and Variant lineages use the executable replacement rules in Shared Qi Subpath Rules R4; they do not provide a second simultaneous Subpath progression.\n\n---\n",
+          "summary": "At CL3, choose one Qi Cultivation Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18."
+        }
+      ],
+      "source_rules_text": "## Qi Cultivation Subpaths\n\nAt CL3, choose one Qi Cultivation Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Catalog classification | Meaning |\n|---|---|\n| **Open School** | Commonly teachable or institutionally available. Open access does not imply low power. |\n| **Restricted Scripture** | Controlled technical, political, military, medical, inherited, or hazardous instruction. |\n| **Rare Inheritance** | Uncommon structural access, bloodline, vessel, destiny, treasure, or singular transmission. A **Rare Variant** is a parent-lineage conversion inside this category. |\n| **Forbidden Variant** | A parent-lineage conversion carrying a prohibited, condemned, hazardous, predatory, or politically unacceptable price. Forbidden is not automatically Daemonic. |\n| **Secret Law** | Qualitatively superior law-level authority requiring explicit access and its printed initiation price. |\n| **Daemonic** | A mechanical tag used only when the Source Rule interacts with Corruption, daemonic energy, purification, or anti-daemonic rules. It is orthogonal to social accusations of being “demonic.” |\n\nA character normally has one Subpath progression. Parent and Variant lineages use the executable replacement rules in Shared Qi Subpath Rules R4; they do not provide a second simultaneous Subpath progression.\n\n---\n",
+      "effective_rules_text": "## Qi Cultivation Subpaths\n\nAt CL3, choose one Qi Cultivation Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Catalog classification | Meaning |\n|---|---|\n| **Open School** | Commonly teachable or institutionally available. Open access does not imply low power. |\n| **Restricted Scripture** | Controlled technical, political, military, medical, inherited, or hazardous instruction. |\n| **Rare Inheritance** | Uncommon structural access, bloodline, vessel, destiny, treasure, or singular transmission. A **Rare Variant** is a parent-lineage conversion inside this category. |\n| **Forbidden Variant** | A parent-lineage conversion carrying a prohibited, condemned, hazardous, predatory, or politically unacceptable price. Forbidden is not automatically Daemonic. |\n| **Secret Law** | Qualitatively superior law-level authority requiring explicit access and its printed initiation price. |\n| **Daemonic** | A mechanical tag used only when the Source Rule interacts with Corruption, daemonic energy, purification, or anti-daemonic rules. It is orthogonal to social accusations of being “demonic.” |\n\nA character normally has one Subpath progression. Parent and Variant lineages use the executable replacement rules in Shared Qi Subpath Rules R4; they do not provide a second simultaneous Subpath progression.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.ability_score_improvement_or_cultivation_insight",
+      "display_name": "Ability Score Improvement or Cultivation Insight",
+      "aliases": [],
+      "feature_kind": "advancement_choice",
+      "minimum_cl": 4,
+      "granted_at_cl": [
+        4,
+        8,
+        12,
+        16,
+        19
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "Ability Score Improvement or Cultivation Insight",
+          "source_line_start": 150,
+          "source_line_end": 163,
+          "source_markdown": "### Ability Score Improvement or Cultivation Insight\n\nAt CL4, CL8, CL12, CL16, and CL19, choose one of the following:\n\n- **Normal Ability Score Improvement:** Increase one ability score by 2, or increase two different ability scores by 1 each. No score can exceed the maximum allowed by your current Realm.\n- **Cultivation Insight:** Choose one Cultivation Insight for which you meet every prerequisite. Gain its cultivation benefit and increase one ability score listed in that Insight's **Ability Increase (Level Selection)** entry by 1, to the maximum allowed by your current Realm.\n\nAn Insight gained through a manual, tribulation, relic, sect instruction, imperial office, bloodline awakening, experimentation, story reward, or another non-level source does not grant its ability increase unless that source explicitly says otherwise. Background ability-score increases and Origin Insights are separate character-creation benefits and do not activate this increase.\n\nUse **Tianxia Qi Cultivation Insights — Modernized R2: Ability-Integrated** as the current Qi Insight catalog. If an Insight grants a new Sphere, it also grants the normal free first talent received whenever a character learns a new Sphere.\n\n---\n",
+          "summary": "At CL4, CL8, CL12, CL16, and CL19, choose one of the following:"
+        }
+      ],
+      "source_rules_text": "### Ability Score Improvement or Cultivation Insight\n\nAt CL4, CL8, CL12, CL16, and CL19, choose one of the following:\n\n- **Normal Ability Score Improvement:** Increase one ability score by 2, or increase two different ability scores by 1 each. No score can exceed the maximum allowed by your current Realm.\n- **Cultivation Insight:** Choose one Cultivation Insight for which you meet every prerequisite. Gain its cultivation benefit and increase one ability score listed in that Insight's **Ability Increase (Level Selection)** entry by 1, to the maximum allowed by your current Realm.\n\nAn Insight gained through a manual, tribulation, relic, sect instruction, imperial office, bloodline awakening, experimentation, story reward, or another non-level source does not grant its ability increase unless that source explicitly says otherwise. Background ability-score increases and Origin Insights are separate character-creation benefits and do not activate this increase.\n\nUse **Tianxia Qi Cultivation Insights — Modernized R2: Ability-Integrated** as the current Qi Insight catalog. If an Insight grants a new Sphere, it also grants the normal free first talent received whenever a character learns a new Sphere.\n\n---\n",
+      "effective_rules_text": "At CL4, CL8, CL12, CL16, and CL19, choose one of the following:\n\n- **Normal Ability Score Improvement:** Increase one ability score by 2, or increase two different ability scores by 1 each. No score can exceed the maximum allowed by your current Realm.\n- **Cultivation Insight:** Choose one Cultivation Insight from the Central Cultivation Insights catalogue for which you meet every prerequisite. Gain its printed benefit and increase one ability score listed in that Insight's **Ability Increase (Level Selection)** entry by 1, to the maximum allowed by your current Realm.\n\nAn Insight gained through a non-level source does not grant its ability increase unless that source explicitly says otherwise. Background ability increases and Origin Insights are separate benefits. If an Insight grants a new Sphere, it also grants the normal free first talent received whenever a character learns a new Sphere.\n",
+      "components": [],
+      "shared_rule_id": "tianxia.shared.advancement.ability_score_improvement_or_cultivation_insight",
+      "authority_resolution": {
+        "status": "authority_overlay_applied",
+        "reason": "The Central Cultivation Insights R4 catalogue is the sole current Insight authority.",
+        "controlling_sources": [
+          "Canonical/PHB/Tianxia_PHB_Chapter_03_Paths_and_Shared_Path_Rules_R2.md",
+          "Canonical/Insights/Tianxia_Cultivation_Insights_Compendium_R1.md",
+          "Canonical/Insights/Tianxia_Central_Cultivation_Insights_AI_Reference_R4.json"
+        ],
+        "effective_rules_text": "At CL4, CL8, CL12, CL16, and CL19, choose one of the following:\n\n- **Normal Ability Score Improvement:** Increase one ability score by 2, or increase two different ability scores by 1 each. No score can exceed the maximum allowed by your current Realm.\n- **Cultivation Insight:** Choose one Cultivation Insight from the Central Cultivation Insights catalogue for which you meet every prerequisite. Gain its printed benefit and increase one ability score listed in that Insight's **Ability Increase (Level Selection)** entry by 1, to the maximum allowed by your current Realm.\n\nAn Insight gained through a non-level source does not grant its ability increase unless that source explicitly says otherwise. Background ability increases and Origin Insights are separate benefits. If an Insight grants a new Sphere, it also grants the normal free first talent received whenever a character learns a new Sphere."
+      },
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.qi_armor",
+      "display_name": "Qi Armor",
+      "aliases": [],
+      "feature_kind": "defensive_feature",
+      "minimum_cl": 5,
+      "granted_at_cl": [
+        5
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL5 — Qi Armor",
+          "source_line_start": 390,
+          "source_line_end": 424,
+          "source_markdown": "## CL5 — Qi Armor\n\n**Reaction**  \n**Trigger:** You are hit by a ranged attack roll.  \n**Cost:** 2 Qi\n\nGain +3 AC until the start of your next turn, including against the triggering attack.\n\nActivate after learning that the attack hit and before damage is applied.\n\nQi Armor applies to:\n\n- Ranged weapon attacks.\n- Ranged spell attacks.\n- Ranged cultivation attacks.\n- Ranged Sphere attacks.\n- Recorded Art attack rolls.\n- Forged Technique attack rolls.\n- Immortal Art attack rolls.\n- Item attack rolls.\n- Formation attack rolls.\n\nQi Armor does not apply to:\n\n- Melee attacks.\n- Reach attacks classified as melee.\n- Saving throw effects.\n- Automatic damage.\n- Environmental damage.\n- An effect without an attack roll.\n\nAt CL10, Qi Armor costs 1 Qi.\n\n---\n",
+          "summary": "Reaction Trigger: You are hit by a ranged attack roll. Cost: 2 Qi"
+        }
+      ],
+      "source_rules_text": "## CL5 — Qi Armor\n\n**Reaction**  \n**Trigger:** You are hit by a ranged attack roll.  \n**Cost:** 2 Qi\n\nGain +3 AC until the start of your next turn, including against the triggering attack.\n\nActivate after learning that the attack hit and before damage is applied.\n\nQi Armor applies to:\n\n- Ranged weapon attacks.\n- Ranged spell attacks.\n- Ranged cultivation attacks.\n- Ranged Sphere attacks.\n- Recorded Art attack rolls.\n- Forged Technique attack rolls.\n- Immortal Art attack rolls.\n- Item attack rolls.\n- Formation attack rolls.\n\nQi Armor does not apply to:\n\n- Melee attacks.\n- Reach attacks classified as melee.\n- Saving throw effects.\n- Automatic damage.\n- Environmental damage.\n- An effect without an attack roll.\n\nAt CL10, Qi Armor costs 1 Qi.\n\n---\n",
+      "effective_rules_text": "## CL5 — Qi Armor\n\n**Reaction**  \n**Trigger:** You are hit by a ranged attack roll.  \n**Cost:** 2 Qi\n\nGain +3 AC until the start of your next turn, including against the triggering attack.\n\nActivate after learning that the attack hit and before damage is applied.\n\nQi Armor applies to:\n\n- Ranged weapon attacks.\n- Ranged spell attacks.\n- Ranged cultivation attacks.\n- Ranged Sphere attacks.\n- Recorded Art attack rolls.\n- Forged Technique attack rolls.\n- Immortal Art attack rolls.\n- Item attack rolls.\n- Formation attack rolls.\n\nQi Armor does not apply to:\n\n- Melee attacks.\n- Reach attacks classified as melee.\n- Saving throw effects.\n- Automatic damage.\n- Environmental damage.\n- An effect without an attack roll.\n\nAt CL10, Qi Armor costs 1 Qi.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.subpath_feature",
+      "display_name": "Subpath Feature",
+      "aliases": [],
+      "feature_kind": "subpath_feature_slot",
+      "minimum_cl": 6,
+      "granted_at_cl": [
+        6,
+        10,
+        14,
+        18
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "Qi Cultivation Subpaths",
+          "source_line_start": 164,
+          "source_line_end": 180,
+          "source_markdown": "## Qi Cultivation Subpaths\n\nAt CL3, choose one Qi Cultivation Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Catalog classification | Meaning |\n|---|---|\n| **Open School** | Commonly teachable or institutionally available. Open access does not imply low power. |\n| **Restricted Scripture** | Controlled technical, political, military, medical, inherited, or hazardous instruction. |\n| **Rare Inheritance** | Uncommon structural access, bloodline, vessel, destiny, treasure, or singular transmission. A **Rare Variant** is a parent-lineage conversion inside this category. |\n| **Forbidden Variant** | A parent-lineage conversion carrying a prohibited, condemned, hazardous, predatory, or politically unacceptable price. Forbidden is not automatically Daemonic. |\n| **Secret Law** | Qualitatively superior law-level authority requiring explicit access and its printed initiation price. |\n| **Daemonic** | A mechanical tag used only when the Source Rule interacts with Corruption, daemonic energy, purification, or anti-daemonic rules. It is orthogonal to social accusations of being “demonic.” |\n\nA character normally has one Subpath progression. Parent and Variant lineages use the executable replacement rules in Shared Qi Subpath Rules R4; they do not provide a second simultaneous Subpath progression.\n\n---\n",
+          "summary": "At CL3, choose one Qi Cultivation Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18."
+        }
+      ],
+      "source_rules_text": "## Qi Cultivation Subpaths\n\nAt CL3, choose one Qi Cultivation Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Catalog classification | Meaning |\n|---|---|\n| **Open School** | Commonly teachable or institutionally available. Open access does not imply low power. |\n| **Restricted Scripture** | Controlled technical, political, military, medical, inherited, or hazardous instruction. |\n| **Rare Inheritance** | Uncommon structural access, bloodline, vessel, destiny, treasure, or singular transmission. A **Rare Variant** is a parent-lineage conversion inside this category. |\n| **Forbidden Variant** | A parent-lineage conversion carrying a prohibited, condemned, hazardous, predatory, or politically unacceptable price. Forbidden is not automatically Daemonic. |\n| **Secret Law** | Qualitatively superior law-level authority requiring explicit access and its printed initiation price. |\n| **Daemonic** | A mechanical tag used only when the Source Rule interacts with Corruption, daemonic energy, purification, or anti-daemonic rules. It is orthogonal to social accusations of being “demonic.” |\n\nA character normally has one Subpath progression. Parent and Variant lineages use the executable replacement rules in Shared Qi Subpath Rules R4; they do not provide a second simultaneous Subpath progression.\n\n---\n",
+      "effective_rules_text": "## Qi Cultivation Subpaths\n\nAt CL3, choose one Qi Cultivation Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Catalog classification | Meaning |\n|---|---|\n| **Open School** | Commonly teachable or institutionally available. Open access does not imply low power. |\n| **Restricted Scripture** | Controlled technical, political, military, medical, inherited, or hazardous instruction. |\n| **Rare Inheritance** | Uncommon structural access, bloodline, vessel, destiny, treasure, or singular transmission. A **Rare Variant** is a parent-lineage conversion inside this category. |\n| **Forbidden Variant** | A parent-lineage conversion carrying a prohibited, condemned, hazardous, predatory, or politically unacceptable price. Forbidden is not automatically Daemonic. |\n| **Secret Law** | Qualitatively superior law-level authority requiring explicit access and its printed initiation price. |\n| **Daemonic** | A mechanical tag used only when the Source Rule interacts with Corruption, daemonic energy, purification, or anti-daemonic rules. It is orthogonal to social accusations of being “demonic.” |\n\nA character normally has one Subpath progression. Parent and Variant lineages use the executable replacement rules in Shared Qi Subpath Rules R4; they do not provide a second simultaneous Subpath progression.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.featherfall",
+      "display_name": "Featherfall",
+      "aliases": [],
+      "feature_kind": "movement_feature",
+      "minimum_cl": 7,
+      "granted_at_cl": [
+        7
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL7 — Featherfall",
+          "source_line_start": 425,
+          "source_line_end": 443,
+          "source_markdown": "## CL7 — Featherfall\n\n**Reaction**  \n**Trigger:** You or a creature within 60 feet begins falling.  \n**Cost:** 1 Qi per target  \n**Targets:** Up to your Proficiency Bonus in creatures  \n**Duration:** 1 minute\n\nAn affected target:\n\n- Descends no more than 60 feet during each round.\n- Takes no falling damage while the effect lasts.\n- Lands standing when it reaches a supporting surface.\n- May end the effect on itself at the start of its turn.\n\nFeatherfall does not grant flight or horizontal movement.\n\n---\n",
+          "summary": "Reaction Trigger: You or a creature within 60 feet begins falling. Cost: 1 Qi per target Targets: Up to your Proficiency Bonus in creatures Duration: 1 minute"
+        }
+      ],
+      "source_rules_text": "## CL7 — Featherfall\n\n**Reaction**  \n**Trigger:** You or a creature within 60 feet begins falling.  \n**Cost:** 1 Qi per target  \n**Targets:** Up to your Proficiency Bonus in creatures  \n**Duration:** 1 minute\n\nAn affected target:\n\n- Descends no more than 60 feet during each round.\n- Takes no falling damage while the effect lasts.\n- Lands standing when it reaches a supporting surface.\n- May end the effect on itself at the start of its turn.\n\nFeatherfall does not grant flight or horizontal movement.\n\n---\n",
+      "effective_rules_text": "## CL7 — Featherfall\n\n**Reaction**  \n**Trigger:** You or a creature within 60 feet begins falling.  \n**Cost:** 1 Qi per target  \n**Targets:** Up to your Proficiency Bonus in creatures  \n**Duration:** 1 minute\n\nAn affected target:\n\n- Descends no more than 60 feet during each round.\n- Takes no falling damage while the effect lasts.\n- Lands standing when it reaches a supporting surface.\n- May end the effect on itself at the start of its turn.\n\nFeatherfall does not grant flight or horizontal movement.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament",
+      "display_name": "Domain Armament",
+      "aliases": [],
+      "feature_kind": "asset_feature",
+      "minimum_cl": 9,
+      "granted_at_cl": [
+        9
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL9 — Domain Armament",
+          "source_line_start": 444,
+          "source_line_end": 661,
+          "source_markdown": "## CL9 — Domain Armament\n\nA Domain Armament is a movable external Qi focus. It is not a Spirit Awakening Domain.\n\nA Domain Armament may be:\n\n- A projected cultivation construct.\n- One specific real weapon bound to your Qi.\n- One specific real shield bound to your Qi.\n\nExamples include:\n\n- Sword.\n- Spear.\n- Needle.\n- Bow.\n- Bell.\n- Brush.\n- Fan.\n- Seal.\n- Mirror.\n- Orb.\n- Disk.\n- Chain.\n- Instrument.\n- Shield.\n- Talisman array.\n- Another noncreature weapon or cultivation implement.\n\n### Manifest Domain Armament\n\n**Bonus Action**  \n**Initial Position:** One unoccupied point within 30 feet  \n**Cost:** 1 Qi  \n**Duration:** 1 hour\n\nYou may maintain one Domain Armament.\n\nA projected Armament:\n\n- Occupies no space.\n- Provides no Cover except through Guard Mode.\n- Cannot flank.\n- Cannot carry objects.\n- Cannot manipulate objects.\n- Cannot use unrelated item properties.\n- Cannot be targeted unless a rule explicitly affects projected weapons, Qi constructs, or Domain Armaments.\n- Ends if you become Unconscious.\n\nChoose Bludgeoning, Piercing, Slashing, or Force damage when it manifests.\n\nOnce during each of your turns:\n\n- Move it up to 20 feet without using an action.\n- It must remain within 30 feet.\n\nIf a projected Armament ends outside range, it moves to the nearest legal point in range.\n\n### Binding a Real Weapon or Shield\n\nYou may bind one real weapon or shield as your Domain Armament.\n\n**Binding Time:** 10 uninterrupted minutes while touching the item\n\nThe item must satisfy all of the following:\n\n- You own it or have its owner’s permission.\n- You are proficient with it or another rule permits its use.\n- You meet its attunement and cultivation prerequisites.\n- A sentient item consents.\n- It is not already bound as another creature’s Domain Armament.\n\nThe bond remains until:\n\n- You bind another item.\n- You willingly end the bond.\n- The item is destroyed.\n- A feature explicitly severs the bond.\n\nThe actual item alternates between:\n\n- Being wielded.\n- Being carried.\n- Floating as your Domain Armament.\n\nIt is never duplicated.\n\nA Saint-class, Legendary, named, or ancestral item remains the actual item while floating.\n\n### Call or Release Bound Item\n\nMove the item between your hand and a floating position:\n\n- As a Bonus Action.\n- As part of manifesting Domain Armament.\n- At the beginning or end of your Attack action.\n- As part of activating an authorized weapon-delivered technique through it.\n\nCalling requires a legal free hand and an unobstructed path.\n\nReleasing requires a legal point within Domain Armament range.\n\nThis movement is not teleportation unless another feature says otherwise.\n\nA spatial lock, sealed Formation, total physical restraint, or item-control effect can block it.\n\n### Domain Armament Modes\n\nA floating Domain Armament operates in Assault Mode or Guard Mode.\n\nChoose its mode when manifested or released.\n\nOnce during each of your turns, change its mode without using an action.\n\n#### Assault Mode — Domain Armament Attack\n\n**Bonus Action**\n\nMove the Armament up to 20 feet, then make a Cultivation Attack against one creature within 5 feet.\n\n**Projected Armament Hit:**\n\n- CL9: `1d8 + key ability modifier`\n- CL13: `2d8 + key ability modifier`\n- CL17: `3d8 + key ability modifier`\n\nUse the damage type chosen when manifested.\n\n#### Bound Weapon Attack\n\nUse your Cultivation Attack Modifier and the weapon’s printed enhancement bonus.\n\nOn a hit, use the greater of:\n\n- The weapon’s normal damage dice; or\n- Your Domain Armament damage dice.\n\nThen add:\n\n- Your Qi Cultivation key ability modifier.\n- The weapon’s printed damage bonus.\n- Any automatic on-hit property whose trigger is legally satisfied.\n\nThe item retains:\n\n- Damage type.\n- Enhancement bonus.\n- Attunement properties.\n- Automatic on-hit properties.\n- Material properties.\n- Named traits.\n\nA property requiring a separate action, item charge, Attack action, physical grip, stance, or unsatisfied trigger does not activate automatically.\n\nA property saying “while wielding” treats the floating item as wielded unless it explicitly requires physical contact, a free hand, or a stance.\n\n#### Guard Mode — Projected Shield\n\nA projected shield or defensive form cannot make Domain Armament Attacks.\n\nAt the end of your turn, designate one creature within 5 feet as protected until the start of your next turn.\n\nThe creature gains:\n\n`+2 AC against ranged attack rolls`\n\nThe protection ends if:\n\n- The creature moves more than 5 feet from the Armament.\n- The Armament changes mode.\n- The Domain Armament ends.\n\nThe bonus:\n\n- Applies to ranged weapon, spell, and cultivation attack rolls.\n- Does not apply to melee attacks.\n- Does not apply to saving throw effects.\n- Does not stack with another shield bonus.\n- Stacks with Qi Armor.\n\n#### Guard Mode — Bound Shield\n\nUse the shield’s printed shield bonus against ranged attacks for the protected creature.\n\nIts enhancement bonus applies.\n\nThe floating shield:\n\n- Protects one creature.\n- Does not also protect you merely because it is bound.\n- Retains appropriate passive properties.\n- Can serve as a cultivation focus.\n\n#### Bound Shield Assault\n\nA bound shield may use Assault Mode.\n\nIf it has a printed attack profile, use it.\n\nOtherwise, its Domain Armament Attack deals Bludgeoning or Force damage using normal Domain Armament damage dice.\n\n### Bound Item Vulnerability\n\nA bound real item:\n\n- Uses its printed durability.\n- Can be targeted by effects explicitly affecting items, weapons, shields, or cultivation implements.\n- Can be suppressed, restrained, sealed, trapped, or displaced.\n\nIf forced outside Domain Armament range:\n\n- It falls in the nearest legal space.\n- Domain Armament benefits are suppressed.\n- The bond remains.\n- Control returns when it is in range and no blocking effect remains.\n\n---\n",
+          "summary": "A Domain Armament is a movable external Qi focus. It is not a Spirit Awakening Domain."
+        }
+      ],
+      "source_rules_text": "## CL9 — Domain Armament\n\nA Domain Armament is a movable external Qi focus. It is not a Spirit Awakening Domain.\n\nA Domain Armament may be:\n\n- A projected cultivation construct.\n- One specific real weapon bound to your Qi.\n- One specific real shield bound to your Qi.\n\nExamples include:\n\n- Sword.\n- Spear.\n- Needle.\n- Bow.\n- Bell.\n- Brush.\n- Fan.\n- Seal.\n- Mirror.\n- Orb.\n- Disk.\n- Chain.\n- Instrument.\n- Shield.\n- Talisman array.\n- Another noncreature weapon or cultivation implement.\n\n### Manifest Domain Armament\n\n**Bonus Action**  \n**Initial Position:** One unoccupied point within 30 feet  \n**Cost:** 1 Qi  \n**Duration:** 1 hour\n\nYou may maintain one Domain Armament.\n\nA projected Armament:\n\n- Occupies no space.\n- Provides no Cover except through Guard Mode.\n- Cannot flank.\n- Cannot carry objects.\n- Cannot manipulate objects.\n- Cannot use unrelated item properties.\n- Cannot be targeted unless a rule explicitly affects projected weapons, Qi constructs, or Domain Armaments.\n- Ends if you become Unconscious.\n\nChoose Bludgeoning, Piercing, Slashing, or Force damage when it manifests.\n\nOnce during each of your turns:\n\n- Move it up to 20 feet without using an action.\n- It must remain within 30 feet.\n\nIf a projected Armament ends outside range, it moves to the nearest legal point in range.\n\n### Binding a Real Weapon or Shield\n\nYou may bind one real weapon or shield as your Domain Armament.\n\n**Binding Time:** 10 uninterrupted minutes while touching the item\n\nThe item must satisfy all of the following:\n\n- You own it or have its owner’s permission.\n- You are proficient with it or another rule permits its use.\n- You meet its attunement and cultivation prerequisites.\n- A sentient item consents.\n- It is not already bound as another creature’s Domain Armament.\n\nThe bond remains until:\n\n- You bind another item.\n- You willingly end the bond.\n- The item is destroyed.\n- A feature explicitly severs the bond.\n\nThe actual item alternates between:\n\n- Being wielded.\n- Being carried.\n- Floating as your Domain Armament.\n\nIt is never duplicated.\n\nA Saint-class, Legendary, named, or ancestral item remains the actual item while floating.\n\n### Call or Release Bound Item\n\nMove the item between your hand and a floating position:\n\n- As a Bonus Action.\n- As part of manifesting Domain Armament.\n- At the beginning or end of your Attack action.\n- As part of activating an authorized weapon-delivered technique through it.\n\nCalling requires a legal free hand and an unobstructed path.\n\nReleasing requires a legal point within Domain Armament range.\n\nThis movement is not teleportation unless another feature says otherwise.\n\nA spatial lock, sealed Formation, total physical restraint, or item-control effect can block it.\n\n### Domain Armament Modes\n\nA floating Domain Armament operates in Assault Mode or Guard Mode.\n\nChoose its mode when manifested or released.\n\nOnce during each of your turns, change its mode without using an action.\n\n#### Assault Mode — Domain Armament Attack\n\n**Bonus Action**\n\nMove the Armament up to 20 feet, then make a Cultivation Attack against one creature within 5 feet.\n\n**Projected Armament Hit:**\n\n- CL9: `1d8 + key ability modifier`\n- CL13: `2d8 + key ability modifier`\n- CL17: `3d8 + key ability modifier`\n\nUse the damage type chosen when manifested.\n\n#### Bound Weapon Attack\n\nUse your Cultivation Attack Modifier and the weapon’s printed enhancement bonus.\n\nOn a hit, use the greater of:\n\n- The weapon’s normal damage dice; or\n- Your Domain Armament damage dice.\n\nThen add:\n\n- Your Qi Cultivation key ability modifier.\n- The weapon’s printed damage bonus.\n- Any automatic on-hit property whose trigger is legally satisfied.\n\nThe item retains:\n\n- Damage type.\n- Enhancement bonus.\n- Attunement properties.\n- Automatic on-hit properties.\n- Material properties.\n- Named traits.\n\nA property requiring a separate action, item charge, Attack action, physical grip, stance, or unsatisfied trigger does not activate automatically.\n\nA property saying “while wielding” treats the floating item as wielded unless it explicitly requires physical contact, a free hand, or a stance.\n\n#### Guard Mode — Projected Shield\n\nA projected shield or defensive form cannot make Domain Armament Attacks.\n\nAt the end of your turn, designate one creature within 5 feet as protected until the start of your next turn.\n\nThe creature gains:\n\n`+2 AC against ranged attack rolls`\n\nThe protection ends if:\n\n- The creature moves more than 5 feet from the Armament.\n- The Armament changes mode.\n- The Domain Armament ends.\n\nThe bonus:\n\n- Applies to ranged weapon, spell, and cultivation attack rolls.\n- Does not apply to melee attacks.\n- Does not apply to saving throw effects.\n- Does not stack with another shield bonus.\n- Stacks with Qi Armor.\n\n#### Guard Mode — Bound Shield\n\nUse the shield’s printed shield bonus against ranged attacks for the protected creature.\n\nIts enhancement bonus applies.\n\nThe floating shield:\n\n- Protects one creature.\n- Does not also protect you merely because it is bound.\n- Retains appropriate passive properties.\n- Can serve as a cultivation focus.\n\n#### Bound Shield Assault\n\nA bound shield may use Assault Mode.\n\nIf it has a printed attack profile, use it.\n\nOtherwise, its Domain Armament Attack deals Bludgeoning or Force damage using normal Domain Armament damage dice.\n\n### Bound Item Vulnerability\n\nA bound real item:\n\n- Uses its printed durability.\n- Can be targeted by effects explicitly affecting items, weapons, shields, or cultivation implements.\n- Can be suppressed, restrained, sealed, trapped, or displaced.\n\nIf forced outside Domain Armament range:\n\n- It falls in the nearest legal space.\n- Domain Armament benefits are suppressed.\n- The bond remains.\n- Control returns when it is in range and no blocking effect remains.\n\n---\n",
+      "effective_rules_text": "## CL9 — Domain Armament\n\nA Domain Armament is a movable external Qi focus. It is not a Spirit Awakening Domain.\n\nA Domain Armament may be:\n\n- A projected cultivation construct.\n- One specific real weapon bound to your Qi.\n- One specific real shield bound to your Qi.\n\nExamples include:\n\n- Sword.\n- Spear.\n- Needle.\n- Bow.\n- Bell.\n- Brush.\n- Fan.\n- Seal.\n- Mirror.\n- Orb.\n- Disk.\n- Chain.\n- Instrument.\n- Shield.\n- Talisman array.\n- Another noncreature weapon or cultivation implement.\n\n### Manifest Domain Armament\n\n**Bonus Action**  \n**Initial Position:** One unoccupied point within 30 feet  \n**Cost:** 1 Qi  \n**Duration:** 1 hour\n\nYou may maintain one Domain Armament.\n\nA projected Armament:\n\n- Occupies no space.\n- Provides no Cover except through Guard Mode.\n- Cannot flank.\n- Cannot carry objects.\n- Cannot manipulate objects.\n- Cannot use unrelated item properties.\n- Cannot be targeted unless a rule explicitly affects projected weapons, Qi constructs, or Domain Armaments.\n- Ends if you become Unconscious.\n\nChoose Bludgeoning, Piercing, Slashing, or Force damage when it manifests.\n\nOnce during each of your turns:\n\n- Move it up to 20 feet without using an action.\n- It must remain within 30 feet.\n\nIf a projected Armament ends outside range, it moves to the nearest legal point in range.\n\n### Binding a Real Weapon or Shield\n\nYou may bind one real weapon or shield as your Domain Armament.\n\n**Binding Time:** 10 uninterrupted minutes while touching the item\n\nThe item must satisfy all of the following:\n\n- You own it or have its owner’s permission.\n- You are proficient with it or another rule permits its use.\n- You meet its attunement and cultivation prerequisites.\n- A sentient item consents.\n- It is not already bound as another creature’s Domain Armament.\n\nThe bond remains until:\n\n- You bind another item.\n- You willingly end the bond.\n- The item is destroyed.\n- A feature explicitly severs the bond.\n\nThe actual item alternates between:\n\n- Being wielded.\n- Being carried.\n- Floating as your Domain Armament.\n\nIt is never duplicated.\n\nA Saint-class, Legendary, named, or ancestral item remains the actual item while floating.\n\n### Call or Release Bound Item\n\nMove the item between your hand and a floating position:\n\n- As a Bonus Action.\n- As part of manifesting Domain Armament.\n- At the beginning or end of your Attack action.\n- As part of activating an authorized weapon-delivered technique through it.\n\nCalling requires a legal free hand and an unobstructed path.\n\nReleasing requires a legal point within Domain Armament range.\n\nThis movement is not teleportation unless another feature says otherwise.\n\nA spatial lock, sealed Formation, total physical restraint, or item-control effect can block it.\n\n### Domain Armament Modes\n\nA floating Domain Armament operates in Assault Mode or Guard Mode.\n\nChoose its mode when manifested or released.\n\nOnce during each of your turns, change its mode without using an action.\n\n#### Assault Mode — Domain Armament Attack\n\n**Bonus Action**\n\nMove the Armament up to 20 feet, then make a Cultivation Attack against one creature within 5 feet.\n\n**Projected Armament Hit:**\n\n- CL9: `1d8 + key ability modifier`\n- CL13: `2d8 + key ability modifier`\n- CL17: `3d8 + key ability modifier`\n\nUse the damage type chosen when manifested.\n\n#### Bound Weapon Attack\n\nUse your Cultivation Attack Modifier and the weapon’s printed enhancement bonus.\n\nOn a hit, use the greater of:\n\n- The weapon’s normal damage dice; or\n- Your Domain Armament damage dice.\n\nThen add:\n\n- Your Qi Cultivation key ability modifier.\n- The weapon’s printed damage bonus.\n- Any automatic on-hit property whose trigger is legally satisfied.\n\nThe item retains:\n\n- Damage type.\n- Enhancement bonus.\n- Attunement properties.\n- Automatic on-hit properties.\n- Material properties.\n- Named traits.\n\nA property requiring a separate action, item charge, Attack action, physical grip, stance, or unsatisfied trigger does not activate automatically.\n\nA property saying “while wielding” treats the floating item as wielded unless it explicitly requires physical contact, a free hand, or a stance.\n\n#### Guard Mode — Projected Shield\n\nA projected shield or defensive form cannot make Domain Armament Attacks.\n\nAt the end of your turn, designate one creature within 5 feet as protected until the start of your next turn.\n\nThe creature gains:\n\n`+2 AC against ranged attack rolls`\n\nThe protection ends if:\n\n- The creature moves more than 5 feet from the Armament.\n- The Armament changes mode.\n- The Domain Armament ends.\n\nThe bonus:\n\n- Applies to ranged weapon, spell, and cultivation attack rolls.\n- Does not apply to melee attacks.\n- Does not apply to saving throw effects.\n- Does not stack with another shield bonus.\n- Stacks with Qi Armor.\n\n#### Guard Mode — Bound Shield\n\nUse the shield’s printed shield bonus against ranged attacks for the protected creature.\n\nIts enhancement bonus applies.\n\nThe floating shield:\n\n- Protects one creature.\n- Does not also protect you merely because it is bound.\n- Retains appropriate passive properties.\n- Can serve as a cultivation focus.\n\n#### Bound Shield Assault\n\nA bound shield may use Assault Mode.\n\nIf it has a printed attack profile, use it.\n\nOtherwise, its Domain Armament Attack deals Bludgeoning or Force damage using normal Domain Armament damage dice.\n\n### Bound Item Vulnerability\n\nA bound real item:\n\n- Uses its printed durability.\n- Can be targeted by effects explicitly affecting items, weapons, shields, or cultivation implements.\n- Can be suppressed, restrained, sealed, trapped, or displaced.\n\nIf forced outside Domain Armament range:\n\n- It falls in the nearest legal space.\n- Domain Armament benefits are suppressed.\n- The bond remains.\n- Control returns when it is in range and no blocking effect remains.\n\n---\n",
+      "components": [
+        {
+          "title": "Manifest Domain Armament",
+          "slug": "manifest_domain_armament",
+          "heading_level": 3,
+          "source_line": 473,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament.component.manifest_domain_armament"
+        },
+        {
+          "title": "Binding a Real Weapon or Shield",
+          "slug": "binding_a_real_weapon_or_shield",
+          "heading_level": 3,
+          "source_line": 502,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament.component.binding_a_real_weapon_or_shield"
+        },
+        {
+          "title": "Call or Release Bound Item",
+          "slug": "call_or_release_bound_item",
+          "heading_level": 3,
+          "source_line": 533,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament.component.call_or_release_bound_item"
+        },
+        {
+          "title": "Domain Armament Modes",
+          "slug": "domain_armament_modes",
+          "heading_level": 3,
+          "source_line": 550,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament.component.domain_armament_modes"
+        },
+        {
+          "title": "Assault Mode — Domain Armament Attack",
+          "slug": "assault_mode_domain_armament_attack",
+          "heading_level": 4,
+          "source_line": 558,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament.component.assault_mode_domain_armament_attack"
+        },
+        {
+          "title": "Bound Weapon Attack",
+          "slug": "bound_weapon_attack",
+          "heading_level": 4,
+          "source_line": 572,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament.component.bound_weapon_attack"
+        },
+        {
+          "title": "Guard Mode — Projected Shield",
+          "slug": "guard_mode_projected_shield",
+          "heading_level": 4,
+          "source_line": 600,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament.component.guard_mode_projected_shield"
+        },
+        {
+          "title": "Guard Mode — Bound Shield",
+          "slug": "guard_mode_bound_shield",
+          "heading_level": 4,
+          "source_line": 624,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament.component.guard_mode_bound_shield"
+        },
+        {
+          "title": "Bound Shield Assault",
+          "slug": "bound_shield_assault",
+          "heading_level": 4,
+          "source_line": 637,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament.component.bound_shield_assault"
+        },
+        {
+          "title": "Bound Item Vulnerability",
+          "slug": "bound_item_vulnerability",
+          "heading_level": 3,
+          "source_line": 645,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament.component.bound_item_vulnerability"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.golden_core_form",
+      "display_name": "Golden Core Form",
+      "aliases": [],
+      "feature_kind": "choice_feature",
+      "minimum_cl": 10,
+      "granted_at_cl": [
+        10
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL10 — Golden Core Form",
+          "source_line_start": 662,
+          "source_line_end": 736,
+          "source_markdown": "## CL10 — Golden Core Form\n\nAt CL10:\n\n- Qi Armor costs 1 Qi.\n- Choose one Golden Core Form.\n\nYou may replace the chosen Form after a successful CL15 breakthrough before using your CL15 Nascent Soul feature.\n\nAt CL17, your chosen Form becomes Perfected.\n\nAt CL20, choose a second Golden Core Form. Both Forms are Perfected.\n\n### Stable Golden Core\n\nWhen Initiative is rolled, if your current Qi is lower than your Proficiency Bonus, regain Qi until it equals your Proficiency Bonus.\n\nAt the start of your turn, if your current Qi is lower than your Proficiency Bonus, regain 1 Qi.\n\nOnce per round, when a hostile effect would reduce your current Qi, maximum Qi, or restored Qi, reduce that loss by your Proficiency Bonus.\n\nThis does not reduce Qi you willingly spend.\n\n#### Perfected Stable Golden Core\n\n- Initiative threshold becomes `2 × Proficiency Bonus`.\n- Start-of-turn recovery becomes 2 Qi.\n- Hostile Qi loss reduction becomes `2 × Proficiency Bonus`.\n\n### Circulating Golden Core\n\nOnce per turn, after you spend Qi on a feature that resolves successfully, choose one:\n\n- Move 5 feet without provoking Opportunity Attacks.\n- Shift your stance around one creature within your weapon’s reach without provoking an Opportunity Attack from that creature.\n- Gain Temporary Hit Points equal to your Proficiency Bonus.\n- Move your Domain Armament 10 feet.\n\nThis does not trigger from:\n\n- Refunded costs.\n- Invalid activations.\n- A cost paid solely to activate Circulating Golden Core.\n\n#### Perfected Circulating Golden Core\n\nChoose two different benefits.\n\n- Movement becomes 10 feet.\n- Temporary Hit Points become `2 × Proficiency Bonus`.\n- Domain Armament movement becomes 20 feet.\n\n### Golden Core Reservoir\n\n**Bonus Action**  \n**Limit:** Once per scene\n\nRegain Qi equal to:\n\n`Proficiency Bonus + Qi Cultivation key ability modifier`\n\n#### Perfected Golden Core Reservoir\n\nRegain:\n\n`2 × Proficiency Bonus + key ability modifier`\n\nIf you begin your turn with 0 Qi and Reservoir is unused:\n\n- Activate it before any other recovery.\n- It requires no Bonus Action.\n- It remains once per scene.\n\n---\n",
+          "summary": "At CL10:"
+        }
+      ],
+      "source_rules_text": "## CL10 — Golden Core Form\n\nAt CL10:\n\n- Qi Armor costs 1 Qi.\n- Choose one Golden Core Form.\n\nYou may replace the chosen Form after a successful CL15 breakthrough before using your CL15 Nascent Soul feature.\n\nAt CL17, your chosen Form becomes Perfected.\n\nAt CL20, choose a second Golden Core Form. Both Forms are Perfected.\n\n### Stable Golden Core\n\nWhen Initiative is rolled, if your current Qi is lower than your Proficiency Bonus, regain Qi until it equals your Proficiency Bonus.\n\nAt the start of your turn, if your current Qi is lower than your Proficiency Bonus, regain 1 Qi.\n\nOnce per round, when a hostile effect would reduce your current Qi, maximum Qi, or restored Qi, reduce that loss by your Proficiency Bonus.\n\nThis does not reduce Qi you willingly spend.\n\n#### Perfected Stable Golden Core\n\n- Initiative threshold becomes `2 × Proficiency Bonus`.\n- Start-of-turn recovery becomes 2 Qi.\n- Hostile Qi loss reduction becomes `2 × Proficiency Bonus`.\n\n### Circulating Golden Core\n\nOnce per turn, after you spend Qi on a feature that resolves successfully, choose one:\n\n- Move 5 feet without provoking Opportunity Attacks.\n- Shift your stance around one creature within your weapon’s reach without provoking an Opportunity Attack from that creature.\n- Gain Temporary Hit Points equal to your Proficiency Bonus.\n- Move your Domain Armament 10 feet.\n\nThis does not trigger from:\n\n- Refunded costs.\n- Invalid activations.\n- A cost paid solely to activate Circulating Golden Core.\n\n#### Perfected Circulating Golden Core\n\nChoose two different benefits.\n\n- Movement becomes 10 feet.\n- Temporary Hit Points become `2 × Proficiency Bonus`.\n- Domain Armament movement becomes 20 feet.\n\n### Golden Core Reservoir\n\n**Bonus Action**  \n**Limit:** Once per scene\n\nRegain Qi equal to:\n\n`Proficiency Bonus + Qi Cultivation key ability modifier`\n\n#### Perfected Golden Core Reservoir\n\nRegain:\n\n`2 × Proficiency Bonus + key ability modifier`\n\nIf you begin your turn with 0 Qi and Reservoir is unused:\n\n- Activate it before any other recovery.\n- It requires no Bonus Action.\n- It remains once per scene.\n\n---\n",
+      "effective_rules_text": "## CL10 — Golden Core Form\n\nAt CL10:\n\n- Qi Armor costs 1 Qi.\n- Choose one Golden Core Form.\n\nYou may replace the chosen Form after a successful CL15 breakthrough before using your CL15 Nascent Soul feature.\n\nAt CL17, your chosen Form becomes Perfected.\n\nAt CL20, choose a second Golden Core Form. Both Forms are Perfected.\n\n### Stable Golden Core\n\nWhen Initiative is rolled, if your current Qi is lower than your Proficiency Bonus, regain Qi until it equals your Proficiency Bonus.\n\nAt the start of your turn, if your current Qi is lower than your Proficiency Bonus, regain 1 Qi.\n\nOnce per round, when a hostile effect would reduce your current Qi, maximum Qi, or restored Qi, reduce that loss by your Proficiency Bonus.\n\nThis does not reduce Qi you willingly spend.\n\n#### Perfected Stable Golden Core\n\n- Initiative threshold becomes `2 × Proficiency Bonus`.\n- Start-of-turn recovery becomes 2 Qi.\n- Hostile Qi loss reduction becomes `2 × Proficiency Bonus`.\n\n### Circulating Golden Core\n\nOnce per turn, after you spend Qi on a feature that resolves successfully, choose one:\n\n- Move 5 feet without provoking Opportunity Attacks.\n- Shift your stance around one creature within your weapon’s reach without provoking an Opportunity Attack from that creature.\n- Gain Temporary Hit Points equal to your Proficiency Bonus.\n- Move your Domain Armament 10 feet.\n\nThis does not trigger from:\n\n- Refunded costs.\n- Invalid activations.\n- A cost paid solely to activate Circulating Golden Core.\n\n#### Perfected Circulating Golden Core\n\nChoose two different benefits.\n\n- Movement becomes 10 feet.\n- Temporary Hit Points become `2 × Proficiency Bonus`.\n- Domain Armament movement becomes 20 feet.\n\n### Golden Core Reservoir\n\n**Bonus Action**  \n**Limit:** Once per scene\n\nRegain Qi equal to:\n\n`Proficiency Bonus + Qi Cultivation key ability modifier`\n\n#### Perfected Golden Core Reservoir\n\nRegain:\n\n`2 × Proficiency Bonus + key ability modifier`\n\nIf you begin your turn with 0 Qi and Reservoir is unused:\n\n- Activate it before any other recovery.\n- It requires no Bonus Action.\n- It remains once per scene.\n\n---\n",
+      "components": [
+        {
+          "title": "Stable Golden Core",
+          "slug": "stable_golden_core",
+          "heading_level": 3,
+          "source_line": 675,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.golden_core_form.component.stable_golden_core"
+        },
+        {
+          "title": "Perfected Stable Golden Core",
+          "slug": "perfected_stable_golden_core",
+          "heading_level": 4,
+          "source_line": 685,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.golden_core_form.component.perfected_stable_golden_core"
+        },
+        {
+          "title": "Circulating Golden Core",
+          "slug": "circulating_golden_core",
+          "heading_level": 3,
+          "source_line": 691,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.golden_core_form.component.circulating_golden_core"
+        },
+        {
+          "title": "Perfected Circulating Golden Core",
+          "slug": "perfected_circulating_golden_core",
+          "heading_level": 4,
+          "source_line": 706,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.golden_core_form.component.perfected_circulating_golden_core"
+        },
+        {
+          "title": "Golden Core Reservoir",
+          "slug": "golden_core_reservoir",
+          "heading_level": 3,
+          "source_line": 714,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.golden_core_form.component.golden_core_reservoir"
+        },
+        {
+          "title": "Perfected Golden Core Reservoir",
+          "slug": "perfected_golden_core_reservoir",
+          "heading_level": 4,
+          "source_line": 723,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.golden_core_form.component.perfected_golden_core_reservoir"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.golden_core_efficiency",
+      "display_name": "Golden Core Efficiency",
+      "aliases": [],
+      "feature_kind": "resource_efficiency",
+      "minimum_cl": 11,
+      "granted_at_cl": [
+        11
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL11 — Golden Core Efficiency",
+          "source_line_start": 737,
+          "source_line_end": 760,
+          "source_markdown": "## CL11 — Golden Core Efficiency\n\nOnce per turn, reduce the Qi cost of one Qi-powered feature with a final cost of at least 2 Qi by 1.\n\nCost order:\n\n1. Base cost.\n2. Optional surcharges.\n3. Golden Core Efficiency.\n4. Later permitted modifiers.\n\nThe final cost cannot be lower than 1 through this feature.\n\nIt does not stack with another feature reducing the same use unless explicitly permitted.\n\nIt cannot reduce:\n\n- Post-resolution costs.\n- Permanent sacrifice.\n- Maximum-Qi reduction.\n- Non-Qi costs.\n\n---\n",
+          "summary": "Once per turn, reduce the Qi cost of one Qi-powered feature with a final cost of at least 2 Qi by 1."
+        }
+      ],
+      "source_rules_text": "## CL11 — Golden Core Efficiency\n\nOnce per turn, reduce the Qi cost of one Qi-powered feature with a final cost of at least 2 Qi by 1.\n\nCost order:\n\n1. Base cost.\n2. Optional surcharges.\n3. Golden Core Efficiency.\n4. Later permitted modifiers.\n\nThe final cost cannot be lower than 1 through this feature.\n\nIt does not stack with another feature reducing the same use unless explicitly permitted.\n\nIt cannot reduce:\n\n- Post-resolution costs.\n- Permanent sacrifice.\n- Maximum-Qi reduction.\n- Non-Qi costs.\n\n---\n",
+      "effective_rules_text": "## CL11 — Golden Core Efficiency\n\nOnce per turn, reduce the Qi cost of one Qi-powered feature with a final cost of at least 2 Qi by 1.\n\nCost order:\n\n1. Base cost.\n2. Optional surcharges.\n3. Golden Core Efficiency.\n4. Later permitted modifiers.\n\nThe final cost cannot be lower than 1 through this feature.\n\nIt does not stack with another feature reducing the same use unless explicitly permitted.\n\nIt cannot reduce:\n\n- Post-resolution costs.\n- Permanent sacrifice.\n- Maximum-Qi reduction.\n- Non-Qi costs.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament_link",
+      "display_name": "Domain Armament Link",
+      "aliases": [],
+      "feature_kind": "remote_origin_feature",
+      "minimum_cl": 13,
+      "granted_at_cl": [
+        13
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL13 — Domain Armament Link",
+          "source_line_start": 761,
+          "source_line_end": 821,
+          "source_markdown": "## CL13 — Domain Armament Link\n\nYour Domain Armament improves:\n\n- Control range becomes 60 feet.\n- Normal movement becomes 30 feet.\n- Domain Armament Attack uses CL13 damage.\n\n### Remote Technique Origin\n\nWhen activating a non-Self Qi Path, Subpath, or Sphere technique, spend 1 additional Qi to originate it from yourself or your Domain Armament.\n\nMeasure from the selected origin:\n\n- Range.\n- Line of sight.\n- Line of effect.\n- Cover.\n- Cones.\n- Lines.\n- Areas.\n- Touch range when the Armament is within 5 feet.\n\nRemote Technique Origin cannot transmit:\n\n- A consumed physical object.\n- A pill or potion that must enter the target’s body.\n- A physical talisman unless the Domain Armament carries it legally.\n- A weapon attack unless weapon delivery is authorized.\n- Direct hand manipulation.\n- A Self technique.\n- An aura explicitly centered on your body.\n\nIt is blocked by:\n\n- Total Cover.\n- A sealed Formation.\n- A spatial lock.\n- A planar boundary.\n- An effect explicitly blocking Qi transmission.\n\nA technique uses one origin unless it explicitly permits multiple origins.\n\n### Weapon-Delivered Remote Technique\n\nA floating bound weapon may make the required weapon attack when a Source Rule explicitly authorizes weapon delivery.\n\nDetermine from the floating weapon:\n\n- Attack range.\n- Line of sight.\n- Cover.\n- Struck point.\n- Technique origin.\n\nThe item must satisfy every weapon requirement.\n\nA sword cannot deliver a technique requiring a bow. A shield cannot deliver a piercing technique unless it has a legal piercing attack.\n\n---\n",
+          "summary": "Your Domain Armament improves:"
+        }
+      ],
+      "source_rules_text": "## CL13 — Domain Armament Link\n\nYour Domain Armament improves:\n\n- Control range becomes 60 feet.\n- Normal movement becomes 30 feet.\n- Domain Armament Attack uses CL13 damage.\n\n### Remote Technique Origin\n\nWhen activating a non-Self Qi Path, Subpath, or Sphere technique, spend 1 additional Qi to originate it from yourself or your Domain Armament.\n\nMeasure from the selected origin:\n\n- Range.\n- Line of sight.\n- Line of effect.\n- Cover.\n- Cones.\n- Lines.\n- Areas.\n- Touch range when the Armament is within 5 feet.\n\nRemote Technique Origin cannot transmit:\n\n- A consumed physical object.\n- A pill or potion that must enter the target’s body.\n- A physical talisman unless the Domain Armament carries it legally.\n- A weapon attack unless weapon delivery is authorized.\n- Direct hand manipulation.\n- A Self technique.\n- An aura explicitly centered on your body.\n\nIt is blocked by:\n\n- Total Cover.\n- A sealed Formation.\n- A spatial lock.\n- A planar boundary.\n- An effect explicitly blocking Qi transmission.\n\nA technique uses one origin unless it explicitly permits multiple origins.\n\n### Weapon-Delivered Remote Technique\n\nA floating bound weapon may make the required weapon attack when a Source Rule explicitly authorizes weapon delivery.\n\nDetermine from the floating weapon:\n\n- Attack range.\n- Line of sight.\n- Cover.\n- Struck point.\n- Technique origin.\n\nThe item must satisfy every weapon requirement.\n\nA sword cannot deliver a technique requiring a bow. A shield cannot deliver a piercing technique unless it has a legal piercing attack.\n\n---\n",
+      "effective_rules_text": "## CL13 — Domain Armament Link\n\nYour Domain Armament improves:\n\n- Control range becomes 60 feet.\n- Normal movement becomes 30 feet.\n- Domain Armament Attack uses CL13 damage.\n\n### Remote Technique Origin\n\nWhen activating a non-Self Qi Path, Subpath, or Sphere technique, spend 1 additional Qi to originate it from yourself or your Domain Armament.\n\nMeasure from the selected origin:\n\n- Range.\n- Line of sight.\n- Line of effect.\n- Cover.\n- Cones.\n- Lines.\n- Areas.\n- Touch range when the Armament is within 5 feet.\n\nRemote Technique Origin cannot transmit:\n\n- A consumed physical object.\n- A pill or potion that must enter the target’s body.\n- A physical talisman unless the Domain Armament carries it legally.\n- A weapon attack unless weapon delivery is authorized.\n- Direct hand manipulation.\n- A Self technique.\n- An aura explicitly centered on your body.\n\nIt is blocked by:\n\n- Total Cover.\n- A sealed Formation.\n- A spatial lock.\n- A planar boundary.\n- An effect explicitly blocking Qi transmission.\n\nA technique uses one origin unless it explicitly permits multiple origins.\n\n### Weapon-Delivered Remote Technique\n\nA floating bound weapon may make the required weapon attack when a Source Rule explicitly authorizes weapon delivery.\n\nDetermine from the floating weapon:\n\n- Attack range.\n- Line of sight.\n- Cover.\n- Struck point.\n- Technique origin.\n\nThe item must satisfy every weapon requirement.\n\nA sword cannot deliver a technique requiring a bow. A shield cannot deliver a piercing technique unless it has a legal piercing attack.\n\n---\n",
+      "components": [
+        {
+          "title": "Remote Technique Origin",
+          "slug": "remote_technique_origin",
+          "heading_level": 3,
+          "source_line": 769,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament_link.component.remote_technique_origin"
+        },
+        {
+          "title": "Weapon-Delivered Remote Technique",
+          "slug": "weapon_delivered_remote_technique",
+          "heading_level": 3,
+          "source_line": 804,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament_link.component.weapon_delivered_remote_technique"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.nascent_soul",
+      "display_name": "Nascent Soul",
+      "aliases": [],
+      "feature_kind": "major_transformation",
+      "minimum_cl": 15,
+      "granted_at_cl": [
+        15
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL15 — Nascent Soul",
+          "source_line_start": 822,
+          "source_line_end": 857,
+          "source_markdown": "## CL15 — Nascent Soul\n\nYour Nascent Soul is a refined autonomous Qi structure. It is not Spirit Awakening spiritual authority.\n\n### Second Defensive Discipline\n\nChoose a second Cultivated Response discipline.\n\n### Nascent Continuity\n\nAt the beginning of your turn, before other recovery, if you have 0 Qi:\n\n- Regain Qi equal to your Proficiency Bonus.\n- Use this once per scene.\n\nThis does not remove Exhaustion gained from reaching 0 Qi.\n\n### Independent Concentration\n\n**Reaction**  \n**Trigger:** You fail a Constitution saving throw to maintain a Qi-powered feature.  \n**Cost:** 1 Qi  \n**Limit:** Once per round\n\nAdd your Proficiency Bonus to the saving throw, potentially turning failure into success.\n\nThis is not saving throw proficiency.\n\n### Nascent Armament Conduction\n\nOnce per turn, use Remote Technique Origin without paying its 1-Qi surcharge.\n\nYour Domain Armament persists while you are Incapacitated, but ends if you become Unconscious.\n\n---\n",
+          "summary": "Your Nascent Soul is a refined autonomous Qi structure. It is not Spirit Awakening spiritual authority."
+        }
+      ],
+      "source_rules_text": "## CL15 — Nascent Soul\n\nYour Nascent Soul is a refined autonomous Qi structure. It is not Spirit Awakening spiritual authority.\n\n### Second Defensive Discipline\n\nChoose a second Cultivated Response discipline.\n\n### Nascent Continuity\n\nAt the beginning of your turn, before other recovery, if you have 0 Qi:\n\n- Regain Qi equal to your Proficiency Bonus.\n- Use this once per scene.\n\nThis does not remove Exhaustion gained from reaching 0 Qi.\n\n### Independent Concentration\n\n**Reaction**  \n**Trigger:** You fail a Constitution saving throw to maintain a Qi-powered feature.  \n**Cost:** 1 Qi  \n**Limit:** Once per round\n\nAdd your Proficiency Bonus to the saving throw, potentially turning failure into success.\n\nThis is not saving throw proficiency.\n\n### Nascent Armament Conduction\n\nOnce per turn, use Remote Technique Origin without paying its 1-Qi surcharge.\n\nYour Domain Armament persists while you are Incapacitated, but ends if you become Unconscious.\n\n---\n",
+      "effective_rules_text": "## CL15 — Nascent Soul\n\nYour Nascent Soul is a refined autonomous Qi structure. It is not Spirit Awakening spiritual authority.\n\n### Second Defensive Discipline\n\nChoose a second Cultivated Response discipline.\n\n### Nascent Continuity\n\nAt the beginning of your turn, before other recovery, if you have 0 Qi:\n\n- Regain Qi equal to your Proficiency Bonus.\n- Use this once per scene.\n\nThis does not remove Exhaustion gained from reaching 0 Qi.\n\n### Independent Concentration\n\n**Reaction**  \n**Trigger:** You fail a Constitution saving throw to maintain a Qi-powered feature.  \n**Cost:** 1 Qi  \n**Limit:** Once per round\n\nAdd your Proficiency Bonus to the saving throw, potentially turning failure into success.\n\nThis is not saving throw proficiency.\n\n### Nascent Armament Conduction\n\nOnce per turn, use Remote Technique Origin without paying its 1-Qi surcharge.\n\nYour Domain Armament persists while you are Incapacitated, but ends if you become Unconscious.\n\n---\n",
+      "components": [
+        {
+          "title": "Second Defensive Discipline",
+          "slug": "second_defensive_discipline",
+          "heading_level": 3,
+          "source_line": 826,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.nascent_soul.component.second_defensive_discipline"
+        },
+        {
+          "title": "Nascent Continuity",
+          "slug": "nascent_continuity",
+          "heading_level": 3,
+          "source_line": 830,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.nascent_soul.component.nascent_continuity"
+        },
+        {
+          "title": "Independent Concentration",
+          "slug": "independent_concentration",
+          "heading_level": 3,
+          "source_line": 839,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.nascent_soul.component.independent_concentration"
+        },
+        {
+          "title": "Nascent Armament Conduction",
+          "slug": "nascent_armament_conduction",
+          "heading_level": 3,
+          "source_line": 850,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.nascent_soul.component.nascent_armament_conduction"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.nine_heavens_gaze",
+      "display_name": "Nine Heavens Gaze",
+      "aliases": [],
+      "feature_kind": "sense_feature",
+      "minimum_cl": 17,
+      "granted_at_cl": [
+        17
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL17 — Nine Heavens Gaze",
+          "source_line_start": 858,
+          "source_line_end": 915,
+          "source_markdown": "## CL17 — Nine Heavens Gaze\n\n**Action**  \n**Cost:** 8 Qi  \n**Duration:** 1 hour\n\nGain:\n\n- Truesight 60 feet.\n- Qi Sensing range 120 feet.\n- Analyze Qi range 120 feet.\n- Physical materials no longer block Qi Sensing within 30 feet, except lead, artifact shielding, or explicit Qi sealing.\n- Perception of Formation lines, seals, projected Qi, possession links, transformations, Domain Armaments, and active cultivation routes.\n\n### Heavenly Analysis\n\n**Bonus Action**  \n**Limit:** Once per turn  \n**Range:** 120 feet\n\nChoose one active effect.\n\nLearn:\n\n- Exact Source CL.\n- Remaining duration.\n- Whether it requires Concentration.\n- Active tags.\n- Its Anchor, if any.\n- Its printed condition for ending or suppression.\n\nAn explicitly concealed effect whose Source CL exceeds yours requires a Cultivation Check against its save DC.\n\nOn failure:\n\n- You know that it is concealed.\n- You do not learn the details.\n- You cannot retry until it changes or a new scene begins.\n\nNine Heavens Gaze does not reveal:\n\n- Dormant abilities.\n- Future actions.\n- Memories.\n- Thoughts.\n- Exact Hit Points.\n- Non-active secrets.\n\n### Perfected Golden Core\n\nYour selected Golden Core Form becomes Perfected.\n\n### Domain Armament Damage\n\nDomain Armament Attack uses CL17 damage.\n\n---\n",
+          "summary": "Action Cost: 8 Qi Duration: 1 hour"
+        }
+      ],
+      "source_rules_text": "## CL17 — Nine Heavens Gaze\n\n**Action**  \n**Cost:** 8 Qi  \n**Duration:** 1 hour\n\nGain:\n\n- Truesight 60 feet.\n- Qi Sensing range 120 feet.\n- Analyze Qi range 120 feet.\n- Physical materials no longer block Qi Sensing within 30 feet, except lead, artifact shielding, or explicit Qi sealing.\n- Perception of Formation lines, seals, projected Qi, possession links, transformations, Domain Armaments, and active cultivation routes.\n\n### Heavenly Analysis\n\n**Bonus Action**  \n**Limit:** Once per turn  \n**Range:** 120 feet\n\nChoose one active effect.\n\nLearn:\n\n- Exact Source CL.\n- Remaining duration.\n- Whether it requires Concentration.\n- Active tags.\n- Its Anchor, if any.\n- Its printed condition for ending or suppression.\n\nAn explicitly concealed effect whose Source CL exceeds yours requires a Cultivation Check against its save DC.\n\nOn failure:\n\n- You know that it is concealed.\n- You do not learn the details.\n- You cannot retry until it changes or a new scene begins.\n\nNine Heavens Gaze does not reveal:\n\n- Dormant abilities.\n- Future actions.\n- Memories.\n- Thoughts.\n- Exact Hit Points.\n- Non-active secrets.\n\n### Perfected Golden Core\n\nYour selected Golden Core Form becomes Perfected.\n\n### Domain Armament Damage\n\nDomain Armament Attack uses CL17 damage.\n\n---\n",
+      "effective_rules_text": "## CL17 — Nine Heavens Gaze\n\n**Action**  \n**Cost:** 8 Qi  \n**Duration:** 1 hour\n\nGain:\n\n- Truesight 60 feet.\n- Qi Sensing range 120 feet.\n- Analyze Qi range 120 feet.\n- Physical materials no longer block Qi Sensing within 30 feet, except lead, artifact shielding, or explicit Qi sealing.\n- Perception of Formation lines, seals, projected Qi, possession links, transformations, Domain Armaments, and active cultivation routes.\n\n### Heavenly Analysis\n\n**Bonus Action**  \n**Limit:** Once per turn  \n**Range:** 120 feet\n\nChoose one active effect.\n\nLearn:\n\n- Exact Source CL.\n- Remaining duration.\n- Whether it requires Concentration.\n- Active tags.\n- Its Anchor, if any.\n- Its printed condition for ending or suppression.\n\nAn explicitly concealed effect whose Source CL exceeds yours requires a Cultivation Check against its save DC.\n\nOn failure:\n\n- You know that it is concealed.\n- You do not learn the details.\n- You cannot retry until it changes or a new scene begins.\n\nNine Heavens Gaze does not reveal:\n\n- Dormant abilities.\n- Future actions.\n- Memories.\n- Thoughts.\n- Exact Hit Points.\n- Non-active secrets.\n\n### Perfected Golden Core\n\nYour selected Golden Core Form becomes Perfected.\n\n### Domain Armament Damage\n\nDomain Armament Attack uses CL17 damage.\n\n---\n",
+      "components": [
+        {
+          "title": "Heavenly Analysis",
+          "slug": "heavenly_analysis",
+          "heading_level": 3,
+          "source_line": 872,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.nine_heavens_gaze.component.heavenly_analysis"
+        },
+        {
+          "title": "Perfected Golden Core",
+          "slug": "perfected_golden_core",
+          "heading_level": 3,
+          "source_line": 906,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.nine_heavens_gaze.component.perfected_golden_core"
+        },
+        {
+          "title": "Domain Armament Damage",
+          "slug": "domain_armament_damage",
+          "heading_level": 3,
+          "source_line": 910,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.nine_heavens_gaze.component.domain_armament_damage"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.perfected_golden_core",
+      "display_name": "Perfected Golden Core",
+      "aliases": [],
+      "feature_kind": "scaling_improvement",
+      "minimum_cl": 17,
+      "granted_at_cl": [
+        17
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "Perfected Golden Core",
+          "source_line_start": 906,
+          "source_line_end": 909,
+          "source_markdown": "### Perfected Golden Core\n\nYour selected Golden Core Form becomes Perfected.\n",
+          "summary": "Your selected Golden Core Form becomes Perfected."
+        }
+      ],
+      "source_rules_text": "### Perfected Golden Core\n\nYour selected Golden Core Form becomes Perfected.\n",
+      "effective_rules_text": "### Perfected Golden Core\n\nYour selected Golden Core Form becomes Perfected.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.domain_armament_damage_increase",
+      "display_name": "Domain Armament damage increase",
+      "aliases": [],
+      "feature_kind": "scaling_improvement",
+      "minimum_cl": 17,
+      "granted_at_cl": [
+        17
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "Domain Armament Damage",
+          "source_line_start": 910,
+          "source_line_end": 915,
+          "source_markdown": "### Domain Armament Damage\n\nDomain Armament Attack uses CL17 damage.\n\n---\n",
+          "summary": "Domain Armament Attack uses CL17 damage."
+        }
+      ],
+      "source_rules_text": "### Domain Armament Damage\n\nDomain Armament Attack uses CL17 damage.\n\n---\n",
+      "effective_rules_text": "### Domain Armament Damage\n\nDomain Armament Attack uses CL17 damage.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.immortal_of_qi",
+      "display_name": "Immortal of Qi",
+      "aliases": [],
+      "feature_kind": "capstone",
+      "minimum_cl": 20,
+      "granted_at_cl": [
+        20
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL20 — Immortal of Qi",
+          "source_line_start": 916,
+          "source_line_end": 988,
+          "source_markdown": "## CL20 — Immortal of Qi\n\n### Immortal Circulation\n\nAt the start of each of your turns, regain 5 Qi.\n\nThis functions in spiritually barren environments unless an effect explicitly suppresses Immortal circulation.\n\n### Permanent Nine Heavens Gaze\n\nNine Heavens Gaze is always active:\n\n- No Action required.\n- No Qi cost.\n- It remains suppressible.\n\n### Twin Domain Armaments\n\nYou may maintain two Domain Armaments.\n\nManifest or release both through the same Bonus Action for 1 Qi.\n\nEach may have:\n\n- A separate projected form.\n- A separate bound real item.\n- A separate damage type.\n- A separate mode.\n\nOnce during each of your turns, move both normally.\n\n#### Twin Assault\n\nWhen using your Bonus Action to attack:\n\n- Make one Domain Armament Attack with each Armament in Assault Mode.\n- Resolve them separately.\n- Once-per-turn riders apply once across both attacks unless explicitly stated otherwise.\n- A weapon-delivered technique applies to the first qualifying attack unless explicitly extended.\n- Neither attack can generate another Domain Armament Attack.\n\n#### Twin Guard\n\nTwo shield Armaments may protect two different creatures.\n\nThe same creature cannot add two shield bonuses from Twin Domain Armaments.\n\n#### Remote Origins\n\nChoose one Domain Armament as the origin of a technique unless it explicitly permits multiple origins.\n\n### Complete Cultivated Response\n\nLearn all three Defensive Disciplines.\n\n### Second Golden Core Form\n\nChoose a second Golden Core Form.\n\nBoth Forms are Perfected.\n\n### Immortal Physiology\n\nYou:\n\n- Do not age.\n- Cannot die from old age.\n- Do not require food, drink, air, or sleep.\n- Still require rests and Cultivation Sessions to recover features whose rules require them.\n\n---\n",
+          "summary": "At the start of each of your turns, regain 5 Qi."
+        }
+      ],
+      "source_rules_text": "## CL20 — Immortal of Qi\n\n### Immortal Circulation\n\nAt the start of each of your turns, regain 5 Qi.\n\nThis functions in spiritually barren environments unless an effect explicitly suppresses Immortal circulation.\n\n### Permanent Nine Heavens Gaze\n\nNine Heavens Gaze is always active:\n\n- No Action required.\n- No Qi cost.\n- It remains suppressible.\n\n### Twin Domain Armaments\n\nYou may maintain two Domain Armaments.\n\nManifest or release both through the same Bonus Action for 1 Qi.\n\nEach may have:\n\n- A separate projected form.\n- A separate bound real item.\n- A separate damage type.\n- A separate mode.\n\nOnce during each of your turns, move both normally.\n\n#### Twin Assault\n\nWhen using your Bonus Action to attack:\n\n- Make one Domain Armament Attack with each Armament in Assault Mode.\n- Resolve them separately.\n- Once-per-turn riders apply once across both attacks unless explicitly stated otherwise.\n- A weapon-delivered technique applies to the first qualifying attack unless explicitly extended.\n- Neither attack can generate another Domain Armament Attack.\n\n#### Twin Guard\n\nTwo shield Armaments may protect two different creatures.\n\nThe same creature cannot add two shield bonuses from Twin Domain Armaments.\n\n#### Remote Origins\n\nChoose one Domain Armament as the origin of a technique unless it explicitly permits multiple origins.\n\n### Complete Cultivated Response\n\nLearn all three Defensive Disciplines.\n\n### Second Golden Core Form\n\nChoose a second Golden Core Form.\n\nBoth Forms are Perfected.\n\n### Immortal Physiology\n\nYou:\n\n- Do not age.\n- Cannot die from old age.\n- Do not require food, drink, air, or sleep.\n- Still require rests and Cultivation Sessions to recover features whose rules require them.\n\n---\n",
+      "effective_rules_text": "## CL20 — Immortal of Qi\n\n### Immortal Circulation\n\nAt the start of each of your turns, regain 5 Qi.\n\nThis functions in spiritually barren environments unless an effect explicitly suppresses Immortal circulation.\n\n### Permanent Nine Heavens Gaze\n\nNine Heavens Gaze is always active:\n\n- No Action required.\n- No Qi cost.\n- It remains suppressible.\n\n### Twin Domain Armaments\n\nYou may maintain two Domain Armaments.\n\nManifest or release both through the same Bonus Action for 1 Qi.\n\nEach may have:\n\n- A separate projected form.\n- A separate bound real item.\n- A separate damage type.\n- A separate mode.\n\nOnce during each of your turns, move both normally.\n\n#### Twin Assault\n\nWhen using your Bonus Action to attack:\n\n- Make one Domain Armament Attack with each Armament in Assault Mode.\n- Resolve them separately.\n- Once-per-turn riders apply once across both attacks unless explicitly stated otherwise.\n- A weapon-delivered technique applies to the first qualifying attack unless explicitly extended.\n- Neither attack can generate another Domain Armament Attack.\n\n#### Twin Guard\n\nTwo shield Armaments may protect two different creatures.\n\nThe same creature cannot add two shield bonuses from Twin Domain Armaments.\n\n#### Remote Origins\n\nChoose one Domain Armament as the origin of a technique unless it explicitly permits multiple origins.\n\n### Complete Cultivated Response\n\nLearn all three Defensive Disciplines.\n\n### Second Golden Core Form\n\nChoose a second Golden Core Form.\n\nBoth Forms are Perfected.\n\n### Immortal Physiology\n\nYou:\n\n- Do not age.\n- Cannot die from old age.\n- Do not require food, drink, air, or sleep.\n- Still require rests and Cultivation Sessions to recover features whose rules require them.\n\n---\n",
+      "components": [
+        {
+          "title": "Immortal Circulation",
+          "slug": "immortal_circulation",
+          "heading_level": 3,
+          "source_line": 918,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.immortal_of_qi.component.immortal_circulation"
+        },
+        {
+          "title": "Permanent Nine Heavens Gaze",
+          "slug": "permanent_nine_heavens_gaze",
+          "heading_level": 3,
+          "source_line": 924,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.immortal_of_qi.component.permanent_nine_heavens_gaze"
+        },
+        {
+          "title": "Twin Domain Armaments",
+          "slug": "twin_domain_armaments",
+          "heading_level": 3,
+          "source_line": 932,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.immortal_of_qi.component.twin_domain_armaments"
+        },
+        {
+          "title": "Twin Assault",
+          "slug": "twin_assault",
+          "heading_level": 4,
+          "source_line": 947,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.immortal_of_qi.component.twin_assault"
+        },
+        {
+          "title": "Twin Guard",
+          "slug": "twin_guard",
+          "heading_level": 4,
+          "source_line": 957,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.immortal_of_qi.component.twin_guard"
+        },
+        {
+          "title": "Remote Origins",
+          "slug": "remote_origins",
+          "heading_level": 4,
+          "source_line": 963,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.immortal_of_qi.component.remote_origins"
+        },
+        {
+          "title": "Complete Cultivated Response",
+          "slug": "complete_cultivated_response",
+          "heading_level": 3,
+          "source_line": 967,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.immortal_of_qi.component.complete_cultivated_response"
+        },
+        {
+          "title": "Second Golden Core Form",
+          "slug": "second_golden_core_form",
+          "heading_level": 3,
+          "source_line": 971,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.immortal_of_qi.component.second_golden_core_form"
+        },
+        {
+          "title": "Immortal Physiology",
+          "slug": "immortal_physiology",
+          "heading_level": 3,
+          "source_line": 977,
+          "canonical_id": "tianxia.path.qi_cultivation.feature.immortal_of_qi.component.immortal_physiology"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.qi_cultivation.feature.second_golden_core_form",
+      "display_name": "Second Golden Core Form",
+      "aliases": [],
+      "feature_kind": "choice_feature",
+      "minimum_cl": 20,
+      "granted_at_cl": [
+        20
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "Second Golden Core Form",
+          "source_line_start": 971,
+          "source_line_end": 976,
+          "source_markdown": "### Second Golden Core Form\n\nChoose a second Golden Core Form.\n\nBoth Forms are Perfected.\n",
+          "summary": "Choose a second Golden Core Form."
+        }
+      ],
+      "source_rules_text": "### Second Golden Core Form\n\nChoose a second Golden Core Form.\n\nBoth Forms are Perfected.\n",
+      "effective_rules_text": "### Second Golden Core Form\n\nChoose a second Golden Core Form.\n\nBoth Forms are Perfected.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    }
+  ],
+  "counts": {
+    "progression_levels": 20,
+    "unique_feature_records": 19,
+    "feature_components": 42
+  },
+  "authority_notes": [
+    "The player Path chapter is the controlling source for the Path chassis and features.",
+    "The shared PHB Path chapter controls universal Path mathematics and multi-Path rules where applicable.",
+    "Indexes locate and structure rules but do not independently grant abilities or override source text.",
+    "The effective_rules_text field applies recorded authority overlays; source_rules_text preserves the source section verbatim."
+  ]
+}

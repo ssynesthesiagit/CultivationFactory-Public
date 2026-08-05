@@ -1,0 +1,55 @@
+{
+  "$id": "https://tianxia.local/schemas/compatibility-result-v0.6.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "activates_dormant_path_expression": {
+      "const": false
+    },
+    "grants_combat_action": {
+      "const": false
+    },
+    "grants_method": {
+      "const": false
+    },
+    "grants_path_ap": {
+      "const": false
+    },
+    "grants_resource_conversion": {
+      "const": false
+    },
+    "grants_sphere_or_talent": {
+      "const": false
+    },
+    "satisfies_method_acquisition": {
+      "const": false
+    },
+    "schema": {
+      "const": "Tianxia.MethodFoundationCompatibilityResult.v0.6"
+    },
+    "state": {
+      "enum": [
+        "NATURAL_AFFINITY",
+        "WORKABLE",
+        "WORKABLE_WITH_FRICTION",
+        "STRAINED",
+        "INCOMPATIBLE",
+        "CORRECTIVE_OPPORTUNITY",
+        "TRANSFORMATION_OPPORTUNITY",
+        "GM_REVIEW_REQUIRED"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "state",
+    "grants_path_ap",
+    "grants_resource_conversion",
+    "grants_sphere_or_talent",
+    "activates_dormant_path_expression",
+    "grants_method",
+    "grants_combat_action",
+    "satisfies_method_acquisition"
+  ],
+  "type": "object"
+}

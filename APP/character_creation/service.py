@@ -138,7 +138,7 @@ class CharacterCreationExecutionService:
         method_id = access_plan.get("method_id")
         required = (
             "schema", "method_id", "access_tier", "route_type", "route_label",
-            "source_reference", "route_commitment_sha256",
+            "source_reference", "source_route_sha256", "route_commitment_sha256",
             "method_registry_commitment_sha256", "status",
         )
         missing = [field for field in required if access_plan.get(field) in (None, "", {})]
@@ -153,7 +153,7 @@ class CharacterCreationExecutionService:
             key: deepcopy(access_plan[key])
             for key in (
                 "method_id", "access_tier", "route_type", "route_label",
-                "owner_annotation", "source_reference", "route_commitment_sha256",
+                "owner_annotation", "source_reference", "source_route_sha256", "route_commitment_sha256",
                 "method_registry_commitment_sha256",
             )
         }
@@ -290,8 +290,29 @@ class CharacterCreationExecutionService:
         }
         if revision_request:
             request["revision_request"] = deepcopy(revision_request)
-        request["request_sha256"] = sha256_json(request)
+        request["request_sha256"] = self.request_payload_sha256(request)
         return request
+
+    @staticmethod
+    def canonical_request_payload(request: dict[str, Any]) -> dict[str, Any]:
+        """Return the non-circular payload covered by request_sha256.
+
+        Transport/run commitments are deliberately external to this payload.  In
+        particular, start() adds the idempotency binding only after the canonical
+        request identity exists; validators must therefore exclude it too.
+        """
+        payload = deepcopy(request)
+        payload.pop("request_sha256", None)
+        payload.pop("idempotency_binding_sha256", None)
+        return payload
+
+    @classmethod
+    def request_payload_bytes(cls, request: dict[str, Any]) -> bytes:
+        return canonical_json(cls.canonical_request_payload(request)).encode("utf-8")
+
+    @classmethod
+    def request_payload_sha256(cls, request: dict[str, Any]) -> str:
+        return sha256_bytes(cls.request_payload_bytes(request))
 
     @staticmethod
     def _deterministic_zip(entries: dict[str, bytes]) -> bytes:
@@ -304,7 +325,7 @@ class CharacterCreationExecutionService:
                 archive.writestr(info, entries[name])
         return output.getvalue()
 
-    def complete_request_zip(self, run_id: str) -> tuple[str, bytes]:
+    def _complete_request_package(self, run_id: str) -> dict[str, Any]:
         run = self.get(run_id)
         request = deepcopy(run["request"])
         response_schema = {
@@ -337,22 +358,42 @@ class CharacterCreationExecutionService:
         entries["SHA256SUMS.txt"] = "".join(
             f"{sha256_bytes(entries[name])}  {name}\n" for name in sorted(entries)
         ).encode("ascii")
-        return (
-            f"CG1_COMPLETE_REQUEST_{run['project_id']}_{request['request_sha256'][:12]}.zip",
-            self._deterministic_zip(entries),
-        )
+        filename = f"CG1_COMPLETE_REQUEST_{run['project_id']}_{request['request_sha256'][:12]}.zip"
+        member_inventory = [
+            {"name": name, "bytes": len(entries[name]), "sha256": sha256_bytes(entries[name])}
+            for name in sorted(entries)
+        ]
+        content_set_sha256 = sha256_json(member_inventory)
+        payload = self._deterministic_zip(entries)
+        return {
+            "filename": filename,
+            "payload": payload,
+            "request_payload_sha256": self.request_payload_sha256(request),
+            "member_inventory": member_inventory,
+            "content_set_sha256": content_set_sha256,
+            "final_zip_sha256": sha256_bytes(payload),
+        }
+
+    def complete_request_zip(self, run_id: str) -> tuple[str, bytes]:
+        package = self._complete_request_package(run_id)
+        return package["filename"], package["payload"]
 
     def complete_request_save_receipt(self, run_id: str) -> dict[str, Any]:
         """Return the bounded server-owned identity needed by native Save As."""
         run = self.get(run_id)
         request = run["request"]
-        filename = f"CG1_COMPLETE_REQUEST_{run['project_id']}_{request['request_sha256'][:12]}.zip"
+        package = self._complete_request_package(run_id)
         return {
-            "schema": "TianxiaFoundry.CompleteRequestSaveReceipt.v1",
+            "schema": "TianxiaFoundry.CompleteRequestSaveReceipt.v2",
             "run_id": run["run_id"],
             "project_id": run["project_id"],
             "starting_revision": run["starting_revision"],
-            "filename": filename,
+            "filename": package["filename"],
+            "request_payload_sha256": package["request_payload_sha256"],
+            "content_set_sha256": package["content_set_sha256"],
+            "final_zip_sha256": package["final_zip_sha256"],
+            "final_zip_bytes": len(package["payload"]),
+            "member_inventory": package["member_inventory"],
             "request": {
                 "request_sha256": request["request_sha256"],
                 "content_lock_hash": request["content_lock_hash"],
@@ -653,7 +694,6 @@ class CharacterCreationExecutionService:
             settings=Settings(root_dir=s.root_dir,data_dir=data,db_path=data/s.db_path.name,inbox_dir=data/"inbox",exports_dir=data/"exports",packs_dir=data/"content_packs",vendor_dir=data/"vendor",logs_dir=data/"logs",backups_dir=data/"backups",security_dir=data/"security",factory_zip=s.factory_zip,fixture_path=s.fixture_path)
             scratch_db=Database(settings); scratch_db.migrate(); services=self._scratch_services(scratch_db)
             stage1=services["stage1"]
-            method_access_receipt = self._materialize_method_hard_lock(run, scratch_db, phase="scratch_compile")
             s1=plan["stage1_response"]; text=s1 if isinstance(s1,str) else canonical_json(s1)
             attempt=stage1.validate_response(
                 run["request"]["stage1_prompt"]["prompt_id"],
@@ -664,6 +704,7 @@ class CharacterCreationExecutionService:
             if v.get("valid") is False or v.get("errors") or v.get("blockers"):
                 raise FoundryError("CG1_STAGE1_INVALID","Stage 1 validation rejected the plan.",details=v)
             stage1_commit=stage1.approve_and_commit(attempt.get("attempt_id"),self.owner_principal)
+            method_access_receipt = self._materialize_method_hard_lock(run, scratch_db, phase="scratch_compile")
             stage2_validation,stage2_commit=self._stage2_commit(
                 services["stage2"], deepcopy(plan["stage2_proposal"]), self.owner_principal,
                 creation_run=run, phase="scratch_compile",
@@ -1311,7 +1352,6 @@ class CharacterCreationExecutionService:
     def _execute_live(self, run: dict[str,Any], plan: dict[str,Any], fail_after: str|None=None) -> dict[str,Any]:
         choice_snapshot=self._require_frozen_choice_snapshot(run)
         svc=self._live_pipeline(); outputs={}
-        outputs["method_access"] = self._materialize_method_hard_lock(run, self.db, phase="finalization")
         text=plan["stage1_response"] if isinstance(plan["stage1_response"],str) else canonical_json(plan["stage1_response"])
         attempt=svc["stage1"].validate_response(
             run["request"]["stage1_prompt"]["prompt_id"],
@@ -1319,6 +1359,7 @@ class CharacterCreationExecutionService:
             prior_attempt_id=run["transport"].get("prior_attempt_id"),
         )
         outputs["stage1"]=svc["stage1"].approve_and_commit(attempt.get("attempt_id"),self.owner_principal)
+        outputs["method_access"] = self._materialize_method_hard_lock(run, self.db, phase="finalization")
         if fail_after=="stage1": raise RuntimeError("forced failure after stage1")
         outputs["stage2_validation"],outputs["stage2"]=self._stage2_commit(
             svc["stage2"], deepcopy(plan["stage2_proposal"]), self.owner_principal,

@@ -7,6 +7,7 @@ import re
 import unicodedata
 import zipfile
 from collections import Counter, defaultdict
+from copy import deepcopy
 from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Iterable
@@ -1500,6 +1501,62 @@ def build(source_root: Path, output_root: Path) -> dict[str, Any]:
 
     background_routes = load_prior(source_root, "background_origin_talent_routes.v1.json")["records"]
     raw_base_abilities = [row for row in old_mixed if row["cat1_classification"] == "BASE_SPHERE_ABILITY"]
+    # Some exact compendium base-ability headings entered CAT1 as confirmed
+    # non-Talents before automatic Sphere components had a dedicated runtime
+    # projection.  Promote only rows whose source path explicitly places the
+    # heading under a Base ... Abilities section, then bind the complete exact
+    # source block.  This is source metadata, never a name-only inference.
+    explicit_base_rows = [
+        row for row in old_mixed
+        if row["cat1_classification"] != "BASE_SPHERE_ABILITY"
+        and any(re.search(r"(?i)::\s*Base(?:\s+Sphere|\s+[A-Za-z][A-Za-z -]*)?\s+Abilities\s*>", ref) for ref in row.get("source_refs") or [])
+    ]
+    sphere_bounds: dict[str, tuple[int, int]] = {}
+    for index, sphere_heading in enumerate(spheres):
+        sphere_name = sphere_heading.title.removeprefix("Sphere of ").strip()
+        sphere_bounds[sphere_name] = (
+            sphere_heading.token_index,
+            spheres[index + 1].token_index if index + 1 < len(spheres) else len(tokens),
+        )
+    for raw in explicit_base_rows:
+        bounds = sphere_bounds.get(raw.get("source_label") or "")
+        matching_headings = [
+            heading for heading in headings
+            if bounds and bounds[0] < heading.token_index < bounds[1]
+            and normalize(heading.title) == normalize(raw["display_name"])
+        ]
+        if len(matching_headings) != 1:
+            continue
+        heading = matching_headings[0]
+        exact_text, description, end_line, end_column, _ = source_block(tokens, headings, heading)
+        labels: dict[str, str] = {}
+        for line in exact_text.splitlines()[1:]:
+            match = re.match(r"^([A-Za-z][A-Za-z /-]{1,40}):\s*(.+)$", line.strip())
+            if match:
+                labels[normalize(match.group(1))] = match.group(2).strip()
+        narrative = [
+            line.strip() for line in exact_text.splitlines()[1:]
+            if line.strip() and not re.match(r"^[A-Za-z][A-Za-z /-]{1,40}:\s*", line.strip())
+        ]
+        scaling = [line for line in narrative if re.search(r"(?i)\bAt CL\s+\d+", line)]
+        payload = {key: deepcopy(value) for key, value in raw.items() if key != "record_commitment_sha256"}
+        payload.update({
+            "cat1_classification": "BASE_SPHERE_ABILITY",
+            "qa2_prior_classification": "sphere_base_ability",
+            "reason": f"Exact source path places this heading under Base Abilities at authenticated compendium line {heading.line}.",
+            "full_description": exact_text,
+            "action_type": labels.get(normalize("Action Type")),
+            "factory_combat_bucket": labels.get(normalize("Factory Combat Bucket")),
+            "factory_routing": labels.get(normalize("Factory Routing")),
+            "range": labels.get(normalize("Range")), "cost": labels.get(normalize("Cost")),
+            "target": labels.get(normalize("Target")), "trigger": labels.get(normalize("Trigger")),
+            "use_limit": labels.get(normalize("Use Limit")),
+            "effect": "\n".join(narrative), "scaling": scaling,
+            "tags": sorted(set([str(raw.get("packet_type") or "source_verified"), "automatic_sphere_component"])),
+            "source_provenance": source_provenance(heading.line, heading.column, f"Sphere of {raw['source_label']} > Base Abilities > {raw['display_name']}", exact_text=exact_text),
+            "source_block_end_line": end_line, "source_block_end_column": end_column,
+        })
+        raw_base_abilities.append(payload)
     base_alias_source = "TAL_DARK_DARKNESS"
     base_alias_target = "DARK_BASE_DARKNESS"
     base_abilities: list[dict[str, Any]] = []

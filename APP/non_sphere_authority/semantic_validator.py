@@ -105,6 +105,16 @@ class NonSphereSemanticStateValidator:
                     minimum_cl = self.service.subpath_minimum_cl(choice)
                     if int(path.get("attainment") or 0) < minimum_cl:
                         cause = {"code": "SUBPATH_MINIMUM_CL_NO_LONGER_MET", "minimum_cl": minimum_cl, "attainment": path.get("attainment")}
+                    elif (choice.get("access") or {}).get("access_source_record_required") and not self.service.has_exact_access_record(
+                        records,
+                        "subpath_access",
+                        selection_id=selection_id,
+                        path_id=path["path_id"],
+                    ):
+                        cause = {
+                            "code": "SUBPATH_EXACT_ACCESS_NO_LONGER_PRESENT",
+                            "selection_id": selection_id,
+                        }
                 if cause:
                     invalidation = {
                         "code": "DEPENDENT_CHOICE_INVALIDATED",

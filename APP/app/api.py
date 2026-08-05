@@ -1255,6 +1255,10 @@ def create_app(
             ordinary_talent_ids=body.ordinary_talent_ids,
         )
 
+    @app.post("/api/character-builder/projects/{project_id}/normal-first-cycle-catalog-choice-lock")
+    def character_builder_normal_first_cycle_catalog_choice_lock(project_id: str) -> dict[str, Any]:
+        return character_builder.commit_normal_first_cycle_catalog_choices(project_id)
+
     @app.get("/api/character-builder/projects/{project_id}/lifecycle")
     def character_builder_lifecycle(project_id: str) -> dict[str, Any]:
         return projects.builder_lifecycle(project_id)
@@ -1375,9 +1379,15 @@ def create_app(
     def owner_artifact_stage(body: OwnerArtifactStageRequest) -> dict[str, Any]:
         kind = body.artifact_kind
         if kind == "chat_request":
-            if not body.prompt_id:
-                raise FoundryError("OWNER_ARTIFACT_PROMPT_REQUIRED", "Prepare a Stage 1 request before staging the Chat request ZIP.", status_code=409)
-            result = stage1.save_prompt_file(body.prompt_id, zipped=True)
+            prompt_id = body.prompt_id
+            if not prompt_id:
+                if not body.project_id:
+                    raise FoundryError("OWNER_ARTIFACT_PROJECT_REQUIRED", "Select a character project first.", status_code=409)
+                prompt_id = stage1.prepare_prompt(body.project_id)["prompt_id"]
+            prompt = stage1.get_prompt(prompt_id)
+            if body.project_id and prompt["project_id"] != body.project_id:
+                raise FoundryError("OWNER_ARTIFACT_PROJECT_PROMPT_MISMATCH", "The Stage 1 request does not belong to the selected project.", status_code=409)
+            result = stage1.save_prompt_file(prompt_id, zipped=True, reuse_existing=True)
             source = Path(result["path"]).resolve()
         elif kind == "project_backup":
             if not body.project_id:
@@ -1585,7 +1595,14 @@ def create_app(
     @app.get("/api/character-creation/runs/{run_id}/complete-request.zip")
     def character_creation_complete_request_zip(run_id: str):
         filename, payload = character_creation.complete_request_zip(run_id)
-        return Response(content=payload, media_type="application/zip", headers={"Content-Disposition": f'attachment; filename="{filename}"'})
+        receipt = character_creation.complete_request_save_receipt(run_id)
+        return Response(content=payload, media_type="application/zip", headers={
+            "Content-Disposition": f'attachment; filename="{filename}"',
+            "X-Tianxia-Request-Payload-SHA256": receipt["request_payload_sha256"],
+            "X-Tianxia-Content-Set-SHA256": receipt["content_set_sha256"],
+            "X-Tianxia-Final-Zip-SHA256": receipt["final_zip_sha256"],
+            "X-Tianxia-Run-Id": receipt["run_id"],
+        })
 
     @app.get("/api/character-creation/runs/{run_id}/complete-request-save-receipt")
     def character_creation_complete_request_save_receipt(run_id: str) -> dict[str, Any]:

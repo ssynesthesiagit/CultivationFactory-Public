@@ -1,0 +1,1054 @@
+{
+  "schema_version": "HF05ZVK-R1F.PathIndex.P2A.v1",
+  "index_release": "Phase 2A — Machine-Readable Path Indexes",
+  "canonical_id": "tianxia.path.body_refining",
+  "display_name": "Body Refining",
+  "publication_revision": "R8",
+  "publication_status": "current_canonical_player_path",
+  "source": {
+    "factory_path": "09_RULES/Source_Text/Paths/Body/Tianxia_Body_Refining_Player_Path_Chapter_R8.md",
+    "corpus_path": "Canonical/Paths/Body/Tianxia_Body_Refining_Player_Path_Chapter_R8.md",
+    "sha256": "774213817c938f9eb00a58e432b85feb32872a12b723b60ea1a77cefedc12186",
+    "bytes": 35072,
+    "line_count": 706
+  },
+  "path_profile": {
+    "key_ability": {
+      "options": [
+        "Constitution"
+      ],
+      "selection_timing": "fixed",
+      "modifier_label": "Constitution modifier"
+    },
+    "hit_die": "d12",
+    "cultivation_points": "Stamina",
+    "primary_roles": "Durable martial combatant, grappler, frontline protector, mobile physical threat",
+    "saving_throw_proficiencies": "None",
+    "armor_training": "Light armor, medium armor, shields",
+    "weapon_training": "Simple weapons, martial weapons",
+    "skills": "Choose two: Acrobatics, Athletics, Intimidation, Perception, Survival"
+  },
+  "cultivation_math": {
+    "save_dc": "8 + Proficiency Bonus + Constitution modifier",
+    "attack_modifier": "Proficiency Bonus + Constitution modifier",
+    "cultivation_check": "d20 + Proficiency Bonus + Constitution modifier",
+    "source_section": {
+      "source_heading": "Cultivation Mathematics",
+      "source_line_start": 101,
+      "source_line_end": 110,
+      "source_markdown": "## Cultivation Mathematics\n\n**Cultivation Save DC:** `8 + Proficiency Bonus + Constitution modifier`\n\n**Cultivation Attack Modifier:** `Proficiency Bonus + Constitution modifier`\n\n**Cultivation Check:** `d20 + Proficiency Bonus + Constitution modifier`\n\n---\n",
+      "summary": "Cultivation Save DC: 8 + Proficiency Bonus + Constitution modifier"
+    }
+  },
+  "resource_rules": {
+    "canonical_id": "tianxia.resource.stamina",
+    "name": "Stamina",
+    "maximum_formula": "Body Refining CL × Constitution modifier",
+    "minimum_formula": null,
+    "short_rest": {
+      "amount": "half maximum Stamina, rounded down",
+      "limit": "twice between long rests"
+    },
+    "long_rest": {
+      "amount": "all missing Stamina",
+      "limit": "none beyond completing the rest"
+    },
+    "full_cultivation_session": {
+      "amount": "all missing Stamina",
+      "duration": "2 uninterrupted hours",
+      "limit": "once per long rest unless an explicit Source Rule states otherwise"
+    },
+    "zero_consequence": "When current Stamina is reduced from above 0 to exactly 0, gain 1 level of Exhaustion.",
+    "source_section": {
+      "source_heading": "Stamina",
+      "source_line_start": 111,
+      "source_line_end": 164,
+      "source_markdown": "# Stamina\n\nA Body Refiner's Cultivation Points are called **Stamina**.\n\nStamina represents the body's ability to exert cultivated force through physical conditioning, pain tolerance, reinforced flesh, hardened bone, refined blood, controlled breathing, meridian circulation, and supernatural bodily exertion.\n\n## Maximum Stamina\n\nYour maximum Stamina equals:\n\n`Body Refining CL x Constitution modifier`\n\nOnly a Source Rule that explicitly modifies maximum Cultivation Points changes this amount.\n\n## Spending Stamina\n\nYou spend Stamina when a feature says that you do.\n\nUnless a feature states otherwise:\n\n- Stamina is spent when the feature is activated.\n- You cannot activate a feature without enough Stamina to pay its cost.\n- Current Stamina cannot exceed maximum Stamina.\n- A feature that fails because its declared target was invalid does not resolve.\n- Whether its cost is spent follows the feature's printed cost timing.\n\n## Reaching 0 Stamina\n\nWhen your current Stamina is reduced from a value above 0 to exactly 0, you gain 1 level of Exhaustion.\n\nIf you later regain Stamina and are reduced to 0 again, this consequence can occur again.\n\nBeginning a scene at 0 Stamina does not trigger another level of Exhaustion by itself.\n\n## Recovering Stamina\n\n### Short Rest\n\nDuring a short rest, you may recover half your maximum Stamina, rounded down.\n\nYou can use this short-rest recovery twice between long rests.\n\n### Long Rest\n\nCompleting a long rest restores all missing Stamina.\n\n### Full Cultivation Session\n\nA full Cultivation Session requires 2 uninterrupted hours.\n\nCompleting one restores all missing Stamina. You can receive this full restoration from one Cultivation Session per long rest unless another Source Rule states otherwise.\n\n---\n",
+      "summary": "A Body Refiner's Cultivation Points are called Stamina."
+    }
+  },
+  "source_cl_rules": {
+    "normal_effective_cl": "Body Refining CL",
+    "default_source_cl": "effective Body Refining CL",
+    "key_rule": "Source CL determines authority and interaction; it does not replace printed attacks, saves, costs, Anchors, or recovery.",
+    "source_section": {
+      "source_heading": "Effective CL and Source CL",
+      "source_line_start": 68,
+      "source_line_end": 71,
+      "source_markdown": "# Effective CL and Source CL\n\nYour normal effective CL is your Body Refining CL. Realm Suppression or another explicit rule can lower the effective CL used by a feature. Source CL determines authority and interaction; it does not replace attack rolls, saving throws, Stamina costs, Asset profiles, injury procedures, or recovery procedures printed by the Source Rule.\n",
+      "summary": "Your normal effective CL is your Body Refining CL. Realm Suppression or another explicit rule can lower the effective CL used by a feature. Source CL determines authority and interaction; it does not replace attack rolls, saving throws, Stamina costs, Asset profiles, injury procedures, or recovery procedures printed by the Source Rule."
+    }
+  },
+  "realm_suppression": {
+    "heading": "Realm Suppression — Body Summary",
+    "suppresses": [
+      "features gained above suppressed CL",
+      "higher-CL scaling where lower versions exist",
+      "states granted solely by unavailable features"
+    ],
+    "preserves": [
+      "maximum Hit Points",
+      "Hit Dice",
+      "maximum Stamina",
+      "permanent anatomy",
+      "passive bodily durability unless expressly suppressed",
+      "existing Foundation unless expressly suppressed",
+      "existing injuries and severance"
+    ],
+    "special": [
+      "Transformations, stances, and projected bodily Assets granted solely by unavailable features become suppressed rather than destroyed.",
+      "Suppression does not heal or reconstruct anatomy or Assets."
+    ],
+    "source_section": {
+      "source_heading": "Realm Suppression — Body Summary",
+      "source_line_start": 580,
+      "source_line_end": 594,
+      "source_markdown": "# Realm Suppression — Body Summary\n\nUse the universal Realm Suppression procedure unless an explicit Body Refining Source Rule states otherwise.\n\n- Use the suppressed Proficiency Bonus and effective CL for attacks, saving throw DCs, scaling, Source CL, and feature access.\n- You cannot activate a Body Refining feature gained above the suppressed CL.\n- A transformation, stance, projected bodily Asset, or other state granted solely by an unavailable feature is suppressed for the duration rather than destroyed.\n- Maximum Hit Points, Hit Dice, maximum Stamina, and permanent anatomy are not recalculated solely because of Realm Suppression.\n- Passive bodily durability and an existing Foundation are not automatically removed. A Source Rule that suppresses a named feature, bodily system, transformation, Foundation benefit, or complete Body Refining cultivation applies only to the authority it expressly states.\n- A suppressed severed limb, organ, mutation, or embodied Asset is not healed or reconstructed merely because its feature is unavailable.\n\nThe Body Refining GM Authority module governs collisions involving complete bodily suppression, Foundation damage, destroyed cultivation systems, altered anatomy, and reconstruction.\n\n---\n",
+      "summary": "Use the universal Realm Suppression procedure unless an explicit Body Refining Source Rule states otherwise."
+    }
+  },
+  "realm_integration": [
+    {
+      "realm": "Mortal",
+      "cl_range": "1-4",
+      "expression": "Iron Fist, Stomping Step, Stamina Guard, initial Subpath"
+    },
+    {
+      "realm": "Foundation",
+      "cl_range": "5-9",
+      "expression": "Extra Attack, Body Tempering, refined cultivation attacks, reinforced meridians"
+    },
+    {
+      "realm": "Core Formation",
+      "cl_range": "10-14",
+      "expression": "Core Tempering Expression, three attacks, Indomitable Body"
+    },
+    {
+      "realm": "Nascent Soul",
+      "cl_range": "15-19",
+      "expression": "Blood Pump, perfected circulation, four attacks, Heavenly Fist"
+    },
+    {
+      "realm": "Immortal",
+      "cl_range": "20",
+      "expression": "Immortal regeneration, bodily reconstruction, second Core Tempering Expression"
+    }
+  ],
+  "progression": [
+    {
+      "cl": 1,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.tempered_response",
+          "display_name": "Tempered Response"
+        },
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.unarmored_defense",
+          "display_name": "Unarmored Defense"
+        },
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.iron_fist",
+          "display_name": "Iron Fist"
+        },
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.stomping_step",
+          "display_name": "Stomping Step"
+        }
+      ]
+    },
+    {
+      "cl": 2,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.stamina_guard",
+          "display_name": "Stamina Guard"
+        }
+      ]
+    },
+    {
+      "cl": 3,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.body_refining_subpath",
+          "display_name": "Body Refining Subpath"
+        }
+      ]
+    },
+    {
+      "cl": 4,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 5,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.extra_attack",
+          "display_name": "Extra Attack"
+        },
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.body_tempering",
+          "display_name": "Body Tempering"
+        },
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.refined_iron_fist",
+          "display_name": "Refined Iron Fist"
+        }
+      ]
+    },
+    {
+      "cl": 6,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.subpath_feature",
+          "display_name": "Subpath Feature"
+        }
+      ]
+    },
+    {
+      "cl": 7,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.meridian_reinforcement",
+          "display_name": "Meridian Reinforcement"
+        }
+      ]
+    },
+    {
+      "cl": 8,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 9,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.iron_voice",
+          "display_name": "Iron Voice"
+        }
+      ]
+    },
+    {
+      "cl": 10,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.core_tempering_expression",
+          "display_name": "Core Tempering Expression"
+        },
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.subpath_feature",
+          "display_name": "Subpath Feature"
+        }
+      ]
+    },
+    {
+      "cl": 11,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.extra_attack_improvement",
+          "display_name": "Extra Attack Improvement"
+        }
+      ]
+    },
+    {
+      "cl": 12,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 13,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.indomitable_body",
+          "display_name": "Indomitable Body"
+        }
+      ]
+    },
+    {
+      "cl": 14,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.subpath_feature",
+          "display_name": "Subpath Feature"
+        }
+      ]
+    },
+    {
+      "cl": 15,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.blood_pump",
+          "display_name": "Blood Pump"
+        }
+      ]
+    },
+    {
+      "cl": 16,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 17,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.extra_attack_improvement",
+          "display_name": "Extra Attack Improvement"
+        },
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.heavenly_fist",
+          "display_name": "Heavenly Fist"
+        },
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.perfected_core_tempering",
+          "display_name": "Perfected Core Tempering"
+        }
+      ]
+    },
+    {
+      "cl": 18,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.subpath_feature",
+          "display_name": "Subpath Feature"
+        }
+      ]
+    },
+    {
+      "cl": 19,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 20,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.immortal_body",
+          "display_name": "Immortal Body"
+        },
+        {
+          "canonical_id": "tianxia.path.body_refining.feature.second_core_tempering_expression",
+          "display_name": "Second Core Tempering Expression"
+        }
+      ]
+    }
+  ],
+  "features": [
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.tempered_response",
+      "display_name": "Tempered Response",
+      "aliases": [],
+      "feature_kind": "defensive_discipline",
+      "minimum_cl": 1,
+      "granted_at_cl": [
+        1
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL1 - Tempered Response",
+          "source_line_start": 207,
+          "source_line_end": 236,
+          "source_markdown": "## CL1 - Tempered Response\n\nBody Refiners do not receive saving-throw proficiencies from their Path. Instead, they cultivate an active physical response against danger.\n\nChoose one Defensive Discipline.\n\n### Rooted Frame\n\nYour chosen saving throw is Strength.\n\n### Flowing Frame\n\nYour chosen saving throw is Dexterity.\n\n### Enduring Frame\n\nYour chosen saving throw is Constitution.\n\nWhen you fail a saving throw using your chosen ability, you may spend 1 Stamina to add your Proficiency Bonus to the result, potentially turning the failure into a success.\n\n- No action is required.\n- You may use it once per round.\n- You may use it after learning that the saving throw failed.\n- You may use it only once on the same saving throw.\n- This bonus is not saving-throw proficiency.\n- It does not stack with saving-throw proficiency from another source.\n- It cannot modify death saving throws, breakthrough checks, training checks, or another roll that is not a saving throw.\n\nYou gain a second Defensive Discipline through Indomitable Body at CL13.\n",
+          "summary": "Body Refiners do not receive saving-throw proficiencies from their Path. Instead, they cultivate an active physical response against danger."
+        }
+      ],
+      "source_rules_text": "## CL1 - Tempered Response\n\nBody Refiners do not receive saving-throw proficiencies from their Path. Instead, they cultivate an active physical response against danger.\n\nChoose one Defensive Discipline.\n\n### Rooted Frame\n\nYour chosen saving throw is Strength.\n\n### Flowing Frame\n\nYour chosen saving throw is Dexterity.\n\n### Enduring Frame\n\nYour chosen saving throw is Constitution.\n\nWhen you fail a saving throw using your chosen ability, you may spend 1 Stamina to add your Proficiency Bonus to the result, potentially turning the failure into a success.\n\n- No action is required.\n- You may use it once per round.\n- You may use it after learning that the saving throw failed.\n- You may use it only once on the same saving throw.\n- This bonus is not saving-throw proficiency.\n- It does not stack with saving-throw proficiency from another source.\n- It cannot modify death saving throws, breakthrough checks, training checks, or another roll that is not a saving throw.\n\nYou gain a second Defensive Discipline through Indomitable Body at CL13.\n",
+      "effective_rules_text": "## CL1 - Tempered Response\n\nBody Refiners do not receive saving-throw proficiencies from their Path. Instead, they cultivate an active physical response against danger.\n\nChoose one Defensive Discipline.\n\n### Rooted Frame\n\nYour chosen saving throw is Strength.\n\n### Flowing Frame\n\nYour chosen saving throw is Dexterity.\n\n### Enduring Frame\n\nYour chosen saving throw is Constitution.\n\nWhen you fail a saving throw using your chosen ability, you may spend 1 Stamina to add your Proficiency Bonus to the result, potentially turning the failure into a success.\n\n- No action is required.\n- You may use it once per round.\n- You may use it after learning that the saving throw failed.\n- You may use it only once on the same saving throw.\n- This bonus is not saving-throw proficiency.\n- It does not stack with saving-throw proficiency from another source.\n- It cannot modify death saving throws, breakthrough checks, training checks, or another roll that is not a saving throw.\n\nYou gain a second Defensive Discipline through Indomitable Body at CL13.\n",
+      "components": [
+        {
+          "title": "Rooted Frame",
+          "slug": "rooted_frame",
+          "heading_level": 3,
+          "source_line": 213,
+          "canonical_id": "tianxia.path.body_refining.feature.tempered_response.component.rooted_frame"
+        },
+        {
+          "title": "Flowing Frame",
+          "slug": "flowing_frame",
+          "heading_level": 3,
+          "source_line": 217,
+          "canonical_id": "tianxia.path.body_refining.feature.tempered_response.component.flowing_frame"
+        },
+        {
+          "title": "Enduring Frame",
+          "slug": "enduring_frame",
+          "heading_level": 3,
+          "source_line": 221,
+          "canonical_id": "tianxia.path.body_refining.feature.tempered_response.component.enduring_frame"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.unarmored_defense",
+      "display_name": "Unarmored Defense",
+      "aliases": [],
+      "feature_kind": "passive_statistic",
+      "minimum_cl": 1,
+      "granted_at_cl": [
+        1
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL1 - Unarmored Defense",
+          "source_line_start": 237,
+          "source_line_end": 246,
+          "source_markdown": "## CL1 - Unarmored Defense\n\nWhile you are not wearing armor, your Armor Class equals:\n\n`10 + Constitution modifier + Proficiency Bonus`\n\nYou may use a shield and retain this Armor Class calculation.\n\nYou choose whether to use Unarmored Defense or another available AC calculation. You cannot combine multiple base AC calculations.\n",
+          "summary": "While you are not wearing armor, your Armor Class equals:"
+        }
+      ],
+      "source_rules_text": "## CL1 - Unarmored Defense\n\nWhile you are not wearing armor, your Armor Class equals:\n\n`10 + Constitution modifier + Proficiency Bonus`\n\nYou may use a shield and retain this Armor Class calculation.\n\nYou choose whether to use Unarmored Defense or another available AC calculation. You cannot combine multiple base AC calculations.\n",
+      "effective_rules_text": "## CL1 - Unarmored Defense\n\nWhile you are not wearing armor, your Armor Class equals:\n\n`10 + Constitution modifier + Proficiency Bonus`\n\nYou may use a shield and retain this Armor Class calculation.\n\nYou choose whether to use Unarmored Defense or another available AC calculation. You cannot combine multiple base AC calculations.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.iron_fist",
+      "display_name": "Iron Fist",
+      "aliases": [],
+      "feature_kind": "attack_chassis",
+      "minimum_cl": 1,
+      "granted_at_cl": [
+        1
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL1 - Iron Fist",
+          "source_line_start": 247,
+          "source_line_end": 260,
+          "source_markdown": "## CL1 - Iron Fist\n\nYour body is a cultivated weapon.\n\nYour unarmed strikes deal:\n\n`1d8 + Strength or Constitution modifier`\n\nChoose Strength or Constitution separately for each attack. You may use the chosen ability for both the attack roll and damage roll.\n\nYour unarmed strike may deal Bludgeoning, Piercing, or Slashing damage. Choose the damage type when you make the attack.\n\nFor Tianxia features, an Iron Fist attack is both an unarmed strike and a Body Refining melee attack. It does not become a held weapon or an unattended object.\n",
+          "summary": "Your body is a cultivated weapon."
+        }
+      ],
+      "source_rules_text": "## CL1 - Iron Fist\n\nYour body is a cultivated weapon.\n\nYour unarmed strikes deal:\n\n`1d8 + Strength or Constitution modifier`\n\nChoose Strength or Constitution separately for each attack. You may use the chosen ability for both the attack roll and damage roll.\n\nYour unarmed strike may deal Bludgeoning, Piercing, or Slashing damage. Choose the damage type when you make the attack.\n\nFor Tianxia features, an Iron Fist attack is both an unarmed strike and a Body Refining melee attack. It does not become a held weapon or an unattended object.\n",
+      "effective_rules_text": "## CL1 - Iron Fist\n\nYour body is a cultivated weapon.\n\nYour unarmed strikes deal:\n\n`1d8 + Strength or Constitution modifier`\n\nChoose Strength or Constitution separately for each attack. You may use the chosen ability for both the attack roll and damage roll.\n\nYour unarmed strike may deal Bludgeoning, Piercing, or Slashing damage. Choose the damage type when you make the attack.\n\nFor Tianxia features, an Iron Fist attack is both an unarmed strike and a Body Refining melee attack. It does not become a held weapon or an unattended object.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.stomping_step",
+      "display_name": "Stomping Step",
+      "aliases": [],
+      "feature_kind": "movement_feature",
+      "minimum_cl": 1,
+      "granted_at_cl": [
+        1
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL1 - Stomping Step",
+          "source_line_start": 261,
+          "source_line_end": 270,
+          "source_markdown": "## CL1 - Stomping Step\n\n**Bonus Action**\n\nTake either the Dash action or Disengage action.\n\nStomping Step represents explosive footwork, controlled bodily release, tendon refinement, practiced breathing, and the ability to place the body exactly where its force is required.\n\nIt does not require Stamina.\n",
+          "summary": "Bonus Action"
+        }
+      ],
+      "source_rules_text": "## CL1 - Stomping Step\n\n**Bonus Action**\n\nTake either the Dash action or Disengage action.\n\nStomping Step represents explosive footwork, controlled bodily release, tendon refinement, practiced breathing, and the ability to place the body exactly where its force is required.\n\nIt does not require Stamina.\n",
+      "effective_rules_text": "## CL1 - Stomping Step\n\n**Bonus Action**\n\nTake either the Dash action or Disengage action.\n\nStomping Step represents explosive footwork, controlled bodily release, tendon refinement, practiced breathing, and the ability to place the body exactly where its force is required.\n\nIt does not require Stamina.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.stamina_guard",
+      "display_name": "Stamina Guard",
+      "aliases": [],
+      "feature_kind": "reaction",
+      "minimum_cl": 2,
+      "granted_at_cl": [
+        2
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL2 - Stamina Guard",
+          "source_line_start": 271,
+          "source_line_end": 304,
+          "source_markdown": "## CL2 - Stamina Guard\n\n**Reaction**\n\n**Trigger:** Damage is first applied to you.  \n**Cost:** Up to your Proficiency Bonus in Stamina\n\nAfter the damage amount is determined but before your Hit Points are reduced, spend up to your Proficiency Bonus in Stamina.\n\nReduce the triggering damage by:\n\n`1d10 per Stamina spent`\n\nRoll all dice and total the reduction.\n\n### Damage Procedure\n\n1. Determine the attack or effect's damage.\n2. Apply Immunity, Resistance, Vulnerability, and other modifiers that resolve before flat damage reduction.\n3. Activate Stamina Guard.\n4. Subtract the Stamina Guard result.\n5. Reduce your Hit Points by any remaining damage.\n\nIf the damage contains multiple damage types, subtract the reduction from the total damage. You choose which damage types are reduced first when that distinction matters.\n\nIf Stamina Guard reduces the damage to 0:\n\n- A rider requiring the target to **take damage** does not occur.\n- A rider requiring only that the attack **hit** still occurs.\n- A condition imposed regardless of damage still occurs.\n- The triggering attack or effect is not treated as having missed.\n\nStamina Guard cannot reduce maximum-Hit-Point loss, Cultivation Point loss, a cost willingly paid, damage that explicitly cannot be reduced or prevented, or a consequence that is not expressed as damage.\n",
+          "summary": "Reaction"
+        }
+      ],
+      "source_rules_text": "## CL2 - Stamina Guard\n\n**Reaction**\n\n**Trigger:** Damage is first applied to you.  \n**Cost:** Up to your Proficiency Bonus in Stamina\n\nAfter the damage amount is determined but before your Hit Points are reduced, spend up to your Proficiency Bonus in Stamina.\n\nReduce the triggering damage by:\n\n`1d10 per Stamina spent`\n\nRoll all dice and total the reduction.\n\n### Damage Procedure\n\n1. Determine the attack or effect's damage.\n2. Apply Immunity, Resistance, Vulnerability, and other modifiers that resolve before flat damage reduction.\n3. Activate Stamina Guard.\n4. Subtract the Stamina Guard result.\n5. Reduce your Hit Points by any remaining damage.\n\nIf the damage contains multiple damage types, subtract the reduction from the total damage. You choose which damage types are reduced first when that distinction matters.\n\nIf Stamina Guard reduces the damage to 0:\n\n- A rider requiring the target to **take damage** does not occur.\n- A rider requiring only that the attack **hit** still occurs.\n- A condition imposed regardless of damage still occurs.\n- The triggering attack or effect is not treated as having missed.\n\nStamina Guard cannot reduce maximum-Hit-Point loss, Cultivation Point loss, a cost willingly paid, damage that explicitly cannot be reduced or prevented, or a consequence that is not expressed as damage.\n",
+      "effective_rules_text": "## CL2 - Stamina Guard\n\n**Reaction**\n\n**Trigger:** Damage is first applied to you.  \n**Cost:** Up to your Proficiency Bonus in Stamina\n\nAfter the damage amount is determined but before your Hit Points are reduced, spend up to your Proficiency Bonus in Stamina.\n\nReduce the triggering damage by:\n\n`1d10 per Stamina spent`\n\nRoll all dice and total the reduction.\n\n### Damage Procedure\n\n1. Determine the attack or effect's damage.\n2. Apply Immunity, Resistance, Vulnerability, and other modifiers that resolve before flat damage reduction.\n3. Activate Stamina Guard.\n4. Subtract the Stamina Guard result.\n5. Reduce your Hit Points by any remaining damage.\n\nIf the damage contains multiple damage types, subtract the reduction from the total damage. You choose which damage types are reduced first when that distinction matters.\n\nIf Stamina Guard reduces the damage to 0:\n\n- A rider requiring the target to **take damage** does not occur.\n- A rider requiring only that the attack **hit** still occurs.\n- A condition imposed regardless of damage still occurs.\n- The triggering attack or effect is not treated as having missed.\n\nStamina Guard cannot reduce maximum-Hit-Point loss, Cultivation Point loss, a cost willingly paid, damage that explicitly cannot be reduced or prevented, or a consequence that is not expressed as damage.\n",
+      "components": [
+        {
+          "title": "Damage Procedure",
+          "slug": "damage_procedure",
+          "heading_level": 3,
+          "source_line": 286,
+          "canonical_id": "tianxia.path.body_refining.feature.stamina_guard.component.damage_procedure"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.body_refining_subpath",
+      "display_name": "Body Refining Subpath",
+      "aliases": [],
+      "feature_kind": "subpath_selection",
+      "minimum_cl": 3,
+      "granted_at_cl": [
+        3
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL3 - Body Refining Subpath",
+          "source_line_start": 305,
+          "source_line_end": 319,
+          "source_markdown": "## CL3 - Body Refining Subpath\n\nChoose one Body Refining Subpath for which you have legal access. Your Subpath represents the school, scripture, inheritance, bodily transformation, martial focus, or forbidden method through which your cultivated body develops its defining expression.\n\nYou gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Classification | Meaning |\n|---|---|\n| **Open School** | Commonly teachable or institutionally available. Open access does not imply low power. |\n| **Restricted Scripture** | Controlled military, medical, sect, weapon, technical, political, inherited, or hazardous instruction. |\n| **Rare Inheritance** | Uncommon bloodline, transformed anatomy, destiny, treasure, vessel, species, or singular transmission. |\n| **Forbidden Method** | A bodily cultivation method carrying a prohibited, condemned, predatory, corruptive, or physically catastrophic price. Forbidden does not automatically mean Daemonic. |\n\nA campaign may alter access requirements without changing a Subpath's mechanics. A Subpath does not automatically grant a Sphere or Sphere talent unless its rules explicitly state otherwise.\n",
+          "summary": "Choose one Body Refining Subpath for which you have legal access. Your Subpath represents the school, scripture, inheritance, bodily transformation, martial focus, or forbidden method through which your cultivated body develops its defining expression."
+        }
+      ],
+      "source_rules_text": "## CL3 - Body Refining Subpath\n\nChoose one Body Refining Subpath for which you have legal access. Your Subpath represents the school, scripture, inheritance, bodily transformation, martial focus, or forbidden method through which your cultivated body develops its defining expression.\n\nYou gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Classification | Meaning |\n|---|---|\n| **Open School** | Commonly teachable or institutionally available. Open access does not imply low power. |\n| **Restricted Scripture** | Controlled military, medical, sect, weapon, technical, political, inherited, or hazardous instruction. |\n| **Rare Inheritance** | Uncommon bloodline, transformed anatomy, destiny, treasure, vessel, species, or singular transmission. |\n| **Forbidden Method** | A bodily cultivation method carrying a prohibited, condemned, predatory, corruptive, or physically catastrophic price. Forbidden does not automatically mean Daemonic. |\n\nA campaign may alter access requirements without changing a Subpath's mechanics. A Subpath does not automatically grant a Sphere or Sphere talent unless its rules explicitly state otherwise.\n",
+      "effective_rules_text": "## CL3 - Body Refining Subpath\n\nChoose one Body Refining Subpath for which you have legal access. Your Subpath represents the school, scripture, inheritance, bodily transformation, martial focus, or forbidden method through which your cultivated body develops its defining expression.\n\nYou gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Classification | Meaning |\n|---|---|\n| **Open School** | Commonly teachable or institutionally available. Open access does not imply low power. |\n| **Restricted Scripture** | Controlled military, medical, sect, weapon, technical, political, inherited, or hazardous instruction. |\n| **Rare Inheritance** | Uncommon bloodline, transformed anatomy, destiny, treasure, vessel, species, or singular transmission. |\n| **Forbidden Method** | A bodily cultivation method carrying a prohibited, condemned, predatory, corruptive, or physically catastrophic price. Forbidden does not automatically mean Daemonic. |\n\nA campaign may alter access requirements without changing a Subpath's mechanics. A Subpath does not automatically grant a Sphere or Sphere talent unless its rules explicitly state otherwise.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.ability_score_improvement_or_cultivation_insight",
+      "display_name": "Ability Score Improvement or Cultivation Insight",
+      "aliases": [],
+      "feature_kind": "advancement_choice",
+      "minimum_cl": 4,
+      "granted_at_cl": [
+        4,
+        8,
+        12,
+        16,
+        19
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL4, CL8, CL12, CL16, and CL19 - Ability Score Improvement or Cultivation Insight",
+          "source_line_start": 320,
+          "source_line_end": 332,
+          "source_markdown": "## CL4, CL8, CL12, CL16, and CL19 - Ability Score Improvement or Cultivation Insight\n\nAt each listed CL, choose one of the following:\n\n- **Normal Ability Score Improvement:** Increase one ability score by 2, or increase two different ability scores by 1 each. No score can exceed the maximum allowed by your current Realm.\n- **Cultivation Insight:** Choose one Cultivation Insight for which you meet every prerequisite. Gain its cultivation benefit and increase one ability score listed in that Insight's **Ability Increase (Level Selection)** entry by 1, to the maximum allowed by your current Realm.\n\nAn Insight gained through a manual, tribulation, relic, sect instruction, bloodline awakening, experimentation, bodily transformation, story reward, or another non-level source does not grant its ability increase unless that source explicitly says otherwise. Background ability-score increases and Origin Insights are separate character-creation benefits and do not activate this increase.\n\nUse the current **Tianxia Central Cultivation Insights** catalogue as the rules authority. Path, Sphere, and Subpath access tags are prerequisites only when the Insight expressly prints them. Advisory affinity or recommendation tags never grant access.\n\nIf an Insight grants a new Sphere, it also grants the normal free first talent received whenever a character learns a new Sphere.\n",
+          "summary": "At each listed CL, choose one of the following:"
+        }
+      ],
+      "source_rules_text": "## CL4, CL8, CL12, CL16, and CL19 - Ability Score Improvement or Cultivation Insight\n\nAt each listed CL, choose one of the following:\n\n- **Normal Ability Score Improvement:** Increase one ability score by 2, or increase two different ability scores by 1 each. No score can exceed the maximum allowed by your current Realm.\n- **Cultivation Insight:** Choose one Cultivation Insight for which you meet every prerequisite. Gain its cultivation benefit and increase one ability score listed in that Insight's **Ability Increase (Level Selection)** entry by 1, to the maximum allowed by your current Realm.\n\nAn Insight gained through a manual, tribulation, relic, sect instruction, bloodline awakening, experimentation, bodily transformation, story reward, or another non-level source does not grant its ability increase unless that source explicitly says otherwise. Background ability-score increases and Origin Insights are separate character-creation benefits and do not activate this increase.\n\nUse the current **Tianxia Central Cultivation Insights** catalogue as the rules authority. Path, Sphere, and Subpath access tags are prerequisites only when the Insight expressly prints them. Advisory affinity or recommendation tags never grant access.\n\nIf an Insight grants a new Sphere, it also grants the normal free first talent received whenever a character learns a new Sphere.\n",
+      "effective_rules_text": "At CL4, CL8, CL12, CL16, and CL19, choose one of the following:\n\n- **Normal Ability Score Improvement:** Increase one ability score by 2, or increase two different ability scores by 1 each. No score can exceed the maximum allowed by your current Realm.\n- **Cultivation Insight:** Choose one Cultivation Insight from the Central Cultivation Insights catalogue for which you meet every prerequisite. Gain its printed benefit and increase one ability score listed in that Insight's **Ability Increase (Level Selection)** entry by 1, to the maximum allowed by your current Realm.\n\nAn Insight gained through a non-level source does not grant its ability increase unless that source explicitly says otherwise. Background ability increases and Origin Insights are separate benefits. If an Insight grants a new Sphere, it also grants the normal free first talent received whenever a character learns a new Sphere.\n",
+      "components": [],
+      "shared_rule_id": "tianxia.shared.advancement.ability_score_improvement_or_cultivation_insight",
+      "authority_resolution": {
+        "status": "authority_overlay_applied",
+        "reason": "The Central Cultivation Insights R4 catalogue is the sole current Insight authority.",
+        "controlling_sources": [
+          "Canonical/PHB/Tianxia_PHB_Chapter_03_Paths_and_Shared_Path_Rules_R2.md",
+          "Canonical/Insights/Tianxia_Cultivation_Insights_Compendium_R1.md",
+          "Canonical/Insights/Tianxia_Central_Cultivation_Insights_AI_Reference_R4.json"
+        ],
+        "effective_rules_text": "At CL4, CL8, CL12, CL16, and CL19, choose one of the following:\n\n- **Normal Ability Score Improvement:** Increase one ability score by 2, or increase two different ability scores by 1 each. No score can exceed the maximum allowed by your current Realm.\n- **Cultivation Insight:** Choose one Cultivation Insight from the Central Cultivation Insights catalogue for which you meet every prerequisite. Gain its printed benefit and increase one ability score listed in that Insight's **Ability Increase (Level Selection)** entry by 1, to the maximum allowed by your current Realm.\n\nAn Insight gained through a non-level source does not grant its ability increase unless that source explicitly says otherwise. Background ability increases and Origin Insights are separate benefits. If an Insight grants a new Sphere, it also grants the normal free first talent received whenever a character learns a new Sphere."
+      },
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.extra_attack",
+      "display_name": "Extra Attack",
+      "aliases": [],
+      "feature_kind": "attack_chassis",
+      "minimum_cl": 5,
+      "granted_at_cl": [
+        5
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL5 - Extra Attack",
+          "source_line_start": 333,
+          "source_line_end": 340,
+          "source_markdown": "## CL5 - Extra Attack\n\nWhen you take the Attack action, you may make two attacks instead of one.\n\nThis increases to three attacks at CL11 and four attacks at CL17.\n\nAn attack granted outside the ordinary attacks of your Attack action cannot itself trigger another feature that grants an additional attack unless that feature explicitly overrides this rule.\n",
+          "summary": "When you take the Attack action, you may make two attacks instead of one."
+        }
+      ],
+      "source_rules_text": "## CL5 - Extra Attack\n\nWhen you take the Attack action, you may make two attacks instead of one.\n\nThis increases to three attacks at CL11 and four attacks at CL17.\n\nAn attack granted outside the ordinary attacks of your Attack action cannot itself trigger another feature that grants an additional attack unless that feature explicitly overrides this rule.\n",
+      "effective_rules_text": "## CL5 - Extra Attack\n\nWhen you take the Attack action, you may make two attacks instead of one.\n\nThis increases to three attacks at CL11 and four attacks at CL17.\n\nAn attack granted outside the ordinary attacks of your Attack action cannot itself trigger another feature that grants an additional attack unless that feature explicitly overrides this rule.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.body_tempering",
+      "display_name": "Body Tempering",
+      "aliases": [],
+      "feature_kind": "passive_statistic",
+      "minimum_cl": 5,
+      "granted_at_cl": [
+        5
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL5 - Body Tempering",
+          "source_line_start": 341,
+          "source_line_end": 358,
+          "source_markdown": "## CL5 - Body Tempering\n\nYour body has passed beyond ordinary mortal frailty.\n\nYou gain Resistance to nonmagical Bludgeoning, Piercing, and Slashing damage.\n\nThis Resistance applies to qualifying damage from mundane weapon attacks, falling, collisions, nonmagical traps, rubble, cave-ins, ordinary machinery, and nonmagical environmental hazards.\n\nAn attack or hazard is cultivation-powered rather than mundane when its damage is created or empowered by a Path feature, Subpath feature, Sphere talent, Recorded Art, Forged Technique, Immortal Art, Foundation feature, Method feature, supernatural item power, or another rule explicitly identifying it as magical or cultivation-powered.\n\nBody Tempering does not grant Resistance against cultivation-powered physical damage unless another feature states otherwise.\n\nIn addition:\n\n- You have Advantage on saving throws against extreme heat, extreme cold, high altitude, forced marches, starvation, dehydration, and suffocation.\n- You can hold your breath for ten times the normal duration.\n- Ordinary caltrops, thorns, splinters, and similarly minor environmental hazards cannot damage you unless they are supernatural or part of an active attack or trap.\n",
+          "summary": "Your body has passed beyond ordinary mortal frailty."
+        }
+      ],
+      "source_rules_text": "## CL5 - Body Tempering\n\nYour body has passed beyond ordinary mortal frailty.\n\nYou gain Resistance to nonmagical Bludgeoning, Piercing, and Slashing damage.\n\nThis Resistance applies to qualifying damage from mundane weapon attacks, falling, collisions, nonmagical traps, rubble, cave-ins, ordinary machinery, and nonmagical environmental hazards.\n\nAn attack or hazard is cultivation-powered rather than mundane when its damage is created or empowered by a Path feature, Subpath feature, Sphere talent, Recorded Art, Forged Technique, Immortal Art, Foundation feature, Method feature, supernatural item power, or another rule explicitly identifying it as magical or cultivation-powered.\n\nBody Tempering does not grant Resistance against cultivation-powered physical damage unless another feature states otherwise.\n\nIn addition:\n\n- You have Advantage on saving throws against extreme heat, extreme cold, high altitude, forced marches, starvation, dehydration, and suffocation.\n- You can hold your breath for ten times the normal duration.\n- Ordinary caltrops, thorns, splinters, and similarly minor environmental hazards cannot damage you unless they are supernatural or part of an active attack or trap.\n",
+      "effective_rules_text": "## CL5 - Body Tempering\n\nYour body has passed beyond ordinary mortal frailty.\n\nYou gain Resistance to nonmagical Bludgeoning, Piercing, and Slashing damage.\n\nThis Resistance applies to qualifying damage from mundane weapon attacks, falling, collisions, nonmagical traps, rubble, cave-ins, ordinary machinery, and nonmagical environmental hazards.\n\nAn attack or hazard is cultivation-powered rather than mundane when its damage is created or empowered by a Path feature, Subpath feature, Sphere talent, Recorded Art, Forged Technique, Immortal Art, Foundation feature, Method feature, supernatural item power, or another rule explicitly identifying it as magical or cultivation-powered.\n\nBody Tempering does not grant Resistance against cultivation-powered physical damage unless another feature states otherwise.\n\nIn addition:\n\n- You have Advantage on saving throws against extreme heat, extreme cold, high altitude, forced marches, starvation, dehydration, and suffocation.\n- You can hold your breath for ten times the normal duration.\n- Ordinary caltrops, thorns, splinters, and similarly minor environmental hazards cannot damage you unless they are supernatural or part of an active attack or trap.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.refined_iron_fist",
+      "display_name": "Refined Iron Fist",
+      "aliases": [],
+      "feature_kind": "scaling_improvement",
+      "minimum_cl": 5,
+      "granted_at_cl": [
+        5
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL5 - Refined Iron Fist",
+          "source_line_start": 359,
+          "source_line_end": 366,
+          "source_markdown": "## CL5 - Refined Iron Fist\n\nYour unarmed strikes count as magical and cultivation-powered for the purpose of overcoming Resistance and Immunity.\n\nA weapon integrated into your Body Refining cultivation also gains this property while you wield it.\n\nThis feature does not cause a mundane attack made by another creature to bypass your Body Tempering.\n",
+          "summary": "Your unarmed strikes count as magical and cultivation-powered for the purpose of overcoming Resistance and Immunity."
+        }
+      ],
+      "source_rules_text": "## CL5 - Refined Iron Fist\n\nYour unarmed strikes count as magical and cultivation-powered for the purpose of overcoming Resistance and Immunity.\n\nA weapon integrated into your Body Refining cultivation also gains this property while you wield it.\n\nThis feature does not cause a mundane attack made by another creature to bypass your Body Tempering.\n",
+      "effective_rules_text": "## CL5 - Refined Iron Fist\n\nYour unarmed strikes count as magical and cultivation-powered for the purpose of overcoming Resistance and Immunity.\n\nA weapon integrated into your Body Refining cultivation also gains this property while you wield it.\n\nThis feature does not cause a mundane attack made by another creature to bypass your Body Tempering.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.subpath_feature",
+      "display_name": "Subpath Feature",
+      "aliases": [],
+      "feature_kind": "subpath_feature_slot",
+      "minimum_cl": 6,
+      "granted_at_cl": [
+        6,
+        10,
+        14,
+        18
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL3 - Body Refining Subpath",
+          "source_line_start": 305,
+          "source_line_end": 319,
+          "source_markdown": "## CL3 - Body Refining Subpath\n\nChoose one Body Refining Subpath for which you have legal access. Your Subpath represents the school, scripture, inheritance, bodily transformation, martial focus, or forbidden method through which your cultivated body develops its defining expression.\n\nYou gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Classification | Meaning |\n|---|---|\n| **Open School** | Commonly teachable or institutionally available. Open access does not imply low power. |\n| **Restricted Scripture** | Controlled military, medical, sect, weapon, technical, political, inherited, or hazardous instruction. |\n| **Rare Inheritance** | Uncommon bloodline, transformed anatomy, destiny, treasure, vessel, species, or singular transmission. |\n| **Forbidden Method** | A bodily cultivation method carrying a prohibited, condemned, predatory, corruptive, or physically catastrophic price. Forbidden does not automatically mean Daemonic. |\n\nA campaign may alter access requirements without changing a Subpath's mechanics. A Subpath does not automatically grant a Sphere or Sphere talent unless its rules explicitly state otherwise.\n",
+          "summary": "Choose one Body Refining Subpath for which you have legal access. Your Subpath represents the school, scripture, inheritance, bodily transformation, martial focus, or forbidden method through which your cultivated body develops its defining expression."
+        }
+      ],
+      "source_rules_text": "## CL3 - Body Refining Subpath\n\nChoose one Body Refining Subpath for which you have legal access. Your Subpath represents the school, scripture, inheritance, bodily transformation, martial focus, or forbidden method through which your cultivated body develops its defining expression.\n\nYou gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Classification | Meaning |\n|---|---|\n| **Open School** | Commonly teachable or institutionally available. Open access does not imply low power. |\n| **Restricted Scripture** | Controlled military, medical, sect, weapon, technical, political, inherited, or hazardous instruction. |\n| **Rare Inheritance** | Uncommon bloodline, transformed anatomy, destiny, treasure, vessel, species, or singular transmission. |\n| **Forbidden Method** | A bodily cultivation method carrying a prohibited, condemned, predatory, corruptive, or physically catastrophic price. Forbidden does not automatically mean Daemonic. |\n\nA campaign may alter access requirements without changing a Subpath's mechanics. A Subpath does not automatically grant a Sphere or Sphere talent unless its rules explicitly state otherwise.\n",
+      "effective_rules_text": "## CL3 - Body Refining Subpath\n\nChoose one Body Refining Subpath for which you have legal access. Your Subpath represents the school, scripture, inheritance, bodily transformation, martial focus, or forbidden method through which your cultivated body develops its defining expression.\n\nYou gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Classification | Meaning |\n|---|---|\n| **Open School** | Commonly teachable or institutionally available. Open access does not imply low power. |\n| **Restricted Scripture** | Controlled military, medical, sect, weapon, technical, political, inherited, or hazardous instruction. |\n| **Rare Inheritance** | Uncommon bloodline, transformed anatomy, destiny, treasure, vessel, species, or singular transmission. |\n| **Forbidden Method** | A bodily cultivation method carrying a prohibited, condemned, predatory, corruptive, or physically catastrophic price. Forbidden does not automatically mean Daemonic. |\n\nA campaign may alter access requirements without changing a Subpath's mechanics. A Subpath does not automatically grant a Sphere or Sphere talent unless its rules explicitly state otherwise.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.meridian_reinforcement",
+      "display_name": "Meridian Reinforcement",
+      "aliases": [],
+      "feature_kind": "passive_statistic",
+      "minimum_cl": 7,
+      "granted_at_cl": [
+        7
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL7 - Meridian Reinforcement",
+          "source_line_start": 367,
+          "source_line_end": 381,
+          "source_markdown": "## CL7 - Meridian Reinforcement\n\nYour meridians, organs, blood, and nervous system resist contamination and physical collapse.\n\nYou gain Advantage on saving throws against the Poisoned condition, disease, Exhaustion caused by physical exertion or environmental exposure, effects that obstruct breathing, and effects that directly disrupt your bodily meridians.\n\nAt the end of your turn, if you are Poisoned or affected by a disease with a printed saving throw DC, you may spend 1 Stamina to repeat the original saving throw against the original DC.\n\n- No action is required.\n- You may make this additional saving throw once per round.\n- On a success, the Poisoned condition or disease ends if the original effect would end on a successful repeated save.\n- If the disease normally requires multiple successful saves, this success counts as one such success.\n\nMeridian Reinforcement cannot remove or suppress Exhaustion gained from reaching 0 Cultivation Points, Hidden Injuries, Foundation damage, Tribulation scars, curses, possession, permanent corruption, or a condition whose Source Rule states that ordinary saves cannot remove it.\n",
+          "summary": "Your meridians, organs, blood, and nervous system resist contamination and physical collapse."
+        }
+      ],
+      "source_rules_text": "## CL7 - Meridian Reinforcement\n\nYour meridians, organs, blood, and nervous system resist contamination and physical collapse.\n\nYou gain Advantage on saving throws against the Poisoned condition, disease, Exhaustion caused by physical exertion or environmental exposure, effects that obstruct breathing, and effects that directly disrupt your bodily meridians.\n\nAt the end of your turn, if you are Poisoned or affected by a disease with a printed saving throw DC, you may spend 1 Stamina to repeat the original saving throw against the original DC.\n\n- No action is required.\n- You may make this additional saving throw once per round.\n- On a success, the Poisoned condition or disease ends if the original effect would end on a successful repeated save.\n- If the disease normally requires multiple successful saves, this success counts as one such success.\n\nMeridian Reinforcement cannot remove or suppress Exhaustion gained from reaching 0 Cultivation Points, Hidden Injuries, Foundation damage, Tribulation scars, curses, possession, permanent corruption, or a condition whose Source Rule states that ordinary saves cannot remove it.\n",
+      "effective_rules_text": "## CL7 - Meridian Reinforcement\n\nYour meridians, organs, blood, and nervous system resist contamination and physical collapse.\n\nYou gain Advantage on saving throws against the Poisoned condition, disease, Exhaustion caused by physical exertion or environmental exposure, effects that obstruct breathing, and effects that directly disrupt your bodily meridians.\n\nAt the end of your turn, if you are Poisoned or affected by a disease with a printed saving throw DC, you may spend 1 Stamina to repeat the original saving throw against the original DC.\n\n- No action is required.\n- You may make this additional saving throw once per round.\n- On a success, the Poisoned condition or disease ends if the original effect would end on a successful repeated save.\n- If the disease normally requires multiple successful saves, this success counts as one such success.\n\nMeridian Reinforcement cannot remove or suppress Exhaustion gained from reaching 0 Cultivation Points, Hidden Injuries, Foundation damage, Tribulation scars, curses, possession, permanent corruption, or a condition whose Source Rule states that ordinary saves cannot remove it.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.iron_voice",
+      "display_name": "Iron Voice",
+      "aliases": [],
+      "feature_kind": "activated_feature",
+      "minimum_cl": 9,
+      "granted_at_cl": [
+        9
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL9 - Iron Voice",
+          "source_line_start": 382,
+          "source_line_end": 398,
+          "source_markdown": "## CL9 - Iron Voice\n\n**Bonus Action**\n\n**Range:** 30 feet  \n**Target:** One creature that can hear you  \n**Cost:** 1 Stamina  \n**Saving Throw:** Constitution\n\nOn a failed save, the creature is Frightened of you until the end of your next turn. On a successful save, it suffers no effect.\n\nA creature immune to the Frightened condition automatically succeeds.\n\nIron Voice is blocked by total silence, an effect preventing the target from hearing, total cover that also prevents sound from passing, or a feature explicitly suppressing cultivation pressure or bodily sound.\n\nIron Voice does not require shared language.\n",
+          "summary": "Bonus Action"
+        }
+      ],
+      "source_rules_text": "## CL9 - Iron Voice\n\n**Bonus Action**\n\n**Range:** 30 feet  \n**Target:** One creature that can hear you  \n**Cost:** 1 Stamina  \n**Saving Throw:** Constitution\n\nOn a failed save, the creature is Frightened of you until the end of your next turn. On a successful save, it suffers no effect.\n\nA creature immune to the Frightened condition automatically succeeds.\n\nIron Voice is blocked by total silence, an effect preventing the target from hearing, total cover that also prevents sound from passing, or a feature explicitly suppressing cultivation pressure or bodily sound.\n\nIron Voice does not require shared language.\n",
+      "effective_rules_text": "## CL9 - Iron Voice\n\n**Bonus Action**\n\n**Range:** 30 feet  \n**Target:** One creature that can hear you  \n**Cost:** 1 Stamina  \n**Saving Throw:** Constitution\n\nOn a failed save, the creature is Frightened of you until the end of your next turn. On a successful save, it suffers no effect.\n\nA creature immune to the Frightened condition automatically succeeds.\n\nIron Voice is blocked by total silence, an effect preventing the target from hearing, total cover that also prevents sound from passing, or a feature explicitly suppressing cultivation pressure or bodily sound.\n\nIron Voice does not require shared language.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.core_tempering_expression",
+      "display_name": "Core Tempering Expression",
+      "aliases": [],
+      "feature_kind": "choice_feature",
+      "minimum_cl": 10,
+      "granted_at_cl": [
+        10
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL10 - Core Tempering Expression",
+          "source_line_start": 399,
+          "source_line_end": 470,
+          "source_markdown": "## CL10 - Core Tempering Expression\n\nWhen you enter Core Formation Realm, your accumulated bodily refinement settles into a stable internal expression.\n\nChoose one Core Tempering Expression. Your choice is permanent until you complete a later Realm breakthrough. When you successfully enter Nascent Soul Realm at CL15, you may replace your chosen expression with another before using any CL15 feature.\n\nAt CL17, your chosen expression becomes Perfected.\n\nAt CL20, choose a second expression. Both expressions function simultaneously, and both use their Perfected benefits.\n\n### Golden Bell Circulation\n\n**Bonus Action**  \n**Cost:** 3 Stamina  \n**Duration:** 1 minute\n\nFor the duration:\n\n- Gain +2 AC.\n- You have Advantage on checks and saving throws against being pushed, pulled, or knocked Prone.\n- Once per round, when Stamina Guard reduces a damage packet to 0, gain Temporary Hit Points equal to your Proficiency Bonus.\n\nThe effect ends early if you become Unconscious. Activating Golden Bell Circulation again replaces and refreshes its duration.\n\n#### Perfected Golden Bell - CL17\n\nWhile Golden Bell Circulation is active:\n\n- Stamina Guard uses d12s instead of d10s.\n- Your Temporary Hit Points from Golden Bell equal twice your Proficiency Bonus.\n- You cannot be moved against your will by a creature whose CL is lower than yours unless its feature explicitly ignores bodily anchoring.\n\nA creature of equal or higher CL resolves forced movement normally.\n\n### Blood-Furnace Circulation\n\nOnce per turn, immediately after you spend one or more Stamina on a feature that successfully resolves, regain Hit Points equal to your Proficiency Bonus.\n\nIf you are at your maximum Hit Points, gain Temporary Hit Points equal to your Proficiency Bonus instead.\n\nBlood-Furnace Circulation does not function while you are at 0 Hit Points, cannot be triggered by refunded Stamina or an invalid activation, and functions no more than once per turn.\n\n#### Perfected Blood Furnace - CL17\n\nThe Hit Points or Temporary Hit Points gained become `2 x Proficiency Bonus`.\n\nWhen this feature restores Hit Points, you may also end one ongoing Bleeding state affecting you if that state has a Source CL no higher than your CL.\n\n### Mountain-Rending Pulse\n\nOnce per turn, immediately after you spend one or more Stamina on a feature that successfully resolves, empower your next Body Refining melee attack before the end of your next turn.\n\nOn a hit:\n\n- Deal an additional `1d8` Force damage.\n- Choose either to push the target 5 feet or prevent it from taking Reactions until the start of its next turn.\n\nIf the empowered attack misses, the empowerment remains until its duration expires.\n\nYou cannot hold more than one Mountain-Rending empowerment at a time. Gaining another replaces the previous one.\n\n#### Perfected Mountain-Rending Pulse - CL17\n\nThe additional damage becomes `2d8` Force damage.\n\nOn a hit, choose one:\n\n- Push the target 10 feet.\n- Knock the target Prone if it fails a Strength saving throw.\n- Prevent it from taking Reactions until the start of its next turn.\n- Deal double damage to an unattended object, temporary barrier, vehicle, structure, or Formation Anchor.\n",
+          "summary": "When you enter Core Formation Realm, your accumulated bodily refinement settles into a stable internal expression."
+        }
+      ],
+      "source_rules_text": "## CL10 - Core Tempering Expression\n\nWhen you enter Core Formation Realm, your accumulated bodily refinement settles into a stable internal expression.\n\nChoose one Core Tempering Expression. Your choice is permanent until you complete a later Realm breakthrough. When you successfully enter Nascent Soul Realm at CL15, you may replace your chosen expression with another before using any CL15 feature.\n\nAt CL17, your chosen expression becomes Perfected.\n\nAt CL20, choose a second expression. Both expressions function simultaneously, and both use their Perfected benefits.\n\n### Golden Bell Circulation\n\n**Bonus Action**  \n**Cost:** 3 Stamina  \n**Duration:** 1 minute\n\nFor the duration:\n\n- Gain +2 AC.\n- You have Advantage on checks and saving throws against being pushed, pulled, or knocked Prone.\n- Once per round, when Stamina Guard reduces a damage packet to 0, gain Temporary Hit Points equal to your Proficiency Bonus.\n\nThe effect ends early if you become Unconscious. Activating Golden Bell Circulation again replaces and refreshes its duration.\n\n#### Perfected Golden Bell - CL17\n\nWhile Golden Bell Circulation is active:\n\n- Stamina Guard uses d12s instead of d10s.\n- Your Temporary Hit Points from Golden Bell equal twice your Proficiency Bonus.\n- You cannot be moved against your will by a creature whose CL is lower than yours unless its feature explicitly ignores bodily anchoring.\n\nA creature of equal or higher CL resolves forced movement normally.\n\n### Blood-Furnace Circulation\n\nOnce per turn, immediately after you spend one or more Stamina on a feature that successfully resolves, regain Hit Points equal to your Proficiency Bonus.\n\nIf you are at your maximum Hit Points, gain Temporary Hit Points equal to your Proficiency Bonus instead.\n\nBlood-Furnace Circulation does not function while you are at 0 Hit Points, cannot be triggered by refunded Stamina or an invalid activation, and functions no more than once per turn.\n\n#### Perfected Blood Furnace - CL17\n\nThe Hit Points or Temporary Hit Points gained become `2 x Proficiency Bonus`.\n\nWhen this feature restores Hit Points, you may also end one ongoing Bleeding state affecting you if that state has a Source CL no higher than your CL.\n\n### Mountain-Rending Pulse\n\nOnce per turn, immediately after you spend one or more Stamina on a feature that successfully resolves, empower your next Body Refining melee attack before the end of your next turn.\n\nOn a hit:\n\n- Deal an additional `1d8` Force damage.\n- Choose either to push the target 5 feet or prevent it from taking Reactions until the start of its next turn.\n\nIf the empowered attack misses, the empowerment remains until its duration expires.\n\nYou cannot hold more than one Mountain-Rending empowerment at a time. Gaining another replaces the previous one.\n\n#### Perfected Mountain-Rending Pulse - CL17\n\nThe additional damage becomes `2d8` Force damage.\n\nOn a hit, choose one:\n\n- Push the target 10 feet.\n- Knock the target Prone if it fails a Strength saving throw.\n- Prevent it from taking Reactions until the start of its next turn.\n- Deal double damage to an unattended object, temporary barrier, vehicle, structure, or Formation Anchor.\n",
+      "effective_rules_text": "## CL10 - Core Tempering Expression\n\nWhen you enter Core Formation Realm, your accumulated bodily refinement settles into a stable internal expression.\n\nChoose one Core Tempering Expression. Your choice is permanent until you complete a later Realm breakthrough. When you successfully enter Nascent Soul Realm at CL15, you may replace your chosen expression with another before using any CL15 feature.\n\nAt CL17, your chosen expression becomes Perfected.\n\nAt CL20, choose a second expression. Both expressions function simultaneously, and both use their Perfected benefits.\n\n### Golden Bell Circulation\n\n**Bonus Action**  \n**Cost:** 3 Stamina  \n**Duration:** 1 minute\n\nFor the duration:\n\n- Gain +2 AC.\n- You have Advantage on checks and saving throws against being pushed, pulled, or knocked Prone.\n- Once per round, when Stamina Guard reduces a damage packet to 0, gain Temporary Hit Points equal to your Proficiency Bonus.\n\nThe effect ends early if you become Unconscious. Activating Golden Bell Circulation again replaces and refreshes its duration.\n\n#### Perfected Golden Bell - CL17\n\nWhile Golden Bell Circulation is active:\n\n- Stamina Guard uses d12s instead of d10s.\n- Your Temporary Hit Points from Golden Bell equal twice your Proficiency Bonus.\n- You cannot be moved against your will by a creature whose CL is lower than yours unless its feature explicitly ignores bodily anchoring.\n\nA creature of equal or higher CL resolves forced movement normally.\n\n### Blood-Furnace Circulation\n\nOnce per turn, immediately after you spend one or more Stamina on a feature that successfully resolves, regain Hit Points equal to your Proficiency Bonus.\n\nIf you are at your maximum Hit Points, gain Temporary Hit Points equal to your Proficiency Bonus instead.\n\nBlood-Furnace Circulation does not function while you are at 0 Hit Points, cannot be triggered by refunded Stamina or an invalid activation, and functions no more than once per turn.\n\n#### Perfected Blood Furnace - CL17\n\nThe Hit Points or Temporary Hit Points gained become `2 x Proficiency Bonus`.\n\nWhen this feature restores Hit Points, you may also end one ongoing Bleeding state affecting you if that state has a Source CL no higher than your CL.\n\n### Mountain-Rending Pulse\n\nOnce per turn, immediately after you spend one or more Stamina on a feature that successfully resolves, empower your next Body Refining melee attack before the end of your next turn.\n\nOn a hit:\n\n- Deal an additional `1d8` Force damage.\n- Choose either to push the target 5 feet or prevent it from taking Reactions until the start of its next turn.\n\nIf the empowered attack misses, the empowerment remains until its duration expires.\n\nYou cannot hold more than one Mountain-Rending empowerment at a time. Gaining another replaces the previous one.\n\n#### Perfected Mountain-Rending Pulse - CL17\n\nThe additional damage becomes `2d8` Force damage.\n\nOn a hit, choose one:\n\n- Push the target 10 feet.\n- Knock the target Prone if it fails a Strength saving throw.\n- Prevent it from taking Reactions until the start of its next turn.\n- Deal double damage to an unattended object, temporary barrier, vehicle, structure, or Formation Anchor.\n",
+      "components": [
+        {
+          "title": "Golden Bell Circulation",
+          "slug": "golden_bell_circulation",
+          "heading_level": 3,
+          "source_line": 409,
+          "canonical_id": "tianxia.path.body_refining.feature.core_tempering_expression.component.golden_bell_circulation"
+        },
+        {
+          "title": "Perfected Golden Bell - CL17",
+          "slug": "perfected_golden_bell",
+          "heading_level": 4,
+          "source_line": 423,
+          "canonical_id": "tianxia.path.body_refining.feature.core_tempering_expression.component.perfected_golden_bell"
+        },
+        {
+          "title": "Blood-Furnace Circulation",
+          "slug": "blood_furnace_circulation",
+          "heading_level": 3,
+          "source_line": 433,
+          "canonical_id": "tianxia.path.body_refining.feature.core_tempering_expression.component.blood_furnace_circulation"
+        },
+        {
+          "title": "Perfected Blood Furnace - CL17",
+          "slug": "perfected_blood_furnace",
+          "heading_level": 4,
+          "source_line": 441,
+          "canonical_id": "tianxia.path.body_refining.feature.core_tempering_expression.component.perfected_blood_furnace"
+        },
+        {
+          "title": "Mountain-Rending Pulse",
+          "slug": "mountain_rending_pulse",
+          "heading_level": 3,
+          "source_line": 447,
+          "canonical_id": "tianxia.path.body_refining.feature.core_tempering_expression.component.mountain_rending_pulse"
+        },
+        {
+          "title": "Perfected Mountain-Rending Pulse - CL17",
+          "slug": "perfected_mountain_rending_pulse",
+          "heading_level": 4,
+          "source_line": 460,
+          "canonical_id": "tianxia.path.body_refining.feature.core_tempering_expression.component.perfected_mountain_rending_pulse"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.extra_attack_improvement",
+      "display_name": "Extra Attack Improvement",
+      "aliases": [],
+      "feature_kind": "scaling_improvement",
+      "minimum_cl": 11,
+      "granted_at_cl": [
+        11,
+        17
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL11 - Extra Attack Improvement",
+          "source_line_start": 471,
+          "source_line_end": 474,
+          "source_markdown": "## CL11 - Extra Attack Improvement\n\nWhen you take the Attack action, you may make three attacks instead of two.\n",
+          "summary": "When you take the Attack action, you may make three attacks instead of two."
+        },
+        {
+          "source_heading": "CL17 - Extra Attack Improvement",
+          "source_line_start": 504,
+          "source_line_end": 507,
+          "source_markdown": "## CL17 - Extra Attack Improvement\n\nWhen you take the Attack action, you may make four attacks instead of three.\n",
+          "summary": "When you take the Attack action, you may make four attacks instead of three."
+        }
+      ],
+      "source_rules_text": "## CL11 - Extra Attack Improvement\n\nWhen you take the Attack action, you may make three attacks instead of two.\n\n## CL17 - Extra Attack Improvement\n\nWhen you take the Attack action, you may make four attacks instead of three.\n",
+      "effective_rules_text": "## CL11 - Extra Attack Improvement\n\nWhen you take the Attack action, you may make three attacks instead of two.\n\n## CL17 - Extra Attack Improvement\n\nWhen you take the Attack action, you may make four attacks instead of three.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.indomitable_body",
+      "display_name": "Indomitable Body",
+      "aliases": [],
+      "feature_kind": "defensive_feature",
+      "minimum_cl": 13,
+      "granted_at_cl": [
+        13
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL13 - Indomitable Body",
+          "source_line_start": 475,
+          "source_line_end": 488,
+          "source_markdown": "## CL13 - Indomitable Body\n\nChoose a second Defensive Discipline from Tempered Response.\n\nIn addition, when you fail a saving throw, you may spend 3 Stamina to reroll it.\n\n- No action is required.\n- You may use Indomitable Body once per round.\n- You must use the new result.\n- A die cannot be rerolled more than once.\n- You may use Indomitable Body after Tempered Response failed to turn the original roll into a success.\n- If you used Tempered Response on the original roll, you cannot use it again on the reroll.\n- Indomitable Body cannot reroll a death saving throw, breakthrough check, training check, or another roll that is not a saving throw.\n",
+          "summary": "Choose a second Defensive Discipline from Tempered Response."
+        }
+      ],
+      "source_rules_text": "## CL13 - Indomitable Body\n\nChoose a second Defensive Discipline from Tempered Response.\n\nIn addition, when you fail a saving throw, you may spend 3 Stamina to reroll it.\n\n- No action is required.\n- You may use Indomitable Body once per round.\n- You must use the new result.\n- A die cannot be rerolled more than once.\n- You may use Indomitable Body after Tempered Response failed to turn the original roll into a success.\n- If you used Tempered Response on the original roll, you cannot use it again on the reroll.\n- Indomitable Body cannot reroll a death saving throw, breakthrough check, training check, or another roll that is not a saving throw.\n",
+      "effective_rules_text": "## CL13 - Indomitable Body\n\nChoose a second Defensive Discipline from Tempered Response.\n\nIn addition, when you fail a saving throw, you may spend 3 Stamina to reroll it.\n\n- No action is required.\n- You may use Indomitable Body once per round.\n- You must use the new result.\n- A die cannot be rerolled more than once.\n- You may use Indomitable Body after Tempered Response failed to turn the original roll into a success.\n- If you used Tempered Response on the original roll, you cannot use it again on the reroll.\n- Indomitable Body cannot reroll a death saving throw, breakthrough check, training check, or another roll that is not a saving throw.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.blood_pump",
+      "display_name": "Blood Pump",
+      "aliases": [],
+      "feature_kind": "recovery_feature",
+      "minimum_cl": 15,
+      "granted_at_cl": [
+        15
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL15 - Blood Pump",
+          "source_line_start": 489,
+          "source_line_end": 503,
+          "source_markdown": "## CL15 - Blood Pump\n\n**Trigger:** You would be reduced to 0 Hit Points but are not killed outright.  \n**Cost:** 6 Stamina  \n**Limit:** Once per scene  \n**Action:** None\n\nYou are reduced to 1 Hit Point instead.\n\nBlood Pump resolves after all damage reduction has been applied.\n\nBlood Pump cannot prevent instant death, total bodily destruction, an effect explicitly stating that reaching 0 Hit Points cannot be prevented, unavoidable damage from a feature that prohibits zero-Hit-Point substitution, death caused by a non-damage effect, or maximum-Hit-Point reduction that leaves your maximum at 0.\n\nOnly one feature that replaces or prevents the same reduction to 0 Hit Points can resolve. If several are available, choose one.\n",
+          "summary": "Trigger: You would be reduced to 0 Hit Points but are not killed outright. Cost: 6 Stamina Limit: Once per scene Action: None"
+        }
+      ],
+      "source_rules_text": "## CL15 - Blood Pump\n\n**Trigger:** You would be reduced to 0 Hit Points but are not killed outright.  \n**Cost:** 6 Stamina  \n**Limit:** Once per scene  \n**Action:** None\n\nYou are reduced to 1 Hit Point instead.\n\nBlood Pump resolves after all damage reduction has been applied.\n\nBlood Pump cannot prevent instant death, total bodily destruction, an effect explicitly stating that reaching 0 Hit Points cannot be prevented, unavoidable damage from a feature that prohibits zero-Hit-Point substitution, death caused by a non-damage effect, or maximum-Hit-Point reduction that leaves your maximum at 0.\n\nOnly one feature that replaces or prevents the same reduction to 0 Hit Points can resolve. If several are available, choose one.\n",
+      "effective_rules_text": "## CL15 - Blood Pump\n\n**Trigger:** You would be reduced to 0 Hit Points but are not killed outright.  \n**Cost:** 6 Stamina  \n**Limit:** Once per scene  \n**Action:** None\n\nYou are reduced to 1 Hit Point instead.\n\nBlood Pump resolves after all damage reduction has been applied.\n\nBlood Pump cannot prevent instant death, total bodily destruction, an effect explicitly stating that reaching 0 Hit Points cannot be prevented, unavoidable damage from a feature that prohibits zero-Hit-Point substitution, death caused by a non-damage effect, or maximum-Hit-Point reduction that leaves your maximum at 0.\n\nOnly one feature that replaces or prevents the same reduction to 0 Hit Points can resolve. If several are available, choose one.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.heavenly_fist",
+      "display_name": "Heavenly Fist",
+      "aliases": [],
+      "feature_kind": "attack_improvement",
+      "minimum_cl": 17,
+      "granted_at_cl": [
+        17
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL17 - Heavenly Fist",
+          "source_line_start": 508,
+          "source_line_end": 528,
+          "source_markdown": "## CL17 - Heavenly Fist\n\nYour unarmed strikes and integrated weapons:\n\n- Count as magical.\n- Count as cultivation-powered.\n- Count as adamantine.\n- May deal Force damage instead of their normal damage type.\n- Ignore ordinary Resistance to damage from nonmagical weapons.\n- Cannot be broken or rendered unusable by a mundane disarm, rust, dulling, or weapon-breaking effect while you wield them.\n\nAgainst an unattended object, vehicle, structure, temporary barrier, terrain section, or Formation Anchor whose Source CL is no higher than yours:\n\n- Your Body Refining attacks deal double damage.\n- Ignore Resistance to Bludgeoning, Piercing, Slashing, and Force damage.\n- Treat its Damage Threshold as 0.\n\nAgainst a target with a higher Source CL, resolve its Resistance and Damage Threshold normally.\n\nHeavenly Fist does not automatically bypass Immunity, permanent artifact properties, Immortal protections, Void protections, or a Source Rule explicitly stating that physical force cannot damage the target.\n",
+          "summary": "Your unarmed strikes and integrated weapons:"
+        }
+      ],
+      "source_rules_text": "## CL17 - Heavenly Fist\n\nYour unarmed strikes and integrated weapons:\n\n- Count as magical.\n- Count as cultivation-powered.\n- Count as adamantine.\n- May deal Force damage instead of their normal damage type.\n- Ignore ordinary Resistance to damage from nonmagical weapons.\n- Cannot be broken or rendered unusable by a mundane disarm, rust, dulling, or weapon-breaking effect while you wield them.\n\nAgainst an unattended object, vehicle, structure, temporary barrier, terrain section, or Formation Anchor whose Source CL is no higher than yours:\n\n- Your Body Refining attacks deal double damage.\n- Ignore Resistance to Bludgeoning, Piercing, Slashing, and Force damage.\n- Treat its Damage Threshold as 0.\n\nAgainst a target with a higher Source CL, resolve its Resistance and Damage Threshold normally.\n\nHeavenly Fist does not automatically bypass Immunity, permanent artifact properties, Immortal protections, Void protections, or a Source Rule explicitly stating that physical force cannot damage the target.\n",
+      "effective_rules_text": "## CL17 - Heavenly Fist\n\nYour unarmed strikes and integrated weapons:\n\n- Count as magical.\n- Count as cultivation-powered.\n- Count as adamantine.\n- May deal Force damage instead of their normal damage type.\n- Ignore ordinary Resistance to damage from nonmagical weapons.\n- Cannot be broken or rendered unusable by a mundane disarm, rust, dulling, or weapon-breaking effect while you wield them.\n\nAgainst an unattended object, vehicle, structure, temporary barrier, terrain section, or Formation Anchor whose Source CL is no higher than yours:\n\n- Your Body Refining attacks deal double damage.\n- Ignore Resistance to Bludgeoning, Piercing, Slashing, and Force damage.\n- Treat its Damage Threshold as 0.\n\nAgainst a target with a higher Source CL, resolve its Resistance and Damage Threshold normally.\n\nHeavenly Fist does not automatically bypass Immunity, permanent artifact properties, Immortal protections, Void protections, or a Source Rule explicitly stating that physical force cannot damage the target.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.perfected_core_tempering",
+      "display_name": "Perfected Core Tempering",
+      "aliases": [],
+      "feature_kind": "scaling_improvement",
+      "minimum_cl": 17,
+      "granted_at_cl": [
+        17
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL17 - Perfected Core Tempering",
+          "source_line_start": 529,
+          "source_line_end": 532,
+          "source_markdown": "## CL17 - Perfected Core Tempering\n\nYour chosen Core Tempering Expression gains its Perfected benefits.\n",
+          "summary": "Your chosen Core Tempering Expression gains its Perfected benefits."
+        }
+      ],
+      "source_rules_text": "## CL17 - Perfected Core Tempering\n\nYour chosen Core Tempering Expression gains its Perfected benefits.\n",
+      "effective_rules_text": "## CL17 - Perfected Core Tempering\n\nYour chosen Core Tempering Expression gains its Perfected benefits.\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.immortal_body",
+      "display_name": "Immortal Body",
+      "aliases": [],
+      "feature_kind": "capstone",
+      "minimum_cl": 20,
+      "granted_at_cl": [
+        20
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL20 - Immortal Body",
+          "source_line_start": 533,
+          "source_line_end": 579,
+          "source_markdown": "## CL20 - Immortal Body\n\nYour physical vessel no longer obeys ordinary mortal limitations.\n\n### Immortal Regeneration\n\nAt the start of each of your turns, if you have at least 1 Hit Point, regain 20 Hit Points.\n\n### Body Recalls Life\n\nAt the start of your turn, if you are at 0 Hit Points, alive, and have at least 10 Stamina, you may spend 10 Stamina to regain 20 Hit Points.\n\n- No action is required.\n- You may use this benefit once per scene.\n- You immediately regain consciousness.\n- You may stand by spending 5 feet of movement.\n- Failed death saving throws remain until removed under the normal rules.\n- This cannot restore you after death.\n- It cannot function if your body has been completely destroyed.\n- It cannot function while an effect explicitly prevents healing or bodily reconstruction.\n\n### Immortal Reconstruction\n\n- A severed body part held against its original location reattaches after 1 uninterrupted minute.\n- A missing body part regrows during a full 2-hour Cultivation Session.\n- A regrown body part is fully functional when the session ends.\n- This reconstruction does not restore Hit Points unless another rule says so.\n- It does not repair Foundation damage, soul damage, core destruction, Hidden Injuries, or permanent identity alteration.\n\n### Transcended Mortal Needs\n\nYou cease aging unless you choose to continue aging, cannot die from old age, do not require food, drink, air, or sleep, and are immune to mundane disease and ordinary bodily poison.\n\nYou must still complete rests or Cultivation Sessions to gain their mechanical benefits.\n\nCultivation-powered disease, curses, corruption, Tribulation effects, Foundation injuries, and poisons with a Source CL remain capable of affecting you unless another feature protects you.\n\n### Complete Defensive Tempering\n\nYou gain all three Defensive Disciplines from Tempered Response.\n\n### Second Core Tempering Expression\n\nChoose a second Core Tempering Expression. Both are active and use their Perfected CL17 benefits.\n\n---\n",
+          "summary": "Your physical vessel no longer obeys ordinary mortal limitations."
+        }
+      ],
+      "source_rules_text": "## CL20 - Immortal Body\n\nYour physical vessel no longer obeys ordinary mortal limitations.\n\n### Immortal Regeneration\n\nAt the start of each of your turns, if you have at least 1 Hit Point, regain 20 Hit Points.\n\n### Body Recalls Life\n\nAt the start of your turn, if you are at 0 Hit Points, alive, and have at least 10 Stamina, you may spend 10 Stamina to regain 20 Hit Points.\n\n- No action is required.\n- You may use this benefit once per scene.\n- You immediately regain consciousness.\n- You may stand by spending 5 feet of movement.\n- Failed death saving throws remain until removed under the normal rules.\n- This cannot restore you after death.\n- It cannot function if your body has been completely destroyed.\n- It cannot function while an effect explicitly prevents healing or bodily reconstruction.\n\n### Immortal Reconstruction\n\n- A severed body part held against its original location reattaches after 1 uninterrupted minute.\n- A missing body part regrows during a full 2-hour Cultivation Session.\n- A regrown body part is fully functional when the session ends.\n- This reconstruction does not restore Hit Points unless another rule says so.\n- It does not repair Foundation damage, soul damage, core destruction, Hidden Injuries, or permanent identity alteration.\n\n### Transcended Mortal Needs\n\nYou cease aging unless you choose to continue aging, cannot die from old age, do not require food, drink, air, or sleep, and are immune to mundane disease and ordinary bodily poison.\n\nYou must still complete rests or Cultivation Sessions to gain their mechanical benefits.\n\nCultivation-powered disease, curses, corruption, Tribulation effects, Foundation injuries, and poisons with a Source CL remain capable of affecting you unless another feature protects you.\n\n### Complete Defensive Tempering\n\nYou gain all three Defensive Disciplines from Tempered Response.\n\n### Second Core Tempering Expression\n\nChoose a second Core Tempering Expression. Both are active and use their Perfected CL17 benefits.\n\n---\n",
+      "effective_rules_text": "## CL20 - Immortal Body\n\nYour physical vessel no longer obeys ordinary mortal limitations.\n\n### Immortal Regeneration\n\nAt the start of each of your turns, if you have at least 1 Hit Point, regain 20 Hit Points.\n\n### Body Recalls Life\n\nAt the start of your turn, if you are at 0 Hit Points, alive, and have at least 10 Stamina, you may spend 10 Stamina to regain 20 Hit Points.\n\n- No action is required.\n- You may use this benefit once per scene.\n- You immediately regain consciousness.\n- You may stand by spending 5 feet of movement.\n- Failed death saving throws remain until removed under the normal rules.\n- This cannot restore you after death.\n- It cannot function if your body has been completely destroyed.\n- It cannot function while an effect explicitly prevents healing or bodily reconstruction.\n\n### Immortal Reconstruction\n\n- A severed body part held against its original location reattaches after 1 uninterrupted minute.\n- A missing body part regrows during a full 2-hour Cultivation Session.\n- A regrown body part is fully functional when the session ends.\n- This reconstruction does not restore Hit Points unless another rule says so.\n- It does not repair Foundation damage, soul damage, core destruction, Hidden Injuries, or permanent identity alteration.\n\n### Transcended Mortal Needs\n\nYou cease aging unless you choose to continue aging, cannot die from old age, do not require food, drink, air, or sleep, and are immune to mundane disease and ordinary bodily poison.\n\nYou must still complete rests or Cultivation Sessions to gain their mechanical benefits.\n\nCultivation-powered disease, curses, corruption, Tribulation effects, Foundation injuries, and poisons with a Source CL remain capable of affecting you unless another feature protects you.\n\n### Complete Defensive Tempering\n\nYou gain all three Defensive Disciplines from Tempered Response.\n\n### Second Core Tempering Expression\n\nChoose a second Core Tempering Expression. Both are active and use their Perfected CL17 benefits.\n\n---\n",
+      "components": [
+        {
+          "title": "Immortal Regeneration",
+          "slug": "immortal_regeneration",
+          "heading_level": 3,
+          "source_line": 537,
+          "canonical_id": "tianxia.path.body_refining.feature.immortal_body.component.immortal_regeneration"
+        },
+        {
+          "title": "Body Recalls Life",
+          "slug": "body_recalls_life",
+          "heading_level": 3,
+          "source_line": 541,
+          "canonical_id": "tianxia.path.body_refining.feature.immortal_body.component.body_recalls_life"
+        },
+        {
+          "title": "Immortal Reconstruction",
+          "slug": "immortal_reconstruction",
+          "heading_level": 3,
+          "source_line": 554,
+          "canonical_id": "tianxia.path.body_refining.feature.immortal_body.component.immortal_reconstruction"
+        },
+        {
+          "title": "Transcended Mortal Needs",
+          "slug": "transcended_mortal_needs",
+          "heading_level": 3,
+          "source_line": 562,
+          "canonical_id": "tianxia.path.body_refining.feature.immortal_body.component.transcended_mortal_needs"
+        },
+        {
+          "title": "Complete Defensive Tempering",
+          "slug": "complete_defensive_tempering",
+          "heading_level": 3,
+          "source_line": 570,
+          "canonical_id": "tianxia.path.body_refining.feature.immortal_body.component.complete_defensive_tempering"
+        },
+        {
+          "title": "Second Core Tempering Expression",
+          "slug": "second_core_tempering_expression",
+          "heading_level": 3,
+          "source_line": 574,
+          "canonical_id": "tianxia.path.body_refining.feature.immortal_body.component.second_core_tempering_expression"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.body_refining.feature.second_core_tempering_expression",
+      "display_name": "Second Core Tempering Expression",
+      "aliases": [],
+      "feature_kind": "choice_feature",
+      "minimum_cl": 20,
+      "granted_at_cl": [
+        20
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "Second Core Tempering Expression",
+          "source_line_start": 574,
+          "source_line_end": 579,
+          "source_markdown": "### Second Core Tempering Expression\n\nChoose a second Core Tempering Expression. Both are active and use their Perfected CL17 benefits.\n\n---\n",
+          "summary": "Choose a second Core Tempering Expression. Both are active and use their Perfected CL17 benefits."
+        }
+      ],
+      "source_rules_text": "### Second Core Tempering Expression\n\nChoose a second Core Tempering Expression. Both are active and use their Perfected CL17 benefits.\n\n---\n",
+      "effective_rules_text": "### Second Core Tempering Expression\n\nChoose a second Core Tempering Expression. Both are active and use their Perfected CL17 benefits.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    }
+  ],
+  "counts": {
+    "progression_levels": 20,
+    "unique_feature_records": 21,
+    "feature_components": 16
+  },
+  "authority_notes": [
+    "The player Path chapter is the controlling source for the Path chassis and features.",
+    "The shared PHB Path chapter controls universal Path mathematics and multi-Path rules where applicable.",
+    "Indexes locate and structure rules but do not independently grant abilities or override source text.",
+    "The effective_rules_text field applies recorded authority overlays; source_rules_text preserves the source section verbatim."
+  ]
+}

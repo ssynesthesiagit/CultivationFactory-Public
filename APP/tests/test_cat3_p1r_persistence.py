@@ -101,8 +101,8 @@ def run_cat3_p1r_persistence_acceptance(
 
     source_status = source_catalog.status()
     target_status_before = target_catalog.status()
-    assert source_status["automatic_base_ability_source_row_count"] == 126
-    assert source_status["automatic_base_ability_unique_count"] == 125
+    assert source_status["automatic_base_ability_source_row_count"] == 132
+    assert source_status["automatic_base_ability_unique_count"] == 131
     assert target_status_before == source_status
 
     project_id = str(uuid.uuid4())
@@ -219,11 +219,11 @@ def run_cat3_p1r_persistence_acceptance(
     target_catalog_after = CharacterBuilderService(reopened_target_db).canonical_catalog
     target_status_after = target_catalog_after.status()
     assert target_status_after == source_status
-    assert target_status_after["automatic_base_ability_unique_count"] == 125
+    assert target_status_after["automatic_base_ability_unique_count"] == 131
 
     target_components = _runtime_base_components(target_catalog_after)
     target_component_ids = [row["runtime_component_id"] for row in target_components]
-    assert len(target_components) == 125
+    assert len(target_components) == 131
     assert len(target_component_ids) == len(set(target_component_ids))
     target_darkness = [
         row for row in target_components

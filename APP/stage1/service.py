@@ -267,6 +267,20 @@ class Stage1ClipboardService:
             raise FoundryError("STAGE1_PROMPT_NOT_FOUND", "No Stage 1 prompt has that ID.", status_code=404)
         return {"prompt_id": prompt_id, "project_id": row["project_id"], "project_revision": row["project_revision"], "prompt_sha256": row["prompt_sha256"], "prompt_text": bytes(row["prompt_bytes"]).decode("utf-8"), "envelope": json.loads(row["envelope_json"]), "created_at": row["created_at"]}
 
+    def prepare_prompt(self, project_id: str) -> dict[str, Any]:
+        """Resolve one current-revision request for the selected canonical project."""
+        project = self._project(project_id)
+        revision = int(project["revision"])
+        with self.db.connection() as conn:
+            row = conn.execute(
+                "SELECT prompt_id FROM stage1_prompt_exchanges WHERE project_id=? AND project_revision=? "
+                "ORDER BY created_at DESC,prompt_id DESC LIMIT 1",
+                (project_id, revision),
+            ).fetchone()
+        result = self.get_prompt(row["prompt_id"]) if row else self.generate_prompt(project_id)
+        result["reused"] = bool(row)
+        return result
+
     @staticmethod
     def _safe_export_stem(value: str) -> str:
         cleaned = re.sub(r"[^A-Za-z0-9._-]+", "_", str(value or "character").strip()).strip("._-")
@@ -286,13 +300,31 @@ class Stage1ClipboardService:
             raise FoundryError("STAGE1_PROMPT_BYTES_MISMATCH", "The saved Stage 1 request no longer matches its sealed hash.", status_code=500)
         return row, prompt_bytes
 
-    def save_prompt_file(self, prompt_id: str, *, zipped: bool) -> dict[str, Any]:
+    def save_prompt_file(self, prompt_id: str, *, zipped: bool, reuse_existing: bool = False) -> dict[str, Any]:
         row, prompt_bytes = self._prompt_row(prompt_id)
         export_dir = self.db.settings.exports_dir / "CharacterBuilder"
         export_dir.mkdir(parents=True, exist_ok=True)
         stem = f"{self._safe_export_stem(row['working_name'])}_{self._safe_export_stem(prompt_id)}"
         prompt_name = stem + ".md"
         target = export_dir / (stem + (".zip" if zipped else ".md"))
+        if target.exists() and reuse_existing:
+            if not target.is_file():
+                raise FoundryError("CHARACTER_BUILDER_EXPORT_EXISTS", "The expected export path is not a file.", details={"path": str(target)}, status_code=409)
+            if zipped:
+                try:
+                    with zipfile.ZipFile(target) as existing:
+                        if existing.testzip() is not None or existing.read(prompt_name) != prompt_bytes:
+                            raise ValueError("existing prompt ZIP differs")
+                except (OSError, KeyError, zipfile.BadZipFile, ValueError) as exc:
+                    raise FoundryError("CHARACTER_BUILDER_EXPORT_EXISTS", "The existing request ZIP does not match this sealed Stage 1 request.", details={"path": str(target)}, status_code=409) from exc
+            elif target.read_bytes() != prompt_bytes:
+                raise FoundryError("CHARACTER_BUILDER_EXPORT_EXISTS", "The existing request file does not match this sealed Stage 1 request.", details={"path": str(target)}, status_code=409)
+            return {
+                "saved": True, "reused": True, "kind": "zip" if zipped else "markdown",
+                "path": str(target.resolve()), "filename": target.name, "prompt_id": prompt_id,
+                "prompt_sha256": row["prompt_sha256"], "saved_file_sha256": sha256_bytes(target.read_bytes()),
+                "prompt_bytes_preserved": True, "recommended": bool(zipped),
+            }
         if target.exists():
             raise FoundryError(
                 "CHARACTER_BUILDER_EXPORT_EXISTS",
@@ -326,6 +358,7 @@ class Stage1ClipboardService:
                     raise FoundryError("CHARACTER_BUILDER_PROMPT_ZIP_INVALID", "The saved request ZIP failed its integrity check.", status_code=500)
         return {
             "saved": True,
+            "reused": False,
             "kind": "zip" if zipped else "markdown",
             "path": str(target.resolve()),
             "filename": target.name,
@@ -1127,4 +1160,13 @@ class Stage1ClipboardService:
             ).fetchone()[0]
         for item in attempts:
             item["validation"] = json.loads(item.pop("validation_json"))
-        return {"project_id": project_id, "stage_id": STAGE_ID, "prompts": prompts, "attempts": attempts, "blueprint_head": dict(head) if head else None, "advancement_event_count": advancement_count, "network_calls": network_calls}
+        current_revision = int(self._project(project_id)["revision"])
+        current_prompts = [row for row in prompts if int(row["project_revision"]) == current_revision]
+        state = "SEALED" if head else ("REQUEST_PREPARED" if current_prompts else "ELIGIBLE_TO_PREPARE")
+        return {
+            "project_id": project_id, "project_revision": current_revision, "stage_id": STAGE_ID,
+            "state": state, "stage1_sealed": bool(head), "request_prepared": bool(current_prompts),
+            "current_prompt_id": current_prompts[-1]["prompt_id"] if current_prompts else None,
+            "prompts": prompts, "attempts": attempts, "blueprint_head": dict(head) if head else None,
+            "advancement_event_count": advancement_count, "network_calls": network_calls,
+        }

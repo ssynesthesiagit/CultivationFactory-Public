@@ -764,9 +764,10 @@ class CombatService:
             result["source"] = "match_snapshot"
             return result
 
+        maps = manifest.get("maps") or []
         selected_map = next(
-            (row for row in manifest.get("maps", []) if row.get("asset_id") == manifest.get("default_map_asset_id")),
-            manifest.get("maps", [None])[0],
+            (row for row in maps if row.get("asset_id") == manifest.get("default_map_asset_id")),
+            maps[0] if maps else None,
         )
         map_row = snapshot_row(selected_map, prefix="background") if selected_map else None
         tokens = {}

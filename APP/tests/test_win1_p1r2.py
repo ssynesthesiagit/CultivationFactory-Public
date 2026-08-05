@@ -60,7 +60,8 @@ def test_exact_method_choice_blocks_without_route_then_materializes_server_autho
     envelope = project.get("project") or project
     locks = {row["field"]: row["value"] for row in envelope["user_locks"]}
     internal = locks["character_sheet.method_access_plan"]
-    assert internal["route_type"] == access["owner_route_options"][0]["description"]
+    assert internal["route_type"] == access["owner_route_options"][0]["typed_route"]
+    assert internal["source_route_sha256"] == access["owner_route_options"][0]["source_route_sha256"]
     assert internal["owner_annotation"] == "Met during the first journey."
     assert internal["source_reference"]["method_record_sha256"]
     assert internal["route_commitment_sha256"]
@@ -78,6 +79,21 @@ def test_exact_method_choice_blocks_without_route_then_materializes_server_autho
     assert evidence["route_type"] == internal["route_type"]
     assert evidence["source_reference"] == internal["source_reference"]
     assert evidence["method_registry_commitment_sha256"] == internal["method_registry_commitment_sha256"]
+
+
+def test_custom_method_route_requires_and_persists_owner_explanation(fresh_db):
+    service = NonSphereAuthorityService(fresh_db)
+    method = next(row for row in service.method_catalog(initial_creation=True)["records"] if row["method_id"] == "METHOD-002")
+    custom = next(row for row in method["method_planning"]["owner_route_options"] if row["typed_route"] == "CUSTOM_DOCUMENTED_ROUTE")
+    with pytest.raises(FoundryError) as exc:
+        service.resolve_initial_method_access("METHOD-002", route_choice=custom["choice_id"], owner_annotation=" ")
+    assert exc.value.code == "CHARACTER_METHOD_CUSTOM_EXPLANATION_REQUIRED"
+    plan = service.resolve_initial_method_access(
+        "METHOD-002", route_choice=custom["choice_id"], owner_annotation="Taught by a wandering archivist.",
+    )
+    assert plan["route_type"] == "CUSTOM_DOCUMENTED_ROUTE"
+    assert plan["owner_annotation"] == "Taught by a wandering archivist."
+    assert plan["source_route_sha256"] == custom["source_route_sha256"]
 
 
 def test_insight_authority_uses_explicit_bindings_and_never_defaults_missing_to_general():
@@ -118,6 +134,58 @@ def test_insight_duplicate_resolution_uses_exact_supersession_and_matrix_has_zer
     assert matrix["summary"]["unresolved_duplicate_record_id_count"] == 0
 
 
+def test_background_origin_insight_inventory_is_source_backed_and_preference_only(catalog_environment):
+    builder = CharacterBuilderService(catalog_environment["db"])
+    categories = {row["slot_id"]: row for row in builder.options()["categories"]}
+    insights = categories["insight_priorities"]["choices"]
+    classified = [
+        row for row in insights
+        if row.get("insight_authority", {}).get("authority_type") == "Background-Origin"
+    ]
+    assert len(classified) == 50
+    assert len({row["choice_id"] for row in classified}) == 50
+    assert all(row["content_type"] == "origin_insight" for row in classified)
+    assert all(row["insight_authority"]["preference_only"] is True for row in classified)
+    assert all(row["insight_authority"]["classification_code"] == "EXPLICIT_BACKGROUND_ORIGIN_INSIGHT_AUTHORITY" for row in classified)
+    assert all(row["insight_authority"]["binding_records"] for row in classified)
+    assert all(
+        occurrence.get("path") and occurrence.get("anchor")
+        for row in classified
+        for occurrence in row["insight_authority"]["source_reference"]["source_occurrences"]
+    )
+
+    authority_path = Path(__file__).resolve().parents[1] / "non_sphere_authority" / "authority" / "Background_Core_Authority_v1.json"
+    authority = json.loads(authority_path.read_text(encoding="utf-8"))
+    backgrounds = authority["backgrounds"] if isinstance(authority["backgrounds"], list) else list(authority["backgrounds"].values())
+    expected: dict[str, set[str]] = {}
+    for background in backgrounds:
+        background_id = background.get("background_id") or background.get("record_id")
+        options = (background.get("origin_insight") or {}).get("suggested_options") or []
+        for option in options:
+            name = option if isinstance(option, str) else option.get("display_name") or option.get("name")
+            expected.setdefault(" ".join(name.casefold().split()), set()).add(background_id)
+    actual = {
+        " ".join(row["name"].casefold().split()): {
+            binding["binding_id"] for binding in row["insight_authority"]["binding_records"]
+        }
+        for row in classified
+    }
+    assert actual == expected
+    assert any(len(background_ids) > 1 for background_ids in actual.values())
+
+    counts: dict[str, int] = {}
+    for row in insights:
+        authority_type = row.get("insight_authority", {}).get("authority_type", "Unresolved")
+        counts[authority_type] = counts.get(authority_type, 0) + 1
+    assert counts == {"Path": 135, "Sphere": 316, "Background-Origin": 50}
+
+    matrix = json.loads((Path(__file__).resolve().parents[2] / "win1_p1r2" / "INSIGHT_SOURCE_AUTHORITY_MATRIX.json").read_text(encoding="utf-8"))
+    assert matrix["summary"]["matrix_record_count"] == 456
+    assert matrix["summary"]["source_record_count"] == 459
+    assert matrix["summary"]["authority_type_counts"] == {"Path": 135, "Sphere": 321}
+    assert matrix["summary"]["resolved_duplicate_record_id_count"] == 3
+
+
 def test_primary_wizard_contains_only_simple_method_controls():
     static = Path(__file__).resolve().parents[1] / "static"
     html = (static / "index.html").read_text(encoding="utf-8")
@@ -143,7 +211,10 @@ def test_complete_request_save_receipt_is_small_and_exactly_bound():
         "request_sha256": "a" * 64,
         "content_lock_hash": "b" * 64,
         "typed_choice_snapshot": {"snapshot_sha256": "c" * 64, "large_projection": "x" * (3 * 1024 * 1024)},
+        "required_components": ["stage1_response"],
+        "forbidden_planner_fields": ["compiled_mechanics"],
     }
+    service.owner_principal = "windows-sid:test-owner"
     service.get = lambda _run_id: {
         "run_id": "cg1.run." + "d" * 32,
         "project_id": "project-receipt",
@@ -174,8 +245,12 @@ def test_owner_connection_test_uses_deepseek_mock_and_never_returns_secret(fresh
         enabled=True, model="deepseek-v4-flash", thinking_mode="disabled", max_output_tokens=1024,
         timeout_seconds=30, data_sharing_acknowledged=True, acknowledged_by="Owner Test",
     )
+    assert service.status()["readiness_state"] == "CONNECTION_NOT_TESTED"
+    assert service.status()["ready"] is False
     result = service.test_connection()
     assert result["status"] == "PASS" and result["secret_returned"] is False
+    assert service.status()["readiness_state"] == "READY"
+    assert service.status()["ready"] is True
     assert secret not in json.dumps(result)
     assert observed["authorization"] == f"Bearer {secret}"
     assert observed["body"]["model"] == "deepseek-v4-flash"

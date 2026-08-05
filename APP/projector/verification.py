@@ -5,6 +5,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 from typing import Any
@@ -210,10 +211,24 @@ class ProjectionVerifier:
                     consumer_identity=consumer_identity, command6_identity={"status": "COMMAND_6_CHARACTER_GM_SOURCE_CONSUMER_PASS", "build_profile": CHARACTER_GM_PROFILE},
                     projection_artifacts=projection_artifacts, owner_sheet_path=owner_sheet_path,
                 )
-                consumer_report_path = output_zip.parent / "Exact_Bundled_GM_Source_Consumer_Report.json"
                 harness = Path(__file__).resolve().parents[1] / "gm_export" / "exact_consumer_harness.py"
-                harness_run = _run([str(helper_python_executable()), str(harness), "--package", str(output_zip), "--consumer-root", str(self.gm_screen_root), "--output", str(consumer_report_path)], cwd=Path(__file__).resolve().parents[1], timeout=120)
-                consumer_report = json.loads(consumer_report_path.read_text(encoding="utf-8")) if consumer_report_path.is_file() else {"status": "GM_SCREEN_SOURCE_CONSUMER_FAILED", "harness_run": harness_run}
+                # Chromium's Windows FileReader cannot open a package whose
+                # fully-qualified path crosses the legacy MAX_PATH boundary,
+                # even though Python can build, audit, and hash that same
+                # artifact.  The production output remains at output_zip;
+                # give the exact browser consumer a byte-identical short-path
+                # copy so the verification tests the package contents rather
+                # than the host staging path.
+                with tempfile.TemporaryDirectory(prefix="tianxia-gm-consumer-") as harness_temp:
+                    harness_package = Path(harness_temp) / output_zip.name
+                    harness_report_path = Path(harness_temp) / "Exact_Bundled_GM_Source_Consumer_Report.json"
+                    shutil.copy2(output_zip, harness_package)
+                    harness_run = _run([str(helper_python_executable()), str(harness), "--package", str(harness_package), "--consumer-root", str(self.gm_screen_root), "--output", str(harness_report_path)], cwd=Path(__file__).resolve().parents[1], timeout=120)
+                    consumer_report = json.loads(harness_report_path.read_text(encoding="utf-8")) if harness_report_path.is_file() else {"status": "GM_SCREEN_SOURCE_CONSUMER_FAILED", "harness_run": harness_run}
+                    if consumer_report:
+                        consumer_report["package_path"] = str(output_zip)
+                        consumer_report["harness_package_path"] = str(harness_package)
+                        consumer_report["harness_package_path_strategy"] = "BYTE_IDENTICAL_SHORT_PATH_COPY"
                 consumer_report["harness_run"] = harness_run
                 status = "COMMAND_6_CHARACTER_GM_SOURCE_CONSUMER_PASS" if harness_run.get("exit_code") == 0 and consumer_report.get("status") == "GM_SCREEN_SOURCE_CONSUMER_VERIFIED" else "COMMAND_6_CHARACTER_GM_SOURCE_CONSUMER_FAILED"
                 report = {

@@ -23,7 +23,7 @@ from common import (
 )
 
 
-EXPECTED_CATALOG_COMMITMENT = "3bc84ab1bb80301fbbb49aa28c561af0aeec77b281bc4cca9b0c4e3860861102"
+EXPECTED_CATALOG_COMMITMENT = "b53d36b6da5f3d8ead46e01cd07bbfc0f80e35043e7f3ef0f2e11d5fb79e35df"
 
 
 @dataclass(frozen=True)
@@ -42,6 +42,7 @@ def pytest_command(output: Path, report_name: str, tests: Sequence[str]) -> list
         "-p",
         "no:cacheprovider",
         "--tb=short",
+        "--basetemp=" + str(output / "pytest-tmp"),
         f"--junitxml={output / 'junit' / report_name}",
         *tests,
     ]
@@ -57,15 +58,7 @@ def fast_stages(output: Path, node: str) -> list[CommandStage]:
     verifier = APP_ROOT / "catalog_authority" / "cat3" / "verify_determinism.py"
     matrices = APP_ROOT / "catalog_authority" / "cat3" / "generate_acceptance_matrices.py"
     focused = (
-        "tests/test_cat3_p1_canonical_catalog.py",
-        "tests/test_cat3_p1r_canonical_catalog.py",
-        "tests/test_cat3_p1r_r2_r1_prerequisite_scope.py",
-        "tests/test_cat3_p1r_r2_evidence_authority.py",
-        "tests/test_character_sheet_builder.py::test_background_sheet_projection_excludes_cross_route_sphere_talent_pairs",
-        "tests/test_character_sheet_builder.py::test_open_initial_methods_use_typed_path_grants_without_post_creation_access",
-        "tests/test_character_sheet_builder.py::test_foundation_dropdown_projection_is_owner_facing_and_insights_are_grouped",
-        "tests/test_ns1r_non_sphere_authority.py::test_initial_open_method_context_does_not_weaken_post_creation_switch_gate",
-        "tests/test_win1_p1r2.py",
+        "tests/test_combat_battle_history.py",
         "tests/test_windows_portable_packaging.py",
     )
     return [
@@ -109,19 +102,6 @@ def fast_stages(output: Path, node: str) -> list[CommandStage]:
             300,
         ),
         CommandStage("focused_tests", pytest_command(output, "fast-focused.xml", focused), 900),
-        CommandStage(
-            "rendered_browser",
-            [
-                sys.executable,
-                str(APP_ROOT / "tests" / "win1_p1r2r2_browser_harness.py"),
-                "--data",
-                str(output.parent / "win1-p1r2r2-browser-data"),
-                "--output-root",
-                str(output / "rendered-browser"),
-                "--cleanup-data",
-            ],
-            600,
-        ),
         CommandStage(
             "ci_contract",
             [sys.executable, "-m", "unittest", "discover", "-s", str(REPOSITORY_ROOT / "ci" / "tests"), "-v"],

@@ -59,10 +59,15 @@ def _bound_plan(app, run: dict, *, warnings: bool = False) -> dict:
 
 def _provider_handler(context: dict):
     def handler(request: httpx.Request) -> httpx.Response:
+        provider_request = json.loads(request.content)
+        if provider_request["messages"][1]["content"] == 'Return exactly {"connection":"ok"}.':
+            return httpx.Response(200, json={
+                "choices": [{"message": {"content": '{"connection":"ok"}'}, "finish_reason": "stop"}],
+                "usage": {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2},
+            })
         behavior = context.get("behavior", "clean")
         if behavior == "http_error":
             return httpx.Response(503, json={"error": "deterministic provider outage"})
-        provider_request = json.loads(request.content)
         prompt = json.loads(provider_request["messages"][1]["content"])
         complete_request = prompt["complete_request"]
         app = context["app"]
@@ -139,7 +144,10 @@ def test_w5_p1r_r1_real_application_endpoints_and_provider(tmp_path: Path) -> No
             },
         )
         assert provider.status_code == 200, provider.text
-        assert provider.json()["ready"] is True
+        assert provider.json()["readiness_state"] == "CONNECTION_NOT_TESTED"
+        tested = client.post("/api/ai-provider/test", headers=headers, json={})
+        assert tested.status_code == 200, tested.text
+        assert client.get("/api/ai-provider", headers=headers).json()["ready"] is True
 
         # Real Manual Chat paste endpoint: prior_attempt_id is accepted and reaches typed validation.
         manual_id = _new_project(app, "w5-r1-manual")

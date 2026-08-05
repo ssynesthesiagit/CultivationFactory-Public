@@ -45,6 +45,7 @@ def main() -> int:
         data_sharing_acknowledged=True,
         acknowledged_by="CAT3-P1R deterministic direct preserved-project compiler check",
     )
+    app.state.ai_provider.test_connection()
     before_envelope = app.state.projects.get_project(args.project_id)
     before = {
         **before_envelope["project"],

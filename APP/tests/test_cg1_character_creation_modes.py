@@ -23,7 +23,7 @@ class Stage1:
         return {'attempt_id':'attempt.'+sha256_json(d)[:12],'response_sha256':sha256_json(d),'validation':{'valid':valid,'errors':[] if valid else [{'code':'BAD_PATH'}],'warnings':[]}}
     def approve_and_commit(self,attempt_id,approved_by):
         with self.db.transaction() as c:
-            row=c.execute('select revision,project_json from projects where project_id="p"').fetchone(); p=json.loads(row['project_json']); p['stage1']=attempt_id; p['revision']=row['revision']+1
+            row=c.execute('select revision,project_json from projects where project_id="p"').fetchone(); p=json.loads(row['project_json']); p['revision']=row['revision']+1
             c.execute('update projects set revision=?,project_json=? where project_id="p"',(row['revision']+1,canonical_json(p)))
         return {'commit_id':'s1.'+attempt_id}
 
@@ -35,7 +35,7 @@ class Stage2:
     def approve_proposal(self,*a,**k): return {'approved':True}
     def commit_proposal(self,pid):
         with self.db.transaction() as c:
-            row=c.execute('select revision,project_json from projects where project_id="p"').fetchone(); p=json.loads(row['project_json']); p['stage2']=pid; p['revision']=row['revision']+1
+            row=c.execute('select revision,project_json from projects where project_id="p"').fetchone(); p=json.loads(row['project_json']); p['revision']=row['revision']+1
             c.execute('update projects set revision=?,project_json=? where project_id="p"',(row['revision']+1,canonical_json(p)))
         return {'commit_id':'s2.'+pid}
 

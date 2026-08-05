@@ -39,6 +39,7 @@ class AIProviderService:
         self.stage1 = Stage1ClipboardService(db)
         self.transport = transport
         self.secrets = secret_store or DeepSeekSecretStore(db.settings.data_dir)
+        self._connection_test = {"status": "NOT_TESTED", "message": "Save settings and key, then run the explicit connection test."}
 
     @staticmethod
     def _defaults() -> dict[str, Any]:
@@ -72,6 +73,24 @@ class AIProviderService:
     def status(self) -> dict[str, Any]:
         settings = self._settings()
         secret = self.secrets.status()
+        prerequisites_ready = bool(
+            settings["enabled"]
+            and settings["data_sharing_acknowledged"]
+            and settings.get("acknowledged_by")
+            and secret["present"]
+        )
+        if not settings["enabled"]:
+            readiness_state, readiness_reason = "DISABLED_BY_OWNER", "DeepSeek is disabled in the saved settings."
+        elif not settings["data_sharing_acknowledged"] or not settings.get("acknowledged_by"):
+            readiness_state, readiness_reason = "ACKNOWLEDGEMENT_MISSING", "A named data-sharing acknowledgement is required."
+        elif not secret["present"]:
+            readiness_state, readiness_reason = "KEY_MISSING", "No protected DeepSeek API key is stored."
+        elif self._connection_test["status"] == "FAILED":
+            readiness_state, readiness_reason = "CONNECTION_FAILED", self._connection_test["message"]
+        elif self._connection_test["status"] != "PASS":
+            readiness_state, readiness_reason = "CONNECTION_NOT_TESTED", "Settings and key are saved; run Test Connection once."
+        else:
+            readiness_state, readiness_reason = "READY", "Saved settings, protected key, acknowledgement, and connection test passed."
         with self.db.connection() as conn:
             totals = conn.execute(
                 """SELECT COUNT(*) AS runs,
@@ -86,11 +105,10 @@ class AIProviderService:
             "mode": "optional_validated_stage1_and_combat_transport",
             "settings": settings,
             "secret": secret,
-            "ready": bool(
-                settings["enabled"]
-                and settings["data_sharing_acknowledged"]
-                and secret["present"]
-            ),
+            "ready": bool(prerequisites_ready and self._connection_test["status"] == "PASS"),
+            "readiness_state": readiness_state,
+            "readiness_reason": readiness_reason,
+            "connection_test": dict(self._connection_test),
             "manual_clipboard_available": True,
             "combat_transport_available": True,
             "direct_commit_allowed": False,
@@ -164,29 +182,38 @@ class AIProviderService:
                     now,
                 ),
             )
+        self._connection_test = {"status": "NOT_TESTED", "message": "Saved provider settings changed; run the explicit connection test."}
         return self.status()
 
     def set_api_key(self, api_key: str) -> dict[str, Any]:
         self.secrets.set(api_key)
+        self._connection_test = {"status": "NOT_TESTED", "message": "The protected key changed; run the explicit connection test."}
         return self.status()
 
     def delete_api_key(self) -> dict[str, Any]:
         removed = self.secrets.delete()
+        self._connection_test = {"status": "NOT_TESTED", "message": "No protected key is stored."}
         return {"removed": removed, **self.status()}
 
     def test_connection(self) -> dict[str, Any]:
         """Run one explicit, owner-triggered, non-authoritative DeepSeek probe."""
-        result = self.complete_json(
-            prompt_text='Return exactly {"connection":"ok"}.',
-            system_message="Return one JSON object for a local connection test. No tools and no mechanical authority.",
-            purpose="owner_connection_test",
-        )
+        try:
+            result = self.complete_json(
+                prompt_text='Return exactly {"connection":"ok"}.',
+                system_message="Return one JSON object for a local connection test. No tools and no mechanical authority.",
+                purpose="owner_connection_test",
+            )
+        except FoundryError as exc:
+            self._connection_test = {"status": "FAILED", "message": exc.message}
+            raise
         try:
             connection_value = json.loads(result["response_text"])
         except (KeyError, TypeError, json.JSONDecodeError):
             connection_value = None
         if connection_value != {"connection": "ok"}:
+            self._connection_test = {"status": "FAILED", "message": "DeepSeek responded, but the connection-test JSON contract failed."}
             raise FoundryError("AI_PROVIDER_CONNECTION_TEST_INVALID", "DeepSeek answered, but the connection-test contract was not satisfied.", status_code=502)
+        self._connection_test = {"status": "PASS", "message": "The explicit DeepSeek connection test passed."}
         return {
             "provider_id": PROVIDER_ID,
             "status": "PASS",

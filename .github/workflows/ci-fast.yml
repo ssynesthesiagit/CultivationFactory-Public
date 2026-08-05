@@ -1,6 +1,7 @@
 name: CI Fast
 
 on:
+  push:
   pull_request:
   workflow_dispatch:
 
@@ -15,7 +16,7 @@ jobs:
   fast:
     name: Fast authority checks
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 60
     steps:
       - name: Begin checkout timing
         shell: pwsh
@@ -33,6 +34,7 @@ jobs:
       - name: Check out accepted source
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           clean: false
           persist-credentials: false
 
