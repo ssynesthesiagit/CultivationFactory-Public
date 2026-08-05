@@ -1221,13 +1221,17 @@ document.getElementById("guidedCreate").addEventListener("submit", async event =
     guidedProjectId = created.project_id;
     guidedProjectLifecycle = created.builder_lifecycle || {persistence_state: "temporary", is_temporary: true, display_label: "Temporary", plain_explanation: "Disappears if abandoned or the Factory closes before you save it."};
     renderGuidedPersistence();
+    const firstCycle = await api(`/api/character-builder/projects/${encodeURIComponent(created.project_id)}/normal-first-cycle-catalog-choice-lock`, {method: "POST", body: "{}"});
     await loadProjects();
     const lockedCount = Object.values(created.character_sheet?.locked_choices || {}).reduce((total, values) => total + (Array.isArray(values) ? values.length : 0), 0)
       + (created.character_sheet?.method_planning_mode === "EXACT" ? 1 : 0);
     const planning = created.character_sheet?.planning_preferences || {};
+    const grantAccounting = firstCycle.grant_plan?.grant_accounting || {};
+    const acquiredSphereCount = (firstCycle.grant_plan?.acquired_canonical_sphere_ids || []).length;
+    const ordinaryTalentCount = (grantAccounting.ordinary_talent_ids || []).length;
     const preferenceCount = (planning.sphere_priority_ids || []).length + (planning.talent_priority_ids || []).length
       + (planning.method_preference_id ? 1 : 0);
-    setGuidedStatus(`${name} is temporary and ready. ${lockedCount} exact ${lockedCount === 1 ? "choice" : "choices"}; ${preferenceCount} planning ${preferenceCount === 1 ? "preference" : "preferences"}. Choose a complete-character build mode.`);
+    setGuidedStatus(`${name} is temporary and ready. ${lockedCount} exact ${lockedCount === 1 ? "choice" : "choices"}; ${preferenceCount} planning ${preferenceCount === 1 ? "preference" : "preferences"}; ${acquiredSphereCount} first-cycle ${acquiredSphereCount === 1 ? "Sphere" : "Spheres"} and ${ordinaryTalentCount} ordinary Talent ${ordinaryTalentCount === 1 ? "slot" : "slots"} server-validated and frozen. Choose a complete-character build mode.`);
     setGuidedStep(2);
     updateGuidedModeUI();
   } catch (error) {
@@ -1459,6 +1463,7 @@ async function startGuidedCompleteBuild() {
   }
   setGuidedStatus(mode === "MANUAL_CHAT" ? "Preparing the complete CG1 request ZIP…" : "Building the complete candidate through the accepted shared pipeline…");
   try {
+    await api(`/api/character-builder/projects/${encodeURIComponent(guidedProjectId)}/normal-first-cycle-catalog-choice-lock`, {method: "POST", body: "{}"});
     guidedRun = await api(`/api/projects/${encodeURIComponent(guidedProjectId)}/character-creation/runs`, {method: "POST", body: JSON.stringify({execution_mode: mode, idempotency_key: `primary.${Date.now()}.${crypto.randomUUID()}`})});
     const returnedMode = document.querySelector(`input[name="guidedExecutionMode"][value="${guidedRun.execution_mode}"]`);
     if (returnedMode) {

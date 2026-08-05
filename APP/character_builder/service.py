@@ -1201,6 +1201,165 @@ class CharacterBuilderService:
                 details={"spheres": blocked},
             )
 
+    @staticmethod
+    def _project_lock_values(project: dict[str, Any]) -> dict[str, Any]:
+        return {
+            lock.get("field"): lock.get("value")
+            for lock in project.get("user_locks", [])
+            if isinstance(lock, dict) and isinstance(lock.get("field"), str)
+        }
+
+    @staticmethod
+    def _project_envelope(project_result: dict[str, Any]) -> dict[str, Any]:
+        project = deepcopy(project_result.get("project") or project_result)
+        if isinstance(project_result.get("project"), dict):
+            for key in ("project_id", "revision", "working_name"):
+                if key in project_result:
+                    project[key] = deepcopy(project_result[key])
+        return project
+
+    def _normal_first_cycle_catalog_choices(
+        self, project: dict[str, Any], locks: dict[str, Any],
+    ) -> tuple[list[str], dict[str, str], list[str]]:
+        """Choose one complete initial route from server-owned CAT3 authority.
+
+        Planning preferences are only ordering hints. The returned choices are
+        revalidated by ``commit_catalog_choices`` before they become the
+        immutable revision-bound lock consumed by Character Creation.
+        """
+        target_cl = locks.get("target_cl")
+        if not isinstance(target_cl, int) or not 1 <= target_cl <= 20:
+            raise FoundryError(
+                "CG1_NORMAL_FIRST_CYCLE_TARGET_INVALID",
+                "The normal first-cycle catalog plan requires a typed target CL.",
+                status_code=409,
+            )
+
+        preferences = locks.get("character_sheet.planning_preferences") or {}
+        preferred_sphere_ids = list(preferences.get("sphere_priority_ids") or [])
+        preferred_talent_ids = list(preferences.get("talent_priority_ids") or [])
+        sphere_rows = self.canonical_catalog.list_spheres()["records"]
+        sphere_by_id = {row["canonical_sphere_id"]: row for row in sphere_rows}
+        ordered_sphere_ids: list[str] = []
+        for sphere_id in [*preferred_sphere_ids, *(row["canonical_sphere_id"] for row in sphere_rows)]:
+            canonical_id = self.canonical_catalog.resolve_sphere_id(sphere_id)
+            if canonical_id and canonical_id not in ordered_sphere_ids:
+                ordered_sphere_ids.append(canonical_id)
+
+        selected_sphere_id: str | None = None
+        selected_sphere_talents: list[dict[str, Any]] = []
+        free_talent_id: str | None = None
+        for sphere_id in ordered_sphere_ids:
+            if sphere_id not in sphere_by_id:
+                continue
+            sphere = self.canonical_catalog.get_sphere(sphere_id)
+            talents = list(sphere.get("talents") or [])
+            talent_by_id = {row.get("canonical_talent_id"): row for row in talents}
+            preferred_for_sphere = [
+                talent_by_id[talent_id]
+                for talent_id in preferred_talent_ids
+                if talent_id in talent_by_id
+            ]
+            preferred_ids = {row.get("canonical_talent_id") for row in preferred_for_sphere}
+            ordered_talents = preferred_for_sphere + [
+                row for row in talents
+                if row.get("canonical_talent_id") not in preferred_ids
+            ]
+            free = next(
+                (
+                    row for row in ordered_talents
+                    if row.get("free_sphere_talent_eligible") is True
+                    and row.get("access_category") == "Open"
+                    and row.get("creator_selectability_can_be_evaluated_safely") is True
+                    and isinstance(row.get("minimum_cl"), int)
+                    and row["minimum_cl"] <= 1
+                ),
+                None,
+            )
+            if free is not None:
+                selected_sphere_id = sphere_id
+                selected_sphere_talents = ordered_talents
+                free_talent_id = free["canonical_talent_id"]
+                break
+
+        if not selected_sphere_id or not free_talent_id:
+            raise FoundryError(
+                "CG1_NORMAL_FIRST_CYCLE_PLAN_UNAVAILABLE",
+                "The current canonical catalog cannot supply a legal first-cycle Sphere and free Talent.",
+                status_code=409,
+            )
+
+        locked_choices = locks.get("character_sheet.locked_choices") or {}
+        selected_non_sphere_ids = sorted({
+            str(choice_id)
+            for values in locked_choices.values()
+            if isinstance(values, list)
+            for choice_id in values
+            if isinstance(choice_id, str) and choice_id
+        })
+        context = {
+            "target_cl": target_cl,
+            "acquired_sphere_ids": [selected_sphere_id],
+            "free_talent_grants": {selected_sphere_id: free_talent_id},
+            "path_ids": selected_non_sphere_ids,
+            "subpath_or_tradition_ids": selected_non_sphere_ids,
+            "method_ids": selected_non_sphere_ids,
+            "foundation_or_feature_ids": selected_non_sphere_ids,
+            "character_feature_ids": selected_non_sphere_ids,
+        }
+        selected_talent_ids = {free_talent_id}
+        ordinary_talent_ids: list[str] = []
+        priority_ids = [
+            talent_id for talent_id in preferred_talent_ids
+            if talent_id != free_talent_id
+            and any(row.get("canonical_talent_id") == talent_id for row in selected_sphere_talents)
+        ]
+        priority_id_set = set(priority_ids)
+        ordered_progression = priority_ids + [
+            row["canonical_talent_id"] for row in selected_sphere_talents
+            if row.get("canonical_talent_id") not in {free_talent_id, *priority_id_set}
+        ]
+        talent_by_id = {
+            row["canonical_talent_id"]: row
+            for row in selected_sphere_talents
+            if row.get("canonical_talent_id")
+        }
+        for effective_cl in range(1, target_cl + 1):
+            chosen: str | None = None
+            for talent_id in ordered_progression:
+                if talent_id in selected_talent_ids:
+                    continue
+                talent = talent_by_id[talent_id]
+                if (
+                    talent.get("access_category") != "Open"
+                    or talent.get("creator_selectability_can_be_evaluated_safely") is not True
+                    or not isinstance(talent.get("minimum_cl"), int)
+                    or talent["minimum_cl"] > effective_cl
+                ):
+                    continue
+                try:
+                    self.canonical_catalog.validate_grant_plan_for_initial_creation(
+                        **context,
+                        ordinary_talent_ids=[*ordinary_talent_ids, talent_id],
+                    )
+                except FoundryError as exc:
+                    if exc.status_code >= 500:
+                        raise
+                    continue
+                chosen = talent_id
+                break
+            if chosen is None:
+                raise FoundryError(
+                    "CG1_NORMAL_FIRST_CYCLE_PLAN_UNAVAILABLE",
+                    "The current canonical catalog cannot supply one legal ordinary Talent for every first-cycle CL.",
+                    details={"target_cl": target_cl, "effective_cl": effective_cl, "sphere_id": selected_sphere_id},
+                    status_code=409,
+                )
+            ordinary_talent_ids.append(chosen)
+            selected_talent_ids.add(chosen)
+
+        return [selected_sphere_id], {selected_sphere_id: free_talent_id}, ordinary_talent_ids
+
     def _resolved_pack_locks(self, selected_choices: dict[str, dict[str, Any]]) -> list[dict[str, str]]:
         packs = self.packs.list()
         # New projects lock one deterministic current version per pack ID.
@@ -1394,14 +1553,71 @@ class CharacterBuilderService:
             _require_unstarted_character_creation=True,
         )
         from character_creation.choice_snapshot import materialize_choice_snapshot
+        snapshot_project = self._project_envelope(updated)
         return {
             "schema": "TianxiaFoundry.CanonicalCatalogChoiceCommit.v1",
             "project_id": project_id,
             "project_revision": updated["project"]["revision"],
             "grant_plan": deepcopy(plan),
-            "typed_choice_snapshot": materialize_choice_snapshot(updated["project"]),
+            "typed_choice_snapshot": materialize_choice_snapshot(snapshot_project),
             "evidence_issued": False,
         }
+
+    def commit_normal_first_cycle_catalog_choices(self, project_id: str) -> dict[str, Any]:
+        """Freeze the normal wizard's first-cycle plan before any run starts."""
+        project_result = self.projects.get_project(project_id)
+        project = project_result["project"]
+        locks = self._project_lock_values(project)
+        committed = locks.get(COMMITTED_CATALOG_CHOICE_FIELD)
+        if isinstance(committed, dict):
+            accounting = committed.get("grant_accounting")
+            if (
+                committed.get("schema") != "TianxiaFactory.CanonicalGrantPlan.v1"
+                or committed.get("ready") is not True
+                or committed.get("target_cl") != locks.get("target_cl")
+                or not isinstance(committed.get("acquired_canonical_sphere_ids"), list)
+                or not isinstance(accounting, dict)
+                or not isinstance(accounting.get("free_sphere_talent_grants"), list)
+                or not isinstance(accounting.get("ordinary_talent_ids"), list)
+            ):
+                raise FoundryError(
+                    "CG1_COMMITTED_CATALOG_CHOICE_PLAN_INVALID",
+                    "The existing normal-wizard canonical catalog choice lock is invalid.",
+                    status_code=409,
+                )
+            from character_creation.choice_snapshot import materialize_choice_snapshot
+            return {
+                "schema": "TianxiaFoundry.CanonicalCatalogChoiceCommit.v1",
+                "project_id": project_id,
+                "project_revision": project["revision"],
+                "grant_plan": deepcopy(committed),
+                "typed_choice_snapshot": materialize_choice_snapshot(self._project_envelope(project_result)),
+                "evidence_issued": False,
+                "idempotent": True,
+            }
+
+        legacy = locks.get("character_sheet.canonical_grant_plan")
+        accounting = legacy.get("grant_accounting") if isinstance(legacy, dict) else None
+        if isinstance(legacy, dict) and (
+            legacy.get("acquired_canonical_sphere_ids")
+            or (accounting or {}).get("free_sphere_talent_grants")
+            or (accounting or {}).get("ordinary_talent_ids")
+        ):
+            acquired_sphere_ids = list(legacy.get("acquired_canonical_sphere_ids") or [])
+            free_talent_grants = {
+                row["sphere_id"]: row["talent_id"]
+                for row in (accounting or {}).get("free_sphere_talent_grants") or []
+                if isinstance(row, dict) and row.get("sphere_id") and row.get("talent_id")
+            }
+            ordinary_talent_ids = list((accounting or {}).get("ordinary_talent_ids") or [])
+        else:
+            acquired_sphere_ids, free_talent_grants, ordinary_talent_ids = self._normal_first_cycle_catalog_choices(project, locks)
+        return self.commit_catalog_choices(
+            project_id,
+            acquired_sphere_ids=acquired_sphere_ids,
+            free_talent_grants=free_talent_grants,
+            ordinary_talent_ids=ordinary_talent_ids,
+        )
 
     def create_project(
         self,

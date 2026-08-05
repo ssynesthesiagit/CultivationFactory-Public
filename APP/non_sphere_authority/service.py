@@ -1411,7 +1411,8 @@ class NonSphereAuthorityService:
                     "state_before_hash":before["state_hash"],"state_after_hash":ZERO_HASH,"created_at":utcnow(),
                     "advancement":{"kind":kind,"target_cl":int(targets.get("target_cl",0)),"details":details,"authority_bindings":[{
                         key: row[key] for key in (
-                            "role", "record_id", "record_hash", "pack_id", "pack_version", "pack_hash",
+                            "role", "record_id", "record_hash", "relationship_id", "relationship_hash",
+                            "pack_id", "pack_version", "pack_hash",
                             "source_id", "source_hash", "source_anchor", "source_path", "causal_event_id"
                         )
                     } for row in locked_bindings],"calculation":{"rule_id":"non_sphere_authority_commit","formula":None,"inputs":operation_core,"outputs":{"authority_type":authority_type,"amount_awarded":amount_awarded},"trace":{"authenticated":True}},"training_transaction":None,"none_state":None}

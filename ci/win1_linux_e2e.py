@@ -59,6 +59,14 @@ BASE_HEAD = "80560ac00421e73057a2962ab6cbc4e15e540904"
 FACTORY = APP_ROOT / "BundledContent" / "Tianxia_Factory_HF05ZVK_R1H_Phase2I_HF2.zip"
 GM_ZIP = APP_ROOT / "gm_screen" / "HF05ZUI_R2K3_HF3_W1_CoreStats_GMScreen.zip"
 CHARACTER_NAME = "Linux E2E Cinder Archivist"
+FOUNDATION_TYPED_NONE = "tianxia.c1a.none.foundation"
+# The public GM ZIP references this decorative private-workspace background but
+# intentionally does not ship it. Keep the public E2E static server complete
+# without masking arbitrary missing runtime assets.
+GM_DECORATIVE_ASSET_PATH = "/work/Xianxia/Campaign%20Interface/Campaign%20player%20dashboard.png"
+GM_DECORATIVE_ASSET_PNG = base64.b64decode(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+)
 FAKE_SECRET = "linux-e2e-deterministic-placeholder-not-a-real-key"
 SCREENSHOT_NAMES = [
     "01_factory_start.png",
@@ -155,6 +163,16 @@ def static_server(root: Path) -> Iterator[str]:
         def log_message(self, _format: str, *_args: Any) -> None:
             return
 
+        def do_GET(self) -> None:
+            if self.path.split("?", 1)[0] in {GM_DECORATIVE_ASSET_PATH, "/favicon.ico"}:
+                self.send_response(200)
+                self.send_header("Content-Type", "image/png")
+                self.send_header("Content-Length", str(len(GM_DECORATIVE_ASSET_PNG)))
+                self.end_headers()
+                self.wfile.write(GM_DECORATIVE_ASSET_PNG)
+                return
+            super().do_GET()
+
     handler = lambda *args, **kwargs: QuietHandler(*args, directory=str(root), **kwargs)
     server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
     thread = threading.Thread(target=server.serve_forever, name="win1-gm-static", daemon=True)
@@ -209,17 +227,6 @@ def find_category(options: dict[str, Any], slot_id: str) -> dict[str, Any]:
     return next(row for row in options["categories"] if row["slot_id"] == slot_id)
 
 
-def choose_foundation(options: dict[str, Any]) -> dict[str, Any]:
-    choices = find_category(options, "foundation_choice").get("choices") or []
-    compatible = [
-        row for row in choices
-        if not row.get("related_choice_ids") or QI_PATH in set(row.get("related_choice_ids") or [])
-    ]
-    if not compatible:
-        raise AssertionError("No source-backed Foundation is available for Qi Cultivation.")
-    return compatible[0]
-
-
 def choose_method(options: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
     choices = find_category(options, "method_choice").get("choices") or []
     compatible = [
@@ -233,30 +240,6 @@ def choose_method(options: dict[str, Any]) -> tuple[dict[str, Any], dict[str, An
     routes = (method.get("method_planning") or {}).get("owner_route_options") or []
     route = next((row for row in routes if row.get("typed_route") != "CUSTOM_DOCUMENTED_ROUTE"), routes[0])
     return method, route
-
-
-def replace_foundation_typed_none(plan: dict[str, Any], foundation_id: str) -> None:
-    choices = plan["stage2_proposal"]["choices"]
-    filtered: list[dict[str, Any]] = []
-    inserted = False
-    for choice in choices:
-        if choice.get("kind") == "typed_none" and (choice.get("parameters") or {}).get("target") == "foundation":
-            if not inserted:
-                filtered.append(
-                    {
-                        "kind": "foundation_acquisition",
-                        "effective_cl": 1,
-                        "record_id": foundation_id,
-                        "acquisition_channel": "owner-detailed-intake",
-                        "parameters": {},
-                    }
-                )
-                inserted = True
-            continue
-        filtered.append(choice)
-    if not inserted:
-        raise AssertionError("The accepted plan no longer contains the bounded Foundation typed-none slot.")
-    plan["stage2_proposal"]["choices"] = filtered
 
 
 def zip_member_inventory(path: Path) -> tuple[dict[str, Any], list[dict[str, Any]]]:
@@ -285,6 +268,15 @@ def recursive_values(value: Any, key: str) -> list[Any]:
     return found
 
 
+def project_event_records(db, project_id: str) -> list[dict[str, Any]]:
+    with db.connection() as conn:
+        rows = conn.execute(
+            "SELECT event_json FROM events WHERE project_id=? ORDER BY sequence_no",
+            (project_id,),
+        ).fetchall()
+    return [json.loads(row["event_json"]) for row in rows]
+
+
 def contains_text(value: Any, needle: str) -> bool:
     return needle.lower() in json.dumps(value, sort_keys=True, ensure_ascii=False).lower()
 
@@ -296,10 +288,12 @@ def extract_character_payload(package: Path, output: Path) -> dict[str, Any]:
         nested = archive.read("source/Character_Project.tianxia-project.zip")
         with zipfile.ZipFile(io.BytesIO(nested)) as project_archive:
             project = json.loads(project_archive.read("project.json"))
+            events = json.loads(project_archive.read("events.json"))
     write_json(output / "final-character-view.json", view)
     write_json(output / "final-character-model.json", model)
     write_json(output / "final-character-project.json", project)
-    return {"view": view, "model": model, "project": project}
+    write_json(output / "final-character-events.json", events)
+    return {"view": view, "model": model, "project": project, "events": events}
 
 
 def write_evidence_manifest(root: Path) -> None:
@@ -349,7 +343,6 @@ def exercise_exact_gm_screen(
     *,
     gm_root: Path,
     portable_zip: Path,
-    gm_view_json: Path,
     screenshots: Path,
     logs: dict[str, list[Any]],
 ) -> dict[str, Any]:
@@ -369,32 +362,22 @@ def exercise_exact_gm_screen(
                 attempts.append({"input": index, "accept": accept, "file": candidate.name, "status": "SET"})
             except PlaywrightError as exc:
                 attempts.append({"input": index, "accept": accept, "file": candidate.name, "status": "ERROR", "error": str(exc)})
-        import_button = visible_button_matching(page, re.compile(r"import|load|open|add character", re.I))
-        if import_button is not None:
-            import_button.click()
-        page.wait_for_timeout(2500)
-        body_text = page.locator("body").inner_text()
-        if CHARACTER_NAME not in body_text and inputs.count():
-            for index in range(inputs.count()):
-                try:
-                    inputs.nth(index).set_input_files(str(gm_view_json))
-                except PlaywrightError:
-                    pass
-            if import_button is not None:
-                import_button.click()
-            page.wait_for_timeout(2500)
-            body_text = page.locator("body").inner_text()
-        if CHARACTER_NAME not in body_text:
-            raise AssertionError(
-                "The exact bundled GM Screen did not render the imported character. "
-                + json.dumps({"attempts": attempts, "visible_text": body_text[:2000]}, ensure_ascii=False)
-            )
-        save_button = visible_button_matching(page, re.compile(r"^\s*save|save character|save changes", re.I))
+        automation_tab = visible_button_matching(page, re.compile(r"^\s*automation\s*$", re.I))
+        if automation_tab is not None:
+            automation_tab.click()
+        page.wait_for_timeout(500)
+        save_button = visible_button_matching(page, re.compile(r"^\s*save package\s*$", re.I))
         save_clicked = False
         if save_button is not None:
             save_button.click()
             save_clicked = True
-            page.wait_for_timeout(750)
+        page.wait_for_timeout(2500)
+        body_text = page.locator("body").inner_text()
+        if CHARACTER_NAME not in body_text:
+            raise AssertionError(
+                "The exact bundled GM Screen did not render the imported character. "
+                + json.dumps({"attempts": attempts, "automation_tab_visible": automation_tab is not None, "save_package_clicked": save_clicked, "visible_text": body_text[:2000]}, ensure_ascii=False)
+            )
         before_reload = page.locator("body").inner_text()
         page.reload(wait_until="domcontentloaded", timeout=120_000)
         page.wait_for_timeout(2000)
@@ -479,7 +462,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
 
     app = configured_app(data_root)
     project_id = ""
-    foundation: dict[str, Any] = {}
+    foundation = {"choice_id": FOUNDATION_TYPED_NONE}
     method: dict[str, Any] = {}
     route: dict[str, Any] = {}
     run_id = ""
@@ -513,7 +496,6 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 page.screenshot(path=str(screenshots / SCREENSHOT_NAMES[0]), full_page=True)
                 page.locator("#builderModeDetailed").click()
                 options = page.evaluate("async () => (await fetch('/api/character-builder/options')).json()")
-                foundation = choose_foundation(options)
                 method, route = choose_method(options)
 
                 page.locator("#guidedName").fill(CHARACTER_NAME)
@@ -521,7 +503,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 page.locator("#guidedPower").select_option("heroic")
                 page.locator("#guidedConcept").fill(
                     "A Fire-aligned Qi cultivator, abandoned orphan and street-hardened archivist. "
-                    "They use an exact source-backed Foundation and Primary Method, carry complete Fire base abilities, "
+                    "They use a source-backed typed-none Foundation resolution and exact Primary Method, carry complete Fire base abilities, "
                     "and preserve every advancement decision for portable play."
                 )
                 page.locator("#guidedSource").fill("Installed Tianxia canonical catalog authority")
@@ -534,7 +516,6 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     page.locator("#sheetBackgroundSphere").select_option(SCOUNDREL)
                 select_option_when_ready(page, "#sheetBackgroundTalent", HIDDEN_TOOL_CACHE)
                 select_option_when_ready(page, "#sheetOriginInsight", STREET_HARDENED)
-                select_option_when_ready(page, "#sheetFoundation", foundation["choice_id"])
                 page.locator('input[name="sheetMethodMode"][value="EXACT"]').check()
                 select_option_when_ready(page, "#sheetMethod", method["choice_id"])
                 select_option_when_ready(page, "#sheetMethodRouteChoice", route["choice_id"])
@@ -612,12 +593,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 run_id = page.evaluate("guidedRun.run_id")
                 request_sha = page.evaluate("guidedRun.request.request_sha256")
                 plan = complete_plan(app.state.db, project_id)
-                replace_foundation_typed_none(plan, foundation["choice_id"])
                 plan["request_sha256"] = request_sha
                 plan["stage2_proposal"]["idempotency_key"] = f"win1-linux-e2e-{project_id}"
                 plan["owner_descriptive_fields"]["identity"]["name"] = CHARACTER_NAME
                 plan["owner_descriptive_fields"]["concept"] = (
-                    "Qi Cultivation / Cinder Heart / Abandoned Orphan / Street-Hardened / source-backed Foundation and Method"
+                    "Qi Cultivation / Cinder Heart / Abandoned Orphan / Street-Hardened / typed-none Foundation resolution and source-backed Method"
                 )
                 plan_text = canonical_json(plan)
                 page.locator("#guidedCompleteResponseText").fill(plan_text)
@@ -652,7 +632,14 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 final_run = app.state.character_creation.get(run_id)
                 check("server_final_run_has_no_blockers", not final_run.get("blockers"), final_run.get("blockers"))
                 check("exact_method_materialized", (final_run.get("outputs") or {}).get("method_access", {}).get("primary_method_id") == method["choice_id"], (final_run.get("outputs") or {}).get("method_access"))
-                check("method_route_bound", (final_run.get("outputs") or {}).get("method_access", {}).get("access_plan", {}).get("route_commitment_sha256") == route.get("route_commitment_sha256"), (final_run.get("outputs") or {}).get("method_access"))
+                method_access_plan = (final_run.get("outputs") or {}).get("method_access", {}).get("access_plan", {})
+                check(
+                    "method_route_bound",
+                    method_access_plan.get("route_type") == route.get("typed_route")
+                    and method_access_plan.get("route_label") == route.get("label")
+                    and method_access_plan.get("source_route_sha256") == route.get("source_route_sha256"),
+                    (final_run.get("outputs") or {}).get("method_access"),
+                )
                 page.screenshot(path=str(screenshots / SCREENSHOT_NAMES[5]), full_page=True)
 
                 verified = app.state.portable_characters.verified_status(project_id)
@@ -689,16 +676,36 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             view = payloads["view"]
             model = payloads["model"]
             project_payload = payloads["project"]
+            event_payload = payloads["events"]
             check("character_name_complete", contains_text(view, CHARACTER_NAME), view.get("identity"))
             check("character_level_complete", 5 in [int(v) for v in recursive_values(view, "cultivation_level") if str(v).isdigit()], recursive_values(view, "cultivation_level"))
             check("path_present", contains_text(view, "Qi Cultivation") or contains_text(view, QI_PATH))
             check("subpath_present", contains_text(view, "Cinder Heart") or contains_text(view, CINDER_HEART))
-            check("foundation_present", contains_text(view, foundation["choice_id"]) or contains_text(model, foundation["choice_id"]), foundation["choice_id"])
+            foundation_state = ((view.get("cultivation") or {}).get("foundation") or {})
+            typed_none_events = [
+                event
+                for event in event_payload
+                if isinstance(event, dict)
+                and event.get("advancement", {}).get("kind") == "typed_none"
+                and event.get("subject", {}).get("record_id") == foundation["choice_id"]
+            ]
+            check(
+                "typed_none_foundation_resolved",
+                foundation_state.get("state") == "explicit_none" and len(typed_none_events) == 1,
+                {"foundation": foundation_state, "events": typed_none_events},
+            )
             check("primary_method_present", contains_text(view, method["choice_id"]) or contains_text(model, method["choice_id"]), method["choice_id"])
             check("fire_sphere_present", contains_text(view, FIRE) or contains_text(view, "Fire"))
             check("complete_base_abilities_present", len(recursive_values(view, "base_abilities")) > 0 or contains_text(view, "Flame"), recursive_values(view, "base_abilities"))
             check("talents_present", contains_text(view, "talent"))
-            check("insights_present", contains_text(view, "insight"))
+            origin_insight_events = [
+                event
+                for event in event_payload
+                if isinstance(event, dict)
+                and event.get("advancement", {}).get("kind") == "origin_insight_acquisition"
+                and event.get("subject", {}).get("record_id") == STREET_HARDENED
+            ]
+            check("origin_insight_present", len(origin_insight_events) == 1, origin_insight_events)
             check("advancement_ledger_present", contains_text(project_payload, "advancement") or contains_text(project_payload, "leveling"))
             check("derived_statistics_present", contains_text(view, "ability_scores") or contains_text(view, "armor_class"))
             check("resources_present", contains_text(view, "Qi") and contains_text(view, "resources"))
@@ -735,10 +742,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 imported_card.wait_for(state="visible", timeout=120_000)
                 imported_card.click()
                 imported_project = clean_app.state.projects.get_project(project_id)
+                imported_events = project_event_records(clean_app.state.db, project_id)
                 check("clean_import_project_identity_equivalent", imported_project["project_id"] == project_id)
                 check("clean_import_character_identity_equivalent", CHARACTER_NAME in canonical_json(imported_project))
-                check("clean_import_foundation_equivalent", foundation["choice_id"] in canonical_json(imported_project))
-                check("clean_import_method_equivalent", method["choice_id"] in canonical_json(imported_project))
+                imported_event_text = canonical_json(imported_events)
+                check("clean_import_foundation_equivalent", foundation["choice_id"] in imported_event_text)
+                check("clean_import_method_equivalent", method["choice_id"] in imported_event_text)
                 clean_page.screenshot(path=str(screenshots / SCREENSHOT_NAMES[8]), full_page=True)
                 clean_page.close()
 
@@ -751,7 +760,6 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 context,
                 gm_root=gm_root,
                 portable_zip=portable_copy,
-                gm_view_json=output / "final-character-view.json",
                 screenshots=screenshots,
                 logs=logs,
             )

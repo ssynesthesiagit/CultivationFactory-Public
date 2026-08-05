@@ -1255,6 +1255,10 @@ def create_app(
             ordinary_talent_ids=body.ordinary_talent_ids,
         )
 
+    @app.post("/api/character-builder/projects/{project_id}/normal-first-cycle-catalog-choice-lock")
+    def character_builder_normal_first_cycle_catalog_choice_lock(project_id: str) -> dict[str, Any]:
+        return character_builder.commit_normal_first_cycle_catalog_choices(project_id)
+
     @app.get("/api/character-builder/projects/{project_id}/lifecycle")
     def character_builder_lifecycle(project_id: str) -> dict[str, Any]:
         return projects.builder_lifecycle(project_id)
