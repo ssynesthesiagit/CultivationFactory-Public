@@ -160,7 +160,7 @@ jobs:
 
       - name: Run exact-head Linux full-character E2E
         run: |
-          python ci/win1_linux_e2e.py \
+          python ci/win1_linux_e2e_entry.py \
             --output "$GITHUB_WORKSPACE/ci-results/win1-linux-e2e" \
             --data-root "$RUNNER_TEMP/WIN1-LINUX-E2E/LinuxE2EData" \
             --import-data-root "$RUNNER_TEMP/WIN1-LINUX-E2E/LinuxE2EImportData" \
