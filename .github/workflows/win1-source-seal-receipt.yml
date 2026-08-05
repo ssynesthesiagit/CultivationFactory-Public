@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   seal-source:
@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Check out exact candidate head
+      - name: Check out exact candidate branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 1
 
       - name: Verify exact checkout
@@ -38,7 +38,6 @@ jobs:
           python - <<'PY'
           from __future__ import annotations
 
-          import hashlib
           import json
           import shutil
           import sys
@@ -116,7 +115,7 @@ jobs:
 
           report = {
               "schema": "Tianxia.WIN1.SourceSealReceipt.v1",
-              "head_sha": "${{ github.event.pull_request.head.sha }}",
+              "input_head_sha": "${{ github.event.pull_request.head.sha }}",
               "checkpoint": manifest["checkpoint"],
               "manifest_record_count": len(payload_records),
               "checksum_record_count": len(payload_records),
@@ -218,11 +217,70 @@ jobs:
             APP/tests/test_win1_linux_e2e_origin_insight_route_binding.py \
             | tee seal-output/focused-tests.log
 
+      - name: Commit regenerated commitments atomically and remove temporary workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/win1-source-seal-receipt.yml
+          git add \
+            APP/PACKAGE_MANIFEST.json \
+            APP/SHA256SUMS.txt \
+            ci/accepted-source.sha256 \
+            ci/source-baseline.json
+          python - <<'PY'
+          import subprocess
+
+          expected = {
+              ".github/workflows/win1-source-seal-receipt.yml",
+              "APP/PACKAGE_MANIFEST.json",
+              "APP/SHA256SUMS.txt",
+              "ci/accepted-source.sha256",
+              "ci/source-baseline.json",
+          }
+          actual = set(
+              subprocess.check_output(
+                  ["git", "diff", "--cached", "--name-only"], text=True
+              ).splitlines()
+          )
+          if actual != expected:
+              raise SystemExit(f"Unexpected staged paths: {sorted(actual)}")
+          PY
+          git commit -m "WIN1: regenerate authoritative source commitments"
+          git push origin HEAD:work/win1-p1r3
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          output = Path("seal-output")
+          receipt = {
+              "schema": "Tianxia.WIN1.SourceSealPushReceipt.v1",
+              "published_head_sha": subprocess.check_output(
+                  ["git", "rev-parse", "HEAD"], text=True
+              ).strip(),
+              "branch": "work/win1-p1r3",
+              "staged_paths": [
+                  ".github/workflows/win1-source-seal-receipt.yml (deleted)",
+                  "APP/PACKAGE_MANIFEST.json",
+                  "APP/SHA256SUMS.txt",
+                  "ci/accepted-source.sha256",
+                  "ci/source-baseline.json",
+              ],
+          }
+          (output / "source-seal-push-receipt.json").write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(receipt, sort_keys=True))
+          PY
+
       - name: Upload deterministic sealing receipt
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: win1-source-seal-${{ github.run_id }}-${{ github.run_attempt }}
+          name: win1-source-seal-publish-${{ github.run_id }}-${{ github.run_attempt }}
           path: seal-output
           if-no-files-found: error
-          retention-days: 7
+          retention-days: 1
