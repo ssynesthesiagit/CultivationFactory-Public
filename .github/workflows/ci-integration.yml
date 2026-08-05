@@ -134,6 +134,7 @@ jobs:
       - name: Check out exact candidate head
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           clean: true
           persist-credentials: false
 
@@ -172,7 +173,7 @@ jobs:
             --data-root "$RUNNER_TEMP/WIN1-LINUX-E2E/LinuxE2EData" \
             --import-data-root "$RUNNER_TEMP/WIN1-LINUX-E2E/LinuxE2EImportData" \
             --browser "$TIANXIA_BROWSER_EXECUTABLE" \
-            --expected-head "${{ github.sha }}"
+            --expected-head "${{ github.event.pull_request.head.sha || github.sha }}"
 
       - name: Upload WIN1 Linux E2E evidence
         id: linux_e2e_upload
