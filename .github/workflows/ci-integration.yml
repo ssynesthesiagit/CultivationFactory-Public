@@ -123,10 +123,6 @@ jobs:
     name: WIN1 Linux full-character Chromium E2E
     runs-on: ubuntu-latest
     timeout-minutes: 75
-    env:
-      E2E_OUTPUT: ${{ github.workspace }}/ci-results/win1-linux-e2e
-      TIANXIA_DATA_ROOT: ${{ runner.temp }}/WIN1-LINUX-E2E/LinuxE2EData
-      TIANXIA_IMPORT_DATA_ROOT: ${{ runner.temp }}/WIN1-LINUX-E2E/LinuxE2EImportData
     steps:
       - name: Check out exact candidate head
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -165,9 +161,9 @@ jobs:
       - name: Run exact-head Linux full-character E2E
         run: |
           python ci/win1_linux_e2e.py \
-            --output "$E2E_OUTPUT" \
-            --data-root "$TIANXIA_DATA_ROOT" \
-            --import-data-root "$TIANXIA_IMPORT_DATA_ROOT" \
+            --output "$GITHUB_WORKSPACE/ci-results/win1-linux-e2e" \
+            --data-root "$RUNNER_TEMP/WIN1-LINUX-E2E/LinuxE2EData" \
+            --import-data-root "$RUNNER_TEMP/WIN1-LINUX-E2E/LinuxE2EImportData" \
             --browser "$TIANXIA_BROWSER_EXECUTABLE" \
             --expected-head "${{ github.sha }}"
 
