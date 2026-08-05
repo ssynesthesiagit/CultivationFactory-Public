@@ -3,8 +3,6 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import Any
 
-from playwright.sync_api import Locator, Page
-
 import win1_linux_e2e as harness
 
 
@@ -244,126 +242,9 @@ def _complete_plan_with_source_backed_fire_progression(db, project_id):
     return plan
 
 
-_original_fill = Locator.fill
-_original_click = Locator.click
-_original_evaluate = Page.evaluate
-
-
-def _fill_hidden_production_control(
-    locator: Locator,
-    value: str,
-    *,
-    force: bool | None = None,
-    no_wait_after: bool | None = None,
-    timeout: float | None = None,
-) -> None:
-    selector = getattr(getattr(locator, "_impl_obj", None), "_selector", "")
-    if selector == "#sheetMethodLearningNote":
-        force = True
-    _original_fill(
-        locator,
-        value,
-        force=force,
-        no_wait_after=no_wait_after,
-        timeout=timeout,
-    )
-
-
-def _click_with_catalog_choice_lock(
-    locator: Locator,
-    *,
-    modifiers=None,
-    position=None,
-    delay=None,
-    button=None,
-    click_count=None,
-    timeout=None,
-    force=None,
-    no_wait_after=None,
-    trial=None,
-    steps=None,
-) -> None:
-    selector = getattr(getattr(locator, "_impl_obj", None), "_selector", "")
-    result = _original_click(
-        locator,
-        modifiers=modifiers,
-        position=position,
-        delay=delay,
-        button=button,
-        click_count=click_count,
-        timeout=timeout,
-        force=force,
-        no_wait_after=no_wait_after,
-        trial=trial,
-        steps=steps,
-    )
-    if selector == "#guidedBuildButton" and not trial:
-        if len(SELECTED_FIRE_TALENT_IDS) != len(LEVEL_TALENT_CLS):
-            raise AssertionError("The source-backed Fire Talent progression was not available for catalog locking.")
-        page = locator.page
-        page.wait_for_function("Boolean(guidedProjectId)", timeout=120_000)
-        payload = {
-            "acquired_sphere_ids": [harness.FIRE],
-            "free_talent_grants": {harness.FIRE: FREE_FIRE_TALENT_ID},
-            "ordinary_talent_ids": SELECTED_FIRE_TALENT_IDS,
-        }
-        locked = page.evaluate(
-            """async payload => {
-              const response = await fetch(
-                `/api/character-builder/projects/${encodeURIComponent(guidedProjectId)}/catalog-choice-lock`,
-                {
-                  method: 'POST',
-                  headers: {
-                    'X-Foundry-Token': token,
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(payload),
-                },
-              );
-              const data = await response.json();
-              if (!response.ok) throw new Error(JSON.stringify(data));
-              return data;
-            }""",
-            payload,
-        )
-        if locked.get("grant_plan", {}).get("ready") is not True:
-            raise AssertionError(f"Canonical catalog choice lock was not ready: {locked}")
-    return result
-
-
-def _evaluate_with_atomic_stage1_approval(
-    page: Page,
-    expression: str,
-    arg: Any = None,
-) -> Any:
-    if (
-        isinstance(expression, str)
-        and "/approve-commit" in expression
-        and "stage1Attempt" in expression
-    ):
-        # The complete-character pipeline performs the actual owner-approved
-        # Stage 1 commit atomically in each isolated compilation and in final
-        # live finalization. Calling the standalone approve-and-commit endpoint
-        # first would deliberately stale the exact frozen complete request. Keep
-        # the validated response visible here and bind the approval intent to the
-        # subsequent owner finalization, where the production service commits it.
-        attempt = _original_evaluate(page, "stage1Attempt")
-        return {
-            **attempt,
-            "commit": {
-                "status": "OWNER_APPROVAL_BOUND_TO_COMPLETE_FINALIZATION",
-                "atomic_commit_pending": True,
-            },
-        }
-    return _original_evaluate(page, expression, arg)
-
-
 harness.select_option_when_ready = _select_option_when_ready
 harness.choose_method = _choose_method
 harness.complete_plan = _complete_plan_with_source_backed_fire_progression
-Locator.fill = _fill_hidden_production_control
-Locator.click = _click_with_catalog_choice_lock
-Page.evaluate = _evaluate_with_atomic_stage1_approval
 
 if __name__ == "__main__":
     raise SystemExit(harness.main())
