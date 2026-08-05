@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - work/win1-p1r3
+  pull_request:
+    branches:
+      - main
+    types:
+      - synchronize
   workflow_dispatch:
   workflow_call:
 
@@ -12,6 +17,7 @@ permissions:
 
 jobs:
   integration:
+    if: github.event_name != 'pull_request'
     name: Integration and portable-chain checks
     runs-on: ubuntu-latest
     timeout-minutes: 75
@@ -120,6 +126,7 @@ jobs:
           retention-days: 1
 
   linux-character-e2e:
+    if: github.event_name != 'pull_request' || github.head_ref == 'work/win1-p1r3'
     name: WIN1 Linux full-character Chromium E2E
     runs-on: ubuntu-latest
     timeout-minutes: 75
