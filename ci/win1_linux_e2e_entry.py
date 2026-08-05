@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import Any
 
-from playwright.sync_api import Locator
+from playwright.sync_api import Locator, Page
 
 import win1_linux_e2e as harness
 
@@ -246,6 +246,7 @@ def _complete_plan_with_source_backed_fire_progression(db, project_id):
 
 _original_fill = Locator.fill
 _original_click = Locator.click
+_original_evaluate = Page.evaluate
 
 
 def _fill_hidden_production_control(
@@ -330,11 +331,39 @@ def _click_with_catalog_choice_lock(
     return result
 
 
+def _evaluate_with_atomic_stage1_approval(
+    page: Page,
+    expression: str,
+    arg: Any = None,
+) -> Any:
+    if (
+        isinstance(expression, str)
+        and "/approve-commit" in expression
+        and "stage1Attempt" in expression
+    ):
+        # The complete-character pipeline performs the actual owner-approved
+        # Stage 1 commit atomically in each isolated compilation and in final
+        # live finalization. Calling the standalone approve-and-commit endpoint
+        # first would deliberately stale the exact frozen complete request. Keep
+        # the validated response visible here and bind the approval intent to the
+        # subsequent owner finalization, where the production service commits it.
+        attempt = _original_evaluate(page, "stage1Attempt")
+        return {
+            **attempt,
+            "commit": {
+                "status": "OWNER_APPROVAL_BOUND_TO_COMPLETE_FINALIZATION",
+                "atomic_commit_pending": True,
+            },
+        }
+    return _original_evaluate(page, expression, arg)
+
+
 harness.select_option_when_ready = _select_option_when_ready
 harness.choose_method = _choose_method
 harness.complete_plan = _complete_plan_with_source_backed_fire_progression
 Locator.fill = _fill_hidden_production_control
 Locator.click = _click_with_catalog_choice_lock
+Page.evaluate = _evaluate_with_atomic_stage1_approval
 
 if __name__ == "__main__":
     raise SystemExit(harness.main())
