@@ -14,9 +14,20 @@ PREFERRED_FINAL_FIRE_TALENT_ID = "FIRE_TAL_FIREBALL_ART"
 LEVEL_TALENT_CLS = (1, 2, 3, 4, 5)
 SELECTED_FIRE_TALENT_IDS: list[str] = []
 SELECTED_FIRE_TALENT_DETAILS: list[dict[str, Any]] = []
+SELECTED_BACKGROUND_ROUTE: dict[str, Any] = {}
 
 
 def _select_option_when_ready(page, selector: str, value: str, *, timeout: int = 120_000) -> None:
+    if selector == "#sheetBackgroundTalent":
+        sphere_choice_id = SELECTED_BACKGROUND_ROUTE.get("background_sphere_choice_id")
+        if not sphere_choice_id:
+            raise AssertionError("The exact Abandoned-Orphan background route was not resolved.")
+        page.wait_for_function(
+            "value => Array.from(document.querySelector('#sheetBackgroundSphere')?.options || []).some(o => o.value === value)",
+            arg=sphere_choice_id,
+            timeout=timeout,
+        )
+        page.locator("#sheetBackgroundSphere").select_option(sphere_choice_id, force=True)
     page.wait_for_function(
         "([selector, value]) => Array.from(document.querySelector(selector)?.options || []).some(o => o.value === value)",
         arg=[selector, value],
@@ -153,9 +164,35 @@ def _choose_fire_progression(options: dict[str, Any]) -> list[str]:
     return selected
 
 
+def _choose_background_route(options: dict[str, Any]) -> dict[str, Any]:
+    background = next(
+        (
+            row
+            for row in harness.find_category(options, "background_choice").get("choices") or []
+            if row.get("choice_id") == harness.ABANDONED_ORPHAN
+        ),
+        None,
+    )
+    routes = ((background or {}).get("ns1r_exact_route_authority") or {}).get("route_options") or []
+    route = next(
+        (
+            row
+            for row in routes
+            if row.get("background_talent_choice_id") == harness.HIDDEN_TOOL_CACHE
+        ),
+        None,
+    )
+    if not route:
+        raise AssertionError(
+            "No exact Abandoned-Orphan route binds Hidden Tool Cache to its background Sphere."
+        )
+    return route
+
+
 def _choose_method(options):
-    global SELECTED_FIRE_TALENT_IDS
+    global SELECTED_FIRE_TALENT_IDS, SELECTED_BACKGROUND_ROUTE
     SELECTED_FIRE_TALENT_IDS = _choose_fire_progression(options)
+    SELECTED_BACKGROUND_ROUTE = _choose_background_route(options)
     choices = harness.find_category(options, "method_choice").get("choices") or []
     compatible = [
         row
