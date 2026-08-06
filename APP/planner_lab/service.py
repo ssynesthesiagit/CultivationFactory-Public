@@ -31,6 +31,14 @@ class CharacterPlannerLab:
 
     SCENARIOS = (
         {
+            "scenario_id": "zero-owner-locks",
+            "label": "Zero-owner-lock delegated Path character",
+            "required_path_ids": [],
+            "ai_final_path_ids": list(CANONICAL_PATH_IDS),
+            "owner_reason": "Leave every advancing Path open; zero owner locks is a legal delegation state, not a final no-Path decision.",
+            "ai_reason": "Choose a legal Method and final Path set from the complete offered envelope; the server derives any extra Method-granted Paths.",
+        },
+        {
             "scenario_id": "body-one-path",
             "label": "One-Path Body character",
             "required_path_ids": ["tianxia.path.body_refining"],
@@ -129,9 +137,13 @@ class CharacterPlannerLab:
         return sorted(compatible, key=lambda row: row["method_id"])[0]["method_id"]
 
     def scenario_report(self, scenario: dict[str, Any]) -> dict[str, Any]:
-        required = canonicalize_path_ids(scenario["required_path_ids"], allow_empty=False)
-        method_id = scenario.get("method_id") or self.choose_demonstration_method(required)
-        review = self.method_review(required, method_id)
+        required = canonicalize_path_ids(scenario["required_path_ids"], allow_empty=True)
+        final_paths = canonicalize_path_ids(
+            scenario.get("ai_final_path_ids") or required,
+            allow_empty=False,
+        )
+        method_id = scenario.get("method_id") or self.choose_demonstration_method(final_paths)
+        review = self.method_review(final_paths, method_id)
         paths = {
             row["path_id"]: {
                 "name": row["display_name"],
@@ -140,6 +152,8 @@ class CharacterPlannerLab:
             for row in self.authority.path_catalog()["records"]
         }
         compatibility = self.authority_envelope(required)
+        actual_advancing = list(review["explicit_granted_path_ids"])
+        extra_grants = [path_id for path_id in actual_advancing if path_id not in final_paths]
         report = {
             "scenario_id": scenario["scenario_id"],
             "label": scenario["label"],
@@ -149,18 +163,29 @@ class CharacterPlannerLab:
             },
             "chosen_by_ai": {
                 "method_id": method_id,
+                "path_ids": final_paths,
                 "reason": scenario["ai_reason"],
+                "selection_basis": "deterministic authority-order demonstrator; not a thematic or power ranking",
             },
-            "automatic_grants": [],
+            "actual_advancing_path_ids": actual_advancing,
+            "extra_method_granted_path_ids": extra_grants,
+            "automatic_grants": [
+                {"path_id": path_id, "source": "method_explicit_ap_grant", "provenance": "automatic"}
+                for path_id in extra_grants
+            ],
             "unavailable_or_rejected": [],
-            "unresolved_owner_decision": ["The owner still judges thematic coherence and access-story fit."],
+            "unresolved_owner_decision": [
+                "The owner still judges thematic coherence and access-story fit.",
+                "The owner retains no hard-locked Path requirement in this scenario." if not required else "",
+            ],
             "source_descriptions": {
-                "paths": {path_id: paths.get(path_id) for path_id in required},
+                "paths": {path_id: paths.get(path_id) for path_id in final_paths},
                 "method": review,
             },
             "authority_envelope": compatibility,
             "level_zero_note": "All three tracks remain present and dormant at attainment 0; the selected IDs describe Method requirements.",
         }
+        report["unresolved_owner_decision"] = [item for item in report["unresolved_owner_decision"] if item]
         if not review["compatible"]:
             report["unavailable_or_rejected"].append({
                 "reason": "Method lacks an explicit AP grant for every owner-required Path.",

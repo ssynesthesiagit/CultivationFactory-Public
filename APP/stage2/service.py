@@ -783,7 +783,6 @@ class RulesCausalStage2Service:
             "background_sphere_acquisition",
             "background_talent_acquisition",
             "origin_insight_acquisition",
-            "path_acquisition",
             "subpath_acquisition",
             "method_acquisition",
             "method_activation",
@@ -1599,8 +1598,10 @@ class RulesCausalStage2Service:
                     calculation["trace"] = recalc_trace
                     created_records = [record["record_id"]]
         elif kind == "path_acquisition":
-            if state["paths"]:
-                blockers.append(_block("PATH_ALREADY_SELECTED", pointer, "The HF1 fixture contract permits one active Path selection."))
+            if record["record_id"] in state["paths"]:
+                blockers.append(_block("PATH_ALREADY_SELECTED", pointer, "A canonical Path may be acquired only once in the same initial proposal.", path_id=record["record_id"]))
+            if len(state["paths"]) >= 3:
+                blockers.append(_block("TOO_MANY_PATHS_SELECTED", pointer, "A character may select at most the three canonical advancing Paths.", maximum=3, selected_path_ids=state["paths"]))
             created_records = [record["record_id"]]
             calculation["outputs"] = {"path_record_id": record["record_id"], "required_milestones": deepcopy(auth.get("required_milestones", []))}
         elif kind == "level_advance":
@@ -1930,8 +1931,9 @@ class RulesCausalStage2Service:
             blockers.append(_block("BACKGROUND_PACKAGE_INCOMPLETE", "/final_state/background", "A complete character requires a Background and its exact causal Sphere/Talent package."))
         if not state.get("origin_insight"):
             blockers.append(_block("ORIGIN_INSIGHT_REQUIRED", "/final_state/origin_insight", "A complete character requires one causal Origin Insight."))
-        if len(state.get("paths", [])) != 1:
-            blockers.append(_block("PATH_SELECTION_COUNT_INVALID", "/final_state/paths", "A complete character requires exactly one causal active Path.", paths=state.get("paths", [])))
+        path_count = len(state.get("paths", []))
+        if not 1 <= path_count <= 3:
+            blockers.append(_block("PATH_SELECTION_COUNT_INVALID", "/final_state/paths", "A complete character requires one to three causal advancing Paths.", minimum=1, maximum=3, actual=path_count, paths=state.get("paths", [])))
         method_state = state.get("method") if isinstance(state.get("method"), dict) else {}
         if method_state.get("state") not in {"acquired", "active"} and not causally_none("method"):
             blockers.append(_block("METHOD_RESOLUTION_REQUIRED", "/final_state/method", "A complete character requires an acquired/active Method or a current causal typed-none Method resolution."))

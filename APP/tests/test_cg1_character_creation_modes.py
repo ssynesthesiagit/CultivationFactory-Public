@@ -227,3 +227,21 @@ def test_auto_finalize_requires_explicit_durable_bound_opt_in(tmp_path):
     with pytest.raises(FoundryError) as exc:
         manual.create_auto_finalize_opt_in(manual_run['run_id'])
     assert exc.value.code=='CG1_AUTO_FINALIZE_MODE_REQUIRED'
+
+def test_accepted_final_plan_and_response_are_immutable(tmp_path):
+    svc,_,_=make(tmp_path/'immutable')
+    before=snapshot(svc.db)
+    run=svc.start('p',execution_mode='STANDARD_API',idempotency_key='immutable-123')  #gitleaks:allow -- inert test idempotency label
+    assert snapshot(svc.db)==before
+    assert run['dry_run']['independent_compilations']==2 and run['dry_run']['deterministic']
+    final_plan=run['final_plan']
+    exact_response=run['response']['exact_response_text']
+    changed=json.loads(exact_response)
+    changed['owner_descriptive_fields']['concept']='Changed after acceptance'
+    with pytest.raises(FoundryError) as exc:
+        svc._apply_response(run['run_id'],canonical_json(changed),{'mode':'STANDARD_API','provider_called':True})
+    assert exc.value.code=='CG1_FINAL_PLAN_IMMUTABLE'
+    unchanged=svc.get(run['run_id'])
+    assert unchanged['final_plan']==final_plan
+    assert unchanged['response']['exact_response_text']==exact_response
+    assert unchanged['status']=='READY_FOR_REVIEW'

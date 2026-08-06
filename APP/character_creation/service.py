@@ -19,6 +19,11 @@ from app.core import Database, FoundryError, Settings, canonical_json, sha256_by
 from canonical_catalog import CanonicalCatalogAuthorityService
 from catalog_choice_authority import COMMITTED_CATALOG_CHOICE_FIELD, committed_catalog_grant_plan
 from character_creation.choice_snapshot import materialize_choice_snapshot, valid_choice_snapshot
+from character_creation.delegated_choice_authority import (
+    build_delegated_choice_envelope,
+    final_plan_sha256,
+    validate_delegated_choice_plan,
+)
 from non_sphere_authority import NonSphereAuthorityService
 from non_sphere_authority.service import (
     _TRUSTED_INITIAL_CATALOG_FINALIZATION,
@@ -46,7 +51,10 @@ RESPONSE_BINDING_MESSAGE = (
 CHARACTER_CREATION_PROVIDER_SYSTEM_MESSAGE = (
     "You are an untrusted Tianxia complete-character planning adapter. Return exactly one JSON object "
     "that follows the complete response contract in the user prompt. Copy the exact active request_sha256 "
-    "into the response. Select only offered IDs. Do not invent mechanics, compiled surfaces, readiness, "
+    "into the response. Resolve every delegated slot only from the frozen delegated_choice_envelope; "
+    "select only offered and allowed IDs, preserve owner locks, and never infer hidden final choices. "
+    "If delegated_fields marks the name or concept as delegated, you may propose display-only text in "
+    "owner_descriptive_fields for owner review. Do not invent mechanics, compiled surfaces, readiness, "
     "artifact identities, actions, tools, or network instructions. The local Factory validates every choice, "
     "performs two isolated compilations, and retains sole mechanical and commit authority."
 )
@@ -254,6 +262,7 @@ class CharacterCreationExecutionService:
             "idempotency_key": row["idempotency_key"], "request": self._loads(row, "request_json", {}),
             "transport": self._loads(row, "transport_json", {}), "response": self._loads(row, "response_json", {}),
             "validation": self._loads(row, "validation_json", {}), "dry_run": self._loads(row, "dry_run_json", {}),
+            "final_plan": self._loads(row, "final_plan_json", {}),
             "quality": self._loads(row, "quality_json", {}), "owner_decision": row["owner_decision"],
             "commit": self._loads(row, "commit_json", {}), "final_revision": row["final_revision"],
             "outputs": self._loads(row, "output_json", {}), "blockers": self._loads(row, "blockers_json", []),
@@ -274,8 +283,16 @@ class CharacterCreationExecutionService:
             rows = conn.execute("SELECT * FROM character_creation_runs WHERE project_id=? ORDER BY created_at DESC", (project_id,)).fetchall()
         return [self._public(row) for row in rows]
 
-    def _complete_request(self, project_id: str, revision_request: dict[str, Any] | None = None) -> dict[str, Any]:
+    def _complete_request(
+        self,
+        project_id: str,
+        revision_request: dict[str, Any] | None = None,
+        *,
+        execution_mode: str = "MANUAL_CHAT",
+        idempotency_key: str = "",
+    ) -> dict[str, Any]:
         prompt = self.stage1.generate_prompt(project_id)
+        project = self._project(project_id)
         request = {
             "schema": "TianxiaFoundry.CharacterCreationPlanRequest.v2",
             "project_id": project_id,
@@ -288,6 +305,14 @@ class CharacterCreationExecutionService:
             "forbidden_planner_fields": sorted(FORBIDDEN_PLANNER_FIELDS),
             "policy": {"planner_prose_is_mechanical_authority": False, "automatic_retries": False},
         }
+        delegated = build_delegated_choice_envelope(
+            project,
+            prompt,
+            execution_mode=execution_mode,
+            idempotency_key=idempotency_key,
+        )
+        if delegated is not None:
+            request["delegated_choice_envelope"] = delegated
         if revision_request:
             request["revision_request"] = deepcopy(revision_request)
         request["request_sha256"] = self.request_payload_sha256(request)
@@ -411,7 +436,12 @@ class CharacterCreationExecutionService:
         if len(key) < 8:
             raise FoundryError("CG1_IDEMPOTENCY_KEY_INVALID", "The build request key must be at least 8 characters.")
         self.set_preference(project_id, mode)
-        request = self._complete_request(project_id, revision_request)
+        request = self._complete_request(
+            project_id,
+            revision_request,
+            execution_mode=mode,
+            idempotency_key=key,
+        )
         binding = sha256_json({"project_id": project_id, "starting_revision": request["project_revision"], "content_lock_hash": request["content_lock_hash"], "execution_mode": mode, "request_sha256": request["request_sha256"], "idempotency_key": key, "owner_principal": self.owner_principal})
         request["idempotency_binding_sha256"] = binding
         with self.db.connection() as conn:
@@ -826,7 +856,7 @@ class CharacterCreationExecutionService:
                 or (legacy or {}).get("grant_accounting", {}).get("ordinary_talent_ids")
                 or (legacy or {}).get("grant_accounting", {}).get("free_sphere_talent_grants")
             )
-            if (proposal_spheres or proposal_free or proposal_ordinary) and not legacy_selected:
+            if (proposal_spheres or proposal_free or proposal_ordinary) and not legacy_selected and not (run.get("request") or {}).get("delegated_choice_envelope"):
                 raise FoundryError(
                     "CG1_COMMITTED_CATALOG_CHOICE_PLAN_REQUIRED",
                     "Normal-wizard canonical acquisitions must be server-validated and frozen before scratch compilation.",
@@ -894,12 +924,36 @@ class CharacterCreationExecutionService:
             blockers.append({"code":"CG1_TARGET_CL_INVALID","message":"Target CL must be 1 through 20."})
         blockers.extend(self._collaborator_blockers(bool((plan.get("output_profile") or {}).get("combat_ready"))))
         if blockers: raise FoundryError("CG1_PLAN_BLOCKED","The plan cannot enter local compilation.",details={"blockers":blockers})
+        final_plan = validate_delegated_choice_plan(
+            run,
+            self._project(run["project_id"]),
+            plan,
+            response_sha256=sha256_bytes(raw),
+        )
+        if final_plan is None:
+            # Old integrations may provide a minimal Stage1 test double rather
+            # than the production envelope.  Preserve their established
+            # behavior while still giving every accepted run an immutable
+            # server-owned final-plan record.
+            final_plan = {
+                "schema": "TianxiaFoundry.CharacterCreationFinalPlan.v1",
+                "project_id": run["project_id"],
+                "project_revision": run["starting_revision"],
+                "content_lock_hash": run["request"].get("content_lock_hash"),
+                "request_sha256": run["request"].get("request_sha256"),
+                "response_sha256": sha256_bytes(raw),
+                "idempotency_key": run.get("idempotency_key"),
+                "resolution": {"schema": "TianxiaFoundry.LegacyPlanResolution.v1", "authority": "existing-local-validator"},
+                "plan_sha256": sha256_json(plan),
+                "immutable_after_validation": True,
+            }
+            final_plan["final_plan_sha256"] = final_plan_sha256(final_plan)
         self._validate_frozen_catalog_choices(run, plan)
         candidate=self._compile_twice(run, plan, prior_attempt_id=prior_attempt_id)
         warnings.extend(deepcopy(plan.get("uncertainties") or [])); warnings.extend(deepcopy(plan.get("fallbacks") or []))
         quality={"schema":QUALITY_SCHEMA,"status":"CLEAN" if not warnings else "NEEDS_REVIEW","required_receipts":sorted(candidate["preview"]["readiness"]),"candidate_identity":candidate["candidate_identity"]}
-        validation={"valid":True,"response_sha256":sha256_bytes(raw),"plan_sha256":sha256_json(plan),"planner_authority_fields_used":False}
-        return {"plan":plan,"validation":validation,"candidate":candidate,"quality":quality,"warnings":warnings,"raw_sha256":sha256_bytes(raw)}
+        validation={"valid":True,"response_sha256":sha256_bytes(raw),"plan_sha256":sha256_json(plan),"planner_authority_fields_used":False,"delegated_choice_authority":bool(final_plan)}
+        return {"plan":plan,"final_plan":final_plan or {},"validation":validation,"candidate":candidate,"quality":quality,"warnings":warnings,"raw_sha256":sha256_bytes(raw)}
 
     def _apply_response(
         self,
@@ -915,6 +969,15 @@ class CharacterCreationExecutionService:
         transport = deepcopy(transport)
         if prior_attempt_id is not None:
             transport["prior_attempt_id"] = prior_attempt_id
+        existing_final_plan = run.get("final_plan") or {}
+        if existing_final_plan:
+            incoming_response_sha256 = sha256_bytes(response_text.encode("utf-8"))
+            if incoming_response_sha256 != existing_final_plan.get("response_sha256"):
+                raise FoundryError(
+                    "CG1_FINAL_PLAN_IMMUTABLE",
+                    "The accepted server final plan is immutable and cannot be replaced by a different response.",
+                    status_code=409,
+                )
         try:
             compiled = self._validate_and_compile(
                 run,
@@ -929,11 +992,19 @@ class CharacterCreationExecutionService:
                 "parsed_plan": compiled["plan"],
             }
             with self.db.transaction() as conn:
+                existing_row = conn.execute("SELECT final_plan_json FROM character_creation_runs WHERE run_id=?", (run_id,)).fetchone()
+                existing_final_plan = json.loads(existing_row["final_plan_json"] or "{}") if existing_row else {}
+                if existing_final_plan and existing_final_plan != compiled["final_plan"]:
+                    raise FoundryError(
+                        "CG1_FINAL_PLAN_IMMUTABLE",
+                        "The accepted server final plan is immutable and cannot be replaced by a different response.",
+                        status_code=409,
+                    )
                 conn.execute(
-                    """UPDATE character_creation_runs SET transport_json=?,response_json=?,validation_json=?,dry_run_json=?,quality_json=?,blockers_json='[]',warnings_json=?,status=?,updated_at=? WHERE run_id=?""",
+                    """UPDATE character_creation_runs SET transport_json=?,response_json=?,validation_json=?,dry_run_json=?,final_plan_json=?,quality_json=?,blockers_json='[]',warnings_json=?,status=?,updated_at=? WHERE run_id=?""",
                     (
                         canonical_json(transport), canonical_json(response), canonical_json(compiled["validation"]),
-                        canonical_json(compiled["candidate"]), canonical_json(compiled["quality"]),
+                        canonical_json(compiled["candidate"]), canonical_json(compiled["final_plan"]), canonical_json(compiled["quality"]),
                         canonical_json(compiled["warnings"]), status, utcnow(), run_id,
                     ),
                 )
@@ -1409,6 +1480,11 @@ class CharacterCreationExecutionService:
         run=self.get(run_id)
         if run["status"] not in {"READY_FOR_REVIEW","NEEDS_REVIEW"} or run["quality"].get("status")!="CLEAN":
             raise FoundryError("CG1_RUN_NOT_CLEAN","Only a clean, reviewed candidate may be finalized.",status_code=409)
+        final_plan = run.get("final_plan") or {}
+        if not final_plan:
+            raise FoundryError("CG1_FINAL_PLAN_REQUIRED", "Finalization requires the server-owned accepted final plan.", status_code=409)
+        if final_plan_sha256(final_plan) != final_plan.get("final_plan_sha256") or final_plan.get("immutable_after_validation") is not True:
+            raise FoundryError("CG1_FINAL_PLAN_INTEGRITY_FAILED", "The accepted final plan failed its immutable hash check.", status_code=409)
         approved_by = self.owner_principal
         if self._revision(run["project_id"])!=run["starting_revision"] or self._content_lock_hash(run["project_id"])!=run["request"].get("content_lock_hash"):
             raise FoundryError("CG1_STALE_RUN","The project revision or content lock changed after preview.",status_code=409)
@@ -1416,6 +1492,10 @@ class CharacterCreationExecutionService:
         plan, raw = self._parse_plan(response_text)
         if sha256_bytes(raw) != run["response"].get("response_sha256") or sha256_json(plan) != run["validation"].get("plan_sha256"):
             raise FoundryError("CG1_APPROVED_RESPONSE_DIVERGED","The exact approved response bytes no longer match the reviewed request.",status_code=409)
+        if final_plan.get("plan_sha256") and final_plan.get("plan_sha256") != sha256_json(plan):
+            raise FoundryError("CG1_FINAL_PLAN_BINDING_DIVERGED", "The accepted final plan is not bound to the exact reviewed plan.", status_code=409)
+        if final_plan.get("response_sha256") != run["response"].get("response_sha256") or final_plan.get("request_sha256") != run["request"].get("request_sha256"):
+            raise FoundryError("CG1_FINAL_PLAN_BINDING_DIVERGED", "The accepted final plan is not bound to the exact reviewed response and request.", status_code=409)
         compiled={"plan":plan,"candidate":run["dry_run"]}
         if not compiled["candidate"].get("deterministic") or compiled["candidate"].get("independent_compilations") != 2:
             raise FoundryError("CG1_APPROVED_CANDIDATE_DIVERGED","The approved candidate lacks two verified isolated compilations.",status_code=409)

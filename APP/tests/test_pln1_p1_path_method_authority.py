@@ -182,10 +182,14 @@ def test_corrected_stage1_proposal_is_accepted_as_blueprint_intent_and_planner_l
 
     lab = CharacterPlannerLab(db)
     reports = lab.scenario_reports()
-    assert len(reports) == 6
-    assert {len(row["chosen_by_owner"]["path_ids"]) for row in reports} == {1, 2, 3}
+    assert len(reports) == 7
+    assert {len(row["chosen_by_owner"]["path_ids"]) for row in reports} == {0, 1, 2, 3}
     assert all(row["source_descriptions"]["method"]["compatible"] for row in reports)
-    assert all(not row["automatic_grants"] for row in reports)
+    zero_lock = next(row for row in reports if row["scenario_id"] == "zero-owner-locks")
+    assert zero_lock["chosen_by_owner"]["path_ids"] == []
+    assert len(zero_lock["chosen_by_ai"]["path_ids"]) in {1, 2, 3}
+    assert zero_lock["actual_advancing_path_ids"] == zero_lock["source_descriptions"]["method"]["explicit_granted_path_ids"]
+    assert all(row["chosen_by_ai"]["selection_basis"].startswith("deterministic authority-order") for row in reports)
     corrected = lab.corrected_request_contract(list(CANONICAL_PATH_IDS))
     assert corrected["decision_slots"]["path_choice"]["max_selections"] == 3
     assert corrected["method_review"]["compatible"] is True
