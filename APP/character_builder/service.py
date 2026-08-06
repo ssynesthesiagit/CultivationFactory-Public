@@ -12,6 +12,13 @@ from canonical_catalog import CanonicalCatalogAuthorityService
 from content_packs.service import ContentPackManager
 from project_store.service import ProjectStore
 from non_sphere_authority import NonSphereAuthorityService
+from path_method_authority import (
+    CANONICAL_PATH_IDS,
+    compatibility_envelope,
+    canonicalize_path_ids,
+    method_path_compatibility,
+    no_compatible_method_error,
+)
 from character_builder.insight_authority import classify_insight_authority, resolve_insight_occurrences
 from catalog_choice_authority import COMMITTED_CATALOG_CHOICE_FIELD
 
@@ -20,7 +27,7 @@ POINT_BUY_COSTS = {8: 0, 9: 1, 10: 2, 11: 3, 12: 4, 13: 5, 14: 7, 15: 9}
 POINT_BUY_BUDGET = 27
 
 CATEGORY_CONFIG: tuple[dict[str, Any], ...] = (
-    {"slot_id": "path_choice", "label": "Primary Path", "kind": "single", "max": 1},
+    {"slot_id": "path_choice", "label": "Advancing Path Requirements", "kind": "multi", "max": 3},
     {"slot_id": "subpath_choice", "label": "Subpath or Tradition", "kind": "single", "max": 1},
     {"slot_id": "background_choice", "label": "Background", "kind": "single", "max": 1},
     {"slot_id": "background_sphere_choice", "label": "Background Sphere", "kind": "single", "max": 1},
@@ -553,7 +560,16 @@ class CharacterBuilderService:
             path_category["status"] = "offered"
             path_category["kind"] = "multi"
             path_category["max"] = 3
-            path_category["label"] = "Starting Path Tracks"
+            path_category["label"] = "Advancing Path Requirements"
+            path_category["selection_semantics"] = "owner_required_advancing_paths"
+            path_category["authority_contract"] = {
+                "schema": "TianxiaFoundry.PathTrackAuthorityContract.v1",
+                "canonical_path_ids": list(CANONICAL_PATH_IDS),
+                "min_selections": 0,
+                "max_selections": 3,
+                "level_zero_tracks": "all_three_present_dormant",
+                "selected_path_meaning": "Paths the Method must support and advance; not ownership of tracks.",
+            }
 
         subpath_category = by_slot.get("subpath_choice")
         if subpath_category is not None:
@@ -982,6 +998,8 @@ class CharacterBuilderService:
                 for choice_id in unique:
                     selected_choices[choice_id] = offered[choice_id]
         path_ids = normalized.get("path_choice", [])
+        if path_ids:
+            canonicalize_path_ids(path_ids)
         subpath_ids = normalized.get("subpath_choice", [])
         if subpath_ids and not path_ids:
             raise FoundryError(
@@ -1086,6 +1104,24 @@ class CharacterBuilderService:
         for method_id in method_ids:
             method_choice = selected_choices[method_id]
             disposition = method_choice.get("ns1r_disposition") or {}
+            compatibility = method_path_compatibility(path_ids, method_choice)
+            if not compatibility["granted_path_ids"]:
+                raise FoundryError(
+                    "NS1R_METHOD_NO_LEGAL_PATH",
+                    "The selected Cultivation Method grants no legal starting Path for initial creation.",
+                    details={"method_id": method_id},
+                )
+            if compatibility["missing_path_ids"]:
+                raise FoundryError(
+                    "NS1R_METHOD_GATED_AP_ROUTE_BLOCKED",
+                    "The selected Cultivation Method does not support every required advancing Path.",
+                    details={
+                        "method_id": method_id,
+                        "required_path_ids": compatibility["required_path_ids"],
+                        "proposed_method_granted_path_ids": compatibility["granted_path_ids"],
+                        "unsupported_path_ids": compatibility["missing_path_ids"],
+                    },
+                )
             if not method_choice.get("initial_creation_selectable") and not any(
                 row.get("authority_type") == "method_access" and row.get("method_id") == method_id
                 for row in access_source_records
@@ -1094,20 +1130,6 @@ class CharacterBuilderService:
                     "NS1R_METHOD_ACCESS_REQUIRED",
                     "This Method is not freely selectable; exact acquisition or access authority is required.",
                     details={"method_id": method_id, "disposition": disposition},
-                )
-            granted_paths = set(method_choice.get("related_choice_ids") or [])
-            if not granted_paths:
-                raise FoundryError(
-                    "NS1R_METHOD_NO_LEGAL_PATH",
-                    "The selected Cultivation Method grants no legal starting Path for initial creation.",
-                    details={"method_id": method_id},
-                )
-            unsupported_paths = sorted(set(path_ids) - granted_paths)
-            if unsupported_paths:
-                raise FoundryError(
-                    "NS1R_METHOD_GATED_AP_ROUTE_BLOCKED",
-                    "The selected Primary Method does not grant AP to every selected starting Path. Compatibility cannot grant it.",
-                    details={"method_id": method_id, "unsupported_path_ids": unsupported_paths, "granted_path_ids": sorted(granted_paths)},
                 )
         foundation_ids = normalized.get("foundation_choice", [])
         if path_ids and foundation_ids:
@@ -1680,6 +1702,14 @@ class CharacterBuilderService:
         locked_choices, selected_choice_records = self._validated_selections(
             submitted_selections, target_cl=target_cl, access_source_records=access_source_records
         )
+        authority_service = NonSphereAuthorityService(self.db)
+        required_path_ids = locked_choices.get("path_choice", [])
+        path_method_contract = compatibility_envelope(
+            required_path_ids,
+            authority_service.method_catalog(initial_creation=True)["records"],
+        )
+        if required_path_ids and not path_method_contract["compatible_method_ids"]:
+            raise no_compatible_method_error(required_path_ids)
         planning_preferences, preference_choice_records = self._validated_planning_preferences(
             effective_sphere_priorities, effective_talent_priorities
         )
@@ -1691,11 +1721,19 @@ class CharacterBuilderService:
             if method is None:
                 raise FoundryError("NS1R_METHOD_ID_UNKNOWN", "The selected Method is not available.", details={"method_id": method_id})
             authority = method.get("method_planning") or {}
-            selected_paths = set(submitted_selections.get("path_choice") or [])
-            granted_paths = set(method.get("related_choice_ids") or [])
-            if selected_paths and not selected_paths <= granted_paths:
-                raise FoundryError("CHARACTER_SHEET_METHOD_PATH_MISMATCH", "The selected Path is not available with this Method.", details={"method_id": method_id, "selected_path_ids": sorted(selected_paths), "granted_path_ids": sorted(granted_paths)})
-            exact_method_access_plan = NonSphereAuthorityService(self.db).resolve_initial_method_access(
+            compatibility = method_path_compatibility(required_path_ids, method)
+            if compatibility["missing_path_ids"]:
+                raise FoundryError(
+                    "CHARACTER_SHEET_METHOD_PATH_MISMATCH",
+                    "The selected Method does not support every required advancing Path.",
+                    details={
+                        "method_id": method_id,
+                        "required_path_ids": compatibility["required_path_ids"],
+                        "proposed_method_granted_path_ids": compatibility["granted_path_ids"],
+                        "unsupported_path_ids": compatibility["missing_path_ids"],
+                    },
+                )
+            exact_method_access_plan = authority_service.resolve_initial_method_access(
                 method_id,
                 route_choice=method_route_choice,
                 owner_annotation=method_learning_note,
@@ -1755,6 +1793,7 @@ class CharacterBuilderService:
             {"field": "character_sheet.canonical_grant_plan", "value": deepcopy(canonical_grant_plan)},
             {"field": "character_sheet.canonical_character_projection", "value": deepcopy(canonical_character_projection)},
             {"field": "character_sheet.non_sphere_access_sources", "value": deepcopy(access_source_records or [])},
+            {"field": "character_sheet.path_method_compatibility", "value": deepcopy(path_method_contract)},
         ]
         if preferred_record_ids:
             user_locks.append({"field": "preferred_record_ids", "value": preferred_record_ids})
@@ -1767,7 +1806,7 @@ class CharacterBuilderService:
             builder_persistence_state="temporary",
             project_id_override=project_id_override,
         )
-        non_sphere_state = NonSphereAuthorityService(self.db).initialize_for_project(
+        non_sphere_state = authority_service.initialize_for_project(
             result["project_id"], target_cl=target_cl,
             path_ids=locked_choices.get("path_choice", []),
             method_id=(locked_choices.get("method_choice") or [None])[0],
@@ -1792,6 +1831,7 @@ class CharacterBuilderService:
                 "method_planning_mode": method_planning_mode,
                 "canonical_grant_plan": canonical_grant_plan,
                 "canonical_character_projection": canonical_character_projection,
+                "path_method_compatibility": path_method_contract,
                 "auto_completion_required": {
                     "ability_scores": bool(point_buy["auto_abilities"]),
                     "unfilled_categories": [config["slot_id"] for config in CATEGORY_CONFIG if config["slot_id"] not in locked_choices],

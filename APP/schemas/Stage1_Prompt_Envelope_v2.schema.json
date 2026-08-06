@@ -106,6 +106,13 @@
               "blocked_missing_authority"
             ]
           },
+          "selection_semantics": {
+            "type": "string",
+            "minLength": 1
+          },
+          "authority_contract": {
+            "type": "object"
+          },
           "blocked_reason_code": {
             "type": "string",
             "minLength": 1
@@ -279,6 +286,32 @@
       "type": "array",
       "items": {
         "type": "string"
+      }
+    },
+    "path_method_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "selection_semantics",
+        "all_path_ids",
+        "required_advancing_path_ids",
+        "compatible_method_ids",
+        "method_granted_path_ids",
+        "method_compatibility_predicate",
+        "level_zero_track_semantics",
+        "method_access_note"
+      ],
+      "properties": {
+        "schema": {"const": "TianxiaFoundry.PathMethodAuthorityEnvelope.v1"},
+        "selection_semantics": {"type": "string"},
+        "all_path_ids": {"type": "array", "items": {"type": "string"}},
+        "required_advancing_path_ids": {"type": "array", "items": {"type": "string"}},
+        "compatible_method_ids": {"type": "array", "items": {"type": "string"}},
+        "method_granted_path_ids": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}}},
+        "method_compatibility_predicate": {"type": "string"},
+        "level_zero_track_semantics": {"type": "object"},
+        "method_access_note": {"type": "string"}
       }
     },
     "response_schema_version": {

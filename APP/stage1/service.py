@@ -11,11 +11,18 @@ from copy import deepcopy
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from app.core import Database, FoundryError, canonical_json, sha256_bytes, sha256_json, utcnow
+from app.core import CORE_PACK_ID, CORE_PACK_VERSION, Database, FoundryError, canonical_json, sha256_bytes, sha256_json, utcnow
 from catalog.coverage import Stage1CatalogCoverageService
 from catalog.service import CatalogService
 from contracts.canonical import ZERO_HASH, canonical_project_document, canonical_project_hash
 from contracts.registry import SchemaRegistry
+from non_sphere_authority import NonSphereAuthorityService
+from path_method_authority import (
+    compatibility_envelope,
+    canonicalize_path_ids,
+    method_path_compatibility,
+    no_compatible_method_error,
+)
 from project_store.service import ProjectStore
 
 STAGE_ID = "stage_1_source_blueprint"
@@ -35,7 +42,7 @@ QUALITY_PATTERNS = (
 )
 
 SLOT_SPECS: tuple[dict[str, Any], ...] = (
-    {"slot_id": "path_choice", "label": "Primary Path", "types": ("path",), "max": 1, "limit": 12, "allow_none": False},
+    {"slot_id": "path_choice", "label": "Advancing Path Requirements", "types": ("path",), "max": 3, "limit": 3, "allow_none": False},
     {"slot_id": "subpath_choice", "label": "Subpath or Tradition", "types": ("subpath", "tradition"), "max": 1, "limit": 8, "allow_none": True},
     {"slot_id": "background_choice", "label": "Background", "types": ("background",), "max": 1, "limit": 8, "allow_none": True},
     {"slot_id": "background_sphere_choice", "label": "Background Sphere", "types": ("background_sphere",), "max": 1, "limit": 8, "allow_none": True},
@@ -79,6 +86,87 @@ INTENT_OPTION_SLOTS = {
     "advancement_skeleton",
     "insight_priorities",
 }
+
+AUTHORITY_METHOD_SOURCE_PATH = "non_sphere_authority/authority/Tianxia_Methods_Typed_Registry_v0_6.json"
+
+
+def _authority_method_record(method: dict[str, Any], *, pack_hash: str) -> dict[str, Any]:
+    """Project a typed NS1R Method into an immutable Stage 1 planning choice.
+
+    The 22 newer typed Methods are not Factory catalog mechanics.  They are
+    still valid blueprint-intent candidates, so the prompt needs a stable
+    choice snapshot bound to the exact project lock and the accepted typed
+    authority source.  This projection never adds a catalog row or grants a
+    Method, Path, resource, or feature.
+    """
+    method_id = str(method["method_id"])
+    source_reference = (
+        method.get("source_reference")
+        or (method.get("method_planning") or {}).get("source_reference")
+        or {}
+    )
+    source_hash = str(source_reference.get("method_record_sha256") or "")
+    if not source_hash:
+        # ``NonSphereAuthorityService.methods`` contains the raw registry rows;
+        # its public catalog projection exposes the same deterministic hash.
+        source_hash = sha256_json(method)
+    if len(source_hash) != 64:
+        raise FoundryError(
+            "NS1R_METHOD_SOURCE_COMMITMENT_INVALID",
+            "A typed Method planning choice has no valid source commitment.",
+            details={"method_id": method_id},
+            status_code=500,
+        )
+    description = str(
+        (method.get("method_planning") or {}).get("access_text")
+        or (method.get("acquisition") or {}).get("becoming_primary")
+        or method.get("name")
+        or method_id
+    )
+    record = {
+        "record_id": method_id,
+        "display_name": str(method.get("name") or method_id),
+        "content_type": "cultivation_method",
+        "summary": description,
+        "display_projection": {"short_description": description},
+        "source": {
+            "path": AUTHORITY_METHOD_SOURCE_PATH,
+            "anchor": f"method:{method_id}",
+            "source_hash": source_hash,
+        },
+        "content_binding": {
+            "pack_id": CORE_PACK_ID,
+            "pack_version": CORE_PACK_VERSION,
+            "pack_hash": pack_hash,
+        },
+        "publication": {"status": "validated"},
+        "compatibility": {
+            "factory": {
+                "authority_classification": "canonical-non-sphere-authority",
+                "selected_authority": True,
+            },
+        },
+        "legality": {
+            "prerequisites": [],
+            "acquisition_channels": ["method-planning-authority"],
+            "minimum_cl": None,
+            "realm_rules": {},
+            "source_cl": {},
+            "suppression": {},
+            "incompatibilities": [],
+        },
+        "dependencies": [],
+    }
+    # The public method catalog row is a projection while revalidation loads
+    # the raw registry row.  Bind both to the same accepted per-Method source
+    # commitment so the snapshot hash is stable across those two authority
+    # surfaces.
+    record["record_hash"] = sha256_json({
+        "schema": "TianxiaFoundry.NonSphereMethodPromptRecord.v1",
+        "method_id": method_id,
+        "method_record_sha256": source_hash,
+    })
+    return record
 
 
 class Stage1ClipboardService:
@@ -130,13 +218,24 @@ class Stage1ClipboardService:
     def _validated_intent_reference_allowed(slot_id: str, record: dict[str, Any]) -> bool:
         """A validated Sphere index may name intent but never grant mechanics."""
         factory = record.get("compatibility", {}).get("factory", {})
-        return (
+        sphere_reference = (
             slot_id == "sphere_priorities"
             and record.get("content_type") == "sphere"
             and record.get("publication", {}).get("status") == "validated"
             and factory.get("authority_classification") == "reference-only"
             and bool(factory.get("selected_authority"))
         )
+        # The typed NS1R Method registry is the authority for Method/AP
+        # compatibility, while the catalog row remains the immutable prompt
+        # snapshot.  A validated method row may therefore be named as
+        # blueprint intent, but it never grants acquisition or mechanics here.
+        method_reference = (
+            slot_id == "method_choice"
+            and record.get("content_type") == "cultivation_method"
+            and record.get("publication", {}).get("status") == "validated"
+            and bool(factory.get("selected_authority"))
+        )
+        return sphere_reference or method_reference
 
     @staticmethod
     def _choice(record: dict[str, Any]) -> dict[str, Any]:
@@ -180,6 +279,31 @@ class Stage1ClipboardService:
         preferred = self._preferred_ids(project)
         preferred_rank = {record_id: index for index, record_id in enumerate(preferred)}
         required_by_slot = self._required_choice_map(project)
+        authority = NonSphereAuthorityService(self.db)
+        required_path_ids = required_by_slot.get("path_choice", [])
+        authority_method_rows = authority.method_catalog(initial_creation=True)["records"]
+        path_method_authority = compatibility_envelope(
+            required_path_ids,
+            authority_method_rows,
+        )
+        if required_path_ids and not path_method_authority["compatible_method_ids"]:
+            raise no_compatible_method_error(required_path_ids)
+        with self.db.connection() as conn:
+            core_lock = conn.execute(
+                "SELECT pack_hash FROM project_content_locks WHERE project_id=? AND pack_id=? AND version=?",
+                (project_id, CORE_PACK_ID, CORE_PACK_VERSION),
+            ).fetchone()
+        if not core_lock:
+            raise FoundryError(
+                "STAGE1_CORE_PACK_LOCK_MISSING",
+                "The exact project lock has no canonical core pack binding for typed Method planning.",
+                details={"project_id": project_id, "pack_id": CORE_PACK_ID, "version": CORE_PACK_VERSION},
+                status_code=500,
+            )
+        typed_method_records = {
+            row["method_id"]: _authority_method_record(row, pack_hash=core_lock["pack_hash"])
+            for row in authority_method_rows
+        }
         slots: list[dict[str, Any]] = []
         for spec in SLOT_SPECS:
             category = coverage_by_slot[spec["slot_id"]]
@@ -187,6 +311,22 @@ class Stage1ClipboardService:
             selectable_ids = set(category.get(choice_key) or [])
             records = [effective_by_id[record_id] for record_id in selectable_ids if record_id in effective_by_id]
             records = [x for x in records if x.get("content_type") in spec["types"]]
+            if spec["slot_id"] == "method_choice":
+                # Method/AP compatibility is owned by the typed NS1R registry.
+                # The catalog projection may classify these rows as validated
+                # intent references rather than published mechanics, so derive
+                # the Stage 1 proposal set from the exact project-bound rows
+                # named by that registry instead of silently producing an empty
+                # Method slot.
+                method_ids = {row["method_id"] for row in authority_method_rows}
+                records = [
+                    effective_by_id.get(method_id) or typed_method_records[method_id]
+                    for method_id in sorted(method_ids)
+                    if (effective_by_id.get(method_id) or typed_method_records[method_id]).get("content_type") in spec["types"]
+                ]
+                if required_path_ids:
+                    compatible_ids = set(path_method_authority["compatible_method_ids"])
+                    records = [record for record in records if record["record_id"] in compatible_ids]
             records.sort(key=lambda x: (0 if x["record_id"] in preferred_rank else 1, preferred_rank.get(x["record_id"], 10**9), x["record_id"]))
             choices = [self._choice(x) for x in records[: spec["limit"]]]
             slot: dict[str, Any] = {
@@ -194,6 +334,26 @@ class Stage1ClipboardService:
                 "max_selections": spec["max"], "allow_none": spec["allow_none"],
                 "coverage_state": "offered" if choices else "blocked_missing_authority", "choices": choices,
             }
+            if spec["slot_id"] == "path_choice":
+                slot["selection_semantics"] = "owner_required_advancing_paths"
+                slot["authority_contract"] = {
+                    "schema": "TianxiaFoundry.PathTrackAuthorityContract.v1",
+                    "max_unique_canonical_path_ids": 3,
+                    "level_zero_tracks": "all_three_present_dormant",
+                    "selected_path_meaning": "Paths the Method must support and advance; not ownership of tracks.",
+                }
+            elif spec["slot_id"] == "method_choice":
+                slot["selection_semantics"] = "method_acquisition_and_primary_method_authority"
+                slot["authority_contract"] = {
+                    "schema": "TianxiaFoundry.MethodPathCompatibilityContract.v1",
+                    "required_advancing_path_ids": list(required_path_ids),
+                    "compatible_method_ids": list(path_method_authority["compatible_method_ids"]),
+                    "method_registry_commitment_sha256": authority.method_registry_commitment_sha256,
+                    "planning_only_typed_method_rows": sorted(
+                        set(typed_method_records) - set(effective_by_id)
+                    ),
+                    "access_is_separate": True,
+                }
             required = required_by_slot.get(spec["slot_id"], [])
             if required:
                 offered_ids = {choice["choice_id"] for choice in choices}
@@ -215,6 +375,7 @@ class Stage1ClipboardService:
             "catalog_build_id": project["content_lock"]["catalog_build_id"], "content_lock_hash": project["content_lock"]["lock_hash"],
             "user_locks": project["user_locks"], "decision_slots": slots, "coverage_report_hash": coverage["report_hash"],
             "authored_fields": list(AUTHORED_FIELDS), "forbidden_authority_rules": list(FORBIDDEN_RULES),
+            "path_method_authority": path_method_authority,
         }
         prompt_id = "stage1.prompt." + sha256_json(seed)[:40]
         envelope = {
@@ -224,7 +385,7 @@ class Stage1ClipboardService:
             "user_locks": deepcopy(project["user_locks"]), "decision_slots": slots,
             "decision_state_contract": ["selected", "explicit_none", "blocked_missing_authority", "deferred_with_reason"],
             "authored_fields": list(AUTHORED_FIELDS), "forbidden_authority_rules": list(FORBIDDEN_RULES),
-            "response_schema_version": RESPONSE_SCHEMA,
+            "response_schema_version": RESPONSE_SCHEMA, "path_method_authority": path_method_authority,
         }
         self._validate_contract(envelope, PROMPT_SCHEMA, "STAGE1_ENVELOPE_SCHEMA_INVALID")
         return envelope
@@ -498,6 +659,17 @@ class Stage1ClipboardService:
                 if len(ids) < slot["min_selections"] or (maximum is not None and len(ids) > maximum):
                     diagnostics.append({"code": "SLOT_CARDINALITY_INVALID", "pointer": pointer + "/choice_ids", "minimum": slot["min_selections"], "maximum": maximum, "actual": len(ids)})
                 offered = {x["choice_id"] for x in slot["choices"]}
+                if len(ids) != len(set(ids)):
+                    diagnostics.append({
+                        "code": "NS1R_DUPLICATE_PATH_ID" if slot_id == "path_choice" else "DUPLICATE_CHOICE_ID",
+                        "pointer": pointer + "/choice_ids",
+                        "choice_ids": ids,
+                    })
+                if slot_id == "path_choice":
+                    try:
+                        canonicalize_path_ids(ids, allow_empty=False)
+                    except FoundryError as exc:
+                        diagnostics.append({"code": exc.code, "pointer": pointer + "/choice_ids", "message": exc.message, "details": exc.details})
                 for offset, record_id in enumerate(ids):
                     if record_id not in offered:
                         diagnostics.append({"code": "UNKNOWN_ID" if record_id not in all_offered else "ID_NOT_OFFERED_IN_SLOT", "pointer": f"{pointer}/choice_ids/{offset}", "choice_id": record_id})
@@ -523,6 +695,41 @@ class Stage1ClipboardService:
         for slot_id in slots:
             if slot_id not in seen:
                 diagnostics.append({"code": "DECISION_SLOT_OMITTED", "pointer": "/response_payload/decisions", "slot_id": slot_id})
+
+        # Method compatibility is a server-side cross-slot predicate. It is
+        # intentionally evaluated only for a selected Method: deferred and
+        # typed-none Method states remain valid planning outcomes.
+        by_slot = {item.get("slot_id"): item for item in payload.get("decisions", []) if isinstance(item, dict)}
+        path_decision = by_slot.get("path_choice") or {}
+        method_decision = by_slot.get("method_choice") or {}
+        if path_decision.get("state") == "selected" and method_decision.get("state") == "selected":
+            required_paths = list(path_decision.get("choice_ids") or [])
+            method_choices = {choice["choice_id"]: choice for choice in slots.get("method_choice", {}).get("choices", [])}
+            for offset, method_id in enumerate(method_decision.get("choice_ids") or []):
+                method = method_choices.get(method_id)
+                if not method:
+                    continue
+                compatibility = method_path_compatibility(
+                    required_paths,
+                    {
+                        "method_id": method_id,
+                        "related_choice_ids": (envelope.get("path_method_authority") or {}).get("method_granted_path_ids", {}).get(method_id, []),
+                    },
+                )
+                if compatibility["missing_path_ids"]:
+                    diagnostics.append({
+                        "code": "METHOD_PATH_COMPATIBILITY_INVALID",
+                        "pointer": f"/response_payload/decisions/method_choice/choice_ids/{offset}",
+                        "expected": {
+                            "required_path_ids": compatibility["required_path_ids"],
+                            "method_granted_path_ids": compatibility["granted_path_ids"],
+                        },
+                        "proposed": {
+                            "method_id": method_id,
+                            "method_granted_path_ids": compatibility["granted_path_ids"],
+                        },
+                        "unsupported_path_ids": compatibility["missing_path_ids"],
+                    })
 
         # Foundation Expressions are Path-specific published mechanics. Stage 1
         # chooses Path and Foundation in one response, so the relation cannot be
@@ -972,11 +1179,47 @@ class Stage1ClipboardService:
 
     def _revalidate_snapshots(self, conn, project_id: str, decisions: list[dict[str, Any]]) -> None:
         locks = {(row["pack_id"], row["version"], row["pack_hash"]) for row in conn.execute("SELECT pack_id,version,pack_hash FROM project_content_locks WHERE project_id=?", (project_id,))}
+        core_lock = next(
+            (lock for lock in locks if lock[0] == CORE_PACK_ID and lock[1] == CORE_PACK_VERSION),
+            None,
+        )
+        typed_authority: NonSphereAuthorityService | None = None
         for decision in decisions:
             for snapshot in decision["record_snapshots"]:
                 lock = (snapshot["pack_id"], snapshot["pack_version"], snapshot["pack_hash"])
                 if lock not in locks:
                     raise FoundryError("STAGE1_PACK_LOCK_CHANGED", "A selected blueprint record no longer belongs to the exact project content lock.", details=snapshot)
+                choice_snapshot = snapshot.get("choice_snapshot") or {}
+                if (
+                    decision["slot_id"] == "method_choice"
+                    and choice_snapshot.get("authority") == "canonical-non-sphere-authority"
+                ):
+                    if core_lock is None or lock != core_lock:
+                        raise FoundryError(
+                            "STAGE1_METHOD_AUTHORITY_BINDING_CHANGED",
+                            "A typed Method planning choice is not bound to the exact canonical core project lock.",
+                            details=snapshot,
+                        )
+                    typed_authority = typed_authority or NonSphereAuthorityService(self.db)
+                    method = typed_authority.methods.get(snapshot["record_id"])
+                    if method is None:
+                        raise FoundryError(
+                            "STAGE1_RECORD_SNAPSHOT_CHANGED",
+                            "A selected typed Method is absent from the accepted NS1R authority registry.",
+                            details=snapshot,
+                        )
+                    current_record = _authority_method_record(method, pack_hash=core_lock[2])
+                    current_choice = self._choice(current_record)
+                    if (
+                        current_record["record_hash"] != snapshot["record_hash"]
+                        or sha256_json(current_choice) != snapshot["choice_snapshot_hash"]
+                    ):
+                        raise FoundryError(
+                            "STAGE1_RECORD_SNAPSHOT_CHANGED",
+                            "A typed Method planning choice no longer matches its exact authority snapshot.",
+                            details={"record_id": snapshot["record_id"]},
+                        )
+                    continue
                 row = conn.execute(
                     """SELECT data_json,record_hash,publication_state,selected_authority FROM catalog_records
                        WHERE record_id=? AND pack_id=? AND pack_version=? AND record_hash=? ORDER BY row_id LIMIT 1""",
