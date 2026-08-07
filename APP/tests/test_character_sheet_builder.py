@@ -312,7 +312,9 @@ def test_foundation_dropdown_projection_is_owner_facing_and_insights_are_grouped
     insights = categories["insight_priorities"]
     assert insights["grouped_projection"] == "typed_insight_metadata"
     expected_groups = {
-        "general_insights", "sphere_insights", "path_insights", "method_insights",
+        "general_insights", "general_cultivation_insights", "sphere_insights", "path_insights",
+        "technique_forging_insights", "metatechnique_insights", "companion_insights",
+        "narrative_secret_insights", "method_insights",
         "foundation_insights", "background_origin_insights", "item_equipment_insights",
         "special_insights", "unresolved_insights",
     }

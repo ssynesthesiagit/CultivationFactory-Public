@@ -38,7 +38,11 @@ ALLOWED_DRAFT_EVENT_TYPES = {
 ALLOWED_ACTORS = {"human", "ai-planner", "system", "migration"}
 RESERVED_GENERIC_DRAFT_ACTORS = {"ai-planner", "system", "migration"}
 RESERVED_GENERIC_DRAFT_CHANNELS = {"fixture-reconstruction", "deterministic-projection-migration"}
-MAX_PROJECT_ARCHIVE = 64 * 1024 * 1024
+# The installed CAT3 authority now carries the exact R2 Insight occurrence
+# ledger in project lock snapshots.  Keep the expanded archive guard at 256 MiB
+# while allowing the resulting compressed portable project to cross the former
+# 64 MiB boundary without weakening traversal or expansion checks.
+MAX_PROJECT_ARCHIVE = 96 * 1024 * 1024
 MAX_PROJECT_EXPANDED = 256 * 1024 * 1024
 
 

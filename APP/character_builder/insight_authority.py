@@ -8,8 +8,13 @@ from typing import Any
 
 INSIGHT_AUTHORITY_TYPES = (
     "General",
+    "General Cultivation",
     "Sphere",
     "Path",
+    "Technique-Forging",
+    "Metatechnique",
+    "Companion",
+    "Narrative / Secret",
     "Method",
     "Foundation",
     "Background-Origin",
@@ -89,6 +94,58 @@ def classify_insight_authority(
     """
     raw = deepcopy(raw_record) if isinstance(raw_record, dict) else {}
     bindings: list[dict[str, str]] = []
+    explicit_type = _text(raw.get("insight_authority_type"))
+    explicit_group = raw.get("insight_group") if isinstance(raw.get("insight_group"), dict) else {}
+    explicit_hierarchy = raw.get("hierarchy_path") or explicit_group.get("hierarchy_path") or []
+    explicit_spheres = raw.get("owning_canonical_sphere_ids") or []
+    if explicit_type in INSIGHT_AUTHORITY_TYPES and explicit_type not in {"General", "Method", "Foundation", "Background-Origin", "Item-Equipment", "Special", "Unresolved"}:
+        bindings.append({
+            "authority_type": explicit_type,
+            "field": "insight_authority_type",
+            "binding_id": explicit_type,
+            "binding_role": "controlling",
+        })
+        if _text(explicit_group.get("owning_group")):
+            bindings.append({
+                "authority_type": explicit_type,
+                "field": "insight_group.owning_group",
+                "binding_id": _text(explicit_group["owning_group"]),
+                "binding_role": "controlling",
+            })
+        for sphere_id in explicit_spheres if isinstance(explicit_spheres, list) else [explicit_spheres]:
+            if _text(sphere_id):
+                bindings.append({
+                    "authority_type": "Sphere" if explicit_type == "Sphere" else explicit_type,
+                    "field": "owning_canonical_sphere_ids",
+                    "binding_id": _text(sphere_id),
+                    "binding_role": "facet" if explicit_type != "Sphere" else "controlling",
+                })
+        prerequisite_text = raw.get("source_prerequisites_text") or raw.get("prerequisites")
+        if isinstance(prerequisite_text, list):
+            prerequisite_text = "; ".join(_text(item) for item in prerequisite_text if _text(item))
+        source_payload = json.dumps(raw, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        source_record_sha256 = _text((source_reference or {}).get("source_record_sha256")) or hashlib.sha256(source_payload).hexdigest()
+        return {
+            "schema": "TianxiaFoundry.InsightSourceAuthority.v1",
+            "record_id": record_id,
+            "authority_type": explicit_type,
+            "binding_records": bindings,
+            "prerequisites": _text(prerequisite_text),
+            "preference_only": True,
+            "classification_code": "CAT3_R2_EXPLICIT_TYPE_MAPPING",
+            "reason": "CAT3 R2 compiler metadata supplies the authoritative Insight type, hierarchy, and source-bound ownership.",
+            "hierarchy_path": [str(item) for item in explicit_hierarchy if _text(item)],
+            "insight_group": deepcopy(explicit_group),
+            "owning_canonical_sphere_ids": [str(item) for item in explicit_spheres if _text(item)] if isinstance(explicit_spheres, list) else ([_text(explicit_spheres)] if _text(explicit_spheres) else []),
+            "source_reference": {
+                "source_file": _text((source_reference or {}).get("source_file")) or _text(raw.get("source_file")),
+                "source_status": _text((source_reference or {}).get("source_status")) or _text(raw.get("source_status")),
+                "source_record_id": _text(raw.get("record_id")) or record_id,
+                "source_record_sha256": source_record_sha256,
+                **({"source_file_sha256": _text(source_reference.get("source_file_sha256"))} if source_reference and _text(source_reference.get("source_file_sha256")) else {}),
+                **({"source_anchor": _text(source_reference.get("source_anchor"))} if source_reference and _text(source_reference.get("source_anchor")) else {}),
+            },
+        }
     field_types = (
         ("sphere", "Sphere"),
         ("path", "Path"),
@@ -148,6 +205,7 @@ def classify_insight_authority(
         code = "UNRESOLVED_INSIGHT_CLASSIFICATION"
 
     source_payload = json.dumps(raw, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    source_record_sha256 = _text((source_reference or {}).get("source_record_sha256")) or hashlib.sha256(source_payload).hexdigest()
     return {
         "schema": "TianxiaFoundry.InsightSourceAuthority.v1",
         "record_id": record_id,
@@ -161,7 +219,7 @@ def classify_insight_authority(
             "source_file": _text((source_reference or {}).get("source_file")) or _text(raw.get("source_file")),
             "source_status": _text((source_reference or {}).get("source_status")) or _text(raw.get("source_status")),
             "source_record_id": _text(raw.get("record_id")) or record_id,
-            "source_record_sha256": hashlib.sha256(source_payload).hexdigest(),
+            "source_record_sha256": source_record_sha256,
             **({"source_file_sha256": _text(source_reference.get("source_file_sha256"))} if source_reference and _text(source_reference.get("source_file_sha256")) else {}),
             **({"source_anchor": _text(source_reference.get("source_anchor"))} if source_reference and _text(source_reference.get("source_anchor")) else {}),
         },

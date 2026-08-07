@@ -121,6 +121,8 @@ class CanonicalCatalogAuthorityService:
         spheres = document.get("spheres") or []
         talents = document.get("talents") or []
         memberships = document.get("memberships") or []
+        insights = document.get("insights") or []
+        sphere_base_ability_authority = document.get("sphere_base_ability_authority") or []
         if len(spheres) != EXPECTED_SPHERES or counts.get("canonical_spheres") != EXPECTED_SPHERES:
             raise FoundryError(
                 "CANONICAL_SPHERE_IDENTITY_INVALID",
@@ -138,6 +140,7 @@ class CanonicalCatalogAuthorityService:
         committed_groups = (
             spheres, talents, document.get("sphere_aliases_and_noncanonical_labels") or [],
             document.get("automatic_base_abilities") or [], document.get("automatic_base_ability_aliases") or [],
+            sphere_base_ability_authority, insights,
             document.get("background_only_routes") or [], document.get("quarantined_decision_packets") or [],
             document.get("legacy_non_talent_findings") or [],
         )
@@ -152,6 +155,23 @@ class CanonicalCatalogAuthorityService:
                     )
         sphere_by_id = {row["canonical_sphere_id"]: row for row in spheres}
         talent_by_id = {row["canonical_talent_id"]: row for row in talents}
+        insight_by_id = {row["canonical_insight_id"]: row for row in insights if row.get("canonical_insight_id")}
+        if len(insight_by_id) != len(insights):
+            raise FoundryError("CANONICAL_INSIGHT_DUPLICATE_ID", "Compiled CAT3 authority contains duplicate canonical Insight IDs.", status_code=503)
+        selectable_insights = [row for row in insights if row.get("selectable") is True]
+        source_occurrence_count = sum(len(row.get("source_occurrences") or []) for row in insights)
+        if (
+            len(insights) != 547
+            or len(selectable_insights) != 542
+            or source_occurrence_count != 550
+            or counts.get("canonical_insights") != len(insights)
+            or counts.get("selectable_insights") != len(selectable_insights)
+        ):
+            raise FoundryError(
+                "CANONICAL_INSIGHT_AUTHORITY_INVALID",
+                "CAT3 R2 Insight authority counts do not match the accepted reconciliation.",
+                details={"records": len(insights), "selectable": len(selectable_insights), "source_occurrences": source_occurrence_count}, status_code=503,
+            )
         if len(sphere_by_id) != len(spheres) or len(talent_by_id) != len(talents):
             raise FoundryError("CANONICAL_CATALOG_DUPLICATE_ID", "Compiled CAT3 authority contains duplicate canonical IDs.", status_code=503)
         by_sphere: dict[str, list[str]] = {sphere_id: [] for sphere_id in sphere_by_id}
@@ -193,12 +213,32 @@ class CanonicalCatalogAuthorityService:
             if sphere_id in base_by_sphere and component_id not in seen_components:
                 base_by_sphere[sphere_id].append(projected)
                 seen_components.add(str(component_id))
+        base_package_by_sphere: dict[str, list[dict[str, Any]]] = {sphere_id: [] for sphere_id in sphere_by_id}
+        base_package_source_rows_by_component: dict[str, list[dict[str, Any]]] = {}
+        seen_package_components: set[str] = set()
+        for row in sphere_base_ability_authority:
+            sphere_id = row.get("mapped_canonical_sphere_id")
+            projected = _base_ability_row(row)
+            component_id = str(projected.get("base_ability_id"))
+            base_package_source_rows_by_component.setdefault(component_id, []).append(projected)
+            if sphere_id in base_package_by_sphere and component_id not in seen_package_components:
+                base_package_by_sphere[sphere_id].append(projected)
+                seen_package_components.add(component_id)
+        if len(base_package_by_sphere) != EXPECTED_SPHERES or any(not rows for rows in base_package_by_sphere.values()):
+            raise FoundryError(
+                "CANONICAL_SPHERE_BASE_PACKAGE_INVALID",
+                "Every canonical Sphere must expose a non-empty source-bound automatic base package.",
+                details={"empty_sphere_ids": sorted(sphere_id for sphere_id, rows in base_package_by_sphere.items() if not rows)}, status_code=503,
+            )
         loaded = {
             "document": document, "source": document.get("source_authority") or {}, "counts": counts,
             "spheres": spheres, "talents": talents, "sphere_by_id": sphere_by_id,
             "talent_by_id": talent_by_id, "by_sphere": by_sphere, "alias_to_id": alias_to_id,
             "migration_to_id": migration_to_id, "legacy_non_talent_by_id": legacy_non_talent_by_id,
+            "insights": insights, "insight_by_id": insight_by_id,
             "base_by_sphere": base_by_sphere, "base_source_rows_by_component": base_source_rows_by_component,
+            "base_package_by_sphere": base_package_by_sphere,
+            "base_package_source_rows_by_component": base_package_source_rows_by_component,
         }
         self._GLOBAL_DATA_CACHE[cache_key] = loaded
         self._loaded = loaded
@@ -220,6 +260,12 @@ class CanonicalCatalogAuthorityService:
             "background_only_route_count": counts["background_only_routes"], "quarantined_count": counts["quarantined_records"],
             "automatic_base_ability_source_row_count": counts["automatic_base_ability_records"],
             "automatic_base_ability_unique_count": counts["automatic_base_ability_unique_components"],
+            "resolved_sphere_base_ability_source_component_count": counts.get("resolved_sphere_base_ability_source_components", 0),
+            "resolved_sphere_base_ability_unique_count": counts.get("resolved_sphere_base_ability_unique_components", 0),
+            "resolved_sphere_base_ability_sphere_count": counts.get("resolved_sphere_base_ability_spheres", 0),
+            "canonical_insight_count": counts.get("canonical_insights", len(data["insights"])),
+            "selectable_insight_count": counts.get("selectable_insights", sum(row.get("selectable") is True for row in data["insights"])),
+            "insight_source_occurrence_count": counts.get("insight_source_occurrences", sum(len(row.get("source_occurrences") or []) for row in data["insights"])),
             "unresolved_acquisition_talent_count": counts.get("unresolved_acquisition_talents", 0),
             "fencing_alias_target": data["alias_to_id"].get(_normalize_name("Fencing")),
             "harvesting_alias_target": data["alias_to_id"].get(_normalize_name("Harvesting and Gathering")),
@@ -241,8 +287,18 @@ class CanonicalCatalogAuthorityService:
         return migrated if migrated in data["talent_by_id"] else None
 
     def _sphere_row(self, row: dict[str, Any], *, include_full: bool = False) -> dict[str, Any]:
+        data = self._load()
         result = deepcopy(row)
-        result["automatic_base_abilities"] = deepcopy(self._load()["base_by_sphere"].get(row["canonical_sphere_id"], []))
+        legacy_package = deepcopy(data["base_by_sphere"].get(row["canonical_sphere_id"], []))
+        resolved_package = deepcopy(data["base_package_by_sphere"].get(row["canonical_sphere_id"], []))
+        # The historical field remains the compact P1A compatibility surface;
+        # the resolved package is the source-bound owner-facing authority for
+        # all 85 Spheres.  ``get_sphere`` promotes it into the main field.
+        result["automatic_base_abilities"] = resolved_package if include_full else legacy_package
+        result["resolved_automatic_base_abilities"] = resolved_package
+        result["automatic_base_ability_package"] = deepcopy(row.get("automatic_base_ability_package") or {
+            "status": "resolved_source_bound", "component_count": len(resolved_package),
+        })
         result["short_description"] = _first_line(row.get("full_description") or "")
         result["source_reference"] = deepcopy(row["source_provenance"])
         result["source_pack"] = row["source_provenance"]["source_pack"]
@@ -290,6 +346,50 @@ class CanonicalCatalogAuthorityService:
         rows.sort(key=lambda row: (row["owning_canonical_sphere_name"].casefold(), row["minimum_cl"], row["display_name"].casefold(), row["canonical_talent_id"]))
         return {"schema": "TianxiaFactory.CanonicalTalentCollection.v1", "projection": "canonical_owner_facing", "canonical_sphere_id": resolved, "count": len(rows), "records": rows}
 
+    @staticmethod
+    def _insight_row(row: dict[str, Any], *, include_full: bool = False) -> dict[str, Any]:
+        result = deepcopy(row)
+        raw = row.get("raw_source_record") or {}
+        full_text = next(
+            (str(raw.get(key)) for key in ("full_rules_text", "rules_text", "full_description", "description") if isinstance(raw.get(key), str) and raw.get(key).strip()),
+            "",
+        )
+        result["short_description"] = _first_line(full_text)
+        result["full_description"] = full_text
+        result["source_reference"] = deepcopy(row.get("source_provenance") or {})
+        result["source_prerequisites_text"] = raw.get("source_prerequisites_text") or raw.get("prerequisites") or ""
+        result["prerequisite_relations"] = deepcopy(row.get("prerequisites") or [])
+        result["source_occurrence_count"] = len(row.get("source_occurrences") or [])
+        result["owner_selectable"] = row.get("selectable") is True
+        result["selection_disposition"] = "selectable" if row.get("selectable") is True else "retained_reference_only"
+        if not include_full:
+            result.pop("raw_source_record", None)
+            result.pop("full_exact_source_text", None)
+        return result
+
+    def list_insights(self, *, q: str | None = None, insight_type: str | None = None, include_full: bool = False) -> dict[str, Any]:
+        data = self._load()
+        query = _normalize_name(q or "")
+        rows = [
+            self._insight_row(row, include_full=include_full)
+            for row in data["insights"]
+            if (not insight_type or row.get("insight_authority_type") == insight_type)
+            and (
+                not query
+                or query in _normalize_name(str(row.get("display_name") or ""))
+                or query in _normalize_name(str((row.get("raw_source_record") or {}).get("full_rules_text") or ""))
+            )
+        ]
+        rows.sort(key=lambda row: (str(row.get("insight_authority_type") or "").casefold(), str(row.get("display_name") or "").casefold(), row["canonical_insight_id"]))
+        return {"schema": "TianxiaFactory.CanonicalInsightCollection.v1", "projection": "canonical_owner_facing", "count": len(rows), "records": rows}
+
+    def get_insight(self, insight_id: str) -> dict[str, Any]:
+        data = self._load()
+        row = data["insight_by_id"].get(insight_id)
+        if not row:
+            raise FoundryError("CANONICAL_INSIGHT_NOT_FOUND", "That Insight is not in CAT3 canonical authority.", details={"insight_id": insight_id}, status_code=404)
+        return self._insight_row(row, include_full=True)
+
     def get_sphere(self, value: str) -> dict[str, Any]:
         data = self._load()
         resolved = self.resolve_sphere_id(value)
@@ -320,6 +420,7 @@ class CanonicalCatalogAuthorityService:
         data = self._load()
         source_rows = [_base_ability_row(row) for row in data["document"]["automatic_base_abilities"]]
         runtime_records = [deepcopy(row) for rows in data["base_by_sphere"].values() for row in rows]
+        resolved_records = [deepcopy(row) for rows in data["base_package_by_sphere"].values() for row in rows]
         return {
             "schema": "TianxiaFactory.CanonicalCatalogDiagnostics.v1", "status": self.status(),
             "background_only_routes": deepcopy(data["document"]["background_only_routes"]),
@@ -328,6 +429,20 @@ class CanonicalCatalogAuthorityService:
                 "source_row_count": len(source_rows), "unique_component_count": len(runtime_records),
                 "source_rows": source_rows, "records": runtime_records,
                 "aliases": deepcopy(data["document"].get("automatic_base_ability_aliases") or []),
+            },
+            "resolved_sphere_base_abilities": {
+                "source_matrix": deepcopy(data["document"].get("sphere_base_ability_authority_matrix") or {}),
+                "source_component_count": len(data["document"].get("sphere_base_ability_authority") or []),
+                "resolved_sphere_count": len(data["base_package_by_sphere"]),
+                "unique_component_count": len(resolved_records),
+                "records": resolved_records,
+            },
+            "insights": {
+                "authority_audit": deepcopy(data["document"].get("insight_authority_audit") or {}),
+                "record_count": len(data["insights"]),
+                "selectable_count": sum(row.get("selectable") is True for row in data["insights"]),
+                "source_occurrence_count": sum(len(row.get("source_occurrences") or []) for row in data["insights"]),
+                "records": [self._insight_row(row, include_full=False) for row in data["insights"]],
             },
             "stable_id_migrations": deepcopy(data["document"]["stable_id_migrations"]),
             "legacy_non_talent_findings": deepcopy(data["document"]["legacy_non_talent_findings"]),
@@ -657,9 +772,12 @@ class CanonicalCatalogAuthorityService:
                 errors.append({"code": "ORDINARY_TALENT_NOT_CANONICAL", "talent_id": talent_id, "message": "The ordinary Talent is not canonical."})
             elif not disposition_by_id[talent_id]["selectable_now"]:
                 errors.append({"code": "ORDINARY_TALENT_NOT_SELECTABLE", "talent_id": talent_id, "message": disposition_by_id[talent_id]["owner_reason"]})
-        automatic = [deepcopy(row) for sphere_id in acquired for row in data["base_by_sphere"].get(sphere_id, [])]
+        automatic = [deepcopy(row) for sphere_id in acquired for row in data["base_package_by_sphere"].get(sphere_id, [])]
         accounting = {
             "automatic_base_abilities": automatic, "automatic_base_ability_count": len(automatic),
+            "automatic_base_ability_package": "resolved_source_bound_sphere_packages",
+            "legacy_automatic_base_ability_source_row_count": len(data["document"].get("automatic_base_abilities") or []),
+            "legacy_automatic_base_ability_unique_component_count": len({row.get("runtime_component_id") for row in data["document"].get("automatic_base_abilities") or []}),
             "automatic_base_abilities_counted_as_talent_choices": 0,
             "free_sphere_talent_grants": [{"sphere_id": sphere_id, "talent_id": talent_id, "ordinary_slot_cost": 0, "training_slot_cost": 0} for sphere_id, talent_id in sorted(free.items())],
             "free_sphere_talent_grant_count": len(free), "ordinary_talent_ids": ordinary,
@@ -683,7 +801,7 @@ class CanonicalCatalogAuthorityService:
                 "canonical_sphere_id": row["canonical_sphere_id"], "display_name": row["display_name"],
                 "disposition": "selected" if row["canonical_sphere_id"] in acquired else "selectable_with_prerequisites",
                 "owner_reason": "Selected for this character." if row["canonical_sphere_id"] in acquired else "Available when exact build prerequisites are satisfied.",
-                "automatic_base_ability_count": len(data["base_by_sphere"].get(row["canonical_sphere_id"], [])),
+                "automatic_base_ability_count": len(data["base_package_by_sphere"].get(row["canonical_sphere_id"], [])),
                 "canonical_talent_count": row["talent_count"],
             } for row in data["spheres"]],
             "talent_dispositions": dispositions, "grant_accounting": accounting,

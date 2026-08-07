@@ -23,7 +23,7 @@ from common import (
 )
 
 
-EXPECTED_CATALOG_COMMITMENT = "b53d36b6da5f3d8ead46e01cd07bbfc0f80e35043e7f3ef0f2e11d5fb79e35df"
+EXPECTED_CATALOG_COMMITMENT = "914baaef5bd2bc646f25fd85bf32cc1f2a1f37c442836569bd2cdf02f593317b"
 
 
 @dataclass(frozen=True)

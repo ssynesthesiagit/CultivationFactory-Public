@@ -719,7 +719,7 @@ function renderSphereTalentWorkspace() {
       const selectedForSphere = talentIds.filter(talentId => sphereTalentLogic.talentSphereIds(index, talentId).includes(sphereId));
       const associated = document.createElement("div");
       associated.className = "sphere-card-talents";
-      const baseAbilities = sphere.automatic_base_abilities || [];
+      const baseAbilities = sphere.resolved_automatic_base_abilities || sphere.automatic_base_abilities || [];
       associated.textContent = `Planning preference only — no Sphere acquisition or free grant. Talent priorities: ${selectedForSphere.length ? selectedTalentNames(selectedForSphere).join(", ") : "none"}.`;
       const grants = document.createElement("ul"); grants.className = "automatic-base-abilities";
       for (const ability of baseAbilities) {
@@ -740,11 +740,10 @@ function renderSphereTalentWorkspace() {
           ["Source", ability.source_reference?.source_section || ability.source_reference?.source_path],
         ];
         for (const [term, value] of fieldRows) {
+          if (value === null || value === undefined || value === "" || (Array.isArray(value) && !value.length)) continue;
           const dt = document.createElement("dt"); dt.textContent = term;
           const dd = document.createElement("dd");
-          dd.textContent = value === null || value === undefined || value === "" || (Array.isArray(value) && !value.length)
-            ? "Not separately stated in the authenticated source block."
-            : String(value);
+          dd.textContent = String(value);
           fields.append(dt, dd);
         }
         details.append(summary, grant, fields);
@@ -1409,7 +1408,7 @@ function renderGuidedCandidate(run) {
   appendCandidateLine(host, "Quality gate", `${run.quality?.status || "Unknown"}${(run.warnings || []).length ? ` — ${(run.warnings || []).length} warning(s)` : ""}`, clean ? "success" : "warning");
   const acquiredSpheres = candidateList(sphereSurface.acquired_spheres || sphereSurface.spheres || sphereSurface.canonical_spheres);
   const freeTalents = candidateList(sphereSurface.free_sphere_talent_grants || sphereSurface.free_talents || sphereSurface.free_grants);
-  const automatic = candidateList(sphereSurface.automatic_base_abilities || sphereSurface.base_sphere_abilities || sphereSurface.automatic_grants);
+  const automatic = candidateList(sphereSurface.resolved_automatic_base_abilities || sphereSurface.automatic_base_abilities || sphereSurface.base_sphere_abilities || sphereSurface.automatic_grants);
   const ordinary = candidateList(sphereSurface.ordinary_talents || sphereSurface.learned_talents || sphereSurface.acquired_talents);
   appendCandidateLine(host, "Acquired Spheres", acquiredSpheres.length ? acquiredSpheres.join("; ") : "See complete candidate evidence below");
   appendCandidateLine(host, "One free talent per acquired Sphere", freeTalents.length ? freeTalents.join("; ") : "See complete candidate evidence below");

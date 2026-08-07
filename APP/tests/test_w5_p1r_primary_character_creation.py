@@ -30,6 +30,7 @@ def test_w5_p1r_owner_sphere_surface_is_complete_and_truthful(catalog_environmen
         "canonical_spheres": canonical_status["canonical_sphere_count"],
         "canonical_talents": canonical_status["canonical_talent_count"],
         "automatic_base_components": canonical_status["automatic_base_ability_unique_count"],
+        "resolved_automatic_base_components": canonical_status["resolved_sphere_base_ability_unique_count"],
         "zero_talent_spheres": 0,
         "quarantined_records": diagnostics["quarantined"]["count"],
     }

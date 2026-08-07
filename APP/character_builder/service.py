@@ -340,6 +340,8 @@ class CharacterBuilderService:
                 "unavailable_reason": unavailable_reason,
                 "browse_rules_visible": True,
                 "automatic_base_abilities": deepcopy(row["automatic_base_abilities"]),
+                "resolved_automatic_base_abilities": deepcopy(row.get("resolved_automatic_base_abilities") or row["automatic_base_abilities"]),
+                "automatic_base_ability_package": deepcopy(row.get("automatic_base_ability_package") or {}),
                 "canonical_authority": True,
                 "virtual_canonical_authority": True,
                 "authority_coverage": {"disposition": "canonical_owner_projection"},
@@ -463,19 +465,72 @@ class CharacterBuilderService:
                 raw_projection = json.loads(row["raw_projection_json"] or "{}")
                 raw_record = raw_projection.get("raw_record") if isinstance(raw_projection, dict) else {}
             if row["content_type"] in {"cultivation_insight", "origin_insight", "insight"}:
-                insight_occurrences.setdefault(row["record_id"], []).append({
-                    "raw_record": raw_record,
-                    "source_reference": {
-                        "source_file": row["source_path"],
-                        "source_file_sha256": row["source_hash"],
-                        "source_anchor": row["source_anchor"],
-                        "source_status": row["publication_state"],
-                    },
-                })
+                base_reference = {
+                    "source_file": row["source_path"],
+                    "source_file_sha256": row["source_hash"],
+                    "source_anchor": row["source_anchor"],
+                    "source_status": row["publication_state"],
+                }
+                nested_occurrences = raw_record.get("source_occurrences") if isinstance(raw_record, dict) else None
+                if isinstance(nested_occurrences, list) and nested_occurrences:
+                    for nested in nested_occurrences:
+                        # CAT3's generated authority stores occurrence payloads
+                        # as flattened R2 records.  Accept the older nested
+                        # ``{raw_record, source_reference}`` envelope too so
+                        # the runtime remains compatible with prior sealed
+                        # projections without weakening source identity.
+                        nested_raw = (
+                            deepcopy(nested.get("raw_record") or nested)
+                            if isinstance(nested, dict) else {}
+                        )
+                        if not nested_raw:
+                            continue
+                        # The R2 occurrence remains the source text authority;
+                        # compiled CAT3 metadata supplies the explicit type and
+                        # hierarchy used by the owner surface.
+                        for key in (
+                            "insight_authority_type", "insight_group", "hierarchy_path",
+                            "owning_canonical_sphere_ids", "owning_canonical_sphere_id",
+                            "source_prerequisites_text", "compiled_prerequisite_ledger",
+                            "repeatable_maximum", "canonical_insight_id", "compiler_version",
+                        ):
+                            if key in raw_record:
+                                nested_raw[key] = deepcopy(raw_record[key])
+                        nested_reference = deepcopy(nested.get("source_reference") or {}) if isinstance(nested, dict) else {}
+                        if isinstance(nested, dict):
+                            for target_key, source_keys in {
+                                "source_file": ("source_file", "path"),
+                                "source_file_sha256": ("source_file_sha256", "source_hash"),
+                                "source_record_id": ("source_record_id", "record_id", "canonical_id"),
+                                "source_record_sha256": ("source_record_sha256",),
+                                "source_status": ("source_status",),
+                                "source_anchor": ("source_anchor", "anchor"),
+                            }.items():
+                                if target_key in nested_reference:
+                                    continue
+                                for source_key in source_keys:
+                                    if str(nested.get(source_key) or "").strip():
+                                        nested_reference[target_key] = nested[source_key]
+                                        break
+                        nested_reference = {**base_reference, **nested_reference}
+                        insight_occurrences.setdefault(row["record_id"], []).append({
+                            "raw_record": nested_raw,
+                            "source_reference": nested_reference,
+                        })
+                else:
+                    insight_occurrences.setdefault(row["record_id"], []).append({
+                        "raw_record": raw_record,
+                        "source_reference": base_reference,
+                    })
         group_map = {
             "General": ("general_insights", "General Insights"),
+            "General Cultivation": ("general_cultivation_insights", "General Cultivation Insights"),
             "Sphere": ("sphere_insights", "Sphere Insights"),
             "Path": ("path_insights", "Path Insights"),
+            "Technique-Forging": ("technique_forging_insights", "Technique-Forging Insights"),
+            "Metatechnique": ("metatechnique_insights", "Metatechnique Insights"),
+            "Companion": ("companion_insights", "Companion Insights"),
+            "Narrative / Secret": ("narrative_secret_insights", "Narrative / Secret Insights"),
             "Method": ("method_insights", "Method Insights"),
             "Foundation": ("foundation_insights", "Foundation Insights"),
             "Background-Origin": ("background_origin_insights", "Background / Origin Insights"),
@@ -504,6 +559,8 @@ class CharacterBuilderService:
             group, label = group_map[authority["authority_type"]]
             choice["insight_group"] = group
             choice["insight_group_label"] = label
+            choice["insight_hierarchy"] = deepcopy(authority.get("hierarchy_path") or [])
+            choice["insight_facets"] = deepcopy(authority.get("owning_canonical_sphere_ids") or [])
             choice["insight_authority"] = authority
         return result
 
@@ -651,6 +708,50 @@ class CharacterBuilderService:
                     _normalized_visible_name(insight["display_name"]), []
                 ).append(enriched_insight)
 
+        def decorate_background_origin_choice(
+            choice: dict[str, Any], exact_insights: list[dict[str, Any]],
+        ) -> None:
+            """Attach the dedicated Background-Origin authority to its canonical choice.
+
+            The background pack stores one canonical Origin record per visible
+            name, while the route authority stores background-specific option
+            IDs.  The owner surface must retain the canonical choice identity
+            and expose every exact background binding without conflating that
+            route identity with an ordinary Insight preference.
+            """
+            if not exact_insights:
+                return
+            background_ids = sorted({row["background_id"] for row in exact_insights})
+            choice["insight_group"] = "background_origin_insights"
+            choice["insight_group_label"] = "Background / Origin Insights"
+            choice["insight_authority"] = {
+                "schema": "TianxiaFoundry.InsightSourceAuthority.v1",
+                "record_id": choice["choice_id"],
+                "authority_type": "Background-Origin",
+                "binding_records": [{
+                    "authority_type": "Background-Origin",
+                    "field": "background",
+                    "binding_id": background_id,
+                    "binding_role": "controlling",
+                } for background_id in background_ids],
+                "prerequisites": "",
+                "preference_only": True,
+                "classification_code": "EXPLICIT_BACKGROUND_ORIGIN_INSIGHT_AUTHORITY",
+                "reason": "The accepted Background authority explicitly lists this suggested Origin Insight.",
+                "source_reference": {
+                    "source_file": "non_sphere_authority/authority/Background_Core_Authority_v1.json",
+                    "source_status": "accepted_authority",
+                    "source_record_id": choice["choice_id"],
+                    "background_ids": background_ids,
+                    "source_occurrences": [{
+                        "background_id": row["background_id"],
+                        **deepcopy(row["background_source"]),
+                    } for row in exact_insights],
+                },
+            }
+            choice["ns1r_exact_origin_insight_authority"] = deepcopy(exact_insights)
+            choice["canonical_non_sphere_authority"] = True
+
         # Preserve the accepted CAT2 option inventories exactly. NS1R-R1 only
         # decorates those records with the shared authority needed for exact
         # route validation; it must not rebuild, duplicate, or broaden them.
@@ -682,51 +783,28 @@ class CharacterBuilderService:
                 choice["canonical_non_sphere_authority"] = True
         if origin_insight_category is not None:
             for choice in origin_insight_category.get("choices", []):
-                insight = insight_authority_by_id.get(choice["choice_id"])
-                if insight is not None:
-                    choice["ns1r_exact_origin_insight_authority"] = deepcopy(insight)
-                    choice["canonical_non_sphere_authority"] = True
+                exact_insights = insight_authority_by_name.get(_normalized_visible_name(choice["name"]), [])
+                exact_by_route_id = insight_authority_by_id.get(choice["choice_id"])
+                if exact_by_route_id is not None and exact_by_route_id not in exact_insights:
+                    exact_insights = [exact_by_route_id, *exact_insights]
+                decorate_background_origin_choice(choice, exact_insights)
 
         insight_category = by_slot.get("insight_priorities")
         if insight_category is not None:
             for choice in insight_category.get("choices", []):
                 exact_insights = insight_authority_by_name.get(_normalized_visible_name(choice["name"]), [])
                 if choice.get("content_type") == "origin_insight" and exact_insights:
-                    background_ids = sorted({row["background_id"] for row in exact_insights})
-                    choice["insight_group"] = "background_origin_insights"
-                    choice["insight_group_label"] = "Background / Origin Insights"
-                    choice["insight_authority"] = {
-                        "schema": "TianxiaFoundry.InsightSourceAuthority.v1",
-                        "record_id": choice["choice_id"],
-                        "authority_type": "Background-Origin",
-                        "binding_records": [{
-                            "authority_type": "Background-Origin",
-                            "field": "background",
-                            "binding_id": background_id,
-                            "binding_role": "controlling",
-                        } for background_id in background_ids],
-                        "prerequisites": "",
-                        "preference_only": True,
-                        "classification_code": "EXPLICIT_BACKGROUND_ORIGIN_INSIGHT_AUTHORITY",
-                        "reason": "The accepted Background authority explicitly lists this suggested Origin Insight.",
-                        "source_reference": {
-                            "source_file": "non_sphere_authority/authority/Background_Core_Authority_v1.json",
-                            "source_status": "accepted_authority",
-                            "source_record_id": choice["choice_id"],
-                            "background_ids": background_ids,
-                            "source_occurrences": [{
-                                "background_id": row["background_id"],
-                                **deepcopy(row["background_source"]),
-                            } for row in exact_insights],
-                        },
-                    }
-                    choice["ns1r_exact_origin_insight_authority"] = deepcopy(exact_insights)
-                    choice["canonical_non_sphere_authority"] = True
+                    decorate_background_origin_choice(choice, exact_insights)
             insight_category["grouped_projection"] = "typed_insight_metadata"
             insight_category["groups"] = [
                 {"id": "general_insights", "label": "General Insights"},
+                {"id": "general_cultivation_insights", "label": "General Cultivation Insights"},
                 {"id": "sphere_insights", "label": "Sphere Insights"},
                 {"id": "path_insights", "label": "Path Insights"},
+                {"id": "technique_forging_insights", "label": "Technique-Forging Insights"},
+                {"id": "metatechnique_insights", "label": "Metatechnique Insights"},
+                {"id": "companion_insights", "label": "Companion Insights"},
+                {"id": "narrative_secret_insights", "label": "Narrative / Secret Insights"},
                 {"id": "method_insights", "label": "Method Insights"},
                 {"id": "foundation_insights", "label": "Foundation Insights"},
                 {"id": "background_origin_insights", "label": "Background / Origin Insights"},
@@ -872,6 +950,7 @@ class CharacterBuilderService:
                 "canonical_spheres": len(next(row for row in categories if row["slot_id"] == "sphere_priorities")["choices"]),
                 "canonical_talents": len(next(row for row in categories if row["slot_id"] == "advancement_skeleton")["choices"]),
                 "automatic_base_components": sum(len(row.get("automatic_base_abilities") or []) for row in next(row for row in categories if row["slot_id"] == "sphere_priorities")["choices"]),
+                "resolved_automatic_base_components": sum(len(row.get("resolved_automatic_base_abilities") or []) for row in next(row for row in categories if row["slot_id"] == "sphere_priorities")["choices"]),
                 "zero_talent_spheres": sum(1 for row in next(row for row in categories if row["slot_id"] == "sphere_priorities")["choices"] if not row.get("creator_ready")),
                 "quarantined_records": int(self.canonical_catalog.diagnostics()["quarantined"]["count"]),
             },

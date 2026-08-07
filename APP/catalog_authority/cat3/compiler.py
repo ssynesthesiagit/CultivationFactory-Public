@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import re
@@ -23,6 +24,35 @@ COMPENDIUM_SHA256 = "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c661
 SOURCE_PACK = "Tianxia_Factory_HF05ZVK_R1H_Phase2I_HF2"
 SOURCE_VERSION = "HF05ZVK-R1H Phase 2I HF2 / Canon Corpus P2A"
 EXPECTED_SPHERES = 85
+CAT3_SOURCE_DIR = Path(__file__).resolve().parent / "source"
+R2_INSIGHT_SOURCE_RELATIVE_PATH = Path("catalog_authority") / "cat3" / "source" / "Tianxia_Central_Cultivation_Insights_AI_Reference_R5_Legacy_Restored.json"
+R2_INSIGHT_SOURCE_PATH = CAT3_SOURCE_DIR / R2_INSIGHT_SOURCE_RELATIVE_PATH.name
+INSIGHT_TYPE_MAPPING_PATH = CAT3_SOURCE_DIR / "INSIGHT_TYPE_MAPPING.json"
+INSIGHT_GROUPING_INVENTORY_PATH = CAT3_SOURCE_DIR / "INSIGHT_GROUPING_INVENTORY.json"
+SUPERSESSION_LEDGER_PATH = CAT3_SOURCE_DIR / "SUPERSESSION_AND_COLLISION_LEDGER.json"
+SPHERE_BASE_MATRIX_PATH = CAT3_SOURCE_DIR / "SPHERE_BASE_ABILITY_MATRIX.csv"
+CURRENT_INSIGHT_MATRIX_PATH = Path(__file__).resolve().parents[3] / "win1_p1r2" / "INSIGHT_SOURCE_AUTHORITY_MATRIX.json"
+EXPECTED_CURRENT_INSIGHT_SELECTABLE = 451
+EXPECTED_RESTORED_INSIGHT_SELECTABLE = 91
+EXPECTED_INSIGHT_SELECTABLE = 542
+EXPECTED_INSIGHT_SELECTABLE_OCCURRENCES = 545
+EXPECTED_INSIGHT_UNIQUE_SOURCE_IDS = 547
+EXPECTED_INSIGHT_SOURCE_OCCURRENCES = 550
+EXPECTED_NONSELECTABLE_INSIGHTS = 5
+EXPECTED_INSIGHT_DUPLICATE_GROUPS = {
+    "insight.jade-inscription-master": {
+        "qi-path.qi-cultivation.jade-inscription-master",
+        "sphere-compendium.talismans.jade-inscription-master",
+    },
+    "insight.seal-breaker": {
+        "qi-path.qi-cultivation.seal-breaker",
+        "sphere-compendium.talismans.seal-breaker",
+    },
+    "insight.talisman-savant": {
+        "qi-path.qi-cultivation.talisman-savant",
+        "sphere-compendium.talismans.talisman-savant",
+    },
+}
 REALM_ENTRY_CL = {"Mortal": 1, "Foundation": 5, "Core Formation": 10, "Nascent Soul": 15, "Immortal": 20}
 NONCANONICAL_LABELS = {
     "Chains / Meridian": ("content_family_label", "Chains"),
@@ -111,6 +141,696 @@ def sha256_file(path: Path) -> str:
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(canonical_bytes(value))
+
+
+def _read_json_file(path: Path) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"Unable to read CAT3 authority input {path}") from exc
+    if not isinstance(value, dict):
+        raise ValueError(f"CAT3 authority input must be an object: {path}")
+    return value
+
+
+def _read_csv_rows(path: Path) -> list[dict[str, str]]:
+    try:
+        with path.open("r", encoding="utf-8", newline="") as stream:
+            return list(csv.DictReader(stream))
+    except OSError as exc:
+        raise ValueError(f"Unable to read CAT3 authority input {path}") from exc
+
+
+def _json_value(value: Any, *, expected: type = list) -> Any:
+    if isinstance(value, expected):
+        return value
+    if not isinstance(value, str) or not value.strip():
+        return [] if expected is list else {}
+    try:
+        parsed = json.loads(value)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Malformed embedded authority JSON: {value[:120]}") from exc
+    if not isinstance(parsed, expected):
+        raise ValueError("Embedded authority JSON has an unexpected shape")
+    return parsed
+
+
+def _component_slug(value: str) -> str:
+    return re.sub(r"[^A-Z0-9]+", "_", unicodedata.normalize("NFKD", value).upper()).strip("_")
+
+
+def _source_component_rows(matrix_row: dict[str, str]) -> list[dict[str, Any]]:
+    names = _json_value(matrix_row.get("source_component_names_json"), expected=list)
+    player_rows = _json_value(matrix_row.get("source_component_player_text_json"), expected=list)
+    structured_rows = _json_value(matrix_row.get("source_component_structured_fields_json"), expected=list)
+    structured_by_name: dict[str, dict[str, Any]] = {}
+    for row in structured_rows:
+        if isinstance(row, dict) and len(row) == 1:
+            name, fields = next(iter(row.items()))
+            structured_by_name[str(name)] = fields if isinstance(fields, dict) else {}
+    by_name = {
+        str(row.get("component_name")): row
+        for row in player_rows
+        if isinstance(row, dict) and isinstance(row.get("component_name"), str)
+    }
+    components: list[dict[str, Any]] = []
+    for name in names:
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError(f"Sphere {matrix_row.get('sphere_name')} has an invalid source component name")
+        player = by_name.get(name)
+        if not player or not str(player.get("exact_source_excerpt") or "").strip():
+            raise ValueError(f"Sphere {matrix_row.get('sphere_name')} lacks exact player text for {name}")
+        components.append({
+            "component_name": name,
+            "exact_source_excerpt": player["exact_source_excerpt"],
+            "match_kind": player.get("match_kind"),
+            "source_heading": player.get("source_heading"),
+            "source_global_line_start": player.get("source_global_line_start"),
+            "source_global_line_end": player.get("source_global_line_end"),
+            "source_local_line_start": player.get("source_local_line_start"),
+            "source_local_line_end": player.get("source_local_line_end"),
+            "structured_fields": deepcopy(structured_by_name.get(name) or player.get("structured_fields") or {}),
+        })
+    if len(components) != int(matrix_row.get("source_component_count") or 0):
+        raise ValueError(f"Sphere {matrix_row.get('sphere_name')} source component count does not match the matrix")
+    return components
+
+
+def _matrix_provenance(matrix_row: dict[str, str], component: dict[str, Any]) -> dict[str, Any]:
+    diagnostics = _json_value(matrix_row.get("diagnostics_details_json"), expected=dict)
+    start = int(component.get("source_global_line_start") or matrix_row.get("exact_source_start_line") or 0)
+    end = int(component.get("source_global_line_end") or matrix_row.get("exact_source_end_line") or 0)
+    source_path = matrix_row["exact_source_path"]
+    section = matrix_row["exact_source_section"]
+    return {
+        "source_pack": SOURCE_PACK,
+        "source_version": SOURCE_VERSION,
+        "source_path": source_path,
+        "source_section": section,
+        "source_anchor": f"{section}:lines:{start}-{end}:{_component_slug(component['component_name']).lower()}",
+        "source_line_start": start,
+        "source_line_end": end,
+        "source_file_sha256": matrix_row["exact_source_file_sha256"],
+        "source_authority_sha256": matrix_row["exact_source_authority_sha256"],
+        "source_matrix_record_commitment_sha256": diagnostics.get("source_record_commitment_sha256"),
+    }
+
+
+def _sphere_ids_for_source(value: Any, sphere_ids_by_name: dict[str, str]) -> list[str]:
+    if not isinstance(value, str) or not value.strip():
+        return []
+    aliases = {
+        normalize("Dream"): "Dreams",
+        normalize("Beastmastery"): "Beastmastery",
+        normalize("Dark"): "Dark",
+        normalize("Shadow"): "Shadow",
+    }
+    result: list[str] = []
+    parts = re.split(r"(?i)\s+or\s+", value)
+    for part in parts:
+        label = re.sub(r"(?i)\bsphere\b", "", part).strip(" -|,/")
+        key = normalize(label)
+        key = normalize(aliases.get(key, label))
+        target = sphere_ids_by_name.get(key)
+        if target and target not in result:
+            result.append(target)
+    return result
+
+
+def _insight_group_for_source(raw: dict[str, Any], sphere_ids_by_name: dict[str, str]) -> dict[str, Any]:
+    category = normalize(str(raw.get("category") or ""))
+    source_family = normalize(str(raw.get("source_family") or ""))
+    if "legacy restored general cultivation insights" in category:
+        return {"authority_type": "General Cultivation", "owning_group": "General Cultivation", "hierarchy_path": ["General Cultivation"]}
+    if "legacy restored body refining insights" in category or source_family == normalize("Body Path"):
+        return {"authority_type": "Path", "owning_group": "Body", "leaf_label": "Body Refining", "hierarchy_path": ["Path", "Body Refining"]}
+    if "legacy restored qi cultivation insights" in category or source_family == normalize("Qi Path"):
+        return {"authority_type": "Path", "owning_group": "Qi", "leaf_label": "Qi Cultivation", "hierarchy_path": ["Path", "Qi Cultivation"]}
+    if "legacy restored spirit awakening insights" in category or source_family == normalize("Spirit Candidate") or category == normalize("General Spirit"):
+        return {"authority_type": "Path", "owning_group": "Spirit", "leaf_label": "Spirit Awakening", "hierarchy_path": ["Path", "Spirit Awakening"]}
+    if "legacy restored sphere enhanced insights" in category or category.startswith("sphere "):
+        sphere_ids = _sphere_ids_for_source(raw.get("sphere"), sphere_ids_by_name)
+        if not sphere_ids:
+            raise ValueError(f"Sphere Insight has no exact canonical Sphere binding: {raw.get('record_id')}")
+        return {
+            "authority_type": "Sphere", "owning_group": "Exact current canonical Sphere stable ID(s)",
+            "sphere_ids": sphere_ids, "hierarchy_path": ["Sphere"],
+        }
+    if "legacy restored technique forging insights" in category:
+        return {"authority_type": "Technique-Forging", "owning_group": "Technique-Forging", "hierarchy_path": ["Technique-Forging"]}
+    if "legacy restored metatechnique insights" in category:
+        return {"authority_type": "Metatechnique", "owning_group": "Metatechnique", "hierarchy_path": ["Metatechnique"]}
+    if "legacy restored companion insights" in category:
+        return {"authority_type": "Companion", "owning_group": "Companion", "hierarchy_path": ["Companion"]}
+    if "legacy restored narrative and secret insights" in category:
+        return {"authority_type": "Narrative / Secret", "owning_group": "Narrative / Secret", "hierarchy_path": ["Narrative / Secret"]}
+    raise ValueError(f"Insight source family/category is outside the supplied explicit type mapping: {raw.get('record_id')}")
+
+
+def _insight_prerequisite_relations(
+    raw: dict[str, Any],
+    *,
+    sphere_ids_by_name: dict[str, str],
+    unique_insight_ids_by_name: dict[str, str],
+    canonical_id: str | None = None,
+) -> tuple[list[dict[str, str]], list[str]]:
+    text = str(raw.get("prerequisites") or "").strip()
+    relations: dict[tuple[str, str], dict[str, str]] = {}
+    source_terms: list[str] = []
+    path_ids = {
+        normalize("Body Refining"): "tianxia.path.body_refining",
+        normalize("Qi Cultivation"): "tianxia.path.qi_cultivation",
+        normalize("Spirit Awakening"): "tianxia.path.spirit_awakening",
+    }
+    for value in raw.get("legal_path_requirements") or []:
+        target = path_ids.get(normalize(str(value)))
+        if target:
+            relations[("path", target)] = {"kind": "path", "target_id": target, "operator": "requires"}
+    if raw.get("path"):
+        target = path_ids.get(normalize(str(raw["path"])))
+        if target:
+            relations[("path", target)] = {"kind": "path", "target_id": target, "operator": "requires"}
+    normalized_text = normalize(text)
+    for name, target in sorted(sphere_ids_by_name.items(), key=lambda item: len(item[0]), reverse=True):
+        if name and re.search(rf"(?<![a-z0-9]){re.escape(name)}(?![a-z0-9])", normalized_text):
+            relations[("sphere", target)] = {"kind": "sphere", "target_id": target, "operator": "requires"}
+    for name, target in sorted(unique_insight_ids_by_name.items(), key=lambda item: len(item[0]), reverse=True):
+        if len(name) >= 5 and re.search(rf"(?<![a-z0-9]){re.escape(name)}(?![a-z0-9])", normalized_text):
+            relations[("insight", target)] = {"kind": "insight", "target_id": target, "operator": "requires"}
+    # A printed phrase can contain the Insight's own visible name as a
+    # descriptive use condition (for example, a paired-cultivation rule).
+    # It is not a legal acquisition prerequisite for the same canonical row:
+    # retaining it as a relation would create an artificial fixed-point cycle
+    # and hide an explicitly selectable source record.  The original text is
+    # still preserved in ``source_terms`` and the raw source record.
+    if canonical_id:
+        relations = {
+            key: relation
+            for key, relation in relations.items()
+            if not (relation.get("kind") == "insight" and relation.get("target_id") == canonical_id)
+        }
+    if text and not relations:
+        source_terms.append(text)
+    elif text:
+        source_terms.append(text)
+    return list(relations.values()), source_terms
+
+
+def _repeatable_maximum(raw: dict[str, Any]) -> int | None:
+    value = raw.get("repeatable")
+    if value is None:
+        return None
+    text = str(value).casefold()
+    if text in {"no", "none", "never", "false"}:
+        return 1
+    if "twice" in text or "two" in text:
+        return 2
+    match = re.search(r"\b(\d+)\b", text)
+    return int(match.group(1)) if match else None
+
+
+def _compile_insights(sphere_ids_by_name: dict[str, str]) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    r2_document = _read_json_file(R2_INSIGHT_SOURCE_PATH)
+    r2_rows = [row for row in r2_document.get("records") or [] if isinstance(row, dict)]
+    if len(r2_rows) != EXPECTED_INSIGHT_SOURCE_OCCURRENCES:
+        raise ValueError(f"R2 Insight source occurrence count changed: {len(r2_rows)}")
+    type_mapping = _read_json_file(INSIGHT_TYPE_MAPPING_PATH)
+    grouping_inventory = _read_json_file(INSIGHT_GROUPING_INVENTORY_PATH)
+    supersession_ledger = _read_json_file(SUPERSESSION_LEDGER_PATH)
+    by_canonical: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in r2_rows:
+        canonical_id = row.get("canonical_id")
+        if not isinstance(canonical_id, str) or not canonical_id.startswith("insight."):
+            raise ValueError(f"R2 Insight row lacks a canonical stable ID: {row.get('record_id')}")
+        by_canonical[canonical_id].append(row)
+    if len(by_canonical) != EXPECTED_INSIGHT_UNIQUE_SOURCE_IDS:
+        raise ValueError(f"R2 Insight unique canonical count changed: {len(by_canonical)}")
+
+    current_rows = _read_json_file(CURRENT_INSIGHT_MATRIX_PATH).get("records") or []
+    current_ids = {
+        row.get("record_id")
+        for row in current_rows
+        if isinstance(row, dict) and row.get("selectable") is True and isinstance(row.get("record_id"), str)
+    }
+    current_all_ids = {row.get("record_id") for row in current_rows if isinstance(row, dict) and isinstance(row.get("record_id"), str)}
+    r2_selectable_ids = {canonical_id for canonical_id, rows in by_canonical.items() if any(row.get("selectable") is True for row in rows)}
+    r2_all_ids = set(by_canonical)
+    if len(current_ids) != EXPECTED_CURRENT_INSIGHT_SELECTABLE:
+        raise ValueError(f"Current Insight authority selectable count changed: {len(current_ids)}")
+    if not current_ids <= r2_selectable_ids or not current_all_ids <= r2_all_ids:
+        raise ValueError("Current Insight authority is not preserved by the supplied R2 source")
+    restored_ids = r2_selectable_ids - current_ids
+    if len(restored_ids) != EXPECTED_RESTORED_INSIGHT_SELECTABLE:
+        raise ValueError(f"R2 restored Insight set changed: {len(restored_ids)}")
+    if len(r2_selectable_ids) != EXPECTED_INSIGHT_SELECTABLE:
+        raise ValueError(f"R2 selectable canonical Insight count changed: {len(r2_selectable_ids)}")
+    selectable_occurrences = sum(1 for row in r2_rows if row.get("selectable") is True)
+    if selectable_occurrences != EXPECTED_INSIGHT_SELECTABLE_OCCURRENCES:
+        raise ValueError(f"R2 selectable Insight occurrence count changed: {selectable_occurrences}")
+    nonselectable_ids = {canonical_id for canonical_id, rows in by_canonical.items() if not any(row.get("selectable") is True for row in rows)}
+    if len(nonselectable_ids) != EXPECTED_NONSELECTABLE_INSIGHTS:
+        raise ValueError(f"R2 retained nonselectable Insight count changed: {len(nonselectable_ids)}")
+    duplicate_groups = {
+        canonical_id: {row["record_id"] for row in rows}
+        for canonical_id, rows in by_canonical.items()
+        if len(rows) > 1
+    }
+    if duplicate_groups != EXPECTED_INSIGHT_DUPLICATE_GROUPS:
+        raise ValueError(f"R2 duplicate occurrence groups changed: {duplicate_groups}")
+    normalized_names: dict[str, set[str]] = defaultdict(set)
+    for canonical_id, rows in by_canonical.items():
+        normalized_names[normalize(str(rows[0].get("name") or rows[0].get("display_name") or canonical_id))].add(canonical_id)
+    name_collisions = {name: ids for name, ids in normalized_names.items() if len(ids) > 1}
+    if name_collisions != {normalize("Formation Breaker"): {"insight.formation-breaker-destruction", "insight.formation-breaker-lightning"}}:
+        raise ValueError(f"R2 Insight name-collision set changed: {name_collisions}")
+    if set(grouping_inventory.get("authority_record_ids") or []) != r2_selectable_ids:
+        raise ValueError("INSIGHT_GROUPING_INVENTORY authority IDs do not equal R2 selectable IDs")
+
+    unique_name_to_id = {
+        name: next(iter(ids))
+        for name, ids in normalized_names.items()
+        if len(ids) == 1
+    }
+    compiled: list[dict[str, Any]] = []
+    type_counts: Counter[str] = Counter()
+    sphere_facet_count = 0
+    source_hash = sha256_file(R2_INSIGHT_SOURCE_PATH)
+    for canonical_id in sorted(by_canonical):
+        rows = sorted(by_canonical[canonical_id], key=lambda row: str(row.get("record_id")))
+        active = [
+            row for row in rows
+            if not row.get("superseded_by") and str(row.get("execution_status") or "").casefold() != "superseded_source_record"
+        ]
+        selected = active[0] if active else rows[0]
+        group = _insight_group_for_source(selected, sphere_ids_by_name)
+        owning_sphere_ids = list(group.get("sphere_ids") or _sphere_ids_for_source(selected.get("sphere"), sphere_ids_by_name))
+        if group["authority_type"] == "Sphere" and selected.get("selectable") is True:
+            sphere_facet_count += len(owning_sphere_ids)
+        if selected.get("selectable") is True:
+            type_counts[group["authority_type"]] += 1
+        prerequisites, source_prerequisites = _insight_prerequisite_relations(
+            selected,
+            sphere_ids_by_name=sphere_ids_by_name,
+            unique_insight_ids_by_name=unique_name_to_id,
+            canonical_id=canonical_id,
+        )
+        occurrence_rows: list[dict[str, Any]] = []
+        for row in rows:
+            occurrence_rows.append({
+                "raw_record": deepcopy(row),
+                "source_reference": {
+                    "source_file": R2_INSIGHT_SOURCE_RELATIVE_PATH.as_posix(),
+                    "source_file_sha256": source_hash,
+                    "source_anchor": f"record:{row['record_id']}",
+                    "source_record_id": row["record_id"],
+                    "source_status": row.get("source_status"),
+                    "source_record_sha256": sha256_bytes(canonical_bytes(row)),
+                },
+            })
+        source_occurrences = [
+            {
+                "source_record_id": row["raw_record"]["record_id"],
+                "canonical_id": canonical_id,
+                "source_family": row["raw_record"].get("source_family"),
+                "source_file": row["raw_record"].get("source_file"),
+                "source_status": row["raw_record"].get("source_status"),
+                "execution_status": row["raw_record"].get("execution_status"),
+                "selectable": row["raw_record"].get("selectable"),
+                "superseded_by": row["raw_record"].get("superseded_by"),
+                "source_record_sha256": row["source_reference"]["source_record_sha256"],
+            }
+            for row in occurrence_rows
+        ]
+        authority_type = group["authority_type"]
+        leaf_label = group.get("leaf_label")
+        if authority_type == "General Cultivation":
+            leaf_label = "General Cultivation"
+        elif authority_type == "Sphere":
+            leaf_label = "Sphere"
+        elif not leaf_label:
+            leaf_label = authority_type
+        insight_group = {
+            "type": authority_type,
+            "owning_group": group["owning_group"],
+            "leaf_label": leaf_label,
+            "hierarchy_path": list(group["hierarchy_path"]),
+            "facet_ids": [f"sphere:{sphere_id}" for sphere_id in owning_sphere_ids] if owning_sphere_ids else [],
+        }
+        source_raw = deepcopy(selected)
+        source_raw.update({
+            "compiler_version": COMPILER_VERSION,
+            "canonical_id": canonical_id,
+            "source_occurrences": occurrence_rows,
+            "source_occurrence_count": len(occurrence_rows),
+            "source_record_ids": [row["raw_record"]["record_id"] for row in occurrence_rows],
+            "insight_authority_type": authority_type,
+            "insight_group": insight_group,
+            "owning_canonical_sphere_ids": owning_sphere_ids,
+            "owning_canonical_sphere_id": owning_sphere_ids[0] if owning_sphere_ids else None,
+            "compiled_prerequisite_ledger": {
+                "source_text": str(selected.get("prerequisites") or ""),
+                "resolved_relations": prerequisites,
+                "source_terms_preserved": source_prerequisites,
+                "normalization_boundary": "Exact path and Sphere IDs are typed; remaining printed prerequisite text remains source/manual authority.",
+            },
+            "repeatable_maximum": _repeatable_maximum(selected),
+            "ability_option_requirements": deepcopy(selected.get("ability_options") or []),
+            "source_authority": {
+                "r2_source_path": R2_INSIGHT_SOURCE_RELATIVE_PATH.as_posix(),
+                "r2_source_sha256": source_hash,
+                "source_record_sha256": sha256_bytes(canonical_bytes(selected)),
+            },
+        })
+        if owning_sphere_ids:
+            source_raw["owning_sphere_facet_ids"] = list(owning_sphere_ids)
+        restoration_lineage = "preserved_current_authority" if canonical_id in current_ids else "restored_r2_legacy_authority"
+        record_payload = {
+            "record_id": canonical_id,
+            "canonical_insight_id": canonical_id,
+            "display_name": selected.get("display_name") or selected.get("name") or canonical_id,
+            "insight_authority_type": authority_type,
+            "insight_group": insight_group,
+            "insight_group_label": leaf_label,
+            "hierarchy_path": list(group["hierarchy_path"]),
+            "owning_canonical_sphere_ids": owning_sphere_ids,
+            "owning_canonical_sphere_id": owning_sphere_ids[0] if owning_sphere_ids else None,
+            "source_occurrences": source_occurrences,
+            "source_occurrence_count": len(source_occurrences),
+            "source_record_ids": [row["source_record_id"] for row in source_occurrences],
+            "collision_disposition": "UNIQUE_CANONICAL_INSIGHT" if len(rows) == 1 else "CONSOLIDATED_EXPLICIT_SUPERSESSION",
+            "selectable": bool(selected.get("selectable")),
+            "nonselectable_reason": selected.get("nonselectable_reason"),
+            "restoration_lineage": restoration_lineage,
+            "source_provenance": deepcopy(occurrence_rows[0]["source_reference"]),
+            "source_record_commitment_sha256": sha256_bytes(canonical_bytes(selected)),
+            "prerequisites": prerequisites,
+            "compiler_version": COMPILER_VERSION,
+            "raw_source_record": source_raw,
+        }
+        compiled.append(committed(record_payload))
+
+    expected_type_counts = type_mapping.get("selectable_counts_by_type") or {}
+    if dict(type_counts) != {str(key): int(value) for key, value in expected_type_counts.items()}:
+        raise ValueError(f"Insight type counts changed: {dict(type_counts)}")
+    expected_sphere_facets = int(grouping_inventory.get("sphere_facet_membership_count") or 0)
+    if sphere_facet_count != expected_sphere_facets:
+        raise ValueError(f"Insight Sphere facet membership count changed: {sphere_facet_count}")
+    formal_supersessions = supersession_ledger.get("formal_supersessions") or []
+    if len(formal_supersessions) != 3 or any(row.get("superseded_by") != row.get("canonical_id") for row in formal_supersessions):
+        raise ValueError("The supplied formal Insight supersession ledger changed")
+    audit = {
+        "schema": "Tianxia.CAT3.InsightAuthorityAudit.v1",
+        "source_path": R2_INSIGHT_SOURCE_RELATIVE_PATH.as_posix(),
+        "source_sha256": source_hash,
+        "current_selectable_count": len(current_ids),
+        "current_selectable_ids": sorted(current_ids),
+        "preserved_selectable_count": len(current_ids),
+        "preserved_selectable_ids": sorted(current_ids),
+        "restored_selectable_count": len(restored_ids),
+        "restored_selectable_ids": sorted(restored_ids),
+        "selectable_canonical_count": len(r2_selectable_ids),
+        "selectable_canonical_ids": sorted(r2_selectable_ids),
+        "selectable_source_occurrence_count": selectable_occurrences,
+        "retained_nonselectable_count": len(nonselectable_ids),
+        "retained_nonselectable_ids": sorted(nonselectable_ids),
+        "unique_source_catalog_id_count": len(r2_all_ids),
+        "total_source_occurrence_count": len(r2_rows),
+        "duplicate_occurrence_groups": {key: sorted(value) for key, value in sorted(duplicate_groups.items())},
+        "name_collision_records": {key: sorted(value) for key, value in sorted(name_collisions.items())},
+        "changed_mechanic_coexistence_count": int(supersession_ledger.get("changed_mechanic_collision_count") or 38),
+        "old_carried_forward_count": len(supersession_ledger.get("old_carried_forward_not_restored") or []),
+        "formal_superseded_source_occurrence_count": len(formal_supersessions),
+        "canonical_ids_superseded_by_different_id": int(supersession_ledger.get("canonical_id_supersession_count") or 0),
+        "type_counts": dict(sorted(type_counts.items())),
+        "sphere_facet_membership_count": sphere_facet_count,
+        "authority_input_hashes": {
+            "type_mapping": sha256_file(INSIGHT_TYPE_MAPPING_PATH),
+            "grouping_inventory": sha256_file(INSIGHT_GROUPING_INVENTORY_PATH),
+            "supersession_ledger": sha256_file(SUPERSESSION_LEDGER_PATH),
+        },
+    }
+    return compiled, audit
+
+
+def _sphere_base_contract() -> dict[str, bool]:
+    return {
+        "automatic_grant": True,
+        "owner_removable": False,
+        "counts_as_talent_choice": False,
+        "counts_as_advancement_talent": False,
+        "counts_as_training_talent": False,
+    }
+
+
+def _source_component_field_projection(component: dict[str, Any]) -> dict[str, Any]:
+    fields = deepcopy(component.get("structured_fields") or {})
+    projected = {
+        "source_component_name": component["component_name"],
+        "source_component_structured_fields": fields,
+        "full_exact_source_text": component["exact_source_excerpt"],
+        "full_description": component["exact_source_excerpt"],
+        "player_rules_text": component["exact_source_excerpt"],
+        "effect": component["exact_source_excerpt"],
+        "source_heading": component.get("source_heading"),
+        "source_global_line_start": int(component.get("source_global_line_start") or 0),
+        "source_global_line_end": int(component.get("source_global_line_end") or 0),
+    }
+    for key, value in fields.items():
+        if value not in (None, "", [], {}):
+            projected[key] = deepcopy(value)
+    return projected
+
+
+def _compile_sphere_base_ability_authority(
+    *,
+    sphere_records: list[dict[str, Any]],
+    sphere_ids_by_name: dict[str, str],
+    base_abilities: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
+    """Bind every exact compendium Sphere package to an owner-facing packet.
+
+    ``automatic_base_abilities`` remains the P1A source-row compatibility lane
+    (including the Dark alias).  The returned component list is the resolved
+    85-Sphere package lane and may contain newly extracted rows without changing
+    the historical 132/131 accounting.
+    """
+    matrix_rows = _read_csv_rows(SPHERE_BASE_MATRIX_PATH)
+    if len(matrix_rows) != EXPECTED_SPHERES:
+        raise ValueError(f"Sphere base-ability matrix count changed: {len(matrix_rows)}")
+    sphere_by_id = {row["canonical_sphere_id"]: row for row in sphere_records}
+    expected_ids = set(sphere_by_id)
+    matrix_by_id = {row.get("sphere_id"): row for row in matrix_rows}
+    if set(matrix_by_id) != expected_ids:
+        raise ValueError("Sphere base-ability matrix does not exactly cover the canonical Sphere set")
+    if any(row.get("sphere_name") != sphere_by_id[sphere_id].get("display_name") for sphere_id, row in matrix_by_id.items()):
+        raise ValueError("Sphere base-ability matrix names disagree with CAT3 canonical Sphere names")
+
+    matrix_hash = sha256_file(SPHERE_BASE_MATRIX_PATH)
+    legacy_by_key: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+    for row in base_abilities:
+        legacy_by_key[(str(row.get("mapped_canonical_sphere_id")), normalize(str(row.get("display_name") or "")))].append(row)
+
+    def source_matrix_metadata(matrix_row: dict[str, str], component: dict[str, Any]) -> dict[str, Any]:
+        provenance = _matrix_provenance(matrix_row, component)
+        provenance["source_line"] = provenance["source_line_start"]
+        provenance["source_column"] = 1
+        fields = _source_component_field_projection(component)
+        return {
+            **fields,
+            "source_provenance": provenance,
+            "source_matrix": {
+                "matrix_path": "catalog_authority/cat3/source/SPHERE_BASE_ABILITY_MATRIX.csv",
+                "matrix_sha256": matrix_hash,
+                "classification": matrix_row["classification"],
+                "current_projection_state": matrix_row["current_projection_state"],
+                "current_projection_component_count": int(matrix_row.get("current_projection_component_count") or 0),
+                "implementation_path": matrix_row["implementation_path"],
+                "source_matrix_record_commitment_sha256": provenance.get("source_matrix_record_commitment_sha256"),
+            },
+        }
+
+    enriched_rows: dict[str, dict[str, Any]] = {}
+    resolved_by_sphere: dict[str, list[dict[str, Any]]] = {sphere_id: [] for sphere_id in expected_ids}
+    resolved_by_runtime_id: dict[str, dict[str, Any]] = {}
+    matrix_audit_rows: list[dict[str, Any]] = []
+    ruling_rows: list[dict[str, Any]] = []
+
+    for matrix_row in matrix_rows:
+        sphere_id = matrix_row["sphere_id"]
+        sphere_name = matrix_row["sphere_name"]
+        components = _source_component_rows(matrix_row)
+        ruling: dict[str, Any] | None = None
+        if sphere_name == "Retribution":
+            expected_names = ["Martial Focus", "Counterstrike"]
+            if [component["component_name"] for component in components] != expected_names:
+                raise ValueError("Retribution source component candidates changed")
+            ruling = {
+                "ruling_id": "REC1-P1B-RETRIBUTION-AUTOMATIC-BASE-PACKAGE",
+                "ruling_type": "owner_coordination_ruling",
+                "status": "resolved",
+                "statement": "The owner-facing automatic Retribution package grants Martial Focus and Counterstrike when the Sphere is acquired; this statement is an owner ruling, not source wording.",
+                "source_basis": {
+                    "source_pack": SOURCE_PACK,
+                    "source_version": SOURCE_VERSION,
+                    "source_path": matrix_row["exact_source_path"],
+                    "source_section": "Sphere of Retribution > CORE RETRIBUTION RULES",
+                    "source_line_start": int(matrix_row["exact_source_start_line"]),
+                    "source_line_end": int(matrix_row["exact_source_end_line"]),
+                    "source_file_sha256": matrix_row["exact_source_file_sha256"],
+                    "source_authority_sha256": matrix_row["exact_source_authority_sha256"],
+                    "source_matrix_record_commitment_sha256": _json_value(matrix_row.get("diagnostics_details_json"), expected=dict).get("source_record_commitment_sha256"),
+                },
+                "automatic_grant_component_names": expected_names,
+                "ordinary_talent": False,
+                "owner_selectable_output": False,
+            }
+            ruling_rows.append(ruling)
+
+        resolved_ids: list[str] = []
+        all_components_matched = True
+        for component in components:
+            key = (sphere_id, normalize(component["component_name"]))
+            matches = legacy_by_key.get(key, [])
+            all_components_matched = all_components_matched and bool(matches)
+            canonical_match = next(
+                (row for row in matches if row.get("runtime_component_id") == row.get("candidate_record_id")),
+                matches[0] if matches else None,
+            )
+            runtime_component_id = str(
+                (canonical_match or {}).get("runtime_component_id")
+                or f"{_component_slug(sphere_name)}_BASE_{_component_slug(component['component_name'])}"
+            )
+            source_fields = source_matrix_metadata(matrix_row, component)
+            source_refs = list((canonical_match or {}).get("source_refs") or [])
+            source_refs.append(
+                f"{matrix_row['exact_source_path']} :: {matrix_row['exact_source_section']} > {component['component_name']}"
+            )
+            source_refs = list(dict.fromkeys(source_refs))
+            legacy_source_rows = [
+                {
+                    "candidate_record_id": row.get("candidate_record_id"),
+                    "source_row_id": row.get("source_row_id"),
+                    "runtime_component_id": row.get("runtime_component_id"),
+                    "source_provenance": deepcopy(row.get("source_provenance") or {}),
+                }
+                for row in matches
+            ]
+            packet_payload = deepcopy(canonical_match) if canonical_match else {}
+            packet_payload.pop("record_commitment_sha256", None)
+            packet_payload.update({
+                "candidate_record_id": packet_payload.get("candidate_record_id") or runtime_component_id,
+                "source_row_id": packet_payload.get("source_row_id") or packet_payload.get("candidate_record_id") or runtime_component_id,
+                "runtime_component_id": runtime_component_id,
+                "display_name": component["component_name"],
+                "source_label": sphere_name,
+                "mapped_canonical_sphere_id": sphere_id,
+                "cat1_classification": "BASE_SPHERE_ABILITY",
+                "qa2_prior_classification": "sphere_base_ability",
+                "catalog_role": packet_payload.get("catalog_role") or "source_verified_base_ability_packet",
+                "packet_type": packet_payload.get("packet_type") or "source_verified_base_ability_packet",
+                "confirmed_selectable_talent": False,
+                "owner_selectable_output": False,
+                "reason": matrix_row["reason_for_absence_or_malformed_display"],
+                "source_refs": source_refs,
+                "source_context": {
+                    **deepcopy(packet_payload.get("source_context") or {}),
+                    "declared_source_refs": source_refs,
+                    "source_matrix_record_commitment_sha256": source_fields["source_matrix"]["source_matrix_record_commitment_sha256"],
+                },
+                "source_matrix_classification": matrix_row["classification"],
+                "source_matrix_projection_state": matrix_row["current_projection_state"],
+                "source_matrix_implementation_path": matrix_row["implementation_path"],
+                "source_matrix_provenance": deepcopy(source_fields["source_provenance"]),
+                "source_component_name": component["component_name"],
+                "source_component_structured_fields": deepcopy(source_fields["source_component_structured_fields"]),
+                "legacy_source_rows": legacy_source_rows,
+                **{key: value for key, value in source_fields.items() if key not in {"source_provenance", "source_component_name", "source_component_structured_fields"}},
+                **_sphere_base_contract(),
+            })
+            if ruling:
+                packet_payload["owner_ruling"] = deepcopy(ruling)
+                packet_payload["owner_ruling_id"] = ruling["ruling_id"]
+            packet = committed(packet_payload)
+
+            if runtime_component_id in resolved_by_runtime_id:
+                previous = resolved_by_runtime_id[runtime_component_id]
+                if previous["mapped_canonical_sphere_id"] != sphere_id or previous["display_name"] != component["component_name"]:
+                    raise ValueError(f"Automatic Sphere component runtime ID is owned by multiple source components: {runtime_component_id}")
+            else:
+                resolved_by_runtime_id[runtime_component_id] = packet
+                resolved_by_sphere[sphere_id].append(packet)
+            resolved_ids.append(runtime_component_id)
+
+            for legacy_row in matches:
+                enriched = deepcopy(legacy_row)
+                enriched.pop("record_commitment_sha256", None)
+                enriched["legacy_source_provenance"] = deepcopy(legacy_row.get("source_provenance") or {})
+                for field in (
+                    "full_exact_source_text", "full_description", "player_rules_text", "effect", "source_heading",
+                    "source_global_line_start", "source_global_line_end", "source_component_name",
+                    "source_component_structured_fields", "source_matrix", "source_matrix_classification",
+                    "source_matrix_projection_state", "source_matrix_implementation_path", "source_matrix_provenance",
+                ):
+                    if field in packet_payload:
+                        enriched[field] = deepcopy(packet_payload[field])
+                enriched["source_provenance"] = deepcopy(source_fields["source_provenance"])
+                enriched["source_refs"] = source_refs
+                enriched["source_context"] = deepcopy(packet_payload["source_context"])
+                enriched["reason"] = matrix_row["reason_for_absence_or_malformed_display"]
+                for field, value in _sphere_base_contract().items():
+                    enriched[field] = value
+                if ruling:
+                    enriched["owner_ruling"] = deepcopy(ruling)
+                    enriched["owner_ruling_id"] = ruling["ruling_id"]
+                enriched_rows[str(legacy_row.get("candidate_record_id"))] = committed(enriched)
+
+        matrix_audit_rows.append({
+            "canonical_sphere_id": sphere_id,
+            "display_name": sphere_name,
+            "classification": matrix_row["classification"],
+            "current_projection_state": matrix_row["current_projection_state"],
+            "implementation_path": matrix_row["implementation_path"],
+            "source_path": matrix_row["exact_source_path"],
+            "source_section": matrix_row["exact_source_section"],
+            "source_line_start": int(matrix_row["exact_source_start_line"]),
+            "source_line_end": int(matrix_row["exact_source_end_line"]),
+            "source_file_sha256": matrix_row["exact_source_file_sha256"],
+            "source_authority_sha256": matrix_row["exact_source_authority_sha256"],
+            "source_component_names": [component["component_name"] for component in components],
+            "source_component_count": len(components),
+            "resolved_component_ids": resolved_ids,
+            "resolved_component_count": len(resolved_ids),
+            "package_resolution": "preserved_complete_reference" if sphere_name == "Karma" else ("owner_ruling_resolved" if ruling else ("enriched_existing_packets" if all_components_matched else "extracted_source_packets")),
+            "owner_ruling": deepcopy(ruling),
+            "automatic_grant_contract": _sphere_base_contract(),
+        })
+
+    enriched_base_abilities = [enriched_rows.get(str(row.get("candidate_record_id")), row) for row in base_abilities]
+    component_authority = [resolved_by_runtime_id[key] for key in sorted(resolved_by_runtime_id)]
+    if len(resolved_by_sphere) != EXPECTED_SPHERES or any(not rows for rows in resolved_by_sphere.values()):
+        empty = [sphere_id for sphere_id, rows in resolved_by_sphere.items() if not rows]
+        raise ValueError(f"Every canonical Sphere must have a resolved automatic base package: {empty}")
+    classification_counts = Counter(row["classification"] for row in matrix_audit_rows)
+    projection_counts = Counter(row["current_projection_state"] for row in matrix_audit_rows)
+    audit = {
+        "schema": "Tianxia.CAT3.SphereBaseAbilityAuthorityAudit.v1",
+        "matrix_path": "catalog_authority/cat3/source/SPHERE_BASE_ABILITY_MATRIX.csv",
+        "matrix_sha256": matrix_hash,
+        "canonical_sphere_count": len(matrix_audit_rows),
+        "resolved_sphere_count": len(resolved_by_sphere),
+        "source_component_count": sum(row["source_component_count"] for row in matrix_audit_rows),
+        "resolved_unique_component_count": len(component_authority),
+        "classification_counts": dict(sorted(classification_counts.items())),
+        "current_projection_state_counts": dict(sorted(projection_counts.items())),
+        "preserved_complete_reference_spheres": ["tianxia.sphere.karma"],
+        "enriched_existing_packet_sphere_count": sum(row["package_resolution"] == "enriched_existing_packets" for row in matrix_audit_rows),
+        "extracted_source_packet_sphere_count": sum(row["package_resolution"] == "extracted_source_packets" for row in matrix_audit_rows),
+        "owner_ruling_sphere_count": sum(row["owner_ruling"] is not None for row in matrix_audit_rows),
+        "owner_rulings": ruling_rows,
+        "spheres": matrix_audit_rows,
+        "automatic_grant_contract": _sphere_base_contract(),
+    }
+    return enriched_base_abilities, component_authority, audit, resolved_by_sphere
 
 
 def normalize(value: str) -> str:
@@ -1578,6 +2298,27 @@ def build(source_root: Path, output_root: Path) -> dict[str, Any]:
         "evidence": {"source_pack": SOURCE_PACK, "source_path": COMPENDIUM_PATH, "source_file_sha256": COMPENDIUM_SHA256, "owning_sphere": "Dark", "display_name": "Darkness"},
     })
 
+    sphere_ids_by_name = {normalize(name): sphere_id for name, sphere_id in sphere_ids.items()}
+    base_abilities, sphere_base_ability_authority, sphere_base_ability_audit, resolved_base_by_sphere = _compile_sphere_base_ability_authority(
+        sphere_records=sphere_records,
+        sphere_ids_by_name=sphere_ids_by_name,
+        base_abilities=base_abilities,
+    )
+    refreshed_spheres: list[dict[str, Any]] = []
+    for sphere in sphere_records:
+        payload = {key: value for key, value in sphere.items() if key != "record_commitment_sha256"}
+        resolved = deepcopy(resolved_base_by_sphere[sphere["canonical_sphere_id"]])
+        payload["automatic_base_abilities"] = resolved
+        payload["resolved_automatic_base_abilities"] = deepcopy(resolved)
+        payload["automatic_base_ability_package"] = {
+            "status": "resolved_source_bound",
+            "component_count": len(resolved),
+            "automatic_grant_contract": _sphere_base_contract(),
+        }
+        refreshed_spheres.append(committed(payload))
+    sphere_records = refreshed_spheres
+    insights, insight_authority_audit = _compile_insights(sphere_ids_by_name)
+
     legacy_manifest = json.loads((source_root / "catalog" / "sphere_talent_authority_v1.json").read_text(encoding="utf-8"))
     legacy_non_talent_findings = [committed({
         "record_id": row["record_id"], "display_name": row["display_name"],
@@ -1600,6 +2341,14 @@ def build(source_root: Path, output_root: Path) -> dict[str, Any]:
         "automatic_base_ability_records": len(base_abilities),
         "automatic_base_ability_unique_components": len(unique_base_components),
         "automatic_base_ability_aliases": len(base_aliases),
+        "resolved_sphere_base_ability_source_components": sphere_base_ability_audit["source_component_count"],
+        "resolved_sphere_base_ability_unique_components": sphere_base_ability_audit["resolved_unique_component_count"],
+        "resolved_sphere_base_ability_spheres": sphere_base_ability_audit["resolved_sphere_count"],
+        "canonical_insights": len(insights),
+        "selectable_insights": insight_authority_audit["selectable_canonical_count"],
+        "selectable_insight_source_occurrences": insight_authority_audit["selectable_source_occurrence_count"],
+        "insight_source_occurrences": insight_authority_audit["total_source_occurrence_count"],
+        "insight_unique_source_catalog_ids": insight_authority_audit["unique_source_catalog_id_count"],
         "migration_aliases": len(migrations), "quarantined_records": len(quarantine),
         "legacy_non_talent_compatibility_records": len(legacy_non_talent_findings),
         "unresolved_acquisition_talents": sum(not row["creator_selectability_can_be_evaluated_safely"] for row in talents),
@@ -1612,6 +2361,10 @@ def build(source_root: Path, output_root: Path) -> dict[str, Any]:
         "counts": counts, "spheres": sphere_records, "talents": talents, "memberships": memberships,
         "sphere_aliases_and_noncanonical_labels": aliases, "automatic_base_abilities": base_abilities,
         "automatic_base_ability_aliases": base_aliases, "background_only_routes": background_routes,
+        "sphere_base_ability_authority": sphere_base_ability_authority,
+        "sphere_base_ability_authority_matrix": sphere_base_ability_audit,
+        "insights": insights,
+        "insight_authority_audit": insight_authority_audit,
         "stable_id_migrations": sorted(migrations, key=lambda row: (row.get("record_type", ""), row["legacy_id"])),
         "quarantined_decision_packets": sorted(quarantine, key=lambda row: row["candidate_record_id"]),
         "legacy_non_talent_findings": legacy_non_talent_findings,
@@ -1640,6 +2393,8 @@ def build(source_root: Path, output_root: Path) -> dict[str, Any]:
         "source_rows": base_abilities, "runtime_aliases": base_aliases,
         "source_row_count": len(base_abilities), "unique_component_count": len(unique_base_components),
     })
+    write_json(output_root / "matrices" / "sphere_base_ability_authority_matrix.json", sphere_base_ability_audit)
+    write_json(output_root / "matrices" / "insight_authority_matrix.json", insight_authority_audit)
     prior_coverage = json.loads((source_root / "catalog" / "sphere_talent_authority_v1.json").read_text(encoding="utf-8"))["sphere_coverage"]
     write_json(output_root / "matrices" / "sphere_restoration_matrix.json", [{
         "canonical_sphere_id": row["canonical_sphere_id"], "display_name": row["display_name"],
@@ -1652,6 +2407,8 @@ def build(source_root: Path, output_root: Path) -> dict[str, Any]:
         "schema": "Tianxia.CAT3.CompilerRun.v1", "compiler_version": COMPILER_VERSION,
         "source_archive_sha256": FACTORY_SHA256, "compendium_sha256": COMPENDIUM_SHA256,
         "counts": counts, "registry_commitment_sha256": body["registry_commitment_sha256"],
+        "insight_authority_audit": insight_authority_audit,
+        "sphere_base_ability_authority_audit": sphere_base_ability_audit,
     })
     return body
 

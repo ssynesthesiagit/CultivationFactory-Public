@@ -138,8 +138,13 @@ def test_background_origin_insight_inventory_is_source_backed_and_preference_onl
     builder = CharacterBuilderService(catalog_environment["db"])
     categories = {row["slot_id"]: row for row in builder.options()["categories"]}
     insights = categories["insight_priorities"]["choices"]
+    assert not any(
+        row.get("insight_authority", {}).get("authority_type") == "Background-Origin"
+        for row in insights
+    )
+    origin_insights = categories["origin_insight_choice"]["choices"]
     classified = [
-        row for row in insights
+        row for row in origin_insights
         if row.get("insight_authority", {}).get("authority_type") == "Background-Origin"
     ]
     assert len(classified) == 50
@@ -177,7 +182,15 @@ def test_background_origin_insight_inventory_is_source_backed_and_preference_onl
     for row in insights:
         authority_type = row.get("insight_authority", {}).get("authority_type", "Unresolved")
         counts[authority_type] = counts.get(authority_type, 0) + 1
-    assert counts == {"Path": 135, "Sphere": 316, "Background-Origin": 50}
+    assert counts == {
+        "Companion": 3,
+        "General Cultivation": 23,
+        "Metatechnique": 7,
+        "Narrative / Secret": 6,
+        "Path": 172,
+        "Sphere": 324,
+        "Technique-Forging": 7,
+    }
 
     matrix = json.loads((Path(__file__).resolve().parents[2] / "win1_p1r2" / "INSIGHT_SOURCE_AUTHORITY_MATRIX.json").read_text(encoding="utf-8"))
     assert matrix["summary"]["matrix_record_count"] == 456

@@ -45,6 +45,12 @@ _SEMVER = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-[0-
 BACKGROUND_PACK_ID = "tianxia.core.backgrounds.origins"
 BACKGROUND_PACK_VERSION = "0.6.0"
 CAT3_AUTHORITY_PATH = Path(__file__).resolve().parents[1] / "catalog_authority" / "cat3" / "generated" / "catalog_authority.v1.json"
+CAT3_SOURCE_DIR = CAT3_AUTHORITY_PATH.parent.parent / "source"
+CAT3_R2_INSIGHT_SOURCE_PATH = CAT3_SOURCE_DIR / "Tianxia_Central_Cultivation_Insights_AI_Reference_R5_Legacy_Restored.json"
+CAT3_SPHERE_BASE_MATRIX_PATH = CAT3_SOURCE_DIR / "SPHERE_BASE_ABILITY_MATRIX.csv"
+CAT3_INSIGHT_TYPE_MAPPING_PATH = CAT3_SOURCE_DIR / "INSIGHT_TYPE_MAPPING.json"
+CAT3_INSIGHT_GROUPING_INVENTORY_PATH = CAT3_SOURCE_DIR / "INSIGHT_GROUPING_INVENTORY.json"
+CAT3_SUPERSESSION_LEDGER_PATH = CAT3_SOURCE_DIR / "SUPERSESSION_AND_COLLISION_LEDGER.json"
 C1A_TYPED_AUTHORITY_PATH = Path(__file__).with_name("typed_authority") / "C1A_Canonical_Typed_Authority_Pack_v1.json"
 
 
@@ -441,7 +447,7 @@ class CoreCatalogImporter:
             )
 
     def iter_records(self) -> Iterable[dict[str, Any]]:
-        base = list(self._paths()) + list(self._subpaths()) + list(self._cat3_talents_and_spheres()) + list(self._foundations()) + list(self._items()) + list(self._methods()) + list(self._insights()) + list(self._reference_sources())
+        base = list(self._paths()) + list(self._subpaths()) + list(self._cat3_talents_and_spheres()) + list(self._foundations()) + list(self._items()) + list(self._methods()) + list(self._reference_sources())
         yield from self._apply_typed_authority(base)
 
     def source_inventory_hash(self) -> str:
@@ -456,7 +462,11 @@ class CoreCatalogImporter:
             self.rules_root / "Indexes/Cultivation_Methods_AI_Index_v0_1.json",
             self.rules_root / "Indexes/Paths/Tianxia_Path_Index_Master_P2A.json",
             self.rules_root / "Indexes/Subpaths/Tianxia_Subpath_Tradition_Index_Master_P2B.json",
-            self.rules_root / "Source_Text/Insights/Tianxia_Central_Cultivation_Insights_AI_Reference_R4.json",
+            CAT3_R2_INSIGHT_SOURCE_PATH,
+            CAT3_SPHERE_BASE_MATRIX_PATH,
+            CAT3_INSIGHT_TYPE_MAPPING_PATH,
+            CAT3_INSIGHT_GROUPING_INVENTORY_PATH,
+            CAT3_SUPERSESSION_LEDGER_PATH,
         ]
         inventory: dict[str, str] = {}
         for source_path in paths:
@@ -516,6 +526,49 @@ class CoreCatalogImporter:
                 summary=_first_line(talent.get("full_description") or ""),
                 dependencies=[talent["owning_canonical_sphere_id"]],
                 acquisition_channels=deepcopy(talent["acquisition_routes"]),
+            )
+        for insight in authority.get("insights") or []:
+            selectable = bool(insight.get("selectable"))
+            source_reference = insight.get("source_provenance") or {}
+            raw = deepcopy(insight.get("raw_source_record") or {})
+            raw.update({
+                "compiler_version": authority["compiler_version"],
+                "record_id": insight["canonical_insight_id"],
+                "canonical_id": insight["canonical_insight_id"],
+                "display_name": insight["display_name"],
+                "source_prerequisites_text": raw.get("prerequisites"),
+                "prerequisites": deepcopy(insight.get("prerequisites") or []),
+                "insight_authority_type": insight["insight_authority_type"],
+                "insight_group": deepcopy(insight["insight_group"]),
+                "hierarchy_path": deepcopy(insight.get("hierarchy_path") or []),
+                "owning_canonical_sphere_ids": deepcopy(insight.get("owning_canonical_sphere_ids") or []),
+                "owning_canonical_sphere_id": insight.get("owning_canonical_sphere_id"),
+                "source_occurrences": deepcopy(insight.get("source_occurrences") or []),
+                "source_occurrence_count": insight.get("source_occurrence_count"),
+                "source_record_ids": deepcopy(insight.get("source_record_ids") or []),
+                "collision_disposition": insight.get("collision_disposition"),
+                "restoration_lineage": insight.get("restoration_lineage"),
+                "source_authority": deepcopy(insight.get("raw_source_record", {}).get("source_authority") or {}),
+                "canonical_insight_id": insight["canonical_insight_id"],
+            })
+            yield _normalize_record(
+                record_id=insight["canonical_insight_id"],
+                content_type="cultivation_insight",
+                display_name=insight["display_name"],
+                source_path=source_reference["source_file"],
+                source_hash=source_reference["source_file_sha256"],
+                source_anchor=source_reference["source_anchor"],
+                raw=raw,
+                summary=_summary(raw),
+                dependencies=_string_list(insight.get("owning_canonical_sphere_ids") or []) + [
+                    relation["target_id"] for relation in insight.get("prerequisites") or []
+                    if isinstance(relation, dict) and isinstance(relation.get("target_id"), str)
+                ],
+                acquisition_channels=["cultivation-insight-selection"] if selectable else ["reference-only"],
+                unresolved_notes=[] if selectable else [str(insight.get("nonselectable_reason") or "This retained source concept is not selectable.")],
+                authority="canonical" if selectable else "reference-only",
+                publication_state="published" if selectable else "validated",
+                selected_authority=selectable,
             )
         role_to_content_type = {
             "path_expression": "sphere_path_expression",
