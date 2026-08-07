@@ -7,6 +7,7 @@ from typing import Any
 
 from app.core import FoundryError, sha256_file, sha256_json
 from contracts.canonical import canonical_event_hash
+from sphere_component_authority import normalize_sphere_automatic_components
 from stage2.formulas import FormulaError, evaluate_formula
 
 ZERO_HASH = "0" * 64
@@ -164,6 +165,8 @@ def _dynamic_display_section(record: dict[str, Any], packets: list[dict[str, Any
         return "path_subpath", content_type.replace("_", " ").title()
     if content_type == "sphere":
         return "spheres", "Sphere"
+    if content_type == "cultivation_insight":
+        return "insights", "Insight"
     if content_type == "talent":
         if "background_talent_acquisition" in kinds:
             return "background_talent", "Background Talent"
@@ -173,6 +176,47 @@ def _dynamic_display_section(record: dict[str, Any], packets: list[dict[str, Any
     if content_type in {"path_feature", "subpath_feature"}:
         return "path_features", content_type.replace("_", " ").title()
     return "other", content_type.replace("_", " ").title() or "Selected Record"
+
+
+def _component_display_source(component: dict[str, Any], parent_source: dict[str, Any], parent_record_id: str) -> dict[str, str]:
+    """Map the CAT3 source-matrix identity to the sheet display-source shape."""
+    source = component.get("source") if isinstance(component.get("source"), dict) else {}
+    path = source.get("path") or source.get("source_path") or parent_source.get("path")
+    anchor = source.get("anchor") or source.get("source_anchor") or f"{parent_source.get('anchor', parent_record_id)}:{component.get('component_id')}"
+    source_hash = (
+        source.get("source_hash")
+        or source.get("source_file_sha256")
+        or source.get("compendium_sha256")
+        or parent_source.get("source_hash")
+    )
+    if not all(isinstance(value, str) and value for value in (path, anchor, source_hash)):
+        raise FoundryError(
+            "CHARACTER_SHEET_DESCRIPTION_UNPROVEN",
+            "A Sphere automatic component lacks exact source identity.",
+            details={"parent_sphere_id": parent_record_id, "component_id": component.get("component_id"), "source": source},
+        )
+    return {"path": path, "anchor": anchor, "source_hash": source_hash}
+
+
+def _sphere_record_with_event_authority(record: dict[str, Any], event: dict[str, Any]) -> dict[str, Any]:
+    """Bind the immutable compiled Sphere packet to the locked display record.
+
+    Some project-lock adapters retain the CAT3 packet only in the event's
+    calculation output, while others retain it in the raw catalog record.
+    The event packet is already normalized and content-bound by Stage 2, so
+    using it here keeps projector output independent of that storage detail.
+    """
+    packet = (
+        (event.get("advancement") or {})
+        .get("calculation", {})
+        .get("outputs", {})
+        .get("automatic_component_authority")
+    )
+    if not isinstance(packet, dict):
+        return record
+    result = deepcopy(record)
+    result["automatic_component_authority"] = deepcopy(packet)
+    return result
 
 
 def _dynamic_display_contract(
@@ -188,6 +232,7 @@ def _dynamic_display_contract(
         packets_by_record.setdefault(str(packet["record_id"]), []).append(packet)
     required_ids = set(packets_by_record) | set(granted_ids)
     rules: list[dict[str, Any]] = []
+    automatic_component_ids: set[str] = set()
     for record_id in sorted(required_ids):
         record = locked_records.get(record_id)
         if not record:
@@ -219,7 +264,7 @@ def _dynamic_display_contract(
         content_type = str(record.get("content_type") or "")
         executable = content_type in {"talent", "path_feature", "subpath_feature", "origin_insight"}
         stage2 = ((record.get("compatibility") or {}).get("factory", {}).get("stage2_authority") or {})
-        rules.append({
+        rule = {
             "record_id": record_id,
             "record_hash": record["record_hash"],
             "display_name": record.get("display_name") or record_id,
@@ -243,7 +288,68 @@ def _dynamic_display_contract(
                 "ai_policy": "BLOCKED_BY_DEPENDENCY" if executable else "NOT_APPLICABLE",
             },
             "display_only_not_execution_authority": executable,
-        })
+        }
+        if content_type == "sphere":
+            sphere_packet = normalize_sphere_automatic_components(record)
+            rule["automatic_component_authority"] = sphere_packet
+            for component in sphere_packet["components"]:
+                component_id = component["component_id"]
+                if component_id in automatic_component_ids:
+                    raise FoundryError(
+                        "CHARACTER_SHEET_DUPLICATE_DISPLAY_MAPPING",
+                        "A Sphere automatic component ID is attached to more than one display mapping.",
+                        details={"component_id": component_id},
+                    )
+                automatic_component_ids.add(component_id)
+                component_source = _component_display_source(component, source, record_id)
+                component_text = str(component["player_rules_text"]).strip()
+                component_rule = {
+                    "record_id": component_id,
+                    "record_hash": component["component_hash"],
+                    "display_name": component.get("display_name") or component_id,
+                    "section": "sphere_automatic_components",
+                    "subsection": f"{record.get('display_name') or record_id} Automatic Components",
+                    "one_line_description": component_text.splitlines()[0].strip(),
+                    "full_description": component_text,
+                    "full_description_source": "locked_sphere_automatic_component_authority",
+                    "source": component_source,
+                    "acquisition_source": {
+                        "target_cl": binding_packet.get("target_cl"),
+                        "advancement_kind": binding_packet.get("advancement_kind"),
+                        "packet_ids": [binding_packet["packet_id"]],
+                    },
+                    "stage2_rule_id": stage2.get("rule_id"),
+                    "display_timing_or_category": "Automatic Sphere Component",
+                    "capabilities": {
+                        "character_sheet": "SUPPORTED",
+                        "gm_display": "NOT_ATTEMPTED",
+                        "combat_execution": "NOT_APPLICABLE",
+                        "ai_policy": "NOT_APPLICABLE",
+                    },
+                    "display_only_not_execution_authority": False,
+                    "parent_sphere_id": record_id,
+                    "component_hash": component["component_hash"],
+                    "automatic_component_flags": {
+                        key: component[key]
+                        for key in (
+                            "automatic_grant",
+                            "owner_removable",
+                            "counts_as_talent_choice",
+                            "counts_as_advancement_talent",
+                            "counts_as_training_talent",
+                        )
+                    },
+                    "owner_ruling": deepcopy(component.get("owner_ruling") or {}),
+                    "automatic_component_authority": {
+                        "schema_version": sphere_packet["schema_version"],
+                        "parent_sphere_id": record_id,
+                        "package_hash": sphere_packet["package_hash"],
+                        "component_ids": [component_id],
+                    },
+                }
+                rules.append(component_rule)
+            required_ids.update(automatic_component_ids)
+        rules.append(rule)
     unsigned = {
         "schema_version": "TianxiaFoundry.CharacterSheetDisplayContract.v1",
         "contract_id": f"tianxia.character_sheet.display.project.{project['project_id']}",
@@ -627,13 +733,34 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         path_events[0] if path_events else None,
     )
     subpath = only("subpath_acquisition")
-    score_change = only("ability_score_change")
+    score_changes = by_kind.get("ability_score_change") or []
+    if len(score_changes) > 1:
+        raise FoundryError(
+            "PROJECTION_REQUIRED_EVENT_COUNT_INVALID",
+            "The projection permits at most one CL-specific ability-score change event.",
+            details={"kind": "ability_score_change", "count": len(score_changes)},
+        )
+    insight_events = by_kind.get("cultivation_insight_acquisition") or []
+    if not score_changes and not insight_events:
+        raise FoundryError(
+            "PROJECTION_REQUIRED_EVENT_COUNT_INVALID",
+            "The projection requires an ability-score change or an ordinary Cultivation Insight event to represent the CL4 selection authority.",
+            details={"ability_score_change_count": 0, "cultivation_insight_count": 0},
+        )
+    score_change = score_changes[0] if score_changes else None
     level_events = sorted(by_kind.get("level_advance") or [], key=lambda e: e["advancement"]["target_cl"])
     target_cl = max((e["advancement"]["target_cl"] for e in level_events), default=0)
     if [e["advancement"]["target_cl"] for e in level_events] != list(range(1, target_cl + 1)):
         raise FoundryError("PROJECTION_LEVEL_ADVANCEMENT_INCOMPLETE", "The projection requires a gap-free committed level chain.", details={"target_cl": target_cl})
-    final_scores = deepcopy(score_change["advancement"]["calculation"]["outputs"]["ability_scores"])
-    final_mods = deepcopy(score_change["advancement"]["calculation"]["outputs"]["ability_modifiers"])
+    ability_history_events = [
+        event
+        for event in [background, *(score_changes or []), *insight_events]
+        if ((event.get("advancement") or {}).get("calculation") or {}).get("outputs", {}).get("ability_scores")
+    ]
+    ability_history_events.sort(key=lambda event: int(event["sequence"]))
+    latest_ability_event = ability_history_events[-1]
+    final_scores = deepcopy(latest_ability_event["advancement"]["calculation"]["outputs"]["ability_scores"])
+    final_mods = deepcopy(latest_ability_event["advancement"]["calculation"]["outputs"]["ability_modifiers"])
     final_pb = level_events[-1]["advancement"]["calculation"]["outputs"]["pb"]
     formula_context = {"ability_scores": final_scores, "ability_modifiers": final_mods, "cl": target_cl, "pb": final_pb}
     rules_by_id = {rule["rule_id"]: rule for rule in baseline["rules"]}
@@ -677,17 +804,57 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         capability.append(_capability_entry(record, 3, subpath))
 
     spheres = []
-    for kind, acquisition_type in (("background_sphere_acquisition", "background_sphere"), ("ai_bootstrap_sphere_acquisition", "level_1_sphere")):
+    sphere_packets: dict[str, dict[str, Any]] = {}
+    for kind, acquisition_type in (
+        ("background_sphere_acquisition", "background_sphere"),
+        ("ai_bootstrap_sphere_acquisition", "level_1_sphere"),
+        ("sphere_training_attempt", "sphere_training"),
+    ):
         for event in by_kind.get(kind) or []:
+            if kind == "sphere_training_attempt" and ((event.get("advancement") or {}).get("training_transaction") or {}).get("result") != "success":
+                continue
+            record = _sphere_record_with_event_authority(event_records[event["event_id"]], event)
+            sphere_packet = normalize_sphere_automatic_components(record, acquisition_event=event)
+            sphere_id = event["subject"]["record_id"]
+            sphere_packets[sphere_id] = sphere_packet
             spheres.append({
-                "sphere_id": event["subject"]["record_id"],
+                "sphere_id": sphere_id,
                 "name": event["subject"]["display_name"],
                 "gained_at_cl": event["advancement"]["target_cl"],
                 "acquisition_type": acquisition_type,
                 "source_packet_ids": [packet_by_event[event["event_id"]]],
                 "allocation_id": f"allocation.{event['event_id']}",
+                "automatic_component_authority": deepcopy(sphere_packet),
+                "automatic_component_ids": deepcopy(sphere_packet["component_ids"]),
+                "automatic_base_abilities": deepcopy(sphere_packet["components"]),
             })
     spheres.sort(key=lambda x: (x["gained_at_cl"], x["sphere_id"]))
+    automatic_sphere_component_receipts = [
+        {
+            "schema_version": packet["schema_version"],
+            "parent_sphere_id": packet["parent_sphere_id"],
+            "parent_record_hash": packet.get("parent_record_hash"),
+            "package_hash": packet["package_hash"],
+            "component_ids": deepcopy(packet["component_ids"]),
+            "components": deepcopy(packet["components"]),
+            "acquisition": deepcopy(packet.get("acquisition") or {}),
+        }
+        for packet in sorted(sphere_packets.values(), key=lambda row: row["parent_sphere_id"])
+    ]
+    automatic_sphere_components = []
+    component_by_id: dict[str, dict[str, Any]] = {}
+    for receipt in automatic_sphere_component_receipts:
+        for component in receipt["components"]:
+            prior = component_by_id.get(component["component_id"])
+            if prior is not None and prior["component_hash"] != component["component_hash"]:
+                raise FoundryError(
+                    "SPHERE_AUTOMATIC_COMPONENT_CONFLICT",
+                    "The projection encountered conflicting bytes for one automatic Sphere component ID.",
+                    details={"component_id": component["component_id"]},
+                )
+            if prior is None:
+                component_by_id[component["component_id"]] = deepcopy(component)
+    automatic_sphere_components = [component_by_id[key] for key in sorted(component_by_id)]
     sphere_names = {
         event["subject"]["record_id"]: event["subject"]["display_name"]
         for kind in ("background_sphere_acquisition", "ai_bootstrap_sphere_acquisition")
@@ -712,6 +879,24 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
                 "allocation_id": f"allocation.{event['event_id']}",
             })
     talents.sort(key=lambda x: (x["gained_at_cl"], x["talent_id"]))
+
+    insights = []
+    for event in sorted(by_kind.get("cultivation_insight_acquisition") or [], key=lambda row: int(row["sequence"])):
+        record = event_records[event["event_id"]]
+        outputs = (event.get("advancement") or {}).get("calculation", {}).get("outputs") or {}
+        occurrence = deepcopy(outputs.get("insight_occurrence") or {})
+        insights.append({
+            "insight_id": event["subject"]["record_id"],
+            "name": event["subject"]["display_name"],
+            "gained_at_cl": event["advancement"]["target_cl"],
+            "repeat_index": occurrence.get("repeat_index", (event.get("advancement") or {}).get("details", {}).get("repeat_index", 1)),
+            "ability": occurrence.get("ability"),
+            "amount": occurrence.get("amount"),
+            "ability_change_applied": bool(outputs.get("ability_change_applied")),
+            "source_packet_ids": [packet_by_event[event["event_id"]]],
+            "source_record_hash": record["record_hash"],
+            "source_evidence": deepcopy(event.get("source_evidence") or []),
+        })
 
     features = []
     for event in level_events:
@@ -761,6 +946,13 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
     talent_by_cl: dict[int, list[str]] = {}
     for t in talents:
         talent_by_cl.setdefault(t["gained_at_cl"], []).append(t["talent_id"])
+
+    def ability_scores_after(sequence: int) -> dict[str, int]:
+        for history_event in reversed(ability_history_events):
+            if int(history_event["sequence"]) <= sequence:
+                return deepcopy(history_event["advancement"]["calculation"]["outputs"]["ability_scores"])
+        return deepcopy(background["advancement"]["calculation"]["outputs"]["ability_scores"])
+
     for event in level_events:
         cl = event["advancement"]["target_cl"]
         out = event["advancement"]["calculation"]["outputs"]
@@ -774,11 +966,7 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
             "pb": out["pb"],
             "hp": {"gain": out["hp_after"]["last_gain"], "max_after_level": hp_total, "formula_id": out["hp_after"]["last_formula_id"]},
             "resource": {"resource_id": resource["resource_id"], "maximum": resource["maximum"], "current_after_event": resource["current"], "formula_id": resource["formula_id"]},
-            "ability_scores_after": deepcopy(
-                score_change["advancement"]["calculation"]["outputs"]["ability_scores"]
-                if cl >= score_change["advancement"]["target_cl"]
-                else background["advancement"]["calculation"]["outputs"]["ability_scores"]
-            ),
+            "ability_scores_after": ability_scores_after(int(event["sequence"])),
             "feature_record_id": event["subject"]["record_id"],
             "talent_record_ids_gained": sorted(talent_by_cl.get(cl, [])),
             "talent_record_ids_known": sorted(cumulative_talents),
@@ -885,11 +1073,20 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         if packet["advancement_kind"] not in non_projecting_kinds
         or packet["advancement_kind"] == "method_acquisition"
     ]
+    display_locked_records = deepcopy(locked_records)
+    for event in events:
+        if "sphere" not in str((event.get("advancement") or {}).get("kind") or ""):
+            continue
+        record_id = (event.get("subject") or {}).get("record_id")
+        if record_id in display_locked_records:
+            display_locked_records[record_id] = _sphere_record_with_event_authority(
+                display_locked_records[record_id], event
+            )
     dynamic_display_contract = (
         _dynamic_display_contract(
             project,
             choice_snapshot,
-            locked_records,
+            display_locked_records,
             display_packets,
             granted_ids,
             packet_by_event[subpath["event_id"]],
@@ -987,7 +1184,11 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         "path_selections": path_selection_rows,
         "subpaths": [{"subpath_id": subpath["subject"]["record_id"], "name": subpath["subject"]["display_name"], "owning_path_id": path_event["subject"]["record_id"], "selected_at_cl": 3, "feature_ids_expected": granted_ids, "source_packet_ids": [packet_by_event[subpath["event_id"]]]}],
         "spheres": spheres,
+        "automatic_sphere_component_receipts": automatic_sphere_component_receipts,
+        "automatic_sphere_components": automatic_sphere_components,
         "talents": talents,
+        "insights": insights,
+        "cultivation_insight_occurrences": deepcopy(insights),
         "features": features,
         "resources": [{"resource_id": primary_resource["resource_id"], "name": resource_display_name(primary_resource["resource_id"]), "current": primary_resource["current"], "max": primary_resource["maximum"], "formula_id": primary_resource["formula_id"], "authority_components": primary_resource["authority_components"]}],
         "method": method_projection,
@@ -1072,7 +1273,9 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         elif kind == "origin_insight_acquisition": destinations += ["/ledger/background_origin/origin_insight"]
         elif kind == "path_acquisition": destinations += [f"/ledger/path_selections/{path_event_indexes.get(event['event_id'], 0)}"]
         elif kind in {"background_sphere_acquisition", "ai_bootstrap_sphere_acquisition"}: destinations += ["/ledger/spheres"]
+        elif kind == "sphere_training_attempt": destinations += ["/ledger/spheres"]
         elif kind in {"background_talent_acquisition", "ai_bootstrap_talent_acquisition", "level_talent_acquisition"}: destinations += ["/ledger/talents"]
+        elif kind == "cultivation_insight_acquisition": destinations += ["/ledger/insights", "/ledger/cultivation_insight_occurrences"]
         elif kind == "level_advance": destinations += ["/ledger/advancement/levels", "/ledger/core_stats/hp_generation", "/ledger/resources"]
         elif kind == "subpath_acquisition": destinations += ["/ledger/subpaths", "/ledger/features"]
         elif kind == "ability_score_change": destinations += ["/ledger/core_stats/ability_scores", "/ledger/core_stats/ability_modifiers"]

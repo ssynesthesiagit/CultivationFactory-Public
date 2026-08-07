@@ -24,6 +24,8 @@ from stage2.authority_contract import (
     recorded_art_expression_issues,
 )
 from stage2.formulas import FormulaError, evaluate_formula
+from stage2.insight_authority import insight_occurrence_index
+from sphere_component_authority import attach_sphere_automatic_component_receipt, normalize_sphere_automatic_components
 from stage2.legacy_service import (
     Stage2AdvancementService as LegacyStage2AdvancementService,
     _ability_modifier,
@@ -113,7 +115,7 @@ KIND_PARAMETER_KEYS: dict[str, frozenset[str]] = {
     "background_sphere_acquisition": frozenset(),
     "background_talent_acquisition": frozenset(),
     "origin_insight_acquisition": frozenset(),
-    "cultivation_insight_acquisition": frozenset({"ability", "amount"}),
+    "cultivation_insight_acquisition": frozenset({"ability", "amount", "repeat_index"}),
     "path_acquisition": frozenset(),
     "sect_trial_sphere_acquisition": frozenset(),
     "sect_trial_talent_acquisition": frozenset(),
@@ -173,6 +175,12 @@ def _canonical_event_details(kind: str, details: dict[str, Any]) -> dict[str, An
         return {"stage": details["stage"]}
     if kind == "new_sphere_bonus_talent_acquisition":
         return {"entitlement_event_id": details["entitlement_event_id"]}
+    if kind == "cultivation_insight_acquisition":
+        return {
+            key: details[key]
+            for key in ("ability", "amount", "repeat_index")
+            if key in details
+        }
     if kind == "typed_none":
         return {"target": details["target"]}
     return {}
@@ -203,6 +211,7 @@ def _state(project_id: str) -> dict[str, Any]:
         "paths": [],
         "subpaths": [],
         "cultivation_insights": [],
+        "cultivation_insight_occurrences": [],
         "method": _none("not_acquired", "No Method acquisition event exists."),
         "foundation": _none("not_acquired", "No Foundation acquisition event exists."),
         "known_spheres": [],
@@ -218,6 +227,8 @@ def _state(project_id: str) -> dict[str, Any]:
         "event_ids": [],
         "record_event_ids": {},
         "authority_snapshots": {},
+        "automatic_sphere_component_receipts": [],
+        "automatic_sphere_components": [],
         "typed_none_states": {},
         "event_occurrences": {},
         "required_milestones": [],
@@ -361,6 +372,39 @@ def _dm_line_label(value: str) -> str:
 
 def _sort_unique(values: list[str]) -> list[str]:
     return sorted(set(values))
+
+
+def _sphere_record_from_event(event: dict[str, Any]) -> dict[str, Any] | None:
+    """Reconstruct the locked Sphere authority needed by replay.
+
+    The event calculation carries the signed/static normalized packet.  The
+    reducer deliberately reconstructs only this narrow record shape instead
+    of re-reading a mutable catalog during replay.
+    """
+    outputs = event.get("advancement", {}).get("calculation", {}).get("outputs") or {}
+    packet = outputs.get("automatic_component_authority")
+    if not isinstance(packet, dict):
+        return None
+    subject = event.get("subject") or {}
+    binding = event.get("content_binding") or {}
+    evidence = (event.get("source_evidence") or [{}])[0]
+    return {
+        "record_id": subject.get("record_id"),
+        "record_hash": binding.get("record_hash"),
+        "source": {
+            "source_id": evidence.get("source_id"),
+            "source_hash": evidence.get("source_hash"),
+            "anchor": evidence.get("source_anchor"),
+            "path": evidence.get("source_path", ""),
+        },
+        "automatic_component_authority": deepcopy(packet),
+    }
+
+
+def _attach_sphere_components_from_event(state: dict[str, Any], event: dict[str, Any]) -> None:
+    record = _sphere_record_from_event(event)
+    if record is not None:
+        attach_sphere_automatic_component_receipt(state, record, event)
 
 
 class RulesCausalStage2Service:
@@ -590,12 +634,25 @@ class RulesCausalStage2Service:
             state["resources"] = deepcopy(outputs["resources_after"])
         elif kind == "cultivation_insight_acquisition":
             state["cultivation_insights"].append(rid)
-            state["ability_scores"] = deepcopy(outputs["ability_scores"])
-            state["ability_modifiers"] = deepcopy(outputs["ability_modifiers"])
-            state["ability_authority_event_id"] = eid
-            state["ability_authority_record_id"] = rid
-            state["hp"] = deepcopy(outputs["hp_after"])
-            state["resources"] = deepcopy(outputs["resources_after"])
+            occurrence = deepcopy(outputs.get("insight_occurrence") or {
+                "record_id": rid,
+                "event_id": eid,
+                "acquisition_cl": adv["target_cl"],
+                "repeat_index": details.get("repeat_index", 1),
+                "ability": details.get("ability"),
+                "amount": details.get("amount"),
+                "content_binding": deepcopy(event.get("content_binding") or {}),
+                "source_evidence": deepcopy(event.get("source_evidence") or []),
+                "execution_authority": deepcopy(outputs.get("execution_authority") or {}),
+            })
+            state["cultivation_insight_occurrences"].append(occurrence)
+            if outputs.get("ability_scores"):
+                state["ability_scores"] = deepcopy(outputs["ability_scores"])
+                state["ability_modifiers"] = deepcopy(outputs["ability_modifiers"])
+                state["ability_authority_event_id"] = eid
+                state["ability_authority_record_id"] = rid
+                state["hp"] = deepcopy(outputs.get("hp_after", state["hp"]))
+                state["resources"] = deepcopy(outputs.get("resources_after", state["resources"]))
         elif kind == "path_acquisition":
             state["paths"].append(rid)
             for milestone in outputs.get("required_milestones", []):
@@ -618,6 +675,7 @@ class RulesCausalStage2Service:
         elif kind == "background_sphere_acquisition":
             state["background_sphere"] = rid
             state["known_spheres"].append(rid)
+            _attach_sphere_components_from_event(state, event)
         elif kind == "background_talent_acquisition":
             state["background_talent"] = rid
             state["known_talents"].append(rid)
@@ -626,6 +684,7 @@ class RulesCausalStage2Service:
         elif kind == "sect_trial_sphere_acquisition":
             state["sect_trial_sphere"] = rid
             state["known_spheres"].append(rid)
+            _attach_sphere_components_from_event(state, event)
         elif kind == "sect_trial_talent_acquisition":
             state["sect_trial_talent"] = rid
             state["known_talents"].append(rid)
@@ -633,6 +692,7 @@ class RulesCausalStage2Service:
         elif kind == "ai_bootstrap_sphere_acquisition":
             state["ai_bootstrap_sphere"] = rid
             state["known_spheres"].append(rid)
+            _attach_sphere_components_from_event(state, event)
         elif kind == "ai_bootstrap_talent_acquisition":
             state["ai_bootstrap_talent"] = rid
             state["known_talents"].append(rid)
@@ -670,6 +730,7 @@ class RulesCausalStage2Service:
                     state["trained_success_cost"][clkey] = int(state["trained_success_cost"].get(clkey, 0)) + int(txn["slot_cost"])
                 if kind == "sphere_training_attempt":
                     state["known_spheres"].append(rid)
+                    _attach_sphere_components_from_event(state, event)
                     state["new_sphere_entitlements"].append({"entitlement_id": eid, "sphere_record_id": rid, "sphere_event_id": eid, "character_cl": adv["target_cl"], "attempt_id": txn["attempt_id"], "consumed": False, "talent_record_id": None, "talent_event_id": None})
                 elif kind == "talent_training_attempt":
                     state["known_talents"].append(rid)
@@ -792,8 +853,8 @@ class RulesCausalStage2Service:
         if kind in singleton_character and occurrences.get(kind):
             blockers.append(_block("SINGLETON_ADVANCEMENT_EVENT_REPEATED", pointer, "This advancement channel is singleton in the current published character model.", kind=kind, prior=occurrences[kind]))
         cl = int(choice["effective_cl"])
-        if kind in {"level_advance", "level_talent_acquisition", "ability_score_change", "cultivation_insight_acquisition"}:
-            same_cl = [x for name in ({kind} if kind not in {"ability_score_change", "cultivation_insight_acquisition"} else {"ability_score_change", "cultivation_insight_acquisition"}) for x in occurrences.get(name, []) if int(x["cl"]) == cl]
+        if kind in {"level_advance", "level_talent_acquisition", "ability_score_change"}:
+            same_cl = [x for x in occurrences.get(kind, []) if int(x["cl"]) == cl]
             if same_cl:
                 blockers.append(_block("ADVANCEMENT_SLOT_ALREADY_FILLED", pointer, "This CL-specific advancement slot already has a causal event.", kind=kind, cl=cl, prior=same_cl))
         if kind == "training_source_access":
@@ -804,6 +865,43 @@ class RulesCausalStage2Service:
             if target in state.get("typed_none_states", {}):
                 blockers.append(_block("TYPED_NONE_TARGET_ALREADY_RESOLVED", pointer, "This absence target already has a causal resolution.", target=target))
         return blockers
+
+    def _insight_occurrence_blockers(
+        self,
+        state: dict[str, Any],
+        record: dict[str, Any],
+        choice: dict[str, Any],
+        pointer: str,
+    ) -> tuple[list[dict[str, Any]], int]:
+        """Validate typed Insight occurrence identity without prose parsing."""
+        blockers: list[dict[str, Any]] = []
+        auth = _authority(record)
+        repeatability = auth.get("repeatability") or {"mode": "nonrepeatable", "maximum": 1}
+        mode = repeatability.get("mode", "nonrepeatable")
+        prior = [
+            row for row in state.get("cultivation_insight_occurrences", [])
+            if row.get("record_id") == record["record_id"]
+        ]
+        details = choice.get("parameters") or {}
+        supplied = details.get("repeat_index")
+        if isinstance(supplied, bool) or (supplied is not None and not isinstance(supplied, int)):
+            blockers.append(_block("CULTIVATION_INSIGHT_REPEAT_INDEX_INVALID", pointer + "/parameters/repeat_index", "The Insight occurrence index must be a positive integer."))
+        repeat_index = insight_occurrence_index(details, prior)
+        if repeat_index < 1:
+            blockers.append(_block("CULTIVATION_INSIGHT_REPEAT_INDEX_INVALID", pointer + "/parameters/repeat_index", "Insight occurrence indices are one-based."))
+        if mode == "nonrepeatable":
+            if prior:
+                blockers.append(_block("CULTIVATION_INSIGHT_NOT_REPEATABLE", pointer, "The selected Insight is not repeatable and already has a causal occurrence.", record_id=record["record_id"], prior_occurrences=prior))
+            if repeat_index != 1:
+                blockers.append(_block("CULTIVATION_INSIGHT_REPEAT_INDEX_INVALID", pointer + "/parameters/repeat_index", "A nonrepeatable Insight can only have occurrence index 1.", repeat_index=repeat_index))
+        else:
+            maximum = repeatability.get("maximum")
+            if isinstance(maximum, int) and repeat_index > maximum:
+                blockers.append(_block("CULTIVATION_INSIGHT_REPEAT_MAXIMUM_EXCEEDED", pointer + "/parameters/repeat_index", "The Insight occurrence exceeds its exact published repeat maximum.", record_id=record["record_id"], repeat_index=repeat_index, maximum=maximum))
+            expected = len(prior) + 1
+            if repeat_index != expected:
+                blockers.append(_block("CULTIVATION_INSIGHT_REPEAT_INDEX_NOT_CONTIGUOUS", pointer + "/parameters/repeat_index", "Repeatable Insight occurrences must use contiguous one-based indices.", expected=expected, supplied=repeat_index, prior_occurrences=prior))
+        return blockers, repeat_index
 
     def _duplicate_blockers(self, state: dict[str, Any], record: dict[str, Any], kind: str, pointer: str) -> list[dict[str, Any]]:
         rid = record["record_id"]
@@ -1491,6 +1589,10 @@ class RulesCausalStage2Service:
         relation_blockers, relation_bindings = self._legality_relation_blockers(conn, row["project_id"], state, record, pointer)
         blockers.extend(relation_blockers)
         blockers.extend(self._cardinality_blockers(state, kind, choice, pointer))
+        insight_repeat_index: int | None = None
+        if kind == "cultivation_insight_acquisition":
+            insight_blockers, insight_repeat_index = self._insight_occurrence_blockers(state, record, choice, pointer)
+            blockers.extend(insight_blockers)
         minimum_cl = record.get("legality", {}).get("minimum_cl")
         if isinstance(minimum_cl, int) and choice["effective_cl"] < minimum_cl:
             blockers.append(_block("ACQUISITION_BEFORE_MINIMUM_CL", pointer, "The event occurs before the record's published minimum CL.", minimum_cl=minimum_cl, effective_cl=choice["effective_cl"]))
@@ -1519,6 +1621,8 @@ class RulesCausalStage2Service:
             return None, state, blockers
 
         details = deepcopy(choice.get("parameters") or {})
+        if kind == "cultivation_insight_acquisition":
+            details["repeat_index"] = insight_repeat_index
         calculation = {"rule_id": _authority(record).get("rule_id", f"{record['record_id']}.stage2"), "formula": None, "inputs": {}, "outputs": {}, "trace": {}}
         bindings = [_binding(record, "subject_authority", state["record_event_ids"].get(record["record_id"]))] + relation_bindings
         created_records: list[str] = []
@@ -1574,29 +1678,60 @@ class RulesCausalStage2Service:
                 calculation["trace"] = recalc_trace
                 updated_records = [record["record_id"]]
         elif kind == "cultivation_insight_acquisition":
-            if not state["ability_scores"]:
-                blockers.append(_block("ABILITY_SCORES_NOT_ESTABLISHED", pointer, "A Cultivation Insight ability increase requires a causal starting-score event."))
-            rule = auth.get("insight_ability_change") or {}
+            rule = auth.get("ability_change") or auth.get("insight_ability_change")
+            minimum = auth.get("minimum_cl")
+            if isinstance(minimum, int) and cl < minimum:
+                blockers.append(_block("CULTIVATION_INSIGHT_AT_ILLEGAL_CL", pointer, "The Cultivation Insight is not authorized before its published minimum CL.", minimum_cl=minimum, cl=cl))
             ability = details.get("ability")
             amount = details.get("amount")
-            if cl not in rule.get("allowed_cls", []):
-                blockers.append(_block("CULTIVATION_INSIGHT_AT_ILLEGAL_CL", pointer, "The Cultivation Insight is not authorized at this shared-Path milestone.", allowed_cls=rule.get("allowed_cls", []), cl=cl))
-            if ability not in rule.get("allowed_abilities", []) or amount != int(rule.get("amount", 1)):
-                blockers.append(_block("CULTIVATION_INSIGHT_ABILITY_CHANGE_INVALID", pointer, "The Insight's +1 ability choice is outside its published authority.", supplied={"ability": ability, "amount": amount}, authority=rule))
+            if rule:
+                if not state["ability_scores"]:
+                    blockers.append(_block("ABILITY_SCORES_NOT_ESTABLISHED", pointer, "A Cultivation Insight ability increase requires a causal starting-score event."))
+                if ability not in rule.get("allowed_abilities", []) or amount != int(rule.get("amount", 1)):
+                    blockers.append(_block("CULTIVATION_INSIGHT_ABILITY_CHANGE_INVALID", pointer, "The Insight's typed ability choice is outside its published authority.", supplied={"ability": ability, "amount": amount}, authority=rule))
+                if not blockers:
+                    new_scores = deepcopy(state["ability_scores"])
+                    new_scores[ability] += amount
+                    if new_scores[ability] > int(rule.get("cap", 20)):
+                        blockers.append(_block("ABILITY_SCORE_CAP_EXCEEDED", pointer, "The Cultivation Insight would exceed the published ability cap.", cap=rule.get("cap", 20), ability=ability, score=new_scores[ability]))
+                    else:
+                        next_state["ability_scores"] = new_scores
+                        next_state["ability_modifiers"] = {a: _ability_modifier(v) for a, v in new_scores.items()}
+                        hp_after, resources_after, extra_bindings, recalc_trace = self._recalculate_after_ability(conn, row["project_id"], next_state, state["ability_scores"])
+                        bindings.extend(extra_bindings)
+                        calculation["inputs"] = {"prior_scores": state["ability_scores"], "ability": ability, "amount": amount, "rule": rule}
+                        calculation["outputs"] = {"ability_scores": new_scores, "ability_modifiers": next_state["ability_modifiers"], "hp_after": hp_after, "resources_after": resources_after}
+                        calculation["trace"] = recalc_trace
+            elif "ability" in details or "amount" in details:
+                blockers.append(_block("CULTIVATION_INSIGHT_ABILITY_CHANGE_UNAUTHORIZED", pointer + "/parameters", "This Insight does not publish a typed executable ability change; ability parameters are not legal."))
             if not blockers:
-                new_scores = deepcopy(state["ability_scores"])
-                new_scores[ability] += amount
-                if new_scores[ability] > int(rule.get("cap", 20)):
-                    blockers.append(_block("ABILITY_SCORE_CAP_EXCEEDED", pointer, "The Cultivation Insight would exceed the published ability cap.", cap=rule.get("cap", 20), ability=ability, score=new_scores[ability]))
-                else:
-                    next_state["ability_scores"] = new_scores
-                    next_state["ability_modifiers"] = {a: _ability_modifier(v) for a, v in new_scores.items()}
-                    hp_after, resources_after, extra_bindings, recalc_trace = self._recalculate_after_ability(conn, row["project_id"], next_state, state["ability_scores"])
-                    bindings.extend(extra_bindings)
-                    calculation["inputs"] = {"prior_scores": state["ability_scores"], "ability": ability, "amount": amount, "rule": rule}
-                    calculation["outputs"] = {"ability_scores": new_scores, "ability_modifiers": next_state["ability_modifiers"], "hp_after": hp_after, "resources_after": resources_after}
-                    calculation["trace"] = recalc_trace
-                    created_records = [record["record_id"]]
+                calculation.setdefault("inputs", {})
+                calculation["inputs"].update({
+                    "repeat_index": details["repeat_index"],
+                    "execution_authority": deepcopy(auth.get("execution_authority") or {}),
+                })
+                calculation.setdefault("outputs", {})
+                calculation["outputs"].update({
+                    "ability_change_applied": bool(rule),
+                    "execution_authority": deepcopy(auth.get("execution_authority") or {}),
+                    "insight_occurrence": {
+                        "record_id": record["record_id"],
+                        "event_id": event_id,
+                        "acquisition_cl": cl,
+                        "repeat_index": details["repeat_index"],
+                        "ability": ability if rule else None,
+                        "amount": amount if rule else None,
+                        "content_binding": {
+                            "pack_id": record["content_binding"]["pack_id"],
+                            "pack_version": record["content_binding"]["pack_version"],
+                            "pack_hash": record["content_binding"]["pack_hash"],
+                            "record_hash": record["record_hash"],
+                        },
+                        "source_evidence": [_source(record)],
+                        "execution_authority": deepcopy(auth.get("execution_authority") or {}),
+                    },
+                })
+                created_records = [record["record_id"]]
         elif kind == "path_acquisition":
             if record["record_id"] in state["paths"]:
                 blockers.append(_block("PATH_ALREADY_SELECTED", pointer, "A canonical Path may be acquired only once in the same initial proposal.", path_id=record["record_id"]))
@@ -1863,6 +1998,22 @@ class RulesCausalStage2Service:
             event_type = "author_metadata"
         elif kind == "printed_rule_grant":
             blockers.append(_block("PRINTED_RULE_GRANT_NOT_FULLY_TYPED", pointer, "Printed/source-rule grants require an exact published grant relation; generic free-form grants are blocked."))
+
+        sphere_component_kinds = {
+            "background_sphere_acquisition",
+            "sect_trial_sphere_acquisition",
+            "ai_bootstrap_sphere_acquisition",
+            "sphere_training_attempt",
+        }
+        sphere_components_applicable = kind in sphere_component_kinds and (
+            kind != "sphere_training_attempt"
+            or (training_txn is not None and training_txn.get("result") == "success")
+        )
+        if sphere_components_applicable and not blockers:
+            try:
+                calculation.setdefault("outputs", {})["automatic_component_authority"] = normalize_sphere_automatic_components(record)
+            except FoundryError as exc:
+                blockers.append(_block(exc.code, pointer, "The locked Sphere automatic-component authority cannot be normalized.", details=exc.details))
 
         if blockers:
             return None, state, blockers
@@ -3272,6 +3423,9 @@ class RulesCausalStage2Service:
                 "new_sphere_entitlements": [deepcopy(x) for x in state["new_sphere_entitlements"] if x["character_cl"] == cl],
                 "cultivation_insights_after_level": deepcopy(state["cultivation_insights"]),
                 "cultivation_insight_details": [record_detail(record_id) for record_id in state["cultivation_insights"]],
+                "cultivation_insight_occurrences": deepcopy(state["cultivation_insight_occurrences"]),
+                "automatic_sphere_component_receipts": deepcopy(state["automatic_sphere_component_receipts"]),
+                "automatic_sphere_components": deepcopy(state["automatic_sphere_components"]),
                 "training_sources_after_level": deepcopy(state["training_sources"]),
                 "training_source_details": [record_detail(record_id) for record_id in state["training_sources"]],
                 "known_spheres_after_level": deepcopy(state["known_spheres"]),

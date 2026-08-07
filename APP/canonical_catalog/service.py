@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Callable, Iterable
 
 from app.core import EXPECTED_FACTORY_HASH, FoundryError, sha256_file, sha256_json
+from sphere_component_authority import build_sphere_automatic_component_authority
 
 
 CANONICAL_STATUS = "CAT3_P1R_CANONICAL_CATALOG_SOURCE_READY_FOR_INDEPENDENT_REVIEW"
@@ -58,6 +59,18 @@ def _realm_for_cl(target_cl: int) -> str:
 
 def _base_ability_row(row: dict[str, Any]) -> dict[str, Any]:
     result = deepcopy(row)
+    # The generated CAT3 registry deliberately retains compiler diagnostics for
+    # audit/recovery.  They are not part of the owner-facing automatic
+    # component packet, however, and some historical diagnostics contain the
+    # literal placeholder marker.  Keep the source identity/classification
+    # fields while excluding only those QA prose fields from runtime
+    # projections and grant locks; the generated registry itself remains
+    # untouched and its record commitment is still carried below.
+    result.pop("reason", None)
+    result.pop("source_matrix_implementation_path", None)
+    source_matrix = result.get("source_matrix")
+    if isinstance(source_matrix, dict):
+        source_matrix.pop("implementation_path", None)
     result["owning_canonical_sphere_id"] = row.get("mapped_canonical_sphere_id")
     result["base_ability_id"] = row.get("runtime_component_id") or row.get("candidate_record_id")
     result["source_row_id"] = row.get("source_row_id") or row.get("candidate_record_id")
@@ -296,6 +309,16 @@ class CanonicalCatalogAuthorityService:
         # all 85 Spheres.  ``get_sphere`` promotes it into the main field.
         result["automatic_base_abilities"] = resolved_package if include_full else legacy_package
         result["resolved_automatic_base_abilities"] = resolved_package
+        result["automatic_component_authority"] = build_sphere_automatic_component_authority(
+            row["canonical_sphere_id"],
+            resolved_package,
+            source_identity={
+                "source_path": row["source_provenance"].get("source_path"),
+                "source_hash": row["source_provenance"].get("source_file_sha256"),
+                "source_anchor": row["source_provenance"].get("source_anchor"),
+                "source_record_commitment_sha256": row.get("record_commitment_sha256"),
+            },
+        )
         result["automatic_base_ability_package"] = deepcopy(row.get("automatic_base_ability_package") or {
             "status": "resolved_source_bound", "component_count": len(resolved_package),
         })
@@ -639,12 +662,22 @@ class CanonicalCatalogAuthorityService:
             raise FoundryError("TARGET_CL_INVALID", "Target Cultivation Level must be a positive integer.")
         data = self._load()
         acquired: list[str] = []
-        for raw in [*acquired_sphere_ids, *background_sphere_ids]:
+        explicit_acquired: set[str] = set()
+        background_acquired: set[str] = set()
+        for raw in acquired_sphere_ids:
             resolved = self.resolve_sphere_id(raw)
             if not resolved:
                 raise FoundryError("CANONICAL_SPHERE_REFERENCE_INVALID", "A selected Sphere or alias does not resolve to CAT3 canonical authority.", details={"value": raw})
             if resolved not in acquired:
                 acquired.append(resolved)
+            explicit_acquired.add(resolved)
+        for raw in background_sphere_ids:
+            resolved = self.resolve_sphere_id(raw)
+            if not resolved:
+                raise FoundryError("CANONICAL_SPHERE_REFERENCE_INVALID", "A selected Sphere or alias does not resolve to CAT3 canonical authority.", details={"value": raw})
+            if resolved not in acquired:
+                acquired.append(resolved)
+            background_acquired.add(resolved)
         free: dict[str, str] = {}
         for raw_sphere, raw_talent in (free_talent_grants or {}).items():
             sphere_id = self.resolve_sphere_id(raw_sphere)
@@ -760,6 +793,10 @@ class CanonicalCatalogAuthorityService:
         for sphere_id in acquired:
             talent_id = free.get(sphere_id)
             if not talent_id:
+                if sphere_id in background_acquired and sphere_id not in explicit_acquired:
+                    # Background route Talents are authenticated separately and
+                    # never consume a free ordinary-Talent grant.
+                    continue
                 errors.append({"code": "FREE_SPHERE_TALENT_REQUIRED", "sphere_id": sphere_id, "message": "Each acquired Sphere requires one owner-selected free ordinary Talent."})
                 continue
             talent = data["talent_by_id"].get(talent_id)

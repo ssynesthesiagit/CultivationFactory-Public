@@ -40,6 +40,7 @@ _PATH_KINDS = {"path_acquisition"}
 _METHOD_KINDS = {"method_acquisition", "method_activation"}
 _FOUNDATION_KINDS = {"foundation_acquisition", "foundation_expression", "foundation_stage"}
 _CANONICAL_KINDS = {
+    "cultivation_insight_acquisition",
     "sect_trial_sphere_acquisition",
     "sect_trial_talent_acquisition",
     "ai_bootstrap_sphere_acquisition",
@@ -47,6 +48,13 @@ _CANONICAL_KINDS = {
     "level_talent_acquisition",
     "new_sphere_bonus_talent_acquisition",
 }
+
+
+def _canonical_stage2_kind(kind: Any) -> Any:
+    """Normalize the legacy delegated Insight alias before authority checks."""
+    return "cultivation_insight_acquisition" if kind == "insight_acquisition" else kind
+
+
 _CATALOG_SPHERE_GRANT_KINDS = {
     "sect_trial_sphere_acquisition",
     "ai_bootstrap_sphere_acquisition",
@@ -70,9 +78,12 @@ _STAGE2_DELEGATED_SLOT_KINDS = {
     "foundation_expression": _FOUNDATION_SLOT,
     "foundation_stage": _FOUNDATION_SLOT,
     "background_acquisition": "background_choice",
-    "background_sphere_acquisition": "background_sphere_choice",
-    "background_talent_acquisition": "background_talent_choice",
+    # Background Sphere/Talent rows are authenticated route consequences.
+    # They remain in the typed Stage 2 catalog ledger, but are not delegated
+    # free-choice representations and therefore must not be checked against
+    # the bounded Stage 1 choice slots.
     "origin_insight_acquisition": "origin_insight_choice",
+    "cultivation_insight_acquisition": "insight_priorities",
     "insight_acquisition": "insight_priorities",
     "origin_insight_selection": "origin_insight_choice",
     "subpath_acquisition": "subpath_choice",
@@ -105,6 +116,16 @@ _SELECTION_ALIASES = {
     "item_ids": "item_priorities",
     "item_choice_ids": "item_priorities",
     "item_priority_ids": "item_priorities",
+}
+
+# The current CAT3 envelope publishes the canonical Background-Talent record
+# ID, while the bounded historical Stage 2 fixture carries the older compact
+# TAL_ alias.  Keep this compatibility explicit and slot-bound: it is a
+# representation alias, never a second selectable record or a fuzzy name
+# match.
+_LEGACY_CHOICE_ALIASES = {
+    "TAL_SCOUNDREL_HIDDEN_TOOL_CACHE": "tianxia.background_talent.scoundrel.hidden_tool_cache",
+    "tianxia.sphere.scoundrel": "tianxia.background_sphere.scoundrel",
 }
 
 
@@ -140,6 +161,18 @@ def _choice_map(slot: dict[str, Any]) -> dict[str, dict[str, Any]]:
         for row in slot.get("choices") or []
         if isinstance(row, dict) and isinstance(row.get("choice_id"), str)
     }
+
+
+def _canonical_slot_choice_id(envelope: dict[str, Any], slot_id: str, choice_id: str) -> str:
+    """Resolve only the published, explicit legacy alias for a slot value."""
+
+    rows = (envelope.get("choices_by_slot") or {}).get(slot_id) or {}
+    if choice_id in rows:
+        return choice_id
+    canonical = _LEGACY_CHOICE_ALIASES.get(choice_id)
+    if canonical and canonical in rows:
+        return canonical
+    return choice_id
 
 
 def _slot_lock_values(lock_values: dict[str, Any], slot_id: str) -> list[str]:
@@ -672,7 +705,7 @@ def _selection_candidates(plan: dict[str, Any]) -> dict[str, list[tuple[str, lis
     for row in (plan.get("stage2_proposal") or {}).get("choices") or []:
         if not isinstance(row, dict):
             continue
-        slot_id = _STAGE2_DELEGATED_SLOT_KINDS.get(row.get("kind"))
+        slot_id = _STAGE2_DELEGATED_SLOT_KINDS.get(_canonical_stage2_kind(row.get("kind")))
         if slot_id and row.get("record_id"):
             stage2_by_slot.setdefault(slot_id, []).append(row["record_id"])
     for slot_id, values in stage2_by_slot.items():
@@ -680,7 +713,7 @@ def _selection_candidates(plan: dict[str, Any]) -> dict[str, list[tuple[str, lis
     return candidates
 
 
-def catalog_stage2_selections(plan: dict[str, Any]) -> dict[str, list[str]]:
+def catalog_stage2_selections(plan: dict[str, Any]) -> dict[str, Any]:
     """Return the exact typed catalog/mechanical IDs carried by Stage 2.
 
     This is deliberately a projection of response authority, not a planner
@@ -688,7 +721,7 @@ def catalog_stage2_selections(plan: dict[str, Any]) -> dict[str, list[str]]:
     separate buckets so the server can derive the final grant accounting plan
     without silently treating a background route as an initial Sphere grant.
     """
-    result: dict[str, list[str]] = {
+    result: dict[str, Any] = {
         "path_ids": [],
         "method_ids": [],
         "foundation_ids": [],
@@ -701,6 +734,7 @@ def catalog_stage2_selections(plan: dict[str, Any]) -> dict[str, list[str]]:
         "free_sphere_talent_ids": [],
         "ordinary_talent_ids": [],
         "insight_ids": [],
+        "insight_occurrences": [],
         "item_ids": [],
     }
     buckets = {
@@ -717,6 +751,7 @@ def catalog_stage2_selections(plan: dict[str, Any]) -> dict[str, list[str]]:
         **{kind: "sphere_ids" for kind in _CATALOG_SPHERE_GRANT_KINDS},
         **{kind: "free_sphere_talent_ids" for kind in _CATALOG_FREE_TALENT_KINDS},
         **{kind: "ordinary_talent_ids" for kind in _CATALOG_ORDINARY_TALENT_KINDS},
+        "cultivation_insight_acquisition": "insight_ids",
         "insight_acquisition": "insight_ids",
         "item_acquisition": "item_ids",
         "equipment_acquisition": "item_ids",
@@ -724,10 +759,26 @@ def catalog_stage2_selections(plan: dict[str, Any]) -> dict[str, list[str]]:
     for row in (plan.get("stage2_proposal") or {}).get("choices") or []:
         if not isinstance(row, dict):
             continue
-        bucket = buckets.get(row.get("kind"))
+        canonical_kind = _canonical_stage2_kind(row.get("kind"))
+        bucket = buckets.get(canonical_kind)
         record_id = row.get("record_id")
         if bucket and isinstance(record_id, str) and record_id:
             result[bucket].append(record_id)
+        if canonical_kind == "cultivation_insight_acquisition" and isinstance(record_id, str) and record_id:
+            parameters = row.get("parameters") if isinstance(row.get("parameters"), dict) else {}
+            result["insight_occurrences"].append(
+                {
+                    "record_id": record_id,
+                    "effective_cl": row.get("effective_cl"),
+                    "legal_kind": "cultivation_insight_acquisition",
+                    "acquisition_channel": row.get("acquisition_channel"),
+                    "parameters": {
+                        key: deepcopy(parameters[key])
+                        for key in ("ability", "amount", "repeat_index")
+                        if key in parameters
+                    },
+                }
+            )
     return result
 
 
@@ -756,6 +807,16 @@ def _resolved_slot_values(envelope: dict[str, Any], plan: dict[str, Any]) -> tup
     resolved: dict[str, list[str]] = {}
     sources: dict[str, list[str]] = {}
     for slot_id, entries in _selection_candidates(plan).items():
+        entries = [
+            (
+                source,
+                [
+                    _canonical_slot_choice_id(envelope, slot_id, choice_id)
+                    for choice_id in values
+                ],
+            )
+            for source, values in entries
+        ]
         final_entries = [
             (source, values)
             for source, values in entries
@@ -1101,9 +1162,13 @@ def validate_delegated_choice_plan(
     for row in stage2_choices:
         if not isinstance(row, dict) or not row.get("record_id"):
             continue
-        slot_id = _STAGE2_DELEGATED_SLOT_KINDS.get(row.get("kind"))
+        slot_id = _STAGE2_DELEGATED_SLOT_KINDS.get(_canonical_stage2_kind(row.get("kind")))
         if slot_id:
-            _ensure_allowed(envelope, slot_id, [row["record_id"]])
+            _ensure_allowed(
+                envelope,
+                slot_id,
+                [_canonical_slot_choice_id(envelope, slot_id, row["record_id"])],
+            )
     proposed_path_ids = [row.get("record_id") for row in stage2_choices if isinstance(row, dict) and row.get("kind") in _PATH_KINDS and row.get("record_id")]
     if proposed_path_ids:
         _ensure_allowed(envelope, _PATH_SLOT, proposed_path_ids)

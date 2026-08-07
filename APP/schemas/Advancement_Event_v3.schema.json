@@ -16,7 +16,6 @@
                   "background_sphere_acquisition",
                   "background_talent_acquisition",
                   "origin_insight_acquisition",
-                  "cultivation_insight_acquisition",
                   "path_acquisition",
                   "sect_trial_sphere_acquisition",
                   "sect_trial_talent_acquisition",
@@ -47,6 +46,38 @@
             "properties": {
               "details": {
                 "maxProperties": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "cultivation_insight_acquisition"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "details": {
+                "maxProperties": 3,
+                "minProperties": 0,
+                "properties": {
+                  "ability": {
+                    "enum": ["STR", "DEX", "CON", "INT", "WIS", "CHA"]
+                  },
+                  "amount": {
+                    "type": "integer"
+                  },
+                  "repeat_index": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
               }
             }
           }
@@ -538,6 +569,12 @@
               "minLength": 1,
               "type": "string"
             },
+            "ability": {
+              "enum": ["STR", "DEX", "CON", "INT", "WIS", "CHA"]
+            },
+            "amount": {
+              "type": "integer"
+            },
             "method_id": {
               "minLength": 1,
               "type": "string"
@@ -568,6 +605,10 @@
             "route_commitment_sha256": {
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
+            },
+            "repeat_index": {
+              "minimum": 1,
+              "type": "integer"
             },
             "method_registry_commitment_sha256": {
               "pattern": "^[a-f0-9]{64}$",

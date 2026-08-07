@@ -84,6 +84,8 @@ class SchemaRegistry:
         "TianxiaFoundry.Stage2BlockerReport.v1": "Stage2_Blocker_Report.schema.json",
         "TianxiaFoundry.Stage2ReconciliationReport.v1": "Stage2_Reconciliation_Report.schema.json",
         "TianxiaFoundry.Stage2FieldProvenanceMap.v1": "Stage2_Field_Provenance_Map.schema.json",
+        "TianxiaFoundry.CultivationInsightStage2Authority.v1": "Cultivation_Insight_Stage2_Authority_v1.schema.json",
+        "TianxiaFoundry.SphereAutomaticComponentAuthority.v1": "Sphere_Automatic_Component_Authority_v1.schema.json",
     }
 
     def __init__(self, root_dir: Path):

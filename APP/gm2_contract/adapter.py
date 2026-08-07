@@ -6,9 +6,12 @@ import re
 import stat
 import unicodedata
 import zipfile
+from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any, Iterable
+
+from sphere_component_authority import build_sphere_automatic_component_authority
 
 GM_V1 = "Tianxia_GM_Character_Model_v1"
 GM_V2 = "Tianxia_GM_Character_Model_v2"
@@ -356,6 +359,103 @@ def _display_record(record: Any, package_sha: str, model_path: str, model_sha: s
     return {"stable_id": str(stable_id), "name": str(name), "short_description": str(short), "full_description": str(full), "source": _record_source(record, package_sha, model_path, model_sha), "acquisition_route": str(record.get("acquisition_route") or record.get("acquisition_type") or acquisition_route), "state": str(record.get("state") or "present"), "details": details}
 
 
+def _automatic_component_projection(model: dict[str, Any], sphere_rows: list[Any]) -> tuple[dict[str, dict[str, Any]], list[dict[str, Any]]]:
+    """Carry the locked Sphere component packets into the GM transport model."""
+    section = model.get("spheres_talents") or {}
+    packets: dict[str, dict[str, Any]] = {}
+    candidates: list[Any] = []
+    candidates.extend(section.get("automatic_sphere_component_receipts") or [] if isinstance(section, dict) else [])
+    candidates.extend(model.get("automatic_sphere_component_receipts") or [])
+    candidates.extend(sphere_rows)
+    for row in candidates:
+        if not isinstance(row, dict):
+            continue
+        packet = row.get("automatic_component_authority") if isinstance(row.get("automatic_component_authority"), dict) else row
+        parent = packet.get("parent_sphere_id") or row.get("stable_id") or row.get("sphere_id")
+        components = packet.get("components")
+        if isinstance(parent, str) and parent and isinstance(components, list):
+            candidate = {key: value for key, value in packet.items()}
+            prior = packets.get(parent)
+            if prior is not None and (
+                prior.get("package_hash") != candidate.get("package_hash")
+                or [row.get("component_hash") for row in prior.get("components") or []]
+                != [row.get("component_hash") for row in candidate.get("components") or []]
+            ):
+                raise GM2Error("GM2_CONFLICTING_SPHERE_COMPONENT_AUTHORITY", {"parent_sphere_id": parent})
+            packets[parent] = candidate
+
+    flat = []
+    flat.extend(section.get("automatic_sphere_components") or [] if isinstance(section, dict) else [])
+    flat.extend(model.get("automatic_sphere_components") or [])
+    by_parent: dict[str, list[dict[str, Any]]] = {}
+    for row in flat:
+        if isinstance(row, dict) and isinstance(row.get("parent_sphere_id"), str):
+            by_parent.setdefault(row["parent_sphere_id"], []).append(row)
+    for parent, rows in by_parent.items():
+        if parent not in packets:
+            packets[parent] = build_sphere_automatic_component_authority(parent, rows)
+
+    components: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for parent in sorted(packets):
+        for component in packets[parent].get("components") or []:
+            if not isinstance(component, dict):
+                continue
+            component_id = component.get("component_id")
+            if isinstance(component_id, str) and component_id not in seen:
+                seen.add(component_id)
+                components.append(component)
+    return packets, components
+
+
+def _insight_projection(model: dict[str, Any], package_sha: str, model_path: str, model_sha: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Expose the same ordinary Insight occurrences in GM2 as in the sheet."""
+    section = model.get("paths_subpaths_insights") or {}
+    raw_occurrences = model.get("cultivation_insight_occurrences") or section.get("cultivation_insight_occurrences") or []
+    if isinstance(raw_occurrences, dict):
+        raw_occurrences = raw_occurrences.get("occurrences") or raw_occurrences.get("items") or []
+    occurrences: list[dict[str, Any]] = []
+    for row in raw_occurrences if isinstance(raw_occurrences, list) else []:
+        if not isinstance(row, dict):
+            continue
+        record_id = row.get("record_id") or row.get("insight_id") or row.get("stable_id")
+        if not isinstance(record_id, str) or not record_id:
+            continue
+        normalized = deepcopy(row)
+        normalized.setdefault("record_id", record_id)
+        occurrences.append(normalized)
+    raw_rows = model.get("insights") or []
+    by_id: dict[str, dict[str, Any]] = {}
+    for row in raw_rows:
+        if not isinstance(row, dict):
+            continue
+        record_id = row.get("stable_id") or row.get("insight_id") or row.get("record_id")
+        if isinstance(record_id, str) and record_id:
+            by_id[record_id] = deepcopy(row)
+    ids = [value for value in section.get("cultivation_insight_record_ids") or [] if isinstance(value, str)]
+    ids.extend(row["record_id"] for row in occurrences)
+    for record_id in dict.fromkeys(ids):
+        row = by_id.get(record_id)
+        if row is None:
+            row = _display_record(
+                {"record_id": record_id, "display_name": record_id, "summary": "Ordinary Cultivation Insight occurrence."},
+                package_sha,
+                model_path,
+                model_sha,
+                fallback_id=record_id,
+                fallback_name=record_id,
+                acquisition_route="cultivation_insight_acquisition",
+            )
+        row.setdefault("stable_id", record_id)
+        row.setdefault("name", record_id)
+        row.setdefault("acquisition_route", "cultivation_insight_acquisition")
+        row.setdefault("state", "present")
+        row.setdefault("details", {})
+        row["details"]["occurrences"] = [deepcopy(item) for item in occurrences if item.get("record_id") == record_id]
+        by_id[record_id] = row
+    return [by_id[key] for key in sorted(by_id)], occurrences
+
+
 def _action(record: dict[str, Any], package_sha: str, model_path: str, model_sha: str, index: int) -> dict[str, Any]:
     economy = record.get("economy") or record.get("action_type") or record.get("bucket") or record.get("category") or "unspecified"
     return {
@@ -475,7 +575,15 @@ def _migrate_legacy(selected: dict[str, Any], package_sha: str) -> tuple[dict[st
     resources=[]
     if stats.get("primary_resource_name"):
         resources.append({"stable_id":f"tianxia.resource.{str(stats.get('primary_resource_name')).lower()}","name":str(stats.get("primary_resource_name")),"current":stats.get("primary_resource_current"),"maximum":stats.get("primary_resource_max"),"state":"present","recovery":"","path_id":next((p["path_id"] for p in paths if p["primary"]),""),"source":source})
-    spheres=[_display_record(x,package_sha,path,msha,fallback_id=f"sphere.{i}",fallback_name=f"Sphere {i}") for i,x in enumerate(((model.get("spheres_talents") or {}).get("spheres") or []),1)]
+    sphere_rows=((model.get("spheres_talents") or {}).get("spheres") or [])
+    spheres=[_display_record(x,package_sha,path,msha,fallback_id=f"sphere.{i}",fallback_name=f"Sphere {i}") for i,x in enumerate(sphere_rows,1)]
+    sphere_packets, automatic_components = _automatic_component_projection(model, sphere_rows)
+    insights, insight_occurrences = _insight_projection(model, package_sha, path, msha)
+    for sphere in spheres:
+        packet=sphere_packets.get(sphere["stable_id"])
+        if packet:
+            sphere["automatic_component_authority"]=packet
+            sphere["automatic_component_ids"]=list(packet.get("component_ids") or [])
     talents=[]
     for i,x in enumerate(((model.get("spheres_talents") or {}).get("talents") or []),1):
         r=_display_record(x,package_sha,path,msha,fallback_id=f"talent.{i}",fallback_name=f"Talent {i}")
@@ -496,7 +604,9 @@ def _migrate_legacy(selected: dict[str, Any], package_sha: str) -> tuple[dict[st
     states=[_display_record(x,package_sha,path,msha,fallback_id=f"state.{i}",fallback_name=f"State {i}") for i,x in enumerate(((model.get("equipment_resources_states") or {}).get("states") or []),1)]
     recorded=[_display_record(x,package_sha,path,msha,fallback_id=f"recorded_art.{i}",fallback_name=f"Recorded Art {i}") for i,x in enumerate(model.get("martial_manuals") or [],1)]
     forged=[_display_record(x,package_sha,path,msha,fallback_id=f"forged.{i}",fallback_name=f"Forged Technique {i}") for i,x in enumerate(model.get("forged_techniques") or [],1)]
-    incomplete=[{"surface":"automatic_base_abilities","state":"unavailable","reason":"The legacy Phase2H model predates separate automatic base-ability projection.","source_path":path},{"surface":"method_ap_authorized_paths","state":"unavailable","reason":"The legacy Method record does not explicitly enumerate AP-authorized Paths.","source_path":path},{"surface":"active_path_expressions","state":"unavailable","reason":"The legacy model does not encode a distinct active Path-expression surface.","source_path":path}]
+    automatic_surface_state="present" if automatic_components else "unavailable"
+    automatic_surface_reason="Canonical Sphere automatic-component packets are present." if automatic_components else "The legacy Phase2H model predates separate automatic base-ability projection."
+    incomplete=[{"surface":"automatic_base_abilities","state":automatic_surface_state,"reason":automatic_surface_reason,"source_path":path},{"surface":"method_ap_authorized_paths","state":"unavailable","reason":"The legacy Method record does not explicitly enumerate AP-authorized Paths.","source_path":path},{"surface":"active_path_expressions","state":"unavailable","reason":"The legacy model does not encode a distinct active Path-expression surface.","source_path":path}]
     diagnostics=[{"severity":"warning","code":"GM2_LEGACY_METHOD_AP_AUTHORITY_UNAVAILABLE","message":"Primary Method is preserved, but its AP-authorized Paths are not explicitly encoded.","source_path":path}]
     out={
       "schema":GM_V2,"schema_version":"2.0.0","metadata":_metadata(selected["profile"],package_sha,model,manifest,path,msha),
@@ -504,7 +614,7 @@ def _migrate_legacy(selected: dict[str, Any], package_sha: str) -> tuple[dict[st
       "cultivation":{"cultivation_level":cl,"realm":str(identity.get("realm") or stats.get("realm") or ""),"paths":paths,"primary_method":_state("present" if methods else "explicit_none",source_path=path,value=methods[0]["stable_id"] if methods else None,include_value=bool(methods)),"subpaths_traditions":_legacy_subpath(model,package_sha,path,msha),"foundation":_state("present" if foundation else "unavailable","Legacy source contains no Foundation record." if not foundation else "",path,value=foundation[0]["stable_id"] if foundation else None,include_value=bool(foundation)),"foundation_expressions":foundation,"active_path_expressions":[],"resources":resources},
       "combat":{"hit_points":{"current":stats.get("hp_current"),"maximum":stats.get("hp_max")},"armor_class":stats.get("ac_active"),"speed_ft":stats.get("speed_ft"),"attack_bonus":stats.get("technique_attack_bonus"),"save_dc":stats.get("save_dc"),"initiative_bonus":stats.get("initiative_bonus"),"saving_throws":_legacy_saves(stats),"runtime_contract":"not_duplicated"},
       "ability_scores":_ability_records_from_dict(stats.get("ability_scores") or {},stats.get("ability_modifiers") or {}),"skills":_skills_from_dict(stats.get("skills") or {},package_sha,path,msha),
-      "spheres":spheres,"automatic_base_abilities":[],"talents":talents,"actions":actions,"reactions":reactions,"methods":methods,"recorded_arts":recorded,"forged_techniques":forged,"equipment":equipment,"states":states,"companions":[],
+      "spheres":spheres,"automatic_base_abilities":automatic_components,"automatic_sphere_component_receipts":list(sphere_packets.values()),"automatic_sphere_components":automatic_components,"insights":insights,"cultivation_insight_occurrences":insight_occurrences,"talents":talents,"actions":actions,"reactions":reactions,"methods":methods,"recorded_arts":recorded,"forged_techniques":forged,"equipment":equipment,"states":states,"companions":[],
       "provenance":{"source_package_sha256":package_sha,"selected_model_path":path,"selected_model_sha256":msha,"source_references":[source]},
       "readiness":{"gm_ready":True,"contract_valid":True,"combat_runtime_separate":True,"diagnostics":diagnostics},"incomplete_surfaces":incomplete,
       "field_states":{"automatic_base_abilities":_state("unavailable",incomplete[0]["reason"],path),"method_ap_authorized_paths":_state("unavailable",incomplete[1]["reason"],path),"active_path_expressions":_state("unavailable",incomplete[2]["reason"],path),"combat_runtime":_state("not_applicable","Combat Sheet/runtime model is a separate contract.",path)}
@@ -536,7 +646,15 @@ def _migrate_fire(selected: dict[str, Any], package_sha: str) -> tuple[dict[str,
     definition=definitions[0] if definitions and isinstance(definitions[0],dict) else {}
     resource={"stable_id":str(definition.get("resource_id") or "tianxia.resource.qi"),"name":str(primary.get("name") or definition.get("name") or "Qi"),"current":primary.get("build_state_current") if isinstance(primary.get("build_state_current"),(int,float)) else definition.get("current"),"maximum":primary.get("maximum") if isinstance(primary.get("maximum"),(int,float)) else definition.get("max"),"state":"present","recovery":"","path_id":str(identity.get("path_id") or "tianxia.path.qi_cultivation"),"source":source}
     sphere_ids=_fire_record_ids(model,"sphere_record_ids")
+    sphere_rows=((model.get("spheres_talents") or {}).get("spheres") or [])
     spheres=[{"stable_id":sid,"name":" ".join(x.capitalize() for x in sid.split(".")[-1].split("_")),"short_description":"","full_description":"","source":_source(package_sha,path,msha,record_id=sid),"acquisition_route":"source_record_id","state":"present","details":{}} for sid in sphere_ids]
+    sphere_packets, automatic_components = _automatic_component_projection(model, sphere_rows)
+    insights, insight_occurrences = _insight_projection(model, package_sha, path, msha)
+    for sphere in spheres:
+        packet=sphere_packets.get(sphere["stable_id"])
+        if packet:
+            sphere["automatic_component_authority"]=packet
+            sphere["automatic_component_ids"]=list(packet.get("component_ids") or [])
     background_id=str((model.get("spheres_talents") or {}).get("background_talent_record_id") or "")
     talent_ids=_fire_record_ids(model,"learned_talent_record_ids")
     talents=[]
@@ -562,7 +680,9 @@ def _migrate_fire(selected: dict[str, Any], package_sha: str) -> tuple[dict[str,
     forged=[] if isinstance(forged_raw,dict) and forged_raw.get("state")=="none" else [_display_record(x,package_sha,path,msha,fallback_id=f"forged.{i}",fallback_name=f"Forged Technique {i}") for i,x in enumerate(forged_raw if isinstance(forged_raw,list) else [],1)]
     ers=model.get("equipment_resources_states") or {}; equipment=[_display_record(x,package_sha,path,msha,fallback_id=f"equipment.{i}",fallback_name=f"Equipment {i}") for i,x in enumerate(ers.get("equipment") or [],1)]; states=[_display_record(x,package_sha,path,msha,fallback_id=f"state.{i}",fallback_name=f"State {i}") for i,x in enumerate(ers.get("states") or [],1)]
     companions_raw=model.get("spirit_companions"); companions=[] if isinstance(companions_raw,dict) and companions_raw.get("state") in ("none","not_applicable") else [_display_record(x,package_sha,path,msha,fallback_id=f"companion.{i}",fallback_name=f"Companion {i}") for i,x in enumerate(companions_raw if isinstance(companions_raw,list) else [],1)]
-    incomplete=[{"surface":"automatic_base_abilities","state":"unavailable","reason":"The C2C.1 fixture predates CAT2 automatic base-ability projection.","source_path":path},{"surface":"current_primary_method","state":"explicit_none" if explicit_none else "unavailable","reason":str(method.get("reason") or "No supported current Primary Method record is present."),"source_path":path},{"surface":"method_ap_authorized_paths","state":"unavailable","reason":"No exact Method AP-authority list is encoded; migration does not infer one.","source_path":path},{"surface":"active_path_expressions","state":"unavailable","reason":"The C2C.1 fixture does not encode a distinct active Path-expression surface.","source_path":path}]
+    automatic_surface_state="present" if automatic_components else "unavailable"
+    automatic_surface_reason="Canonical Sphere automatic-component packets are present." if automatic_components else "The C2C.1 fixture predates CAT2 automatic base-ability projection."
+    incomplete=[{"surface":"automatic_base_abilities","state":automatic_surface_state,"reason":automatic_surface_reason,"source_path":path},{"surface":"current_primary_method","state":"explicit_none" if explicit_none else "unavailable","reason":str(method.get("reason") or "No supported current Primary Method record is present."),"source_path":path},{"surface":"method_ap_authorized_paths","state":"unavailable","reason":"No exact Method AP-authority list is encoded; migration does not infer one.","source_path":path},{"surface":"active_path_expressions","state":"unavailable","reason":"The C2C.1 fixture does not encode a distinct active Path-expression surface.","source_path":path}]
     diagnostics=[{"severity":"warning","code":"GM2_CURRENT_METHOD_AUTHORITY_INCOMPLETE","message":"The source explicitly has no selected Method while Qi Cultivation is historically advanced; migration preserves both facts and does not fabricate AP authority.","source_path":path}]
     if selected["runtime_package"]:
         diagnostics.append({"severity":"info","code":"GM2_COMBAT_RUNTIME_PRESENT_SEPARATE","message":"Combat runtime sidecars are present but are not copied into the GM transport model.","source_path":"combat/Combat_Sheet.json"})
@@ -572,7 +692,7 @@ def _migrate_fire(selected: dict[str, Any], package_sha: str) -> tuple[dict[str,
       "identity":{"character_id":str((model.get("metadata") or {}).get("project_id") or "c1a_fire_qi_proof"),"display_name":str(identity.get("display_name") or "Unnamed Character"),"species":str(identity.get("species") or ""),"creature_type":str(identity.get("creature_type") or ""),"size":str(identity.get("size") or ""),"title":_state("present" if identity.get("title") else "absent",str(identity.get("title_status") or "Owner omitted title."),path,value=identity.get("title"),include_value=bool(identity.get("title"))),"concept":str(identity.get("concept") or "")},
       "cultivation":{"cultivation_level":cl,"realm":str(identity.get("realm_display") or identity.get("realm") or ""),"paths":paths,"primary_method":_state("explicit_none" if explicit_none else ("present" if methods else "unavailable"),str(method.get("reason") or ""),path,value=methods[0]["stable_id"] if methods else None,include_value=bool(methods)),"subpaths_traditions":sub,"foundation":_state("explicit_none" if foundation_state.get("state") == "none" else ("present" if foundation else "unavailable"),str(foundation_state.get("reason") or "No exact Foundation record is available."),path,value=foundation[0]["stable_id"] if foundation else None,include_value=bool(foundation)),"foundation_expressions":foundation,"active_path_expressions":[],"resources":[resource]},
       "combat":{"hit_points":{"current":hp.get("build_state_current"),"maximum":hp.get("maximum")},"armor_class":ac.get("value"),"speed_ft":speed.get("walking_ft"),"attack_bonus":stats.get("technique_attack_bonus"),"save_dc":stats.get("technique_save_dc"),"initiative_bonus":stats.get("initiative_bonus"),"saving_throws":_fire_saves(stats),"runtime_contract":"not_duplicated"},
-      "ability_scores":_ability_records_from_list(stats.get("abilities") or []),"skills":_skills_from_list(stats.get("skills") or [],package_sha,path,msha),"spheres":spheres,"automatic_base_abilities":[],"talents":talents,"actions":actions,"reactions":reactions,"methods":methods,"recorded_arts":recorded,"forged_techniques":forged,"equipment":equipment,"states":states,"companions":companions,
+      "ability_scores":_ability_records_from_list(stats.get("abilities") or []),"skills":_skills_from_list(stats.get("skills") or [],package_sha,path,msha),"spheres":spheres,"automatic_base_abilities":automatic_components,"automatic_sphere_component_receipts":list(sphere_packets.values()),"automatic_sphere_components":automatic_components,"insights":insights,"cultivation_insight_occurrences":insight_occurrences,"talents":talents,"actions":actions,"reactions":reactions,"methods":methods,"recorded_arts":recorded,"forged_techniques":forged,"equipment":equipment,"states":states,"companions":companions,
       "provenance":{"source_package_sha256":package_sha,"selected_model_path":path,"selected_model_sha256":msha,"source_references":[source]},"readiness":{"gm_ready":True,"contract_valid":True,"combat_runtime_separate":True,"diagnostics":diagnostics},"incomplete_surfaces":incomplete,
       "field_states":{"automatic_base_abilities":_state("unavailable",incomplete[0]["reason"],path),"current_primary_method":_state(incomplete[1]["state"],incomplete[1]["reason"],path),"method_ap_authorized_paths":_state("unavailable",incomplete[2]["reason"],path),"active_path_expressions":_state("unavailable",incomplete[3]["reason"],path),"combat_runtime":_state("not_applicable","Combat Sheet/runtime model remains a separate contract.","combat/Combat_Sheet.json" if selected["runtime_package"] else path)}
     }
@@ -591,6 +711,9 @@ def _migrate_fire(selected: dict[str, Any], package_sha: str) -> tuple[dict[str,
 
 
 def normalize_view(model: dict[str, Any]) -> dict[str, Any]:
+    insight_rows = model.get("insights") or []
+    if not insight_rows:
+        insight_rows, _ = _insight_projection(model, "", "paths_subpaths_insights", "")
     return {
         "schema": VIEW_V2,
         "schema_version": "2.0.0",
@@ -621,6 +744,9 @@ def normalize_view(model: dict[str, Any]) -> dict[str, Any]:
         "sections": {
             "spheres": model["spheres"],
             "automatic_base_abilities": model["automatic_base_abilities"],
+            "automatic_sphere_component_receipts": model.get("automatic_sphere_component_receipts") or [],
+            "automatic_sphere_components": model.get("automatic_sphere_components") or [],
+            "insights": insight_rows,
             "talents": model["talents"],
             "actions": model["actions"],
             "reactions": model["reactions"],

@@ -193,6 +193,12 @@ def stage2_choices() -> list[dict[str, Any]]:
 def complete_plan(db: Database, project_id: str) -> dict[str, Any]:
     prompt = Stage1ClipboardService(db).generate_prompt(project_id)
     project = CharacterBuilderService(db).projects.get_project(project_id)["project"]
+    owner_locks = {
+        lock.get("field"): lock.get("value")
+        for lock in project.get("user_locks") or []
+        if isinstance(lock, dict) and isinstance(lock.get("field"), str)
+    }
+    owner_concept = str(owner_locks.get("concept") or "").strip()
     return {
         "schema": "TianxiaFoundry.CharacterCreationPlan.v2",
         "stage1_response": exact_stage1_response(prompt),
@@ -208,7 +214,7 @@ def complete_plan(db: Database, project_id: str) -> dict[str, Any]:
         },
         "owner_descriptive_fields": {
             "identity": {"name": W5_PROJECT_NAME},
-            "concept": "Qi Cultivation / Cinder Heart / Abandoned Orphan / Street-Hardened",
+            "concept": owner_concept,
         },
         "uncertainties": [],
         "fallbacks": [],

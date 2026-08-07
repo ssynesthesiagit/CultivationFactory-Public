@@ -2459,6 +2459,58 @@
               "$ref": "#/$defs/recordDetail"
             }
           },
+          "cultivation_insight_occurrences": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "required": [
+                "record_id",
+                "event_id",
+                "acquisition_cl",
+                "repeat_index",
+                "content_binding",
+                "source_evidence"
+              ],
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "event_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "acquisition_cl": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 20
+                },
+                "repeat_index": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "content_binding": {
+                  "type": "object"
+                },
+                "source_evidence": {
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "automatic_sphere_component_receipts": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "automatic_sphere_components": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
           "training_sources_after_level": {
             "type": "array",
             "uniqueItems": true,

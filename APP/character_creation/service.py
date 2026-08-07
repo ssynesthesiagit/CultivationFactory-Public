@@ -765,6 +765,7 @@ class CharacterCreationExecutionService:
         representation_requirements = {
             "sphere_priorities": ("sphere_ids", "Sphere"),
             "advancement_skeleton": ("ordinary_talent_ids", "Talent"),
+            "insight_priorities": ("insight_ids", "Insight"),
         }
         for slot_id, (bucket, label) in representation_requirements.items():
             if selected(slot_id) and not stage2[bucket] and not (
@@ -776,6 +777,18 @@ class CharacterCreationExecutionService:
                     details={"slot_id": slot_id, "stage2_bucket": bucket, "choice_ids": selected(slot_id)},
                     status_code=409,
                 )
+        selected_insights = selected("insight_priorities")
+        if selected_insights != list(stage2["insight_ids"]):
+            raise FoundryError(
+                "CG1_DELEGATED_CATALOG_REPRESENTATION_MISMATCH",
+                "The accepted final plan does not contain exactly the ordinary Insight IDs represented by Stage 2.",
+                details={
+                    "selected_insight_ids": selected_insights,
+                    "stage2_insight_ids": list(stage2["insight_ids"]),
+                    "stage2_insight_occurrences": deepcopy(stage2["insight_occurrences"]),
+                },
+                status_code=409,
+            )
         sphere_ids = list(stage2["sphere_ids"])
         free_talent_ids = list(stage2["free_sphere_talent_ids"])
         ordinary_talent_ids = list(stage2["ordinary_talent_ids"])
@@ -807,6 +820,9 @@ class CharacterCreationExecutionService:
                 )
             free_by_sphere[sphere_id] = talent_id
         try:
+            # Background Sphere/Talent choices remain on the separately
+            # authenticated Background route.  The CAT3 grant plan is limited
+            # to ordinary canonical Sphere/Talent acquisitions.
             grant_plan = catalog.validate_grant_plan_for_initial_creation(
                 target_cl=final_plan["target_cl"],
                 acquired_sphere_ids=sphere_ids,
@@ -827,6 +843,8 @@ class CharacterCreationExecutionService:
             "accepted_sphere_ids": deepcopy(sphere_ids),
             "accepted_free_sphere_talent_ids": deepcopy(free_talent_ids),
             "accepted_ordinary_talent_ids": deepcopy(ordinary_talent_ids),
+            "accepted_insight_ids": deepcopy(stage2["insight_ids"]),
+            "accepted_insight_occurrences": deepcopy(stage2["insight_occurrences"]),
             "accepted_background_sphere_ids": deepcopy(stage2["background_sphere_ids"]),
             "accepted_background_talent_ids": deepcopy(stage2["background_talent_ids"]),
             "accepted_path_ids": deepcopy(resolution.get("actual_advancing_path_ids") or []),

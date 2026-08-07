@@ -13,6 +13,8 @@ from contracts.canonical import normalize_core_catalog_record
 from contracts.registry import SchemaRegistry, ContractValidationError
 from content_packs.membership import create_direct_install_receipt, verify_pack_seal
 from security.integrity import IntegrityService
+from sphere_component_authority import build_sphere_automatic_component_authority
+from stage2.insight_authority import compile_insight_stage2_authority
 
 from app.core import (
     APP_VERSION,
@@ -348,6 +350,8 @@ class CoreCatalogImporter:
                         ],
                         "rule_id": f"cat3.{rid}.sphere-acquisition.v1",
                     }
+                elif content_type == "cultivation_insight" and raw.get("selectable") is True:
+                    stage2_authority = compile_insight_stage2_authority(raw, rid)
                 elif content_type == "talent" and raw.get("creator_selectability_can_be_evaluated_safely") is True:
                     stage2_authority = {
                         "authority_complete": True,
@@ -492,6 +496,16 @@ class CoreCatalogImporter:
         authority = _json(CAT3_AUTHORITY_PATH)
         source = authority["source_authority"]
         for sphere in authority["spheres"]:
+            component_packet = build_sphere_automatic_component_authority(
+                sphere["canonical_sphere_id"],
+                deepcopy(sphere.get("resolved_automatic_base_abilities") or sphere.get("automatic_base_abilities") or []),
+                source_identity={
+                    "source_path": source["compendium_path"],
+                    "source_hash": source["compendium_sha256"],
+                    "source_anchor": sphere["source_provenance"]["source_anchor"],
+                    "source_record_commitment_sha256": sphere.get("record_commitment_sha256"),
+                },
+            )
             yield _normalize_record(
                 record_id=sphere["canonical_sphere_id"],
                 content_type="sphere",
@@ -501,6 +515,7 @@ class CoreCatalogImporter:
                 source_anchor=sphere["source_provenance"]["source_anchor"],
                 raw={
                     **deepcopy(sphere),
+                    "automatic_component_authority": component_packet,
                     "authority_coverage": {"disposition": "cat3_compiled"},
                     "authority_summary": {"status": "CAT3_COMPILED", "stable_id": sphere["canonical_sphere_id"]},
                 },

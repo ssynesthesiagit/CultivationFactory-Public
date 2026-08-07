@@ -239,6 +239,15 @@ class CharacterSheetService:
         for feature in ledger.get("features") or []:
             if isinstance(feature, dict) and feature.get("feature_id"):
                 required.add(str(feature["feature_id"]))
+        for component in ledger.get("automatic_sphere_components") or []:
+            if isinstance(component, dict) and component.get("component_id"):
+                required.add(str(component["component_id"]))
+        for receipt in ledger.get("automatic_sphere_component_receipts") or []:
+            if not isinstance(receipt, dict):
+                continue
+            for component in receipt.get("components") or []:
+                if isinstance(component, dict) and component.get("component_id"):
+                    required.add(str(component["component_id"]))
         return required
 
     @staticmethod
@@ -369,6 +378,11 @@ class CharacterSheetService:
                 },
                 "capabilities": capabilities,
                 "display_only_not_execution_authority": bool(rule.get("display_only_not_execution_authority")),
+                "parent_sphere_id": rule.get("parent_sphere_id"),
+                "component_hash": rule.get("component_hash"),
+                "automatic_component_flags": deepcopy(rule.get("automatic_component_flags") or {}),
+                "owner_ruling": deepcopy(rule.get("owner_ruling") or {}),
+                "automatic_component_authority": deepcopy(rule.get("automatic_component_authority") or {}),
                 "combat_execution_note": (
                     "Typed combat execution is available."
                     if combat == "SUPPORTED"
@@ -697,6 +711,15 @@ class CharacterSheetService:
             "spheres_and_talents": {
                 "sphere_record_ids": [card["record_id"] for card in groups.get("spheres", [])],
                 "learned_talent_record_ids": [card["record_id"] for card in groups.get("talents", [])],
+                "cultivation_insight_record_ids": [card["record_id"] for card in groups.get("insights", [])],
+                "cultivation_insight_occurrences": deepcopy(ledger.get("cultivation_insight_occurrences") or []),
+                "automatic_sphere_component_receipts": deepcopy(ledger.get("automatic_sphere_component_receipts") or []),
+                "automatic_sphere_components": deepcopy(ledger.get("automatic_sphere_components") or []),
+                "automatic_sphere_component_record_ids": sorted({
+                    str(row.get("component_id"))
+                    for row in ledger.get("automatic_sphere_components") or []
+                    if isinstance(row, dict) and row.get("component_id")
+                }),
                 "background_talent_record_id": next(
                     (row.get("talent_id") for row in ledger.get("talents") or [] if row.get("acquisition_type") == "background_talent"),
                     None,

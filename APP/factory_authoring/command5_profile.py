@@ -241,7 +241,11 @@ class CharacterGMCommand5Profile:
             "identity":deepcopy(snapshot.get("identity")),"stats":deepcopy(snapshot.get("ability_scores_and_statistics")),
             "leveling_ledger":deepcopy((snapshot.get("advancement_history") or {}).get("levels") or []),
             "background_origin":deepcopy(snapshot.get("background_and_origin")),
-            "paths_subpaths_insights":deepcopy(snapshot.get("path_and_subpath")),
+            "paths_subpaths_insights": {
+                **deepcopy(snapshot.get("path_and_subpath") or {}),
+                "cultivation_insight_record_ids": deepcopy((snapshot.get("spheres_and_talents") or {}).get("cultivation_insight_record_ids") or []),
+                "cultivation_insight_occurrences": deepcopy((snapshot.get("spheres_and_talents") or {}).get("cultivation_insight_occurrences") or []),
+            },
             "spheres_talents":deepcopy(snapshot.get("spheres_and_talents")),
             "actions":actions,"composites":deepcopy(playbooks.get("playbooks") or []),
             "recorded_arts":self._typed_none(snapshot,"manuals"),"foundation":self._typed_none(snapshot,"foundation"),"method":self._typed_none(snapshot,"method"),
