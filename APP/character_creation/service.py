@@ -974,8 +974,28 @@ class CharacterCreationExecutionService:
             compile_kwargs = {"prior_attempt_id": prior_attempt_id}
             if accepted_final_plan is not None:
                 compile_kwargs["accepted_final_plan"] = accepted_final_plan
-            a=self._compile_once(run, plan, 1, **compile_kwargs)
-            b=self._compile_once(run, plan, 2, **compile_kwargs)
+            rebound_plan = self._plan_with_accepted_final_target(
+                run,
+                plan,
+                accepted_final_plan,
+            )
+            first_plan = deepcopy(rebound_plan)
+            second_plan = deepcopy(rebound_plan)
+            rebound_plan_sha256 = sha256_json(rebound_plan)
+            first_plan_sha256 = sha256_json(first_plan)
+            second_plan_sha256 = sha256_json(second_plan)
+            if first_plan_sha256 != rebound_plan_sha256 or second_plan_sha256 != rebound_plan_sha256:
+                raise FoundryError(
+                    "CG1_NONDETERMINISTIC_COMPILATION",
+                    "The central scratch-compilation plan rebind was not canonical.",
+                    details={
+                        "rebound_plan_sha256": rebound_plan_sha256,
+                        "first_plan_sha256": first_plan_sha256,
+                        "second_plan_sha256": second_plan_sha256,
+                    },
+                )
+            a=self._compile_once(run, first_plan, 1, **compile_kwargs)
+            b=self._compile_once(run, second_plan, 2, **compile_kwargs)
         finally:
             if previous_clock is None:
                 os.environ.pop("TIANXIA_DETERMINISTIC_UTC",None)
