@@ -23,6 +23,9 @@ from path_method_authority import (
 
 ENVELOPE_SCHEMA = "TianxiaFoundry.DelegatedChoiceAuthorityEnvelope.v1"
 FINAL_PLAN_SCHEMA = "TianxiaFoundry.CharacterCreationFinalPlan.v1"
+FROZEN_TARGET_CL_AUTHORITY_SCHEMA = "TianxiaFoundry.FrozenOwnerTargetCLAuthority.v1"
+TARGET_CL_MISMATCH_ERROR = "CG1_DELEGATED_TARGET_CL_MISMATCH"
+FINAL_PLAN_TARGET_CL_STALE_ERROR = "CG1_FINAL_PLAN_TARGET_CL_AUTHORITY_STALE"
 
 _PATH_SLOT = "path_choice"
 _METHOD_SLOT = "method_choice"
@@ -151,6 +154,207 @@ def _stable_hash(value: Any) -> str:
     return sha256_json(value)
 
 
+def frozen_owner_target_cl(project: dict[str, Any]) -> int:
+    """Return the one canonical target CL frozen by the owner/server.
+
+    Character Builder projects persist target CL as an immutable ``target_cl``
+    user lock.  Delegated planning must never fall back to a response value or
+    planner text when that lock is absent, malformed, or contradictory.
+    """
+
+    values = [
+        row.get("value")
+        for row in project.get("user_locks") or []
+        if isinstance(row, dict) and row.get("field") == "target_cl"
+    ]
+    if not values or any(type(value) is not int or not 1 <= value <= 20 for value in values) or len(set(values)) != 1:
+        raise FoundryError(
+            "CG1_FROZEN_TARGET_CL_AUTHORITY_INVALID",
+            "The project has no single valid immutable owner target CL for delegated character creation.",
+            details={
+                "project_id": project.get("project_id"),
+                "target_cl_lock_values": values,
+            },
+            status_code=409,
+        )
+    project_projection = project.get("target_cl")
+    if project_projection is not None and (
+        type(project_projection) is not int or project_projection != values[0]
+    ):
+        raise FoundryError(
+            "CG1_FROZEN_TARGET_CL_AUTHORITY_INVALID",
+            "The project target CL projections do not agree with the immutable owner target lock.",
+            details={
+                "project_id": project.get("project_id"),
+                "target_cl_lock": values[0],
+                "project_target_cl": project_projection,
+            },
+            status_code=409,
+        )
+    return values[0]
+
+
+def _target_context(run: dict[str, Any], project: dict[str, Any]) -> dict[str, Any]:
+    request = run.get("request") or {}
+    return {
+        "project_id": project.get("project_id") or run.get("project_id"),
+        "project_revision": project.get("revision") or run.get("starting_revision"),
+        "request_sha256": request.get("request_sha256"),
+        "content_lock_hash": (project.get("content_lock") or {}).get("lock_hash")
+        or request.get("content_lock_hash"),
+    }
+
+
+def _raise_target_mismatch(
+    run: dict[str, Any],
+    project: dict[str, Any],
+    *,
+    expected: int,
+    proposed: Any,
+    surface: str,
+    progression_target: Any = None,
+) -> None:
+    details = {
+        "expected_target_cl": expected,
+        "proposed_target_cl": proposed,
+        "surface": surface,
+        **_target_context(run, project),
+    }
+    if progression_target is not None:
+        details["stage2_progression_target_cl"] = progression_target
+    raise FoundryError(
+        TARGET_CL_MISMATCH_ERROR,
+        "The delegated response target CL must equal the exact frozen owner target before final-plan derivation or compilation.",
+        details=details,
+        status_code=409,
+    )
+
+
+def validate_delegated_target_cl(
+    run: dict[str, Any],
+    project: dict[str, Any],
+    plan: dict[str, Any],
+) -> int:
+    """Validate every delegated target-CL surface before final-plan derivation."""
+
+    envelope = ((run.get("request") or {}).get("delegated_choice_envelope") or {})
+    authority = envelope.get("frozen_owner_target_cl")
+    expected = frozen_owner_target_cl(project)
+    binding = envelope.get("binding") or {}
+    authority_binding = authority.get("binding") if isinstance(authority, dict) else None
+    if (
+        not isinstance(authority, dict)
+        or authority.get("schema") != FROZEN_TARGET_CL_AUTHORITY_SCHEMA
+        or authority.get("field") != "target_cl"
+        or type(authority.get("value")) is not int
+        or authority.get("value") != expected
+        or authority.get("delegated") is not False
+        or authority.get("immutable") is not True
+        or authority_binding != binding
+    ):
+        raise FoundryError(
+            "CG1_DELEGATED_TARGET_CL_AUTHORITY_STALE",
+            "The delegated envelope does not carry the exact frozen owner target CL bound to this request.",
+            details={
+                "expected_target_cl": expected,
+                "envelope_target_cl": authority.get("value") if isinstance(authority, dict) else None,
+                "project_id": project.get("project_id") or run.get("project_id"),
+                "project_revision": project.get("revision") or run.get("starting_revision"),
+                "request_sha256": (run.get("request") or {}).get("request_sha256"),
+            },
+            status_code=409,
+        )
+
+    proposed = plan.get("target_cl")
+    if type(proposed) is not int or proposed != expected:
+        _raise_target_mismatch(run, project, expected=expected, proposed=proposed, surface="complete_response.target_cl")
+
+    stage2 = plan.get("stage2_proposal")
+    if not isinstance(stage2, dict):
+        return expected
+    stage2_target = stage2.get("target_cl")
+    if type(stage2_target) is not int or stage2_target != expected:
+        _raise_target_mismatch(run, project, expected=expected, proposed=stage2_target, surface="stage2_proposal.target_cl")
+
+    choices = stage2.get("choices")
+    if not isinstance(choices, list):
+        return expected
+    level_targets: list[int] = []
+    for index, row in enumerate(choices):
+        if not isinstance(row, dict):
+            continue
+        row_target = row.get("target_cl")
+        if "target_cl" in row and (type(row_target) is not int or row_target != expected):
+            _raise_target_mismatch(
+                run,
+                project,
+                expected=expected,
+                proposed=row_target,
+                surface=f"stage2_proposal.choices[{index}].target_cl",
+            )
+        effective_cl = row.get("effective_cl")
+        if "effective_cl" not in row:
+            continue
+        if type(effective_cl) is not int or effective_cl < 0 or effective_cl > expected:
+            _raise_target_mismatch(
+                run,
+                project,
+                expected=expected,
+                proposed=effective_cl,
+                surface=f"stage2_proposal.choices[{index}].effective_cl",
+            )
+        if row.get("kind") == "level_advance":
+            level_targets.append(effective_cl)
+    if level_targets and max(level_targets) != expected:
+        _raise_target_mismatch(
+            run,
+            project,
+            expected=expected,
+            proposed=max(level_targets),
+            surface="stage2_proposal.level_advance_rows",
+            progression_target=max(level_targets),
+        )
+    return expected
+
+
+def validate_accepted_final_plan_target(
+    run: dict[str, Any],
+    project: dict[str, Any],
+    final_plan: dict[str, Any],
+) -> int:
+    """Reject P1A/P1AR1 final plans that lack proven frozen target authority."""
+
+    expected = frozen_owner_target_cl(project)
+    authority = final_plan.get("target_cl_authority")
+    envelope = ((run.get("request") or {}).get("delegated_choice_envelope") or {})
+    envelope_authority = envelope.get("frozen_owner_target_cl")
+    valid = (
+        type(final_plan.get("target_cl")) is int
+        and final_plan.get("target_cl") == expected
+        and isinstance(authority, dict)
+        and authority.get("schema") == FROZEN_TARGET_CL_AUTHORITY_SCHEMA
+        and authority.get("field") == "target_cl"
+        and authority.get("value") == expected
+        and authority.get("delegated") is False
+        and authority.get("immutable") is True
+        and authority.get("envelope_sha256") == envelope.get("envelope_sha256")
+        and isinstance(envelope_authority, dict)
+    )
+    if not valid:
+        raise FoundryError(
+            FINAL_PLAN_TARGET_CL_STALE_ERROR,
+            "This delegated final plan predates frozen target-CL authority and must be regenerated from the current request.",
+            details={
+                "expected_target_cl": expected,
+                "final_plan_target_cl": final_plan.get("target_cl"),
+                "final_plan_target_cl_authority": authority.get("value") if isinstance(authority, dict) else None,
+                **_target_context(run, project),
+            },
+            status_code=409,
+        )
+    return expected
+
+
 def _authority_mapping(row: dict[str, Any]) -> dict[str, Any]:
     value = row.get("authority") if isinstance(row, dict) else None
     return value if isinstance(value, dict) else {}
@@ -213,6 +417,7 @@ def build_delegated_choice_envelope(
         }
 
     content_lock = project.get("content_lock") or {}
+    frozen_target_cl = frozen_owner_target_cl(project)
     path_authority = deepcopy(prompt_envelope.get("path_method_authority") or {})
     owner_name = locks.get("character.identity.display_name")
     if owner_name is None:
@@ -238,15 +443,25 @@ def build_delegated_choice_envelope(
         slot_id for slot_id, required in by_slot.items()
         if not required and slot_id not in {_PATH_SLOT}
     ]
+    binding = {
+        "project_id": project.get("project_id"),
+        "project_revision": project.get("revision"),
+        "catalog_build_id": content_lock.get("catalog_build_id"),
+        "content_lock_hash": content_lock.get("lock_hash"),
+        "stage1_prompt_id": prompt.get("prompt_id"),
+        "stage1_prompt_sha256": prompt.get("prompt_sha256"),
+    }
     payload = {
         "schema": ENVELOPE_SCHEMA,
-        "binding": {
-            "project_id": project.get("project_id"),
-            "project_revision": project.get("revision"),
-            "catalog_build_id": content_lock.get("catalog_build_id"),
-            "content_lock_hash": content_lock.get("lock_hash"),
-            "stage1_prompt_id": prompt.get("prompt_id"),
-            "stage1_prompt_sha256": prompt.get("prompt_sha256"),
+        "binding": binding,
+        "frozen_owner_target_cl": {
+            "schema": FROZEN_TARGET_CL_AUTHORITY_SCHEMA,
+            "field": "target_cl",
+            "value": frozen_target_cl,
+            "source": "project.user_locks[field=target_cl]",
+            "delegated": False,
+            "immutable": True,
+            "binding": deepcopy(binding),
         },
         "owner_locks": {
             "by_slot": by_slot,
@@ -791,6 +1006,7 @@ def validate_delegated_choice_plan(
     expected_binding = {key: binding.get(key) for key in actual_binding}
     if actual_binding != expected_binding:
         _raise("CG1_DELEGATED_ENVELOPE_STALE", "The project revision or content lock changed after the delegated request was frozen.", details={"expected": expected_binding, "actual": actual_binding})
+    target_cl = validate_delegated_target_cl(run, project, plan)
     locks = _locks(project)
     if _stable_hash(_owner_user_locks(project)) != (envelope.get("owner_locks") or {}).get("lock_sha256"):
         _raise("CG1_DELEGATED_OWNER_LOCKS_CHANGED", "Owner locks changed after the delegated request was frozen.")
@@ -1000,6 +1216,11 @@ def validate_delegated_choice_plan(
         "project_revision": project.get("revision"),
         "content_lock_hash": (project.get("content_lock") or {}).get("lock_hash"),
         "catalog_build_id": (project.get("content_lock") or {}).get("catalog_build_id"),
+        "target_cl": target_cl,
+        "target_cl_authority": {
+            **deepcopy(envelope.get("frozen_owner_target_cl") or {}),
+            "envelope_sha256": envelope.get("envelope_sha256"),
+        },
         "request_sha256": run.get("request", {}).get("request_sha256"),
         "response_sha256": response_sha256 or run.get("response", {}).get("response_sha256"),
         "idempotency_key": run.get("idempotency_key"),

@@ -27,6 +27,8 @@ from character_creation.delegated_choice_authority import (
     build_delegated_choice_envelope,
     catalog_stage2_selections,
     final_plan_sha256,
+    validate_accepted_final_plan_target,
+    validate_delegated_target_cl,
     response_authority_representations,
     validate_delegated_choice_plan,
 )
@@ -718,6 +720,28 @@ class CharacterCreationExecutionService:
     def _has_delegated_envelope(run: dict[str, Any]) -> bool:
         return bool((run.get("request") or {}).get("delegated_choice_envelope"))
 
+    def _plan_with_accepted_final_target(
+        self,
+        run: dict[str, Any],
+        plan: dict[str, Any],
+        accepted_final_plan: dict[str, Any] | None,
+    ) -> dict[str, Any]:
+        """Make every compilation surface consume the accepted target CL."""
+
+        if not self._has_delegated_envelope(run) or accepted_final_plan is None:
+            return plan
+        target_cl = validate_accepted_final_plan_target(
+            run,
+            self._project(run["project_id"]),
+            accepted_final_plan,
+        )
+        bound = deepcopy(plan)
+        bound["target_cl"] = target_cl
+        stage2 = bound.get("stage2_proposal")
+        if isinstance(stage2, dict):
+            stage2["target_cl"] = target_cl
+        return bound
+
     def _derive_delegated_final_grant_plan(
         self,
         run: dict[str, Any],
@@ -784,7 +808,7 @@ class CharacterCreationExecutionService:
             free_by_sphere[sphere_id] = talent_id
         try:
             grant_plan = catalog.validate_grant_plan_for_initial_creation(
-                target_cl=plan["target_cl"],
+                target_cl=final_plan["target_cl"],
                 acquired_sphere_ids=sphere_ids,
                 free_talent_grants=free_by_sphere,
                 ordinary_talent_ids=ordinary_talent_ids,
@@ -798,6 +822,7 @@ class CharacterCreationExecutionService:
         final_plan["canonical_grant_plan"] = grant_plan
         final_plan["canonical_grant_plan_sha256"] = sha256_json(grant_plan)
         final_plan["catalog_response_authority"] = {
+            "target_cl": final_plan["target_cl"],
             "stage2_mechanical_choices": deepcopy(stage2),
             "accepted_sphere_ids": deepcopy(sphere_ids),
             "accepted_free_sphere_talent_ids": deepcopy(free_talent_ids),
@@ -823,6 +848,15 @@ class CharacterCreationExecutionService:
     ) -> dict[str, Any] | None:
         if not self._has_delegated_envelope(run):
             return None
+        from project_store.service import ProjectStore
+        store = self.projects if authority_db is self.db else ProjectStore(authority_db)
+        project_result = store.get_project(run["project_id"])
+        project = deepcopy(project_result.get("project") or project_result)
+        validate_accepted_final_plan_target(
+            run,
+            project,
+            final_plan,
+        )
         grant_plan = deepcopy(final_plan.get("canonical_grant_plan"))
         if not isinstance(grant_plan, dict) or grant_plan.get("schema") != "TianxiaFactory.CanonicalGrantPlan.v1":
             raise FoundryError(
@@ -830,8 +864,6 @@ class CharacterCreationExecutionService:
                 "Delegated compilation requires the server-derived canonical final grant plan.",
                 status_code=409,
             )
-        from project_store.service import ProjectStore
-        store = self.projects if authority_db is self.db else ProjectStore(authority_db)
         store.materialize_server_derived_user_lock(
             run["project_id"],
             field=DELEGATED_FINAL_CATALOG_GRANT_FIELD,
@@ -850,6 +882,7 @@ class CharacterCreationExecutionService:
         prior_attempt_id: str | None = None,
         accepted_final_plan: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
+        compile_plan = self._plan_with_accepted_final_target(run, plan, accepted_final_plan)
         choice_snapshot = self._require_frozen_choice_snapshot(run)
         with tempfile.TemporaryDirectory(prefix=f"cg1-scratch-{index}-", ignore_cleanup_errors=True) as td:
             root=Path(td); data=root/"data"
@@ -864,7 +897,7 @@ class CharacterCreationExecutionService:
                 phase="scratch_compile",
             )
             stage1=services["stage1"]
-            s1=plan["stage1_response"]; text=s1 if isinstance(s1,str) else canonical_json(s1)
+            s1=compile_plan["stage1_response"]; text=s1 if isinstance(s1,str) else canonical_json(s1)
             attempt=stage1.validate_response(
                 run["request"]["stage1_prompt"]["prompt_id"],
                 text,
@@ -876,7 +909,7 @@ class CharacterCreationExecutionService:
             stage1_commit=stage1.approve_and_commit(attempt.get("attempt_id"),self.owner_principal)
             method_access_receipt = self._materialize_method_hard_lock(run, scratch_db, phase="scratch_compile")
             stage2_validation,stage2_commit=self._stage2_commit(
-                services["stage2"], deepcopy(plan["stage2_proposal"]), self.owner_principal,
+                services["stage2"], deepcopy(compile_plan["stage2_proposal"]), self.owner_principal,
                 creation_run=run, phase="scratch_compile",
             )
             self._issue_initial_catalog_provenance(
@@ -902,7 +935,7 @@ class CharacterCreationExecutionService:
                 gm_result=self._invoke(services["gm_consumer"],("verify","consume","import_package"),gm)
                 portable=self._invoke(services["portable_characters"],("build_for_project","build_verified","export","verified_status"),run["project_id"])
             combat=None
-            if bool((plan.get("output_profile") or {}).get("combat_ready")):
+            if bool((compile_plan.get("output_profile") or {}).get("combat_ready")):
                 combat=self._invoke(services["combat_readiness"],("compile","build","verify"),run["project_id"])
             artifacts={"stage1":stage1_commit,"stage2_validation":stage2_validation,"stage2":stage2_commit,"method_access":method_access_receipt,"ledger":projection,"projection":projection,"character_sheet":sheet,"factory_authoring":authoring,"gm_model":gm,"gm_consumer":gm_result,"portable_character":portable,"combat":combat}
             identity_artifacts=artifacts
@@ -920,9 +953,9 @@ class CharacterCreationExecutionService:
                     },
                 }
             identities={k:sha256_json(self._identity_payload(v)) for k,v in identity_artifacts.items() if v is not None}
-            preview={"identity":deepcopy(plan.get("owner_descriptive_fields") or {}),"target_cl":plan.get("target_cl"),"compiled":deepcopy(artifacts),"readiness":{k:{"service":k,"identity":identities.get(k),"verification_status":"VERIFIED","receipt":deepcopy(artifacts.get(k))} for k in REQUIRED_SURFACES},"uncertainties":deepcopy(plan.get("uncertainties") or []),"fallbacks":deepcopy(plan.get("fallbacks") or [])}
+            preview={"identity":deepcopy(compile_plan.get("owner_descriptive_fields") or {}),"target_cl":compile_plan.get("target_cl"),"compiled":deepcopy(artifacts),"readiness":{k:{"service":k,"identity":identities.get(k),"verification_status":"VERIFIED","receipt":deepcopy(artifacts.get(k))} for k in REQUIRED_SURFACES},"uncertainties":deepcopy(compile_plan.get("uncertainties") or []),"fallbacks":deepcopy(compile_plan.get("fallbacks") or [])}
             if combat is not None: preview["readiness"]["combat"]={"service":"combat_readiness","identity":identities["combat"],"verification_status":"VERIFIED","receipt":deepcopy(combat)}
-            candidate_identity=sha256_json({"plan_sha256":sha256_json(plan),"typed_choice_snapshot_sha256":choice_snapshot["snapshot_sha256"],"identities":identities})
+            candidate_identity=sha256_json({"plan_sha256":sha256_json(compile_plan),"typed_choice_snapshot_sha256":choice_snapshot["snapshot_sha256"],"identities":identities})
             return {"schema":"TianxiaFoundry.CompiledCharacterCandidate.v3","candidate_identity":candidate_identity,"typed_choice_snapshot":deepcopy(choice_snapshot),"identities":identities,"preview":preview,"artifacts":artifacts}
 
     def _compile_twice(
@@ -1062,6 +1095,13 @@ class CharacterCreationExecutionService:
             plan,
             submitted_request_sha256=submitted_request_sha256,
         )
+        project = self._project(run["project_id"])
+        delegated_run = self._has_delegated_envelope(run)
+        if delegated_run:
+            # This is deliberately before generic component validation and
+            # before final-plan derivation so omitted, stringified, or changed
+            # target values all receive the one actionable authority error.
+            validate_delegated_target_cl(run, project, plan)
         blockers=[]; warnings=[]
         for k in ("stage1_response","target_cl","stage2_proposal","owner_descriptive_fields","uncertainties","fallbacks","output_profile"):
             if k not in plan: blockers.append({"code":"CG1_PLAN_COMPONENT_MISSING","field":k,"message":f"The complete plan is missing {k}."})
@@ -1071,7 +1111,7 @@ class CharacterCreationExecutionService:
         if blockers: raise FoundryError("CG1_PLAN_BLOCKED","The plan cannot enter local compilation.",details={"blockers":blockers})
         final_plan = validate_delegated_choice_plan(
             run,
-            self._project(run["project_id"]),
+            project,
             plan,
             response_sha256=sha256_bytes(raw),
         )
@@ -1093,7 +1133,6 @@ class CharacterCreationExecutionService:
                 "immutable_after_validation": True,
             }
             final_plan["final_plan_sha256"] = final_plan_sha256(final_plan)
-        delegated_run = self._has_delegated_envelope(run)
         if delegated_run:
             final_plan = self._derive_delegated_final_grant_plan(run, plan, final_plan)
         else:
@@ -1598,8 +1637,9 @@ class CharacterCreationExecutionService:
             self.db,
             phase="finalization",
         )
+        execute_plan = self._plan_with_accepted_final_target(run, plan, accepted_final_plan)
         svc=self._live_pipeline(); outputs={}
-        text=plan["stage1_response"] if isinstance(plan["stage1_response"],str) else canonical_json(plan["stage1_response"])
+        text=execute_plan["stage1_response"] if isinstance(execute_plan["stage1_response"],str) else canonical_json(execute_plan["stage1_response"])
         attempt=svc["stage1"].validate_response(
             run["request"]["stage1_prompt"]["prompt_id"],
             text,
@@ -1609,7 +1649,7 @@ class CharacterCreationExecutionService:
         outputs["method_access"] = self._materialize_method_hard_lock(run, self.db, phase="finalization")
         if fail_after=="stage1": raise RuntimeError("forced failure after stage1")
         outputs["stage2_validation"],outputs["stage2"]=self._stage2_commit(
-            svc["stage2"], deepcopy(plan["stage2_proposal"]), self.owner_principal,
+            svc["stage2"], deepcopy(execute_plan["stage2_proposal"]), self.owner_principal,
             creation_run=run, phase="finalization",
         )
         if fail_after=="stage2": raise RuntimeError("forced failure after stage2")
@@ -1648,7 +1688,7 @@ class CharacterCreationExecutionService:
             if fail_after=="gm_consumer": raise RuntimeError("forced failure after gm_consumer")
             outputs["portable_character"]=self._invoke(svc["portable_characters"],("build_for_project","build_verified","export","verified_status"),run["project_id"])
         if fail_after in {"portable","portable_registration"}: raise RuntimeError("forced failure after portable")
-        if bool((plan.get("output_profile") or {}).get("combat_ready")):
+        if bool((execute_plan.get("output_profile") or {}).get("combat_ready")):
             outputs["combat"]=self._invoke(svc["combat_readiness"],("compile","build","verify"),run["project_id"])
             if fail_after=="combat": raise RuntimeError("forced failure after combat")
         return outputs
@@ -1662,6 +1702,8 @@ class CharacterCreationExecutionService:
             raise FoundryError("CG1_FINAL_PLAN_REQUIRED", "Finalization requires the server-owned accepted final plan.", status_code=409)
         if final_plan_sha256(final_plan) != final_plan.get("final_plan_sha256") or final_plan.get("immutable_after_validation") is not True:
             raise FoundryError("CG1_FINAL_PLAN_INTEGRITY_FAILED", "The accepted final plan failed its immutable hash check.", status_code=409)
+        if self._has_delegated_envelope(run):
+            validate_accepted_final_plan_target(run, self._project(run["project_id"]), final_plan)
         approved_by = self.owner_principal
         if self._revision(run["project_id"])!=run["starting_revision"] or self._content_lock_hash(run["project_id"])!=run["request"].get("content_lock_hash"):
             raise FoundryError("CG1_STALE_RUN","The project revision or content lock changed after preview.",status_code=409)
@@ -1669,6 +1711,8 @@ class CharacterCreationExecutionService:
         plan, raw = self._parse_plan(response_text)
         if sha256_bytes(raw) != run["response"].get("response_sha256") or sha256_json(plan) != run["validation"].get("plan_sha256"):
             raise FoundryError("CG1_APPROVED_RESPONSE_DIVERGED","The exact approved response bytes no longer match the reviewed request.",status_code=409)
+        if self._has_delegated_envelope(run):
+            validate_delegated_target_cl(run, self._project(run["project_id"]), plan)
         if final_plan.get("plan_sha256") and final_plan.get("plan_sha256") != sha256_json(plan):
             raise FoundryError("CG1_FINAL_PLAN_BINDING_DIVERGED", "The accepted final plan is not bound to the exact reviewed plan.", status_code=409)
         if final_plan.get("response_sha256") != run["response"].get("response_sha256") or final_plan.get("request_sha256") != run["request"].get("request_sha256"):

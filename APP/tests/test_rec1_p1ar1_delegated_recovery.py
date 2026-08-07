@@ -267,6 +267,9 @@ def test_jiang_yun_normal_wizard_delegated_authority_recovery(catalog_environmen
     assert _canonical_state(app.state.db, project_id) == before_preview
 
     final_plan = preview["final_plan"]
+    assert final_plan["target_cl"] == 5
+    assert final_plan["target_cl_authority"]["value"] == 5
+    assert final_plan["catalog_response_authority"]["target_cl"] == 5
     accepted_grant_plan = final_plan["canonical_grant_plan"]
     assert accepted_grant_plan["acquired_canonical_sphere_ids"] == [FIRE]
     assert final_plan["canonical_grant_plan_sha256"] == sha256_json(accepted_grant_plan)

@@ -14,7 +14,7 @@ from path_method_authority import CANONICAL_PATH_IDS
 
 
 def _project(path_ids: list[str] | None = None) -> dict:
-    locks = []
+    locks = [{"field": "target_cl", "value": 1, "source": "rec1-p1ar2-test"}]
     if path_ids:
         locks.append({
             "field": "character_sheet.locked_choices",
@@ -87,7 +87,7 @@ def _plan(*, paths: list[str] | None = None, method: str | None = "METHOD-ALL", 
         "schema": "TianxiaFoundry.CharacterCreationPlan.v2",
         "target_cl": 1,
         "delegated_choice_selections": {"by_slot": by_slot},
-        "stage2_proposal": {"choices": [], "planner_rationale": "Prose cannot grant a choice."},
+        "stage2_proposal": {"target_cl": 1, "choices": [], "planner_rationale": "Prose cannot grant a choice."},
         "owner_descriptive_fields": {"identity": {"name": ""}, "concept": ""},
     }
 
@@ -113,6 +113,8 @@ def _raises(code: str, plan: dict, project: dict | None = None, envelope: dict |
 
 def test_zero_owner_locks_offer_all_paths_and_ai_method_grants_are_authoritative():
     project, envelope, run = _authority()
+    assert envelope["frozen_owner_target_cl"]["value"] == 1
+    assert envelope["frozen_owner_target_cl"]["delegated"] is False
     assert envelope["owner_locks"]["by_slot"]["path_choice"] == []
     assert envelope["owner_locks"]["zero_owner_path_locks_are_legal"] is True
     assert envelope["offered_choice_ids_by_slot"]["path_choice"] == list(CANONICAL_PATH_IDS)
@@ -120,6 +122,8 @@ def test_zero_owner_locks_offer_all_paths_and_ai_method_grants_are_authoritative
     plan = _plan(paths=list(CANONICAL_PATH_IDS), method="METHOD-ALL", sphere=["SPHERE-FIRE"])
     final = validate_delegated_choice_plan(run, project, plan, response_sha256="RESPONSE-4")
     assert final is not None
+    assert final["target_cl"] == 1
+    assert final["target_cl_authority"]["value"] == 1
     resolution = final["resolution"]
     assert resolution["actual_advancing_path_ids"] == list(CANONICAL_PATH_IDS)
     assert resolution["actual_advancing_path_ids"] == resolution["method_granted_path_ids"]
