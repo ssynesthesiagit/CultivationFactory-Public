@@ -419,6 +419,12 @@ class FactoryAuthoringWorkspaceService:
             row["gm_display"] = "SUPPORTED"
             row["combat_execution_preserved"] = row.get("combat_execution")
             row["ai_policy_preserved"] = row.get("ai_policy")
+        selected_method = deepcopy(snapshot.get("method") or {})
+        method_audit = (
+            selected_method
+            if selected_method.get("state") == "acquired" and selected_method.get("record_id")
+            else deepcopy((snapshot.get("explicit_none_systems") or {}).get("method") or {"state": "none", "source_backed": True})
+        )
 
         command1 = {
             "Build_Request.json": {"schema_version": "TianxiaFoundry.C2B2BuildRequest.v1", "project_id": project["project_id"], "project_revision": project["revision"], "character_name": identity["display_name"], "target_cl": identity["cultivation_level"], "target_realm": identity["realm"], "requested_boundary": "GM tactical authoring and Command 1–4 workspace inputs only", "command5_authorized": False, "command6_authorized": False},
@@ -440,7 +446,7 @@ class FactoryAuthoringWorkspaceService:
             "Subsystem_Completion_Ledger.json": {"schema_version": "TianxiaFoundry.C2B2SubsystemCompletion.v1", "status":"COMMAND_3_CHASSIS_COMPLETE", "advancement":"ADVANCEMENT_READY", "character_sheet":"CHARACTER_SHEET_READY", "gm_authoring":"COMPLETE_AS_WORKSPACE_INPUT", "combat_execution":"NOT_ATTEMPTED", "typed_none": deepcopy(snapshot["explicit_none_systems"])},
             "Feature_Execution_Coverage_Plan.json": {"schema_version":"TianxiaFoundry.C2B2FeatureCoveragePlan.v1", "records": capability_rows, "display_descriptions_are_not_execution_authority": True, "later_execution_surfaces": workspace_profile["later_combat_execution_fields"]},
             "Foundation_Lifecycle_Audit.json": {"schema_version":"TianxiaFoundry.C2B2TypedNoneAudit.v1", "system":"foundation", "result": deepcopy(snapshot["explicit_none_systems"]["foundation"])},
-            "Background_Origin_Method_Audit.json": {"schema_version":"TianxiaFoundry.C2B2BackgroundOriginMethodAudit.v1", "background_origin":deepcopy(snapshot["background_and_origin"]), "method":deepcopy(snapshot["explicit_none_systems"]["method"]), "valid":True},
+            "Background_Origin_Method_Audit.json": {"schema_version":"TianxiaFoundry.C2B2BackgroundOriginMethodAudit.v1", "background_origin":deepcopy(snapshot["background_and_origin"]), "method":method_audit, "valid":True},
             "Recorded_Art_Roster_Plan.json": {"schema_version":"TianxiaFoundry.C2B2RecordedArtPlan.v1", "recorded_arts":deepcopy(snapshot["explicit_none_systems"]["manuals"]), "planned_records":[]},
             "Blueprint_Deviation_Reconciliation.json": {"schema_version":"TianxiaFoundry.C2B2BlueprintDeviation.v1", "deviations":[], "canonical_choice_changes":False},
             "Command_3_Audit.md": "# Command 3 Audit\n\nStatus: COMMAND_3_CHASSIS_COMPLETE\n\nCharacter chassis, typed-none systems, source-backed display coverage, and later execution dependencies are reconciled.\n",

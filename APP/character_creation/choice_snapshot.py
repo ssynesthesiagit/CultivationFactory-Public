@@ -4,6 +4,7 @@ from copy import deepcopy
 from typing import Any
 
 from app.core import sha256_json
+from catalog_choice_authority import DELEGATED_FINAL_CATALOG_GRANT_FIELD
 
 
 SCHEMA = "TianxiaFoundry.TypedProjectChoiceSnapshot.v1"
@@ -20,7 +21,16 @@ def materialize_choice_snapshot(project: dict[str, Any]) -> dict[str, Any]:
             if key in lock
         }
         for lock in sorted(
-            (lock for lock in project.get("user_locks", []) if isinstance(lock, dict)),
+            (
+                lock
+                for lock in project.get("user_locks", [])
+                if isinstance(lock, dict)
+                # This is a server-derived acceptance artifact, not a new
+                # owner choice.  It is materialized after the response is
+                # accepted and must not make the frozen owner-choice binding
+                # stale during scratch/final compilation.
+                and lock.get("field") != DELEGATED_FINAL_CATALOG_GRANT_FIELD
+            ),
             key=lambda lock: (str(lock.get("field") or ""), str(lock.get("lock_id") or "")),
         )
     ]

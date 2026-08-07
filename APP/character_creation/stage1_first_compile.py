@@ -14,12 +14,13 @@ def compile_once_stage1_first(
     index: int,
     *,
     prior_attempt_id: str | None = None,
+    accepted_final_plan: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Compile one isolated candidate with the frozen Stage 1 boundary first.
 
-    Exact Method materialization is a server-owned native mutation and advances
-    the scratch project revision. It must therefore occur only after the frozen
-    Stage 1 response is validated and committed, and before Stage 2/projection.
+    The delegated final grant plan is materialized before Stage 1 so the frozen
+    compile sees the accepted catalog authority. Exact Method materialization is
+    a separate server-owned native mutation after Stage 1 and before Stage 2.
     The remainder of the production compilation path is intentionally identical
     to ``CharacterCreationExecutionService._compile_once``.
     """
@@ -51,6 +52,13 @@ def compile_once_stage1_first(
         scratch_db.migrate()
         services = self._scratch_services(scratch_db)
         stage1 = services["stage1"]
+        if accepted_final_plan is not None:
+            self._materialize_delegated_final_grant_plan(
+                run,
+                accepted_final_plan,
+                scratch_db,
+                phase="scratch_compile",
+            )
 
         stage1_response = plan["stage1_response"]
         response_text = (
@@ -97,6 +105,7 @@ def compile_once_stage1_first(
             phase="scratch_compile",
             authority_db=scratch_db,
             _finalization_authority=_service._SERVER_SCRATCH_COMPILATION_AUTHORITY,
+            accepted_final_plan=accepted_final_plan,
         )
         projection = services["projections"].build(
             run["project_id"],

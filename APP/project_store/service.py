@@ -463,17 +463,29 @@ class ProjectStore:
         return {**proof, "lock_proof_hash": sha256_json(proof)}
 
     def _assert_snapshot_record(self, conn, project_id: str, record: dict[str, Any]) -> None:
+        if record.get("content_binding", {}).get("pack_id") == "tianxia.non_sphere.authority" or str(record.get("record_id") or "").startswith("tianxia.background_"):
+            fallback = self._resolve_project_locked_authority_projection_after_proof(conn, project_id, record["record_id"])
+            if fallback and canonical_json(fallback) == canonical_json(record):
+                return
         row = conn.execute(
             "SELECT pack_id,pack_version,record_hash,record_json FROM project_locked_records WHERE project_id=? AND record_id=?",
             (project_id, record["record_id"]),
         ).fetchone()
         binding = record["content_binding"]
-        if not row or (
-            row["pack_id"] != binding["pack_id"]
-            or row["pack_version"] != binding["pack_version"]
-            or row["record_hash"] != record["record_hash"]
-            or row["record_json"] != canonical_json(record)
-        ):
+        if row:
+            valid = (
+                row["pack_id"] == binding["pack_id"]
+                and row["pack_version"] == binding["pack_version"]
+                and row["record_hash"] == record["record_hash"]
+                and row["record_json"] == canonical_json(record)
+            )
+        else:
+            # Exact initial Methods may be authenticated by the non-sphere
+            # registry rather than by ordinary HF2 pack membership.  Rebuild the
+            # same deterministic projection and compare the complete bytes.
+            fallback = self._resolve_project_locked_non_sphere_after_proof(conn, project_id, record["record_id"])
+            valid = bool(fallback and canonical_json(fallback) == canonical_json(record))
+        if not valid:
             raise FoundryError(
                 "PROJECT_LOCK_SNAPSHOT_MISMATCH",
                 "A committed event references bytes outside the immutable project record snapshot.",
@@ -671,6 +683,96 @@ class ProjectStore:
                          (updated["name"], updated["status"], new_revision, updated["updated_at"], canonical_json(updated), canonical_project_hash(updated), updated["schema_version"], project_id))
         return self.get_project(project_id)
 
+    def materialize_server_derived_user_lock(
+        self,
+        project_id: str,
+        *,
+        field: str,
+        value: Any,
+        source: str,
+        lock_id: str,
+    ) -> dict[str, Any]:
+        """Materialize a server-derived acceptance artifact without changing owner revision.
+
+        This is intentionally separate from ``append_user_locks``.  The
+        delegated final grant plan is derived only after response validation,
+        may be installed in an isolated scratch database, and is installed in
+        the live project only inside Finalize's atomic precommit boundary.  It
+        is not a new owner choice and therefore does not invalidate the
+        revision-bound Stage 1 prompt or typed owner-choice snapshot.
+        """
+        if not isinstance(field, str) or not field.strip():
+            raise FoundryError("SERVER_DERIVED_LOCK_INVALID", "A server-derived lock requires a non-empty field.")
+        if not isinstance(lock_id, str) or not lock_id.strip():
+            raise FoundryError("SERVER_DERIVED_LOCK_INVALID", "A server-derived lock requires a stable lock ID.")
+        already_materialized = False
+        with self.db.transaction() as conn:
+            row = conn.execute("SELECT * FROM projects WHERE project_id=?", (project_id,)).fetchone()
+            if not row:
+                raise FoundryError("PROJECT_NOT_FOUND", "No character project has that ID.", status_code=404)
+            old = json.loads(row["project_json"])
+            existing = [item for item in old.get("user_locks") or [] if isinstance(item, dict)]
+            prior = next((item for item in existing if item.get("field") == field), None)
+            if prior is not None:
+                if prior.get("value") != value:
+                    raise FoundryError(
+                        "CG1_DELEGATED_FINAL_GRANT_PLAN_IMMUTABLE",
+                        "A different server-derived delegated grant plan is already materialized for this project.",
+                        details={"field": field, "lock_id": prior.get("lock_id")},
+                        status_code=409,
+                    )
+                already_materialized = True
+            if already_materialized:
+                pass
+            elif any(item.get("lock_id") == lock_id for item in existing):
+                raise FoundryError(
+                    "SERVER_DERIVED_LOCK_ID_DUPLICATE",
+                    "The stable server-derived lock ID is already used by another project lock.",
+                    details={"lock_id": lock_id},
+                    status_code=409,
+                )
+            else:
+                revision = int(row["revision"])
+                additions = [
+                    *existing,
+                    {
+                        "lock_id": lock_id,
+                        "field": field,
+                        "value": deepcopy(value),
+                        "created_revision": revision,
+                        "source": str(source or "server-derived"),
+                    },
+                ]
+                now = utcnow()
+                updated = canonical_project_document(
+                    project_id=project_id,
+                    name=old["name"],
+                    revision=revision,
+                    status=old["status"],
+                    created_at=old["created_at"],
+                    updated_at=now,
+                    catalog_build_id=old["content_lock"]["catalog_build_id"],
+                    pack_locks=self._project_locks(conn, project_id),
+                    user_locks=additions,
+                    source_inputs=old["source_inputs"],
+                    event_count=old["event_stream"]["count"],
+                    head_hash=old["event_stream"].get("head_hash"),
+                    active_stage=old.get("active_stage"),
+                    stage_commits=old["stage_commits"],
+                    generated_artifacts=old["generated_artifacts"],
+                    candidates=old["candidates"],
+                    acceptance=old["acceptance"],
+                )
+                self._validate_or_raise(updated, boundary="server_derived_lock_materialization", family="character_project", key=project_id, conn=conn)
+                conn.execute(
+                    "UPDATE projects SET working_name=?,status=?,revision=?,updated_at=?,project_json=?,canonical_project_hash=?,canonical_schema_version=?,contract_status='valid' WHERE project_id=?",
+                    (
+                        updated["name"], updated["status"], revision, updated["updated_at"],
+                        canonical_json(updated), canonical_project_hash(updated), updated["schema_version"], project_id,
+                    ),
+                )
+        return self.get_project(project_id)
+
     def append_owner_fixture_locks(self, project_id: str, *, fixture_contract: Path) -> dict[str, Any]:
         """Append the explicit owner-approved C2A-R.1 fixture choices.
 
@@ -789,7 +891,7 @@ class ProjectStore:
             (project_id, record_id),
         ).fetchone()
         if not row:
-            return None
+            return self._resolve_project_locked_authority_projection_after_proof(conn, project_id, record_id)
         record = json.loads(row["record_json"])
         if canonical_json(record) != row["record_json"] or record.get("record_hash") != row["record_hash"]:
             raise FoundryError(
@@ -798,6 +900,200 @@ class ProjectStore:
                 details={"project_id": project_id, "record_id": record_id},
             )
         self._validate_or_raise(record, boundary="locked_record_reconstruct", family="rules_catalog_record", key=record_id, conn=conn)
+        if record_id.startswith("tianxia.path.") and not record.get("compatibility", {}).get("factory", {}).get("stage2_authority", {}).get("authority_complete"):
+            fallback = self._resolve_project_locked_path_after_proof(conn, project_id, record_id)
+            if fallback is not None:
+                return fallback
+        if record_id.startswith("tianxia.background_") and not record.get("compatibility", {}).get("factory", {}).get("stage2_authority", {}).get("authority_complete"):
+            fallback = self._resolve_project_locked_background_after_proof(conn, project_id, record_id)
+            if fallback is not None:
+                return fallback
+        return record
+
+    def _resolve_project_locked_authority_projection_after_proof(self, conn, project_id: str, record_id: str) -> dict[str, Any] | None:
+        return (
+            self._resolve_project_locked_non_sphere_after_proof(conn, project_id, record_id)
+            or self._resolve_project_locked_background_after_proof(conn, project_id, record_id)
+        )
+
+    def _resolve_project_locked_non_sphere_after_proof(self, conn, project_id: str, record_id: str) -> dict[str, Any] | None:
+        return (
+            self._resolve_project_locked_method_after_proof(conn, project_id, record_id)
+            or self._resolve_project_locked_path_after_proof(conn, project_id, record_id)
+        )
+
+    def _resolve_project_locked_background_after_proof(self, conn, project_id: str, record_id: str) -> dict[str, Any] | None:
+        """Attach typed C1A authority to the owner-facing Background projections.
+
+        The Background supplement intentionally owns the stable creator-facing
+        IDs, while the typed C1A sphere/talent rows own the executable Stage 2
+        rules.  Rebuild the alias only from the complete immutable project
+        snapshot; never consult the live catalog for this authority boundary.
+        """
+        if not isinstance(record_id, str) or not record_id.startswith("tianxia.background_"):
+            return None
+        row = conn.execute(
+            "SELECT record_hash,record_json FROM project_locked_records WHERE project_id=? AND record_id=?",
+            (project_id, record_id),
+        ).fetchone()
+        if not row:
+            return None
+        record = json.loads(row["record_json"])
+        if canonical_json(record) != row["record_json"] or record.get("record_hash") != row["record_hash"]:
+            raise FoundryError(
+                "PROJECT_LOCK_SNAPSHOT_MISMATCH",
+                "The immutable Background snapshot record bytes do not match their stored hash binding.",
+                details={"project_id": project_id, "record_id": record_id},
+            )
+        self._validate_or_raise(record, boundary="background_locked_record_reconstruct", family="rules_catalog_record", key=record_id, conn=conn)
+        existing = record.get("compatibility", {}).get("factory", {}).get("stage2_authority", {})
+        if existing.get("authority_complete"):
+            return record
+
+        def snapshot_record_for(snapshot_record_id: str) -> dict[str, Any] | None:
+            candidate = conn.execute(
+                "SELECT record_hash,record_json FROM project_locked_records WHERE project_id=? AND record_id=?",
+                (project_id, snapshot_record_id),
+            ).fetchone()
+            if not candidate:
+                return None
+            value = json.loads(candidate["record_json"])
+            if canonical_json(value) != candidate["record_json"] or value.get("record_hash") != candidate["record_hash"]:
+                raise FoundryError(
+                    "PROJECT_LOCK_SNAPSHOT_MISMATCH",
+                    "A typed Background authority record diverges from its immutable snapshot binding.",
+                    details={"project_id": project_id, "record_id": snapshot_record_id},
+                )
+            self._validate_or_raise(value, boundary="background_typed_authority_reconstruct", family="rules_catalog_record", key=snapshot_record_id, conn=conn)
+            authority = value.get("compatibility", {}).get("factory", {}).get("stage2_authority")
+            return value if isinstance(authority, dict) and authority.get("authority_complete") else None
+
+        authority_record: dict[str, Any] | None = None
+        if record_id.startswith("tianxia.background_sphere."):
+            suffix = record_id.removeprefix("tianxia.background_sphere.")
+            authority_record = snapshot_record_for(f"tianxia.sphere.{suffix}")
+        elif record_id.startswith("tianxia.background_talent."):
+            background_sphere_id = (record.get("dependencies") or [None])[0]
+            canonical_sphere_id = (
+                f"tianxia.sphere.{background_sphere_id.removeprefix('tianxia.background_sphere.')}"
+                if isinstance(background_sphere_id, str) and background_sphere_id.startswith("tianxia.background_sphere.")
+                else None
+            )
+            display_name = str(record.get("display_name") or "")
+            display_name = display_name.rsplit("(", 1)[0].strip() if "(" in display_name else display_name.strip()
+            folded_name = "".join(character.casefold() for character in display_name if character.isalnum())
+            matches: list[dict[str, Any]] = []
+            for candidate in conn.execute(
+                "SELECT record_id,record_hash,record_json FROM project_locked_records WHERE project_id=? ORDER BY record_id",
+                (project_id,),
+            ):
+                if not candidate["record_id"].startswith(("TAL_", "tianxia.talent.")):
+                    continue
+                value = json.loads(candidate["record_json"])
+                candidate_authority = value.get("compatibility", {}).get("factory", {}).get("stage2_authority") or {}
+                candidate_name = "".join(character.casefold() for character in str(value.get("display_name") or "") if character.isalnum())
+                if (
+                    value.get("content_type") == "talent"
+                    and candidate_authority.get("authority_complete")
+                    and "background_talent_acquisition" in candidate_authority.get("allowed_kinds", [])
+                    and candidate_authority.get("sphere_id") == canonical_sphere_id
+                    and candidate_name == folded_name
+                ):
+                    matches.append(value)
+            if len(matches) == 1:
+                authority_record = matches[0]
+            elif len(matches) > 1:
+                raise FoundryError(
+                    "PROJECT_LOCK_BACKGROUND_AUTHORITY_AMBIGUOUS",
+                    "The owner-facing Background Talent maps to more than one typed authority record.",
+                    details={"project_id": project_id, "record_id": record_id, "matches": [item["record_id"] for item in matches]},
+                    status_code=409,
+                )
+        if not authority_record:
+            return None
+        return authority_record
+
+    def _resolve_project_locked_method_after_proof(self, conn, project_id: str, record_id: str) -> dict[str, Any] | None:
+        """Resolve an exact Method projection from the immutable access plan.
+
+        This is not a live-catalog lookup.  The project must carry a complete
+        server-created MethodAccessPlan whose registry commitment and exact
+        method-record hash still match the authenticated non-sphere authority.
+        """
+        if not isinstance(record_id, str) or not record_id.startswith("METHOD-"):
+            return None
+        row = conn.execute("SELECT project_json FROM projects WHERE project_id=?", (project_id,)).fetchone()
+        if not row:
+            return None
+        project = json.loads(row["project_json"])
+        locks = {
+            item.get("field"): item.get("value")
+            for item in project.get("user_locks", [])
+            if isinstance(item, dict)
+        }
+        access_plan = locks.get("character_sheet.method_access_plan")
+        if not isinstance(access_plan, dict) or access_plan.get("method_id") != record_id:
+            return None
+        from non_sphere_authority import NonSphereAuthorityService
+
+        authority = NonSphereAuthorityService(self.db)
+        method = authority.methods.get(record_id)
+        if method is None:
+            return None
+        if access_plan.get("schema") != "TianxiaFoundry.MethodAccessPlan.v2":
+            return None
+        if access_plan.get("method_registry_commitment_sha256") != authority.method_registry_commitment_sha256:
+            raise FoundryError(
+                "NS1R_METHOD_REGISTRY_COMMITMENT_MISMATCH",
+                "The exact Method access plan is not bound to the installed authenticated registry.",
+                details={"project_id": project_id, "method_id": record_id},
+                status_code=409,
+            )
+        source_reference = access_plan.get("source_reference")
+        if (
+            not isinstance(source_reference, dict)
+            or source_reference.get("method_record_sha256") != sha256_json(method)
+        ):
+            raise FoundryError(
+                "NS1R_METHOD_RECORD_COMMITMENT_MISMATCH",
+                "The exact Method access plan is not bound to the current authenticated Method record.",
+                details={"project_id": project_id, "method_id": record_id},
+                status_code=409,
+            )
+        evidence_targets = {
+            key: deepcopy(access_plan.get(key))
+            for key in (
+                "method_id", "access_tier", "route_type", "route_label", "owner_annotation",
+                "source_reference", "source_route_sha256", "route_commitment_sha256",
+                "method_registry_commitment_sha256",
+            )
+        }
+        authority._validate_authority_targets("method_access", evidence_targets)
+        record = authority.project_locked_method_catalog_record(record_id)
+        self._validate_or_raise(record, boundary="non_sphere_method_locked_record_reconstruct", family="rules_catalog_record", key=record_id, conn=conn)
+        return record
+
+    def _resolve_project_locked_path_after_proof(self, conn, project_id: str, record_id: str) -> dict[str, Any] | None:
+        """Resolve a selected Path from the authenticated non-Sphere index."""
+        if not isinstance(record_id, str) or not record_id.startswith("tianxia.path."):
+            return None
+        row = conn.execute("SELECT project_json FROM projects WHERE project_id=?", (project_id,)).fetchone()
+        if not row:
+            return None
+        project = json.loads(row["project_json"])
+        locks = {
+            item.get("field"): item.get("value")
+            for item in project.get("user_locks", [])
+            if isinstance(item, dict)
+        }
+        locked_choices = locks.get("character_sheet.locked_choices")
+        if not isinstance(locked_choices, dict) or record_id not in (locked_choices.get("path_choice") or []):
+            return None
+        from non_sphere_authority import NonSphereAuthorityService
+
+        authority = NonSphereAuthorityService(self.db)
+        record = authority.project_locked_path_catalog_record(record_id)
+        self._validate_or_raise(record, boundary="non_sphere_path_locked_record_reconstruct", family="rules_catalog_record", key=record_id, conn=conn)
         return record
 
     @staticmethod

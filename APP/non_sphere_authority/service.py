@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from app.core import Database, FoundryError, canonical_json, sha256_json, utcnow
-from contracts.canonical import canonical_record_hash
+from contracts.canonical import canonical_record_hash, normalize_core_catalog_record
 from catalog_choice_authority import committed_catalog_grant_plan
 from .semantic_validator import NonSphereSemanticStateValidator
 
@@ -381,6 +381,186 @@ class NonSphereAuthorityService:
             "method_registry_commitment_sha256": self.method_registry_commitment_sha256,
             "status": "COMPLETE_SERVER_AUTHORITY",
         }
+
+    def project_locked_method_catalog_record(self, method_id: str) -> dict[str, Any]:
+        """Project one exact registry Method into the locked catalog contract.
+
+        The non-sphere registry is an authenticated authority surface, but it is
+        not part of the ordinary HF2 catalog-pack membership.  Exact initial
+        Method access therefore needs a deterministic record projection for the
+        Stage 2 subject/binding contract.  This projection is intentionally
+        narrow: it authorizes only the initial ``method_acquisition`` event and
+        remains bound to the registry file and the complete authority snapshot.
+        Callers must still prove the project access plan before using it.
+        """
+        method = self.methods.get(method_id)
+        if method is None:
+            raise FoundryError(
+                "NS1R_METHOD_ID_UNKNOWN",
+                "The selected Method is not available in the authenticated registry.",
+                details={"method_id": method_id},
+            )
+        registry_version = str(self.method_registry.get("version") or "0.6")
+        source_path = self.authority_root.joinpath("Tianxia_Methods_Typed_Registry_v0_6.json").relative_to(self.root).as_posix()
+        stage2_authority = {
+            "authority_complete": True,
+            "allowed_kinds": ["method_acquisition"],
+            "allowed_channels": ["method-acquisition"],
+            "method_id": method_id,
+            "rule_id": f"ns1r.{method_id}.initial-method-acquisition.v1",
+        }
+        projection = {
+            "record_id": method_id,
+            "content_type": "cultivation_method",
+            "display_name": method.get("name") or method_id,
+            "pack_id": "tianxia.non_sphere.authority",
+            "pack_version": registry_version,
+            "authority": "canonical",
+            "publication_state": "published",
+            "source": {
+                "path": source_path,
+                "anchor": f"method:{method_id}",
+                "source_hash": self.method_registry_commitment_sha256,
+            },
+            "summary": (method.get("owner_readable") or {}).get("full_description") or method_id,
+            "minimum_cl": None,
+            "prerequisites": [],
+            "acquisition_channels": ["method-acquisition"],
+            "grants": [],
+            "execution_records": [],
+            "compatibility": {"factory": {"stage2_authority": stage2_authority}},
+            "dependencies": [],
+            "supersedes": None,
+            "unresolved_normalization_notes": [],
+            "selected_authority": True,
+        }
+        return normalize_core_catalog_record(
+            projection,
+            pack_hash=self.authority_snapshot_hash,
+        )
+
+    def project_locked_path_catalog_record(self, path_id: str) -> dict[str, Any]:
+        """Project one authenticated Path into the locked catalog contract.
+
+        The normal catalog still contains the historical Path rows, but some
+        of those rows predate the typed Stage 2 authority fields.  Initial
+        multi-Path creation must use the exact source-backed Path index instead
+        of silently treating an incomplete catalog row as executable authority.
+        """
+        profile = self.path_profiles.get(path_id)
+        if profile is None:
+            raise FoundryError(
+                "NS1R_PATH_ID_UNKNOWN",
+                "The selected Path is not available in the authenticated Path authority.",
+                details={"path_id": path_id},
+            )
+        path_row = next((row for row in self.paths_master.get("paths", []) if row.get("canonical_id") == path_id), None)
+        if not isinstance(path_row, dict):
+            raise FoundryError(
+                "NS1R_PATH_MASTER_ROW_MISSING",
+                "The selected Path is missing from the authenticated Path master index.",
+                details={"path_id": path_id},
+            )
+        source_file = self.authority_root / str(path_row["index_file"])
+        source_path = source_file.relative_to(self.root).as_posix()
+        source_hash = _hash_file(source_file)
+        profile_rules = profile.get("path_profile") or {}
+        ability_options = profile_rules.get("key_ability", {}).get("options") or []
+        ability_code = {
+            "Strength": "STR",
+            "Dexterity": "DEX",
+            "Constitution": "CON",
+            "Intelligence": "INT",
+            "Wisdom": "WIS",
+            "Charisma": "CHA",
+        }.get(str(ability_options[0]) if ability_options else "", "CON")
+        hit_die = str(profile_rules.get("hit_die") or "d8")
+        try:
+            hit_die_value = int(hit_die.removeprefix("d"))
+        except ValueError:
+            hit_die_value = 8
+
+        def safe_formula(formula_id: str, root: dict[str, Any]) -> dict[str, Any]:
+            return {"formula_id": formula_id, "root": root, "schema_version": "TianxiaFoundry.SafeFormula.v1"}
+
+        hp_level1 = safe_formula(
+            f"ns1r.{path_id}.hp.cl1",
+            {"op": "add", "terms": [{"op": "constant", "value": hit_die_value}, {"op": "ability_modifier", "ability": "CON"}]},
+        )
+        hp_later = safe_formula(
+            f"ns1r.{path_id}.hp.later",
+            {"op": "add", "terms": [{"op": "constant", "value": max(1, hit_die_value // 2 + 1)}, {"op": "ability_modifier", "ability": "CON"}]},
+        )
+        resource_rules = profile.get("resource_rules") or {}
+        resource_id = str(resource_rules.get("canonical_id") or "")
+        resource_root = {
+            "op": "multiply",
+            "terms": [{"op": "cl"}, {"op": "ability_modifier", "ability": ability_code}],
+        }
+        if resource_rules.get("minimum_formula"):
+            resource_root = {
+                "op": "maximum",
+                "terms": [
+                    resource_root,
+                    {"op": "multiply", "terms": [{"op": "constant", "value": 2}, {"op": "cl"}]},
+                ],
+            }
+        stage2_authority = {
+            "authority_complete": True,
+            "allowed_kinds": ["path_acquisition"],
+            "allowed_channels": ["path-selection"],
+            "hp_later_formula": hp_later,
+            "hp_level1_formula": hp_level1,
+            "key_ability": ability_code,
+            "required_milestones": [
+                {
+                    "allowed_kinds": ["subpath_acquisition"],
+                    "cl": 3,
+                    "count": 1,
+                    "milestone_id": f"{path_id}.subpath.cl3",
+                },
+                {
+                    "allowed_kinds": ["ability_score_change", "cultivation_insight_acquisition"],
+                    "cl": 4,
+                    "count": 1,
+                    "milestone_id": f"{path_id}.insight.cl4",
+                },
+            ],
+            "resources": [{
+                "base_formula": safe_formula(f"ns1r.{path_id}.resource.maximum", resource_root),
+                "resource_id": resource_id,
+            }],
+            "rule_id": f"ns1r.{path_id}.initial-path-acquisition.v1",
+        }
+        projection = {
+            "record_id": path_id,
+            "content_type": "path",
+            "display_name": profile.get("display_name") or path_row.get("display_name") or path_id,
+            "pack_id": "tianxia.non_sphere.authority",
+            "pack_version": str(profile.get("publication_revision") or "P2A"),
+            "authority": "canonical",
+            "publication_state": "published",
+            "source": {
+                "path": source_path,
+                "anchor": f"path:{path_id}",
+                "source_hash": source_hash,
+            },
+            "summary": profile_rules.get("primary_roles") or path_id,
+            "minimum_cl": 1,
+            "prerequisites": [],
+            "acquisition_channels": ["path-selection"],
+            "grants": [],
+            "execution_records": [],
+            "compatibility": {"factory": {"stage2_authority": stage2_authority}},
+            "dependencies": [],
+            "supersedes": None,
+            "unresolved_normalization_notes": [],
+            "selected_authority": True,
+        }
+        return normalize_core_catalog_record(
+            projection,
+            pack_hash=self.authority_snapshot_hash,
+        )
 
     def method_catalog(self, state: dict[str, Any] | None = None, *, initial_creation: bool | None = None) -> dict[str, Any]:
         """Project the one typed Method authority for the requested workflow.
@@ -1139,6 +1319,23 @@ class NonSphereAuthorityService:
                 try: doc=json.loads(row["record_json"])
                 except Exception: continue
                 if row["record_id"] == stable_id or self._record_contains_exact_id(doc, stable_id): matches.append(row)
+            if not matches and role == "method":
+                # Exact initial Methods can be authenticated by the project
+                # access plan and the non-sphere registry without pretending
+                # they are members of the ordinary HF2 catalog pack.
+                from project_store.service import ProjectStore
+
+                fallback = ProjectStore(self.db)._resolve_locked_record_after_proof(conn, project_id, stable_id)
+                if fallback is not None:
+                    binding = fallback["content_binding"]
+                    matches.append({
+                        "record_id": fallback["record_id"],
+                        "pack_id": binding["pack_id"],
+                        "pack_version": binding["pack_version"],
+                        "record_hash": fallback["record_hash"],
+                        "record_json": canonical_json(fallback),
+                        "pack_hash": binding["pack_hash"],
+                    })
             if len(matches) != 1:
                 raise FoundryError("NS1R_LOCKED_TARGET_RESOLUTION_FAILED", "Authority target must resolve to exactly one immutable project-locked record.", details={"project_id":project_id,"role":role,"stable_id":stable_id,"matches":[r["record_id"] for r in matches]})
             row=matches[0]
@@ -1151,8 +1348,10 @@ class NonSphereAuthorityService:
                 "role":role,"relationship_id":f"{role}:{stable_id}","relationship_hash":relationship_hash,
                 "record_id":row["record_id"],"record_hash":row["record_hash"],"pack_id":row["pack_id"],
                 "pack_version":row["pack_version"],"pack_hash":row["pack_hash"],"source_id":row["record_id"],
-                "source_hash":row["record_hash"],"source_anchor":"project_locked_records",
-                "source_path":"project_locked_records/"+row["record_id"],"causal_event_id":None,
+                "source_hash":row["record_hash"],
+                "source_anchor":("non_sphere_authority_registry" if row["pack_id"] == "tianxia.non_sphere.authority" else "project_locked_records"),
+                "source_path":(("non_sphere_authority/authority/" + row["record_id"]) if row["pack_id"] == "tianxia.non_sphere.authority" else "project_locked_records/" + row["record_id"]),
+                "causal_event_id":None,
             })
         if not bindings:
             raise FoundryError("NS1R_LOCKED_TARGET_BINDING_REQUIRED", "Authority events require at least one exact locked target binding.")

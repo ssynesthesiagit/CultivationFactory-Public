@@ -12,6 +12,7 @@ from copy import deepcopy
 from typing import Any
 
 from app.core import FoundryError, canonical_json, sha256_json
+from catalog_choice_authority import DELEGATED_FINAL_CATALOG_GRANT_FIELD
 from path_method_authority import (
     CANONICAL_PATH_IDS,
     canonicalize_path_ids,
@@ -43,6 +44,18 @@ _CANONICAL_KINDS = {
     "level_talent_acquisition",
     "new_sphere_bonus_talent_acquisition",
 }
+_CATALOG_SPHERE_GRANT_KINDS = {
+    "sect_trial_sphere_acquisition",
+    "ai_bootstrap_sphere_acquisition",
+}
+_BACKGROUND_SPHERE_KINDS = {"background_sphere_acquisition"}
+_CATALOG_FREE_TALENT_KINDS = {
+    "sect_trial_talent_acquisition",
+    "ai_bootstrap_talent_acquisition",
+    "new_sphere_bonus_talent_acquisition",
+}
+_BACKGROUND_TALENT_KINDS = {"background_talent_acquisition"}
+_CATALOG_ORDINARY_TALENT_KINDS = {"level_talent_acquisition"}
 _DIRECT_STAGE2_SLOT_KINDS = {
     "path_acquisition": _PATH_SLOT,
     "method_acquisition": _METHOD_SLOT,
@@ -57,7 +70,12 @@ _STAGE2_DELEGATED_SLOT_KINDS = {
     "background_sphere_acquisition": "background_sphere_choice",
     "background_talent_acquisition": "background_talent_choice",
     "origin_insight_acquisition": "origin_insight_choice",
+    "insight_acquisition": "insight_priorities",
+    "origin_insight_selection": "origin_insight_choice",
     "subpath_acquisition": "subpath_choice",
+    "tradition_acquisition": "subpath_choice",
+    "item_acquisition": "item_priorities",
+    "equipment_acquisition": "item_priorities",
     "sect_trial_sphere_acquisition": "sphere_priorities",
     "ai_bootstrap_sphere_acquisition": "sphere_priorities",
     "sect_trial_talent_acquisition": "advancement_skeleton",
@@ -93,6 +111,15 @@ def _locks(project: dict[str, Any]) -> dict[str, Any]:
         for row in project.get("user_locks") or []
         if isinstance(row, dict) and isinstance(row.get("field"), str)
     }
+
+
+def _owner_user_locks(project: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return only owner-choice locks covered by the frozen envelope."""
+    return [
+        deepcopy(row)
+        for row in project.get("user_locks") or []
+        if isinstance(row, dict) and row.get("field") != DELEGATED_FINAL_CATALOG_GRANT_FIELD
+    ]
 
 
 def _slot_map(prompt: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -187,15 +214,23 @@ def build_delegated_choice_envelope(
 
     content_lock = project.get("content_lock") or {}
     path_authority = deepcopy(prompt_envelope.get("path_method_authority") or {})
+    owner_name = locks.get("character.identity.display_name")
+    if owner_name is None:
+        owner_name = project.get("working_name") or project.get("name")
+    owner_concept = locks.get("concept")
+    if owner_concept is None:
+        owner_concept = project.get("concept")
+    owner_name = str(owner_name or "").strip() or None
+    owner_concept = str(owner_concept or "").strip() or None
     delegated_fields = {
         "identity.name": {
-            "state": "owner_locked" if str(locks.get("character.identity.display_name") or "").strip() else "delegated",
-            "owner_value": locks.get("character.identity.display_name"),
+            "state": "owner_locked" if owner_name else "delegated",
+            "owner_value": owner_name,
             "response_field": "owner_descriptive_fields.identity.name",
         },
         "concept": {
-            "state": "delegated",
-            "owner_value": None,
+            "state": "owner_locked" if owner_concept else "delegated",
+            "owner_value": owner_concept,
             "response_field": "owner_descriptive_fields.concept",
         },
     }
@@ -250,7 +285,11 @@ def build_delegated_choice_envelope(
             "declared_before_response": [],
             "method_granted_extra_paths_are_disclosed_after_response": True,
             "method_granted_path_ids_by_method": deepcopy(path_authority.get("method_granted_path_ids") or {}),
-            "canonical_grant_lock_present": bool(locks.get("character_sheet.canonical_grant_plan")),
+            "canonical_grant_lock_present": bool(
+                locks.get("character_sheet.canonical_grant_plan")
+                or locks.get("character_creation.committed_catalog_choice_plan")
+                or locks.get("character_creation.delegated_final_catalog_grant_plan")
+            ),
         },
         "delegated_fields": delegated_fields,
         "unresolved_owner_decisions": unresolved,
@@ -289,6 +328,14 @@ def _decisions(plan: dict[str, Any]) -> dict[str, dict[str, Any]]:
 
 
 def _priority_order(plan: dict[str, Any]) -> dict[str, Any]:
+    # Stage2AdvancementProposal.v2 is intentionally closed and therefore
+    # cannot carry response-authority metadata as an extra property.  Keep
+    # the complete-plan representation at the CharacterCreationPlan level;
+    # accept the historical nested shape only for compatibility with older
+    # callers that never reached the production Stage2 schema boundary.
+    top_level = plan.get("catalog_priority_order")
+    if isinstance(top_level, dict):
+        return top_level
     return ((plan.get("stage2_proposal") or {}).get("catalog_priority_order") or {})
 
 
@@ -390,9 +437,10 @@ def _selection_candidates(plan: dict[str, Any]) -> dict[str, list[tuple[str, lis
                 add(slot_id, value, f"delegated_choice_selections.{slot_id}")
 
     priority = _priority_order(plan)
+    priority_source = "catalog_priority_order" if isinstance(plan.get("catalog_priority_order"), dict) else "stage2_proposal.catalog_priority_order"
     for key, slot_id in _SELECTION_ALIASES.items():
         if key in priority:
-            add(slot_id, priority[key], f"stage2_proposal.catalog_priority_order.{key}")
+            add(slot_id, priority[key], f"{priority_source}.{key}")
 
     for decision in _stage1_payload(plan).get("decisions") or []:
         if not isinstance(decision, dict) or decision.get("state") != "selected":
@@ -401,20 +449,90 @@ def _selection_candidates(plan: dict[str, Any]) -> dict[str, list[tuple[str, lis
         if isinstance(slot_id, str):
             add(slot_id, decision.get("choice_ids") or [], f"stage1_response.decisions.{slot_id}")
 
-    # These are the mechanically meaningful cross-slot IDs.  Other Stage 2
-    # records may use a different canonical acquisition ID than the Stage 1
-    # planning reference and are therefore checked by the existing Stage 2
-    # authority, not guessed into a catalog-intent slot here.
+    # Stage 2 is the final mechanical representation.  Its catalog rows are
+    # reconciled with the delegated and priority representations below.  Stage
+    # 1 remains a declared/owner representation and is checked as a subset when
+    # the final mechanical representation contains later delegated additions.
     stage2_by_slot: dict[str, list[str]] = {}
     for row in (plan.get("stage2_proposal") or {}).get("choices") or []:
         if not isinstance(row, dict):
             continue
-        slot_id = _DIRECT_STAGE2_SLOT_KINDS.get(row.get("kind"))
+        slot_id = _STAGE2_DELEGATED_SLOT_KINDS.get(row.get("kind"))
         if slot_id and row.get("record_id"):
             stage2_by_slot.setdefault(slot_id, []).append(row["record_id"])
     for slot_id, values in stage2_by_slot.items():
         add(slot_id, values, f"stage2_proposal.choices.{slot_id}")
     return candidates
+
+
+def catalog_stage2_selections(plan: dict[str, Any]) -> dict[str, list[str]]:
+    """Return the exact typed catalog/mechanical IDs carried by Stage 2.
+
+    This is deliberately a projection of response authority, not a planner
+    interpretation.  Background and catalog-grant acquisitions stay in
+    separate buckets so the server can derive the final grant accounting plan
+    without silently treating a background route as an initial Sphere grant.
+    """
+    result: dict[str, list[str]] = {
+        "path_ids": [],
+        "method_ids": [],
+        "foundation_ids": [],
+        "background_ids": [],
+        "background_sphere_ids": [],
+        "background_talent_ids": [],
+        "origin_insight_ids": [],
+        "subpath_or_tradition_ids": [],
+        "sphere_ids": [],
+        "free_sphere_talent_ids": [],
+        "ordinary_talent_ids": [],
+        "insight_ids": [],
+        "item_ids": [],
+    }
+    buckets = {
+        **{kind: "path_ids" for kind in _PATH_KINDS},
+        **{kind: "method_ids" for kind in _METHOD_KINDS},
+        **{kind: "foundation_ids" for kind in _FOUNDATION_KINDS},
+        "background_acquisition": "background_ids",
+        "background_sphere_acquisition": "background_sphere_ids",
+        "background_talent_acquisition": "background_talent_ids",
+        "origin_insight_acquisition": "origin_insight_ids",
+        "origin_insight_selection": "origin_insight_ids",
+        "subpath_acquisition": "subpath_or_tradition_ids",
+        "tradition_acquisition": "subpath_or_tradition_ids",
+        **{kind: "sphere_ids" for kind in _CATALOG_SPHERE_GRANT_KINDS},
+        **{kind: "free_sphere_talent_ids" for kind in _CATALOG_FREE_TALENT_KINDS},
+        **{kind: "ordinary_talent_ids" for kind in _CATALOG_ORDINARY_TALENT_KINDS},
+        "insight_acquisition": "insight_ids",
+        "item_acquisition": "item_ids",
+        "equipment_acquisition": "item_ids",
+    }
+    for row in (plan.get("stage2_proposal") or {}).get("choices") or []:
+        if not isinstance(row, dict):
+            continue
+        bucket = buckets.get(row.get("kind"))
+        record_id = row.get("record_id")
+        if bucket and isinstance(record_id, str) and record_id:
+            result[bucket].append(record_id)
+    return result
+
+
+def response_authority_representations(plan: dict[str, Any]) -> dict[str, Any]:
+    """Preserve all mechanical authority representations in the final plan."""
+    stage1_decisions = [
+        {
+            "slot_id": row.get("slot_id"),
+            "state": row.get("state"),
+            "choice_ids": list(row.get("choice_ids") or []),
+        }
+        for row in _stage1_payload(plan).get("decisions") or []
+        if isinstance(row, dict) and isinstance(row.get("slot_id"), str)
+    ]
+    return {
+        "stage1_decisions": stage1_decisions,
+        "delegated_choice_selections": deepcopy(plan.get("delegated_choice_selections") or {}),
+        "catalog_priority_order": deepcopy(_priority_order(plan)),
+        "stage2_mechanical_choices": catalog_stage2_selections(plan),
+    }
 
 
 def _resolved_slot_values(envelope: dict[str, Any], plan: dict[str, Any]) -> tuple[dict[str, list[str]], dict[str, list[str]]]:
@@ -423,8 +541,23 @@ def _resolved_slot_values(envelope: dict[str, Any], plan: dict[str, Any]) -> tup
     resolved: dict[str, list[str]] = {}
     sources: dict[str, list[str]] = {}
     for slot_id, entries in _selection_candidates(plan).items():
+        final_entries = [
+            (source, values)
+            for source, values in entries
+            if not source.startswith("stage1_response.decisions.")
+        ]
+        # A Stage 1 selected row records an owner/declaration constraint.  It
+        # may be a strict subset of the final Stage 2 catalog rows, but it may
+        # never disappear from the final plan.  All final representations must
+        # still agree exactly with one another.
+        stage1_entries = [
+            (source, values)
+            for source, values in entries
+            if source.startswith("stage1_response.decisions.")
+        ]
+        authority_entries = final_entries or entries
         distinct: dict[tuple[str, ...], list[str]] = {}
-        for source, values in entries:
+        for source, values in authority_entries:
             distinct.setdefault(tuple(values), []).append(source)
         if len(distinct) > 1:
             _raise(
@@ -434,11 +567,24 @@ def _resolved_slot_values(envelope: dict[str, Any], plan: dict[str, Any]) -> tup
                     "slot_id": slot_id,
                     "representations": [
                         {"source": source, "choice_ids": values}
-                        for source, values in entries
-                    ],
+                         for source, values in authority_entries
+                        ],
                 },
             )
         values, matching_sources = next(iter(distinct.items()))
+        for source, stage1_values in stage1_entries:
+            if not set(stage1_values).issubset(set(values)):
+                _raise(
+                    "CG1_DELEGATED_AUTHORITY_CONFLICT",
+                    "A Stage 1 declared choice is absent from the accepted final mechanical representation.",
+                    details={
+                        "slot_id": slot_id,
+                        "source": source,
+                        "declared_choice_ids": stage1_values,
+                        "final_choice_ids": list(values),
+                    },
+                )
+            matching_sources.append(source)
         resolved[slot_id] = list(values)
         sources[slot_id] = list(matching_sources)
         _ensure_allowed(envelope, slot_id, list(values))
@@ -646,7 +792,7 @@ def validate_delegated_choice_plan(
     if actual_binding != expected_binding:
         _raise("CG1_DELEGATED_ENVELOPE_STALE", "The project revision or content lock changed after the delegated request was frozen.", details={"expected": expected_binding, "actual": actual_binding})
     locks = _locks(project)
-    if _stable_hash(project.get("user_locks") or []) != (envelope.get("owner_locks") or {}).get("lock_sha256"):
+    if _stable_hash(_owner_user_locks(project)) != (envelope.get("owner_locks") or {}).get("lock_sha256"):
         _raise("CG1_DELEGATED_OWNER_LOCKS_CHANGED", "Owner locks changed after the delegated request was frozen.")
     one_shot = envelope.get("one_shot") or {}
     if one_shot.get("idempotency_key") != run.get("idempotency_key") or one_shot.get("execution_mode") != run.get("execution_mode"):
@@ -715,7 +861,7 @@ def validate_delegated_choice_plan(
         # Historical owner-locked runs are allowed to leave Method deferred or
         # typed-none.  The compatibility state is explicit and never treated
         # as a hidden Method choice.
-        grants = list(selected_paths)
+        grants = []
 
     _validate_frozen_legality(
         envelope,
@@ -752,8 +898,38 @@ def validate_delegated_choice_plan(
 
     descriptive = deepcopy(plan.get("owner_descriptive_fields") or {})
     identity = descriptive.get("identity") if isinstance(descriptive.get("identity"), dict) else {}
-    proposed_name = str(identity.get("name") or descriptive.get("name") or "").strip()
-    proposed_concept = str(descriptive.get("concept") or descriptive.get("character_concept") or "").strip()
+    name_values = [
+        str(value).strip()
+        for value in (identity.get("name"), descriptive.get("name"))
+        if str(value or "").strip()
+    ]
+    concept_values = [
+        str(value).strip()
+        for value in (descriptive.get("concept"), descriptive.get("character_concept"))
+        if str(value or "").strip()
+    ]
+    if len(set(name_values)) > 1:
+        _raise("CG1_DELEGATED_AUTHORITY_CONFLICT", "The response supplied conflicting delegated name representations.", details={"representations": name_values})
+    if len(set(concept_values)) > 1:
+        _raise("CG1_DELEGATED_AUTHORITY_CONFLICT", "The response supplied conflicting delegated concept representations.", details={"representations": concept_values})
+    proposed_name = name_values[0] if name_values else ""
+    proposed_concept = concept_values[0] if concept_values else ""
+    delegated_fields = envelope.get("delegated_fields") or {}
+    name_authority = delegated_fields.get("identity.name") or {}
+    concept_authority = delegated_fields.get("concept") or {}
+    if name_authority.get("state") == "owner_locked":
+        owner_name = str(name_authority.get("owner_value") or "").strip()
+        if proposed_name != owner_name:
+            _raise("CG1_OWNER_LOCKED_DESCRIPTIVE_FIELD_CHANGED", "The response changed the owner-locked character name.", details={"field": "identity.name", "expected": owner_name, "actual": proposed_name})
+        proposed_name = owner_name
+    if concept_authority.get("state") == "owner_locked":
+        owner_concept = str(concept_authority.get("owner_value") or "").strip()
+        if proposed_concept != owner_concept:
+            _raise("CG1_OWNER_LOCKED_DESCRIPTIVE_FIELD_CHANGED", "The response changed the owner-locked character concept.", details={"field": "concept", "expected": owner_concept, "actual": proposed_concept})
+        proposed_concept = owner_concept
+    descriptive["identity"] = identity
+    descriptive["identity"]["name"] = proposed_name or None
+    descriptive["concept"] = proposed_concept or None
     provenance: list[dict[str, Any]] = []
 
     def add_provenance(row: dict[str, Any]) -> None:
@@ -786,22 +962,28 @@ def validate_delegated_choice_plan(
             add_provenance({"slot_id": slot_id, "choice_id": None, "provenance": "needs_owner", "status": "unresolved"})
     if not method_id:
         add_provenance({"slot_id": _METHOD_SLOT, "choice_id": None, "provenance": "needs_owner", "status": "deferred_or_typed_none"})
-    if not proposed_name:
+    if not proposed_name and name_authority.get("state") != "owner_locked":
         provenance.append({"slot_id": "identity.name", "choice_id": None, "provenance": "needs_owner", "status": "unresolved"})
-    if not proposed_concept:
+    if not proposed_concept and concept_authority.get("state") != "owner_locked":
         provenance.append({"slot_id": "concept", "choice_id": None, "provenance": "needs_owner", "status": "unresolved"})
 
     resolution = {
         "schema": "TianxiaFoundry.DelegatedChoiceResolution.v1",
         "selected_path_ids": selected_paths,
+        "owner_required_or_proposed_path_ids": list(selected_paths),
         "selected_choices_by_slot": deepcopy(selected_by_slot),
         "selection_sources_by_slot": deepcopy(selection_sources),
         "method_id": method_id,
-        "method_granted_path_ids": grants,
+        "method_granted_path_ids": list(grants),
         "actual_advancing_path_ids": grants,
         "extra_method_granted_path_ids": [path_id for path_id in grants if path_id not in selected_paths],
         "foundation_id": foundation_id,
         "deferred_method": deferred_method,
+        "method_semantics": {
+            "status": "deferred_or_typed_none" if deferred_method else "selected",
+            "owner_required_or_proposed_path_ids": list(selected_paths),
+            "actual_method_granted_path_ids": list(grants),
+        },
         "descriptive_fields": {"name": proposed_name or None, "concept": proposed_concept or None},
         "level_zero_semantics": {
             "all_three_tracks_present": True,
@@ -830,6 +1012,7 @@ def validate_delegated_choice_plan(
             "catalog_priority_order": deepcopy(_priority_order(plan)),
             "resolved_by_slot": deepcopy(selection_sources),
         },
+        "response_representations": response_authority_representations(plan),
         "descriptive_fields": descriptive,
         "automatic_grants": {"path_ids": resolution["extra_method_granted_path_ids"]},
         "unresolved": [row for row in provenance if row.get("status") == "unresolved"],

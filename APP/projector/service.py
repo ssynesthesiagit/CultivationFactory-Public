@@ -98,6 +98,15 @@ def _stage_aware_diagnostics(ledger: dict[str, Any], packets: dict[str, Any], re
         and snapshot_binding.get("event_stream") == choice_snapshot.get("event_stream")
         and snapshot_binding.get("typed_lock_count") == len(choice_snapshot.get("typed_locks") or [])
     )
+    typed_none = ledger.get("typed_none") or {}
+    method_projection = ledger.get("method") or {}
+    method_authority_valid = (
+        typed_none.get("method", {}).get("state") == "none"
+        or (
+            method_projection.get("state") == "acquired"
+            and bool(method_projection.get("record_id"))
+        )
+    )
     required = {
         "identity": bool(
             character.get("name")
@@ -119,7 +128,7 @@ def _stage_aware_diagnostics(ledger: dict[str, Any], packets: dict[str, Any], re
         "background_origin": bool(ledger.get("background_origin")),
         "paths_subpaths": bool(ledger.get("path_selections") and ledger.get("subpaths")),
         "spheres_talents": bool(ledger.get("spheres") and ledger.get("talents")),
-        "typed_none": set((ledger.get("typed_none") or {}).keys()) == {"method", "foundation", "manuals", "equipment", "forged_techniques"},
+        "typed_none": set(typed_none).issuperset({"foundation", "manuals", "equipment", "forged_techniques"}) and method_authority_valid,
         "provenance": bool(reduced.provenance),
         "coverage": bool(reduced.capability_coverage),
     }
@@ -220,26 +229,69 @@ class ProjectionService:
                 project[key] = deepcopy(envelope[key])
         events = self.projects.timeline(project_id)
         referenced = set().union(*(self._event_string_values(event) for event in events)) if events else set()
+        referenced_record_ids = {
+            event.get("subject", {}).get("record_id")
+            for event in events
+            if isinstance(event.get("subject"), dict) and isinstance(event["subject"].get("record_id"), str)
+        }
+        # Subpath-granted features are referenced by the authenticated
+        # calculation output rather than as independent advancement subjects.
+        # They are still required locked-record inputs for capability coverage
+        # and must be loaded from the same immutable snapshot.
+        for event in events:
+            if event.get("advancement", {}).get("kind") != "subpath_acquisition":
+                continue
+            granted = event.get("advancement", {}).get("calculation", {}).get("outputs", {}).get("granted_feature_record_ids") or []
+            referenced_record_ids.update(record_id for record_id in granted if isinstance(record_id, str))
+        authority_record_ids = {
+            record_id
+            for record_id in referenced_record_ids
+            if record_id.startswith(("METHOD-", "tianxia.path.", "tianxia.background_"))
+        }
         records: dict[str, dict[str, Any]] = {}
-        digest = hashlib.sha256()
-        digest.update(b'{"events":')
-        digest.update(canonical_json(events).encode("utf-8"))
-        digest.update(b',"locked_records":{')
+        locked_record_json: dict[str, str] = {}
         with self.db.connection() as conn:
-            first = True
+            authority_proof_verified = bool(authority_record_ids)
+            if authority_proof_verified:
+                self.projects.project_lock_proof(conn, project_id)
             for row in conn.execute(
                 "SELECT record_id,record_json FROM project_locked_records WHERE project_id=? ORDER BY record_id",
                 (project_id,),
             ):
-                if not first:
-                    digest.update(b",")
-                first = False
-                digest.update(canonical_json(row["record_id"]).encode("utf-8"))
-                digest.update(b":")
-                encoded = row["record_json"].encode("utf-8")
-                digest.update(encoded)
-                if row["record_id"] in referenced:
-                    records[row["record_id"]] = json.loads(row["record_json"])
+                locked_record_json[row["record_id"]] = row["record_json"]
+                if row["record_id"] in referenced_record_ids:
+                    record = (
+                        self.projects._resolve_locked_record_after_proof(conn, project_id, row["record_id"])
+                        if authority_proof_verified and row["record_id"] in authority_record_ids
+                        else json.loads(row["record_json"])
+                    )
+                    records[row["record_id"]] = record
+                    if authority_proof_verified and row["record_id"] in authority_record_ids:
+                        locked_record_json[row["record_id"]] = canonical_json(record)
+            # Some authenticated non-sphere records, notably the exact Method
+            # selected during normal creation, are intentionally not HF2 rows.
+            # Prove the complete immutable project lock before reconstructing
+            # those deterministic projections; never make the projector a live
+            # catalog lookup boundary.
+            for record_id in sorted(referenced_record_ids - records.keys()):
+                projected = (
+                    self.projects._resolve_locked_record_after_proof(conn, project_id, record_id)
+                    if authority_proof_verified
+                    else self.projects._resolve_locked_record(conn, project_id, record_id)
+                )
+                if projected is not None:
+                    records[record_id] = projected
+                    locked_record_json[record_id] = canonical_json(projected)
+        digest = hashlib.sha256()
+        digest.update(b'{"events":')
+        digest.update(canonical_json(events).encode("utf-8"))
+        digest.update(b',"locked_records":{')
+        for index, record_id in enumerate(sorted(locked_record_json)):
+            if index:
+                digest.update(b",")
+            digest.update(canonical_json(record_id).encode("utf-8"))
+            digest.update(b":")
+            digest.update(locked_record_json[record_id].encode("utf-8"))
         digest.update(b'},"project":')
         digest.update(canonical_json(project).encode("utf-8"))
         digest.update(b"}")

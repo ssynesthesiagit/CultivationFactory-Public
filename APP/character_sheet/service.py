@@ -441,7 +441,14 @@ class CharacterSheetService:
             if capabilities.get("combat_execution") not in {"SUPPORTED", "NOT_APPLICABLE"} and not card.get("display_only_not_execution_authority"):
                 diagnostics.append({"code": "CHARACTER_SHEET_FALSE_EXECUTION_CLAIM", "record_id": card.get("record_id")})
         typed_none = snapshot.get("explicit_none_systems") or {}
+        selected_method = snapshot.get("method") or {}
+        method_acquired = (
+            selected_method.get("state") == "acquired"
+            and bool(selected_method.get("record_id"))
+        )
         for name in ("method", "foundation", "manuals", "equipment", "forged_techniques"):
+            if name == "method" and method_acquired:
+                continue
             row = typed_none.get(name) or {}
             if row.get("state") != "none" or row.get("source_backed") is not True:
                 diagnostics.append({"code": "CHARACTER_SHEET_TYPED_NONE_INVALID", "system": name})
@@ -710,6 +717,7 @@ class CharacterSheetService:
                 "typed_choice_snapshot": deepcopy(ledger.get("typed_choice_snapshot") or {}),
             },
             "explicit_none_systems": deepcopy(ledger.get("typed_none") or {}),
+            "method": deepcopy(ledger.get("method") or {}),
             "selected_record_sections": groups,
             "selected_record_identity_index": [card["record_id"] for card in cards],
             "capability_status": {

@@ -270,7 +270,17 @@ def _validate_binding(event: dict[str, Any], record: dict[str, Any], project: di
     if binding.get("record_hash") != record.get("record_hash") or any(binding.get(k) != rb.get(k) for k in ("pack_id", "pack_version", "pack_hash")):
         raise FoundryError("PROJECTION_CONTENT_BINDING_MISMATCH", "A v3 event does not match its locked record snapshot.", details={"event_id": event.get("event_id"), "record_id": record.get("record_id")})
     allowed = {(x.get("pack_id"), x.get("version"), x.get("content_hash")) for x in (project.get("content_lock") or {}).get("packs", [])}
-    if (binding.get("pack_id"), binding.get("pack_version"), binding.get("pack_hash")) not in allowed:
+    factory = record.get("compatibility", {}).get("factory", {})
+    raw_projection = factory.get("raw_projection") or {}
+    non_sphere_authority = (
+        binding.get("pack_id") == "tianxia.non_sphere.authority"
+        and (record.get("selected_authority") is True or raw_projection.get("selected_authority") is True)
+        and record.get("publication", {}).get("status") == "published"
+        and record.get("record_id", "").startswith(("METHOD-", "tianxia.path."))
+        and str(record.get("source", {}).get("path", "")).startswith("non_sphere_authority/authority/")
+        and (factory.get("stage2_authority", {}).get("authority_complete") is True)
+    )
+    if (binding.get("pack_id"), binding.get("pack_version"), binding.get("pack_hash")) not in allowed and not non_sphere_authority:
         raise FoundryError("PROJECTION_UNLOCKED_CONTENT", "A v3 event references content outside the project lock.", details={"event_id": event.get("event_id")})
 
 
@@ -392,12 +402,44 @@ def _validate_non_sphere_method_access_event(
         )
 
 
+def _validate_non_sphere_method_acquisition_event(
+    event: dict[str, Any],
+    record: dict[str, Any],
+) -> None:
+    """Validate the initial Method acquisition as an audited non-mechanical event."""
+    advancement = event.get("advancement") or {}
+    details = advancement.get("details") or {}
+    subject = event.get("subject") or {}
+    stage2 = (record.get("compatibility") or {}).get("factory", {}).get("stage2_authority") or {}
+    raw_projection = ((record.get("compatibility") or {}).get("factory") or {}).get("raw_projection") or {}
+    invalid = (
+        event.get("legal_channel") != "method-acquisition"
+        or subject.get("content_type") != "cultivation_method"
+        or subject.get("record_id") != record.get("record_id")
+        or not str(record.get("record_id") or "").startswith("METHOD-")
+        or record.get("content_type") != "cultivation_method"
+        or record.get("publication", {}).get("status") != "published"
+        or not (record.get("selected_authority") is True or raw_projection.get("selected_authority") is True)
+        or stage2.get("authority_complete") is not True
+        or "method_acquisition" not in (stage2.get("allowed_kinds") or [])
+        or "method-acquisition" not in (stage2.get("allowed_channels") or [])
+        or (details.get("method_id") is not None and details.get("method_id") != record.get("record_id"))
+    )
+    if invalid:
+        raise FoundryError(
+            "PROJECTION_NON_SPHERE_AUTHORITY_INVALID",
+            "An initial non-Sphere Method acquisition event failed its authenticated authority boundary.",
+            details={"event_id": event.get("event_id"), "method_id": record.get("record_id")},
+        )
+
+
 def _non_sphere_event_provenance(
     event: dict[str, Any],
     record: dict[str, Any],
     contract: dict[str, Any],
-    destination: str,
+    destination: str | list[str],
 ) -> dict[str, Any]:
+    destinations = [destination] if isinstance(destination, str) else list(destination)
     return {
         "provenance_unit": "canonical_non_sphere_authority_event",
         "event_id": event["event_id"],
@@ -414,7 +456,7 @@ def _non_sphere_event_provenance(
         "projection_contract_hash": sha256_json({k: v for k, v in contract.items() if k != "seal_sha256"}),
         "stage2_normalization_authority": deepcopy(contract["stage2_authority_pack"]),
         "exact_source_map": deepcopy(contract["exact_source_map"]),
-        "destination_pointers": [destination],
+        "destination_pointers": sorted(destinations),
         "transformation_kind": "NON_SPHERE_AUTHORITY_AUDIT_ONLY",
         "authority_complete": True,
         "mechanical_projection": False,
@@ -453,6 +495,10 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
 
     supported_kinds = set(contract["supported_event_kinds"])
     non_projecting_kinds = set(contract.get("non_projecting_event_kinds") or [])
+    # The sealed C2A-R.1 contract predates the normal-wizard initial Method
+    # acquisition.  It is accepted here only as a strictly validated audit
+    # event; it contributes no projected mechanics.
+    non_projecting_kinds.add("method_acquisition")
     supported_records = set(contract["supported_record_ids"])
     previous = ZERO_HASH
     by_kind: dict[str, list[dict[str, Any]]] = {}
@@ -466,8 +512,6 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         if canonical_event_hash(event) != event["event_hash"]:
             raise FoundryError("PROJECTION_EVENT_HASH_MISMATCH", "A v3 event does not match its canonical event hash.", details={"sequence": expected})
         kind = event["advancement"]["kind"]
-        if kind not in supported_kinds and kind not in non_projecting_kinds:
-            raise FoundryError("PROJECTION_V3_KIND_UNSUPPORTED", "The v3 projection contract does not support this advancement kind.", details={"kind": kind, "event_id": event["event_id"]})
         record_id = event["subject"]["record_id"]
         record = locked_records.get(record_id)
         if record is None:
@@ -475,10 +519,15 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         rr = registry.report(record, "TianxiaFoundry.RulesCatalogRecord.v1")
         if not rr["valid"]:
             raise FoundryError("PROJECTION_RECORD_SCHEMA_INVALID", "A v3 locked record failed canonical validation.", details={"record_id": record_id, "diagnostics": rr["diagnostics"]})
+        if kind not in supported_kinds and kind not in non_projecting_kinds:
+            raise FoundryError("PROJECTION_V3_KIND_UNSUPPORTED", "The v3 projection contract does not support this advancement kind.", details={"kind": kind, "event_id": event["event_id"]})
         if kind in non_projecting_kinds:
-            if kind != "non_sphere_method_access":
+            if kind == "method_acquisition":
+                _validate_non_sphere_method_acquisition_event(event, record)
+            elif kind != "non_sphere_method_access":
                 raise FoundryError("PROJECTION_V3_KIND_UNSUPPORTED", "The v3 projection contract declares an unsupported non-projecting event kind.", details={"kind": kind, "event_id": event["event_id"]})
-            _validate_non_sphere_method_access_event(event, record, project)
+            else:
+                _validate_non_sphere_method_access_event(event, record, project)
         else:
             stage2 = (record.get("compatibility") or {}).get("factory", {}).get("stage2_authority") or {}
             if record_id not in supported_records and stage2.get("authority_complete") is not True:
@@ -550,7 +599,33 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
     start = only("starting_state")
     background = only("background_acquisition")
     origin = only("origin_insight_acquisition")
-    path_event = only("path_acquisition")
+    path_events = sorted(
+        by_kind.get("path_acquisition") or [],
+        key=lambda event: (int(event["sequence"]), event["subject"]["record_id"]),
+    )
+    path_ids = [event["subject"]["record_id"] for event in path_events]
+    canonical_all_path_ids = {
+        "tianxia.path.body_refining",
+        "tianxia.path.qi_cultivation",
+        "tianxia.path.spirit_awakening",
+    }
+    if len(path_events) == 1:
+        pass
+    elif len(path_events) == len(canonical_all_path_ids) and set(path_ids) == canonical_all_path_ids:
+        # The normal wizard may commit the authenticated Method's complete
+        # three-Path grant.  Keep the historical single-Path projection
+        # shape as the primary view, while retaining every Path below.
+        pass
+    else:
+        raise FoundryError(
+            "PROJECTION_REQUIRED_EVENT_COUNT_INVALID",
+            "The projection requires either one Path or the authenticated canonical three-Path grant.",
+            details={"kind": "path_acquisition", "count": len(path_events), "record_ids": path_ids},
+        )
+    path_event = next(
+        (event for event in path_events if event["subject"]["record_id"] == "tianxia.path.qi_cultivation"),
+        path_events[0] if path_events else None,
+    )
     subpath = only("subpath_acquisition")
     score_change = only("ability_score_change")
     level_events = sorted(by_kind.get("level_advance") or [], key=lambda e: e["advancement"]["target_cl"])
@@ -664,6 +739,23 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         })
     features.sort(key=lambda x: (x["gained_at_cl"], x["feature_id"]))
 
+    def primary_resource_id(resources: dict[str, Any]) -> str:
+        if "tianxia.resource.qi" in resources:
+            return "tianxia.resource.qi"
+        if not resources:
+            raise FoundryError(
+                "PROJECTION_RESOURCE_AUTHORITY_MISSING",
+                "The final level calculation contains no authenticated primary resource.",
+            )
+        return sorted(resources)[0]
+
+    def resource_display_name(resource_id: str) -> str:
+        return {
+            "tianxia.resource.qi": "Qi",
+            "tianxia.resource.stamina": "Stamina",
+            "tianxia.resource.resonance": "Resonance",
+        }.get(resource_id, resource_id.rsplit(".", 1)[-1].replace("_", " ").title())
+
     levels = []
     cumulative_talents: list[str] = []
     talent_by_cl: dict[int, list[str]] = {}
@@ -675,7 +767,7 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         for rid in sorted(talent_by_cl.get(cl, [])):
             cumulative_talents.append(rid)
         hp_total = out["hp_after"]["total"]
-        resource = out["resources_after"]["tianxia.resource.qi"]
+        resource = out["resources_after"][primary_resource_id(out.get("resources_after") or {})]
         levels.append({
             "cl": cl,
             "realm": "Mortal",
@@ -706,13 +798,45 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         if target not in {"method", "foundation", "manuals", "equipment", "forged_techniques"}:
             raise FoundryError("PROJECTION_TYPED_NONE_TARGET_UNSUPPORTED", "The v3 projection contract does not support this typed-none target.", details={"target": target})
         typed_none[target] = deepcopy(event["advancement"]["none_state"])
-    if set(typed_none) != {"method", "foundation", "manuals", "equipment", "forged_techniques"}:
+    method_acquisition_events = [
+        event for event in events
+        if event["advancement"]["kind"] == "method_acquisition"
+    ]
+    if len(method_acquisition_events) > 1:
+        raise FoundryError(
+            "PROJECTION_REQUIRED_EVENT_COUNT_INVALID",
+            "The initial proof stream may contain at most one authenticated Method acquisition.",
+            details={"kind": "method_acquisition", "count": len(method_acquisition_events)},
+        )
+    required_typed_none_targets = {"foundation", "manuals", "equipment", "forged_techniques"}
+    missing_typed_none_targets = sorted(required_typed_none_targets - set(typed_none))
+    if missing_typed_none_targets or (not method_acquisition_events and "method" not in typed_none):
         raise FoundryError("PROJECTION_REQUIRED_FIELD_AUTHORITY_MISSING", "The proof stream does not contain all required exact typed-none sections.", details={"present": sorted(typed_none)})
+    if method_acquisition_events and "method" in typed_none:
+        raise FoundryError(
+            "PROJECTION_METHOD_AUTHORITY_CONFLICT",
+            "An authenticated Method acquisition and a typed-none Method cannot both be present.",
+            details={"method_event_id": method_acquisition_events[0]["event_id"]},
+        )
+    method_projection = deepcopy(typed_none.get("method"))
+    if method_acquisition_events:
+        method_event = method_acquisition_events[0]
+        method_record = event_records[method_event["event_id"]]
+        method_projection = {
+            "state": "acquired",
+            "status": "acquired",
+            "record_id": method_record["record_id"],
+            "display_name": method_event["subject"]["display_name"],
+            "event_id": method_event["event_id"],
+            "record_hash": method_record["record_hash"],
+            "source_packet_ids": [packet_by_event[method_event["event_id"]]],
+            "mechanical_projection": False,
+        }
 
     background_record = event_records[background["event_id"]]
     origin_record = event_records[origin["event_id"]]
     last_level_out = level_events[-1]["advancement"]["calculation"]["outputs"]
-    qi = last_level_out["resources_after"]["tianxia.resource.qi"]
+    primary_resource = last_level_out["resources_after"][primary_resource_id(last_level_out.get("resources_after") or {})]
     key_ability = ((event_records[path_event["event_id"]].get("compatibility") or {}).get("factory", {}).get("stage2_authority") or {}).get("key_ability", "INT")
     attack_bonus = final_mods[key_ability] + final_pb
     save_dc = 8 + final_mods[key_ability] + final_pb
@@ -728,6 +852,19 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         for skill in proficient_skills
     }
     skills = {skill: final_mods[skill_ability_map[skill]] + final_pb * multipliers[skill] for skill in sorted(skill_ability_map)}
+    path_selection_rows = []
+    path_event_indexes = {}
+    for index, event in enumerate(path_events):
+        path_event_indexes[event["event_id"]] = index
+        record_stage2 = ((event_records[event["event_id"]].get("compatibility") or {}).get("factory", {}).get("stage2_authority") or {})
+        path_selection_rows.append({
+            "path_id": event["subject"]["record_id"],
+            "display_name": event["subject"]["display_name"],
+            "effective_cl": target_cl,
+            "key_ability": record_stage2.get("key_ability") or (key_ability if event["event_id"] == path_event["event_id"] else None),
+            "selected_skills": deepcopy(selected_skills) if event["event_id"] == path_event["event_id"] else [],
+            "source_packet_ids": [packet_by_event[event["event_id"]]],
+        })
 
     readiness = {
         "active_profile": "ADVANCEMENT_READY",
@@ -746,6 +883,7 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
     display_packets = [
         packet for packet in packets_list
         if packet["advancement_kind"] not in non_projecting_kinds
+        or packet["advancement_kind"] == "method_acquisition"
     ]
     dynamic_display_contract = (
         _dynamic_display_contract(
@@ -804,9 +942,9 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
             "hp_current": last_level_out["hp_after"]["total"],
             "hp_max": last_level_out["hp_after"]["total"],
             "hp_generation": {"levels": [{"cl": level["cl"], "gain": level["hp"]["gain"], "maximum": level["hp"]["max_after_level"], "formula_id": level["hp"]["formula_id"]} for level in levels]},
-            "primary_resource_name": "Qi",
-            "primary_resource_current": qi["current"],
-            "primary_resource_max": qi["maximum"],
+            "primary_resource_name": resource_display_name(primary_resource["resource_id"]),
+            "primary_resource_current": primary_resource["current"],
+            "primary_resource_max": primary_resource["maximum"],
             "technique_attack_bonus": attack_bonus,
             "save_dc": save_dc,
             "proficient_skills": proficient_skills,
@@ -846,13 +984,13 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
             },
         },
         "advancement": {"levels": levels, "event_count": len(events), "event_head_hash": previous, "historical_prefix_preserved": historical_fixture},
-        "path_selections": [{"path_id": path_event["subject"]["record_id"], "display_name": path_event["subject"]["display_name"], "effective_cl": target_cl, "key_ability": key_ability, "selected_skills": selected_skills, "source_packet_ids": [packet_by_event[path_event["event_id"]]]}],
+        "path_selections": path_selection_rows,
         "subpaths": [{"subpath_id": subpath["subject"]["record_id"], "name": subpath["subject"]["display_name"], "owning_path_id": path_event["subject"]["record_id"], "selected_at_cl": 3, "feature_ids_expected": granted_ids, "source_packet_ids": [packet_by_event[subpath["event_id"]]]}],
         "spheres": spheres,
         "talents": talents,
         "features": features,
-        "resources": [{"resource_id": qi["resource_id"], "name": "Qi", "current": qi["current"], "max": qi["maximum"], "formula_id": qi["formula_id"], "authority_components": qi["authority_components"]}],
-        "method": deepcopy(typed_none["method"]),
+        "resources": [{"resource_id": primary_resource["resource_id"], "name": resource_display_name(primary_resource["resource_id"]), "current": primary_resource["current"], "max": primary_resource["maximum"], "formula_id": primary_resource["formula_id"], "authority_components": primary_resource["authority_components"]}],
+        "method": method_projection,
         "foundation": deepcopy(typed_none["foundation"]),
         "recorded_arts": deepcopy(typed_none["manuals"]),
         "equipment": deepcopy(typed_none["equipment"]),
@@ -923,14 +1061,16 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         record = event_records[event["event_id"]]
         kind = event["advancement"]["kind"]
         if kind in non_projecting_kinds:
-            destination = f"/rules_selection_packets/packets/{event['sequence'] - 1}"
-            semantic[f"event:{event['sequence']:03d}:{event['event_id']}"] = _non_sphere_event_provenance(event, record, contract, destination)
+            destinations = [f"/rules_selection_packets/packets/{event['sequence'] - 1}"]
+            if kind == "method_acquisition":
+                destinations.append("/ledger/method")
+            semantic[f"event:{event['sequence']:03d}:{event['event_id']}"] = _non_sphere_event_provenance(event, record, contract, destinations)
             continue
         destinations = [f"/ledger/advancement/events/{event['sequence']}", f"/rules_selection_packets/packets/{event['sequence'] - 1}"]
         if kind == "starting_state": destinations += ["/ledger/core_stats/ability_generation"]
         elif kind == "background_acquisition": destinations += ["/ledger/background_origin/background", "/ledger/core_stats/ability_scores", "/ledger/core_stats/ability_modifiers"]
         elif kind == "origin_insight_acquisition": destinations += ["/ledger/background_origin/origin_insight"]
-        elif kind == "path_acquisition": destinations += ["/ledger/path_selections/0"]
+        elif kind == "path_acquisition": destinations += [f"/ledger/path_selections/{path_event_indexes.get(event['event_id'], 0)}"]
         elif kind in {"background_sphere_acquisition", "ai_bootstrap_sphere_acquisition"}: destinations += ["/ledger/spheres"]
         elif kind in {"background_talent_acquisition", "ai_bootstrap_talent_acquisition", "level_talent_acquisition"}: destinations += ["/ledger/talents"]
         elif kind == "level_advance": destinations += ["/ledger/advancement/levels", "/ledger/core_stats/hp_generation", "/ledger/resources"]

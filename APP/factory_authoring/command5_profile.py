@@ -213,6 +213,9 @@ class CharacterGMCommand5Profile:
 
     @staticmethod
     def _typed_none(snapshot: dict[str, Any], name: str) -> dict[str, Any]:
+        selected_method = snapshot.get("method") or {}
+        if name == "method" and selected_method.get("state") == "acquired" and selected_method.get("record_id"):
+            return deepcopy(selected_method)
         return deepcopy((snapshot.get("explicit_none_systems") or {}).get(name) or {"state":"none","source_backed":True})
 
     def _models(self, *, project: dict[str, Any], sheet_response: dict[str, Any], workspace_root: Path, workspace_status: dict[str, Any], profile: dict[str, Any], profile_contract_sha: str, command4: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:

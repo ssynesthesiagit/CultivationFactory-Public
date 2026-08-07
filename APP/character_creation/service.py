@@ -17,11 +17,17 @@ from typing import Any, Callable
 
 from app.core import Database, FoundryError, Settings, canonical_json, sha256_bytes, sha256_file, sha256_json, utcnow
 from canonical_catalog import CanonicalCatalogAuthorityService
-from catalog_choice_authority import COMMITTED_CATALOG_CHOICE_FIELD, committed_catalog_grant_plan
+from catalog_choice_authority import (
+    COMMITTED_CATALOG_CHOICE_FIELD,
+    DELEGATED_FINAL_CATALOG_GRANT_FIELD,
+    committed_catalog_grant_plan,
+)
 from character_creation.choice_snapshot import materialize_choice_snapshot, valid_choice_snapshot
 from character_creation.delegated_choice_authority import (
     build_delegated_choice_envelope,
+    catalog_stage2_selections,
     final_plan_sha256,
+    response_authority_representations,
     validate_delegated_choice_plan,
 )
 from non_sphere_authority import NonSphereAuthorityService
@@ -708,6 +714,133 @@ class CharacterCreationExecutionService:
             return [CharacterCreationExecutionService._identity_payload(v) for v in value]
         return value
 
+    @staticmethod
+    def _has_delegated_envelope(run: dict[str, Any]) -> bool:
+        return bool((run.get("request") or {}).get("delegated_choice_envelope"))
+
+    def _derive_delegated_final_grant_plan(
+        self,
+        run: dict[str, Any],
+        plan: dict[str, Any],
+        final_plan: dict[str, Any],
+    ) -> dict[str, Any]:
+        """Derive the exact canonical grant/accounting plan from accepted response rows."""
+        if not self._has_delegated_envelope(run):
+            return final_plan
+        stage2 = catalog_stage2_selections(plan)
+        resolution = final_plan.get("resolution") or {}
+        selected_by_slot = resolution.get("selected_choices_by_slot") or {}
+
+        def selected(slot_id: str) -> list[str]:
+            return [value for value in selected_by_slot.get(slot_id) or [] if isinstance(value, str)]
+
+        # A delegated catalog response must disclose its final mechanical rows;
+        # a Stage 1 priority or planner sentence cannot become accounting by
+        # itself.  Empty categories are legal, but a declared category with no
+        # corresponding Stage 2 rows is an incomplete representation.
+        representation_requirements = {
+            "sphere_priorities": ("sphere_ids", "Sphere"),
+            "advancement_skeleton": ("ordinary_talent_ids", "Talent"),
+        }
+        for slot_id, (bucket, label) in representation_requirements.items():
+            if selected(slot_id) and not stage2[bucket] and not (
+                bucket == "ordinary_talent_ids" and not selected("sphere_priorities")
+            ):
+                raise FoundryError(
+                    "CG1_DELEGATED_CATALOG_REPRESENTATION_MISSING",
+                    f"The delegated response declared {label} choices without exact Stage 2 mechanical rows.",
+                    details={"slot_id": slot_id, "stage2_bucket": bucket, "choice_ids": selected(slot_id)},
+                    status_code=409,
+                )
+        sphere_ids = list(stage2["sphere_ids"])
+        free_talent_ids = list(stage2["free_sphere_talent_ids"])
+        ordinary_talent_ids = list(stage2["ordinary_talent_ids"])
+        if len(sphere_ids) != len(set(sphere_ids)) or len(free_talent_ids) != len(set(free_talent_ids)) or len(ordinary_talent_ids) != len(set(ordinary_talent_ids)):
+            raise FoundryError(
+                "CG1_DELEGATED_DUPLICATE_CHOICE",
+                "The accepted delegated catalog response repeats a canonical acquisition.",
+                details={"sphere_ids": sphere_ids, "free_sphere_talent_ids": free_talent_ids, "ordinary_talent_ids": ordinary_talent_ids},
+                status_code=409,
+            )
+        catalog = CanonicalCatalogAuthorityService(self.db.settings.root_dir)
+        free_by_sphere: dict[str, str] = {}
+        for talent_id in free_talent_ids:
+            talent = catalog.get_talent(talent_id)
+            sphere_id = talent.get("owning_canonical_sphere_id")
+            if not isinstance(sphere_id, str) or sphere_id not in sphere_ids:
+                raise FoundryError(
+                    "CG1_DELEGATED_FREE_TALENT_SPHERE_MISMATCH",
+                    "Every accepted free Sphere Talent must belong to an accepted Sphere grant.",
+                    details={"talent_id": talent_id, "owning_sphere_id": sphere_id, "sphere_ids": sphere_ids},
+                    status_code=409,
+                )
+            if sphere_id in free_by_sphere:
+                raise FoundryError(
+                    "CG1_DELEGATED_DUPLICATE_CHOICE",
+                    "A Sphere received more than one accepted free Talent grant.",
+                    details={"sphere_id": sphere_id, "talent_ids": [free_by_sphere[sphere_id], talent_id]},
+                    status_code=409,
+                )
+            free_by_sphere[sphere_id] = talent_id
+        try:
+            grant_plan = catalog.validate_grant_plan_for_initial_creation(
+                target_cl=plan["target_cl"],
+                acquired_sphere_ids=sphere_ids,
+                free_talent_grants=free_by_sphere,
+                ordinary_talent_ids=ordinary_talent_ids,
+                path_ids=resolution.get("actual_advancing_path_ids") or [],
+                subpath_or_tradition_ids=stage2["subpath_or_tradition_ids"] or selected("subpath_choice"),
+                method_ids=[resolution["method_id"]] if resolution.get("method_id") else [],
+                foundation_or_feature_ids=[resolution["foundation_id"]] if resolution.get("foundation_id") else [],
+            )
+        except FoundryError:
+            raise
+        final_plan["canonical_grant_plan"] = grant_plan
+        final_plan["canonical_grant_plan_sha256"] = sha256_json(grant_plan)
+        final_plan["catalog_response_authority"] = {
+            "stage2_mechanical_choices": deepcopy(stage2),
+            "accepted_sphere_ids": deepcopy(sphere_ids),
+            "accepted_free_sphere_talent_ids": deepcopy(free_talent_ids),
+            "accepted_ordinary_talent_ids": deepcopy(ordinary_talent_ids),
+            "accepted_background_sphere_ids": deepcopy(stage2["background_sphere_ids"]),
+            "accepted_background_talent_ids": deepcopy(stage2["background_talent_ids"]),
+            "accepted_path_ids": deepcopy(resolution.get("actual_advancing_path_ids") or []),
+            "accepted_method_id": resolution.get("method_id"),
+            "accepted_foundation_id": resolution.get("foundation_id"),
+            "grant_plan_provenance": deepcopy(grant_plan.get("selected_talent_dispositions") or []),
+        }
+        final_plan["response_representations"] = response_authority_representations(plan)
+        final_plan["final_plan_sha256"] = final_plan_sha256(final_plan)
+        return final_plan
+
+    def _materialize_delegated_final_grant_plan(
+        self,
+        run: dict[str, Any],
+        final_plan: dict[str, Any],
+        authority_db: Database,
+        *,
+        phase: str,
+    ) -> dict[str, Any] | None:
+        if not self._has_delegated_envelope(run):
+            return None
+        grant_plan = deepcopy(final_plan.get("canonical_grant_plan"))
+        if not isinstance(grant_plan, dict) or grant_plan.get("schema") != "TianxiaFactory.CanonicalGrantPlan.v1":
+            raise FoundryError(
+                "CG1_CANONICAL_GRANT_PLAN_LOCK_MISSING",
+                "Delegated compilation requires the server-derived canonical final grant plan.",
+                status_code=409,
+            )
+        from project_store.service import ProjectStore
+        store = self.projects if authority_db is self.db else ProjectStore(authority_db)
+        store.materialize_server_derived_user_lock(
+            run["project_id"],
+            field=DELEGATED_FINAL_CATALOG_GRANT_FIELD,
+            value=grant_plan,
+            source=f"cg1-delegated-final-grant-plan:{sha256_json(grant_plan)}:{phase}",
+            lock_id="lock.cg1.delegated-final-grant-plan",
+        )
+        return grant_plan
+
     def _compile_once(
         self,
         run: dict[str, Any],
@@ -715,6 +848,7 @@ class CharacterCreationExecutionService:
         index: int,
         *,
         prior_attempt_id: str | None = None,
+        accepted_final_plan: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         choice_snapshot = self._require_frozen_choice_snapshot(run)
         with tempfile.TemporaryDirectory(prefix=f"cg1-scratch-{index}-", ignore_cleanup_errors=True) as td:
@@ -723,6 +857,12 @@ class CharacterCreationExecutionService:
             s=self.db.settings
             settings=Settings(root_dir=s.root_dir,data_dir=data,db_path=data/s.db_path.name,inbox_dir=data/"inbox",exports_dir=data/"exports",packs_dir=data/"content_packs",vendor_dir=data/"vendor",logs_dir=data/"logs",backups_dir=data/"backups",security_dir=data/"security",factory_zip=s.factory_zip,fixture_path=s.fixture_path)
             scratch_db=Database(settings); scratch_db.migrate(); services=self._scratch_services(scratch_db)
+            self._materialize_delegated_final_grant_plan(
+                run,
+                accepted_final_plan or {},
+                scratch_db,
+                phase="scratch_compile",
+            )
             stage1=services["stage1"]
             s1=plan["stage1_response"]; text=s1 if isinstance(s1,str) else canonical_json(s1)
             attempt=stage1.validate_response(
@@ -745,6 +885,7 @@ class CharacterCreationExecutionService:
                 phase="scratch_compile",
                 authority_db=scratch_db,
                 _finalization_authority=_SERVER_SCRATCH_COMPILATION_AUTHORITY,
+                accepted_final_plan=accepted_final_plan,
             )
             projection=services["projections"].build(run["project_id"], choice_snapshot=deepcopy(choice_snapshot))
             sheet=self._invoke(services["character_sheets"],("build","build_sheet","sheet","current"),run["project_id"])
@@ -790,14 +931,18 @@ class CharacterCreationExecutionService:
         plan: dict[str, Any],
         *,
         prior_attempt_id: str | None = None,
+        accepted_final_plan: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         previous_clock=os.environ.get("TIANXIA_DETERMINISTIC_UTC")
         previous_approval_seed=os.environ.get("TIANXIA_DETERMINISTIC_APPROVAL_SEED")
         os.environ["TIANXIA_DETERMINISTIC_UTC"]=run["created_at"]
         os.environ["TIANXIA_DETERMINISTIC_APPROVAL_SEED"]=run["request"]["request_sha256"]
         try:
-            a=self._compile_once(run, plan, 1, prior_attempt_id=prior_attempt_id)
-            b=self._compile_once(run, plan, 2, prior_attempt_id=prior_attempt_id)
+            compile_kwargs = {"prior_attempt_id": prior_attempt_id}
+            if accepted_final_plan is not None:
+                compile_kwargs["accepted_final_plan"] = accepted_final_plan
+            a=self._compile_once(run, plan, 1, **compile_kwargs)
+            b=self._compile_once(run, plan, 2, **compile_kwargs)
         finally:
             if previous_clock is None:
                 os.environ.pop("TIANXIA_DETERMINISTIC_UTC",None)
@@ -948,11 +1093,20 @@ class CharacterCreationExecutionService:
                 "immutable_after_validation": True,
             }
             final_plan["final_plan_sha256"] = final_plan_sha256(final_plan)
-        self._validate_frozen_catalog_choices(run, plan)
-        candidate=self._compile_twice(run, plan, prior_attempt_id=prior_attempt_id)
+        delegated_run = self._has_delegated_envelope(run)
+        if delegated_run:
+            final_plan = self._derive_delegated_final_grant_plan(run, plan, final_plan)
+        else:
+            self._validate_frozen_catalog_choices(run, plan)
+        candidate=self._compile_twice(
+            run,
+            plan,
+            prior_attempt_id=prior_attempt_id,
+            accepted_final_plan=final_plan if delegated_run else None,
+        )
         warnings.extend(deepcopy(plan.get("uncertainties") or [])); warnings.extend(deepcopy(plan.get("fallbacks") or []))
         quality={"schema":QUALITY_SCHEMA,"status":"CLEAN" if not warnings else "NEEDS_REVIEW","required_receipts":sorted(candidate["preview"]["readiness"]),"candidate_identity":candidate["candidate_identity"]}
-        validation={"valid":True,"response_sha256":sha256_bytes(raw),"plan_sha256":sha256_json(plan),"planner_authority_fields_used":False,"delegated_choice_authority":bool(final_plan)}
+        validation={"valid":True,"response_sha256":sha256_bytes(raw),"plan_sha256":sha256_json(plan),"planner_authority_fields_used":False,"delegated_choice_authority":delegated_run}
         return {"plan":plan,"final_plan":final_plan or {},"validation":validation,"candidate":candidate,"quality":quality,"warnings":warnings,"raw_sha256":sha256_bytes(raw)}
 
     def _apply_response(
@@ -1265,6 +1419,7 @@ class CharacterCreationExecutionService:
         phase: str,
         authority_db: Database,
         _finalization_authority: object | None = None,
+        accepted_final_plan: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Materialize exact initial evidence only in a sealed server phase.
 
@@ -1326,7 +1481,21 @@ class CharacterCreationExecutionService:
                 "SELECT project_json FROM projects WHERE project_id=?", (run["project_id"],),
             ).fetchone()
         project = json.loads(project_row["project_json"] or "{}") if project_row else {}
-        grant_plan = committed_catalog_grant_plan(project)
+        if self._has_delegated_envelope(run):
+            grant_plan = deepcopy((accepted_final_plan or {}).get("canonical_grant_plan"))
+            materialized = committed_catalog_grant_plan(project)
+            if grant_plan is None or materialized != grant_plan:
+                raise FoundryError(
+                    "CG1_DELEGATED_FINAL_GRANT_PLAN_DIVERGED",
+                    "The scratch/final project does not contain the exact accepted delegated grant plan.",
+                    details={
+                        "accepted_plan_sha256": sha256_json(grant_plan) if isinstance(grant_plan, dict) else None,
+                        "materialized_plan_sha256": sha256_json(materialized) if isinstance(materialized, dict) else None,
+                    },
+                    status_code=409,
+                )
+        else:
+            grant_plan = committed_catalog_grant_plan(project)
         if grant_plan is None:
             # Historical/non-catalog creation fixtures can legitimately contain
             # no canonical acquisitions at all.  They issue no provenance; the
@@ -1422,6 +1591,13 @@ class CharacterCreationExecutionService:
 
     def _execute_live(self, run: dict[str,Any], plan: dict[str,Any], fail_after: str|None=None) -> dict[str,Any]:
         choice_snapshot=self._require_frozen_choice_snapshot(run)
+        accepted_final_plan = deepcopy(run.get("final_plan") or {})
+        self._materialize_delegated_final_grant_plan(
+            run,
+            accepted_final_plan,
+            self.db,
+            phase="finalization",
+        )
         svc=self._live_pipeline(); outputs={}
         text=plan["stage1_response"] if isinstance(plan["stage1_response"],str) else canonical_json(plan["stage1_response"])
         attempt=svc["stage1"].validate_response(
@@ -1443,6 +1619,7 @@ class CharacterCreationExecutionService:
             phase="finalization",
             authority_db=self.db,
             _finalization_authority=_SERVER_FINALIZATION_AUTHORITY,
+            accepted_final_plan=accepted_final_plan,
         )
         outputs["projection"]=svc["projections"].build(run["project_id"], choice_snapshot=deepcopy(choice_snapshot))
         if fail_after=="projection": raise RuntimeError("forced failure after projection")
