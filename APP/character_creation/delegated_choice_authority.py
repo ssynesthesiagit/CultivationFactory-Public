@@ -452,11 +452,13 @@ def build_delegated_choice_envelope(
     content_lock = project.get("content_lock") or {}
     frozen_target_cl = frozen_owner_target_cl(project)
     path_authority = deepcopy(prompt_envelope.get("path_method_authority") or {})
+    name_lock_present = "character.identity.display_name" in locks
     owner_name = locks.get("character.identity.display_name")
-    if owner_name is None:
+    if not name_lock_present:
         owner_name = project.get("working_name") or project.get("name")
+    concept_lock_present = "concept" in locks
     owner_concept = locks.get("concept")
-    if owner_concept is None:
+    if not concept_lock_present:
         owner_concept = project.get("concept")
     owner_name = str(owner_name or "").strip() or None
     owner_concept = str(owner_concept or "").strip() or None

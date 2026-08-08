@@ -31,8 +31,8 @@ class ExactEvidenceRecordRequest(StrictModel):
 
 
 class CharacterSheetCreateRequest(StrictModel):
-    working_name: str = Field(min_length=1, max_length=240)
-    concept: str = Field(min_length=1, max_length=12000)
+    working_name: str = Field(default="", max_length=240)
+    concept: str = Field(default="", max_length=12000)
     target_cl: int = Field(default=15, ge=1, le=20)
     power_band: str = Field(default="rival/boss", min_length=1, max_length=100)
     source_reference: str | None = Field(default=None, max_length=2000)

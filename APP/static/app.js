@@ -9,7 +9,7 @@ let activeSheetSphereId = null;
 let guidedProjectId = null;
 let guidedProjectLifecycle = null;
 let guidedRun = null;
-let guidedCompleteResponseFile = null;
+let guidedCompleteResponseSource = {kind: "none", file: null};
 let ownerCharacterSheet = null;
 let lastGMExport = null;
 const sphereTalentLogic = globalThis.TianxiaSphereTalentLogic;
@@ -77,9 +77,81 @@ function setGuidedStatus(message, isError = false) {
   status.classList.toggle("error", isError);
 }
 
+function parseAPIError(error) {
+  const raw = error?.message || String(error || "");
+  try {
+    const parsed = JSON.parse(raw);
+    const detail = parsed?.error || parsed;
+    return {raw: parsed, code: detail?.code || "LOCAL_ERROR", message: detail?.message || raw, details: detail?.details ?? null};
+  } catch (_ignored) {
+    return {raw, code: "LOCAL_ERROR", message: raw, details: null};
+  }
+}
+
+function readableDiagnosticValue(value, key = "") {
+  if (Array.isArray(value)) return value.map(item => readableDiagnosticValue(item, key)).join(", ");
+  if (value && typeof value === "object") {
+    return Object.entries(value).map(([name, item]) => `${friendlyLabel(name)}: ${readableDiagnosticValue(item, name)}`).join("; ");
+  }
+  if (value === null || value === undefined || value === "") return "not supplied";
+  if (typeof value === "boolean") return value ? "yes" : "no";
+  if (typeof value === "string" && ["path", "paths", "required_path_ids", "unsupported_path_ids", "proposed_method_granted_path_ids"].some(token => key.includes(token))) {
+    const ids = value.split(", ").map(item => item.trim()).filter(Boolean);
+    return ids.map(id => choiceFor("path_choice", id)?.name || id).join(", ");
+  }
+  return String(value);
+}
+
+function ownerDiagnosticMessage(diagnostic, fallback = "The requested action could not be completed.") {
+  const message = diagnostic?.message || fallback;
+  const details = diagnostic?.details;
+  if (!details || typeof details !== "object") return message;
+  if (details.required_path_ids || details.unsupported_path_ids || details.proposed_method_granted_path_ids) {
+    const expected = readableDiagnosticValue(details.required_path_ids || [], "required_path_ids");
+    const proposed = readableDiagnosticValue(details.proposed_method_granted_path_ids || [], "proposed_method_granted_path_ids");
+    const missing = readableDiagnosticValue(details.unsupported_path_ids || [], "unsupported_path_ids");
+    return `${message} Expected: the selected Method must support every locked Path (${expected || "no Path locks"}). Proposed: it supports ${proposed || "no matching locked Paths"}; missing ${missing || "none"}.`;
+  }
+  const expected = details.expected ?? details.required ?? details.expected_value;
+  const proposed = details.proposed ?? details.actual ?? details.actual_value;
+  if (expected !== undefined || proposed !== undefined) {
+    const parts = [];
+    if (expected !== undefined) parts.push(`Expected: ${readableDiagnosticValue(expected, "expected")}`);
+    if (proposed !== undefined) parts.push(`Proposed: ${readableDiagnosticValue(proposed, "proposed")}`);
+    return `${message} ${parts.join(" ")}`;
+  }
+  if (details.mismatches && typeof details.mismatches === "object") {
+    const mismatch = Object.entries(details.mismatches).slice(0, 3).map(([field, value]) => {
+      const row = value && typeof value === "object" ? value : {actual: value};
+      return `${friendlyLabel(field)} expected ${readableDiagnosticValue(row.expected, "expected")}, proposed ${readableDiagnosticValue(row.actual ?? row.proposed, "proposed")}`;
+    });
+    if (mismatch.length) return `${message} Expected-versus-proposed: ${mismatch.join("; ")}.`;
+  }
+  return message;
+}
+
+function recordGuidedDiagnostic(error, context = "") {
+  const host = document.getElementById("guidedDiagnosticsDetail");
+  if (!host) return;
+  const diagnostic = parseAPIError(error);
+  host.textContent = pretty({context: context || "owner_action", code: diagnostic.code, message: diagnostic.message, details: diagnostic.details});
+}
+
+function recordGuidedRunDiagnostics(run) {
+  const host = document.getElementById("guidedDiagnosticsDetail");
+  if (!host || !run) return;
+  host.textContent = pretty({
+    status: run.status,
+    blockers: run.blockers || [],
+    warnings: run.warnings || [],
+    quality: run.quality || {},
+    validation: run.validation || {},
+  });
+}
+
 function resetGuidedBuilder() {
   guidedRun = null;
-  guidedCompleteResponseFile = null;
+  resetGuidedResponseSource();
   const response = document.getElementById("guidedCompleteResponseText");
   const fileStatus = document.getElementById("guidedCompleteReplyStatus");
   const downloadStatus = document.getElementById("guidedDownloadCompleteRequestStatus");
@@ -150,12 +222,9 @@ function guidedPromptForChatGPT(prompt) {
 }
 
 function plainAPIError(error, fallback) {
-  try {
-    const parsed = JSON.parse(error.message);
-    return parsed?.error?.message || fallback;
-  } catch (_ignored) {
-    return error.message || fallback;
-  }
+  const diagnostic = parseAPIError(error);
+  recordGuidedDiagnostic(error);
+  return ownerDiagnosticMessage(diagnostic, fallback);
 }
 
 function setScreenState(elementId, state, message, retry = null, error = null) {
@@ -322,6 +391,10 @@ function renderPathChoices() {
   clearNode(host);
   const selected = selectedSet("path_choice");
   const maximum = Number(category.max || 3);
+  const lockSummary = document.createElement("small");
+  lockSummary.className = "path-lock-summary";
+  lockSummary.textContent = `${selected.size} of ${maximum} Path locks selected`;
+  host.appendChild(lockSummary);
   for (const choice of category.choices || []) {
     const label = document.createElement("label");
     const input = document.createElement("input");
@@ -329,6 +402,7 @@ function renderPathChoices() {
     input.value = choice.choice_id;
     input.checked = selected.has(choice.choice_id);
     input.disabled = !input.checked && selected.size >= maximum;
+    input.setAttribute("aria-label", `Lock ${choice.name} as an advancing Path`);
     input.onchange = () => {
       if (input.checked) selected.add(choice.choice_id);
       else selected.delete(choice.choice_id);
@@ -342,7 +416,9 @@ function renderPathChoices() {
       refreshMethodPathChoices({announce: true, preserve: true});
       evaluateGuidedReadiness();
     };
-    label.append(input, document.createTextNode(choice.name));
+    const copy = document.createElement("span");
+    copy.textContent = choice.name;
+    label.append(input, copy);
     host.appendChild(label);
   }
 }
@@ -476,8 +552,8 @@ function refreshMethodPathChoices({announce = false, preserve = true} = {}) {
     previousPaths.every(pathId => (choice.related_choice_ids || []).includes(pathId))
   ).length;
   setMethodPathAuthorityNotice(previousPaths.length
-    ? `${compatibleCount} installed Method${compatibleCount === 1 ? "" : "s"} support every selected Path.`
-    : "Choose one or more Paths; the Method list will show only compatible choices.", previousPaths.length > 0 && compatibleCount === 0);
+    ? `${previousPaths.length} Path lock${previousPaths.length === 1 ? "" : "s"} selected. ${compatibleCount} installed Method${compatibleCount === 1 ? "" : "s"} support every locked Path.`
+    : "0 Path locks: the legal Method route may choose the advancing Paths. Add up to three locks when you want to require them.", previousPaths.length > 0 && compatibleCount === 0);
   refreshPathSubpathChoices({announce, preferredValue: preserve ? previousSubpath : ""});
 }
 
@@ -732,21 +808,34 @@ function renderSphereTalentWorkspace() {
         grant.textContent = "Granted automatically; cannot be removed; costs 0 talent, advancement, or training slots.";
         const fields = document.createElement("dl"); fields.className = "base-ability-fields";
         const fieldRows = [
-          ["Action type", ability.action_type], ["Combat bucket", ability.factory_combat_bucket],
-          ["Factory routing", ability.factory_routing], ["Range", ability.range], ["Cost", ability.cost],
-          ["Target", ability.target], ["Trigger", ability.trigger], ["Effect", ability.effect],
+          ["Action", ability.action_type], ["Combat role", ability.factory_combat_bucket],
+          ["Range", ability.range], ["Cost", ability.cost], ["Target", ability.target],
+          ["When it applies", ability.trigger], ["What it does", ability.effect],
           ["Use limit", ability.use_limit], ["Scaling", Array.isArray(ability.scaling) ? ability.scaling.join(" ") : ability.scaling],
           ["Tags", Array.isArray(ability.tags) ? ability.tags.join(", ") : ability.tags],
-          ["Source", ability.source_reference?.source_section || ability.source_reference?.source_path],
         ];
         for (const [term, value] of fieldRows) {
-          if (value === null || value === undefined || value === "" || (Array.isArray(value) && !value.length)) continue;
+          const empty = value === null || value === undefined || value === "" || (Array.isArray(value) && !value.length);
+          if (empty && !["Action", "Combat role", "When it applies", "What it does"].includes(term)) continue;
           const dt = document.createElement("dt"); dt.textContent = term;
           const dd = document.createElement("dd");
-          dd.textContent = String(value);
+          dd.textContent = empty ? "Not specified in the accepted component record" : String(value);
           fields.append(dt, dd);
         }
         details.append(summary, grant, fields);
+        const technical = document.createElement("details");
+        technical.className = "developer-only base-ability-technical";
+        technical.hidden = true;
+        const technicalSummary = document.createElement("summary"); technicalSummary.textContent = "Developer / Diagnostics: source routing";
+        const technicalFields = document.createElement("dl"); technicalFields.className = "base-ability-fields";
+        for (const [term, value] of [["Base ability ID", ability.base_ability_id], ["Factory routing", ability.factory_routing], ["Source", ability.source_reference?.source_section || ability.source_reference?.source_path]]) {
+          if (value === null || value === undefined || value === "") continue;
+          const dt = document.createElement("dt"); dt.textContent = term;
+          const dd = document.createElement("dd"); dd.textContent = String(value);
+          technicalFields.append(dt, dd);
+        }
+        technical.append(technicalSummary, technicalFields);
+        details.append(technical);
         item.appendChild(details);
         grants.appendChild(item);
       }
@@ -1106,7 +1195,10 @@ async function loadCharacterBuilderOptions() {
     renderSphereTalentWorkspace();
     const blocked = characterBuilderOptions.categories.filter(category => category.status !== "offered").map(category => category.label);
     const counts = characterBuilderOptions.owner_surface_counts || {};
-    status.textContent = `${counts.canonical_spheres || 0} canonical Spheres, ${counts.canonical_talents || 0} canonical Talents, and ${counts.automatic_base_components || 0} automatic base components loaded. ${counts.zero_talent_spheres || 0} zero-talent Spheres are explicitly unavailable in character creation; ${counts.quarantined_records || 0} quarantined records remain unchanged.${blocked.length ? ` Auto remains required for: ${blocked.join(", ")}.` : ""}`;
+    const ordinaryInsightCount = insightChoices.filter(choice => choice.insight_authority?.authority_type !== "Background-Origin").length;
+    const backgroundOriginCount = (categoryFor("origin_insight_choice")?.choices || []).filter(choice => choice.insight_authority?.authority_type === "Background-Origin").length;
+    const automaticSphereComponentCount = counts.resolved_automatic_base_components ?? counts.automatic_base_components ?? 0;
+    status.textContent = `${counts.canonical_spheres || 0} canonical Spheres, ${counts.canonical_talents || 0} canonical Talents, and ${automaticSphereComponentCount} automatic Sphere components loaded. ${ordinaryInsightCount} ordinary Insights and ${backgroundOriginCount} separate Background-Origin Insights are available. ${counts.zero_talent_spheres || 0} zero-talent Spheres are explicitly unavailable in character creation; ${counts.quarantined_records || 0} quarantined records remain unchanged.${blocked.length ? ` Auto remains required for: ${blocked.join(", ")}.` : ""}`;
     updatePointBuySummary();
     evaluateGuidedReadiness();
   } catch (error) {
@@ -1230,7 +1322,9 @@ document.getElementById("guidedCreate").addEventListener("submit", async event =
     const ordinaryTalentCount = (grantAccounting.ordinary_talent_ids || []).length;
     const preferenceCount = (planning.sphere_priority_ids || []).length + (planning.talent_priority_ids || []).length
       + (planning.method_preference_id ? 1 : 0);
-    setGuidedStatus(`${name} is temporary and ready. ${lockedCount} exact ${lockedCount === 1 ? "choice" : "choices"}; ${preferenceCount} planning ${preferenceCount === 1 ? "preference" : "preferences"}; ${acquiredSphereCount} first-cycle ${acquiredSphereCount === 1 ? "Sphere" : "Spheres"} and ${ordinaryTalentCount} ordinary Talent ${ordinaryTalentCount === 1 ? "slot" : "slots"} server-validated and frozen. Choose a complete-character build mode.`);
+    const ownerLabel = name || "AI-proposed character";
+    const descriptiveNote = name || concept ? "Your supplied wording is locked for review." : "Name and Concept are delegated for the AI to propose.";
+    setGuidedStatus(`${ownerLabel} is temporary and ready. ${descriptiveNote} ${lockedCount} exact ${lockedCount === 1 ? "choice" : "choices"}; ${preferenceCount} planning ${preferenceCount === 1 ? "preference" : "preferences"}; ${acquiredSphereCount} first-cycle ${acquiredSphereCount === 1 ? "Sphere" : "Spheres"} and ${ordinaryTalentCount} ordinary Talent ${ordinaryTalentCount === 1 ? "slot" : "slots"} server-validated and frozen. Choose a complete-character build mode.`);
     setGuidedStep(2);
     updateGuidedModeUI();
   } catch (error) {
@@ -1272,8 +1366,6 @@ function evaluateGuidedReadiness() {
   const concept = document.getElementById("guidedConcept")?.value.trim() || "";
   const level = Number(document.getElementById("guidedLevel")?.value || 0);
   if (!characterBuilderOptions) blockers.push({fieldId: "guidedName", message: "Installed character choices are still loading."});
-  if (!name) blockers.push({fieldId: "guidedName", message: "Enter a character name."});
-  if (!concept) blockers.push({fieldId: "guidedConcept", message: "Describe the character concept."});
   if (!Number.isInteger(level) || level < 1 || level > 20) blockers.push({fieldId: "guidedLevel", message: "Intended level must be from 1 through 20."});
   if (creationMode === "detailed" && characterBuilderOptions) {
     const selectedMethod = methodPlanningMode() === "EXACT" ? methodChoiceFor() : null;
@@ -1379,6 +1471,7 @@ function hasSubstantiveCommit(commit) {
 
 function renderGuidedCandidate(run) {
   guidedRun = run;
+  recordGuidedRunDiagnostics(run);
   const progress = document.getElementById("guidedBuildProgress");
   if (progress) progress.textContent = pretty({status: run.status, quality: run.quality, blockers: run.blockers, warnings: run.warnings, independent_compilations: run.dry_run?.independent_compilations, candidate_identity: run.dry_run?.candidate_identity});
   const reviewable = ["READY_FOR_REVIEW", "NEEDS_REVIEW"].includes(run.status);
@@ -1414,7 +1507,7 @@ function renderGuidedCandidate(run) {
   appendCandidateLine(host, "One free talent per acquired Sphere", freeTalents.length ? freeTalents.join("; ") : "See complete candidate evidence below");
   appendCandidateLine(host, "Automatic base abilities", automatic.length ? automatic.join("; ") : "None projected or see evidence below");
   appendCandidateLine(host, "Ordinary acquired talents", ordinary.length ? ordinary.join("; ") : "None projected or see evidence below");
-  if ((run.blockers || []).length) appendCandidateLine(host, "Exact blockers", run.blockers.map(row => `${row.code}: ${row.message}`).join(" | "), "error");
+  if ((run.blockers || []).length) appendCandidateLine(host, "What to fix next", run.blockers.map(row => ownerDiagnosticMessage(row, "The candidate needs one correction before review.")).join(" "), "error");
   document.getElementById("guidedReviewDetail").textContent = pretty({
     status: run.status,
     quality: run.quality,
@@ -1432,6 +1525,12 @@ function renderGuidedCandidate(run) {
   });
   document.getElementById("guidedFinalize").disabled = !clean;
   setGuidedStatus(clean ? "Complete candidate is clean and has not been committed. Review once, then Finalize, Revise, or Cancel." : "The complete candidate needs review. No canonical mutation occurred.", !clean);
+  const nextAction = document.getElementById("guidedNextAction");
+  if (nextAction) nextAction.textContent = clean
+    ? "Next legal action: review the readable summary, then choose Finalize, Revise, or Cancel."
+    : (run.blockers || []).length
+      ? "Next legal action: correct the item described above, then submit one replacement response."
+      : "Next legal action: review the candidate details before making a decision.";
   setGuidedStep(3);
 }
 
@@ -1481,7 +1580,7 @@ async function startGuidedCompleteBuild() {
       }
       document.getElementById("guidedManualTransfer").hidden = false;
       document.getElementById("guidedDownloadCompleteRequest").disabled = false;
-      document.getElementById("guidedSubmitCompleteResponse").disabled = false;
+      renderGuidedResponseSourceState();
       document.getElementById("guidedBuildProgress").textContent = pretty({
         status: guidedRun.status,
         execution_mode: guidedRun.execution_mode,
@@ -1532,6 +1631,8 @@ async function loadGuidedProviderStatus() {
 }
 document.getElementById("guidedProviderSave").onclick = async () => {
   const host = document.getElementById("guidedProviderStatus");
+  const keyInput = document.getElementById("guidedProviderKey");
+  const key = keyInput.value;
   try {
     await api("/api/ai-provider/configure", {method: "POST", body: JSON.stringify({
       enabled: document.getElementById("guidedProviderEnabled").checked,
@@ -1540,13 +1641,14 @@ document.getElementById("guidedProviderSave").onclick = async () => {
       data_sharing_acknowledged: document.getElementById("guidedProviderAcknowledged").checked,
       acknowledged_by: document.getElementById("guidedProviderActor").value.trim() || null,
     })});
+    if (key) await api("/api/ai-provider/key", {method: "POST", body: JSON.stringify({api_key: key})});
+    keyInput.value = "";
     await loadGuidedProviderStatus();
-  } catch (error) { host.textContent = plainAPIError(error, "DeepSeek settings were not saved."); }
-};
-document.getElementById("guidedProviderSaveKey").onclick = async () => {
-  const input = document.getElementById("guidedProviderKey");
-  try { await api("/api/ai-provider/key", {method: "POST", body: JSON.stringify({api_key: input.value})}); input.value = ""; await loadGuidedProviderStatus(); }
-  catch (error) { input.value = ""; document.getElementById("guidedProviderStatus").textContent = plainAPIError(error, "The DeepSeek key was not saved."); }
+    host.textContent = "DeepSeek setup saved. Run Test saved connection once before using an API build mode.";
+  } catch (error) {
+    keyInput.value = "";
+    host.textContent = plainAPIError(error, "DeepSeek setup was not saved.");
+  }
 };
 document.getElementById("guidedProviderDeleteKey").onclick = async () => {
   try { await api("/api/ai-provider/key", {method: "DELETE"}); document.getElementById("guidedProviderKey").value = ""; await loadGuidedProviderStatus(); }
@@ -1577,29 +1679,119 @@ document.getElementById("guidedDownloadCompleteRequest").onclick = window.Tianxi
   navigate: url => window.location.assign(url),
 });
 
-async function loadGuidedCompleteResponse(file) {
-  if (!file) return;
-  guidedCompleteResponseFile = file;
-  document.getElementById("guidedCompleteReplyStatus").textContent = `${file.name} selected. Build Complete Candidate will bind it to the exact request and run both scratch builds.`;
+function guidedResponseSourceName() {
+  if (guidedCompleteResponseSource.kind === "file") return guidedCompleteResponseSource.file?.name || "selected file";
+  if (guidedCompleteResponseSource.kind === "paste") return "pasted response";
+  return "none";
 }
+
+function renderGuidedResponseSourceState(message = null, isError = false) {
+  const source = guidedCompleteResponseSource;
+  const state = document.getElementById("guidedResponseSourceState");
+  const status = document.getElementById("guidedCompleteReplyStatus");
+  const submit = document.getElementById("guidedSubmitCompleteResponse");
+  const remove = document.getElementById("guidedRemoveCompleteReply");
+  const replace = document.getElementById("guidedReplaceCompleteReply");
+  const label = source.kind === "file"
+    ? `Response source: file — ${source.file?.name || "selected file"}. Pasted text is cleared.`
+    : source.kind === "paste"
+      ? "Response source: paste — the selected file, if any, was cleared."
+      : "Response source: none. Choose a file or paste a response.";
+  if (state) {
+    state.textContent = message || label;
+    state.classList.toggle("error", isError);
+    state.classList.toggle("success", !isError && source.kind !== "none");
+  }
+  if (status && message) {
+    status.textContent = message;
+    status.classList.toggle("error", isError);
+    status.classList.toggle("success", !isError && source.kind !== "none");
+  }
+  if (submit) submit.disabled = source.kind === "none" || !guidedRun?.run_id;
+  if (remove) remove.disabled = source.kind === "none";
+  if (replace) replace.disabled = !guidedRun?.run_id;
+}
+
+function resetGuidedResponseSource(message = null) {
+  guidedCompleteResponseSource = {kind: "none", file: null};
+  const text = document.getElementById("guidedCompleteResponseText");
+  const file = document.getElementById("guidedCompleteReplyFile");
+  if (text) text.value = "";
+  if (file) file.value = "";
+  renderGuidedResponseSourceState(message);
+}
+
+function removeGuidedResponseSource() {
+  resetGuidedResponseSource("Response source removed. Choose a new file or paste a new response.");
+}
+
+function selectGuidedResponseFile(file) {
+  if (!file) {
+    renderGuidedResponseSourceState("Drop or choose one response file. A folder or empty drop is not a response file.", true);
+    return false;
+  }
+  const name = String(file.name || "");
+  const extensionValid = /\.(zip|json|md|txt)$/i.test(name);
+  const sizeValid = Number(file.size || 0) > 0 && Number(file.size || 0) <= 16 * 1024 * 1024;
+  if (!extensionValid) {
+    renderGuidedResponseSourceState("That file was not accepted. Choose one .zip, .json, .md, or .txt response file.", true);
+    return false;
+  }
+  if (!sizeValid) {
+    renderGuidedResponseSourceState("That file was not accepted. The response must be larger than 0 bytes and no more than 16 MB.", true);
+    return false;
+  }
+  guidedCompleteResponseSource = {kind: "file", file};
+  const text = document.getElementById("guidedCompleteResponseText");
+  if (text) text.value = "";
+  renderGuidedResponseSourceState(`${name} selected. This file replaces any pasted response; Remove or Replace it before choosing another source.`);
+  return true;
+}
+
+function chooseGuidedResponseFile() {
+  document.getElementById("guidedCompleteReplyFile")?.click();
+}
+
 const completeReplyFile = document.getElementById("guidedCompleteReplyFile");
-document.getElementById("guidedChooseCompleteReply").onclick = event => { event.stopPropagation(); completeReplyFile.click(); };
-completeReplyFile.onchange = async () => { await loadGuidedCompleteResponse(completeReplyFile.files[0]); completeReplyFile.value = ""; };
+document.getElementById("guidedChooseCompleteReply").onclick = event => { event.stopPropagation(); chooseGuidedResponseFile(); };
+document.getElementById("guidedReplaceCompleteReply").onclick = event => { event.stopPropagation(); chooseGuidedResponseFile(); };
+document.getElementById("guidedRemoveCompleteReply").onclick = event => { event.stopPropagation(); removeGuidedResponseSource(); };
+completeReplyFile.onchange = () => { selectGuidedResponseFile(completeReplyFile.files?.[0] || null); completeReplyFile.value = ""; };
 const completeDrop = document.getElementById("guidedCompleteReplyDrop");
-completeDrop.onclick = event => { if (event.target.id !== "guidedChooseCompleteReply") completeReplyFile.click(); };
-completeDrop.onkeydown = event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); completeReplyFile.click(); } };
+completeDrop.onclick = event => { if (!["guidedChooseCompleteReply", "guidedReplaceCompleteReply", "guidedRemoveCompleteReply"].includes(event.target.id)) chooseGuidedResponseFile(); };
+completeDrop.onkeydown = event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); chooseGuidedResponseFile(); } };
 for (const type of ["dragenter", "dragover"]) completeDrop.addEventListener(type, event => { event.preventDefault(); completeDrop.classList.add("active"); });
 for (const type of ["dragleave", "drop"]) completeDrop.addEventListener(type, event => { event.preventDefault(); completeDrop.classList.remove("active"); });
-completeDrop.addEventListener("drop", async event => { await loadGuidedCompleteResponse(event.dataTransfer.files[0]); });
+completeDrop.addEventListener("drop", event => {
+  const files = Array.from(event.dataTransfer?.files || []);
+  if (files.length !== 1) {
+    renderGuidedResponseSourceState(files.length > 1 ? "Drop one response file at a time. The current response source was not changed." : "That drop did not contain one response file. Choose a .zip, .json, .md, or .txt file.", true);
+    return;
+  }
+  selectGuidedResponseFile(files[0]);
+});
+document.getElementById("guidedCompleteResponseText").addEventListener("input", event => {
+  if (event.target.value.trim()) {
+    guidedCompleteResponseSource = {kind: "paste", file: null};
+    if (completeReplyFile) completeReplyFile.value = "";
+    renderGuidedResponseSourceState("Response source: paste. Any previously selected file was cleared.");
+  } else if (guidedCompleteResponseSource.kind === "paste") {
+    resetGuidedResponseSource();
+  }
+});
+renderGuidedResponseSourceState();
 
 document.getElementById("guidedSubmitCompleteResponse").onclick = async () => {
   if (!guidedRun?.run_id) return void setGuidedStatus("Prepare the complete request first.", true);
-  const pasted = document.getElementById("guidedCompleteResponseText").value.trim();
-  if (!guidedCompleteResponseFile && !pasted) return void setGuidedStatus("Choose one complete response ZIP/JSON or paste the complete response JSON.", true);
+  const source = guidedCompleteResponseSource;
+  const pasted = source.kind === "paste" ? document.getElementById("guidedCompleteResponseText").value.trim() : "";
+  if (source.kind === "none" || (source.kind === "paste" && !pasted) || (source.kind === "file" && !source.file)) {
+    return void setGuidedStatus("Choose one complete response file or paste the complete response JSON. Remove the current source before selecting a different one.", true);
+  }
   setGuidedStatus("Validating the response and running two isolated complete-character builds…");
   try {
-    if (guidedCompleteResponseFile) {
-      const response = await fetch(`/api/character-creation/runs/${encodeURIComponent(guidedRun.run_id)}/manual-response-file?filename=${encodeURIComponent(guidedCompleteResponseFile.name)}`, {method: "POST", headers: {"X-Foundry-Token": token, "Content-Type": "application/octet-stream"}, body: await guidedCompleteResponseFile.arrayBuffer()});
+    if (source.kind === "file") {
+      const response = await fetch(`/api/character-creation/runs/${encodeURIComponent(guidedRun.run_id)}/manual-response-file?filename=${encodeURIComponent(source.file.name)}`, {method: "POST", headers: {"X-Foundry-Token": token, "Content-Type": "application/octet-stream"}, body: await source.file.arrayBuffer()});
       const data = await response.json();
       if (!response.ok) throw new Error(pretty(data));
       guidedRun = data;
@@ -1630,14 +1822,13 @@ document.getElementById("guidedRevise").onclick = async () => {
   if (!guidedRun?.run_id) return;
   try {
     guidedRun = await api(`/api/character-creation/runs/${encodeURIComponent(guidedRun.run_id)}/revise`, {method: "POST", body: JSON.stringify({owner_notes: document.getElementById("guidedRevisionNotes").value})});
-    document.getElementById("guidedCompleteResponseText").value = "";
-    guidedCompleteResponseFile = null;
+    resetGuidedResponseSource();
     setGuidedStep(2);
     document.querySelector('input[name="guidedExecutionMode"][value="MANUAL_CHAT"]').checked = true;
     updateGuidedModeUI();
     document.getElementById("guidedManualTransfer").hidden = false;
     document.getElementById("guidedDownloadCompleteRequest").disabled = false;
-    document.getElementById("guidedSubmitCompleteResponse").disabled = false;
+    renderGuidedResponseSourceState();
     setGuidedStatus("Revision request prepared. Download the new complete request ZIP and submit one corrected complete response.");
   } catch (error) { setGuidedStatus(plainAPIError(error, "A revision request could not be prepared."), true); }
 };
@@ -2028,6 +2219,21 @@ function appendReadableValue(host, value, depth = 0) {
   host.appendChild(grid);
 }
 
+function ownerNextLegalAction(sheet) {
+  const status = String(sheet?.build_status || "").toUpperCase();
+  if (status === "TEMPORARY") return "Save Draft when you want to keep this character after closing the builder.";
+  if (status === "SAVED_DRAFT") return "Open the draft in the builder and prepare its complete-character request.";
+  if (status === "BLUEPRINT") return "Prepare the complete-character request for this saved plan.";
+  if (status === "ADVANCEMENT_READY") return "Build the owner-facing Character Sheet from the deterministic advancement result.";
+  if (status === "CHARACTER_SHEET_READY") {
+    return sheet?.gm_export?.available
+      ? "Open Advanced Exports only when you need a Character or GM ZIP."
+      : "Prepare the Factory workspace; GM export stays unavailable until its separate verification gate is complete.";
+  }
+  if (status === "GM_READY") return "Open Advanced Exports if you need the validated GM-compatible ZIP.";
+  return "Select one action above to continue this character.";
+}
+
 
 const NS1R_API_CONTRACT_ROUTES = Object.freeze([
   {method: "GET", path: "/api/non-sphere/authority/status"},
@@ -2181,7 +2387,7 @@ async function loadNonSphereAuthorityPanel() {
     const readyNode = document.getElementById("nonSphereReadiness");
     const ready = Boolean(readiness.ready);
     readyNode.className = `non-sphere-readiness ${ready ? "ready" : "blocked"}`;
-    readyNode.textContent = ready ? "Non-Sphere authority is ready for this character." : `Blocked: ${(readiness.blockers || []).map(row => row.message || row.code).join(" · ") || "cultivation selections remain incomplete"}`;
+    readyNode.textContent = ready ? "Non-Sphere authority is ready for this character." : `Blocked: ${(readiness.blockers || []).map(row => ownerDiagnosticMessage(row, "Cultivation selections remain incomplete.")).join(" · ") || "Cultivation selections remain incomplete."}`;
     technical.textContent = pretty({state, readiness, ap_eligibility: apEligibility, authority: status});
   } catch (error) {
     statusNode.textContent = plainAPIError(error, "Non-Sphere authority could not be loaded.");
@@ -2212,13 +2418,27 @@ function renderOwnerSheet(sheet) {
   header.append(titleWrap, lifecycle); host.appendChild(header);
   const identity = document.createElement("section"); identity.className = "owner-sheet-section identity-sheet-section";
   const ih = document.createElement("h4"); ih.textContent = "Identity and cultivation"; identity.appendChild(ih); appendReadableValue(identity, sheet.identity); host.appendChild(identity);
+  const nextAction = document.createElement("section"); nextAction.className = "next-legal-action owner-sheet-next-action";
+  const nextHeading = document.createElement("h4"); nextHeading.textContent = "Next legal action";
+  const nextCopy = document.createElement("p"); nextCopy.textContent = ownerNextLegalAction(sheet);
+  nextAction.append(nextHeading, nextCopy); host.appendChild(nextAction);
   const provenance = document.createElement("div"); provenance.className = "provenance-strip";
   for (const item of [sheet.provenance.owner_locks, sheet.provenance.ai_blueprint, sheet.provenance.advancement_projection, sheet.provenance.character_sheet_projection]) { if (!item) continue; const badge = document.createElement("div"); badge.className = `provenance-badge ${item.status}`; const strong = document.createElement("strong"); strong.textContent = item.label; const small = document.createElement("small"); small.textContent = item.status === "not_compiled" ? "Not compiled yet" : friendlyLabel(item.status); badge.append(strong, small); provenance.appendChild(badge); }
   host.appendChild(provenance);
   const sections = document.createElement("div"); sections.className = "owner-sheet-sections";
-  for (const [name, section] of Object.entries(sheet.sections || {})) { const card = document.createElement("section"); card.className = `owner-sheet-section ${section.status}`; const h = document.createElement("h4"); h.textContent = friendlyLabel(name); const state = document.createElement("span"); state.className = "section-state"; state.textContent = section.label; card.append(h, state); if (section.data) appendReadableValue(card, section.data); sections.appendChild(card); }
+  for (const [name, section] of Object.entries(sheet.sections || {})) {
+    if (name === "diagnostics") {
+      const technicalSection = document.createElement("details");
+      technicalSection.className = "developer-diagnostics sheet-diagnostics-details";
+      const summary = document.createElement("summary"); summary.textContent = "Developer / Diagnostics: Character Sheet checks";
+      const body = document.createElement("div");
+      if (section.data) appendReadableValue(body, section.data);
+      technicalSection.append(summary, body); sections.appendChild(technicalSection); continue;
+    }
+    const card = document.createElement("section"); card.className = `owner-sheet-section ${section.status}`; const h = document.createElement("h4"); h.textContent = friendlyLabel(name); const state = document.createElement("span"); state.className = "section-state"; state.textContent = section.label; card.append(h, state); if (section.data) appendReadableValue(card, section.data); sections.appendChild(card);
+  }
   host.appendChild(sections);
-  const technical = document.createElement("details"); technical.className = "sheet-technical-details"; const techSummary = document.createElement("summary"); techSummary.textContent = "Technical provenance and committed IDs"; const pre = document.createElement("pre"); pre.textContent = pretty(sheet); technical.append(techSummary, pre); host.appendChild(technical);
+  const technical = document.createElement("details"); technical.className = "sheet-technical-details developer-diagnostics"; const techSummary = document.createElement("summary"); techSummary.textContent = "Developer / Diagnostics: technical provenance and committed IDs"; const pre = document.createElement("pre"); pre.textContent = pretty(sheet); technical.append(techSummary, pre); host.appendChild(technical);
   const exportPanel = document.getElementById("gmExportPanel"); exportPanel.hidden = false;
   const workspace = sheet.factory_workspace || {status: "NOT_ATTEMPTED"};
   const workspaceComplete = workspace.status === "FACTORY_COMMAND_1_TO_4_WORKSPACE_COMPLETE";
@@ -2549,6 +2769,14 @@ function selectCharacterZip(file) {
   else setCharacterImportStatus("Ready to validate. Preview will not change your saved characters.");
 }
 
+function clearCharacterZipSelection(message = "No ZIP selected. Choose or drop one audited Character ZIP.") {
+  selectedCharacterZip = null;
+  selectedCharacterPreview = null;
+  document.getElementById("characterZipFile").value = "";
+  selectCharacterZip(null);
+  setCharacterImportStatus(message);
+}
+
 async function previewSelectedCharacterZip() {
   if (!selectedCharacterZip) return;
   const previewButton = document.getElementById("previewCharacterZip");
@@ -2628,6 +2856,8 @@ characterZipDropZone.addEventListener("drop", event => selectCharacterZip(event.
 characterZipFile.addEventListener("change", () => selectCharacterZip(characterZipFile.files?.[0] || null));
 document.getElementById("previewCharacterZip").addEventListener("click", previewSelectedCharacterZip);
 document.getElementById("importCharacterZip").addEventListener("click", importSelectedCharacterZip);
+document.getElementById("replaceCharacterZip").addEventListener("click", () => characterZipFile.click());
+document.getElementById("removeCharacterZip").addEventListener("click", () => clearCharacterZipSelection());
 document.getElementById("refreshCharacters").addEventListener("click", async () => {
   try { await loadProjects(); setCharacterImportStatus("Character library refreshed.", "success"); }
   catch (error) { setCharacterImportStatus(plainAPIError(error, "The character library could not be refreshed."), "error"); }

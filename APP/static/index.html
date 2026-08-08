@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tianxia Character Foundry — Dynamic Content</title>
-  <link rel="stylesheet" href="/static/styles.css?v=w5-p1r-primary-character-creation">
+  <link rel="stylesheet" href="/static/styles.css?v=rec1-p1c-owner-workflow">
 </head>
 <body>
 <header>
@@ -48,7 +48,7 @@
         <div>
           <p class="sheet-kicker">Character intake</p>
           <h3>Who are we making?</h3>
-          <p>Describe the character. Every mechanical choice remains Auto unless you explicitly customize it.</p>
+            <p>Describe the character. Leave Name or Concept blank when you want the AI to propose wording for your review; mechanical choices remain Auto unless you customize them.</p>
         </div>
         <div class="creation-mode" role="group" aria-label="Character intake detail">
           <button id="builderModeQuick" type="button" class="active" aria-pressed="true">Auto</button>
@@ -57,8 +57,8 @@
       </div>
       <form id="guidedCreate" class="friendly-form">
         <div class="identity-banner">
-          <label>Character name
-            <input id="guidedName" required maxlength="240" placeholder="For example: Lin Mei">
+          <label>Character name <span class="optional">(optional — the AI may propose one)</span>
+            <input id="guidedName" maxlength="240" placeholder="For example: Lin Mei">
           </label>
           <div class="friendly-grid">
             <label>Intended level
@@ -73,8 +73,8 @@
             </label>
           </div>
         </div>
-        <label>Character concept
-          <textarea id="guidedConcept" required rows="5" placeholder="Describe their cultivation path, fighting style, personality, signature abilities, and anything you definitely want."></textarea>
+        <label>Character concept <span class="optional">(optional — the AI may propose one)</span>
+          <textarea id="guidedConcept" rows="5" placeholder="Describe their cultivation path, fighting style, personality, signature abilities, and anything you definitely want. Leave blank to delegate the concept."></textarea>
         </label>
         <label>Source or inspiration <span class="optional">(optional)</span>
           <input id="guidedSource" placeholder="A book, image, existing character, or leave blank">
@@ -112,12 +112,16 @@
             <div class="sheet-section-heading"><div><p class="sheet-number">02</p><h5 id="cultivationHeading">Cultivation Core</h5></div></div>
             <p class="section-help">The Factory keeps the exact choices you make here and checks that they work together.</p>
             <div class="sheet-field-grid">
-              <fieldset class="path-choice-field"><legend>Starting Paths</legend><div id="sheetPaths" class="path-choice-list"></div><small id="sheetPathAuthorityNotice" class="availability-note" role="status"></small></fieldset>
+              <fieldset class="path-choice-field"><legend>Path locks (0–3)</legend>
+                <p class="field-help">Lock zero, one, two, or three advancing Paths. Zero means the legal Method route may choose them; locked Paths must be supported by the selected Method. All three Path tracks still exist at level zero.</p>
+                <div id="sheetPaths" class="path-choice-list"></div>
+                <small id="sheetPathAuthorityNotice" class="availability-note" role="status"></small>
+              </fieldset>
               <label>Subpath or Tradition<select id="sheetSubpath" data-sheet-slot="subpath_choice"></select></label>
               <label>Background<select id="sheetBackground" data-sheet-slot="background_choice"></select></label>
               <label>Background Sphere<select id="sheetBackgroundSphere" data-sheet-slot="background_sphere_choice"></select></label>
               <label>Background Talent<select id="sheetBackgroundTalent" data-sheet-slot="background_talent_choice"></select></label>
-              <label>Origin Insight<select id="sheetOriginInsight" data-sheet-slot="origin_insight_choice"></select></label>
+              <label>Background / Origin Insight<select id="sheetOriginInsight" data-sheet-slot="origin_insight_choice"></select></label>
               <label>Foundation<select id="sheetFoundation" data-sheet-slot="foundation_choice"></select></label>
               <fieldset class="method-planning-field"><legend>Cultivation Method</legend>
                 <div class="method-mode-choices" id="sheetMethodMode">
@@ -173,8 +177,8 @@
                 <p id="sheetSphereTalentNotice" class="availability-note" role="status"></p>
               </article>
               <article class="choice-collection">
-                <h6>Insights</h6><p>Choose themes you would like the Factory to consider. Choices that do not fit remain unavailable.</p>
-                <label>Category<select id="sheetInsightAuthorityFilter"><option value="">All categories</option><option>General</option><option>General Cultivation</option><option>Sphere</option><option>Path</option><option>Technique-Forging</option><option>Metatechnique</option><option>Companion</option><option>Narrative / Secret</option><option>Method</option><option>Foundation</option><option>Background-Origin</option><option>Item-Equipment</option><option>Special</option><option>Unresolved</option></select></label>
+                <h6>Insights</h6><p>Choose from the 542 ordinary Insights you want the Factory to consider. Background-Origin Insights are separate and are chosen above with the Background route.</p>
+                <label>Ordinary Insight category<select id="sheetInsightAuthorityFilter"><option value="">All ordinary categories</option><option>General</option><option>General Cultivation</option><option>Sphere</option><option>Path</option><option>Technique-Forging</option><option>Metatechnique</option><option>Companion</option><option>Narrative / Secret</option><option>Method</option><option>Foundation</option><option>Item-Equipment</option><option>Special</option><option>Unresolved</option></select></label>
                 <div class="choice-adder"><select id="sheetInsightAdd" data-multi-slot="insight_priorities"></select><button type="button" data-add-slot="insight_priorities">Add</button></div>
                 <p id="sheetInsightAuthorityDetail" class="availability-note" role="status">Choose an Insight to see its category and requirements.</p>
                 <div id="sheetInsightList" class="choice-chips" data-chip-host="insight_priorities"></div>
@@ -213,7 +217,7 @@
       </fieldset>
       <section id="guidedProviderSetup" class="sheet-section" aria-labelledby="guidedProviderHeading">
         <div class="sheet-section-heading"><div><h4 id="guidedProviderHeading">DeepSeek setup for Standard API and Auto-Finalize</h4></div></div>
-        <p>Manual Chat never needs a key. DeepSeek is the only provider; enabling it requires explicit data-sharing acknowledgement.</p>
+        <p>Manual Chat never needs a key. DeepSeek is optional; one Save stores the settings and, when supplied, the protected key. Test the saved setup once before choosing an API build mode.</p>
         <div class="sheet-field-grid">
           <label>Endpoint<input id="guidedProviderEndpoint" readonly aria-readonly="true" value="https://api.deepseek.com/chat/completions"></label>
           <label>Model<input id="guidedProviderModel" value="deepseek-v4-flash" autocomplete="off"></label>
@@ -222,7 +226,7 @@
         </div>
         <label><input id="guidedProviderAcknowledged" type="checkbox"> I understand the complete-character prompt will be sent to DeepSeek and may incur charges.</label>
         <label>API key<input id="guidedProviderKey" type="password" autocomplete="new-password" placeholder="Stored locally; never returned"></label>
-        <div class="button-row"><button id="guidedProviderSave" type="button">Save settings</button><button id="guidedProviderSaveKey" type="button">Save key</button><button id="guidedProviderDeleteKey" type="button">Delete key</button><button id="guidedProviderTest" type="button">Test connection</button></div>
+        <div class="button-row"><button id="guidedProviderSave" class="primary-action" type="button">Save DeepSeek setup</button><button id="guidedProviderTest" type="button">Test saved connection</button><button id="guidedProviderDeleteKey" type="button">Remove protected key</button></div>
         <p id="guidedProviderStatus" class="availability-note" role="status">Provider status not loaded.</p>
       </section>
       <label id="guidedAutoConsentPanel" class="auto-finalize-consent" hidden>
@@ -241,15 +245,21 @@
         <div class="numbered-action"><span>3</span><div><strong>Load the complete response.</strong><p>The Factory binds it to this exact request and runs two isolated scratch builds.</p></div></div>
         <div id="guidedCompleteReplyDrop" class="reply-drop-zone" tabindex="0" role="button" aria-label="Drop complete character response ZIP or JSON here">
           <strong>Drop complete response ZIP or JSON here</strong><span>or choose a .zip, .json, .md, or .txt file</span>
-          <button id="guidedChooseCompleteReply" type="button">Choose Complete Response</button>
+          <button id="guidedChooseCompleteReply" type="button">Choose response file</button>
           <input id="guidedCompleteReplyFile" type="file" accept=".zip,.json,.md,.txt" hidden>
         </div>
         <p id="guidedCompleteReplyStatus" class="availability-note" aria-live="polite"></p>
         <label class="friendly-label" for="guidedCompleteResponseText">Or paste the complete response JSON</label>
         <textarea id="guidedCompleteResponseText" rows="10" spellcheck="false" placeholder="Paste one TianxiaFoundry.CharacterCreationPlan.v2 JSON object"></textarea>
+        <div class="response-source-controls" aria-label="Manual response source controls">
+          <button id="guidedReplaceCompleteReply" type="button">Replace response source</button>
+          <button id="guidedRemoveCompleteReply" type="button">Remove response source</button>
+        </div>
+        <p id="guidedResponseSourceState" class="response-source-state" role="status" aria-live="polite">Response source: none. Choose a file or paste a response.</p>
         <button id="guidedSubmitCompleteResponse" class="primary-action" type="button" disabled>Build Complete Candidate</button>
       </section>
       <pre id="guidedBuildProgress" class="owner-readable-log" aria-live="polite">No complete-character build started.</pre>
+      <details id="guidedDeveloperDiagnostics" class="developer-diagnostics"><summary>Developer / Diagnostics</summary><pre id="guidedDiagnosticsDetail">No technical diagnostics recorded.</pre></details>
     </section>
 
     <section class="builder-card" id="builderReview" hidden aria-labelledby="guidedReviewHeading">
@@ -257,7 +267,8 @@
       <h3 id="guidedReviewHeading">Review the complete compiled character</h3>
       <p>No canonical mutation has occurred. Review the locally compiled candidate, including acquired Spheres, free talents, automatic base abilities, ordinary talents, routes, and any exact blockers.</p>
       <div id="guidedCandidateSummary" class="candidate-review-summary" aria-live="polite"></div>
-      <details><summary>Complete technical candidate and gate evidence</summary><pre id="guidedReviewDetail"></pre></details>
+      <p id="guidedNextAction" class="next-legal-action" aria-live="polite">Next legal action will appear after the candidate is reviewed.</p>
+      <details class="developer-diagnostics"><summary>Developer / Diagnostics: complete candidate and gate evidence</summary><pre id="guidedReviewDetail"></pre></details>
       <label class="friendly-label" for="guidedRevisionNotes">Revision notes <span class="optional">(optional)</span></label>
       <textarea id="guidedRevisionNotes" rows="4" placeholder="Describe what should change in the next complete-character request."></textarea>
       <div class="button-row">
@@ -689,7 +700,7 @@
       </div>
       <p id="characterZipAccepted" class="field-help">Accepted: one audited <code>.zip</code> portable Character package, up to 128 MB. Preview is non-mutating.</p>
       <p id="characterZipSelection" class="character-import-selection">No ZIP selected.</p>
-      <div class="button-row"><button id="previewCharacterZip" type="button" disabled>Preview</button><button id="importCharacterZip" class="primary-action" type="button" disabled>Import Character</button></div>
+      <div class="button-row"><button id="previewCharacterZip" type="button" disabled>Preview</button><button id="importCharacterZip" class="primary-action" type="button" disabled>Import Character</button><button id="replaceCharacterZip" type="button">Replace ZIP</button><button id="removeCharacterZip" type="button">Remove ZIP</button></div>
       <div id="characterZipProgress" class="character-import-progress" role="status" aria-live="polite">Select a package to begin.</div>
       <div id="characterZipPreview" class="character-import-preview" hidden></div>
       <details id="characterZipDetails" hidden><summary>Advanced details</summary><pre id="characterZipTechnical"></pre></details>
@@ -713,29 +724,32 @@
       </section>
       <div id="nonSpherePathTracks" class="non-sphere-path-tracks"><p>Select a character to inspect its persistent Path tracks.</p></div>
       <div id="nonSphereReadiness" class="non-sphere-readiness" aria-live="polite"></div>
-      <details><summary>Authority and migration details</summary><pre id="nonSphereTechnical">No character selected.</pre></details>
+      <details class="developer-diagnostics"><summary>Developer / Diagnostics: authority and migration details</summary><pre id="nonSphereTechnical">No character selected.</pre></details>
     </section>
     <section id="ownerWorkflowPanel" class="owner-workflow-panel" aria-labelledby="ownerWorkflowHeading">
-      <div class="owner-workflow-heading"><div><p class="eyebrow">Native owner workflow</p><h3 id="ownerWorkflowHeading">Stage and Save As</h3><p>Create the correct artifact with the existing Factory services, then save it to a native path. This does not depend on browser downloads.</p></div><button id="ownerDeveloperMode" type="button" aria-pressed="false">Developer / Diagnostics mode: Off</button></div>
-      <div class="artifact-grid">
-        <button type="button" data-artifact-kind="chat_request">Stage Chat Request ZIP</button>
-        <button type="button" data-artifact-kind="project_backup">Stage Factory Project Backup</button>
-        <button type="button" data-artifact-kind="completed_character">Stage Completed Character ZIP</button>
-        <button type="button" data-artifact-kind="gm_character">Stage GM-Compatible Character ZIP</button>
-        <button type="button" data-artifact-kind="combat_package">Stage Legal Combat Package</button>
-      </div>
-      <div class="save-as-row"><label>Native Save As path<input id="ownerSaveAsPath" placeholder="Documents/Character.zip"></label><button id="ownerSaveAs" type="button" disabled>Save As</button></div>
-      <pre id="ownerArtifactResult" class="compact-technical">No artifact staged.</pre>
-      <section id="xiangContinuation" class="continuation-panel">
-        <h4 id="stage1ContinuationHeading">Selected character — Stage 1 status</h4>
-        <p id="stage1ContinuationSummary"><strong>Select a character.</strong> The Factory will resolve that exact project and revision before preparing, reusing, or continuing a Stage 1 request.</p>
-        <ol><li>Prepare advancement request</li><li>Manual Chat or configured API</li><li>Import and validate response</li><li>Owner approval</li><li>Compile advancement</li><li>Build Character Sheet</li><li>Prepare GM model</li><li>Export Completed Character ZIP</li></ol>
-        <button id="xiangPrepareAdvancement" type="button">Prepare Advancement Request</button>
-        <p id="xiangContinuationStatus" class="friendly-status">Select a character project to continue.</p>
-      </section>
+      <div class="owner-workflow-heading"><div><p class="eyebrow">Native owner workflow</p><h3 id="ownerWorkflowHeading">Advanced Exports</h3><p>Technical exports stay together here. The ordinary Character Sheet above remains the readable owner surface.</p></div><button id="ownerDeveloperMode" type="button" aria-pressed="false">Developer / Diagnostics mode: Off</button></div>
+      <details id="advancedExports" class="advanced-exports">
+        <summary>Advanced Exports</summary>
+        <p>Create the correct artifact with the existing Factory services, then save it to a native path. This does not depend on browser downloads.</p>
+        <div class="artifact-grid">
+          <button type="button" data-artifact-kind="chat_request">Stage Chat Request ZIP</button>
+          <button type="button" data-artifact-kind="project_backup">Stage Factory Project Backup</button>
+          <button type="button" data-artifact-kind="completed_character">Stage Completed Character ZIP</button>
+          <button type="button" data-artifact-kind="gm_character">Stage GM-Compatible Character ZIP</button>
+          <button type="button" data-artifact-kind="combat_package">Stage Legal Combat Package</button>
+        </div>
+        <div class="save-as-row"><label>Native Save As path<input id="ownerSaveAsPath" placeholder="Documents/Character.zip"></label><button id="ownerSaveAs" type="button" disabled>Save As</button></div>
+        <pre id="ownerArtifactResult" class="compact-technical">No artifact staged.</pre>
+        <section id="xiangContinuation" class="continuation-panel">
+          <h4 id="stage1ContinuationHeading">Selected character — Stage 1 status</h4>
+          <p id="stage1ContinuationSummary"><strong>Select a character.</strong> The Factory will resolve that exact project and revision before preparing, reusing, or continuing a Stage 1 request.</p>
+          <ol><li>Prepare advancement request</li><li>Manual Chat or configured API</li><li>Import and validate response</li><li>Owner approval</li><li>Compile advancement</li><li>Build Character Sheet</li><li>Prepare GM model</li><li>Export Completed Character ZIP</li></ol>
+          <button id="xiangPrepareAdvancement" type="button">Prepare Advancement Request</button>
+          <p id="xiangContinuationStatus" class="friendly-status">Select a character project to continue.</p>
+        </section>
+        <section id="gmExportPanel" class="gm-export-panel" hidden><h3>Factory and GM readiness</h3><p id="factoryWorkspaceExplanation"></p><div class="button-row"><button id="prepareFactoryWorkspace" class="secondary-action" type="button">Prepare Command 1–4 Workspace</button></div><pre id="factoryWorkspaceResult" class="compact-technical">GM tactical authoring has not been prepared.</pre><h4>GM Screen export</h4><p id="gmExportExplanation"></p><div class="button-row"><button id="gmExportCharacter" class="primary-action" type="button">Export Character ZIP for GM Screen</button><a id="gmExportDownload" class="button-link" hidden>Download Exported ZIP</a></div><pre id="gmExportResult" class="compact-technical">No GM Screen export run.</pre></section>
+      </details>
     </section>
-
-    <section id="gmExportPanel" class="gm-export-panel" hidden><h3>Factory and GM readiness</h3><p id="factoryWorkspaceExplanation"></p><div class="button-row"><button id="prepareFactoryWorkspace" class="secondary-action" type="button">Prepare Command 1–4 Workspace</button></div><pre id="factoryWorkspaceResult" class="compact-technical">GM tactical authoring has not been prepared.</pre><h4>GM Screen export</h4><p id="gmExportExplanation"></p><div class="button-row"><button id="gmExportCharacter" class="primary-action" type="button">Export Character ZIP for GM Screen</button><a id="gmExportDownload" class="button-link" hidden>Download Exported ZIP</a></div><pre id="gmExportResult" class="compact-technical">No GM Screen export run.</pre></section>
     <details class="advanced-project-tools developer-only" hidden><summary>Advanced project tools</summary><p>Technical controls for troubleshooting and advanced Factory work. Most owners do not need these.</p>
     <form id="createProject" class="toolbar">
       <input id="projectName" placeholder="Working name" required>
@@ -876,6 +890,6 @@
 </main>
 <script src="/static/sphere_talent_logic.js?v=w5-p1r-primary-character-creation"></script>
 <script src="/static/complete_request_save.js?v=win1-p1r1-native-save-evidence"></script>
-<script src="/static/app.js?v=w5-p1r-primary-character-creation"></script>
+<script src="/static/app.js?v=rec1-p1c-owner-workflow"></script>
 </body>
 </html>

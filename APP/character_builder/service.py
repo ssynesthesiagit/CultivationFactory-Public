@@ -1745,6 +1745,9 @@ class CharacterBuilderService:
         generation_route: str = "player",
         project_id_override: str | None = None,
     ) -> dict[str, Any]:
+        requested_working_name = str(working_name or "").strip()
+        requested_concept = str(concept or "").strip()
+        project_working_name = requested_working_name or "AI-proposed character"
         if generation_route not in {"player", "ai_bootstrap"}:
             raise FoundryError(
                 "CHARACTER_SHEET_GENERATION_ROUTE_INVALID",
@@ -1858,7 +1861,8 @@ class CharacterBuilderService:
         preferred_record_ids.extend(planning_preferences.get("sphere_priority_ids", []))
         preferred_record_ids.extend(planning_preferences.get("talent_priority_ids", []))
         user_locks: list[dict[str, Any]] = [
-            {"field": "concept", "value": concept},
+            {"field": "character.identity.display_name", "value": requested_working_name or None},
+            {"field": "concept", "value": requested_concept},
             {"field": "source_reference", "value": source_reference or "Original character"},
             {"field": "target_cl", "value": target_cl},
             {"field": "power_band", "value": power_band},
@@ -1877,7 +1881,7 @@ class CharacterBuilderService:
         if preferred_record_ids:
             user_locks.append({"field": "preferred_record_ids", "value": preferred_record_ids})
         result = self.projects.create_project(
-            working_name=working_name,
+            working_name=project_working_name,
             pack_locks=pack_locks,
             quality_target=power_band,
             user_locks=user_locks,
