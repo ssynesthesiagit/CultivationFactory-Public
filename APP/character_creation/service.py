@@ -644,6 +644,18 @@ class CharacterCreationExecutionService:
                     except TypeError: continue
         raise FoundryError("CG1_REQUIRED_OPERATION_MISSING", f"Required operation is unavailable: {names[0]}.", details={"operations":names})
 
+    @staticmethod
+    def _canonicalize_stage2_proposal(proposal: dict[str, Any]) -> dict[str, Any]:
+        """Copy the Stage 2 request and canonicalize its one legacy kind alias."""
+        normalized = deepcopy(proposal)
+        choices = normalized.get("choices")
+        if not isinstance(choices, list):
+            return normalized
+        for choice in choices:
+            if isinstance(choice, dict) and choice.get("kind") == "insight_acquisition":
+                choice["kind"] = "cultivation_insight_acquisition"
+        return normalized
+
     def _stage2_commit(
         self,
         svc: Any,
@@ -668,7 +680,8 @@ class CharacterCreationExecutionService:
                 _server_authority=_TRUSTED_CHARACTER_CREATION_EXECUTION,
             )
         with scope:
-            created=self._invoke(svc,("create_proposal",),proposal)
+            stage2_proposal = self._canonicalize_stage2_proposal(proposal)
+            created=self._invoke(svc,("create_proposal",),stage2_proposal)
             pid=(created or {}).get("proposal_id") if isinstance(created,dict) else created
             validation=self._invoke(svc,("validate_proposal",),pid)
             if isinstance(validation,dict) and validation.get("valid") is False:
