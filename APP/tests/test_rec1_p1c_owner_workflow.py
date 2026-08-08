@@ -23,6 +23,7 @@ def test_manual_chat_has_one_explicit_response_source_state() -> None:
     assert 'id="guidedRemoveCompleteReply"' in html
     assert 'Drop one response file at a time.' in javascript
     assert 'Any previously selected file was cleared.' in javascript
+    assert 'The current response source was not changed.' in javascript
 
 
 def test_p1c_owner_surface_keeps_authority_separation_and_advanced_details_collapsed() -> None:
@@ -42,7 +43,8 @@ def test_p1c_owner_surface_keeps_authority_separation_and_advanced_details_colla
     assert "ownerNextLegalAction" in javascript
     assert "Automatic base abilities" in javascript
     assert "Factory routing" in javascript
-    assert "Not specified in the accepted component record" in javascript
+    assert "base-ability-player-text" in javascript
+    assert "Not specified in the accepted component record" not in javascript
 
 
 def test_character_descriptive_fields_are_optional_for_delegated_ai_proposals() -> None:

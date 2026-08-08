@@ -116,6 +116,11 @@
                 <p class="field-help">Lock zero, one, two, or three advancing Paths. Zero means the legal Method route may choose them; locked Paths must be supported by the selected Method. All three Path tracks still exist at level zero.</p>
                 <div id="sheetPaths" class="path-choice-list"></div>
                 <small id="sheetPathAuthorityNotice" class="availability-note" role="status"></small>
+                <div class="path-level-zero-tracks" aria-label="Level-zero Path tracks">
+                  <article class="path-track-card"><strong>Body Refining</strong><span>Level 0 · Dormant until a validated Method grants AP</span></article>
+                  <article class="path-track-card"><strong>Qi Cultivation</strong><span>Level 0 · Dormant until a validated Method grants AP</span></article>
+                  <article class="path-track-card"><strong>Spirit Awakening</strong><span>Level 0 · Dormant until a validated Method grants AP</span></article>
+                </div>
               </fieldset>
               <label>Subpath or Tradition<select id="sheetSubpath" data-sheet-slot="subpath_choice"></select></label>
               <label>Background<select id="sheetBackground" data-sheet-slot="background_choice"></select></label>
@@ -178,7 +183,12 @@
               </article>
               <article class="choice-collection">
                 <h6>Insights</h6><p>Choose from the 542 ordinary Insights you want the Factory to consider. Background-Origin Insights are separate and are chosen above with the Background route.</p>
-                <label>Ordinary Insight category<select id="sheetInsightAuthorityFilter"><option value="">All ordinary categories</option><option>General</option><option>General Cultivation</option><option>Sphere</option><option>Path</option><option>Technique-Forging</option><option>Metatechnique</option><option>Companion</option><option>Narrative / Secret</option><option>Method</option><option>Foundation</option><option>Item-Equipment</option><option>Special</option><option>Unresolved</option></select></label>
+                <div class="insight-browser-filters">
+                  <label>Category<select id="sheetInsightAuthorityFilter"><option value="">All ordinary categories</option><option value="general_cultivation_insights">General</option><option value="path_insights">Path</option><option value="sphere_insights">Sphere</option><option value="technique_forging_insights">Technique-Forging</option><option value="metatechnique_insights">Metatechnique</option><option value="companion_insights">Companion</option><option value="narrative_secret_insights">Narrative / Secret</option></select></label>
+                  <label id="sheetInsightHierarchyFilterWrap" hidden>Path group<select id="sheetInsightHierarchyFilter"><option value="">All Path groups</option></select></label>
+                  <label id="sheetInsightSphereFilterWrap" hidden>Sphere facet<select id="sheetInsightSphereFilter"><option value="">All Sphere facets</option></select></label>
+                  <label>Search Insights<input id="sheetInsightSearch" type="search" autocomplete="off" placeholder="Search by name or description"></label>
+                </div>
                 <div class="choice-adder"><select id="sheetInsightAdd" data-multi-slot="insight_priorities"></select><button type="button" data-add-slot="insight_priorities">Add</button></div>
                 <p id="sheetInsightAuthorityDetail" class="availability-note" role="status">Choose an Insight to see its category and requirements.</p>
                 <div id="sheetInsightList" class="choice-chips" data-chip-host="insight_priorities"></div>
@@ -211,22 +221,23 @@
       <p>All three modes use the same accepted complete-character request, two isolated local builds, and the same authority gates.</p>
       <fieldset class="build-mode-options" id="guidedModeChoices">
         <legend>Build mode</legend>
-        <label class="build-mode-card"><input type="radio" name="guidedExecutionMode" value="MANUAL_CHAT" checked><span><strong>Manual Chat — no API key required</strong><small>Download one complete request ZIP, attach it to ChatGPT, then load the returned complete response ZIP or JSON.</small></span></label>
-        <label class="build-mode-card"><input type="radio" name="guidedExecutionMode" value="STANDARD_API"><span><strong>Standard API — build a complete preview, then I approve</strong><small>Use the configured DeepSeek transport once, then stop for Finalize, Revise, or Cancel.</small></span></label>
+        <label class="build-mode-card"><input type="radio" name="guidedExecutionMode" value="MANUAL_CHAT" checked><span><strong>Manual Chat — no API key required</strong><small>Download one complete request ZIP, attach it to a compatible receiving chat, then load the returned complete response ZIP or JSON.</small></span></label>
+        <label class="build-mode-card"><input type="radio" name="guidedExecutionMode" value="STANDARD_API"><span><strong>API Provider — build a complete preview, then I approve</strong><small>Use the configured OpenAI-compatible Chat Completions API once, then stop for Finalize, Revise, or Cancel.</small></span></label>
         <label class="build-mode-card"><input type="radio" name="guidedExecutionMode" value="AUTO_FINALIZE_WHEN_CLEAN"><span><strong>Auto-Finalize When Clean — finalize only when every gate is clean</strong><small>Warnings, uncertainties, fallbacks, stale authority, or blockers always return to review without canonical mutation.</small></span></label>
       </fieldset>
       <section id="guidedProviderSetup" class="sheet-section" aria-labelledby="guidedProviderHeading">
-        <div class="sheet-section-heading"><div><h4 id="guidedProviderHeading">DeepSeek setup for Standard API and Auto-Finalize</h4></div></div>
-        <p>Manual Chat never needs a key. DeepSeek is optional; one Save stores the settings and, when supplied, the protected key. Test the saved setup once before choosing an API build mode.</p>
+        <div class="sheet-section-heading"><div><h4 id="guidedProviderHeading">API Provider setup — OpenAI-compatible Chat Completions API</h4></div></div>
+        <p>Manual Chat remains available without a key. Choose a provider profile, save it, and run one explicit test. The protected key handling and local validation gates remain unchanged.</p>
         <div class="sheet-field-grid">
-          <label>Endpoint<input id="guidedProviderEndpoint" readonly aria-readonly="true" value="https://api.deepseek.com/chat/completions"></label>
-          <label>Model<input id="guidedProviderModel" value="deepseek-v4-flash" autocomplete="off"></label>
-          <label><input id="guidedProviderEnabled" type="checkbox"> Enable DeepSeek</label>
+          <label>Provider profile<select id="guidedProviderProfile"><option value="openai">OpenAI</option><option value="deepseek">DeepSeek (optional)</option><option value="custom">Custom OpenAI-compatible</option></select></label>
+          <label>Endpoint<input id="guidedProviderEndpoint" readonly aria-readonly="true" value="https://api.openai.com/v1/chat/completions"></label>
+          <label>Model<input id="guidedProviderModel" value="gpt-4o-mini" autocomplete="off"></label>
+          <label><input id="guidedProviderEnabled" type="checkbox"> Enable API Provider</label>
           <label>Acknowledged by<input id="guidedProviderActor" autocomplete="off" placeholder="Owner name"></label>
         </div>
-        <label><input id="guidedProviderAcknowledged" type="checkbox"> I understand the complete-character prompt will be sent to DeepSeek and may incur charges.</label>
+        <label><input id="guidedProviderAcknowledged" type="checkbox"> I understand the complete-character prompt will be sent to the selected API Provider and may incur charges.</label>
         <label>API key<input id="guidedProviderKey" type="password" autocomplete="new-password" placeholder="Stored locally; never returned"></label>
-        <div class="button-row"><button id="guidedProviderSave" class="primary-action" type="button">Save DeepSeek setup</button><button id="guidedProviderTest" type="button">Test saved connection</button><button id="guidedProviderDeleteKey" type="button">Remove protected key</button></div>
+        <div class="button-row"><button id="guidedProviderSave" class="primary-action" type="button">Save and test</button><button id="guidedProviderTest" type="button">Test saved connection</button><button id="guidedProviderDeleteKey" type="button">Remove protected key</button></div>
         <p id="guidedProviderStatus" class="availability-note" role="status">Provider status not loaded.</p>
       </section>
       <label id="guidedAutoConsentPanel" class="auto-finalize-consent" hidden>
@@ -241,7 +252,7 @@
         <div class="numbered-action"><span>1</span><div><strong>Download the complete CG1 request ZIP.</strong><p>This is not the old Stage 1 blueprint request.</p></div></div>
         <button id="guidedDownloadCompleteRequest" class="primary-action" type="button" disabled>Download Complete Request ZIP</button>
         <p id="guidedDownloadCompleteRequestStatus" class="availability-note" role="status" aria-live="polite"></p>
-        <div class="numbered-action"><span>2</span><div><strong>Attach it to a new ChatGPT conversation.</strong><p>Ask ChatGPT to follow the enclosed response schema and return one complete response ZIP or JSON.</p></div></div>
+        <div class="numbered-action"><span>2</span><div><strong>Attach it to a compatible receiving chat.</strong><p>ChatGPT, ChatGPT Work, Codex, or another compatible chat may follow the enclosed response schema and return one complete response ZIP or JSON.</p></div></div>
         <div class="numbered-action"><span>3</span><div><strong>Load the complete response.</strong><p>The Factory binds it to this exact request and runs two isolated scratch builds.</p></div></div>
         <div id="guidedCompleteReplyDrop" class="reply-drop-zone" tabindex="0" role="button" aria-label="Drop complete character response ZIP or JSON here">
           <strong>Drop complete response ZIP or JSON here</strong><span>or choose a .zip, .json, .md, or .txt file</span>

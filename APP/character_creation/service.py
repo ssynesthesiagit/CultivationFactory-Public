@@ -380,11 +380,22 @@ class CharacterCreationExecutionService:
         entries = {
             "BINDING.json": canonical_json(binding).encode("utf-8") + b"\n",
             "COMPLETE_REQUEST.json": canonical_json(request).encode("utf-8") + b"\n",
+            "README_START_HERE.md": (
+                b"# Start Here: Complete Character Response\n\n"
+                b"This package is an owner-mediated Manual Chat transfer for automatic character creation only. "
+                b"A compatible receiving chat may be ChatGPT, ChatGPT Work, Codex, or another compatible chat. "
+                b"It is not a combat or game-session control package.\n\n"
+                b"Read COMPLETE_REQUEST.json, PROMPT_INSTRUCTIONS.md, and RESPONSE_SCHEMA.json. Return one "
+                b"response file for this exact request. Do not edit the request, invent mechanics, call APIs, "
+                b"control combat, or claim mechanical authority. The local Factory performs validation and "
+                b"compilation. Any plan allowance described in the request is not direct API credit.\n"
+            ),
             "PROMPT_INSTRUCTIONS.md": (
                 b"# Complete Character Creation Request\n\nReturn exactly one JSON object conforming "
                 b"to RESPONSE_SCHEMA.json. Copy the exact request_sha256 into the response. Do not "
-                b"assert compiled mechanics, readiness, or artifact identities. The local Factory "
-                b"validates and compiles every mechanical choice.\n"
+                b"assert compiled mechanics, readiness, or artifact identities. Select only offered "
+                b"IDs and preserve owner locks. The local Factory validates and compiles every mechanical "
+                b"choice.\n"
             ),
             "RESPONSE_SCHEMA.json": canonical_json(response_schema).encode("utf-8") + b"\n",
         }

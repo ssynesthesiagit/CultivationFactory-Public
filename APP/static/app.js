@@ -521,6 +521,109 @@ function clearMethodAccessInputs() {
   if (note) note.value = "";
 }
 
+const INSIGHT_GROUP_LABELS = {
+  general_cultivation_insights: "General",
+  path_insights: "Path",
+  sphere_insights: "Sphere",
+  technique_forging_insights: "Technique-Forging",
+  metatechnique_insights: "Metatechnique",
+  companion_insights: "Companion",
+  narrative_secret_insights: "Narrative / Secret",
+};
+
+function ordinaryInsightChoices() {
+  return (categoryFor("insight_priorities")?.choices || []).filter(choice =>
+    choice.content_type !== "origin_insight" && choice.insight_authority?.authority_type !== "Background-Origin"
+  );
+}
+
+function insightGroupId(choice) {
+  return choice?.insight_group || "unresolved_insights";
+}
+
+function insightGroupLabel(choice) {
+  return choice?.insight_group_label?.replace(/ Insights?$/i, "") || INSIGHT_GROUP_LABELS[insightGroupId(choice)] || "Other";
+}
+
+function insightPathGroup(choice) {
+  const hierarchy = choice?.insight_hierarchy?.length
+    ? choice.insight_hierarchy
+    : choice?.insight_authority?.hierarchy_path || [];
+  return hierarchy.length > 1 ? hierarchy[hierarchy.length - 1] : choice?.insight_authority?.insight_group?.leaf_label || "";
+}
+
+function insightSphereFacetIds(choice) {
+  const direct = choice?.insight_facets?.length ? choice.insight_facets : choice?.insight_authority?.owning_canonical_sphere_ids || [];
+  const nested = choice?.insight_authority?.insight_group?.facet_ids || [];
+  return Array.from(new Set([...direct, ...nested].map(value => String(value).replace(/^sphere:/, "")).filter(Boolean)));
+}
+
+function insightChoiceMatches(choice, filters) {
+  if (filters.group && insightGroupId(choice) !== filters.group) return false;
+  if (filters.path && insightPathGroup(choice) !== filters.path) return false;
+  if (filters.sphere && !insightSphereFacetIds(choice).includes(filters.sphere)) return false;
+  if (filters.query && !`${choice.name} ${choice.description || ""}`.toLowerCase().includes(filters.query)) return false;
+  return true;
+}
+
+function renderInsightBrowser() {
+  const select = document.getElementById("sheetInsightAdd");
+  if (!select) return;
+  const all = ordinaryInsightChoices();
+  const groupFilter = document.getElementById("sheetInsightAuthorityFilter")?.value || "";
+  const pathWrap = document.getElementById("sheetInsightHierarchyFilterWrap");
+  const sphereWrap = document.getElementById("sheetInsightSphereFilterWrap");
+  const pathFilter = document.getElementById("sheetInsightHierarchyFilter")?.value || "";
+  const sphereFilter = document.getElementById("sheetInsightSphereFilter")?.value || "";
+  const query = String(document.getElementById("sheetInsightSearch")?.value || "").trim().toLowerCase();
+  const filters = {group: groupFilter, path: groupFilter === "path_insights" ? pathFilter : "", sphere: groupFilter === "sphere_insights" ? sphereFilter : "", query};
+  if (pathWrap) pathWrap.hidden = groupFilter !== "path_insights";
+  if (sphereWrap) sphereWrap.hidden = groupFilter !== "sphere_insights";
+  const pathSelect = document.getElementById("sheetInsightHierarchyFilter");
+  if (pathSelect) {
+    const prior = pathSelect.value;
+    clearNode(pathSelect);
+    pathSelect.append(new Option("All Path groups", ""));
+    const groups = Array.from(new Set(all.filter(choice => insightGroupId(choice) === "path_insights").map(insightPathGroup).filter(Boolean))).sort();
+    groups.forEach(value => pathSelect.append(new Option(value, value)));
+    pathSelect.value = groups.includes(prior) ? prior : "";
+  }
+  const sphereSelect = document.getElementById("sheetInsightSphereFilter");
+  if (sphereSelect) {
+    const prior = sphereSelect.value;
+    const sphereMap = new Map((categoryFor("sphere_priorities")?.choices || []).map(choice => [choice.choice_id, choice.name]));
+    clearNode(sphereSelect);
+    sphereSelect.append(new Option("All Sphere facets", ""));
+    const ids = Array.from(new Set(all.filter(choice => insightGroupId(choice) === "sphere_insights").flatMap(insightSphereFacetIds))).sort((left, right) => (sphereMap.get(left) || left).localeCompare(sphereMap.get(right) || right));
+    ids.forEach(id => sphereSelect.append(new Option(sphereMap.get(id) || id, id)));
+    sphereSelect.value = ids.includes(prior) ? prior : "";
+    filters.sphere = groupFilter === "sphere_insights" ? sphereSelect.value : "";
+  }
+  const choices = all.filter(choice => insightChoiceMatches(choice, filters));
+  const priorValue = select.value;
+  clearNode(select);
+  select.append(new Option(choices.length ? "Choose an Insight preference" : "No matching ordinary Insights", ""));
+  const byGroup = new Map();
+  choices.forEach(choice => {
+    const group = insightGroupId(choice);
+    if (!byGroup.has(group)) byGroup.set(group, []);
+    byGroup.get(group).push(choice);
+  });
+  for (const [group, rows] of Array.from(byGroup.entries()).sort(([left], [right]) => (INSIGHT_GROUP_LABELS[left] || left).localeCompare(INSIGHT_GROUP_LABELS[right] || right))) {
+    const optgroup = document.createElement("optgroup");
+    optgroup.label = `${INSIGHT_GROUP_LABELS[group] || group} (${rows.length})`;
+    rows.sort((left, right) => left.name.localeCompare(right.name)).forEach(choice => {
+      const option = new Option(choice.name, choice.choice_id);
+      option.title = choice.description || `${insightGroupLabel(choice)} Insight`;
+      option.disabled = choice.planning_priority_available === false || choice.initial_creation_selectable === false;
+      optgroup.appendChild(option);
+    });
+    select.appendChild(optgroup);
+  }
+  if (choices.some(choice => choice.choice_id === priorValue)) select.value = priorValue;
+  renderInsightAuthorityDetail();
+}
+
 function renderInsightAuthorityDetail() {
   const select = document.getElementById("sheetInsightAdd");
   const host = document.getElementById("sheetInsightAuthorityDetail");
@@ -531,7 +634,12 @@ function renderInsightAuthorityDetail() {
     host.textContent = "Choose an Insight to see its category and requirements.";
     return;
   }
-  host.textContent = `Category: ${authority.authority_type}. Requirements: ${authority.prerequisites || "None"}. ${authority.preference_only ? "This is a planning preference; it does not grant anything by itself." : ""}`;
+  const group = insightGroupLabel(choice);
+  const path = insightPathGroup(choice);
+  const sphereMap = new Map((categoryFor("sphere_priorities")?.choices || []).map(row => [row.choice_id, row.name]));
+  const facets = insightSphereFacetIds(choice).map(id => sphereMap.get(id) || id);
+  const scope = path ? ` Path group: ${path}.` : facets.length ? ` Sphere facet: ${facets.join(", ")}.` : "";
+  host.textContent = `Category: ${group}.${scope} Requirements: ${authority.prerequisites || "None"}. ${authority.preference_only ? "This is a planning preference; it does not grant anything by itself." : ""}`;
 }
 
 function setMethodPathAuthorityNotice(message = "", isError = false) {
@@ -806,29 +914,44 @@ function renderSphereTalentWorkspace() {
         summary.textContent = `${ability.display_name} — automatic Sphere component`;
         const grant = document.createElement("p");
         grant.textContent = "Granted automatically; cannot be removed; costs 0 talent, advancement, or training slots.";
+        const playerText = ability.player_rules_text || ability.full_exact_source_text || ability.full_description || ability.effect || "";
+        if (playerText) {
+          const readable = document.createElement("p");
+          readable.className = "base-ability-player-text";
+          readable.textContent = playerText;
+          details.append(summary, grant, readable);
+        } else details.append(summary, grant);
+        const structured = ability.source_component_structured_fields || ability.structured_fields || {};
         const fields = document.createElement("dl"); fields.className = "base-ability-fields";
         const fieldRows = [
-          ["Action", ability.action_type], ["Combat role", ability.factory_combat_bucket],
-          ["Range", ability.range], ["Cost", ability.cost], ["Target", ability.target],
-          ["When it applies", ability.trigger], ["What it does", ability.effect],
-          ["Use limit", ability.use_limit], ["Scaling", Array.isArray(ability.scaling) ? ability.scaling.join(" ") : ability.scaling],
+          ["Action type", ability.action_type], ["Range", ability.range], ["Cost", ability.cost],
+          ["Target", ability.target], ["Trigger", ability.trigger], ["Use limit", ability.use_limit],
+          ["Scaling", Array.isArray(ability.scaling) ? ability.scaling.join(" ") : ability.scaling],
           ["Tags", Array.isArray(ability.tags) ? ability.tags.join(", ") : ability.tags],
+          ...Object.entries(structured).map(([key, value]) => [friendlyLabel(key), Array.isArray(value) ? value.join(", ") : (value && typeof value === "object" ? pretty(value) : value)]),
         ];
         for (const [term, value] of fieldRows) {
           const empty = value === null || value === undefined || value === "" || (Array.isArray(value) && !value.length);
-          if (empty && !["Action", "Combat role", "When it applies", "What it does"].includes(term)) continue;
+          if (empty) continue;
           const dt = document.createElement("dt"); dt.textContent = term;
-          const dd = document.createElement("dd");
-          dd.textContent = empty ? "Not specified in the accepted component record" : String(value);
+          const dd = document.createElement("dd"); dd.textContent = String(value);
           fields.append(dt, dd);
         }
-        details.append(summary, grant, fields);
+        if (fields.children.length) details.append(fields);
         const technical = document.createElement("details");
         technical.className = "developer-only base-ability-technical";
         technical.hidden = true;
         const technicalSummary = document.createElement("summary"); technicalSummary.textContent = "Developer / Diagnostics: source routing";
         const technicalFields = document.createElement("dl"); technicalFields.className = "base-ability-fields";
-        for (const [term, value] of [["Base ability ID", ability.base_ability_id], ["Factory routing", ability.factory_routing], ["Source", ability.source_reference?.source_section || ability.source_reference?.source_path]]) {
+        for (const [term, value] of [
+          ["Base ability ID", ability.base_ability_id],
+          ["Component hash", ability.component_hash || ability.source_component_sha256 || ability.source_hash],
+          ["Record commitment", ability.record_commitment_sha256 || ability.commitment_sha256],
+          ["Factory routing", ability.factory_routing],
+          ["Source section / path", ability.source_reference?.source_section || ability.source_reference?.source_path || ability.source_reference?.path],
+          ["Source anchor", ability.source_reference?.source_anchor || ability.source_reference?.anchor],
+          ["Owner ruling", ability.owner_ruling_id || ability.ruling_id],
+        ]) {
           if (value === null || value === undefined || value === "") continue;
           const dt = document.createElement("dt"); dt.textContent = term;
           const dd = document.createElement("dd"); dd.textContent = String(value);
@@ -971,7 +1094,7 @@ function renderChoiceChips(slotId) {
     chip.className = "choice-chip";
     chip.title = choice.description || choice.name;
     const label = document.createElement("span");
-    const insightType = choice.insight_authority?.authority_type;
+    const insightType = choice.insight_authority ? insightGroupLabel(choice) : "";
     label.textContent = insightType ? `${choice.name} — ${insightType}` : choice.name;
     const remove = document.createElement("button");
     remove.type = "button";
@@ -1083,8 +1206,15 @@ function resetCharacterSheet() {
   const learningNote = document.getElementById("sheetMethodLearningNote");
   if (learningNote) learningNote.value = "";
   const insightFilter = document.getElementById("sheetInsightAuthorityFilter");
+  const insightHierarchyFilter = document.getElementById("sheetInsightHierarchyFilter");
+  const insightSphereFilter = document.getElementById("sheetInsightSphereFilter");
+  const insightSearch = document.getElementById("sheetInsightSearch");
   setMethodPlanningMode("AUTO");
   if (insightFilter) insightFilter.value = "";
+  if (insightHierarchyFilter) insightHierarchyFilter.value = "";
+  if (insightSphereFilter) insightSphereFilter.value = "";
+  if (insightSearch) insightSearch.value = "";
+  renderInsightBrowser();
   renderInsightAuthorityDetail();
   setSphereTalentNotice("");
   if (characterBuilderOptions) {
@@ -1173,23 +1303,21 @@ async function loadCharacterBuilderOptions() {
       if (help) help.textContent = categoryAvailabilityText(category);
     }
     const insightFilter = document.getElementById("sheetInsightAuthorityFilter");
-    const insightChoices = categoryFor("insight_priorities")?.choices || [];
-    for (const option of insightFilter.options) {
+    const insightChoices = ordinaryInsightChoices();
+    const filterCounts = new Map();
+    insightChoices.forEach(choice => filterCounts.set(insightGroupId(choice), (filterCounts.get(insightGroupId(choice)) || 0) + 1));
+    for (const option of insightFilter?.options || []) {
       if (!option.value) continue;
-      const count = insightChoices.filter(choice => choice.insight_authority?.authority_type === option.value).length;
-      option.textContent = `${option.value} (${count})`;
-      if (option.value === "General" && count === 0) option.title = "No explicitly General records exist in the current canonical source projection.";
+      option.textContent = `${option.textContent.split(" (")[0]} (${filterCounts.get(option.value) || 0})`;
     }
-    const generalCount = insightChoices.filter(choice => choice.insight_authority?.authority_type === "General").length;
-    if (generalCount === 0) document.getElementById("sheetInsightHelp").textContent = "General: 0 explicitly General source records. No choices were invented; Sphere and Path classifications remain unchanged.";
-    insightFilter.onchange = event => {
-      const category = categoryFor("insight_priorities");
-      const authorityType = event.target.value;
-      const filtered = (category?.choices || []).filter(choice => !authorityType || choice.insight_authority?.authority_type === authorityType);
-      populateSheetSelect(document.getElementById("sheetInsightAdd"), category, "Choose an Insight preference", filtered);
-      renderInsightAuthorityDetail();
-    };
+    const insightHelp = document.getElementById("sheetInsightHelp");
+    if (insightHelp) insightHelp.textContent = `${insightChoices.length} ordinary Insights are available. Background-Origin Insights remain separate and are not mixed into this browser. Filter Path groups or Sphere facets when useful.`;
+    insightFilter.onchange = renderInsightBrowser;
+    document.getElementById("sheetInsightHierarchyFilter").onchange = renderInsightBrowser;
+    document.getElementById("sheetInsightSphereFilter").onchange = renderInsightBrowser;
+    document.getElementById("sheetInsightSearch").oninput = renderInsightBrowser;
     document.getElementById("sheetInsightAdd").onchange = renderInsightAuthorityDetail;
+    renderInsightBrowser();
     document.getElementById("sheetTalentSearch").oninput = renderSphereTalentWorkspace;
     document.getElementById("sheetUnassignedTalentSearch").oninput = renderSphereTalentWorkspace;
     renderSphereTalentWorkspace();
@@ -1607,11 +1735,31 @@ async function startGuidedCompleteBuild() {
 document.querySelectorAll('input[name="guidedExecutionMode"]').forEach(input => input.addEventListener("change", updateGuidedModeUI));
 let guidedProviderDirty = false;
 let guidedProviderStatus = null;
+const GUIDED_PROVIDER_DEFAULTS = {
+  openai: {endpoint: "https://api.openai.com/v1/chat/completions", model: "gpt-4o-mini", preset: true},
+  deepseek: {endpoint: "https://api.deepseek.com/chat/completions", model: "deepseek-v4-flash", preset: true},
+  custom: {endpoint: "", model: "compatible-model", preset: false},
+};
+function guidedProviderProfile() {
+  return document.getElementById("guidedProviderProfile")?.value || "openai";
+}
+function updateGuidedProviderProfileFields({resetModel = false} = {}) {
+  const profile = GUIDED_PROVIDER_DEFAULTS[guidedProviderProfile()] || GUIDED_PROVIDER_DEFAULTS.openai;
+  const endpoint = document.getElementById("guidedProviderEndpoint");
+  const model = document.getElementById("guidedProviderModel");
+  if (endpoint) {
+    if (profile.preset || !endpoint.value) endpoint.value = profile.endpoint;
+    endpoint.readOnly = profile.preset;
+    endpoint.setAttribute("aria-readonly", profile.preset ? "true" : "false");
+  }
+  if (model && (resetModel || !model.value || Object.values(GUIDED_PROVIDER_DEFAULTS).some(row => row.model === model.value))) model.value = profile.model;
+}
 function providerStatusMessage(status, dirty = false) {
-  const saved = status?.readiness_reason || "Saved DeepSeek readiness is unknown.";
+  const display = status?.profile?.display_name || status?.settings?.provider_id || "API Provider";
+  const saved = status?.readiness_reason || "Saved API Provider readiness is unknown.";
   const prefix = dirty ? "Settings not saved. " : "";
   const key = status?.secret?.present ? "Protected key stored." : "No protected key stored.";
-  return `${prefix}${saved} ${key} Manual Chat remains available without DeepSeek.`;
+  return `${prefix}${saved} ${key} Manual Chat remains available without ${display}.`;
 }
 async function loadGuidedProviderStatus() {
   const host = document.getElementById("guidedProviderStatus");
@@ -1619,8 +1767,10 @@ async function loadGuidedProviderStatus() {
     const status = await api("/api/ai-provider");
     guidedProviderStatus = status;
     const settings = status.settings || {};
-    document.getElementById("guidedProviderEndpoint").value = settings.endpoint || "https://api.deepseek.com/chat/completions";
-    document.getElementById("guidedProviderModel").value = settings.model || "deepseek-v4-flash";
+    document.getElementById("guidedProviderProfile").value = settings.provider_id || status.provider_id || "deepseek";
+    updateGuidedProviderProfileFields();
+    document.getElementById("guidedProviderEndpoint").value = settings.endpoint || GUIDED_PROVIDER_DEFAULTS[guidedProviderProfile()].endpoint;
+    document.getElementById("guidedProviderModel").value = settings.model || GUIDED_PROVIDER_DEFAULTS[guidedProviderProfile()].model;
     document.getElementById("guidedProviderEnabled").checked = !!settings.enabled;
     document.getElementById("guidedProviderAcknowledged").checked = !!settings.data_sharing_acknowledged;
     document.getElementById("guidedProviderActor").value = settings.acknowledged_by || "";
@@ -1636,6 +1786,8 @@ document.getElementById("guidedProviderSave").onclick = async () => {
   try {
     await api("/api/ai-provider/configure", {method: "POST", body: JSON.stringify({
       enabled: document.getElementById("guidedProviderEnabled").checked,
+      provider_id: guidedProviderProfile(),
+      endpoint: document.getElementById("guidedProviderEndpoint").value.trim() || null,
       model: document.getElementById("guidedProviderModel").value.trim(),
       thinking_mode: "disabled", max_output_tokens: 16384, timeout_seconds: 120,
       data_sharing_acknowledged: document.getElementById("guidedProviderAcknowledged").checked,
@@ -1644,26 +1796,32 @@ document.getElementById("guidedProviderSave").onclick = async () => {
     if (key) await api("/api/ai-provider/key", {method: "POST", body: JSON.stringify({api_key: key})});
     keyInput.value = "";
     await loadGuidedProviderStatus();
-    host.textContent = "DeepSeek setup saved. Run Test saved connection once before using an API build mode.";
+    if (guidedProviderStatus?.secret?.present && guidedProviderStatus?.settings?.enabled) {
+      host.textContent = "API Provider settings saved. Testing the configured connection once…";
+      await api("/api/ai-provider/test", {method: "POST", body: "{}"});
+      await loadGuidedProviderStatus();
+      host.textContent = `${host.textContent} Connection test passed. (run Test Connection once remains available for a repeat check.)`;
+    } else host.textContent = `${host.textContent} Save and test is ready when a protected key is available.`;
   } catch (error) {
     keyInput.value = "";
-    host.textContent = plainAPIError(error, "DeepSeek setup was not saved.");
+    host.textContent = plainAPIError(error, "API Provider settings were not saved.");
   }
 };
 document.getElementById("guidedProviderDeleteKey").onclick = async () => {
   try { await api("/api/ai-provider/key", {method: "DELETE"}); document.getElementById("guidedProviderKey").value = ""; await loadGuidedProviderStatus(); }
-  catch (error) { document.getElementById("guidedProviderStatus").textContent = plainAPIError(error, "The DeepSeek key was not deleted."); }
+  catch (error) { document.getElementById("guidedProviderStatus").textContent = plainAPIError(error, "The protected API Provider key was not deleted."); }
 };
 document.getElementById("guidedProviderTest").onclick = async () => {
   const host = document.getElementById("guidedProviderStatus");
-  host.textContent = "Testing the configured DeepSeek connection once…";
+  host.textContent = "Testing the configured API Provider connection once…";
   try { await api("/api/ai-provider/test", {method: "POST", body: "{}"}); await loadGuidedProviderStatus(); }
-  catch (error) { await loadGuidedProviderStatus(); host.textContent = `${host.textContent} ${plainAPIError(error, "DeepSeek connection test failed.")}`; }
+  catch (error) { await loadGuidedProviderStatus(); host.textContent = `${host.textContent} ${plainAPIError(error, "API Provider connection test failed.")}`; }
 };
-["guidedProviderModel", "guidedProviderEnabled", "guidedProviderAcknowledged", "guidedProviderActor"].forEach(id => {
+["guidedProviderProfile", "guidedProviderEndpoint", "guidedProviderModel", "guidedProviderEnabled", "guidedProviderAcknowledged", "guidedProviderActor"].forEach(id => {
   const input = document.getElementById(id);
   const eventName = input.type === "checkbox" ? "change" : "input";
   input.addEventListener(eventName, () => {
+    if (id === "guidedProviderProfile") updateGuidedProviderProfileFields({resetModel: true});
     guidedProviderDirty = true;
     const host = document.getElementById("guidedProviderStatus");
     host.textContent = providerStatusMessage(guidedProviderStatus, true);
@@ -1726,19 +1884,22 @@ function removeGuidedResponseSource() {
 }
 
 function selectGuidedResponseFile(file) {
+  const unchanged = guidedCompleteResponseSource.kind === "none"
+    ? " No response source is currently selected."
+    : " The current response source was not changed.";
   if (!file) {
-    renderGuidedResponseSourceState("Drop or choose one response file. A folder or empty drop is not a response file.", true);
+    renderGuidedResponseSourceState(`Drop or choose one response file. A folder or empty drop is not a response file.${unchanged}`, true);
     return false;
   }
   const name = String(file.name || "");
   const extensionValid = /\.(zip|json|md|txt)$/i.test(name);
   const sizeValid = Number(file.size || 0) > 0 && Number(file.size || 0) <= 16 * 1024 * 1024;
   if (!extensionValid) {
-    renderGuidedResponseSourceState("That file was not accepted. Choose one .zip, .json, .md, or .txt response file.", true);
+    renderGuidedResponseSourceState(`That file was not accepted. Choose one .zip, .json, .md, or .txt response file.${unchanged}`, true);
     return false;
   }
   if (!sizeValid) {
-    renderGuidedResponseSourceState("That file was not accepted. The response must be larger than 0 bytes and no more than 16 MB.", true);
+    renderGuidedResponseSourceState(`That file was not accepted. The response must be larger than 0 bytes and no more than 16 MB.${unchanged}`, true);
     return false;
   }
   guidedCompleteResponseSource = {kind: "file", file};

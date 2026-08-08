@@ -863,6 +863,8 @@ class CharacterBuilderService:
                     "authority_summary": record.get("authority_summary") or {},
                     "insight_group": record.get("insight_group"),
                     "insight_group_label": record.get("insight_group_label"),
+                    "insight_hierarchy": deepcopy(record.get("insight_hierarchy") or []),
+                    "insight_facets": deepcopy(record.get("insight_facets") or []),
                     "insight_authority": deepcopy(record.get("insight_authority")),
                     "planning_priority_available": record.get("planning_priority_available", True),
                     "unavailable_reason": record.get("unavailable_reason"),

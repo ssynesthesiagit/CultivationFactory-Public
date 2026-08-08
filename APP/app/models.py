@@ -242,6 +242,8 @@ class Stage1ApproveCommitRequest(StrictModel):
 
 class AIProviderConfigureRequest(StrictModel):
     enabled: bool = False
+    provider_id: str = Field(default="deepseek", pattern="^(openai|deepseek|custom)$")
+    endpoint: str | None = Field(default=None, max_length=2048)
     model: str = Field(default="deepseek-v4-flash", min_length=1, max_length=100)
     thinking_mode: str = Field(default="disabled", pattern="^(enabled|disabled)$")
     max_output_tokens: int = Field(default=16384, ge=512, le=32768)

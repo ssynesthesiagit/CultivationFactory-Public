@@ -177,7 +177,7 @@ def test_complete_manual_request_zip_is_deterministic_and_exact(tmp_path):
     assert name.startswith('CG1_COMPLETE_REQUEST_p_')
     with zipfile.ZipFile(io.BytesIO(first)) as archive:
         assert archive.namelist()==[
-            'BINDING.json','COMPLETE_REQUEST.json','PROMPT_INSTRUCTIONS.md',
+            'BINDING.json','COMPLETE_REQUEST.json','PROMPT_INSTRUCTIONS.md','README_START_HERE.md',
             'RESPONSE_SCHEMA.json','SHA256SUMS.txt',
         ]
         declared={}

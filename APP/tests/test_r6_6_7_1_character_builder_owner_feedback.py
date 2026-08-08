@@ -239,7 +239,7 @@ def test_owner_ui_is_nontechnical_and_packaging_includes_gm_authority():
     assert "Choose a Starting Path first." in js
     assert "The selected Method must support every selected Path." in js
     assert "Download Complete Request ZIP" in html
-    assert "Attach it to a new ChatGPT conversation." in html
+    assert "Attach it to a compatible receiving chat." in html
     assert "return one complete response ZIP or JSON" in html
     assert 'id="guidedDownloadCompleteRequest"' in html
     assert 'id="guidedCompleteReplyFile"' in html

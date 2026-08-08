@@ -127,6 +127,10 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .path-choice-list { display: grid; gap: .4rem; }
 .path-choice-list label { display: flex; align-items: center; gap: .5rem; font-weight: 600; cursor: pointer; }
 .path-choice-list input { width: auto; margin: 0; }
+.path-level-zero-tracks { display: grid; gap: .4rem; margin-top: .7rem; }
+.path-track-card { display: grid; gap: .15rem; padding: .45rem .55rem; border: 1px solid #b29b6e; border-radius: .4rem; background: rgb(245 235 202 / .45); }
+.path-track-card strong { font-family: Georgia, 'Times New Roman', serif; }
+.path-track-card span { font-size: .78rem; color: #625d50; line-height: 1.3; }
 .path-lock-summary { display: block; margin: .15rem 0 .35rem; font-weight: 800; color: #405846; }
 .method-learning-question { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(220px, 1fr); gap: .7rem; margin-top: .55rem; padding: .65rem; border-left: 3px solid #8a6c36; background: rgb(245 235 202 / .45); }
 .method-learning-question label { display: grid; gap: .3rem; font-weight: 800; }
@@ -144,6 +148,10 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .base-ability-fields { display: grid; grid-template-columns: minmax(7rem, auto) 1fr; gap: .25rem .65rem; margin: .55rem 0; }
 .base-ability-fields dt { font-weight: 700; }
 .base-ability-fields dd { margin: 0; white-space: pre-wrap; }
+.base-ability-player-text { margin: .55rem 0; white-space: pre-wrap; line-height: 1.5; }
+.insight-browser-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; margin-bottom: .65rem; }
+.insight-browser-filters label { display: grid; gap: .3rem; font-weight: 700; min-width: 0; }
+.insight-browser-filters input, .insight-browser-filters select { min-width: 0; width: 100%; }
 .availability-note { display: block; margin-top: .45rem; color: #6f695b; line-height: 1.35; }
 .sheet-footer-note { margin: 1rem 1.25rem; padding: .8rem 1rem; border-left: .3rem solid #977332; background: rgb(151 115 50 / .1); }
 .sheet-footer-note p { margin: .25rem 0 0; }
@@ -152,7 +160,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 @media (max-width: 900px) {
   .builder-card-heading, .sheet-titlebar { align-items: stretch; flex-direction: column; }
   .creation-mode { align-self: flex-start; }
-  .identity-banner, .sheet-field-grid, .choice-collection-grid, .method-mode-choices, .method-learning-question { grid-template-columns: 1fr; }
+  .identity-banner, .sheet-field-grid, .choice-collection-grid, .method-mode-choices, .method-learning-question, .insight-browser-filters { grid-template-columns: 1fr; }
   .ability-grid { grid-template-columns: repeat(3, 1fr); }
   .point-buy-meter { text-align: left; width: 100%; }
 }

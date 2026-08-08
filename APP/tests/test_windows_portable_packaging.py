@@ -218,7 +218,7 @@ def test_owner_ui_defaults_to_guided_character_builder_and_keeps_advanced_tools(
     assert "FACTORY RESPONSE BINDING" in javascript
     assert "async function resumeGuidedDraft" in javascript
     assert "await resumeGuidedDraft(projectRows)" in javascript
-    assert "Attach it to a new ChatGPT conversation." in html
+    assert "Attach it to a compatible receiving chat." in html
     assert "Build Complete Candidate" in html
     assert '/responses/validate' in javascript
     assert '/approve-commit' in javascript
