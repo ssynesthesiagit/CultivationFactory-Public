@@ -83,6 +83,7 @@ from app.models import (
     CombatAIIntentExecuteRequest,
     CharacterCreationStartRequest,
     CharacterCreationManualResponseRequest,
+    CharacterCreationDescriptiveFieldsRequest,
     CharacterCreationPreferenceRequest,
     CharacterCreationReviseRequest,
 )
@@ -444,6 +445,12 @@ def create_app(
     def characters_list() -> list[dict[str, Any]]:
         rows = character_sheets.list_characters()
         for row in rows:
+            workflow = character_creation.recovery(str(row["project_id"]))
+            row["workflow"] = workflow
+            descriptive = ((workflow.get("active_run") or workflow.get("latest_run") or {}).get("owner_descriptive_fields") or {}).get("resolved") or {}
+            proposed_name = ((descriptive.get("identity") or {}).get("name") if isinstance(descriptive, dict) else None)
+            if proposed_name and row.get("name") in {None, "", "AI-proposed character"}:
+                row["name"] = proposed_name
             verified = portable_characters.verified_status(str(row["project_id"]))
             if verified:
                 row["portable_readiness"] = {
@@ -464,7 +471,9 @@ def create_app(
 
     @app.get("/api/characters/{project_id}/sheet")
     def character_sheet_get(project_id: str) -> dict[str, Any]:
-        return character_sheets.sheet(project_id)
+        result = character_sheets.sheet(project_id)
+        result["workflow"] = character_creation.recovery(project_id)
+        return result
 
     @app.get("/api/characters/{project_id}/factory-workspace/status")
     def character_factory_workspace_status(project_id: str) -> dict[str, Any]:
@@ -1219,6 +1228,10 @@ def create_app(
     def character_builder_options() -> dict[str, Any]:
         return character_builder.options()
 
+    @app.get("/api/character-builder/recovery")
+    def character_builder_recovery() -> list[dict[str, Any]]:
+        return character_creation.recoverable()
+
     @app.post("/api/character-builder/projects")
     def character_builder_create(body: CharacterSheetCreateRequest) -> dict[str, Any]:
         return character_builder.create_project(
@@ -1567,6 +1580,10 @@ def create_app(
     def character_creation_list(project_id: str) -> dict[str, Any]:
         return {"project_id": project_id, "runs": character_creation.list(project_id)}
 
+    @app.get("/api/projects/{project_id}/character-creation/recovery")
+    def character_creation_recovery(project_id: str) -> dict[str, Any]:
+        return character_creation.recovery(project_id)
+
     @app.get("/api/projects/{project_id}/character-creation/preference")
     def character_creation_preference(project_id: str) -> dict[str, Any]:
         return character_creation.preference(project_id)
@@ -1608,6 +1625,15 @@ def create_app(
     def character_creation_complete_request_save_receipt(run_id: str) -> dict[str, Any]:
         return character_creation.complete_request_save_receipt(run_id)
 
+    @app.get("/api/character-creation/runs/{run_id}/evidence.json")
+    def character_creation_evidence(run_id: str):
+        payload = canonical_json(character_creation.evidence(run_id)).encode("utf-8") + b"\n"
+        return Response(
+            content=payload,
+            media_type="application/json",
+            headers={"Content-Disposition": f'attachment; filename="CG1_BUILD_EVIDENCE_{run_id}.json"'},
+        )
+
     @app.post("/api/character-creation/runs/{run_id}/manual-response")
     def character_creation_manual_response(run_id: str, body: CharacterCreationManualResponseRequest) -> dict[str, Any]:
         return _character_creation_api_view(character_creation.submit_manual(run_id, **body.model_dump()))
@@ -1618,6 +1644,10 @@ def create_app(
     ) -> dict[str, Any]:
         payload = await request.body()
         return _character_creation_api_view(character_creation.submit_manual_file(run_id, filename=filename, payload=payload))
+
+    @app.post("/api/character-creation/runs/{run_id}/descriptive-fields")
+    def character_creation_descriptive_fields(run_id: str, body: CharacterCreationDescriptiveFieldsRequest) -> dict[str, Any]:
+        return _character_creation_api_view(character_creation.accept_descriptive_fields(run_id, name=body.name, concept=body.concept))
 
     @app.post("/api/character-creation/runs/{run_id}/finalize")
     def character_creation_finalize(run_id: str) -> dict[str, Any]:

@@ -945,6 +945,19 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .builder-result-panel.error { border-color: #9b2d30; background: #fff3f3; }
 .builder-result-panel h4 { margin: 0 0 .4rem; }
 .builder-result-panel ul { margin-bottom: .6rem; }
+.descriptive-review-panel { margin: .9rem 0; padding: .85rem 1rem; border: 2px solid #8a6c36; border-radius: .65rem; background: #fff8e7; color: #302714; }
+.descriptive-review-panel h4 { margin: 0 0 .3rem; }
+.descriptive-review-panel p { margin: .25rem 0 .7rem; }
+.descriptive-fields-grid { display: grid; grid-template-columns: minmax(180px, .65fr) minmax(0, 1.35fr); gap: .75rem; }
+.descriptive-fields-grid label { display: grid; gap: .3rem; font-weight: 800; }
+.descriptive-fields-grid input, .descriptive-fields-grid textarea { width: 100%; background: #fffdf6; color: #27251f; }
+.active-build-recovery { margin: 0 0 1rem; padding: .9rem 1rem; border: 2px solid #285d4f; border-radius: .65rem; background: #e7f2e9; color: #173b25; }
+.active-build-recovery h3 { margin: 0 0 .35rem; }
+.active-build-recovery p { margin: .25rem 0 .6rem; }
+.active-build-recovery .recovery-actions, .character-library-card .recovery-actions { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .45rem; }
+.active-build-recovery .recovery-actions button, .character-library-card .recovery-actions button { min-width: 0; }
+.character-library-card { cursor: default; }
+.character-library-card > .card-main { display: grid; gap: .25rem; cursor: pointer; }
 .characters-header { display: flex; justify-content: space-between; gap: 1rem; align-items: start; margin-bottom: 1rem; }
 .character-library-layout { display: grid; grid-template-columns: minmax(230px, 310px) minmax(0, 1fr); gap: 1rem; align-items: start; }
 .character-card-list { display: grid; gap: .65rem; position: sticky; top: .75rem; max-height: calc(100vh - 9rem); overflow: auto; padding-right: .25rem; }
@@ -979,6 +992,10 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   .character-card-list { position: static; max-height: none; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
   .owner-sheet-sections { grid-template-columns: 1fr; }
   .provenance-strip { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 700px) {
+  .descriptive-fields-grid { grid-template-columns: 1fr; }
 }
 
 /* C2B.1 deterministic owner-facing Character Sheet readability */

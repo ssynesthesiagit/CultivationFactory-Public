@@ -41,6 +41,8 @@ def test_p1c_owner_surface_keeps_authority_separation_and_advanced_details_colla
     assert "Developer / Diagnostics" in html
     assert "Next legal action" in html
     assert "ownerNextLegalAction" in javascript
+    assert "complete mechanical rows" in javascript
+    assert "selection intent only" in javascript
     assert "Automatic base abilities" in javascript
     assert "Factory routing" in javascript
     assert "base-ability-player-text" in javascript

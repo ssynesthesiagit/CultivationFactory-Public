@@ -3,6 +3,7 @@ from __future__ import annotations
 import ipaddress
 import json
 import re
+import socket
 import sqlite3
 import uuid
 from typing import Any
@@ -47,6 +48,17 @@ PROVIDER_PROFILES: dict[str, dict[str, Any]] = {
 MODEL_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,99}$")
 MAX_PROVIDER_RESPONSE_BYTES = 4 * 1024 * 1024
 MAX_STAGE1_RESPONSE_BYTES = 2_000_000
+_CARRIER_GRADE_NAT = ipaddress.ip_network("100.64.0.0/10")
+_CLOUD_METADATA_HOSTNAMES = {
+    "metadata",
+    "metadata.google.internal",
+    "metadata.google.com",
+    "instance-data.ec2.internal",
+    "instance-data.ec2.amazonaws.com",
+    "metadata.azure.com",
+    "metadata.azure.internal",
+    "100.100.100.200",
+}
 SYSTEM_MESSAGE = (
     "You are an untrusted Tianxia Stage 1 planning adapter. Return exactly one JSON object "
     "that follows the response schema inside the user prompt. Select only offered IDs. "
@@ -71,15 +83,27 @@ def validate_endpoint(endpoint: str, *, provider_id: str) -> str:
         return value
     parsed = urlsplit(value)
     hostname = (parsed.hostname or "").rstrip(".").lower()
+    try:
+        _ = parsed.port
+    except ValueError as exc:
+        raise FoundryError("AI_PROVIDER_ENDPOINT_INVALID", "Custom API endpoints must use a valid HTTPS port.") from exc
     if parsed.scheme.lower() != "https" or not hostname or parsed.username or parsed.password or parsed.query or parsed.fragment:
         raise FoundryError("AI_PROVIDER_ENDPOINT_INVALID", "Custom API endpoints must be HTTPS URLs without credentials, queries, or fragments.")
-    if hostname == "localhost" or hostname.endswith(".local") or hostname.endswith(".localhost"):
+    if hostname in _CLOUD_METADATA_HOSTNAMES or hostname == "localhost" or hostname.endswith(".local") or hostname.endswith(".localhost"):
         raise FoundryError("AI_PROVIDER_ENDPOINT_BLOCKED", "Custom API endpoints on local or link-local hostnames are not allowed.")
     try:
         address = ipaddress.ip_address(hostname)
     except ValueError:
         address = None
-    if address is not None and (address.is_private or address.is_loopback or address.is_link_local or address.is_multicast or address.is_reserved or address.is_unspecified):
+    if address is not None and (
+        address.is_private
+        or address.is_loopback
+        or address.is_link_local
+        or address.is_multicast
+        or address.is_reserved
+        or address.is_unspecified
+        or address in _CARRIER_GRADE_NAT
+    ):
         raise FoundryError("AI_PROVIDER_ENDPOINT_BLOCKED", "Custom API endpoints on private, loopback, link-local, or reserved addresses are not allowed.")
     return value
 
@@ -91,12 +115,78 @@ class AIProviderService:
         *,
         transport: httpx.BaseTransport | None = None,
         secret_store: SecretStore | None = None,
+        resolver: Any | None = None,
     ):
         self.db = db
         self.stage1 = Stage1ClipboardService(db)
         self.transport = transport
         self.secrets = secret_store or APIProviderSecretStore(db.settings.data_dir)
+        self.resolver = resolver or self._resolve_hostname
         self._connection_test = {"status": "NOT_TESTED", "message": "Save settings and key, then run the explicit connection test."}
+
+    @staticmethod
+    def _resolve_hostname(hostname: str, port: int) -> list[Any]:
+        return socket.getaddrinfo(hostname, port, type=socket.SOCK_STREAM)
+
+    @staticmethod
+    def _resolved_address(value: Any) -> str | None:
+        if isinstance(value, str):
+            return value
+        if isinstance(value, tuple) and value:
+            sockaddr = value[-1]
+            if isinstance(sockaddr, tuple) and sockaddr:
+                return str(sockaddr[0])
+        return None
+
+    @staticmethod
+    def _blocked_resolved_address(address: str) -> bool:
+        try:
+            parsed = ipaddress.ip_address(address)
+        except ValueError:
+            return True
+        return bool(
+            parsed.is_private
+            or parsed.is_loopback
+            or parsed.is_link_local
+            or parsed.is_multicast
+            or parsed.is_reserved
+            or parsed.is_unspecified
+            or parsed in _CARRIER_GRADE_NAT
+        )
+
+    def _revalidate_custom_destination(self, endpoint: str) -> None:
+        checked = validate_endpoint(endpoint, provider_id="custom")
+        parsed = urlsplit(checked)
+        hostname = (parsed.hostname or "").rstrip(".").lower()
+        if hostname in _CLOUD_METADATA_HOSTNAMES:
+            raise FoundryError("AI_PROVIDER_ENDPOINT_BLOCKED", "Custom API endpoints on cloud-metadata hostnames are not allowed.")
+        port = parsed.port or 443
+        try:
+            answers = self.resolver(hostname, port)
+            addresses = [self._resolved_address(value) for value in (answers or [])]
+            addresses = sorted({value for value in addresses if value})
+        except Exception as exc:
+            raise FoundryError(
+                "AI_PROVIDER_ENDPOINT_RESOLUTION_FAILED",
+                "The Custom API endpoint hostname could not be resolved safely; the request was not sent.",
+                details={"hostname": hostname, "exception_type": type(exc).__name__},
+                status_code=502,
+            ) from exc
+        if not addresses:
+            raise FoundryError(
+                "AI_PROVIDER_ENDPOINT_RESOLUTION_FAILED",
+                "The Custom API endpoint returned no usable addresses; the request was not sent.",
+                details={"hostname": hostname},
+                status_code=502,
+            )
+        blocked = [address for address in addresses if self._blocked_resolved_address(address)]
+        if blocked:
+            raise FoundryError(
+                "AI_PROVIDER_ENDPOINT_BLOCKED",
+                "The Custom API endpoint resolved to a private, local, reserved, or metadata destination; the request was not sent.",
+                details={"hostname": hostname, "resolved_addresses": addresses, "blocked_addresses": blocked},
+                status_code=409,
+            )
 
     @staticmethod
     def _defaults() -> dict[str, Any]:
@@ -417,6 +507,11 @@ class AIProviderService:
         return b"".join(chunks)
 
     def _provider_call(self, *, endpoint: str, key: str, request_bytes: bytes, timeout_seconds: int) -> tuple[int, bytes]:
+        if self._selected_provider_id() == "custom":
+            # Re-resolve after all settings/key checks and immediately before
+            # opening the client. No redirect or proxy environment is allowed
+            # to turn the reviewed destination into a different one.
+            self._revalidate_custom_destination(endpoint)
         headers = {
             "Authorization": "Bearer " + key,
             "Content-Type": "application/json",

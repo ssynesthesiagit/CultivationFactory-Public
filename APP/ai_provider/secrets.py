@@ -13,6 +13,7 @@ SECRET_ENVIRONMENT_VARIABLE = "API_PROVIDER_API_KEY"
 LEGACY_SECRET_ENVIRONMENT_VARIABLE = "DEEPSEEK_API_KEY"
 SECRET_FILENAME = "api_provider_key.dpapi"
 LEGACY_SECRET_FILENAME = "deepseek_api_key.dpapi"
+PROVIDER_SECRET_FILENAME = "api_provider_key.{provider_id}.dpapi"
 DPAPI_ENTROPY = b"TianxiaCharacterFoundry.DeepSeek.Stage1.v1"
 CRYPTPROTECT_UI_FORBIDDEN = 0x1
 
@@ -136,52 +137,98 @@ def _crypt_unprotect(value: bytes) -> bytes:
 class APIProviderSecretStore:
     def __init__(self, data_dir: Path):
         self.directory = data_dir.resolve() / "secrets"
+        # ``path`` is retained as a read-only migration source for the
+        # pre-profile store. It is never used for OpenAI or Custom credentials.
         self.path = self.directory / SECRET_FILENAME
         self.legacy_path = self.directory / LEGACY_SECRET_FILENAME
 
+    @staticmethod
+    def _provider_id(provider_id: str | None) -> str | None:
+        value = str(provider_id or "").strip().casefold()
+        return value if value in {"openai", "deepseek", "custom"} else None
+
+    def _provider_path(self, provider_id: str | None) -> Path | None:
+        value = self._provider_id(provider_id)
+        if value is None:
+            return None
+        return self.directory / PROVIDER_SECRET_FILENAME.format(provider_id=value)
+
+    @staticmethod
+    def _environment_name(provider_id: str | None) -> str | None:
+        return {
+            "openai": "OPENAI_API_KEY",
+            "deepseek": "DEEPSEEK_API_KEY",
+            "custom": "CUSTOM_API_KEY",
+        }.get(str(provider_id or "").strip().casefold())
+
     def set(self, value: str, provider_id: str | None = None) -> None:
+        provider = self._provider_id(provider_id)
+        if provider is None:
+            raise FoundryError("AI_PROVIDER_PROFILE_INVALID", "A protected API key must be assigned to OpenAI, DeepSeek, or Custom.")
         key = validate_api_key(value)
         protected = _crypt_protect(key.encode("utf-8"))
         self.directory.mkdir(parents=True, exist_ok=True)
-        temporary = self.path.with_name(self.path.name + ".new")
+        destination = self._provider_path(provider)
+        assert destination is not None
+        temporary = destination.with_name(destination.name + ".new")
         temporary.write_bytes(protected)
-        os.replace(temporary, self.path)
+        os.replace(temporary, destination)
 
     def get(self, provider_id: str | None = None) -> str | None:
-        path = self.path if self.path.is_file() else self.legacy_path
-        if path.is_file():
+        provider = self._provider_id(provider_id)
+        if provider is None:
+            return None
+        path = self._provider_path(provider)
+        # Historical DPAPI files were DeepSeek-only. The old generic file is
+        # also treated as a DeepSeek migration source, never as a credential
+        # for a newly selected OpenAI or Custom profile.
+        legacy_path = path if path and path.is_file() else None
+        if legacy_path is None and provider == "deepseek":
+            legacy_path = self.legacy_path if self.legacy_path.is_file() else (self.path if self.path.is_file() else None)
+        if legacy_path is not None and legacy_path.is_file():
             try:
-                return validate_api_key(_crypt_unprotect(path.read_bytes()).decode("utf-8"))
+                return validate_api_key(_crypt_unprotect(legacy_path.read_bytes()).decode("utf-8"))
             except UnicodeDecodeError as exc:
                 raise FoundryError(
                     "AI_PROVIDER_API_KEY_DECRYPT_FAILED",
                     "The saved API key is not valid UTF-8 after decryption.",
                 ) from exc
-        environment = (
-            os.getenv({"openai": "OPENAI_API_KEY", "deepseek": "DEEPSEEK_API_KEY"}.get(provider_id or "", ""))
-            or os.getenv(SECRET_ENVIRONMENT_VARIABLE)
-            or (os.getenv(LEGACY_SECRET_ENVIRONMENT_VARIABLE) if provider_id in (None, "deepseek") else None)
-        )
+        environment_name = self._environment_name(provider)
+        environment = os.getenv(environment_name) if environment_name else None
         return validate_api_key(environment) if environment else None
 
     def delete(self, provider_id: str | None = None) -> bool:
+        provider = self._provider_id(provider_id)
+        if provider is None:
+            return False
         removed = False
-        for path in (self.path, self.legacy_path):
+        paths = [self._provider_path(provider)]
+        if provider == "deepseek":
+            paths.extend((self.legacy_path, self.path))
+        for path in paths:
+            if path is None:
+                continue
             if path.exists():
                 path.unlink()
                 removed = True
         return removed
 
     def status(self, provider_id: str | None = None) -> dict[str, object]:
-        persisted = self.path.is_file() or self.legacy_path.is_file()
-        environment_name = {"openai": "OPENAI_API_KEY", "deepseek": "DEEPSEEK_API_KEY"}.get(provider_id or "")
-        environment_name = environment_name or SECRET_ENVIRONMENT_VARIABLE
-        environment = bool(os.getenv(environment_name)) or (provider_id in (None, "deepseek") and bool(os.getenv(LEGACY_SECRET_ENVIRONMENT_VARIABLE)))
+        provider = self._provider_id(provider_id)
+        provider_path = self._provider_path(provider)
+        persisted = bool(provider_path and provider_path.is_file())
+        source = "windows_dpapi" if persisted else None
+        if provider == "deepseek" and not persisted:
+            persisted = self.legacy_path.is_file() or self.path.is_file()
+            source = "windows_dpapi_legacy_deepseek" if persisted else None
+        environment_name = self._environment_name(provider)
+        environment = bool(os.getenv(environment_name)) if environment_name else False
         return {
             "present": persisted or environment,
-            "source": "windows_dpapi" if persisted else ("environment" if environment else None),
+            "source": source or ("environment" if environment else None),
             "persistent": persisted,
             "environment_variable": environment_name,
+            "provider_id": provider,
         }
 
 
@@ -193,23 +240,40 @@ class InMemorySecretStore:
     """Tests only: never selected by the application runtime."""
 
     def __init__(self, value: str | None = None):
-        self.value = validate_api_key(value) if value else None
+        self.values: dict[str, str] = {}
+        self._unbound_value = validate_api_key(value) if value else None
 
     def set(self, value: str, provider_id: str | None = None) -> None:
-        self.value = validate_api_key(value)
+        provider = str(provider_id or "").strip().casefold()
+        if provider not in {"openai", "deepseek", "custom"}:
+            raise FoundryError("AI_PROVIDER_PROFILE_INVALID", "A protected API key must be assigned to a provider profile.")
+        self.values[provider] = validate_api_key(value)
 
     def get(self, provider_id: str | None = None) -> str | None:
-        return self.value
+        provider = str(provider_id or "").strip().casefold()
+        if provider in self.values:
+            return self.values[provider]
+        if self._unbound_value is not None and provider in {"openai", "deepseek", "custom"}:
+            # Test-only compatibility for callers that provide one initial
+            # secret before selecting a profile. It is bound once, then never
+            # reused by another profile.
+            self.values[provider] = self._unbound_value
+            self._unbound_value = None
+            return self.values[provider]
+        return None
 
     def delete(self, provider_id: str | None = None) -> bool:
-        present = self.value is not None
-        self.value = None
+        provider = str(provider_id or "").strip().casefold()
+        present = provider in self.values
+        self.values.pop(provider, None)
         return present
 
     def status(self, provider_id: str | None = None) -> dict[str, object]:
+        provider = str(provider_id or "").strip().casefold()
         return {
-            "present": self.value is not None,
-            "source": "in_memory_test" if self.value is not None else None,
+            "present": provider in self.values,
+            "source": "in_memory_test" if provider in self.values else None,
             "persistent": False,
             "environment_variable": None,
+            "provider_id": provider,
         }

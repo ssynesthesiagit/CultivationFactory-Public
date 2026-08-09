@@ -306,10 +306,16 @@ def validate_delegated_target_cl(
     if not isinstance(stage2, dict):
         return expected
     stage2_target = stage2.get("target_cl")
-    if type(stage2_target) is not int or stage2_target != expected:
+    stage2_choices = stage2.get("choices")
+    selection_intent_only = (
+        stage2_target is None
+        and isinstance(stage2.get("selection_intent_by_slot"), dict)
+        and not isinstance(stage2_choices, list)
+    )
+    if not selection_intent_only and (type(stage2_target) is not int or stage2_target != expected):
         _raise_target_mismatch(run, project, expected=expected, proposed=stage2_target, surface="stage2_proposal.target_cl")
 
-    choices = stage2.get("choices")
+    choices = stage2_choices
     if not isinstance(choices, list):
         return expected
     level_targets: list[int] = []
@@ -586,7 +592,12 @@ def _priority_order(plan: dict[str, Any]) -> dict[str, Any]:
     top_level = plan.get("catalog_priority_order")
     if isinstance(top_level, dict):
         return top_level
-    return ((plan.get("stage2_proposal") or {}).get("catalog_priority_order") or {})
+    proposal = plan.get("stage2_proposal") or {}
+    return deepcopy(
+        proposal.get("catalog_priority_order")
+        or proposal.get("selection_intent_by_slot")
+        or {}
+    )
 
 
 def _delegated_selection(plan: dict[str, Any]) -> dict[str, Any]:

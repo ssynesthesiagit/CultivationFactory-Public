@@ -190,6 +190,17 @@ class ProjectStore:
                     details={"project_id": project_id},
                     status_code=409,
                 )
+            active_run = conn.execute(
+                "SELECT run_id,status FROM character_creation_runs WHERE project_id=? AND status IN ('PREPARING_REQUEST','WAITING_FOR_RESPONSE','READY_FOR_REVIEW','NEEDS_REVIEW') ORDER BY created_at DESC LIMIT 1",
+                (project_id,),
+            ).fetchone()
+            if active_run:
+                raise FoundryError(
+                    "CHARACTER_BUILDER_ACTIVE_RUN_REQUIRES_OWNER_DECISION",
+                    "This temporary character has an incomplete build. Resume it or explicitly cancel the build before starting over.",
+                    details={"project_id": project_id, "run_id": active_run["run_id"], "status": active_run["status"]},
+                    status_code=409,
+                )
             # HF2 snapshot rows are immutable by default. This one-transaction
             # authorization is created only after the explicit temporary marker
             # is verified. Triggers still reject every other deletion path.
@@ -219,7 +230,15 @@ class ProjectStore:
                     "SELECT project_id FROM character_builder_project_lifecycle WHERE persistence_state='temporary' ORDER BY project_id"
                 )
             ]
+            skipped_project_ids = []
             for project_id in project_ids:
+                active_run = conn.execute(
+                    "SELECT run_id FROM character_creation_runs WHERE project_id=? AND status IN ('PREPARING_REQUEST','WAITING_FOR_RESPONSE','READY_FOR_REVIEW','NEEDS_REVIEW') LIMIT 1",
+                    (project_id,),
+                ).fetchone()
+                if active_run:
+                    skipped_project_ids.append(project_id)
+                    continue
                 conn.execute(
                     "INSERT INTO character_builder_temporary_delete_authorizations(project_id,reason,authorized_at) VALUES(?,?,?)",
                     (project_id, reason, utcnow()),
@@ -234,7 +253,8 @@ class ProjectStore:
                         status_code=500,
                     )
                 conn.execute("DELETE FROM character_builder_temporary_delete_authorizations WHERE project_id=?", (project_id,))
-        return {"reason": reason, "removed_project_ids": project_ids, "removed_count": len(project_ids)}
+        removed_project_ids = [project_id for project_id in project_ids if project_id not in skipped_project_ids]
+        return {"reason": reason, "removed_project_ids": removed_project_ids, "removed_count": len(removed_project_ids), "skipped_active_project_ids": skipped_project_ids}
 
     def _record_validation(
         self,

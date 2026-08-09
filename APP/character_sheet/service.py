@@ -992,10 +992,16 @@ class CharacterSheetService:
             }
             readiness = deepcopy(snapshot["readiness"])
         else:
+            final_display_name = locks.get("character.identity.final_display_name")
+            final_concept = locks.get("character.identity.final_concept")
+            if isinstance(final_display_name, dict):
+                final_display_name = final_display_name.get("value")
+            if isinstance(final_concept, dict):
+                final_concept = final_concept.get("value")
             identity = {
-                "name": compiled_character.get("name") or project.get("name"),
+                "name": compiled_character.get("name") or final_display_name or project.get("name"),
                 "title": compiled_character.get("title"),
-                "concept": compiled_character.get("concept") or locks.get("concept"),
+                "concept": compiled_character.get("concept") or final_concept or locks.get("concept"),
                 "target_cl": locks.get("target_cl"),
                 "current_cl": compiled_character.get("cl"),
                 "target_realm": locks.get("target_realm"),

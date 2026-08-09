@@ -40,6 +40,8 @@ from non_sphere_authority.service import (
 from stage2.service import _TRUSTED_CHARACTER_CREATION_EXECUTION
 
 MODES = {"MANUAL_CHAT", "STANDARD_API", "AUTO_FINALIZE_WHEN_CLEAN"}
+ACTIVE_RUN_STATUSES = {"PREPARING_REQUEST", "WAITING_FOR_RESPONSE", "READY_FOR_REVIEW", "NEEDS_REVIEW"}
+TERMINAL_RUN_STATUSES = {"CLEAN_AND_FINALIZED", "CANCELLED", "REVISED"}
 PLAN_SCHEMA = "TianxiaFoundry.CharacterCreationPlan.v2"
 LEGACY_PLAN_SCHEMA = "TianxiaFoundry.CharacterCreationPlan.v1"
 RUN_SCHEMA = "TianxiaFoundry.CharacterCreationRun.v3"
@@ -263,19 +265,70 @@ class CharacterCreationExecutionService:
         value = row[key]
         return json.loads(value) if value else deepcopy(default)
 
+    @staticmethod
+    def _descriptive_fields(value: Any) -> dict[str, Any]:
+        raw = value if isinstance(value, dict) else {}
+        identity = raw.get("identity") if isinstance(raw.get("identity"), dict) else {}
+        name = str(identity.get("name") or raw.get("name") or "").strip() or None
+        concept = str(raw.get("concept") or raw.get("character_concept") or "").strip() or None
+        return {"identity": {"name": name}, "concept": concept}
+
+    @classmethod
+    def _descriptive_from_response_text(cls, response_text: str) -> dict[str, Any]:
+        try:
+            value = json.loads(response_text)
+        except (TypeError, json.JSONDecodeError):
+            return cls._descriptive_fields({})
+        if isinstance(value, dict) and isinstance(value.get("owner_descriptive_fields"), dict):
+            value = value["owner_descriptive_fields"]
+        return cls._descriptive_fields(value)
+
+    @classmethod
+    def _descriptive_projection(cls, row: Any) -> dict[str, Any]:
+        proposed = cls._descriptive_fields(cls._loads(row, "owner_descriptive_fields_json", {}))
+        final_plan = cls._loads(row, "final_plan_json", {})
+        if not ((proposed.get("identity") or {}).get("name") or proposed.get("concept")):
+            proposed = cls._descriptive_fields((final_plan or {}).get("descriptive_fields"))
+        accepted = cls._descriptive_fields(cls._loads(row, "accepted_descriptive_fields_json", {}))
+        accepted_name = (accepted.get("identity") or {}).get("name")
+        accepted_concept = accepted.get("concept")
+        proposed_name = (proposed.get("identity") or {}).get("name")
+        proposed_concept = proposed.get("concept")
+        resolved = {
+            "identity": {"name": accepted_name or proposed_name},
+            "concept": accepted_concept or proposed_concept,
+        }
+        if accepted_name or accepted_concept:
+            state = "OWNER_ACCEPTED"
+        elif proposed_name or proposed_concept:
+            state = "AI_PROPOSED"
+        else:
+            state = "UNRESOLVED"
+        return {
+            "schema": "TianxiaFoundry.OwnerDescriptiveFieldsProjection.v1",
+            "proposed": proposed,
+            "accepted": accepted,
+            "resolved": resolved,
+            "state": state,
+            "label": "Owner accepted" if state == "OWNER_ACCEPTED" else "AI proposed" if state == "AI_PROPOSED" else "Owner decision needed",
+        }
+
     def _public(self, row: Any) -> dict[str, Any]:
+        validation = self._loads(row, "validation_json", {})
         return {
             "schema": RUN_SCHEMA, "run_id": row["run_id"], "project_id": row["project_id"],
             "starting_revision": row["starting_revision"], "execution_mode": row["execution_mode"],
             "idempotency_key": row["idempotency_key"], "request": self._loads(row, "request_json", {}),
             "transport": self._loads(row, "transport_json", {}), "response": self._loads(row, "response_json", {}),
-            "validation": self._loads(row, "validation_json", {}), "dry_run": self._loads(row, "dry_run_json", {}),
+            "validation": validation, "dry_run": self._loads(row, "dry_run_json", {}),
             "final_plan": self._loads(row, "final_plan_json", {}),
             "quality": self._loads(row, "quality_json", {}), "owner_decision": row["owner_decision"],
             "commit": self._loads(row, "commit_json", {}), "final_revision": row["final_revision"],
             "outputs": self._loads(row, "output_json", {}), "blockers": self._loads(row, "blockers_json", []),
             "warnings": self._loads(row, "warnings_json", []), "status": row["status"],
             "created_at": row["created_at"], "updated_at": row["updated_at"], "completed_at": row["completed_at"],
+            "owner_descriptive_fields": self._descriptive_projection(row),
+            "submission_error": deepcopy(validation.get("last_submission_error")) if isinstance(validation, dict) else None,
             "secret_persisted": False,
         }
 
@@ -290,6 +343,144 @@ class CharacterCreationExecutionService:
         with self.db.connection() as conn:
             rows = conn.execute("SELECT * FROM character_creation_runs WHERE project_id=? ORDER BY created_at DESC", (project_id,)).fetchall()
         return [self._public(row) for row in rows]
+
+    @staticmethod
+    def _stage_for_status(status: str) -> int:
+        return {
+            "PREPARING_REQUEST": 2,
+            "WAITING_FOR_RESPONSE": 2,
+            "NEEDS_REVIEW": 3,
+            "READY_FOR_REVIEW": 3,
+            "CLEAN_AND_FINALIZED": 4,
+            "CANCELLED": 2,
+            "REVISED": 2,
+        }.get(status, 2)
+
+    @classmethod
+    def _next_action_for_status(cls, run: dict[str, Any]) -> str:
+        status = run.get("status")
+        if status == "WAITING_FOR_RESPONSE":
+            return "Load one response file or paste the complete response."
+        if status == "PREPARING_REQUEST":
+            return "Resume the build and inspect the request status."
+        if status == "NEEDS_REVIEW":
+            return "Inspect the blocker, then Replace Response, Retry, Revise, or Cancel."
+        if status == "READY_FOR_REVIEW":
+            return "Review the proposal and choose Finalize, Revise, or Cancel."
+        if status == "CLEAN_AND_FINALIZED":
+            return "Open the completed Character Sheet."
+        if status == "CANCELLED":
+            return "Start a deliberate new build when you are ready."
+        if status == "REVISED":
+            return "Resume the replacement build."
+        return "Inspect the current build state."
+
+    @classmethod
+    def _recovery_summary(cls, run: dict[str, Any]) -> dict[str, Any]:
+        request = run.get("request") or {}
+        response = run.get("response") or {}
+        return {
+            "run_id": run.get("run_id"),
+            "project_id": run.get("project_id"),
+            "starting_revision": run.get("starting_revision"),
+            "execution_mode": run.get("execution_mode"),
+            "status": run.get("status"),
+            "stage": cls._stage_for_status(str(run.get("status") or "")),
+            "next_legal_action": cls._next_action_for_status(run),
+            "request_sha256": request.get("request_sha256"),
+            "content_lock_hash": request.get("content_lock_hash"),
+            "response_sha256": response.get("response_sha256"),
+            "response_binding": {
+                "request_sha256": request.get("request_sha256"),
+                "response_sha256": response.get("response_sha256"),
+                "binding_status": "BOUND" if response.get("response_sha256") and not run.get("submission_error") else "WAITING_FOR_RESPONSE" if not response.get("response_sha256") else "REVIEW_REQUIRED",
+            },
+            "blockers": deepcopy(run.get("blockers") or []),
+            "warnings": deepcopy(run.get("warnings") or []),
+            "submission_error": deepcopy(run.get("submission_error")),
+            "owner_descriptive_fields": deepcopy(run.get("owner_descriptive_fields") or {}),
+            "updated_at": run.get("updated_at"),
+        }
+
+    def recovery(self, project_id: str) -> dict[str, Any]:
+        project = self._project(project_id)
+        runs = self.list(project_id)
+        active = next((run for run in runs if run.get("status") in ACTIVE_RUN_STATUSES), None)
+        latest = runs[0] if runs else None
+        summary = self._recovery_summary(active or latest) if (active or latest) else None
+        return {
+            "schema": "TianxiaFoundry.CharacterCreationRecovery.v1",
+            "project_id": project_id,
+            "project_revision": self._revision(project_id),
+            "content_lock_hash": self._content_lock_hash(project_id),
+            "project_name": project.get("name"),
+            "active": active is not None,
+            "active_run": self._recovery_summary(active) if active else None,
+            "latest_run": self._recovery_summary(latest) if latest else None,
+            "next_legal_action": summary.get("next_legal_action") if summary else "Start a complete-character build when the owner is ready.",
+        }
+
+    def recoverable(self) -> list[dict[str, Any]]:
+        result = []
+        for row in self.projects.list_projects():
+            project_id = row.get("project_id")
+            if not project_id:
+                continue
+            recovery = self.recovery(str(project_id))
+            if recovery.get("active") or recovery.get("latest_run"):
+                result.append(recovery)
+        return result
+
+    def evidence(self, run_id: str) -> dict[str, Any]:
+        run = self.get(run_id)
+        request = run.get("request") or {}
+        response = run.get("response") or {}
+        validation = run.get("validation") or {}
+        return {
+            "schema": "TianxiaFoundry.CharacterCreationBuildEvidence.v1",
+            "run_id": run.get("run_id"),
+            "project_id": run.get("project_id"),
+            "stage": self._stage_for_status(str(run.get("status") or "")),
+            "status": run.get("status"),
+            "execution_mode": run.get("execution_mode"),
+            "starting_revision": run.get("starting_revision"),
+            "request_binding": {
+                "request_sha256": request.get("request_sha256"),
+                "content_lock_hash": request.get("content_lock_hash"),
+                "project_id": request.get("project_id"),
+                "project_revision": request.get("project_revision"),
+                "typed_choice_snapshot_sha256": (request.get("typed_choice_snapshot") or {}).get("snapshot_sha256"),
+                "idempotency_binding_sha256": request.get("idempotency_binding_sha256"),
+            },
+            "response_binding": {
+                "response_sha256": response.get("response_sha256"),
+                "submitted_request_sha256": (run.get("transport") or {}).get("submitted_request_sha256"),
+                "binding_status": "BOUND" if response.get("response_sha256") and not run.get("submission_error") else "NOT_BOUND_OR_REQUIRES_REVIEW",
+            },
+            "response_view": {
+                "exact_response_present": bool(response.get("exact_response_text")),
+                "response_sha256": response.get("response_sha256"),
+                "parsed_plan": deepcopy(response.get("parsed_plan")) if isinstance(response.get("parsed_plan"), dict) else None,
+                "owner_descriptive_fields": deepcopy(run.get("owner_descriptive_fields")),
+            },
+            "owner_descriptive_fields": deepcopy(run.get("owner_descriptive_fields")),
+            "blockers": deepcopy(run.get("blockers") or []),
+            "warnings": deepcopy(run.get("warnings") or []),
+            "submission_error": deepcopy(run.get("submission_error")),
+            "validation": {
+                key: deepcopy(value)
+                for key, value in validation.items()
+                if key != "last_submission_error"
+            },
+            "last_submission_error": deepcopy(validation.get("last_submission_error")),
+            "quality": deepcopy(run.get("quality") or {}),
+            "dry_run": {
+                key: deepcopy((run.get("dry_run") or {}).get(key))
+                for key in ("schema", "candidate_identity", "identities", "deterministic", "independent_compilations", "preview")
+                if key in (run.get("dry_run") or {})
+            },
+            "next_legal_action": self._next_action_for_status(run),
+        }
 
     def _complete_request(
         self,
@@ -506,6 +697,15 @@ class CharacterCreationExecutionService:
             plan = json.loads(response_text)
         except json.JSONDecodeError as exc:
             raise FoundryError("CG1_PLAN_JSON_INVALID", "The complete character plan response is not valid JSON.", details={"line": exc.lineno, "column": exc.colno}) from exc
+        if isinstance(plan, dict) and not plan.get("schema") and all(
+            key in plan
+            for key in ("stage1_response", "target_cl", "stage2_proposal", "owner_descriptive_fields", "uncertainties", "fallbacks", "output_profile", "request_sha256")
+        ):
+            # The first physical owner response used the complete response
+            # fields but omitted the explicit schema member. Preserve its exact
+            # submitted bytes and bind this compatibility projection only in
+            # memory; no response file is rewritten or silently replaced.
+            plan["schema"] = PLAN_SCHEMA
         if not isinstance(plan, dict) or plan.get("schema") not in {PLAN_SCHEMA, LEGACY_PLAN_SCHEMA}:
             raise FoundryError("CG1_PLAN_SCHEMA_INVALID", f"The response must use {PLAN_SCHEMA}.")
         forbidden = sorted(k for k in plan if k in FORBIDDEN_PLANNER_FIELDS)
@@ -925,6 +1125,7 @@ class CharacterCreationExecutionService:
         accepted_final_plan: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         compile_plan = self._plan_with_accepted_final_target(run, plan, accepted_final_plan)
+        compile_plan = self._execution_descriptive_fields(run, compile_plan)
         choice_snapshot = self._require_frozen_choice_snapshot(run)
         with tempfile.TemporaryDirectory(prefix=f"cg1-scratch-{index}-", ignore_cleanup_errors=True) as td:
             root=Path(td); data=root/"data"
@@ -932,6 +1133,7 @@ class CharacterCreationExecutionService:
             s=self.db.settings
             settings=Settings(root_dir=s.root_dir,data_dir=data,db_path=data/s.db_path.name,inbox_dir=data/"inbox",exports_dir=data/"exports",packs_dir=data/"content_packs",vendor_dir=data/"vendor",logs_dir=data/"logs",backups_dir=data/"backups",security_dir=data/"security",factory_zip=s.factory_zip,fixture_path=s.fixture_path)
             scratch_db=Database(settings); scratch_db.migrate(); services=self._scratch_services(scratch_db)
+            self._materialize_descriptive_fields(run, compile_plan, scratch_db, phase="scratch_compile")
             self._materialize_delegated_final_grant_plan(
                 run,
                 accepted_final_plan or {},
@@ -1207,7 +1409,7 @@ class CharacterCreationExecutionService:
         )
         warnings.extend(deepcopy(plan.get("uncertainties") or [])); warnings.extend(deepcopy(plan.get("fallbacks") or []))
         quality={"schema":QUALITY_SCHEMA,"status":"CLEAN" if not warnings else "NEEDS_REVIEW","required_receipts":sorted(candidate["preview"]["readiness"]),"candidate_identity":candidate["candidate_identity"]}
-        validation={"valid":True,"response_sha256":sha256_bytes(raw),"plan_sha256":sha256_json(plan),"planner_authority_fields_used":False,"delegated_choice_authority":delegated_run}
+        validation={"valid":True,"response_sha256":sha256_bytes(raw),"plan_sha256":sha256_json(plan),"planner_authority_fields_used":False,"delegated_choice_authority":delegated_run,"owner_descriptive_fields":deepcopy(plan.get("owner_descriptive_fields") or {})}
         return {"plan":plan,"final_plan":final_plan or {},"validation":validation,"candidate":candidate,"quality":quality,"warnings":warnings,"raw_sha256":sha256_bytes(raw)}
 
     def _apply_response(
@@ -1256,27 +1458,44 @@ class CharacterCreationExecutionService:
                         status_code=409,
                     )
                 conn.execute(
-                    """UPDATE character_creation_runs SET transport_json=?,response_json=?,validation_json=?,dry_run_json=?,final_plan_json=?,quality_json=?,blockers_json='[]',warnings_json=?,status=?,updated_at=? WHERE run_id=?""",
+                    """UPDATE character_creation_runs SET transport_json=?,response_json=?,validation_json=?,dry_run_json=?,final_plan_json=?,owner_descriptive_fields_json=?,quality_json=?,blockers_json='[]',warnings_json=?,status=?,updated_at=? WHERE run_id=?""",
                     (
                         canonical_json(transport), canonical_json(response), canonical_json(compiled["validation"]),
-                        canonical_json(compiled["candidate"]), canonical_json(compiled["final_plan"]), canonical_json(compiled["quality"]),
+                        canonical_json(compiled["candidate"]), canonical_json(compiled["final_plan"]), canonical_json(compiled["plan"].get("owner_descriptive_fields") or {}), canonical_json(compiled["quality"]),
                         canonical_json(compiled["warnings"]), status, utcnow(), run_id,
                     ),
                 )
         except FoundryError as exc:
+            descriptive = self._descriptive_from_response_text(response_text)
+            diagnostic = {"code": exc.code, "message": exc.message, "details": exc.details}
             if exc.code == RESPONSE_BINDING_ERROR and binding_error_status:
+                validation = deepcopy(run.get("validation") or {})
+                validation["last_submission_error"] = diagnostic
+                validation["owner_descriptive_fields"] = descriptive
+                with self.db.transaction() as conn:
+                    conn.execute(
+                        "UPDATE character_creation_runs SET transport_json=?,response_json=?,validation_json=?,owner_descriptive_fields_json=?,updated_at=? WHERE run_id=?",
+                        (
+                            canonical_json(transport),
+                            canonical_json({"exact_response_text": response_text, "response_sha256": sha256_bytes(response_text.encode("utf-8"))}),
+                            canonical_json(validation), canonical_json(descriptive), utcnow(), run_id,
+                        ),
+                    )
                 raise
-            blocker = {"code": exc.code, "message": exc.message, "details": exc.details}
+            blocker = diagnostic
+            validation = deepcopy(run.get("validation") or {})
+            validation.pop("last_submission_error", None)
+            validation["owner_descriptive_fields"] = descriptive
             with self.db.transaction() as conn:
                 conn.execute(
-                    "UPDATE character_creation_runs SET transport_json=?,response_json=?,blockers_json=?,status='NEEDS_REVIEW',updated_at=? WHERE run_id=?",
+                    "UPDATE character_creation_runs SET transport_json=?,response_json=?,validation_json=?,owner_descriptive_fields_json=?,blockers_json=?,status='NEEDS_REVIEW',updated_at=? WHERE run_id=?",
                     (
                         canonical_json(transport),
                         canonical_json({
                             "exact_response_text": response_text,
                             "response_sha256": sha256_bytes(response_text.encode("utf-8")),
                         }),
-                        canonical_json([blocker]), utcnow(), run_id,
+                        canonical_json(validation), canonical_json(descriptive), canonical_json([blocker]), utcnow(), run_id,
                     ),
                 )
             return self.get(run_id)
@@ -1286,6 +1505,80 @@ class CharacterCreationExecutionService:
             if receipt:
                 return self.finalize(run_id, auto_finalize_receipt=receipt)
         return result
+
+    def accept_descriptive_fields(self, run_id: str, *, name: str | None, concept: str | None) -> dict[str, Any]:
+        run = self.get(run_id)
+        if run["status"] in TERMINAL_RUN_STATUSES:
+            raise FoundryError("CG1_DESCRIPTIVE_FIELDS_TERMINAL", "A finalized, cancelled, or revised run cannot accept new descriptive fields.", status_code=409)
+        proposed = run.get("owner_descriptive_fields", {}).get("proposed") or {}
+        fields = self._descriptive_fields({"identity": {"name": name}, "concept": concept})
+        delegated = (run.get("request") or {}).get("delegated_choice_envelope") or {}
+        delegated_fields = delegated.get("delegated_fields") or {}
+        for field, value in (("identity.name", fields["identity"]["name"]), ("concept", fields["concept"])):
+            authority = delegated_fields.get(field) or {}
+            if authority.get("state") == "owner_locked":
+                expected = str(authority.get("owner_value") or "").strip() or None
+                if value != expected:
+                    raise FoundryError(
+                        "CG1_OWNER_LOCKED_DESCRIPTIVE_FIELD_CHANGED",
+                        "This descriptive field is owner-locked and cannot be changed during review.",
+                        details={"field": field, "expected": expected, "proposed": value},
+                        status_code=409,
+                    )
+        if not (fields["identity"]["name"] or fields["concept"]):
+            fields = self._descriptive_fields(proposed)
+        with self.db.transaction() as conn:
+            conn.execute(
+                "UPDATE character_creation_runs SET accepted_descriptive_fields_json=?,owner_decision='ACCEPT_DESCRIPTIVE_FIELDS',updated_at=? WHERE run_id=?",
+                (canonical_json(fields), utcnow(), run_id),
+            )
+        return self.get(run_id)
+
+    @staticmethod
+    def _execution_descriptive_fields(run: dict[str, Any], plan: dict[str, Any]) -> dict[str, Any]:
+        projection = run.get("owner_descriptive_fields") or {}
+        accepted = projection.get("accepted") if isinstance(projection, dict) else None
+        resolved = accepted if isinstance(accepted, dict) and (
+            (accepted.get("identity") or {}).get("name") or accepted.get("concept")
+        ) else (projection.get("resolved") if isinstance(projection, dict) else None)
+        if not isinstance(resolved, dict):
+            return deepcopy(plan)
+        result = deepcopy(plan)
+        result["owner_descriptive_fields"] = CharacterCreationExecutionService._descriptive_fields(resolved)
+        return result
+
+    def _materialize_descriptive_fields(self, run: dict[str, Any], plan: dict[str, Any], authority_db: Database, *, phase: str) -> None:
+        fields = self._descriptive_fields(plan.get("owner_descriptive_fields") or {})
+        from project_store.service import ProjectStore
+        store = self.projects if authority_db is self.db else ProjectStore(authority_db)
+        binding = {
+            "schema": "TianxiaFoundry.ServerDerivedDescriptiveFields.v1",
+            "run_id": run["run_id"],
+            "project_id": run["project_id"],
+            "request_sha256": run["request"].get("request_sha256"),
+            "response_sha256": run.get("response", {}).get("response_sha256"),
+            "phase": phase,
+        }
+        for field, value in (
+            ("character.identity.final_display_name", fields["identity"].get("name")),
+            ("character.identity.final_concept", fields.get("concept")),
+        ):
+            if not value:
+                continue
+            materialize = getattr(store, "materialize_server_derived_user_lock", None)
+            if not callable(materialize):
+                # Focused legacy test doubles intentionally model only the
+                # project read/write surface.  They still exercise the
+                # candidate/finalization path; production ProjectStore owns
+                # the durable server-derived descriptive locks.
+                continue
+            materialize(
+                run["project_id"],
+                field=field,
+                value={"value": value, "binding": binding},
+                source=f"cg1-owner-descriptive:{run['run_id']}:{phase}",
+                lock_id=f"lock.cg1.{field.replace('.', '-')}",
+            )
 
     def submit_manual(
         self,
@@ -1304,7 +1597,12 @@ class CharacterCreationExecutionService:
         return self._apply_response(
             run_id,
             response_text,
-            {"mode": "MANUAL_CHAT", "provider_called": False, "transfer": "pasted_response"},
+            {
+                "mode": "MANUAL_CHAT",
+                "provider_called": False,
+                "transfer": "pasted_response",
+                "submitted_request_sha256": request_sha256,
+            },
             submitted_request_sha256=request_sha256,
             prior_attempt_id=prior_attempt_id,
             binding_error_status=True,
@@ -1364,7 +1662,13 @@ class CharacterCreationExecutionService:
         return self._apply_response(
             run_id,
             response_text,
-            {"mode": "MANUAL_CHAT", "provider_called": False, "transfer": "response_file", **upload},
+            {
+                "mode": "MANUAL_CHAT",
+                "provider_called": False,
+                "transfer": "response_file",
+                "submitted_request_sha256": run["request"].get("request_sha256"),
+                **upload,
+            },
             binding_error_status=True,
         )
 
@@ -1700,6 +2004,8 @@ class CharacterCreationExecutionService:
             phase="finalization",
         )
         execute_plan = self._plan_with_accepted_final_target(run, plan, accepted_final_plan)
+        execute_plan = self._execution_descriptive_fields(run, execute_plan)
+        self._materialize_descriptive_fields(run, execute_plan, self.db, phase="finalization")
         svc=self._live_pipeline(); outputs={}
         text=execute_plan["stage1_response"] if isinstance(execute_plan["stage1_response"],str) else canonical_json(execute_plan["stage1_response"])
         attempt=svc["stage1"].validate_response(
@@ -1779,7 +2085,22 @@ class CharacterCreationExecutionService:
             raise FoundryError("CG1_FINAL_PLAN_BINDING_DIVERGED", "The accepted final plan is not bound to the exact reviewed plan.", status_code=409)
         if final_plan.get("response_sha256") != run["response"].get("response_sha256") or final_plan.get("request_sha256") != run["request"].get("request_sha256"):
             raise FoundryError("CG1_FINAL_PLAN_BINDING_DIVERGED", "The accepted final plan is not bound to the exact reviewed response and request.", status_code=409)
-        compiled={"plan":plan,"candidate":run["dry_run"]}
+        accepted_projection = run.get("owner_descriptive_fields") or {}
+        accepted_fields = accepted_projection.get("accepted") if isinstance(accepted_projection, dict) else None
+        if isinstance(accepted_fields, dict) and (
+            (accepted_fields.get("identity") or {}).get("name") or accepted_fields.get("concept")
+        ):
+            # Owner edits are display/story authority, but the deterministic
+            # candidate still needs the accepted identity in its generated
+            # Character Sheet before the live identity comparison.
+            approved_candidate = self._compile_twice(
+                run,
+                plan,
+                accepted_final_plan=final_plan,
+            )
+        else:
+            approved_candidate = run["dry_run"]
+        compiled={"plan":plan,"candidate":approved_candidate}
         if not compiled["candidate"].get("deterministic") or compiled["candidate"].get("independent_compilations") != 2:
             raise FoundryError("CG1_APPROVED_CANDIDATE_DIVERGED","The approved candidate lacks two verified isolated compilations.",status_code=409)
         frozen_snapshot = self._require_frozen_choice_snapshot(run)

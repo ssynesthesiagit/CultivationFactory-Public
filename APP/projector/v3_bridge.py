@@ -87,7 +87,7 @@ def _lock_provenance(lock: dict[str, Any], fixture_path: Path, destinations: lis
         "lock_id": lock["lock_id"],
         "lock_field": lock["field"],
         "created_revision": lock["created_revision"],
-        "source": lock["source"],
+        "source": lock.get("source", "local-user"),
         "fixture_contract_sha256": sha256_file(fixture_path),
         "destination_pointers": sorted(destinations),
         "transformation_kind": transformation,
@@ -661,9 +661,16 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
     generic_project = not current_fixture and not historical_fixture
     if current_fixture and len(events) != 25:
         raise FoundryError("CG1_CURRENT_PROJECTION_EVENT_COUNT_INVALID", "The bounded current fixture requires the exact 25-event Fire/Qi route.", details={"event_count": len(events)})
+    final_display_lock = locks.get("character.identity.final_display_name", {}).get("value")
+    final_concept_lock = locks.get("character.identity.final_concept", {}).get("value")
+    if isinstance(final_display_lock, dict):
+        final_display_lock = final_display_lock.get("value")
+    if isinstance(final_concept_lock, dict):
+        final_concept_lock = final_concept_lock.get("value")
     required_lock_values = {
         "character.identity.display_name": (
-            locks.get("character.identity.display_name", {}).get("value")
+            final_display_lock
+            or locks.get("character.identity.display_name", {}).get("value")
             or choice_snapshot.get("display_name_content")
             if generic_project
             else "W5 Current Fire-Qi Owner-Test Fixture"
@@ -686,6 +693,9 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
             else fixture["selections"]["language"]
         ),
     }
+    concept_value = final_concept_lock or next(
+        lock["value"] for lock in project["user_locks"] if lock["field"] == "concept"
+    )
     for field, expected in required_lock_values.items() if not generic_project else ():
         lock = locks.get(field)
         if lock is None or lock.get("value") != expected:
@@ -1112,7 +1122,7 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         "character": {
             "character_id": project["project_id"],
             "name": required_lock_values["character.identity.display_name"],
-            "concept": next(lock["value"] for lock in project["user_locks"] if lock["field"] == "concept"),
+            "concept": concept_value,
             "species": rules_by_id["tianxia.core.human.species.v1"]["typed_value"],
             "creature_type": rules_by_id["tianxia.core.human.creature_type.v1"]["typed_value"],
             "size": rules_by_id["tianxia.core.human.size.v1"]["typed_value"],

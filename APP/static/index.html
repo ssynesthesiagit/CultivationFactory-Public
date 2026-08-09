@@ -278,6 +278,18 @@
       <h3 id="guidedReviewHeading">Review the complete compiled character</h3>
       <p>No canonical mutation has occurred. Review the locally compiled candidate, including acquired Spheres, free talents, automatic base abilities, ordinary talents, routes, and any exact blockers.</p>
       <div id="guidedCandidateSummary" class="candidate-review-summary" aria-live="polite"></div>
+      <section id="guidedDescriptiveFields" class="descriptive-review-panel" aria-labelledby="guidedDescriptiveHeading">
+        <h4 id="guidedDescriptiveHeading">Character identity wording</h4>
+        <p><strong>AI proposed</strong> wording is display/story content only. Accept it or edit it before Finalize; it does not change Paths, Method, Foundation, target CL, or catalog authority.</p>
+        <div class="descriptive-fields-grid">
+          <label>Name<input id="guidedProposedName" maxlength="240" autocomplete="off"></label>
+          <label>Concept<textarea id="guidedProposedConcept" rows="5" maxlength="12000"></textarea></label>
+        </div>
+        <div class="button-row">
+          <button id="guidedSaveDescriptiveFields" type="button">Accept / Save identity wording</button>
+          <span id="guidedDescriptiveFieldsStatus" class="availability-note" role="status"></span>
+        </div>
+      </section>
       <p id="guidedNextAction" class="next-legal-action" aria-live="polite">Next legal action will appear after the candidate is reviewed.</p>
       <details class="developer-diagnostics"><summary>Developer / Diagnostics: complete candidate and gate evidence</summary><pre id="guidedReviewDetail"></pre></details>
       <label class="friendly-label" for="guidedRevisionNotes">Revision notes <span class="optional">(optional)</span></label>
@@ -286,6 +298,8 @@
         <button id="guidedFinalize" class="primary-action" type="button">Finalize Character</button>
         <button id="guidedRevise" type="button">Revise</button>
         <button id="guidedCancel" type="button">Cancel</button>
+        <button id="guidedCopyErrorSummary" type="button">Copy error summary</button>
+        <button id="guidedDownloadEvidence" type="button">Download build evidence JSON</button>
       </div>
     </section>
 
@@ -702,6 +716,7 @@
 
   <section id="screen-projects" class="screen" aria-labelledby="charactersHeading">
     <div class="characters-header"><div><p class="eyebrow">Saved characters and completed sheets</p><h2 id="charactersHeading">Character Sheets</h2><p>Select a character to see what is saved, what is only a plan, and what has been mechanically compiled.</p></div><button id="refreshCharacters" type="button">Refresh Characters</button></div>
+    <section id="activeBuildRecovery" class="active-build-recovery" hidden aria-live="polite"></section>
     <section id="characterZipImportPanel" class="character-import-panel" aria-labelledby="characterZipImportHeading">
       <div class="character-import-heading"><div><p class="sheet-kicker">Portable completed character</p><h3 id="characterZipImportHeading">Import Character ZIP</h3><p>Choose or drop a Tianxia portable Character ZIP from anywhere on this computer. Preview validates the package without changing your characters.</p></div></div>
       <div id="characterZipDropZone" class="character-zip-drop-zone" role="button" tabindex="0" aria-describedby="characterZipAccepted">

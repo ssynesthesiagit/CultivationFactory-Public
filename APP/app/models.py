@@ -435,6 +435,10 @@ class CharacterCreationManualResponseRequest(StrictModel):
     request_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     prior_attempt_id: str | None = None
 
+class CharacterCreationDescriptiveFieldsRequest(StrictModel):
+    name: str | None = Field(default=None, max_length=240)
+    concept: str | None = Field(default=None, max_length=12000)
+
 class CharacterCreationPreferenceRequest(StrictModel):
     execution_mode: str = Field(pattern="^(MANUAL_CHAT|STANDARD_API|AUTO_FINALIZE_WHEN_CLEAN)$")
 
