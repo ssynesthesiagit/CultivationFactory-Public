@@ -19,6 +19,10 @@ from path_method_authority import (
     method_granted_path_ids,
     method_path_compatibility,
 )
+from character_creation.response_materialization import (
+    inject_canonical_intent,
+    normalize_selection_intent,
+)
 
 
 ENVELOPE_SCHEMA = "TianxiaFoundry.DelegatedChoiceAuthorityEnvelope.v1"
@@ -117,6 +121,13 @@ _SELECTION_ALIASES = {
     "item_choice_ids": "item_priorities",
     "item_priority_ids": "item_priorities",
 }
+
+_PLANNING_SLOT_IDS = frozenset({
+    "sphere_priorities",
+    "advancement_skeleton",
+    "insight_priorities",
+    "item_priorities",
+})
 
 # The current CAT3 envelope publishes the canonical Background-Talent record
 # ID, while the bounded historical Stage 2 fixture carries the older compact
@@ -298,9 +309,13 @@ def validate_delegated_target_cl(
             status_code=409,
         )
 
-    proposed = plan.get("target_cl")
-    if type(proposed) is not int or proposed != expected:
-        _raise_target_mismatch(run, project, expected=expected, proposed=proposed, surface="complete_response.target_cl")
+    # The preferred response contract omits target CL entirely.  The immutable
+    # project/envelope value is injected by the server before downstream
+    # compilation.  A compatibility copy remains legal only when it is exact.
+    if "target_cl" in plan:
+        proposed = plan.get("target_cl")
+        if type(proposed) is not int or proposed != expected:
+            _raise_target_mismatch(run, project, expected=expected, proposed=proposed, surface="complete_response.target_cl")
 
     stage2 = plan.get("stage2_proposal")
     if not isinstance(stage2, dict):
@@ -312,7 +327,7 @@ def validate_delegated_target_cl(
         and isinstance(stage2.get("selection_intent_by_slot"), dict)
         and not isinstance(stage2_choices, list)
     )
-    if not selection_intent_only and (type(stage2_target) is not int or stage2_target != expected):
+    if not selection_intent_only and stage2_target is not None and (type(stage2_target) is not int or stage2_target != expected):
         _raise_target_mismatch(run, project, expected=expected, proposed=stage2_target, surface="stage2_proposal.target_cl")
 
     choices = stage2_choices
@@ -458,6 +473,12 @@ def build_delegated_choice_envelope(
     content_lock = project.get("content_lock") or {}
     frozen_target_cl = frozen_owner_target_cl(project)
     path_authority = deepcopy(prompt_envelope.get("path_method_authority") or {})
+    complete_source_authority = path_authority.get("complete_character_source_authority") or {}
+    typed_choice_authority = {
+        slot_id: deepcopy(slot.get("authority_contract") or {})
+        for slot_id, slot in slots.items()
+        if isinstance(slot.get("authority_contract"), dict)
+    }
     name_lock_present = "character.identity.display_name" in locks
     owner_name = locks.get("character.identity.display_name")
     if not name_lock_present:
@@ -514,6 +535,7 @@ def build_delegated_choice_envelope(
         "unavailable_or_rejected_choice_ids_by_slot": unavailable,
         "nonselectable_choice_ids_by_slot": unavailable,
         "choices_by_slot": choices,
+        "typed_choice_authority_by_slot": typed_choice_authority,
         "selection_limits_by_slot": limits,
         "prerequisites_and_availability": {
             slot_id: {
@@ -526,6 +548,9 @@ def build_delegated_choice_envelope(
             }
             for slot_id, rows in choices.items()
         },
+        "ordinary_talent_count": complete_source_authority.get("ordinary_talent_count"),
+        "advancement_choice_milestones": deepcopy(complete_source_authority.get("advancement_choice_milestones") or []),
+        "path_progression_choices": deepcopy(complete_source_authority.get("path_progression_choices") or []),
         "path_method_authority": path_authority,
         "method_foundation_compatibility": {
             method_id: {
@@ -601,6 +626,36 @@ def _priority_order(plan: dict[str, Any]) -> dict[str, Any]:
 
 
 def _delegated_selection(plan: dict[str, Any]) -> dict[str, Any]:
+    canonical_intent = plan.get("canonical_selection_intent")
+    if isinstance(canonical_intent, dict):
+        by_slot = canonical_intent.get("selected_by_slot")
+        if isinstance(by_slot, dict):
+            result: dict[str, Any] = {}
+            aliases = {
+                _PATH_SLOT: "path_ids",
+                _METHOD_SLOT: "method_id",
+                _FOUNDATION_SLOT: "foundation_id",
+                "sphere_priorities": "sphere_ids",
+                "advancement_skeleton": "talent_ids",
+                "insight_priorities": "insight_ids",
+                "item_priorities": "item_ids",
+                "subpath_choice": "subpath_ids",
+                "background_choice": "background_ids",
+                "background_sphere_choice": "background_sphere_ids",
+                "background_talent_choice": "background_talent_ids",
+                "origin_insight_choice": "origin_insight_ids",
+            }
+            for slot_id, values in by_slot.items():
+                key = aliases.get(slot_id)
+                if not key:
+                    continue
+                cleaned = _values(values)
+                result[key] = cleaned[0] if key.endswith("_id") and cleaned else cleaned
+            # Actual acquisitions are separate from planning priorities, but a
+            # materialized compatibility plan may not yet have its Stage 2
+            # rows.  Keep only the explicit IDs here; the materializer expands
+            # them into typed rows before compilation.
+            return result
     selection = plan.get("delegated_choice_selections")
     if not isinstance(selection, dict):
         selection = {}
@@ -817,6 +872,125 @@ def response_authority_representations(plan: dict[str, Any]) -> dict[str, Any]:
 def _resolved_slot_values(envelope: dict[str, Any], plan: dict[str, Any]) -> tuple[dict[str, list[str]], dict[str, list[str]]]:
     """Resolve slot IDs and retain the exact source used for each slot."""
 
+    canonical_intent = plan.get("canonical_selection_intent")
+    if isinstance(canonical_intent, dict) and isinstance(canonical_intent.get("selected_by_slot"), dict):
+        # REC1-P1CR3 has already separated planning preferences from actual
+        # acquisitions.  Reusing the older representation merger here would
+        # incorrectly require a 15-item priority list to equal (for example)
+        # a 12-item explicit acquisition list.  The canonical intent is the
+        # authority boundary; a materialized Stage 2 projection may only
+        # confirm its actual IDs, never replace or extend them silently.
+        resolved = {
+            slot_id: _values(values)
+            for slot_id, values in (canonical_intent.get("selected_by_slot") or {}).items()
+            if isinstance(slot_id, str)
+        }
+        sources = {
+            slot_id: [str(source) for source in values if isinstance(source, str)]
+            for slot_id, values in (canonical_intent.get("sources_by_slot") or {}).items()
+            if isinstance(slot_id, str) and isinstance(values, list)
+        }
+        planning_preferences = {
+            slot_id: [
+                _canonical_slot_choice_id(envelope, slot_id, choice_id)
+                for choice_id in _values(values)
+            ]
+            for slot_id, values in (canonical_intent.get("planning_preferences_by_slot") or {}).items()
+            if isinstance(slot_id, str)
+        }
+        # A priority order is never promoted to an acquisition.  It is used as
+        # the visible/frozen selection only when no actual acquisition intent
+        # exists for that slot, preserving historical Stage 1 validation while
+        # keeping the canonical intent's acquisition list authoritative.
+        for slot_id, values in planning_preferences.items():
+            if slot_id not in _PLANNING_SLOT_IDS and resolved.get(slot_id) and resolved[slot_id] != values:
+                _raise(
+                    "CG1_DELEGATED_AUTHORITY_CONFLICT",
+                    "A non-planning delegated slot has conflicting selection and priority representations.",
+                    details={
+                        "slot_id": slot_id,
+                        "selected_choice_ids": resolved[slot_id],
+                        "priority_choice_ids": values,
+                    },
+                )
+            if not resolved.get(slot_id):
+                resolved[slot_id] = list(values)
+                sources.setdefault(slot_id, []).append("planning_preferences_by_slot")
+        stage2_slot_kinds = {
+            "path_acquisition": _PATH_SLOT,
+            "method_acquisition": _METHOD_SLOT,
+            "method_activation": _METHOD_SLOT,
+            "foundation_acquisition": _FOUNDATION_SLOT,
+            "foundation_expression": _FOUNDATION_SLOT,
+            "foundation_stage": _FOUNDATION_SLOT,
+            "background_acquisition": "background_choice",
+            "background_sphere_acquisition": "background_sphere_choice",
+            "background_talent_acquisition": "background_talent_choice",
+            "origin_insight_acquisition": "origin_insight_choice",
+            "origin_insight_selection": "origin_insight_choice",
+            "subpath_acquisition": "subpath_choice",
+            "tradition_acquisition": "subpath_choice",
+            "item_acquisition": "item_priorities",
+            "equipment_acquisition": "item_priorities",
+            "sect_trial_sphere_acquisition": "sphere_priorities",
+            "ai_bootstrap_sphere_acquisition": "sphere_priorities",
+            "sphere_acquisition": "sphere_priorities",
+            "sect_trial_talent_acquisition": "advancement_skeleton",
+            "ai_bootstrap_talent_acquisition": "advancement_skeleton",
+            "level_talent_acquisition": "advancement_skeleton",
+            "new_sphere_bonus_talent_acquisition": "advancement_skeleton",
+            "talent_acquisition": "advancement_skeleton",
+            "cultivation_insight_acquisition": "insight_priorities",
+            "insight_acquisition": "insight_priorities",
+        }
+        stage2_values: dict[str, list[str]] = {}
+        for row in (plan.get("stage2_proposal") or {}).get("choices") or []:
+            if not isinstance(row, dict) or not isinstance(row.get("record_id"), str):
+                continue
+            kind = _canonical_stage2_kind(row.get("kind"))
+            slot_id = stage2_slot_kinds.get(kind)
+            if slot_id:
+                stage2_values.setdefault(slot_id, []).append(row["record_id"])
+        for slot_id, values in stage2_values.items():
+            values = _values(values)
+            existing = resolved.get(slot_id) or []
+            if existing and existing != values:
+                _raise(
+                    "CG1_DELEGATED_AUTHORITY_CONFLICT",
+                    "The server-materialized Stage 2 IDs do not equal the canonical delegated intent.",
+                    details={
+                        "slot_id": slot_id,
+                        "canonical_choice_ids": existing,
+                        "stage2_choice_ids": values,
+                    },
+                )
+            if not existing:
+                resolved[slot_id] = values
+                sources.setdefault(slot_id, []).append("server_materialized_stage2")
+        for slot_id, values in resolved.items():
+            canonical_values = [
+                _canonical_slot_choice_id(envelope, slot_id, choice_id)
+                for choice_id in values
+            ]
+            resolved[slot_id] = canonical_values
+            _ensure_allowed(envelope, slot_id, canonical_values)
+            limits = (envelope.get("selection_limits_by_slot") or {}).get(slot_id) or {}
+            minimum = limits.get("final_min")
+            maximum = limits.get("final_max")
+            if minimum is not None and len(canonical_values) < int(minimum):
+                _raise(
+                    "CG1_DELEGATED_CHOICE_COUNT_INVALID",
+                    "The canonical delegated intent selected fewer IDs than the frozen slot minimum.",
+                    details={"slot_id": slot_id, "minimum": minimum, "actual": len(canonical_values)},
+                )
+            if maximum is not None and len(canonical_values) > int(maximum):
+                _raise(
+                    "CG1_DELEGATED_CHOICE_COUNT_INVALID",
+                    "The canonical delegated intent selected more IDs than the frozen slot maximum.",
+                    details={"slot_id": slot_id, "maximum": maximum, "actual": len(canonical_values)},
+                )
+        return resolved, sources
+
     resolved: dict[str, list[str]] = {}
     sources: dict[str, list[str]] = {}
     for slot_id, entries in _selection_candidates(plan).items():
@@ -1018,6 +1192,169 @@ def _validate_frozen_legality(
                 )
 
 
+def _validate_semantic_acquisition_intent(
+    envelope: dict[str, Any],
+    plan: dict[str, Any],
+    selected_by_slot: dict[str, list[str]],
+) -> None:
+    """Validate the preferred semantic acquisitions before materialization.
+
+    This is deliberately an envelope check, not a catalog lookup.  The later
+    materializer proves ownership and grant legality again from project-locked
+    records.  Keeping this first check here gives response authors precise
+    out-of-envelope, pair, duplicate, and milestone diagnostics without ever
+    accepting a planner-authored event kind or channel.
+    """
+
+    intent = plan.get("canonical_selection_intent") or {}
+    acquisition = intent.get("acquisition_intent") if isinstance(intent, dict) else None
+    if not isinstance(acquisition, dict):
+        _raise(
+            "CG1_PREFERRED_RESPONSE_ACQUISITION_INVALID",
+            "The canonical intent does not contain semantic acquisition fields.",
+        )
+    sphere_slot = "sphere_priorities"
+    talent_slot = "advancement_skeleton"
+    insight_slot = "insight_priorities"
+    pair_spheres: list[str] = []
+    pair_talents: list[str] = []
+    for index, pair in enumerate(acquisition.get("sphere_free_talent_pairs") or []):
+        if not isinstance(pair, dict):
+            _raise("CG1_PREFERRED_RESPONSE_ACQUISITION_INVALID", "Every Sphere acquisition must be a semantic pair.", details={"index": index})
+        sphere_id = pair.get("sphere_id")
+        talent_id = pair.get("talent_id")
+        if not isinstance(sphere_id, str) or not isinstance(talent_id, str):
+            _raise("CG1_PREFERRED_RESPONSE_ACQUISITION_INVALID", "A Sphere/free-Talent pair requires two stable IDs.", details={"index": index})
+        pair_spheres.append(sphere_id)
+        pair_talents.append(talent_id)
+    if len(pair_spheres) != len(set(pair_spheres)) or len(pair_talents) != len(set(pair_talents)):
+        _raise("CG1_DELEGATED_DUPLICATE_CHOICE", "Sphere/free-Talent pairs may not repeat a Sphere or Talent.", details={"sphere_ids": pair_spheres, "talent_ids": pair_talents})
+    _ensure_allowed(envelope, sphere_slot, pair_spheres)
+    _ensure_allowed(envelope, talent_slot, pair_talents)
+    choice_map = (envelope.get("choices_by_slot") or {}).get(talent_slot) or {}
+    typed_authority_by_choice = (
+        (envelope.get("typed_choice_authority_by_slot") or {})
+        .get(talent_slot, {})
+        .get("stage2_authority_by_choice", {})
+    )
+    for sphere_id, talent_id in zip(pair_spheres, pair_talents):
+        talent_choice = choice_map.get(talent_id) or {}
+        authority = typed_authority_by_choice.get(talent_id)
+        if not isinstance(authority, dict):
+            authority = talent_choice.get("stage2_authority")
+        if not isinstance(authority, dict):
+            authority = (talent_choice.get("compatibility") or {}).get("factory", {}).get("stage2_authority") or {}
+        if not isinstance(authority, dict):
+            authority = {}
+        owning_sphere = (
+            talent_choice.get("owning_sphere_id")
+            or talent_choice.get("owning_canonical_sphere_id")
+            or authority.get("owning_sphere_id")
+            or authority.get("owning_canonical_sphere_id")
+            or authority.get("sphere_id")
+        )
+        if isinstance(owning_sphere, str) and owning_sphere != sphere_id:
+            _raise(
+                "CG1_DELEGATED_FREE_TALENT_SPHERE_MISMATCH",
+                "The selected free Talent does not belong to its selected Sphere in the frozen envelope.",
+                details={"sphere_id": sphere_id, "talent_id": talent_id, "owning_sphere_id": owning_sphere},
+            )
+        if authority.get("free_sphere_talent_eligible") is False or talent_choice.get("free_sphere_talent_eligible") is False:
+            _raise(
+                "CG1_DELEGATED_FREE_TALENT_NOT_LEGAL",
+                "The selected Talent is not a legal free-Talent grant for its Sphere in frozen authority.",
+                details={"sphere_id": sphere_id, "talent_id": talent_id},
+            )
+
+    ordinary = [value for value in acquisition.get("ordinary_talent_ids") or [] if isinstance(value, str)]
+    _ensure_allowed(envelope, talent_slot, ordinary)
+    if len(ordinary) != len(set(ordinary)) or set(ordinary).intersection(pair_talents):
+        _raise(
+            "CG1_DELEGATED_DUPLICATE_CHOICE",
+            "A free Sphere Talent cannot be repeated as an ordinary Talent acquisition.",
+            details={"ordinary_talent_ids": ordinary, "free_talent_ids": pair_talents},
+        )
+    expected_count = envelope.get("ordinary_talent_count")
+    if isinstance(expected_count, int) and len(ordinary) != expected_count:
+        _raise(
+            "CG1_BOUNDED_DECISION_REQUIRED",
+            "The ordinary Talent acquisition count does not equal the source-governed creation capacity.",
+            details={"field": "acquisition_intent.ordinary_talent_ids", "required_count": expected_count, "actual_count": len(ordinary)},
+        )
+
+    milestone_rows = {
+        row.get("milestone_id"): row
+        for row in envelope.get("advancement_choice_milestones") or []
+        if isinstance(row, dict) and isinstance(row.get("milestone_id"), str)
+    }
+    insight_occurrences = acquisition.get("insight_occurrences") or []
+    occurrence_milestones: list[str] = []
+    for index, occurrence in enumerate(insight_occurrences):
+        if not isinstance(occurrence, dict):
+            _raise("CG1_PREFERRED_RESPONSE_ACQUISITION_INVALID", "Every Insight occurrence must be a semantic object.", details={"index": index})
+        insight_id = occurrence.get("insight_id")
+        milestone_id = occurrence.get("milestone_id")
+        if not isinstance(insight_id, str) or not isinstance(milestone_id, str):
+            _raise("CG1_PREFERRED_RESPONSE_ACQUISITION_INVALID", "Insight occurrences require insight_id and milestone_id.", details={"index": index})
+        _ensure_allowed(envelope, insight_slot, [insight_id])
+        if milestone_id not in milestone_rows:
+            _raise(
+                "CG1_BOUNDED_DECISION_REQUIRED",
+                "The Insight occurrence names a milestone that was not advertised by the frozen Path authority.",
+                details={"field": f"acquisition_intent.insight_occurrences[{index}].milestone_id", "milestone_id": milestone_id, "allowed_milestone_ids": sorted(milestone_rows)},
+            )
+        occurrence_milestones.append(milestone_id)
+        parameters = occurrence.get("parameters") or {}
+        choice = ((envelope.get("choices_by_slot") or {}).get(insight_slot) or {}).get(insight_id) or {}
+        authority = (
+            (envelope.get("typed_choice_authority_by_slot") or {})
+            .get(insight_slot, {})
+            .get("stage2_authority_by_choice", {})
+            .get(insight_id)
+        )
+        if not isinstance(authority, dict):
+            authority = choice.get("stage2_authority")
+        if not isinstance(authority, dict):
+            authority = (choice.get("compatibility") or {}).get("factory", {}).get("stage2_authority") or {}
+        if not isinstance(authority, dict):
+            authority = {}
+        rule = authority.get("ability_change") or authority.get("insight_ability_change") or {}
+        allowed_parameters = {"ability"} if rule else set()
+        unsupported = sorted(set(parameters) - allowed_parameters)
+        if unsupported:
+            _raise(
+                "CG1_INSIGHT_PARAMETER_OUT_OF_AUTHORITY",
+                "Insight parameters are outside the selected Insight's frozen typed authority.",
+                details={"insight_id": insight_id, "milestone_id": milestone_id, "unsupported_parameters": unsupported, "allowed_parameters": sorted(allowed_parameters)},
+            )
+        if rule and "ability" in parameters and parameters["ability"] not in (rule.get("allowed_abilities") or []):
+            _raise(
+                "CG1_INSIGHT_PARAMETER_OUT_OF_AUTHORITY",
+                "The selected Insight ability is not in its frozen typed authority.",
+                details={"insight_id": insight_id, "milestone_id": milestone_id, "ability": parameters["ability"], "allowed_abilities": rule.get("allowed_abilities") or []},
+            )
+    if len(occurrence_milestones) != len(set(occurrence_milestones)):
+        _raise("CG1_DELEGATED_DUPLICATE_CHOICE", "An Insight milestone may be resolved only once.", details={"milestone_ids": occurrence_milestones})
+
+    # Relation evaluation includes both planning selections and explicit
+    # semantic acquisitions.  Do not mutate the canonical selected mapping;
+    # the extra IDs are a legality-only view.
+    legality_slots = deepcopy(selected_by_slot)
+    legality_slots.setdefault(sphere_slot, [])
+    legality_slots.setdefault(talent_slot, [])
+    legality_slots.setdefault(insight_slot, [])
+    for value in pair_spheres:
+        if value not in legality_slots[sphere_slot]:
+            legality_slots[sphere_slot].append(value)
+    for value in pair_talents + ordinary:
+        if value not in legality_slots[talent_slot]:
+            legality_slots[talent_slot].append(value)
+    for occurrence in insight_occurrences:
+        if occurrence["insight_id"] not in legality_slots[insight_slot]:
+            legality_slots[insight_slot].append(occurrence["insight_id"])
+    _validate_frozen_legality(envelope, legality_slots, plan)
+
+
 def _selection_from_plan(plan: dict[str, Any], key: str) -> list[str]:
     values = _delegated_selection(plan).get(key)
     return _values(values)
@@ -1067,6 +1404,22 @@ def validate_delegated_choice_plan(
     envelope = ((run.get("request") or {}).get("delegated_choice_envelope") or {})
     if not envelope:
         return None
+    if not isinstance(plan.get("canonical_selection_intent"), dict):
+        # Keep the authority function independently useful for callers that
+        # validate a preferred response directly rather than through the full
+        # execution service.  The execution service performs the same step
+        # before compilation and persists the resulting hash/evidence.
+        try:
+            intent = normalize_selection_intent(
+                plan,
+                request_sha256=str((run.get("request") or {}).get("request_sha256") or ""),
+                delegated_envelope=envelope,
+                project=project,
+                target_cl=frozen_owner_target_cl(project),
+            )
+            plan = inject_canonical_intent(plan, intent, target_cl=frozen_owner_target_cl(project))
+        except FoundryError:
+            raise
     if _stable_hash({key: value for key, value in envelope.items() if key != "envelope_sha256"}) != envelope.get("envelope_sha256"):
         _raise("CG1_DELEGATED_ENVELOPE_TAMPERED", "The persisted delegated-choice envelope no longer matches its sealed hash.")
     binding = envelope.get("binding") or {}
@@ -1159,6 +1512,7 @@ def validate_delegated_choice_plan(
         plan,
         automatic_ids=set(grants),
     )
+    _validate_semantic_acquisition_intent(envelope, plan, selected_by_slot)
 
     foundation_values = list(selected_by_slot.get(_FOUNDATION_SLOT) or [])
     if len(foundation_values) > 1:

@@ -53,7 +53,9 @@ SLOT_SPECS: tuple[dict[str, Any], ...] = (
     # Truncating this slot silently changes legality, so the full bounded catalog
     # set is offered and cross-slot Path compatibility is checked below.
     {"slot_id": "foundation_choice", "label": "Proposed Foundation Expression", "types": ("foundation_expression", "foundation"), "max": 1, "limit": None, "allow_none": True},
-    {"slot_id": "sphere_priorities", "label": "Additional Sphere Priorities", "types": ("sphere",), "max": 8, "limit": 50, "allow_none": True},
+    # This is an ordered planning-preference slot.  It has no fixed maximum;
+    # real acquisitions remain governed by canonical Stage 2 authority.
+    {"slot_id": "sphere_priorities", "label": "Additional Sphere Priorities", "types": ("sphere",), "max": None, "limit": None, "allow_none": True},
     {"slot_id": "advancement_skeleton", "label": "Published Talent Priorities", "types": ("talent",), "max": None, "limit": None, "allow_none": True},
     {"slot_id": "insight_priorities", "label": "Additional Insight Priorities", "types": ("cultivation_insight", "origin_insight", "insight"), "max": 8, "limit": 50, "allow_none": True},
     {"slot_id": "item_priorities", "label": "Preferred Items and Equipment", "types": ("item", "equipment", "weapon", "armor", "treasure", "treasure_set", "consumable", "growth_treasure"), "max": 8, "limit": 50, "allow_none": True},
@@ -328,7 +330,7 @@ class Stage1ClipboardService:
                     compatible_ids = set(path_method_authority["compatible_method_ids"])
                     records = [record for record in records if record["record_id"] in compatible_ids]
             records.sort(key=lambda x: (0 if x["record_id"] in preferred_rank else 1, preferred_rank.get(x["record_id"], 10**9), x["record_id"]))
-            choices = [self._choice(x) for x in records[: spec["limit"]]]
+            choices = [self._choice(x) for x in (records if spec["limit"] is None else records[: spec["limit"]])]
             slot: dict[str, Any] = {
                 "slot_id": spec["slot_id"], "label": spec["label"], "min_selections": 1,
                 "max_selections": spec["max"], "allow_none": spec["allow_none"],
@@ -354,6 +356,51 @@ class Stage1ClipboardService:
                     ),
                     "access_is_separate": True,
                 }
+            elif spec["slot_id"] == "background_choice":
+                slot["authority_contract"] = {
+                    "schema": "TianxiaFoundry.BackgroundTypedChoiceContract.v1",
+                    "ability_adjustment_by_choice": {
+                        record["record_id"]: deepcopy(
+                            (record.get("compatibility", {}).get("factory", {}).get("stage2_authority") or {}).get("ability_adjustment")
+                        )
+                        for record in records
+                        if isinstance(record, dict)
+                        and isinstance(
+                            (record.get("compatibility", {}).get("factory", {}).get("stage2_authority") or {}).get("ability_adjustment"),
+                            dict,
+                        )
+                    },
+                }
+            elif spec["slot_id"] in {"advancement_skeleton", "insight_priorities"}:
+                typed_authority: dict[str, Any] = {}
+                for record in records:
+                    if not isinstance(record, dict):
+                        continue
+                    authority_row = record.get("compatibility", {}).get("factory", {}).get("stage2_authority") or {}
+                    if not isinstance(authority_row, dict):
+                        continue
+                    typed_authority[record["record_id"]] = {
+                        key: deepcopy(authority_row[key])
+                        for key in (
+                            "authority_complete",
+                            "allowed_kinds",
+                            "allowed_channels",
+                            "owning_sphere_id",
+                            "owning_canonical_sphere_id",
+                            "sphere_id",
+                            "free_sphere_talent_eligible",
+                            "ability_change",
+                            "insight_ability_change",
+                            "allowed_cls",
+                            "minimum_cl",
+                            "repeatability",
+                        )
+                        if key in authority_row
+                    }
+                slot["authority_contract"] = {
+                    "schema": "TianxiaFoundry.TypedAcquisitionChoiceContract.v1",
+                    "stage2_authority_by_choice": typed_authority,
+                }
             required = required_by_slot.get(spec["slot_id"], [])
             if required:
                 offered_ids = {choice["choice_id"] for choice in choices}
@@ -370,6 +417,69 @@ class Stage1ClipboardService:
                 slot["blocked_reason_code"] = str(reasons[0].get("code") if reasons else "CATEGORY_SELECTABLE_AUTHORITY_MISSING")
                 slot["blocked_reason"] = str(reasons[0].get("message") if reasons else "No complete published authority is selectable for this slot.")
             slots.append(slot)
+        # The complete-character response may resolve an Advancement Choice
+        # milestone or a Path route only after it has selected the advancing
+        # Paths.  Publish the authenticated source inventory up front, but keep
+        # each milestone/path association explicit so the Factory can require
+        # resolutions only for the selected Paths.
+        target_cl = next(
+            (
+                lock.get("value")
+                for lock in project.get("user_locks") or []
+                if isinstance(lock, dict) and lock.get("field") == "target_cl"
+            ),
+            None,
+        )
+        offered_path_ids = [
+            choice.get("choice_id")
+            for slot in slots
+            if slot.get("slot_id") == "path_choice"
+            for choice in slot.get("choices") or []
+            if isinstance(choice, dict) and isinstance(choice.get("choice_id"), str)
+        ]
+        advancement_choice_milestones: list[dict[str, Any]] = []
+        path_progression_choices: list[dict[str, Any]] = []
+        for path_id in offered_path_ids:
+            try:
+                path_record = authority.project_locked_path_catalog_record(path_id)
+            except FoundryError:
+                continue
+            path_authority = path_record.get("compatibility", {}).get("factory", {}).get("stage2_authority") or {}
+            for milestone in path_authority.get("required_milestones") or []:
+                if not isinstance(milestone, dict) or milestone.get("feature_kind") != "advancement_choice":
+                    continue
+                item = deepcopy(milestone)
+                item["path_id"] = path_id
+                advancement_choice_milestones.append(item)
+            for raw_cl, progression in (path_authority.get("progression_by_cl") or {}).items():
+                if not isinstance(raw_cl, str) or not isinstance(progression, dict):
+                    continue
+                path_progression_choices.append({
+                    "cl": int(raw_cl) if raw_cl.isdigit() else raw_cl,
+                    "path_id": path_id,
+                    "feature_record_ids": deepcopy(progression.get("feature_record_ids") or []),
+                })
+        progression_by_cl: dict[str, list[str]] = {}
+        for item in path_progression_choices:
+            cl = item.get("cl")
+            if isinstance(cl, int):
+                progression_by_cl.setdefault(str(cl), []).append(item["path_id"])
+        path_progression_choices = [
+            {"cl": int(cl), "path_ids": sorted(set(path_ids))}
+            for cl, path_ids in sorted(progression_by_cl.items(), key=lambda row: int(row[0]))
+        ]
+        seed_extra = {
+            "target_cl": target_cl,
+            "ordinary_talent_count": target_cl if isinstance(target_cl, int) else None,
+            "advancement_choice_milestones": sorted(
+                advancement_choice_milestones,
+                key=lambda row: (row.get("path_id", ""), row.get("cl", 0), row.get("milestone_id", "")),
+            ),
+            "path_progression_choices": path_progression_choices,
+        }
+        path_method_authority.update({
+            "complete_character_source_authority": seed_extra,
+        })
         seed = {
             "project_id": project_id, "project_revision": project["revision"],
             "catalog_build_id": project["content_lock"]["catalog_build_id"], "content_lock_hash": project["content_lock"]["lock_hash"],

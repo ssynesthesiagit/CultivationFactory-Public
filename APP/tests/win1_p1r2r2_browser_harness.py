@@ -379,8 +379,8 @@ def run(*, data: Path, output_root: Path, browser_path: str | None, cleanup_data
                     selectedProject = projectId;
                     guidedProjectLifecycle = {persistence_state:'saved_draft', is_temporary:false, display_label:'Saved Draft'};
                     document.querySelector('#guidedName').value = projectName;
-                    document.querySelector('input[name="guidedExecutionMode"][value="MANUAL_CHAT"]').checked = true;
-                    setGuidedStep(2); updateGuidedModeUI();
+                     setGuidedRoute('MANUAL_CHAT');
+                     setGuidedStep(3); updateGuidedModeUI();
                 }""", {"projectId": WIN1_PROJECT_ID, "projectName": W5_PROJECT_NAME})
                 page.locator("#guidedStartBuild").click()
                 page.wait_for_function("guidedRun?.status === 'WAITING_FOR_RESPONSE'", timeout=120_000)

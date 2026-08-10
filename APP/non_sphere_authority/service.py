@@ -505,6 +505,67 @@ class NonSphereAuthorityService:
                     {"op": "multiply", "terms": [{"op": "constant", "value": 2}, {"op": "cl"}]},
                 ],
             }
+        progression = deepcopy(profile.get("progression") or [])
+        features = deepcopy(profile.get("features") or [])
+        feature_by_id = {
+            row.get("canonical_id"): row
+            for row in features
+            if isinstance(row, dict) and isinstance(row.get("canonical_id"), str)
+        }
+        required_milestones: list[dict[str, Any]] = []
+        for feature in features:
+            feature_kind = feature.get("feature_kind")
+            if feature_kind == "subpath_selection":
+                allowed_kinds = ["subpath_acquisition"]
+            elif feature_kind == "advancement_choice":
+                allowed_kinds = ["ability_score_change", "cultivation_insight_acquisition"]
+            else:
+                continue
+            for milestone_cl in feature.get("granted_at_cl") or [feature.get("minimum_cl")]:
+                if not isinstance(milestone_cl, int):
+                    continue
+                required_milestones.append({
+                    "allowed_kinds": allowed_kinds,
+                    "cl": milestone_cl,
+                    "count": 1,
+                    "milestone_id": f"{feature.get('canonical_id')}.cl{milestone_cl}",
+                    "feature_record_id": feature.get("canonical_id"),
+                    "feature_kind": feature_kind,
+                    "source_path": source_path,
+                    "source_hash": source_hash,
+                })
+        required_milestones.sort(key=lambda row: (row["cl"], row["milestone_id"]))
+        progression_by_cl = {
+            str(row.get("cl")): {
+                "cl": row.get("cl"),
+                "feature_record_ids": [
+                    feature.get("canonical_id")
+                    for feature in row.get("features") or []
+                    if isinstance(feature, dict)
+                    and isinstance(feature.get("canonical_id"), str)
+                    and feature.get("canonical_id") in feature_by_id
+                ],
+                "all_feature_ids": [
+                    feature.get("canonical_id")
+                    for feature in row.get("features") or []
+                    if isinstance(feature, dict) and isinstance(feature.get("canonical_id"), str)
+                ],
+                "component_feature_ids": [
+                    feature.get("canonical_id")
+                    for feature in row.get("features") or []
+                    if isinstance(feature, dict)
+                    and isinstance(feature.get("canonical_id"), str)
+                    and feature.get("canonical_id") not in feature_by_id
+                ],
+                "features": deepcopy(row.get("features") or []),
+            }
+            for row in progression
+            if isinstance(row, dict) and isinstance(row.get("cl"), int)
+        }
+        automatic_feature_record_ids_by_cl = {
+            cl: list(value.get("feature_record_ids") or [])
+            for cl, value in progression_by_cl.items()
+        }
         stage2_authority = {
             "authority_complete": True,
             "allowed_kinds": ["path_acquisition"],
@@ -512,20 +573,17 @@ class NonSphereAuthorityService:
             "hp_later_formula": hp_later,
             "hp_level1_formula": hp_level1,
             "key_ability": ability_code,
-            "required_milestones": [
-                {
-                    "allowed_kinds": ["subpath_acquisition"],
-                    "cl": 3,
-                    "count": 1,
-                    "milestone_id": f"{path_id}.subpath.cl3",
-                },
-                {
-                    "allowed_kinds": ["ability_score_change", "cultivation_insight_acquisition"],
-                    "cl": 4,
-                    "count": 1,
-                    "milestone_id": f"{path_id}.insight.cl4",
-                },
-            ],
+            "required_milestones": required_milestones,
+            "progression": progression,
+            "progression_by_cl": progression_by_cl,
+            "features": features,
+            "automatic_feature_record_ids_by_cl": automatic_feature_record_ids_by_cl,
+            "path_index_source": {
+                "path_id": path_id,
+                "source_path": source_path,
+                "source_hash": source_hash,
+                "authority_snapshot_hash": self.authority_snapshot_hash,
+            },
             "resources": [{
                 "base_formula": safe_formula(f"ns1r.{path_id}.resource.maximum", resource_root),
                 "resource_id": resource_id,
@@ -556,6 +614,96 @@ class NonSphereAuthorityService:
             "supersedes": None,
             "unresolved_normalization_notes": [],
             "selected_authority": True,
+        }
+        return normalize_core_catalog_record(
+            projection,
+            pack_hash=self.authority_snapshot_hash,
+        )
+
+    def project_locked_path_feature_catalog_record(self, path_id: str, feature_id: str) -> dict[str, Any]:
+        """Project one exact Path-index feature into Stage 2 authority.
+
+        This is a proof-bound projection of the authenticated P2A Path index,
+        not a second catalog.  It lets Stage 2 retain one exact source-bound
+        representative for a level event while preserving the complete
+        progression feature set in the event calculation evidence.
+        """
+        path_record = self.project_locked_path_catalog_record(path_id)
+        path_authority = path_record.get("compatibility", {}).get("factory", {}).get("stage2_authority") or {}
+        feature = next(
+            (
+                row for row in path_authority.get("features") or []
+                if isinstance(row, dict) and row.get("canonical_id") == feature_id
+            ),
+            None,
+        )
+        if feature is None:
+            raise FoundryError(
+                "NS1R_PATH_FEATURE_ID_UNKNOWN",
+                "The selected Path feature is not present in the authenticated Path index.",
+                details={"path_id": path_id, "feature_id": feature_id},
+            )
+        feature_kind = str(feature.get("feature_kind") or "")
+        granted_at_cl = [
+            value for value in feature.get("granted_at_cl") or [feature.get("minimum_cl")]
+            if isinstance(value, int)
+        ]
+        allowed_kinds = ["level_advance"]
+        allowed_channels = ["level-advance"]
+        ability_change = None
+        if feature_kind == "advancement_choice":
+            allowed_kinds.append("ability_score_change")
+            allowed_channels.append("level-choice")
+            ability_change = {
+                "allowed_cls": granted_at_cl,
+                "allowed_deltas": [1, 2],
+                "budget": 2,
+                "cap": 20,
+            }
+        if feature_kind == "subpath_selection":
+            allowed_kinds.append("subpath_acquisition")
+            allowed_channels.append("subpath-selection")
+        source = path_record["source"]
+        stage2_authority = {
+            "authority_complete": True,
+            "allowed_kinds": allowed_kinds,
+            "allowed_channels": allowed_channels,
+            "minimum_cl": feature.get("minimum_cl"),
+            "granted_at_cl": granted_at_cl,
+            "feature_kind": feature_kind,
+            "path_id": path_id,
+            "feature_record_id": feature_id,
+            "ability_change": ability_change,
+            "path_index_source": deepcopy(
+                path_record.get("compatibility", {}).get("factory", {}).get("stage2_authority", {}).get("path_index_source") or {}
+            ),
+            "rule_id": f"ns1r.{path_id}.{feature_id.rsplit('.', 1)[-1]}.v1",
+        }
+        projection = {
+            "record_id": feature_id,
+            "content_type": "path_feature",
+            "display_name": feature.get("display_name") or feature_id,
+            "pack_id": "tianxia.non_sphere.authority",
+            "pack_version": path_record.get("pack_version") or "P2A",
+            "authority": "canonical",
+            "publication_state": "published",
+            "source": {
+                "path": source.get("path"),
+                "anchor": f"path-feature:{path_id}:{feature_id}",
+                "source_hash": source.get("source_hash"),
+            },
+            "summary": feature.get("summary") or feature.get("display_name") or feature_id,
+            "minimum_cl": feature.get("minimum_cl"),
+            "prerequisites": deepcopy(feature.get("prerequisites") or []),
+            "acquisition_channels": allowed_channels,
+            "grants": [],
+            "execution_records": [],
+            "compatibility": {"factory": {"stage2_authority": stage2_authority}},
+            "dependencies": [path_id],
+            "supersedes": None,
+            "unresolved_normalization_notes": [],
+            "selected_authority": True,
+            "path_feature": deepcopy(feature),
         }
         return normalize_core_catalog_record(
             projection,

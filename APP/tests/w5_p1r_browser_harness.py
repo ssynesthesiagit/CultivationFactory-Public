@@ -451,11 +451,11 @@ def run(root: Path, options_path: Path, output: Path, screenshot_dir: Path, brow
         manual = new_page(); fill_intake(manual, "Browser Manual Character")
         capture(manual, "01_primary_describe_quick.png")
         print("W5P1R browser: click review/build mode", flush=True)
-        manual.locator("#guidedBuildButton").click()
+        manual.locator("#guidedBriefContinue").click(); manual.locator("#guidedBuildButton").click()
         print("W5P1R browser: wait build modes", flush=True)
         manual.locator("#builderAI").wait_for(timeout=30000)
         print("W5P1R browser: build modes visible", flush=True)
-        assert manual.locator('input[value="MANUAL_CHAT"]').is_checked()
+        assert manual.locator("#guidedManualRouteTab").get_attribute("aria-selected") == "true"
         capture(manual, "02_primary_manual_mode.png")
         print("W5P1R browser: click manual start", flush=True)
         manual.locator("#guidedStartBuild").click()
@@ -483,7 +483,7 @@ def run(root: Path, options_path: Path, output: Path, screenshot_dir: Path, brow
 
         # Standard API: one Build Character action and same candidate identity, no pre-finalize commit.
         standard = new_page(); fill_intake(standard, "Browser Standard Character")
-        standard.locator("#guidedBuildButton").click(); standard.locator('input[value="STANDARD_API"]').check()
+        standard.locator("#guidedBriefContinue").click(); standard.locator("#guidedBuildButton").click(); standard.locator("#guidedProviderRouteTab").click()
         standard.locator("#guidedStartBuild").click(); standard.locator("#builderReview").wait_for(timeout=30000)
         assert standard.locator("#guidedFinalize").is_enabled()
         capture(standard, "06_primary_standard_review.png")
@@ -491,21 +491,21 @@ def run(root: Path, options_path: Path, output: Path, screenshot_dir: Path, brow
 
         # Auto-Finalize clean and warning fallback.
         auto = new_page(); fill_intake(auto, "Browser Auto Character")
-        auto.locator("#guidedBuildButton").click(); auto.locator('input[value="AUTO_FINALIZE_WHEN_CLEAN"]').check()
+        auto.locator("#guidedBriefContinue").click(); auto.locator("#guidedBuildButton").click(); auto.locator("#guidedProviderRouteTab").click(); auto.locator("#guidedAutoFinalizeCapability").check()
         assert not auto.locator("#guidedAutoFinalizeConsent").is_checked()
         capture(auto, "07_primary_auto_opt_in_off_by_default.png")
         auto.locator("#guidedAutoFinalizeConsent").check(); auto.locator("#guidedStartBuild").click()
         auto.locator("#builderDone").wait_for(timeout=30000); capture(auto, "08_primary_auto_clean_finalized.png")
 
         warning = new_page(); fill_intake(warning, "Browser Warning Character")
-        warning.locator("#guidedBuildButton").click(); warning.locator('input[value="AUTO_FINALIZE_WHEN_CLEAN"]').check(); warning.locator("#guidedAutoFinalizeConsent").check(); warning.locator("#guidedStartBuild").click()
+        warning.locator("#guidedBriefContinue").click(); warning.locator("#guidedBuildButton").click(); warning.locator("#guidedProviderRouteTab").click(); warning.locator("#guidedAutoFinalizeCapability").check(); warning.locator("#guidedAutoFinalizeConsent").check(); warning.locator("#guidedStartBuild").click()
         warning.locator("#builderReview").wait_for(timeout=30000)
         assert warning.locator("#guidedFinalize").is_disabled()
         capture(warning, "09_primary_auto_warning_falls_back_to_review.png")
 
         # Detailed customization: Ice 30, Ash 7, zero-talent unavailable, priorities persist save/reopen.
         detailed = new_page(); fill_intake(detailed, "Browser Detailed Character", "An Ice cultivator with future freezing-technique preferences.")
-        detailed.locator("#builderModeDetailed").click(); detailed.locator("#characterSheetPanel").wait_for()
+        detailed.locator("#builderModeDetailed").click(); detailed.locator("#ownerCustomizationSection").wait_for()
         ice_value = detailed.locator('#sheetSphereAdd option', has_text="Ice").get_attribute("value")
         detailed.locator("#sheetSphereAdd").select_option(ice_value); detailed.get_by_role("button", name="Add Sphere", exact=True).click()
         assert "Talents for Ice" in detailed.locator("#sheetTalentPanelTitle").inner_text()
@@ -532,7 +532,7 @@ def run(root: Path, options_path: Path, output: Path, screenshot_dir: Path, brow
         assert "no canonical selectable talent authority" in (beauty.get_attribute("title") or beauty.inner_text())
         capture(detailed, "11_detailed_zero_talent_spheres_unavailable.png")
         print("W5P1R browser: create detailed draft", flush=True)
-        detailed.locator("#guidedBuildButton").click()
+        detailed.locator("#guidedBriefContinue").click(); detailed.locator("#guidedBuildButton").click()
         detailed.locator("#builderAI").wait_for(timeout=30000)
         detailed.wait_for_function("!document.querySelector('#guidedSaveDraft')?.disabled", timeout=30000)
         print("W5P1R browser: save detailed draft", flush=True)

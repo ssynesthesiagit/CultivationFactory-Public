@@ -50,6 +50,7 @@ def _bound_plan(app, run: dict, *, warnings: bool = False) -> dict:
         app.state.db,
         run["project_id"],
         stage1_prompt=run["request"]["stage1_prompt"],
+        delegated_envelope=run["request"].get("delegated_choice_envelope"),
     )
     plan["request_sha256"] = run["request"]["request_sha256"]
     if warnings:
@@ -251,7 +252,10 @@ def test_w5_p1r_r1_real_application_endpoints_and_provider(tmp_path: Path) -> No
             source_reference=None,
             creation_mode="detailed",
             ability_scores={},
-            selections={},
+            selections={
+                "path_choice": ["tianxia.path.qi_cultivation"],
+                "subpath_choice": ["tianxia.subpath.qi.cinder_heart_cultivator"],
+            },
             sphere_priority_ids=list(SPHERES),
             talent_priority_ids=[talent_id for _, talent_id in PRIORITY_FIXTURES],
             generation_route="ai_bootstrap",

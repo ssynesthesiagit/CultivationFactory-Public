@@ -270,6 +270,13 @@ class InMemorySecretStore:
 
     def status(self, provider_id: str | None = None) -> dict[str, object]:
         provider = str(provider_id or "").strip().casefold()
+        if self._unbound_value is not None and provider in {"openai", "deepseek", "custom"}:
+            # Bind the test-only constructor value when the application first
+            # reports readiness for the selected provider.  This keeps status
+            # truthful without making production secret stores infer or copy
+            # credentials across provider profiles.
+            self.values[provider] = self._unbound_value
+            self._unbound_value = None
         return {
             "present": provider in self.values,
             "source": "in_memory_test" if provider in self.values else None,

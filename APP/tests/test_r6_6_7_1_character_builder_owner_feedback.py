@@ -246,6 +246,14 @@ def test_owner_ui_is_nontechnical_and_packaging_includes_gm_authority():
     assert 'id="guidedCompleteResponseText"' in html
     assert 'id="guidedSubmitCompleteResponse"' in html
     assert "Build Complete Candidate" in html
+    assert 'id="guidedRecoveryActions"' in html
+    assert "Replace Response" in html
+    assert "Retry Local Build" in html
+    assert "Edit Brief / Create New Request" in html
+    assert "Cancel Build" in html
+    assert "retry-local-build" in js
+    assert "edit-brief-create-new-request" in js
+    assert "replace-response-file" in js
     assert "Finalizing through the accepted atomic pipeline" in js
     assert "The accepted server-derived local principal approved the canonical commit" in html
     assert "Not compiled yet" in js

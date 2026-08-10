@@ -9,6 +9,7 @@ from ai_provider.secrets import APIProviderSecretStore, InMemorySecretStore
 from ai_provider.service import AIProviderService
 from app.core import FoundryError
 from character_creation.delegated_choice_authority import validate_delegated_target_cl
+from character_creation.service import CharacterCreationExecutionService
 from tests.test_cg1_character_creation_modes import bound_plan, make
 from tests.test_rec1_p1ar2_target_cl_authority import _authority, _plan_for_target
 
@@ -40,6 +41,47 @@ def test_waiting_and_blocked_runs_keep_owner_recovery_and_evidence(tmp_path) -> 
     assert evidence["response_binding"]["submitted_request_sha256"] == "0" * 64
     assert evidence["last_submission_error"]["code"] == "CG1_COMPLETE_RESPONSE_REQUEST_HASH_MISMATCH"
     assert evidence["response_view"]["exact_response_present"] is True
+
+
+def test_recovery_actions_preserve_attempt_history_for_replace_and_retry(tmp_path) -> None:
+    service, _provider, _db = make(tmp_path / "recovery-actions")
+    run = service.start("p", execution_mode="MANUAL_CHAT", idempotency_key="recovery-actions-1")
+    assert run["action_availability"]["replace_response"]["available"] is True
+    assert run["action_availability"]["retry_local_build"]["available"] is False
+    assert run["action_availability"]["edit_brief_create_new_request"]["available"] is True
+    assert run["action_availability"]["cancel_build"]["available"] is True
+
+    incomplete = {
+        "schema": "TianxiaFoundry.CharacterCreationPlan.v2",
+        "request_sha256": run["request"]["request_sha256"],
+    }
+    blocked = service.submit_manual(
+        run["run_id"],
+        response_text=json.dumps(incomplete, separators=(",", ":")),
+        request_sha256=run["request"]["request_sha256"],
+    )
+    assert blocked["status"] == "NEEDS_REVIEW"
+    assert blocked["action_availability"]["retry_local_build"]["available"] is True
+    assert blocked["attempt_history"]
+
+    retried = service.retry_local_build(run["run_id"])
+    assert retried["status"] == "NEEDS_REVIEW"
+    assert retried["attempt_history"][-1]["action_type"] == "RETRY_LOCAL_BUILD"
+
+    replaced = service.replace_response_file(
+        run["run_id"],
+        filename="corrected-response.json",
+        payload=json.dumps(incomplete, separators=(",", ":")).encode("utf-8"),
+    )
+    assert replaced["status"] == "NEEDS_REVIEW"
+    assert replaced["attempt_history"][-1]["action_type"] == "REPLACE_RESPONSE"
+    assert len(replaced["attempt_history"]) == len(retried["attempt_history"]) + 1
+
+
+def test_unresolved_owner_projection_does_not_erase_response_descriptive_fields() -> None:
+    plan = {"owner_descriptive_fields": {"identity": {"name": "AI Name"}, "concept": "AI concept"}}
+    run = {"owner_descriptive_fields": {"resolved": {"identity": {"name": None}, "concept": None}}}
+    assert CharacterCreationExecutionService._execution_descriptive_fields(run, plan) == plan
 
 
 def test_owner_descriptive_fields_persist_and_are_separate_from_mechanics(tmp_path) -> None:

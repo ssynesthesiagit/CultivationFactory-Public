@@ -6,6 +6,7 @@ import re
 import secrets
 import tempfile
 import shutil
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -26,6 +27,7 @@ from app.core import (
     canonical_json,
     resolve_inside,
     sha256_file,
+    sha256_json,
     utcnow,
 )
 from app.models import (
@@ -36,6 +38,7 @@ from app.models import (
     ConfigureVendorRequest,
     CreateProjectRequest,
     CharacterSheetCreateRequest,
+    CharacterBuilderMethodCompatibilityRequest,
     CanonicalCatalogChoiceLockRequest,
     NS1RStateUpdateRequest,
     NS1RPrimaryMethodRequest,
@@ -86,6 +89,8 @@ from app.models import (
     CharacterCreationDescriptiveFieldsRequest,
     CharacterCreationPreferenceRequest,
     CharacterCreationReviseRequest,
+    CharacterCreationEditBriefPrepareRequest,
+    CharacterCreationEditBriefSubmitRequest,
 )
 from catalog.service import CatalogService
 from canonical_catalog import CanonicalCatalogAuthorityService
@@ -117,13 +122,14 @@ from combat.gate5_service import CombatService, CombatServiceError
 from combat.pre_encounter import CombatantLibraryService
 from product_bootstrap import NATIVE_WINDOWS_STATUS, ProductReadinessService
 from non_sphere_authority import NonSphereAuthorityService
+from path_method_authority import PATH_DISPLAY_NAMES
 
 
 _LOOPBACK_ORIGIN_HOSTS = {"127.0.0.1", "::1", "localhost", "testserver"}
 
 
 def _choice_snapshot_api_binding(snapshot: dict[str, Any] | None) -> dict[str, Any]:
-    value = snapshot or {}
+    value = snapshot if isinstance(snapshot, dict) else {}
     return {
         "schema": "TianxiaFoundry.TypedProjectChoiceSnapshotBinding.v1",
         "source_schema": value.get("schema"),
@@ -138,6 +144,563 @@ def _choice_snapshot_api_binding(snapshot: dict[str, Any] | None) -> dict[str, A
     }
 
 
+_OWNER_PATH_NAMES = dict(PATH_DISPLAY_NAMES)
+_OWNER_PROVENANCE_LABELS = {
+    "owner": "Owner",
+    "ai": "AI proposed",
+    "automatic": "Automatic",
+    "needs_owner": "Needs owner decision",
+    "unavailable": "Unavailable",
+}
+_OWNER_FREE_TALENT_ROUTES = frozenset({
+    "free_sphere_talent_grant",
+    "new_sphere_bonus_talent_acquisition",
+    "ai_bootstrap_talent_acquisition",
+    "sect_trial_talent_acquisition",
+})
+_OWNER_ORDINARY_TALENT_ROUTES = frozenset({
+    "ordinary_learned_or_trained",
+    "level_talent_acquisition",
+    "talent_acquisition",
+})
+
+
+def _owner_record_name(row: Any) -> str | None:
+    if isinstance(row, str):
+        return row.strip() or None
+    if not isinstance(row, dict):
+        return None
+    for key in ("display_name", "name", "canonical_name", "title", "label", "talent_name", "sphere_name"):
+        value = row.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return None
+
+
+def _owner_record_description(row: Any) -> str | None:
+    if not isinstance(row, dict):
+        return None
+    for key in (
+        "full_description", "full_description_text", "player_rules_text",
+        "one_line_description", "short_description", "description", "summary",
+        "effect", "full_effect",
+    ):
+        value = row.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return None
+
+
+def _owner_record_map(snapshot: dict[str, Any]) -> dict[str, str]:
+    result: dict[str, str] = {}
+    sections = snapshot.get("selected_record_sections") or {}
+    if not isinstance(sections, dict):
+        return result
+    for rows in sections.values():
+        if not isinstance(rows, list):
+            continue
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            record_id = row.get("record_id")
+            name = _owner_record_name(row)
+            if isinstance(record_id, str) and name:
+                result[record_id] = name
+    return result
+
+
+def _owner_choice_name(
+    slot_id: str,
+    choice_id: Any,
+    *,
+    choice_metadata: dict[str, Any],
+    record_names: dict[str, str],
+) -> str:
+    if not isinstance(choice_id, str) or not choice_id:
+        return "Owner decision needed"
+    if choice_id in _OWNER_PATH_NAMES:
+        return _OWNER_PATH_NAMES[choice_id]
+    choices = choice_metadata.get(slot_id) or {}
+    choices = choices if isinstance(choices, dict) else {}
+    row = choices.get(choice_id)
+    name = _owner_record_name(row)
+    if name:
+        return name
+    return record_names.get(choice_id) or "Selected choice"
+
+
+def _owner_lock_value(run: dict[str, Any], field: str) -> Any:
+    request = run.get("request") or {}
+    request = request if isinstance(request, dict) else {}
+    prompt = request.get("stage1_prompt") or {}
+    prompt = prompt if isinstance(prompt, dict) else {}
+    envelope = prompt.get("envelope") or {}
+    envelope = envelope if isinstance(envelope, dict) else {}
+    for row in envelope.get("user_locks") or []:
+        if isinstance(row, dict) and row.get("field") == field:
+            return row.get("value")
+    return None
+
+
+def _owner_card(row: Any, *, state: str | None = None) -> dict[str, Any] | None:
+    name = _owner_record_name(row)
+    if not name:
+        return None
+    description = _owner_record_description(row)
+    result: dict[str, Any] = {"name": name}
+    if description:
+        result["description"] = description
+    if state:
+        result["state"] = state
+    timing = row.get("timing_or_category") if isinstance(row, dict) else None
+    if isinstance(timing, str) and timing.strip():
+        result["timing"] = timing.strip()
+    route = (
+        row.get("acquisition_route") or row.get("acquisition_type")
+        if isinstance(row, dict)
+        else None
+    )
+    if route in _OWNER_FREE_TALENT_ROUTES:
+        result["acquisition"] = "free"
+    elif route in _OWNER_ORDINARY_TALENT_ROUTES:
+        result["acquisition"] = "ordinary"
+    return result
+
+
+def _bounded_owner_scratch_sheet(compiled_sheet: dict[str, Any] | None) -> dict[str, Any] | None:
+    """Project the scratch Character Sheet into owner-readable fields only.
+
+    Scratch compilation deliberately produces the same complete sheet service
+    response used by the persisted character.  The response is much larger than
+    an owner review needs, so this projection selects display names, player text,
+    meaningful values, and explicit pending states while dropping IDs, hashes,
+    source bindings, and technical receipts.
+    """
+    if not isinstance(compiled_sheet, dict):
+        return None
+    snapshot = compiled_sheet.get("owner_character_sheet")
+    if not isinstance(snapshot, dict):
+        return None
+    identity = snapshot.get("identity") or compiled_sheet.get("identity") or {}
+    if not isinstance(identity, dict):
+        identity = {}
+    path_surface = snapshot.get("path_and_subpath") or {}
+    path_surface = path_surface if isinstance(path_surface, dict) else {}
+    method = snapshot.get("method") or {}
+    method = method if isinstance(method, dict) else {}
+    sphere_surface = snapshot.get("spheres_and_talents") or {}
+    sphere_surface = sphere_surface if isinstance(sphere_surface, dict) else {}
+    sections = snapshot.get("selected_record_sections") or {}
+    sections = sections if isinstance(sections, dict) else {}
+    record_names = _owner_record_map(snapshot)
+
+    def cards_for(*needles: str) -> list[dict[str, Any]]:
+        rows: list[dict[str, Any]] = []
+        for section_name, section_rows in sections.items() if isinstance(sections, dict) else []:
+            lowered = str(section_name).casefold()
+            if not any(needle in lowered for needle in needles) or not isinstance(section_rows, list):
+                continue
+            for row in section_rows:
+                card = _owner_card(row)
+                if card:
+                    rows.append(card)
+        return rows
+
+    def named_values(values: Any) -> list[str]:
+        result: list[str] = []
+        if not isinstance(values, list):
+            return result
+        for value in values:
+            if isinstance(value, str):
+                name = record_names.get(value) or _OWNER_PATH_NAMES.get(value)
+                if name:
+                    result.append(name)
+            else:
+                card = _owner_card(value)
+                if card:
+                    result.append(card["name"])
+        return result
+
+    paths: list[dict[str, Any]] = []
+    for row in (path_surface.get("paths") or snapshot.get("path_selections") or []):
+        if not isinstance(row, dict):
+            continue
+        path_id = row.get("path_id")
+        name = _OWNER_PATH_NAMES.get(path_id) or _owner_record_name(row)
+        if not name:
+            continue
+        paths.append({
+            "name": name,
+            "mode": "advancing" if row.get("advancing") or row.get("status") in {"ACTIVE", "ADVANCING"} else "dormant",
+            "attainment": row.get("attainment") if row.get("attainment") is not None else "pending",
+        })
+    if not paths:
+        # The delegated resolution is projected separately below.  Keep this
+        # field explicit rather than inventing a level or claiming acquisition.
+        paths = [{"name": name, "mode": "pending", "attainment": "pending"} for name in _OWNER_PATH_NAMES.values()]
+
+    path_value = path_surface.get("path") if isinstance(path_surface, dict) else None
+    subpath_value = path_surface.get("subpath") if isinstance(path_surface, dict) else None
+    path_name = _owner_record_name(path_value)
+    subpath_name = _owner_record_name(subpath_value)
+    method_name = _owner_record_name(method)
+
+    ability_surface = snapshot.get("ability_scores_and_statistics") or {}
+    ability_surface = ability_surface if isinstance(ability_surface, dict) else {}
+    primary_resource = ability_surface.get("primary_resource") or {}
+    resources: list[dict[str, Any]] = []
+    if isinstance(primary_resource, dict):
+        resource_name = _owner_record_name(primary_resource) or primary_resource.get("name")
+        if isinstance(resource_name, str) and resource_name.strip():
+            resources.append({
+                "name": resource_name.strip(),
+                "current": primary_resource.get("build_state_current") if primary_resource.get("build_state_current") is not None else "pending",
+                "maximum": primary_resource.get("maximum") if primary_resource.get("maximum") is not None else "pending",
+            })
+
+    automatic = []
+    for row in sphere_surface.get("automatic_sphere_components") or []:
+        card = _owner_card(row, state="automatic")
+        if card:
+            automatic.append(card)
+    talents = cards_for("talent")
+    free_talents = [card for card in talents if card.get("acquisition") == "free"]
+    ordinary_talents = [card for card in talents if card.get("acquisition") == "ordinary"]
+    return {
+        "identity": {
+            "name": identity.get("display_name") or identity.get("name") or "Name pending owner review",
+            "concept": identity.get("concept") or "Concept pending owner review",
+            "cultivation_level": identity.get("cultivation_level") if identity.get("cultivation_level") is not None else "pending",
+            "realm": identity.get("realm_display") or identity.get("realm") or "pending",
+        },
+        "paths": paths,
+        "method": {"name": method_name or "Method pending validated compilation", "state": "acquired" if method_name else "pending"},
+        "foundation": {"name": _owner_record_name(snapshot.get("foundation")) or "Foundation pending validated compilation", "state": "acquired" if snapshot.get("foundation") else "pending"},
+        "tradition": {"name": subpath_name or "Subpath / Tradition pending", "state": "acquired" if subpath_name else "pending"},
+        "resources": resources or [{"name": "Cultivation resources", "current": "pending", "maximum": "pending"}],
+        "spheres": cards_for("sphere"),
+        "talents": talents,
+        "free_talents": free_talents,
+        "ordinary_talents": ordinary_talents,
+        "insights": cards_for("insight"),
+        "equipment": cards_for("equipment", "item"),
+        "actions": cards_for("action", "feature"),
+        "automatic_components": automatic,
+        "ability_locks": [
+            {"name": str(row.get("ability") or "Ability"), "value": row.get("score") if row.get("score") is not None else "pending"}
+            for row in ability_surface.get("abilities") or []
+            if isinstance(row, dict)
+        ],
+    }
+
+
+def _owner_view(run: dict[str, Any]) -> dict[str, Any]:
+    """Return the bounded server-derived projection consumed by owner panels."""
+    status = str(run.get("status") or "UNKNOWN")
+    stage = {
+        "PREPARING_REQUEST": 3,
+        "WAITING_FOR_RESPONSE": 3,
+        "READY_FOR_REVIEW": 4,
+        "NEEDS_REVIEW": 4,
+        "CLEAN_AND_FINALIZED": 7,
+        "REVISED": 3,
+        "CANCELLED": 8,
+    }.get(status, 1)
+    request = run.get("request") or {}
+    request = request if isinstance(request, dict) else {}
+    final_plan = run.get("final_plan") or {}
+    final_plan = final_plan if isinstance(final_plan, dict) else {}
+    resolution = final_plan.get("resolution") if isinstance(final_plan, dict) else {}
+    resolution = resolution if isinstance(resolution, dict) else {}
+    envelope = request.get("delegated_choice_envelope") or {}
+    envelope = envelope if isinstance(envelope, dict) else {}
+    choice_metadata = envelope.get("choices_by_slot") or {}
+    choice_metadata = choice_metadata if isinstance(choice_metadata, dict) else {}
+    dry_run = run.get("dry_run") or {}
+    dry_run = dry_run if isinstance(dry_run, dict) else {}
+    preview = dry_run.get("preview") or {}
+    preview = preview if isinstance(preview, dict) else {}
+    compiled = preview.get("compiled") or {}
+    compiled_sheet = compiled.get("character_sheet") if isinstance(compiled, dict) else None
+    scratch_sheet = _bounded_owner_scratch_sheet(compiled_sheet)
+    record_names = _owner_record_map((compiled_sheet or {}).get("owner_character_sheet") or {}) if isinstance(compiled_sheet, dict) else {}
+
+    def name(slot_id: str, value: Any) -> str:
+        return _owner_choice_name(slot_id, value, choice_metadata=choice_metadata, record_names=record_names)
+
+    selected_by_slot = resolution.get("selected_choices_by_slot") or {}
+    selected_by_slot = selected_by_slot if isinstance(selected_by_slot, dict) else {}
+    selected_paths = list(resolution.get("actual_advancing_path_ids") or resolution.get("selected_path_ids") or selected_by_slot.get("path_choice") or [])
+    granted_paths = set(resolution.get("method_granted_path_ids") or [])
+    paths = [
+        {
+            "name": _OWNER_PATH_NAMES.get(path_id, name("path_choice", path_id)),
+            "state": "advancing" if path_id in granted_paths or path_id in selected_paths else "dormant",
+            "attainment": "pending",
+            "provenance": "Owner" if path_id in (envelope.get("owner_locks") or {}).get("by_slot", {}).get("path_choice", []) else "AI proposed",
+        }
+        for path_id in _OWNER_PATH_NAMES
+    ]
+    if scratch_sheet and scratch_sheet.get("paths"):
+        # Keep all three source-backed level-zero tracks visible, but prefer the
+        # candidate's server-derived advancing/dormant state when available.
+        by_name = {row.get("name"): row for row in scratch_sheet["paths"] if isinstance(row, dict)}
+        for row in paths:
+            candidate = by_name.get(row["name"])
+            if candidate:
+                if candidate.get("mode") in {"advancing", "dormant"}:
+                    row["state"] = candidate["mode"]
+                candidate_attainment = candidate.get("attainment")
+                if candidate_attainment is not None:
+                    row["attainment"] = candidate_attainment
+
+    provenance_rows = (resolution.get("provenance") or []) if isinstance(resolution, dict) else []
+    provenance_groups = {label: [] for label in ("Owner", "AI proposed", "Automatic", "Needs owner decision")}
+    for row in provenance_rows:
+        if not isinstance(row, dict):
+            continue
+        label = _OWNER_PROVENANCE_LABELS.get(str(row.get("provenance") or "needs_owner"), "Needs owner decision")
+        if label == "Unavailable":
+            label = "Needs owner decision"
+        slot_id = str(row.get("slot_id") or "")
+        choice_id = row.get("choice_id")
+        item = {"name": name(slot_id, choice_id) if choice_id else "Owner decision needed", "status": "resolved" if row.get("status") == "accepted" else "needs_owner"}
+        reason = row.get("reason")
+        if isinstance(reason, str) and reason.strip():
+            item["note"] = reason.strip().replace("_", " ")
+        provenance_groups[label].append(item)
+    if not provenance_groups["Owner"]:
+        provenance_groups["Owner"].append({"name": "Target CL and locked brief", "status": "resolved"})
+
+    descriptive = run.get("owner_descriptive_fields") or {}
+    resolved = descriptive.get("resolved") or {}
+    proposed = descriptive.get("proposed") or {}
+    resolved_identity = resolved.get("identity") if isinstance(resolved, dict) else {}
+    proposed_identity = proposed.get("identity") if isinstance(proposed, dict) else {}
+    resolved_identity = resolved_identity if isinstance(resolved_identity, dict) else {}
+    proposed_identity = proposed_identity if isinstance(proposed_identity, dict) else {}
+    blockers: list[dict[str, Any]] = []
+    decisions: list[dict[str, Any]] = []
+    for row in run.get("blockers") or []:
+        if not isinstance(row, dict):
+            continue
+        item = {"title": "Review required", "message": str(row.get("message") or "The candidate needs an owner decision."), "expected": None, "proposed": None}
+        details = row.get("details") if isinstance(row.get("details"), dict) else {}
+        expected = details.get("expected") or details.get("required") or details.get("required_path_ids")
+        proposed_value = details.get("proposed") or details.get("actual") or details.get("proposed_method_granted_path_ids")
+        if expected is not None:
+            item["expected"] = ", ".join(_OWNER_PATH_NAMES.get(value, str(value)) for value in expected) if isinstance(expected, list) else str(expected)
+        if proposed_value is not None:
+            item["proposed"] = ", ".join(_OWNER_PATH_NAMES.get(value, str(value)) for value in proposed_value) if isinstance(proposed_value, list) else str(proposed_value)
+        blockers.append(item)
+        decisions.append(item)
+    for row in provenance_rows:
+        if isinstance(row, dict) and row.get("status") == "unresolved":
+            decisions.append({"title": "Choose a value", "message": "This choice remains open for the owner.", "expected": "A legal selected choice", "proposed": "No selection"})
+    if not decisions and status in {"READY_FOR_REVIEW", "NEEDS_REVIEW"}:
+        decisions.append({"title": "Review the candidate", "message": "Review the server-derived proposal before Finalize.", "expected": "Validated candidate", "proposed": "Pending owner approval"})
+
+    outputs = run.get("outputs") or {}
+    outputs = outputs if isinstance(outputs, dict) else {}
+    portable = outputs.get("portable_character") or {}
+    gm_consumer = outputs.get("gm_consumer") or {}
+    portable_audit = portable.get("audit") if isinstance(portable, dict) else None
+    portable_audit = portable_audit if isinstance(portable_audit, dict) else {}
+    portable_clean_import = portable.get("clean_import") if isinstance(portable, dict) else None
+    portable_clean_import = portable_clean_import if isinstance(portable_clean_import, dict) else {}
+    portable_first_import = portable_clean_import.get("first") if isinstance(portable_clean_import.get("first"), dict) else {}
+    portable_second_import = portable_clean_import.get("second") if isinstance(portable_clean_import.get("second"), dict) else {}
+    portable_verified = (
+        bool(portable.get("package_sha256"))
+        and portable_audit.get("sha256") == portable.get("package_sha256")
+        and isinstance(portable_audit.get("bytes"), int)
+        and portable_audit.get("crc_validation", {}).get("status") == "VALID"
+        and portable_audit.get("checksum_manifest", {}).get("coverage_status") == "EXACT"
+        and portable_first_import.get("status") in {"IMPORTED", "ALREADY_INSTALLED_IDENTICAL", "GM_SCREEN_SOURCE_CONSUMER_VERIFIED"}
+        and portable_second_import.get("status") in {"ALREADY_INSTALLED_IDENTICAL", "IMPORTED", "GM_SCREEN_SOURCE_CONSUMER_VERIFIED"}
+    )
+    completed_available = status == "CLEAN_AND_FINALIZED" and portable_verified
+    gm_available = gm_consumer.get("status") in {"GM_SCREEN_SOURCE_CONSUMER_VERIFIED", "VERIFIED", "PASS"}
+    return {
+        "schema": "TianxiaFoundry.CharacterCreationOwnerView.v1",
+        "display_state": {"status": status, "step": stage, "label": status.replace("_", " ").title()},
+        "identity": {
+            "name": resolved_identity.get("name") or proposed_identity.get("name") or (scratch_sheet or {}).get("identity", {}).get("name") or "Name pending owner review",
+            "concept": resolved.get("concept") or proposed.get("concept") or (scratch_sheet or {}).get("identity", {}).get("concept") or "Concept pending owner review",
+            "name_provenance": "Owner" if resolved_identity.get("name") else "AI proposed" if proposed_identity.get("name") else "Needs owner decision",
+            "concept_provenance": "Owner" if resolved.get("concept") else "AI proposed" if proposed.get("concept") else "Needs owner decision",
+            "target_cl": final_plan.get("target_cl") or (preview.get("target_cl") if isinstance(preview, dict) else None) or "pending",
+            "power_band": _owner_lock_value(run, "power_band") or "pending",
+        },
+        "paths": paths,
+        "method": {"name": name("method_choice", resolution.get("method_id")) if resolution.get("method_id") else "Method pending owner decision", "provenance": "Owner" if resolution.get("method_id") in ((envelope.get("owner_locks") or {}).get("by_slot", {}).get("method_choice") or []) else "AI proposed" if resolution.get("method_id") else "Needs owner decision"},
+        "foundation": {"name": name("foundation_choice", resolution.get("foundation_id")) if resolution.get("foundation_id") else "Foundation pending owner decision", "provenance": "AI proposed" if resolution.get("foundation_id") else "Needs owner decision"},
+        "tradition": {"name": name("subpath_choice", (selected_by_slot.get("subpath_choice") or [None])[0]) if (selected_by_slot.get("subpath_choice") or []) else "Subpath / Tradition pending", "provenance": "Owner" if selected_by_slot.get("subpath_choice") else "Needs owner decision"},
+        "provenance_groups": provenance_groups,
+        "decisions": decisions,
+        "blockers": blockers,
+        "next_legal_action": {
+            "target_step": {
+                "PREPARING_REQUEST": 3,
+                "WAITING_FOR_RESPONSE": 3,
+                "READY_FOR_REVIEW": 4,
+                "NEEDS_REVIEW": 4,
+                "CLEAN_AND_FINALIZED": 7,
+                "REVISED": 3,
+                "CANCELLED": 1,
+            }.get(status, 1),
+            "label": {
+                "WAITING_FOR_RESPONSE": "Load one response",
+                "PREPARING_REQUEST": "Open the AI route",
+                "READY_FOR_REVIEW": "Review the imported proposal",
+                "NEEDS_REVIEW": "Resolve the review blocker",
+                "CLEAN_AND_FINALIZED": "Open the saved Character Sheet",
+                "CANCELLED": "Start a deliberate new build",
+                "REVISED": "Load the replacement response",
+            }.get(status, "Describe a character"),
+            "description": {
+                "WAITING_FOR_RESPONSE": "The sealed request is ready for one matching Manual Chat response.",
+                "PREPARING_REQUEST": "The Factory is preparing the complete-character route.",
+                "READY_FOR_REVIEW": "The candidate is clean and awaits owner approval before Finalize.",
+                "NEEDS_REVIEW": "Correct the item described in the review before choosing the next legal action.",
+                "CLEAN_AND_FINALIZED": "The persisted owner Character Sheet is ready to open.",
+                "CANCELLED": "No canonical character mutation was committed.",
+                "REVISED": "A linked replacement request is ready for its response.",
+            }.get(status, "The brief and target CL are required before a build can start."),
+        },
+        "action_availability": {
+            key: {"available": bool(value.get("available")), "reason": str(value.get("reason") or "")}
+            for key, value in (run.get("action_availability") or {}).items()
+            if isinstance(value, dict)
+        },
+        "export_availability": {
+            "project_backup": {"available": bool(run.get("project_id")), "reason": "Available for the current project." if run.get("project_id") else "Create a project first."},
+            "chat_request": {"available": bool(request.get("request_sha256")), "reason": "Available while a sealed request exists." if request.get("request_sha256") else "Prepare the AI route first."},
+            "completed_character": {"available": completed_available, "reason": "Validated completed Character ZIP is available." if completed_available else "Available only after the server records a verified Finalize package."},
+            "gm_package": {"available": gm_available, "reason": "GM package is separately verified." if gm_available else "GM-only verification remains a separate gate."},
+        },
+        "scratch_candidate": {
+            "available": bool(scratch_sheet),
+            "deterministic": dry_run.get("deterministic") is True,
+            "independent_compilations": dry_run.get("independent_compilations") if dry_run else None,
+            "sheet": scratch_sheet,
+        },
+        "diagnostics_available": True,
+    }
+
+
+def _bounded_diagnostic_summary(value: Any, *, section: str) -> dict[str, Any]:
+    """Keep ordinary run responses bounded while retaining technical breadcrumbs.
+
+    The complete evidence endpoint intentionally remains the full-fidelity
+    boundary.  Diagnostics in the owner response carry hashes, counts, and
+    the small values needed to explain a state, never the complete plan or
+    validator receipt tree.
+    """
+    raw = value if isinstance(value, dict) else {}
+    summary: dict[str, Any] = {
+        "section": section,
+        "present": bool(raw),
+        "sha256": sha256_json(raw),
+        "size_bytes": len(canonical_json(raw).encode("utf-8")),
+        "top_level_keys": sorted(str(key) for key in raw)[:32],
+        "full_evidence": "GET /api/character-creation/runs/{run_id}/evidence.json",
+    }
+    if section == "final_plan":
+        resolution = raw.get("resolution") if isinstance(raw.get("resolution"), dict) else {}
+        selected = resolution.get("selected_choices_by_slot") if isinstance(resolution.get("selected_choices_by_slot"), dict) else {}
+        summary.update({
+            "target_cl": raw.get("target_cl"),
+            "method_id": resolution.get("method_id"),
+            "foundation_id": resolution.get("foundation_id"),
+            "selected_path_count": len(resolution.get("selected_path_ids") or []),
+            "actual_advancing_path_count": len(resolution.get("actual_advancing_path_ids") or []),
+            "selected_choice_counts": {str(key): len(value) if isinstance(value, list) else 0 for key, value in selected.items()},
+        })
+    elif section == "validation":
+        last_error = raw.get("last_submission_error") if isinstance(raw.get("last_submission_error"), dict) else {}
+        summary.update({
+            "valid": raw.get("valid"),
+            "status": raw.get("status"),
+            "error_count": len(raw.get("errors") or []),
+            "blocker_count": len(raw.get("blockers") or []),
+            "warning_count": len(raw.get("warnings") or []),
+            "last_submission_error": {key: last_error.get(key) for key in ("code", "message") if key in last_error},
+        })
+    elif section == "transport":
+        summary.update({
+            "provider_called": raw.get("provider_called"),
+            "provider_id": raw.get("provider_id"),
+            "execution_mode": raw.get("execution_mode"),
+            "status": raw.get("status"),
+            "fallback": raw.get("fallback"),
+        })
+    return summary
+
+
+def _bounded_portable_output(portable: Any) -> dict[str, Any] | None:
+    if not isinstance(portable, dict):
+        return None
+    audit = portable.get("audit") if isinstance(portable.get("audit"), dict) else {}
+    clean = portable.get("clean_import") if isinstance(portable.get("clean_import"), dict) else {}
+    first = clean.get("first") if isinstance(clean.get("first"), dict) else {}
+    second = clean.get("second") if isinstance(clean.get("second"), dict) else {}
+    gm_export = portable.get("gm_export") if isinstance(portable.get("gm_export"), dict) else {}
+    return {
+        "package_sha256": portable.get("package_sha256"),
+        "release_identity": portable.get("release_identity"),
+        "portable_verified": bool(
+            portable.get("package_sha256")
+            and audit.get("sha256") == portable.get("package_sha256")
+            and audit.get("crc_validation", {}).get("status") == "VALID"
+            and audit.get("checksum_manifest", {}).get("coverage_status") == "EXACT"
+            and first.get("status") == "IMPORTED"
+            and second.get("status") == "ALREADY_INSTALLED_IDENTICAL"
+        ),
+        "audit": {
+            "bytes": audit.get("bytes"),
+            "sha256": audit.get("sha256"),
+            "entry_count": audit.get("entry_count"),
+            "crc_status": audit.get("crc_validation", {}).get("status"),
+            "checksum_coverage": audit.get("checksum_manifest", {}).get("coverage_status"),
+        } if audit else None,
+        "clean_import": {
+            "first_status": first.get("status"),
+            "second_status": second.get("status"),
+            "character_sheet_semantic_equal": (clean.get("character_sheet") or {}).get("semantic_equal"),
+            "gm_model_semantic_equal": (clean.get("gm_model") or {}).get("semantic_equal"),
+            "consumer_status": (clean.get("consumer") or {}).get("status"),
+        } if clean else None,
+        "gm_export": {
+            key: gm_export.get(key)
+            for key in ("available", "status", "package_sha256", "sha256")
+            if key in gm_export
+        } if gm_export else None,
+    }
+
+
+def _bounded_gm_consumer_output(consumer: Any) -> dict[str, Any] | None:
+    if not isinstance(consumer, dict):
+        return None
+    result = {
+        key: consumer.get(key)
+        for key in (
+            "status", "verdict", "consumer_status", "source_consumer_verified",
+            "save_reload_semantic_equivalence", "all_tabs_nonempty", "exact_tab_order",
+            "local_save_package_count", "selected_id", "semantic_hash", "console_or_page_errors",
+        )
+        if key in consumer
+    }
+    harness = consumer.get("browser_harness")
+    if isinstance(harness, dict):
+        result["browser_harness"] = {
+            key: harness.get(key)
+            for key in ("status", "runtime_kind", "requested_executable", "resolved_executable", "screenshot_count", "console_errors", "page_errors", "failed_requests")
+            if key in harness
+        }
+    return result
+
+
 def _character_creation_api_view(run: dict[str, Any]) -> dict[str, Any]:
     """Bound the owner UI payload without weakening the stored canonical run.
 
@@ -148,13 +711,16 @@ def _character_creation_api_view(run: dict[str, Any]) -> dict[str, Any]:
     result = {
         key: value
         for key, value in run.items()
-        if key not in {"request", "dry_run", "outputs"}
+        if key not in {"request", "dry_run", "outputs", "final_plan", "response"}
     }
     request = dict(run.get("request") or {})
-    request["typed_choice_snapshot"] = _choice_snapshot_api_binding(
-        request.get("typed_choice_snapshot")
-    )
-    result["request"] = request
+    result["request"] = {
+        key: request.get(key)
+        for key in ("schema", "project_id", "project_revision", "request_sha256", "content_lock_hash")
+        if key in request
+    }
+    result["request"]["typed_choice_snapshot"] = _choice_snapshot_api_binding(request.get("typed_choice_snapshot"))
+    result["response"] = {"response_sha256": (run.get("response") or {}).get("response_sha256")} if run.get("response") else {}
     dry = run.get("dry_run") or {}
     preview = dry.get("preview") or {}
     result["dry_run"] = {
@@ -186,6 +752,8 @@ def _character_creation_api_view(run: dict[str, Any]) -> dict[str, Any]:
                 if isinstance(receipt, dict)
             },
         }
+        # The owner view receives a bounded scratch-sheet projection below;
+        # never send the compiled scratch receipt itself to the browser.
     outputs = run.get("outputs") or {}
     portable = outputs.get("portable_character") or {}
     catalog_evidence = outputs.get("catalog_acquisition_evidence") or {}
@@ -200,29 +768,8 @@ def _character_creation_api_view(run: dict[str, Any]) -> dict[str, Any]:
         } if outputs.get("character_sheet") else None,
         "factory_authoring": {"produced": bool(outputs.get("factory_authoring"))},
         "gm_model": {"produced": bool(outputs.get("gm_model"))},
-        "gm_consumer": {
-            key: (outputs.get("gm_consumer") or {}).get(key)
-            for key in (
-                "status",
-                "verdict",
-                "consumer_status",
-                "source_consumer_verified",
-                "save_reload_semantic_equivalence",
-                "all_tabs_nonempty",
-                "exact_tab_order",
-                "local_save_package_count",
-                "selected_id",
-                "semantic_hash",
-                "console_or_page_errors",
-                "browser_harness",
-            )
-        } if outputs.get("gm_consumer") else None,
-        "portable_character": {
-            "package_sha256": portable.get("package_sha256"),
-            "clean_import": portable.get("clean_import"),
-            "gm_export": portable.get("gm_export"),
-            "release_identity": portable.get("release_identity"),
-        } if portable else None,
+        "gm_consumer": _bounded_gm_consumer_output(outputs.get("gm_consumer")),
+        "portable_character": _bounded_portable_output(portable),
         "catalog_acquisition_evidence": {
             key: catalog_evidence.get(key)
             for key in (
@@ -257,7 +804,21 @@ def _character_creation_api_view(run: dict[str, Any]) -> dict[str, Any]:
                 if isinstance(row, dict)
             ]
         } if catalog_evidence else None,
-        "combat": outputs.get("combat"),
+        "combat": _bounded_diagnostic_summary(outputs.get("combat"), section="combat") if outputs.get("combat") else None,
+    }
+    result["owner_view"] = _owner_view(run)
+    result["next_legal_action"] = result["owner_view"]["next_legal_action"]["description"]
+    result["diagnostics"] = {
+        "request": {
+            "request_sha256": request.get("request_sha256"),
+            "content_lock_hash": request.get("content_lock_hash"),
+            "typed_choice_snapshot": _choice_snapshot_api_binding(request.get("typed_choice_snapshot")),
+        },
+        "response": {"response_sha256": (run.get("response") or {}).get("response_sha256")},
+        "final_plan": _bounded_diagnostic_summary(run.get("final_plan"), section="final_plan"),
+        "validation": _bounded_diagnostic_summary(run.get("validation"), section="validation"),
+        "transport": _bounded_diagnostic_summary(run.get("transport"), section="transport"),
+        "full_evidence_endpoint": f"/api/character-creation/runs/{run.get('run_id')}/evidence.json",
     }
     return result
 
@@ -1228,6 +1789,12 @@ def create_app(
     def character_builder_options() -> dict[str, Any]:
         return character_builder.options()
 
+    @app.post("/api/character-builder/method-compatibility")
+    def character_builder_method_compatibility(
+        body: CharacterBuilderMethodCompatibilityRequest,
+    ) -> dict[str, Any]:
+        return character_builder.method_compatibility(body.selected_path_ids)
+
     @app.get("/api/character-builder/recovery")
     def character_builder_recovery() -> list[dict[str, Any]]:
         return character_creation.recoverable()
@@ -1638,12 +2205,27 @@ def create_app(
     def character_creation_manual_response(run_id: str, body: CharacterCreationManualResponseRequest) -> dict[str, Any]:
         return _character_creation_api_view(character_creation.submit_manual(run_id, **body.model_dump()))
 
+    @app.post("/api/character-creation/runs/{run_id}/replace-response")
+    def character_creation_replace_response(run_id: str, body: CharacterCreationManualResponseRequest) -> dict[str, Any]:
+        return _character_creation_api_view(character_creation.replace_response(run_id, **body.model_dump()))
+
+    @app.post("/api/character-creation/runs/{run_id}/retry-local-build")
+    def character_creation_retry_local_build(run_id: str) -> dict[str, Any]:
+        return _character_creation_api_view(character_creation.retry_local_build(run_id))
+
     @app.post("/api/character-creation/runs/{run_id}/manual-response-file")
     async def character_creation_manual_response_file(
         run_id: str, request: Request, filename: str = Query(min_length=1, max_length=240),
     ) -> dict[str, Any]:
         payload = await request.body()
         return _character_creation_api_view(character_creation.submit_manual_file(run_id, filename=filename, payload=payload))
+
+    @app.post("/api/character-creation/runs/{run_id}/replace-response-file")
+    async def character_creation_replace_response_file(
+        run_id: str, request: Request, filename: str = Query(min_length=1, max_length=240),
+    ) -> dict[str, Any]:
+        payload = await request.body()
+        return _character_creation_api_view(character_creation.replace_response_file(run_id, filename=filename, payload=payload))
 
     @app.post("/api/character-creation/runs/{run_id}/descriptive-fields")
     def character_creation_descriptive_fields(run_id: str, body: CharacterCreationDescriptiveFieldsRequest) -> dict[str, Any]:
@@ -1660,6 +2242,14 @@ def create_app(
     @app.post("/api/character-creation/runs/{run_id}/revise")
     def character_creation_revise(run_id: str, body: CharacterCreationReviseRequest) -> dict[str, Any]:
         return _character_creation_api_view(character_creation.revise(run_id, owner_notes=body.owner_notes))
+
+    @app.post("/api/character-creation/runs/{run_id}/edit-brief-create-new-request")
+    def character_creation_edit_brief_create_new_request(run_id: str, body: CharacterCreationEditBriefSubmitRequest) -> dict[str, Any]:
+        return _character_creation_api_view(character_creation.edit_brief_create_new_request(run_id, edit_id=body.edit_id))
+
+    @app.post("/api/character-creation/runs/{run_id}/edit-brief/prepare")
+    def character_creation_edit_brief_prepare(run_id: str, body: CharacterCreationEditBriefPrepareRequest) -> dict[str, Any]:
+        return _character_creation_api_view(character_creation.prepare_edit_brief(run_id, **body.model_dump()))
 
     @app.post("/api/character-creation/runs/{run_id}/cancel")
     def character_creation_cancel(run_id: str) -> dict[str, Any]:

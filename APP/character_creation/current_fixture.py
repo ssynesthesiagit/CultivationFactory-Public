@@ -91,12 +91,19 @@ def create_fresh_project(db: Database, *, project_id: str | None = None) -> dict
     # These accepted C1A selections are stable owner-intent references, appended
     # through the current immutable project-lock service before Stage 1. No old
     # project identity, revision, event, hash, or artifact is reused.
-    return builder.projects.append_user_locks(project_id, [
+    additional_locks = [
         {"field": "character.identity.display_name", "value": W5_PROJECT_NAME, "source": "w5-p1-current-fixture"},
         {"field": "character.choices.qi_cultivation_skills", "value": ["tianxia.fixture.skill.arcana", "tianxia.fixture.skill.history"], "source": "w5-p1-current-fixture"},
         {"field": "character.choices.street_hardened", "value": "tianxia.fixture.street_hardened.deception", "source": "w5-p1-current-fixture"},
         {"field": "character.choices.language", "value": "tianxia.language.classical", "source": "w5-p1-current-fixture"},
-    ])
+    ]
+    existing_fields = {
+        lock.get("field")
+        for lock in builder.projects.get_project(project_id)["project"].get("user_locks") or []
+        if isinstance(lock, dict)
+    }
+    additions = [lock for lock in additional_locks if lock["field"] not in existing_fields]
+    return builder.projects.append_user_locks(project_id, additions) if additions else builder.projects.get_project(project_id)
 
 
 def exact_stage1_response(prompt: dict[str, Any]) -> dict[str, Any]:

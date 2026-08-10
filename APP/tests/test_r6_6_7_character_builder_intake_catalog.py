@@ -120,7 +120,7 @@ def test_more_than_eight_talent_priorities_round_trip_without_new_cap(catalog_en
     assert len(talents) == 12
     assert categories["advancement_skeleton"]["max"] is None
     # Independent category limits remain unchanged.
-    assert categories["sphere_priorities"]["max"] == 8
+    assert categories["sphere_priorities"]["max"] is None
     assert categories["insight_priorities"]["max"] == 8
     assert categories["item_priorities"]["max"] == 8
 

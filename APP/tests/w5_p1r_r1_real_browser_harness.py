@@ -162,7 +162,7 @@ def production_document(api_base_url: str) -> str:
 </script>
 """
     html = html.replace(
-        '<link rel="stylesheet" href="/static/styles.css?v=w5-p1r-primary-character-creation">',
+        '<link rel="stylesheet" href="/static/styles.css?v=rec1-p1cr3-owner-view">',
         "<style>\n" + css + "\n</style>",
     )
     html = html.replace(
@@ -170,7 +170,7 @@ def production_document(api_base_url: str) -> str:
         fetch_bridge + "\n<script>\n" + sphere_js + "\n</script>",
     )
     html = html.replace(
-        '<script src="/static/app.js?v=w5-p1r-primary-character-creation"></script>',
+        '<script src="/static/app.js?v=rec1-p1cr3-owner-view"></script>',
         "<script>\n" + app_js + "\n</script>",
     )
     return html
@@ -268,16 +268,16 @@ async def fill_and_continue(page, url: str, bridge_requests: list[str], *, name:
     print(f"browser: guided project network sequence complete for {name}", flush=True)
     state = await page.evaluate(
         """() => ({
-            modeCount: document.querySelectorAll('input[name="guidedExecutionMode"]').length,
-            manualVisible: Boolean(document.querySelector('input[name="guidedExecutionMode"][value="MANUAL_CHAT"]')?.offsetParent),
-            standardVisible: Boolean(document.querySelector('input[name="guidedExecutionMode"][value="STANDARD_API"]')?.offsetParent),
-            autoVisible: Boolean(document.querySelector('input[name="guidedExecutionMode"][value="AUTO_FINALIZE_WHEN_CLEAN"]')?.offsetParent),
+            modeCount: document.querySelectorAll('[data-guided-route][role="tab"]').length,
+            manualVisible: Boolean(document.querySelector('#guidedManualRouteTab')?.offsetParent),
+            standardVisible: Boolean(document.querySelector('#guidedProviderRouteTab')?.offsetParent),
+            autoVisible: Boolean(document.querySelector('#guidedAutoFinalizeCapability')?.offsetParent),
             autoChecked: document.querySelector('#guidedAutoFinalizeConsent').checked,
             projectId: guidedProjectId,
             status: document.querySelector('#guidedStatus').textContent
         })"""
     )
-    assert state["modeCount"] == 3, state
+    assert state["modeCount"] == 2, state
     assert state["manualVisible"] is True, state
     assert state["standardVisible"] is True, state
     assert state["autoVisible"] is True, state
@@ -297,9 +297,7 @@ async def select_standard_and_start(
     before = completed_request_count(bridge_requests, "POST", "/character-creation/runs")
     state = await page.evaluate(
         """() => {
-            const input = document.querySelector('input[name="guidedExecutionMode"][value="STANDARD_API"]');
-            input.checked = true;
-            input.dispatchEvent(new Event('change', {bubbles: true}));
+            document.querySelector('#guidedProviderRouteTab').click();
             const button = document.querySelector('#guidedStartBuild');
             const snapshot = {
                 disabled: button.disabled,
@@ -443,12 +441,12 @@ async def run_async(output: Path, screenshots: Path, data_root: Path, browser_pa
                 )
                 mode_state = await surface_page.evaluate(
                     """() => ({
-                        modeCount: document.querySelectorAll('input[name="guidedExecutionMode"]').length,
+                        modeCount: document.querySelectorAll('[data-guided-route][role="tab"]').length,
                         autoChecked: document.querySelector('#guidedAutoFinalizeConsent').checked,
                         detailedOptional: !document.querySelector('#builderModeDetailed').hidden
                     })"""
                 )
-                assert mode_state == {"modeCount": 3, "autoChecked": False, "detailedOptional": True}
+                assert mode_state == {"modeCount": 2, "autoChecked": False, "detailedOptional": True}
                 mode_path = screenshots / "00_real_normal_wizard_three_modes.png"
                 await surface_page.screenshot(path=str(mode_path), full_page=True)
                 screenshots_written.append(mode_path.name)

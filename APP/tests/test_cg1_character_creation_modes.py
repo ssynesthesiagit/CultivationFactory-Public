@@ -112,9 +112,38 @@ def test_three_modes_real_two_scratch_parity_and_no_preview_mutation(tmp_path):
         assert run['dry_run']['typed_choice_snapshot']==frozen
         ids.append(run['dry_run']['candidate_identity'])
         assert run['status']=='READY_FOR_REVIEW'
-        run=svc.finalize(run['run_id'])
-        assert run['status']=='CLEAN_AND_FINALIZED'
+        with pytest.raises(FoundryError) as exc:
+            svc.finalize(run['run_id'])
+        assert exc.value.code == 'CG1_FINALIZATION_ROLLED_BACK'
+        assert svc.get(run['run_id'])['status'] == 'READY_FOR_REVIEW'
     assert len(set(ids))==1
+
+
+def test_finalize_without_production_release_rolls_back_and_never_persists_clean_status(tmp_path):
+    svc, _, db = make(tmp_path / "no-production-release")
+    run = svc.start("p", execution_mode="STANDARD_API", idempotency_key="no-release-finalize-123")
+    before = snapshot(db)
+    with pytest.raises(FoundryError) as exc:
+        svc.finalize(run["run_id"])
+    assert exc.value.code == "CG1_FINALIZATION_ROLLED_BACK"
+    assert snapshot(db) == before
+    assert svc.get(run["run_id"])["status"] == "READY_FOR_REVIEW"
+
+def test_scratch_compile_binds_the_incoming_response_hash(tmp_path,monkeypatch):
+    svc,_,_=make(tmp_path)
+    observed={}
+    original=svc._validate_and_compile
+
+    def capture(run,response_text,**kwargs):
+        observed['response_sha256']=run['response'].get('response_sha256')
+        return original(run,response_text,**kwargs)
+
+    monkeypatch.setattr(svc,'_validate_and_compile',capture)
+    run=svc.start('p',execution_mode='MANUAL_CHAT',idempotency_key='response-binding-123')
+    response_text=canonical_json(bound_plan(run))
+    submitted=svc.submit_manual(run['run_id'],response_text=response_text,request_sha256=run['request']['request_sha256'])
+    assert submitted['status']=='READY_FOR_REVIEW'
+    assert observed['response_sha256']==sha256_bytes(response_text.encode('utf-8'))
 
 def test_candidate_identity_excludes_process_local_approval_envelope_only():
     substantive = {
@@ -146,6 +175,197 @@ def test_candidate_identity_excludes_process_local_approval_envelope_only():
     assert CharacterCreationExecutionService._identity_payload(second) == substantive
     changed = {**second, 'terminal_mechanical_state_hash': 'e' * 64}
     assert CharacterCreationExecutionService._identity_payload(changed) != substantive
+
+
+def test_candidate_identity_excludes_actual_nested_stage2_receipt_process_values():
+    first = {
+        "committed": True,
+        "receipt": {
+            "approval_challenge_id": "challenge-one",
+            "approval_evidence_id": "evidence-one",
+            "binding_set_hash": "binding-one",
+            "terminal_projection_hash": "projection-one",
+            "terminal_projection_json": '{"process":"one"}',
+            "integrity_mac": "mac-one",
+            "integrity_key_id": "key-one",
+            "integrity_domain": "domain-one",
+            "terminal_attempt_id": "attempt-one",
+            "created_at": "2026-08-10T00:00:01Z",
+            "completed_at": "2026-08-10T00:00:02Z",
+            "approval_evidence": {
+                "evidence_id": "evidence-one",
+                "projection_hash": "approval-projection-one",
+                "mac": "approval-mac-one",
+            },
+            "approved_proposal_hash": "proposal-one",
+            "event_hashes_json": '["event-hash-one"]',
+            "state_after_hash": "state-one",
+            "terminal_mechanical_state_hash": "mechanics-one",
+            "source_binding": {"source_hash": "source-one", "source_path": "catalog/record.json"},
+        },
+        "project": {"canonical_project_hash": "project-one"},
+        "replay": {"state_hash": "replay-one"},
+    }
+    second = json.loads(json.dumps(first))
+    receipt = second["receipt"]
+    receipt.update({
+        "approval_challenge_id": "challenge-two",
+        "approval_evidence_id": "evidence-two",
+        "binding_set_hash": "binding-two",
+        "terminal_projection_hash": "projection-two",
+        "terminal_projection_json": '{"process":"two"}',
+        "integrity_mac": "mac-two",
+        "integrity_key_id": "key-two",
+        "integrity_domain": "domain-two",
+        "terminal_attempt_id": "attempt-two",
+        "created_at": "2026-08-11T00:00:01Z",
+        "completed_at": "2026-08-11T00:00:02Z",
+    })
+    receipt["approval_evidence"].update({
+        "evidence_id": "evidence-two",
+        "projection_hash": "approval-projection-two",
+        "mac": "approval-mac-two",
+    })
+    assert CharacterCreationExecutionService._identity_payload(first) == CharacterCreationExecutionService._identity_payload(second)
+
+    substantive = json.loads(json.dumps(first))
+    substantive["receipt"]["event_hashes_json"] = '["event-hash-two"]'
+    assert CharacterCreationExecutionService._identity_payload(first) != CharacterCreationExecutionService._identity_payload(substantive)
+
+    state_change = json.loads(json.dumps(first))
+    state_change["receipt"]["state_after_hash"] = "state-two"
+    assert CharacterCreationExecutionService._identity_payload(first) != CharacterCreationExecutionService._identity_payload(state_change)
+
+    source_change = json.loads(json.dumps(first))
+    source_change["receipt"]["source_binding"]["source_hash"] = "source-two"
+    assert CharacterCreationExecutionService._identity_payload(first) != CharacterCreationExecutionService._identity_payload(source_change)
+
+
+def test_terminal_wrapper_identity_retains_receipt_replay_and_stage2_hashes():
+    wrapper = {
+        "commit_id": "commit-1",
+        "event_count": 2,
+        "event_ids": ["event-1", "event-2"],
+        "project": {"project_hash": "project-1"},
+        "receipt": {"terminal_state_hash": "terminal-1"},
+        "replay": {"ledger_hash": "ledger-1"},
+        "stage2": {"manifest_hash": "manifest-1"},
+    }
+    for branch, key in (("receipt", "terminal_state_hash"), ("replay", "ledger_hash"), ("stage2", "manifest_hash")):
+        changed = json.loads(json.dumps(wrapper))
+        changed[branch][key] = changed[branch][key] + "-changed"
+        assert CharacterCreationExecutionService._identity_payload(changed) != CharacterCreationExecutionService._identity_payload(wrapper)
+
+
+def test_nested_manifest_package_members_remain_identity_bearing():
+    first = {"manifest": {"package_path": "member-a", "members": [{"path": "a.json", "sha256": "a"}]}}
+    second = {"manifest": {"package_path": "member-b", "members": [{"path": "a.json", "sha256": "a"}]}}
+    third = {"manifest": {"package_path": "member-a", "members": [{"path": "a.json", "sha256": "b"}]}}
+    assert CharacterCreationExecutionService._identity_payload(first) != CharacterCreationExecutionService._identity_payload(second)
+    assert CharacterCreationExecutionService._identity_payload(first) != CharacterCreationExecutionService._identity_payload(third)
+
+
+def test_identity_drops_only_known_sheet_transport_paths_and_preserves_mechanics():
+    first = {
+        "advanced_details": {
+            "projection_status": {
+                "artifacts": [{"path": "scratch-a", "sha256": "ledger-a"}],
+            },
+        },
+        "provenance": {
+            "advancement_projection": {
+                "projection": {"artifacts": [{"path": "scratch-b", "sha256": "projection-a"}]},
+            },
+            "character_sheet_projection": {
+                "artifact": {"path": "scratch-c", "sha256": "sheet-a"},
+            },
+            "mechanical_projection": {
+                "projection": {"artifacts": [{"path": "scratch-d", "sha256": "mechanics-a"}]},
+            },
+        },
+        "sheet_artifact": {"path": "scratch-e", "sha256": "sheet-artifact-a"},
+        "owner_character_sheet": {"spheres_and_talents": {"paths": [{"path": "qi-path"}]}},
+    }
+    second = json.loads(json.dumps(first))
+    second["advanced_details"]["projection_status"]["artifacts"][0]["path"] = "scratch-other"
+    second["provenance"]["advancement_projection"]["projection"]["artifacts"][0]["path"] = "scratch-other"
+    second["provenance"]["character_sheet_projection"]["artifact"]["path"] = "scratch-other"
+    second["provenance"]["mechanical_projection"]["projection"]["artifacts"][0]["path"] = "scratch-other"
+    second["sheet_artifact"]["path"] = "scratch-other"
+    assert CharacterCreationExecutionService._identity_payload(first) == CharacterCreationExecutionService._identity_payload(second)
+
+    changed = json.loads(json.dumps(first))
+    changed["provenance"]["mechanical_projection"]["projection"]["artifacts"][0]["sha256"] = "mechanics-b"
+    assert CharacterCreationExecutionService._identity_payload(first) != CharacterCreationExecutionService._identity_payload(changed)
+
+
+def test_identity_surface_transport_fields_are_scoped_to_their_surface():
+    gm_model_one = {"build": "scratch-a", "workspace": "workspace-a", "identity": {"model_id": "model"}}
+    gm_model_two = {"build": "scratch-b", "workspace": "workspace-b", "identity": {"model_id": "model"}}
+    assert CharacterCreationExecutionService._identity_payload(gm_model_one, _surface="gm_model") == CharacterCreationExecutionService._identity_payload(gm_model_two, _surface="gm_model")
+
+    consumer_one = {"selected_id": "package-a", "manifest": {"sha256": "manifest"}}
+    consumer_two = {"selected_id": "package-b", "manifest": {"sha256": "manifest"}}
+    assert CharacterCreationExecutionService._identity_payload(consumer_one, _surface="gm_consumer") == CharacterCreationExecutionService._identity_payload(consumer_two, _surface="gm_consumer")
+
+    package_one = {"selected_id": "package-a", "manifest": {"sha256": "manifest"}}
+    package_two = {"selected_id": "package-b", "manifest": {"sha256": "manifest"}}
+    assert CharacterCreationExecutionService._identity_payload(package_one, _surface="portable_character") != CharacterCreationExecutionService._identity_payload(package_two, _surface="portable_character")
+
+
+def test_server_descriptive_binding_response_identity_is_not_deleted():
+    first = {"source": "cg1-owner-descriptive:run-a:server-derived", "value": {"value": "Name", "binding": {"response_sha256": "a"}}}
+    second = {"source": "cg1-owner-descriptive:run-a:server-derived", "value": {"value": "Name", "binding": {"response_sha256": "b"}}}
+    assert CharacterCreationExecutionService._identity_payload(first) != CharacterCreationExecutionService._identity_payload(second)
+
+def test_candidate_identity_retains_project_and_manifest_mechanical_identity():
+    first = {
+        'audit': {
+            'manifest': {
+                'event_head_hash': 'event-head',
+                'advancement_projection_references': {'Projection_Diagnostics.json': 'a' * 64},
+                'source_command5_candidate_sha256': 'b' * 64,
+            },
+        },
+        'clean_import': {
+            'first': {
+                'project_import': {
+                    'event_head_hash': 'event-head',
+                    'state_hash': 'state',
+                    'project_hash': 'c' * 64,
+                },
+            },
+        },
+        'release_identity': 'release-one',
+    }
+    second = {
+        'audit': {
+            'manifest': {
+                'event_head_hash': 'event-head',
+                'advancement_projection_references': {'Projection_Diagnostics.json': 'd' * 64},
+                'source_command5_candidate_sha256': 'e' * 64,
+            },
+        },
+        'clean_import': {
+            'first': {
+                'project_import': {
+                    'event_head_hash': 'event-head',
+                    'state_hash': 'state',
+                    'project_hash': 'f' * 64,
+                },
+            },
+        },
+        'release_identity': 'release-two',
+    }
+    assert CharacterCreationExecutionService._identity_payload(first) != CharacterCreationExecutionService._identity_payload(second)
+    changed = {
+        **second,
+        'audit': {
+            **second['audit'],
+            'manifest': {**second['audit']['manifest'], 'event_head_hash': 'different-event-head'},
+        },
+    }
+    assert CharacterCreationExecutionService._identity_payload(first) != CharacterCreationExecutionService._identity_payload(changed)
 
 def test_adversarial_planner_authority_and_invalid_stage2_fail_closed(tmp_path):
     bad=plan(); bad['compiled_surfaces']={'ability_scores':{'int':20},'resources':{'qi':999}}; bad['readiness']={'gm_model':'READY'}
@@ -206,21 +426,22 @@ def test_preference_is_durable_per_server_principal_and_finalize_uses_server_pri
     assert same_owner.preference('p')['execution_mode']=='STANDARD_API'
     assert other_owner.preference('p')['execution_mode']=='MANUAL_CHAT'
     run=same_owner.start('p',execution_mode='STANDARD_API',idempotency_key='principal-123')  #gitleaks:allow -- inert test idempotency label
-    finalized=same_owner.finalize(run['run_id'])
-    assert finalized['commit']['approved_by']=='owner'
-    assert finalized['commit']['approved_by_sha256']==same_owner.owner_principal_hash
+    with pytest.raises(FoundryError) as exc:
+        same_owner.finalize(run['run_id'])
+    assert exc.value.code == 'CG1_FINALIZATION_ROLLED_BACK'
+    assert same_owner.get(run['run_id'])['status'] == 'READY_FOR_REVIEW'
 
 def test_auto_finalize_requires_explicit_durable_bound_opt_in(tmp_path):
     svc,_,db=make(tmp_path)
     run=svc.start('p',execution_mode='AUTO_FINALIZE_WHEN_CLEAN',idempotency_key='auto-optin-123')
     assert run['status']=='READY_FOR_REVIEW' and not run['commit']
-    finalized=svc.create_auto_finalize_opt_in(run['run_id'])
-    receipt=finalized['auto_finalize_opt_in']
-    assert finalized['status']=='CLEAN_AND_FINALIZED'
-    assert finalized['commit']['auto_finalize_opt_in_receipt_sha256']==receipt['receipt_sha256']
+    with pytest.raises(FoundryError) as exc:
+        svc.create_auto_finalize_opt_in(run['run_id'])
+    assert exc.value.code == 'CG1_FINALIZATION_ROLLED_BACK'
     with db.connection() as conn:
-        row=conn.execute('select * from character_creation_auto_finalize_opt_ins where receipt_id=?',(receipt['receipt_id'],)).fetchone()
-    assert row and row['candidate_identity']==run['dry_run']['candidate_identity']
+        row=conn.execute('select count(*) from character_creation_auto_finalize_opt_ins').fetchone()
+    assert row[0] == 1
+    assert svc.get(run['run_id'])['status'] == 'READY_FOR_REVIEW'
     manual,_,_=make(tmp_path/'manual')
     manual_run=manual.start('p',execution_mode='MANUAL_CHAT',idempotency_key='manual-no-auto-123')
     manual_run=manual.submit_manual(manual_run['run_id'],response_text=canonical_json(bound_plan(manual_run)),request_sha256=manual_run['request']['request_sha256'])

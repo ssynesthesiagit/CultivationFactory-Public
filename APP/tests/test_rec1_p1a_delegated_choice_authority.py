@@ -10,6 +10,7 @@ from character_creation.delegated_choice_authority import (
     final_plan_sha256,
     validate_delegated_choice_plan,
 )
+from character_creation.response_materialization import normalize_selection_intent
 from path_method_authority import CANONICAL_PATH_IDS
 
 
@@ -205,6 +206,45 @@ def test_method_foundation_prerequisite_and_conflicting_authority_fail_closed():
     conflict = _plan(paths=list(CANONICAL_PATH_IDS), method="METHOD-ALL")
     conflict["stage2_proposal"]["catalog_priority_order"] = {"path_ids": [CANONICAL_PATH_IDS[0]]}
     _raises("CG1_DELEGATED_AUTHORITY_CONFLICT", conflict, project, envelope)
+
+
+def test_historical_selection_intent_normalizes_explicit_acquisition_list():
+    project, envelope, run = _authority([CANONICAL_PATH_IDS[0]])
+    pair = {
+        "kind": "__free_sphere_talent_pair__",
+        "sphere_id": "SPHERE-FIRE",
+        "record_id": "TALENT-FLAME",
+    }
+    plan = {
+        "schema": "TianxiaFoundry.CharacterCreationPlan.v2",
+        "request_sha256": run["request"]["request_sha256"],
+        "selection_intent": {
+            "by_slot": {
+                "path_choice": [CANONICAL_PATH_IDS[0]],
+                "method_choice": ["METHOD-ALL"],
+            },
+        },
+        "acquisition_intent": [pair],
+        "owner_descriptive_fields": {"identity": {"name": "Intent Test"}, "concept": "Bounded"},
+        "bounded_choices": {"ability_scores": {"STR": 8, "DEX": 15, "CON": 12, "INT": 10, "WIS": 10, "CHA": 10}},
+    }
+    intent = normalize_selection_intent(
+        plan,
+        request_sha256=run["request"]["request_sha256"],
+        delegated_envelope=envelope,
+        project=project,
+        target_cl=1,
+    )
+    document = intent.as_dict()
+    assert document["acquisition_intent"] == {
+        "sphere_free_talent_pairs": [{
+            "sphere_id": "SPHERE-FIRE",
+            "talent_id": "TALENT-FLAME",
+        }],
+        "ordinary_talent_ids": [],
+        "insight_occurrences": [],
+    }
+    assert "sphere_priorities" not in document["selected_by_slot"]
 
 
 def test_stale_or_tampered_envelope_and_owner_lock_changes_are_rejected():

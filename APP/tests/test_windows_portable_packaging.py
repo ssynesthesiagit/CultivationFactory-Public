@@ -73,6 +73,23 @@ def test_exact_consumer_discovers_windows_browser_and_honors_override(monkeypatc
     assert exact_consumer_harness._default_browser_executable() == r"C:\Verified\chromium.exe"
 
 
+def test_exact_consumer_linux_browser_fallback_does_not_claim_missing_system_binary(monkeypatch):
+    monkeypatch.delenv("TIANXIA_BROWSER_EXECUTABLE", raising=False)
+    monkeypatch.setattr(exact_consumer_harness, "_is_windows", lambda: False)
+    discovered = exact_consumer_harness._default_browser_executable()
+    system_browser = Path("/usr/bin/chromium")
+    assert discovered == (str(system_browser) if system_browser.is_file() else None)
+
+
+def test_exact_consumer_browser_runtime_reports_invalid_explicit_override_fail_closed(monkeypatch, tmp_path):
+    missing = tmp_path / "missing-chromium"
+    monkeypatch.setenv("TIANXIA_BROWSER_EXECUTABLE", str(missing))
+    runtime = exact_consumer_harness._browser_runtime_descriptor(str(missing))
+    assert runtime["runtime_kind"] == "explicit_executable"
+    assert runtime["requested_executable"] == str(missing)
+    assert runtime["resolved_executable"] is None
+
+
 def test_portable_settings_keep_persistent_state_outside_runtime(tmp_path):
     package = tmp_path / "Folder With Spaces" / "Tianxia Factory"
     paths = PortablePaths(

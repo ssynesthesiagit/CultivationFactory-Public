@@ -243,10 +243,20 @@ class ProjectionService:
                 continue
             granted = event.get("advancement", {}).get("calculation", {}).get("outputs", {}).get("granted_feature_record_ids") or []
             referenced_record_ids.update(record_id for record_id in granted if isinstance(record_id, str))
+        background_event_record_ids = {
+            event.get("subject", {}).get("record_id")
+            for event in events
+            if event.get("advancement", {}).get("kind") in {
+                "background_sphere_acquisition",
+                "background_talent_acquisition",
+            }
+            and isinstance(event.get("subject", {}).get("record_id"), str)
+        }
         authority_record_ids = {
             record_id
             for record_id in referenced_record_ids
-            if record_id.startswith(("METHOD-", "tianxia.path.", "tianxia.background_"))
+            if record_id.startswith(("METHOD-", "tianxia.path.", "tianxia.background.", "tianxia.background_", "tianxia.origin_insight."))
+            or record_id in background_event_record_ids
         }
         records: dict[str, dict[str, Any]] = {}
         locked_record_json: dict[str, str] = {}
@@ -260,11 +270,16 @@ class ProjectionService:
             ):
                 locked_record_json[row["record_id"]] = row["record_json"]
                 if row["record_id"] in referenced_record_ids:
-                    record = (
-                        self.projects._resolve_locked_record_after_proof(conn, project_id, row["record_id"])
-                        if authority_proof_verified and row["record_id"] in authority_record_ids
-                        else json.loads(row["record_json"])
-                    )
+                    if authority_proof_verified and row["record_id"] in background_event_record_ids:
+                        record = self.projects._resolve_project_locked_background_content_after_proof(
+                            conn, project_id, row["record_id"]
+                        ) or self.projects._resolve_locked_record_after_proof(conn, project_id, row["record_id"])
+                    else:
+                        record = (
+                            self.projects._resolve_locked_record_after_proof(conn, project_id, row["record_id"])
+                            if authority_proof_verified and row["record_id"] in authority_record_ids
+                            else json.loads(row["record_json"])
+                        )
                     records[row["record_id"]] = record
                     if authority_proof_verified and row["record_id"] in authority_record_ids:
                         locked_record_json[row["record_id"]] = canonical_json(record)
@@ -274,11 +289,16 @@ class ProjectionService:
             # those deterministic projections; never make the projector a live
             # catalog lookup boundary.
             for record_id in sorted(referenced_record_ids - records.keys()):
-                projected = (
-                    self.projects._resolve_locked_record_after_proof(conn, project_id, record_id)
-                    if authority_proof_verified
-                    else self.projects._resolve_locked_record(conn, project_id, record_id)
-                )
+                if authority_proof_verified and record_id in background_event_record_ids:
+                    projected = self.projects._resolve_project_locked_background_content_after_proof(
+                        conn, project_id, record_id
+                    ) or self.projects._resolve_locked_record_after_proof(conn, project_id, record_id)
+                else:
+                    projected = (
+                        self.projects._resolve_locked_record_after_proof(conn, project_id, record_id)
+                        if authority_proof_verified
+                        else self.projects._resolve_locked_record(conn, project_id, record_id)
+                    )
                 if projected is not None:
                     records[record_id] = projected
                     locked_record_json[record_id] = canonical_json(projected)

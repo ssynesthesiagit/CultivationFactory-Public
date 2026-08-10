@@ -26,6 +26,11 @@ def compile_once_stage1_first(
     """
 
     choice_snapshot = self._require_frozen_choice_snapshot(run)
+    # Keep the stage1-first adapter behaviorally identical to the central
+    # compiler: descriptive server-owned fields are materialized in the
+    # scratch database before Stage 1/Stage 2 outputs are compared with live
+    # finalization.
+    plan = self._execution_descriptive_fields(run, plan)
     with _service.tempfile.TemporaryDirectory(
         prefix=f"cg1-scratch-{index}-",
         ignore_cleanup_errors=True,
@@ -52,6 +57,12 @@ def compile_once_stage1_first(
         scratch_db.migrate()
         services = self._scratch_services(scratch_db)
         stage1 = services["stage1"]
+        self._materialize_descriptive_fields(
+            run,
+            plan,
+            scratch_db,
+            phase="scratch_compile",
+        )
         if accepted_final_plan is not None:
             self._materialize_delegated_final_grant_plan(
                 run,
@@ -121,6 +132,7 @@ def compile_once_stage1_first(
                 run["project_id"],
                 output_root=root / "release",
                 register=False,
+                output_profile=deepcopy(plan.get("output_profile") or {}),
             )
             authoring = release["factory_authoring"]
             gm = release["command5"]
@@ -190,7 +202,7 @@ def compile_once_stage1_first(
                 },
             }
         identities = {
-            key: _service.sha256_json(self._identity_payload(value))
+            key: _service.sha256_json(self._identity_payload(value, _surface=key))
             for key, value in identity_artifacts.items()
             if value is not None
         }

@@ -12,7 +12,7 @@ import zipfile
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from app.core import Database, FoundryError, canonical_json, sha256_bytes, sha256_file, utcnow
+from app.core import Database, FoundryError, canonical_json, sha256_bytes, sha256_file, sha256_json, utcnow
 from project_store.service import ProjectStore
 from contracts.canonical import canonical_project_hash
 from product_bootstrap import ProductReadinessService
@@ -68,12 +68,108 @@ def _first_mapping_with_key(value: Any, key: str) -> dict[str, Any] | None:
 
 def _authoritative_display_name(project: dict[str, Any]) -> str | None:
     for lock in project.get("user_locks") or []:
-        if isinstance(lock, dict) and lock.get("field") == "character.identity.display_name" and str(lock.get("value") or "").strip():
-            return str(lock["value"]).strip()
+        if not isinstance(lock, dict) or lock.get("field") not in {"character.identity.display_name", "character.identity.final_display_name"}:
+            continue
+        raw = lock.get("value")
+        if isinstance(raw, dict):
+            raw = raw.get("value")
+        if str(raw or "").strip():
+            return str(raw).strip()
     identity = project.get("identity") or project.get("character_identity") or {}
     if isinstance(identity, dict) and str(identity.get("display_name") or "").strip():
         return str(identity["display_name"]).strip()
     return None
+
+
+def _authoritative_concept(project: dict[str, Any]) -> str | None:
+    for lock in project.get("user_locks") or []:
+        if not isinstance(lock, dict) or lock.get("field") != "character.identity.final_concept":
+            continue
+        raw = lock.get("value")
+        if isinstance(raw, dict):
+            raw = raw.get("value")
+        if str(raw or "").strip():
+            return str(raw).strip()
+    return None
+
+
+def _first_present(mapping: Any, keys: tuple[str, ...]) -> tuple[bool, Any]:
+    if not isinstance(mapping, dict):
+        return False, None
+    for key in keys:
+        if key in mapping:
+            return True, copy.deepcopy(mapping[key])
+    return False, None
+
+
+def _package_combat_readiness(
+    audit: dict[str, Any],
+    *,
+    resource_contract: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Return package-derived combat/setup fields without truthiness fallback.
+
+    The readiness document is authoritative when it explicitly contains a
+    field, including ``False`` or an empty object.  Manifest aliases are used
+    only when the readiness document omits that field.  Defaults are explicit
+    pre-encounter/not-claimed states, never inferred combat capability.
+    """
+    readiness = audit.get("readiness") if isinstance(audit.get("readiness"), dict) else {}
+    manifest = audit.get("manifest") if isinstance(audit.get("manifest"), dict) else {}
+    resources = {
+        str(row.get("resource_id"))
+        for row in (resource_contract or {}).get("resources") or []
+        if isinstance(row, dict) and row.get("resource_id")
+    }
+
+    def value(name: str, *aliases: str, default: Any = None) -> Any:
+        found, result = _first_present(readiness, (name, *aliases))
+        if found:
+            return result
+        found, result = _first_present(manifest, (name, *aliases))
+        if found:
+            return result
+        return copy.deepcopy(default)
+
+    qi_required = value(
+        "current_qi_required",
+        "qi_current_required",
+        default="resource:core.qi" in resources,
+    )
+    martial_focus_required = value(
+        "current_martial_focus_required",
+        "martial_focus_current_required",
+        default="resource:core.martial_focus" in resources,
+    )
+    current_requirements = value(
+        "current_resource_requirements",
+        "current_resources_required",
+        "resource_initialization_requirements",
+        default={
+            "current_qi_required": qi_required,
+            "current_martial_focus_required": martial_focus_required,
+        },
+    )
+    return {
+        "combat": value("combat", "combat_readiness", default="NOT_ATTEMPTED"),
+        "combat_execution": value("combat_execution", default="NOT_CLAIMED"),
+        "combat_runtime": value("combat_runtime", "combat_runtime_readiness", default="NOT_CLAIMED"),
+        "combat_sheet": value("combat_sheet", "combat_sheet_readiness", default="NOT_CLAIMED"),
+        "combat_ready_semantics": value("combat_ready_semantics", default="NOT_CLAIMED"),
+        "encounter": value("encounter", default="NOT_ATTEMPTED"),
+        "controller_selection": value("controller_selection", default="NOT_ATTEMPTED"),
+        "encounter_setup_required": value("encounter_setup_required", default=True),
+        "current_resource_requirements": current_requirements,
+        "current_qi_required": qi_required,
+        "current_martial_focus_required": martial_focus_required,
+        "opponent_team_completion_required": value("opponent_team_completion_required", default=True),
+        "battlefield_choice": value("battlefield_choice", "battlefield_owner_choice", default="NOT_ATTEMPTED"),
+        "battlefield_owner_choice_committed": value("battlefield_owner_choice_committed", default=False),
+        "token_placement": value("token_placement", "token_placement_required", default="NOT_ATTEMPTED"),
+        "token_placement_committed": value("token_placement_committed", "tokens_placed", default=False),
+        "initiative": value("initiative", "initiative_method", default="NOT_ATTEMPTED"),
+        "initiative_attempted": value("initiative_attempted", default=False),
+    }
 
 
 def _project_non_sphere_state(project_doc: dict[str, Any], non_sphere_doc: dict[str, Any] | None) -> dict[str, Any] | None:
@@ -89,6 +185,7 @@ def _project_model_overlay(model: dict[str, Any], project_doc: dict[str, Any], n
     out = copy.deepcopy(model)
     state = _project_non_sphere_state(project_doc, non_sphere_doc)
     project_name = _authoritative_display_name(project_doc)
+    project_concept = _authoritative_concept(project_doc)
     candidate_name = str((out.get("identity") or {}).get("display_name") or "").strip()
     if project_name and candidate_name and project_name != candidate_name:
         raise FoundryError(
@@ -98,6 +195,8 @@ def _project_model_overlay(model: dict[str, Any], project_doc: dict[str, Any], n
         )
     if project_name:
         out.setdefault("identity", {})["display_name"] = project_name
+    if project_concept:
+        out.setdefault("identity", {})["concept"] = project_concept
     if not state:
         return out
 
@@ -276,7 +375,9 @@ class PortableCharacterPackageService:
             missing = sorted(required - set(zf.namelist()))
             if missing:
                 raise FoundryError("PORTABLE_CHARACTER_PACKAGE_INCOMPLETE", "The portable Character ZIP is missing required members.", details={"missing": missing})
-            lines = zf.read("SHA256SUMS.txt").decode("utf-8").splitlines()
+            checksum_manifest_bytes = zf.read("SHA256SUMS.txt")
+            checksum_manifest_sha256 = sha256_bytes(checksum_manifest_bytes)
+            lines = checksum_manifest_bytes.decode("utf-8").splitlines()
             declared: dict[str, str] = {}
             for line in lines:
                 if not line.strip():
@@ -292,6 +393,22 @@ class PortableCharacterPackageService:
                 actual = sha256_bytes(zf.read(member))
                 if actual != expected:
                     raise FoundryError("PORTABLE_CHARACTER_MEMBER_HASH_MISMATCH", "A portable package member failed checksum validation.", details={"member": member, "expected": expected, "actual": actual})
+            member_inventory = []
+            for info in sorted(zf.infolist(), key=lambda item: item.filename):
+                if info.is_dir():
+                    continue
+                member = info.filename.replace("\\", "/")
+                payload = zf.read(info)
+                member_inventory.append(
+                    {
+                        "name": member,
+                        "bytes": info.file_size,
+                        "compressed_bytes": info.compress_size,
+                        "compression": info.compress_type,
+                        "crc32": f"{info.CRC & 0xFFFFFFFF:08x}",
+                        "sha256": sha256_bytes(payload),
+                    }
+                )
             manifest = json.loads(zf.read("PACKAGE_MANIFEST.json"))
             readiness = json.loads(zf.read("READINESS.json"))
             if manifest.get("schema_version") != PORTABLE_SCHEMA:
@@ -344,6 +461,19 @@ class PortableCharacterPackageService:
         return {
             "valid": True, "path": str(path), "sha256": sha256_file(path), "bytes": path.stat().st_size,
             "entry_count": len(names), "expanded_bytes": total, "checksum_count": len(declared),
+            "member_inventory": member_inventory,
+            "member_inventory_sha256": sha256_json(member_inventory),
+            "checksum_manifest": {
+                "path": "SHA256SUMS.txt",
+                "sha256": checksum_manifest_sha256,
+                "covered_members": sorted(declared),
+                "coverage_status": "EXACT",
+            },
+            "crc_validation": {
+                "status": "VALID",
+                "member_count": len(member_inventory),
+                "failed_member": None,
+            },
             "manifest": manifest, "readiness": readiness,
         }
 
@@ -372,7 +502,9 @@ class PortableCharacterPackageService:
             candidate_manifest = json.loads(zf.read("PACKAGE_MANIFEST.json")) if "PACKAGE_MANIFEST.json" in zf.namelist() else {}
             files = {i.filename: zf.read(i.filename) for i in zf.infolist() if not i.is_dir() and i.filename not in {"PACKAGE_MANIFEST.json", "SHA256SUMS.txt"}}
             legacy_name = LEGACY_GM_MODEL_NAME if LEGACY_GM_MODEL_NAME in zf.namelist() else GM_MODEL_NAME
-            original_model = json.loads(zf.read(legacy_name)); original_view = json.loads(zf.read(GM_VIEW_NAME))
+            command5_model_bytes = zf.read(legacy_name)
+            command5_view_bytes = zf.read(GM_VIEW_NAME)
+            original_model = json.loads(command5_model_bytes); original_view = json.loads(command5_view_bytes)
         with zipfile.ZipFile(project_export) as zf:
             project_manifest = json.loads(zf.read("manifest.json")); project_doc = json.loads(zf.read("project.json"))
             try:
@@ -387,7 +519,9 @@ class PortableCharacterPackageService:
                 "The completed character candidate belongs to a different Factory project. Select the Command-5 candidate produced by this project.",
                 details={"candidate_project_id": candidate_project_id, "project_export_project_id": export_project_id},
             )
-        files[f"source/C2B3_{GM_VIEW_NAME}"] = _canon(original_view)
+        source_model_member = f"source/C2B3_{GM_MODEL_NAME}"
+        source_view_member = f"source/C2B3_{GM_VIEW_NAME}"
+        files[source_view_member] = _canon(original_view)
         if owner_sheet_path is not None:
             if "Tianxia_Owner_Character_Sheet_v1.json" in files:
                 files["source/C2B3_Tianxia_Owner_Character_Sheet_v1.json"] = files["Tianxia_Owner_Character_Sheet_v1.json"]
@@ -411,8 +545,10 @@ class PortableCharacterPackageService:
             "content_lock_hash": project_manifest.get("content_lock_hash"),
             "typed_choice_snapshot_sha256": source_snapshot_hash,
         })
+        source_model_bytes = _canon(gm2_model)
         files[GM_MODEL_NAME] = _canon(gm2_model)
         files[GM_VIEW_NAME] = _canon(normalize_view(gm2_model))
+        files[source_model_member] = source_model_bytes
         files.pop(LEGACY_GM_MODEL_NAME, None)
         files[PROJECT_MEMBER] = project_export.read_bytes()
         projection_references: dict[str, str] = {}
@@ -421,13 +557,57 @@ class PortableCharacterPackageService:
             member = f"source/advancement_projection/{artifact_name}"
             files[member] = data
             projection_references[artifact_name] = sha256_bytes(data)
+        model_metadata = gm2_model.get("metadata") if isinstance(gm2_model.get("metadata"), dict) else {}
+        model_capability = gm2_model.get("capability_readiness") if isinstance(gm2_model.get("capability_readiness"), dict) else {}
+
+        def model_value(name: str, *aliases: str, default: Any = None) -> Any:
+            found, result = _first_present(model_capability, (name, *aliases))
+            if found:
+                return result
+            found, result = _first_present(model_metadata, (name, *aliases))
+            if found:
+                return result
+            return copy.deepcopy(default)
+
+        current_qi_required = model_value("current_qi_required", default=False)
+        current_martial_focus_required = model_value("current_martial_focus_required", default=False)
+        combat_fields = {
+            "combat": model_value("combat", default="NOT_ATTEMPTED"),
+            # Character Sheet and Command 5 both expose the execution route as
+            # not attempted; preserve that explicit source-backed status rather
+            # than replacing it with a generic omission marker.
+            "combat_execution": model_value("combat_execution", default="NOT_ATTEMPTED"),
+            "combat_runtime": model_value("combat_runtime", default="NOT_CLAIMED"),
+            "combat_sheet": model_value("combat_sheet", default="NOT_CLAIMED"),
+            "combat_ready_semantics": model_value("combat_ready_semantics", default="NOT_CLAIMED"),
+            "encounter": model_value("encounter", default="NOT_ATTEMPTED"),
+            "controller_selection": model_value("controller_selection", default="NOT_ATTEMPTED"),
+            "encounter_setup_required": model_value("encounter_setup_required", default=True),
+            "current_resource_requirements": model_value(
+                "current_resource_requirements",
+                "current_resources_required",
+                default={
+                    "current_qi_required": current_qi_required,
+                    "current_martial_focus_required": current_martial_focus_required,
+                },
+            ),
+            "current_qi_required": current_qi_required,
+            "current_martial_focus_required": current_martial_focus_required,
+            "opponent_team_completion_required": model_value("opponent_team_completion_required", default=True),
+            "battlefield_choice": model_value("battlefield_choice", default="NOT_ATTEMPTED"),
+            "battlefield_owner_choice_committed": model_value("battlefield_owner_choice_committed", default=False),
+            "token_placement": model_value("token_placement", default="NOT_ATTEMPTED"),
+            "token_placement_committed": model_value("token_placement_committed", default=False),
+            "initiative": model_value("initiative", default="NOT_ATTEMPTED"),
+            "initiative_attempted": model_value("initiative_attempted", default=False),
+        }
         readiness = {
             "schema_version": READINESS_SCHEMA,
             "advancement": "ADVANCEMENT_READY", "character_sheet": "CHARACTER_SHEET_READY",
             "gm_tactical_authoring": "COMPLETE", "character_gm_command4": "PASS", "character_gm_command5": "PASS",
             "command6": "COMMAND_6_CHARACTER_GM_SOURCE_CONSUMER_PASS", "gm_screen": "GM_SCREEN_SOURCE_CONSUMER_VERIFIED",
             "gm_export_available": True, "native_or_interactive_acceptance": "NOT_RUN",
-            "combat": "NOT_ATTEMPTED_OR_CAPABILITY_BLOCKED", "cpk1_schemas_registered": False,
+            **copy.deepcopy(combat_fields), "cpk1_schemas_registered": False,
         }
         files["READINESS.json"] = _canon(readiness)
         files["CONSUMER_VERIFICATION.json"] = _canon({
@@ -451,10 +631,22 @@ class PortableCharacterPackageService:
             "gm_model": {"path": GM_MODEL_NAME, "schema": "Tianxia_GM_Character_Model_v2", "schema_version": "2.0.0", "profile": "canonical_v2", "authoritative": True},
             "canonical_models": [GM_MODEL_NAME],
             "derived_display_models": [GM_VIEW_NAME],
-            "exact_source_models": [f"source/C2B3_{GM_VIEW_NAME}"],
+            "exact_source_models": [source_model_member, source_view_member],
+            "source_model_conversion": {
+                "schema_version": "TianxiaFoundry.GMSourceModelConversionEvidence.v1",
+                "conversion": "COMMAND5_GM_MODEL_TO_CANONICAL_V2",
+                "command5_model_member": legacy_name,
+                "command5_model_sha256": sha256_bytes(command5_model_bytes),
+                "command5_view_model_member": GM_VIEW_NAME,
+                "command5_view_model_sha256": sha256_bytes(command5_view_bytes),
+                "package_source_model_member": source_model_member,
+                "package_source_model_sha256": sha256_bytes(source_model_bytes),
+                "package_source_view_member": source_view_member,
+                "package_source_view_sha256": sha256_bytes(files[source_view_member]),
+            },
             "display_container_normalization": NORMALIZATION_SCHEMA,
             "advancement_projection_references": projection_references,
-            "native_or_interactive_acceptance": "NOT_RUN", "combat_execution": "NOT_ATTEMPTED",
+            "native_or_interactive_acceptance": "NOT_RUN", **copy.deepcopy(combat_fields),
             "created_at": project_doc.get("updated_at") or project_doc.get("created_at"), "files": [],
         }
         for name, data in sorted(files.items()):
@@ -531,6 +723,10 @@ class PortableCharacterPackageService:
             for row in (resource_contract.get("resources") or [])
             if isinstance(row, dict) and row.get("resource_id")
         }
+        combat_fields = _package_combat_readiness(
+            audit,
+            resource_contract=resource_contract,
+        )
         return {
             "status": "PORTABLE_CHARACTER_PREVIEW_READY" if can_import else "PORTABLE_CHARACTER_PREVIEW_BLOCKED",
             "valid": True,
@@ -556,19 +752,7 @@ class PortableCharacterPackageService:
                 "advancement": readiness.get("advancement"),
                 "character_sheet": readiness.get("character_sheet"),
                 "gm_screen": readiness.get("gm_screen"),
-                "combat": readiness.get("combat"),
-                "combat_sheet": readiness.get("combat_sheet") or manifest.get("combat_sheet_readiness"),
-                "combat_runtime": readiness.get("combat_runtime") or manifest.get("combat_runtime_readiness"),
-                "combat_ready_semantics": readiness.get("combat_ready_semantics") or manifest.get("combat_ready_semantics"),
-                "encounter": readiness.get("encounter") or manifest.get("encounter") or "NOT_ATTEMPTED",
-                "controller_selection": readiness.get("controller_selection") or manifest.get("controller_selection") or "NOT_ATTEMPTED",
-                "encounter_setup_required": True,
-                "current_qi_required": "resource:core.qi" in resources,
-                "current_martial_focus_required": "resource:core.martial_focus" in resources,
-                "opponent_team_completion_required": True,
-                "battlefield_owner_choice_committed": False,
-                "token_placement_committed": False,
-                "initiative_attempted": False,
+                **combat_fields,
             },
             "product_readiness": environment,
             "incoming_identity": expected,
@@ -701,19 +885,19 @@ class PortableCharacterPackageService:
                         details={"incoming": audit["sha256"], "installed": installed_sha, "pointer": existing_pointer.get("package_sha256")},
                         status_code=409,
                     )
-                package_readiness = audit.get("readiness") or {}
+                package_readiness = audit.get("readiness") if isinstance(audit.get("readiness"), dict) else {}
+                combat_fields = _package_combat_readiness(audit)
                 return {
                     "status": "ALREADY_INSTALLED_IDENTICAL", "imported": False, "project_id": project_id,
-                    "package_sha256": audit["sha256"], "identity": expected,
+                    "package_sha256": audit["sha256"], "package_path": str(installed.resolve()),
+                    "installed_audit": self.audit(installed), "identity": expected,
                     "readiness": {
                         "advancement": package_readiness.get("advancement"),
                         "character_sheet": package_readiness.get("character_sheet"),
                         "gm_screen": package_readiness.get("gm_screen"),
-                        "combat": package_readiness.get("combat"),
-                        "combat_runtime": package_readiness.get("combat_runtime"),
-                        "combat_ready_semantics": package_readiness.get("combat_ready_semantics"),
-                        "encounter": package_readiness.get("encounter", "NOT_ATTEMPTED"),
+                        **combat_fields,
                     },
+                    **combat_fields,
                 }
             raise FoundryError("PORTABLE_CHARACTER_PROJECT_ID_CONFLICT", "A different character already uses this project ID.", details={"existing": current_identity, "incoming": expected}, status_code=409)
         from vendor_adapter.service import FactoryAdapter
@@ -757,8 +941,9 @@ class PortableCharacterPackageService:
             raise FoundryError("PORTABLE_CHARACTER_SHEET_REBUILD_MISMATCH", "The clean Factory Character Sheet rebuild did not match the package.", details={"expected": expected_sheet_sha, "actual": actual_sheet_sha})
         install_root = self.db.settings.data_dir / "portable_characters" / project_id
         installed = install_root / "current.zip"
-        package_readiness = audit.get("readiness") or {}
-        combat_status = package_readiness.get("combat") or manifest.get("combat_readiness") or "NOT_ATTEMPTED"
+        package_readiness = audit.get("readiness") if isinstance(audit.get("readiness"), dict) else {}
+        combat_fields = _package_combat_readiness(audit)
+        combat_status = combat_fields["combat"]
         pointer = {
             "schema_version": "TianxiaFoundry.PortableCharacterVerificationPointer.v1",
             "project_id": project_id, "status": "GM_SCREEN_SOURCE_CONSUMER_VERIFIED",
@@ -768,32 +953,27 @@ class PortableCharacterPackageService:
             "consumer_status": "GM_SCREEN_SOURCE_CONSUMER_VERIFIED", "factory_import_status": "IMPORTED",
             "projection_id": projection.get("projection_id"), "projection_hashes": rebuilt,
             "character_sheet_sha256": actual_sheet_sha, "native_or_interactive_acceptance": "NOT_RUN",
-            "combat": combat_status,
-            "combat_runtime": package_readiness.get("combat_runtime") or manifest.get("combat_runtime_readiness"),
-            "combat_ready_semantics": package_readiness.get("combat_ready_semantics") or manifest.get("combat_ready_semantics"),
-            "combat_sheet": package_readiness.get("combat_sheet") or manifest.get("combat_sheet_readiness"),
-            "encounter": package_readiness.get("encounter") or manifest.get("encounter") or "NOT_ATTEMPTED",
-            "controller_selection": package_readiness.get("controller_selection") or manifest.get("controller_selection") or "NOT_ATTEMPTED",
+            **combat_fields,
             "cpk1_schemas_registered": bool(package_readiness.get("cpk1_schemas_registered", manifest.get("cpk1_schemas_registered", False))),
             "verified_at": utcnow(),
         }
         install_disposition = self._install_verified_package_atomic(
             project_id=project_id, package=package, pointer=pointer, expected_sha256=audit["sha256"]
         )
+        installed_audit = self.audit(installed)
         return {
             "status": "IMPORTED", "imported": True, "project_id": project_id, "package_sha256": audit["sha256"],
+            "package_path": str(installed.resolve()), "install_disposition": install_disposition,
             "project_import": imported, "projection": {"status": projection.get("status"), "projection_id": projection.get("projection_id"), "artifact_hashes": rebuilt},
             "character_sheet": {"status": sheet.get("build_status"), "sha256": actual_sheet_sha},
+            "installed_audit": installed_audit,
             "readiness": {
                 "advancement": package_readiness.get("advancement"),
                 "character_sheet": package_readiness.get("character_sheet"),
                 "gm_screen": package_readiness.get("gm_screen"),
-                "combat": combat_status,
-                "combat_runtime": package_readiness.get("combat_runtime") or manifest.get("combat_runtime_readiness"),
-                "combat_ready_semantics": package_readiness.get("combat_ready_semantics") or manifest.get("combat_ready_semantics"),
-                "encounter": package_readiness.get("encounter") or manifest.get("encounter") or "NOT_ATTEMPTED",
+                **combat_fields,
             },
-            "native_or_interactive_acceptance": "NOT_RUN", "combat": combat_status,
+            "native_or_interactive_acceptance": "NOT_RUN", **combat_fields,
         }
 
     def register_verified(self, project_id: str, *, package: Path, command6_report: dict[str, Any], consumer_report: dict[str, Any], factory_import_report: dict[str, Any]) -> dict[str, Any]:
@@ -811,9 +991,9 @@ class PortableCharacterPackageService:
             raise FoundryError("PORTABLE_CHARACTER_VERIFIED_PACKAGE_CONFLICT", "A different verified package already exists for this character.", status_code=409)
         if not target.exists():
             target.write_bytes(package.read_bytes())
-        package_readiness = audit.get("readiness") or {}
-        manifest = audit.get("manifest") or {}
-        combat_status = package_readiness.get("combat") or manifest.get("combat_readiness") or "NOT_ATTEMPTED"
+        package_readiness = audit.get("readiness") if isinstance(audit.get("readiness"), dict) else {}
+        manifest = audit.get("manifest") if isinstance(audit.get("manifest"), dict) else {}
+        combat_fields = _package_combat_readiness(audit)
         pointer = {
             "schema_version": "TianxiaFoundry.PortableCharacterVerificationPointer.v1",
             "project_id": project_id, "status": "GM_SCREEN_SOURCE_CONSUMER_VERIFIED",
@@ -821,12 +1001,7 @@ class PortableCharacterPackageService:
             "manifest_identity": {key: manifest.get(key) for key in ("project_revision", "event_head_hash", "replay_state_hash", "content_lock_hash", "source_command5_candidate_sha256", "typed_choice_snapshot_sha256")},
             "command6_status": command6_report.get("status"), "consumer_status": consumer_report.get("status"),
             "factory_import_status": factory_import_report.get("status"),
-            "native_or_interactive_acceptance": "NOT_RUN", "combat": combat_status,
-            "combat_runtime": package_readiness.get("combat_runtime") or manifest.get("combat_runtime_readiness"),
-            "combat_ready_semantics": package_readiness.get("combat_ready_semantics") or manifest.get("combat_ready_semantics"),
-            "combat_sheet": package_readiness.get("combat_sheet") or manifest.get("combat_sheet_readiness"),
-            "encounter": package_readiness.get("encounter") or manifest.get("encounter") or "NOT_ATTEMPTED",
-            "controller_selection": package_readiness.get("controller_selection") or manifest.get("controller_selection") or "NOT_ATTEMPTED",
+            "native_or_interactive_acceptance": "NOT_RUN", **combat_fields,
             "cpk1_schemas_registered": bool(package_readiness.get("cpk1_schemas_registered", manifest.get("cpk1_schemas_registered", False))),
             "verified_at": utcnow(),
         }

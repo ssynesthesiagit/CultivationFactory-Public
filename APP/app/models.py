@@ -53,6 +53,12 @@ class CharacterSheetCreateRequest(StrictModel):
     background_route_ids: dict[str, Any] = Field(default_factory=dict)
 
 
+class CharacterBuilderMethodCompatibilityRequest(StrictModel):
+    """Canonical Path requirements for the owner compatibility check."""
+
+    selected_path_ids: list[str] = Field(default_factory=list, max_length=3)
+
+
 class CanonicalCatalogChoiceLockRequest(StrictModel):
     acquired_sphere_ids: list[str]
     free_talent_grants: dict[str, str]
@@ -444,3 +450,13 @@ class CharacterCreationPreferenceRequest(StrictModel):
 
 class CharacterCreationReviseRequest(StrictModel):
     owner_notes: str = Field(default="", max_length=4000)
+
+
+class CharacterCreationEditBriefPrepareRequest(StrictModel):
+    owner_notes: str = Field(default="", max_length=4000)
+    brief: dict[str, Any] = Field(default_factory=dict)
+    user_locks: list[dict[str, Any]] = Field(default_factory=list, max_length=50)
+
+
+class CharacterCreationEditBriefSubmitRequest(StrictModel):
+    edit_id: str = Field(min_length=8, max_length=200)

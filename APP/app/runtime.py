@@ -27,4 +27,7 @@ def helper_python_executable() -> Path:
                 status_code=500,
             )
         return candidate
-    return Path(sys.executable).resolve()
+    # Preserve the active virtual-environment launcher.  Resolving the symlink
+    # turns ``.venv/bin/python`` into the system interpreter and drops bundled
+    # helper dependencies such as Playwright.
+    return Path(sys.executable)

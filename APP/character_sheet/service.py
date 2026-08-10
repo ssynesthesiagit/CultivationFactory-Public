@@ -577,6 +577,21 @@ class CharacterSheetService:
         core = deepcopy(ledger.get("core_stats") or {})
         background_origin = deepcopy(ledger.get("background_origin") or {})
         owner_locks = self._owner_lock_rows(project)
+        owner_lock_values = {
+            row.get("field"): row.get("value")
+            for row in owner_locks
+            if isinstance(row.get("field"), str)
+        }
+        final_display_name = owner_lock_values.get("character.identity.final_display_name")
+        final_concept = owner_lock_values.get("character.identity.final_concept")
+        if isinstance(final_display_name, dict):
+            final_display_name = final_display_name.get("value")
+        if isinstance(final_concept, dict):
+            final_concept = final_concept.get("value")
+        if isinstance(final_display_name, str) and final_display_name.strip():
+            character["name"] = final_display_name.strip()
+        if isinstance(final_concept, str) and final_concept.strip():
+            character["concept"] = final_concept.strip()
 
         title = character.get("title")
         title_status = character.get("title_status") or ("SELECTED" if title else "OPTIONAL_OMITTED_BY_OWNER")
@@ -1053,6 +1068,34 @@ class CharacterSheetService:
                     "Advancement projection eligibility is only a legacy Factory-authoring input signal, not GM export readiness.",
                 ]
 
+        # Combat remains a separate, explicitly bounded contract.  Expose the
+        # source-backed not-claimed/setup state so production release equality
+        # cannot mistake an omitted field for a matching value.  A verified
+        # portable runtime may override these fields only with values already
+        # present in its authenticated package pointer.
+        verified_combat = portable_verified if isinstance(portable_verified, dict) else {}
+        combat_readiness = {
+            "schema_version": "TianxiaFoundry.OwnerCharacterSheetCombatReadiness.v1",
+            "combat": readiness.get("combat"),
+            "combat_execution": verified_combat["combat_execution"] if "combat_execution" in verified_combat else "NOT_ATTEMPTED",
+            "combat_runtime": verified_combat["combat_runtime"] if "combat_runtime" in verified_combat else "NOT_CLAIMED",
+            "combat_sheet": verified_combat["combat_sheet"] if "combat_sheet" in verified_combat else "NOT_CLAIMED",
+            "combat_ready_semantics": verified_combat["combat_ready_semantics"] if "combat_ready_semantics" in verified_combat else "NOT_CLAIMED",
+            "encounter": verified_combat["encounter"] if "encounter" in verified_combat else "NOT_ATTEMPTED",
+            "controller_selection": verified_combat["controller_selection"] if "controller_selection" in verified_combat else "NOT_ATTEMPTED",
+            "encounter_setup_required": verified_combat["encounter_setup_required"] if "encounter_setup_required" in verified_combat else True,
+            "current_resource_requirements": verified_combat["current_resource_requirements"] if "current_resource_requirements" in verified_combat else {"current_qi_required": False, "current_martial_focus_required": False},
+            "current_qi_required": verified_combat["current_qi_required"] if "current_qi_required" in verified_combat else False,
+            "current_martial_focus_required": verified_combat["current_martial_focus_required"] if "current_martial_focus_required" in verified_combat else False,
+            "opponent_team_completion_required": verified_combat["opponent_team_completion_required"] if "opponent_team_completion_required" in verified_combat else True,
+            "battlefield_choice": verified_combat["battlefield_choice"] if "battlefield_choice" in verified_combat else "NOT_ATTEMPTED",
+            "battlefield_owner_choice_committed": verified_combat["battlefield_owner_choice_committed"] if "battlefield_owner_choice_committed" in verified_combat else False,
+            "token_placement": verified_combat["token_placement"] if "token_placement" in verified_combat else "NOT_ATTEMPTED",
+            "token_placement_committed": verified_combat["token_placement_committed"] if "token_placement_committed" in verified_combat else False,
+            "initiative": verified_combat["initiative"] if "initiative" in verified_combat else "NOT_ATTEMPTED",
+            "initiative_attempted": verified_combat["initiative_attempted"] if "initiative_attempted" in verified_combat else False,
+        }
+
         result = {
             "schema_version": "TianxiaFoundry.OwnerCharacterSheetServiceResponse.v2",
             "project_id": project_id,
@@ -1061,6 +1104,7 @@ class CharacterSheetService:
             "lifecycle": lifecycle,
             "build_status": build_status,
             "readiness": readiness,
+            "combat_readiness": combat_readiness,
             "plain_summary": status_copy,
             "identity": identity,
             "sheet_artifact": sheet_artifact,

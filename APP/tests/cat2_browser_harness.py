@@ -142,8 +142,8 @@ def _run_direct(*, root: Path, data: Path, output: Path, browser: str, screensho
         # Character Creator: automatic grants + required free grants + ordinary route.
         print("[cat2] creator", flush=True)
         page.get_by_role("button", name="Detailed Character Intake", exact=True).click()
-        print(f"[cat2] detailed clicked hidden={page.locator('#characterSheetPanel').get_attribute('hidden')}", flush=True)
-        page.locator("#characterSheetPanel").wait_for(state="visible", timeout=60000)
+        print(f"[cat2] detailed owner customization hidden={page.locator('#ownerCustomizationSection').get_attribute('hidden')}", flush=True)
+        page.locator("#ownerCustomizationSection").wait_for(state="visible", timeout=60000)
         print("[cat2] detailed visible", flush=True)
         page.fill("#guidedName", "CAT2 Chromium Owner Flow")
         page.fill("#guidedConcept", "Noncanonical browser fixture proving canonical catalog integration and preservation.")

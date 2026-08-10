@@ -540,10 +540,24 @@ class RulesCausalStage2Service:
             raise FoundryError("STAGE2_PROPOSAL_NOT_FOUND", "No Stage 2 proposal has that ID.", status_code=404)
         return row
 
-    def _record(self, conn, project_id: str, record_id: str | None, pointer: str, *, require_complete: bool = True) -> tuple[dict[str, Any] | None, list[dict[str, Any]]]:
+    def _record(
+        self,
+        conn,
+        project_id: str,
+        record_id: str | None,
+        pointer: str,
+        *,
+        require_complete: bool = True,
+        record_cache: dict[str, dict[str, Any] | None] | None = None,
+    ) -> tuple[dict[str, Any] | None, list[dict[str, Any]]]:
         if not record_id:
             return None, [_block("CATALOG_RECORD_ID_REQUIRED", pointer, "A published project-locked catalog record ID is required.")]
-        record = self.projects._resolve_locked_record_after_proof(conn, project_id, record_id)
+        if record_cache is not None and record_id in record_cache:
+            record = record_cache[record_id]
+        else:
+            record = self.projects._resolve_locked_record_after_proof(conn, project_id, record_id)
+            if record_cache is not None:
+                record_cache[record_id] = record
         if not record:
             return None, [_block("MISSING_OR_UNLOCKED_CATALOG_AUTHORITY", pointer, "The requested record is not present in the immutable project lock.", record_id=record_id)]
         if record.get("publication", {}).get("status") != "published":
@@ -803,6 +817,8 @@ class RulesCausalStage2Service:
         state: dict[str, Any],
         record: dict[str, Any],
         pointer: str,
+        *,
+        record_cache: dict[str, dict[str, Any] | None] | None = None,
     ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
         """Evaluate only typed prerequisite shapes; unknown shapes fail closed."""
         blockers: list[dict[str, Any]] = []
@@ -817,7 +833,13 @@ class RulesCausalStage2Service:
                 if not present:
                     blockers.append(_block("PUBLISHED_PREREQUISITE_UNMET", rel_pointer, "A published prerequisite is not present in the prior causal state.", record_id=record["record_id"], prerequisite=relation))
                     continue
-                prerequisite, issues = self._record(conn, project_id, target_id, rel_pointer + "/target_id")
+                prerequisite, issues = self._record(
+                    conn,
+                    project_id,
+                    target_id,
+                    rel_pointer + "/target_id",
+                    record_cache=record_cache,
+                )
                 blockers.extend(issues)
                 causal_event_id = state["record_event_ids"].get(target_id)
                 if prerequisite and not causal_event_id:
@@ -1017,10 +1039,19 @@ class RulesCausalStage2Service:
         }
         return result, [_binding(path, "path_hp_authority", state["record_event_ids"].get(path["record_id"]))], trace
 
-    def _recalculate_after_ability(self, conn, project_id: str, state: dict[str, Any], old_scores: dict[str, int]) -> tuple[dict[str, Any], dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
+    def _recalculate_after_ability(
+        self,
+        conn,
+        project_id: str,
+        state: dict[str, Any],
+        old_scores: dict[str, int],
+        *,
+        path_id: str | None = None,
+    ) -> tuple[dict[str, Any], dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
         if not state["paths"] or state["current_cl"] < 1:
             return state["hp"], state["resources"], [], {}
-        path = self.projects._resolve_locked_record_after_proof(conn, project_id, state["paths"][0])
+        selected_path_id = path_id if path_id in state["paths"] else state["paths"][0]
+        path = self.projects._resolve_locked_record_after_proof(conn, project_id, selected_path_id)
         cl = state["current_cl"]
         pb = _pb(cl)
         old_con = _ability_modifier(old_scores["CON"])
@@ -1030,7 +1061,7 @@ class RulesCausalStage2Service:
         hp_after["last_gain"] = int(state["hp"].get("last_gain", 0)) + (new_con - old_con) * cl
         resources_after, bindings, traces = self._resource_recalculation(conn, project_id, state, cl=cl, pb=pb, path=path, current_resources=state["resources"])
         bindings.append(_binding(path, "path_hp_authority", state["record_event_ids"].get(path["record_id"])))
-        return hp_after, resources_after, bindings, {"resource": traces, "hp_retroactive_con_delta": (new_con - old_con) * cl}
+        return hp_after, resources_after, bindings, {"resources": traces, "hp_retroactive_con_delta": (new_con - old_con) * cl}
 
     def _legacy_manual_entry_unreachable(self, conn, project_id: str, manual: dict[str, Any], state: dict[str, Any], pointer: str) -> tuple[dict[str, Any] | None, list[dict[str, Any]], list[dict[str, Any]]]:
         auth = _authority(manual)
@@ -1553,13 +1584,32 @@ class RulesCausalStage2Service:
         self.registry.validate(txn)
         return txn, [], [_binding(source, "training_source_access", access_event_id)], {"days": days, "dc": dc, "check_total": computed_check_total, "result": computed_result}
 
-    def _choice_event(self, *, conn, row, project: dict[str, Any], state: dict[str, Any], choice: dict[str, Any], index: int, sequence: int, previous_hash: str, generic_prefix: list[dict[str, Any]]) -> tuple[dict[str, Any] | None, dict[str, Any], list[dict[str, Any]]]:
+    def _choice_event(
+        self,
+        *,
+        conn,
+        row,
+        project: dict[str, Any],
+        state: dict[str, Any],
+        choice: dict[str, Any],
+        index: int,
+        sequence: int,
+        previous_hash: str,
+        generic_prefix: list[dict[str, Any]],
+        record_cache: dict[str, dict[str, Any] | None] | None = None,
+    ) -> tuple[dict[str, Any] | None, dict[str, Any], list[dict[str, Any]]]:
         pointer = f"/choices/{index}"
         kind = choice["kind"]
         blockers: list[dict[str, Any]] = []
         if kind not in HF1_KINDS:
             return None, state, [_block("UNKNOWN_STAGE2_EVENT_KIND", pointer + "/kind", "The event kind is not part of the HF1 advancement contract.", kind=kind)]
-        record, issues = self._record(conn, row["project_id"], choice.get("record_id"), pointer + "/record_id")
+        record, issues = self._record(
+            conn,
+            row["project_id"],
+            choice.get("record_id"),
+            pointer + "/record_id",
+            record_cache=record_cache,
+        )
         blockers.extend(issues)
         if not record:
             return None, state, blockers
@@ -1586,7 +1636,14 @@ class RulesCausalStage2Service:
                 allowed_parameters=sorted(KIND_PARAMETER_KEYS.get(kind, frozenset())),
             ))
         blockers.extend(self._stage2_authority(record, kind, choice["acquisition_channel"], pointer))
-        relation_blockers, relation_bindings = self._legality_relation_blockers(conn, row["project_id"], state, record, pointer)
+        relation_blockers, relation_bindings = self._legality_relation_blockers(
+            conn,
+            row["project_id"],
+            state,
+            record,
+            pointer,
+            record_cache=record_cache,
+        )
         blockers.extend(relation_blockers)
         blockers.extend(self._cardinality_blockers(state, kind, choice, pointer))
         insight_repeat_index: int | None = None
@@ -1671,7 +1728,13 @@ class RulesCausalStage2Service:
                     blockers.append(_block("ABILITY_SCORE_CAP_EXCEEDED", pointer, "A resulting ability score exceeds the published cap.", cap=cap, scores=new_scores))
                 next_state["ability_scores"] = new_scores
                 next_state["ability_modifiers"] = {a: _ability_modifier(v) for a, v in new_scores.items()}
-                hp_after, resources_after, extra_bindings, recalc_trace = self._recalculate_after_ability(conn, row["project_id"], next_state, state["ability_scores"])
+                hp_after, resources_after, extra_bindings, recalc_trace = self._recalculate_after_ability(
+                    conn,
+                    row["project_id"],
+                    next_state,
+                    state["ability_scores"],
+                    path_id=auth.get("path_id"),
+                )
                 bindings.extend(extra_bindings)
                 calculation["inputs"] = {"prior_scores": state["ability_scores"], "deltas": deltas, "rule": rule}
                 calculation["outputs"] = {"ability_scores": new_scores, "ability_modifiers": next_state["ability_modifiers"], "hp_after": hp_after, "resources_after": resources_after}
@@ -1697,7 +1760,13 @@ class RulesCausalStage2Service:
                     else:
                         next_state["ability_scores"] = new_scores
                         next_state["ability_modifiers"] = {a: _ability_modifier(v) for a, v in new_scores.items()}
-                        hp_after, resources_after, extra_bindings, recalc_trace = self._recalculate_after_ability(conn, row["project_id"], next_state, state["ability_scores"])
+                        hp_after, resources_after, extra_bindings, recalc_trace = self._recalculate_after_ability(
+                            conn,
+                            row["project_id"],
+                            next_state,
+                            state["ability_scores"],
+                            path_id=auth.get("path_id"),
+                        )
                         bindings.extend(extra_bindings)
                         calculation["inputs"] = {"prior_scores": state["ability_scores"], "ability": ability, "amount": amount, "rule": rule}
                         calculation["outputs"] = {"ability_scores": new_scores, "ability_modifiers": next_state["ability_modifiers"], "hp_after": hp_after, "resources_after": resources_after}
@@ -1748,7 +1817,52 @@ class RulesCausalStage2Service:
             if not state["ability_scores"]:
                 blockers.append(_block("ABILITY_AUTHORITY_REQUIRED_FOR_LEVEL", pointer, "A legal starting-score event is required before level calculation."))
             if not blockers:
-                path = self.projects._resolve_locked_record_after_proof(conn, row["project_id"], state["paths"][0])
+                feature_authority = _authority(record)
+                progression_path_id = feature_authority.get("path_id")
+                active_path_id = progression_path_id if progression_path_id in state["paths"] else state["paths"][0]
+                path = self.projects._resolve_locked_record_after_proof(conn, row["project_id"], active_path_id)
+                path_authority = _authority(path)
+                progression = (path_authority.get("progression_by_cl") or {}).get(str(cl)) or {}
+                automatic_feature_ids = [
+                    value for value in progression.get("feature_record_ids") or []
+                    if isinstance(value, str)
+                ]
+                if not automatic_feature_ids:
+                    blockers.append(_block(
+                        "PATH_PROGRESSION_ENTRY_MISSING",
+                        pointer,
+                        "The selected Path does not publish an exact automatic feature set for this CL.",
+                        path_id=path["record_id"],
+                        cl=cl,
+                    ))
+                if record["record_id"] not in automatic_feature_ids:
+                    blockers.append(_block(
+                        "PATH_PROGRESSION_FEATURE_NOT_AT_CL",
+                        pointer + "/record_id",
+                        "The level event representative is not one of the exact features published for this Path at this CL.",
+                        path_id=path["record_id"],
+                        cl=cl,
+                        record_id=record["record_id"],
+                        automatic_feature_record_ids=automatic_feature_ids,
+                    ))
+                automatic_feature_records: list[dict[str, Any]] = []
+                for feature_id in automatic_feature_ids:
+                    feature_record = self.projects._resolve_locked_record_after_proof(
+                        conn,
+                        row["project_id"],
+                        feature_id,
+                    )
+                    if not feature_record:
+                        blockers.append(_block(
+                            "PATH_PROGRESSION_FEATURE_NOT_LOCKED",
+                            pointer,
+                            "An automatic Path feature is absent from the immutable project snapshot.",
+                            path_id=path["record_id"],
+                            cl=cl,
+                            feature_id=feature_id,
+                        ))
+                        continue
+                    automatic_feature_records.append(feature_record)
                 pb = _pb(cl)
                 hp_after, hp_bindings, hp_trace = self._hp_calculation(state, path, cl, previous_total=int(state["hp"]["total"]), pb=pb)
                 resources_after, resource_bindings, resource_trace = self._resource_recalculation(conn, row["project_id"], state, cl=cl, pb=pb, path=path, current_resources=state["resources"])
@@ -1763,8 +1877,27 @@ class RulesCausalStage2Service:
                         bindings.append(_binding(ability_record, "ability_score_authority", state.get("ability_authority_event_id")))
                 calculation["formula"] = deepcopy(_authority(path).get("hp_level1_formula" if cl == 1 else "hp_later_formula"))
                 calculation["inputs"] = {"cl": cl, "pb": pb, "ability_scores": state["ability_scores"], "ability_modifiers": state["ability_modifiers"], "prior_hp_total": state["hp"]["total"], "prior_resources": state["resources"], "level_talent_capacity": free_capacity, "trained_choice_capacity": trained_capacity}
-                calculation["outputs"] = {"pb": pb, "hp_after": hp_after, "resources_after": resources_after, "level_talent_capacity": free_capacity, "trained_choice_capacity": trained_capacity}
+                calculation["outputs"] = {
+                    "pb": pb,
+                    "hp_after": hp_after,
+                    "resources_after": resources_after,
+                    "level_talent_capacity": free_capacity,
+                    "trained_choice_capacity": trained_capacity,
+                    "automatic_feature_record_ids": automatic_feature_ids,
+                    "automatic_feature_display_names": [
+                        feature.get("display_name") for feature in automatic_feature_records
+                    ],
+                    "path_progression_authority": {
+                        "path_id": path["record_id"],
+                        "cl": cl,
+                        "source": deepcopy((path_authority.get("path_index_source") or {})),
+                    },
+                }
                 calculation["trace"] = {"hp": hp_trace, "resources": resource_trace}
+                bindings.extend(
+                    _binding(feature, "path_automatic_feature_authority", state["record_event_ids"].get(feature["record_id"]))
+                    for feature in automatic_feature_records
+                )
                 updated_records = [path["record_id"]]
         elif kind in {"background_acquisition", "background_sphere_acquisition", "background_talent_acquisition", "origin_insight_acquisition", "sect_trial_sphere_acquisition", "sect_trial_talent_acquisition", "ai_bootstrap_sphere_acquisition", "ai_bootstrap_talent_acquisition", "level_talent_acquisition", "subpath_acquisition", "method_acquisition", "foundation_acquisition", "foundation_expression", "foundation_stage", "equipment_acquisition", "new_sphere_bonus_talent_acquisition", "training_source_access"}:
             if kind == "background_acquisition" and state["background"]:
@@ -2031,7 +2164,13 @@ class RulesCausalStage2Service:
         details = _canonical_event_details(kind, details)
         subject = {"record_id": record["record_id"], "content_type": record["content_type"], "display_name": record["display_name"]}
         bind = record["content_binding"]
-        last_generic_state = self.projects._reduce_events(generic_prefix, row["project_id"], conn, lock_already_proved=True)
+        last_generic_state = self.projects._reduce_events(
+            generic_prefix,
+            row["project_id"],
+            conn,
+            lock_already_proved=True,
+            record_cache=record_cache,
+        )
         event = {
             "schema_version": EVENT_V3,
             "event_id": event_id,
@@ -2057,7 +2196,13 @@ class RulesCausalStage2Service:
         }
         # Apply event using deterministic calculated outputs, then calculate generic state hashes.
         next_state = self._apply_event(state, event)
-        generic_after = self.projects._reduce_events(generic_prefix + [event], row["project_id"], conn, lock_already_proved=True)
+        generic_after = self.projects._reduce_events(
+            generic_prefix + [event],
+            row["project_id"],
+            conn,
+            lock_already_proved=True,
+            record_cache=record_cache,
+        )
         event["state_after_hash"] = sha256_json(generic_after)
         event["event_hash"] = canonical_event_hash(event)
         try:
@@ -2334,8 +2479,20 @@ class RulesCausalStage2Service:
         sequence = int(last[0]) + 1 if last else 1
         previous = last[1] if last else ZERO_HASH
         compiled: list[dict[str, Any]] = []
+        record_cache: dict[str, dict[str, Any] | None] = {}
         for index, choice in enumerate(choices):
-            event, next_state, issues = self._choice_event(conn=conn, row=row, project=project, state=state, choice=choice, index=index, sequence=sequence + index, previous_hash=previous, generic_prefix=generic_prefix)
+            event, next_state, issues = self._choice_event(
+                conn=conn,
+                row=row,
+                project=project,
+                state=state,
+                choice=choice,
+                index=index,
+                sequence=sequence + index,
+                previous_hash=previous,
+                generic_prefix=generic_prefix,
+                record_cache=record_cache,
+            )
             blockers.extend(issues)
             if event:
                 compiled.append(event)
@@ -2672,7 +2829,9 @@ class RulesCausalStage2Service:
             raise FoundryError(
                 "STAGE2_TERMINAL_RECEIPT_MECHANICAL_STATE_MISMATCH",
                 "The terminal mechanical state could not be reconstructed from the anchored event prefix.",
-                details={"error": str(exc)}, status_code=409,
+                details={
+                    "error": str(exc),
+                }, status_code=409,
             ) from exc
         if sha256_json(mechanical_state) != receipt["terminal_mechanical_state_hash"]:
             raise FoundryError(
@@ -3229,12 +3388,34 @@ class RulesCausalStage2Service:
             }
 
             resources: dict[str, Any] = {}
+            def resource_trace(event: dict[str, Any]) -> dict[str, Any]:
+                trace = event["advancement"]["calculation"].get("trace") or {}
+                # Early HF1 ability recalculation receipts used the singular
+                # compatibility key.  New events use the canonical plural key;
+                # both remain mechanically equivalent for replay.
+                return trace.get("resources") or trace.get("resource") or {}
+
             for rid, value in sorted(state["resources"].items()):
                 resource_event = next(
-                    event for event in reversed(current)
-                    if rid in ((event["advancement"]["calculation"].get("trace") or {}).get("resources") or {})
+                    (
+                        event
+                        for event in reversed(cumulative)
+                        if rid in resource_trace(event)
+                    ),
+                    None,
                 )
-                traces = resource_event["advancement"]["calculation"]["trace"]["resources"][rid]
+                if resource_event is None:
+                    raise FoundryError(
+                        "STAGE2_RESOURCE_TRACE_MISSING",
+                        "A visible resource lacks a causal calculation trace in the anchored event prefix.",
+                        details={
+                            "resource_id": rid,
+                            "character_cl": cl,
+                            "current_event_ids": [event["event_id"] for event in current],
+                            "cumulative_event_ids": [event["event_id"] for event in cumulative],
+                        },
+                    )
+                traces = resource_trace(resource_event)[rid]
                 path_trace = traces["path_base"]
                 key_ability = _formula_trace_ability(path_trace)
                 modifier_details: list[dict[str, Any]] = []

@@ -35,7 +35,10 @@ CATEGORY_CONFIG: tuple[dict[str, Any], ...] = (
     {"slot_id": "origin_insight_choice", "label": "Origin Insight", "kind": "single", "max": 1},
     {"slot_id": "method_choice", "label": "Cultivation Method", "kind": "single", "max": 1},
     {"slot_id": "foundation_choice", "label": "Foundation", "kind": "single", "max": 1},
-    {"slot_id": "sphere_priorities", "label": "Additional Spheres", "kind": "multiple", "max": 8},
+    # Planning preferences are ordered hints, not an acquisition budget.  The
+    # authoritative catalog and Stage 2 legal budget control actual Sphere
+    # acquisitions; this surface must not impose an arbitrary fixed count.
+    {"slot_id": "sphere_priorities", "label": "Additional Spheres", "kind": "multiple", "max": None},
     {"slot_id": "advancement_skeleton", "label": "Talent Priorities", "kind": "multiple", "max": None},
     {"slot_id": "insight_priorities", "label": "Additional Insights", "kind": "multiple", "max": 8},
     {"slot_id": "item_priorities", "label": "Items and Equipment", "kind": "multiple", "max": 8},
@@ -966,6 +969,63 @@ class CharacterBuilderService:
         self._OPTIONS_CACHE[cache_key] = deepcopy(result)
         return result
 
+    def method_compatibility(self, selected_path_ids: list[str] | None = None) -> dict[str, Any]:
+        """Return only validator-confirmed initial-creation Methods.
+
+        The browser must not reproduce the Method/Path predicate from visible
+        option metadata.  This operation deliberately delegates canonical Path
+        validation and compatibility to the same shared authority used by the
+        Builder and returns a bounded owner projection of the confirmed rows.
+        An empty requirement is legal: the Method route may choose the
+        advancing Paths later.
+        """
+        required = canonicalize_path_ids(selected_path_ids or [])
+        authority = NonSphereAuthorityService(self.db)
+        catalog = authority.method_catalog(initial_creation=True)
+        envelope = compatibility_envelope(required, catalog["records"])
+        records = {
+            row["method_id"]: row
+            for row in catalog["records"]
+            if isinstance(row, dict) and isinstance(row.get("method_id"), str)
+        }
+        display_names = dict(zip(
+            CANONICAL_PATH_IDS,
+            ("Body Refining", "Qi Cultivation", "Spirit Awakening"),
+        ))
+        confirmed = []
+        for method_id in envelope["compatible_method_ids"]:
+            row = records.get(method_id)
+            if not row or row.get("initial_creation_selectable") is not True:
+                continue
+            granted = list(envelope["method_granted_path_ids"].get(method_id) or [])
+            confirmed.append({
+                "method_id": method_id,
+                "name": row.get("name") or method_id,
+                "supported_path_ids": granted,
+                "supported_paths": [display_names.get(path_id, path_id) for path_id in granted],
+                "initial_creation_selectable": True,
+                "owner_description": str(
+                    ((row.get("method_planning") or {}).get("access_text") or "")
+                ).strip(),
+                "requirements": {
+                    "access_tier": (row.get("method_planning") or {}).get("access_tier"),
+                    "access_available": True,
+                },
+            })
+        return {
+            "schema": "TianxiaFoundry.CharacterBuilderMethodCompatibility.v1",
+            "selected_path_ids": required,
+            "selected_paths": [display_names.get(path_id, path_id) for path_id in required],
+            "compatible_methods": confirmed,
+            "authority": {
+                "schema": envelope["schema"],
+                "selection_semantics": envelope["selection_semantics"],
+                "predicate": envelope["method_compatibility_predicate"],
+                "level_zero_track_semantics": deepcopy(envelope["level_zero_track_semantics"]),
+                "authority_snapshot_sha256": authority.authority_snapshot_hash,
+            },
+        }
+
     @staticmethod
     def validate_point_buy(scores: dict[str, int | None] | None) -> dict[str, Any]:
         supplied = scores or {}
@@ -1244,8 +1304,6 @@ class CharacterBuilderService:
 
         sphere_ids = unique_ids(sphere_priority_ids, "Sphere")
         talent_ids = unique_ids(talent_priority_ids, "talent")
-        if len(sphere_ids) > 8:
-            raise FoundryError("CHARACTER_PLANNING_TOO_MANY_SPHERES", "Choose no more than eight Sphere planning priorities.", details={"maximum": 8, "actual": len(sphere_ids)})
         unavailable_spheres = [
             {"sphere_id": sphere_id, "name": spheres.get(sphere_id, {}).get("name") or sphere_id, "reason": spheres.get(sphere_id, {}).get("unavailable_reason") or "Not available in accepted canonical authority."}
             for sphere_id in sphere_ids

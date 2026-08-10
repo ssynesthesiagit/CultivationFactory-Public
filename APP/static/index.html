@@ -4,17 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tianxia Character Foundry — Dynamic Content</title>
-  <link rel="stylesheet" href="/static/styles.css?v=rec1-p1c-owner-workflow">
+  <link rel="stylesheet" href="/static/styles.css?v=rec1-p1cr3-owner-view">
 </head>
 <body>
-<header>
-  <div>
-    <h1>Tianxia Character Foundry</h1>
-    <p>Build and manage Tianxia characters. Start with the guided builder; advanced tools remain available when you need them.</p>
+<a class="skip-link" href="#ownerWorkspace">Skip to the active character-creation workspace</a>
+<header class="app-header">
+  <div class="brand-lockup">
+    <div class="brand-mark" aria-hidden="true">天</div>
+    <div>
+      <p class="eyebrow">Tianxia Character Factory</p>
+      <h1>Tianxia Character Foundry</h1>
+      <p class="header-subtitle">A local, server-validated character workspace.</p>
+    </div>
   </div>
-  <button id="refreshAll">Refresh</button>
+  <div class="header-actions">
+    <span id="ownerSaveState" class="save-state" role="status"><span class="status-dot"></span>Ready — changes use the Factory service</span>
+    <button id="diagnosticsToggle" class="quiet-button" type="button" aria-pressed="false" aria-controls="diagnosticsDrawer">Developer / Diagnostics</button>
+    <button id="refreshAll" class="quiet-button" type="button">Refresh</button>
+  </div>
 </header>
-<nav>
+<nav class="product-nav" aria-label="Product areas">
   <button data-screen="builder" data-builder-mode="quick" class="active">Create a Character</button>
   <button data-screen="builder" data-builder-mode="detailed">Detailed Character Intake</button>
   <button data-screen="projects">Character Sheets</button>
@@ -25,13 +34,32 @@
 </nav>
 <main>
   <section id="screen-builder" class="screen active">
+    <div id="ownerWorkspace" class="owner-builder-shell" tabindex="-1">
+    <div class="production-banner" role="note">
+      <strong>Production owner workspace</strong>
+      <span>Choices are checked by the local Factory. Review screens show proposals; only validated Finalize changes the saved character.</span>
+    </div>
     <div class="welcome">
       <p class="eyebrow">Guided character builder</p>
-      <h2>Create a new character</h2>
-      <p>Tell us who you want to make. The Factory will choose the installed rules and prepare the technical parts automatically.</p>
+      <h2>Shape a cultivator</h2>
+      <p>Move through eight focused screens. Keep owner decisions readable while the Factory protects the installed rules and lifecycle.</p>
     </div>
 
-    <ol class="progress" aria-label="Character creation progress">
+    <nav id="ownerStepNav" class="owner-step-nav" aria-label="Character creation screens">
+      <div class="owner-step-nav-heading"><strong id="ownerBuilderName">New character</strong><span id="ownerBuilderState" class="draft-pill">Draft</span></div>
+      <ol>
+        <li><button type="button" class="owner-step is-active" data-owner-step="1" aria-current="step"><span>1</span><strong>Character brief</strong><small>Identity and intent</small></button></li>
+        <li><button type="button" class="owner-step" data-owner-step="2"><span>2</span><strong>Paths &amp; Method</strong><small>Advancement support</small></button></li>
+        <li><button type="button" class="owner-step" data-owner-step="3"><span>3</span><strong>AI route</strong><small>Manual or API</small></button></li>
+        <li><button type="button" class="owner-step" data-owner-step="4"><span>4</span><strong>Proposal review</strong><small>Confirm and resolve</small></button></li>
+        <li><button type="button" class="owner-step" data-owner-step="5"><span>5</span><strong>Insights</strong><small>Browse by meaning</small></button></li>
+        <li><button type="button" class="owner-step" data-owner-step="6"><span>6</span><strong>Spheres &amp; Talents</strong><small>Plan the growth</small></button></li>
+        <li><button type="button" class="owner-step" data-owner-step="7"><span>7</span><strong>Character sheet</strong><small>Proposal or saved sheet</small></button></li>
+        <li><button type="button" class="owner-step" data-owner-step="8"><span>8</span><strong>Save &amp; export</strong><small>One legal next action</small></button></li>
+      </ol>
+    </nav>
+
+    <ol class="progress legacy-progress" aria-label="Legacy character creation progress">
       <li class="current clickable-step" id="builderProgress1" role="button" tabindex="0" title="Start a new character">1. Describe</li>
       <li id="builderProgress2">2. Choose Build Mode</li>
       <li id="builderProgress3">3. Review Complete Character</li>
@@ -43,7 +71,7 @@
       <button id="guidedSaveDraft" type="button">Save Draft</button>
     </section>
 
-    <section class="builder-card builder-intake" id="builderDescribe">
+    <section class="builder-card builder-intake owner-step-panel" id="builderDescribe" data-owner-panel="1">
       <div class="builder-card-heading">
         <div>
           <p class="sheet-kicker">Character intake</p>
@@ -76,11 +104,33 @@
         <label>Character concept <span class="optional">(optional — the AI may propose one)</span>
           <textarea id="guidedConcept" rows="5" placeholder="Describe their cultivation path, fighting style, personality, signature abilities, and anything you definitely want. Leave blank to delegate the concept."></textarea>
         </label>
-        <label>Source or inspiration <span class="optional">(optional)</span>
-          <input id="guidedSource" placeholder="A book, image, existing character, or leave blank">
-        </label>
+         <label>Source or inspiration <span class="optional">(optional)</span>
+           <input id="guidedSource" placeholder="A book, image, existing character, or leave blank">
+         </label>
 
-        <section id="characterSheetPanel" class="character-sheet" hidden aria-labelledby="characterSheetTitle">
+         <section id="ownerCustomizationSection" class="owner-detail-section" aria-labelledby="ownerCustomizationHeading">
+           <div class="owner-detail-heading">
+             <div>
+               <p class="sheet-kicker">Detail / Auto-choice scope</p>
+               <h3 id="ownerCustomizationHeading">Customize only what matters</h3>
+               <p>Auto leaves the Factory in charge of open choices. Customize Manually exposes the real point-buy controls and owner planning preferences; these values are locked into the request when you create the project.</p>
+             </div>
+             <span id="ownerDetailModeSummary" class="owner-status-pill">Auto choices</span>
+           </div>
+           <div class="owner-lock-summary" aria-label="Owner lock summary">
+             <div><span>Paths</span><strong id="ownerDetailPathSummary">0 of 3 locked</strong></div>
+             <div><span>Insights</span><strong id="ownerDetailInsightSummary">0 priorities</strong></div>
+             <div><span>Spheres</span><strong id="ownerDetailSphereSummary">0 priorities</strong></div>
+             <div><span>Factory lock</span><strong id="ownerDetailFreezeSummary">Editable before project creation</strong></div>
+           </div>
+           <p id="planningFreezeReason" class="planning-freeze-note" role="status" hidden>Edit Brief / Create New Request is required to change this frozen planning envelope.</p>
+           <details id="ownerCustomizationDetails" open>
+             <summary>Ability point-buy and owner planning details</summary>
+             <div id="ownerDetailHost"></div>
+           </details>
+         </section>
+
+         <section id="characterSheetPanel" class="character-sheet" hidden aria-labelledby="characterSheetTitle">
           <div class="sheet-titlebar">
             <div>
               <p class="sheet-kicker">Tianxia cultivation record</p>
@@ -154,9 +204,11 @@
                   <small id="sheetSphereHelp" class="availability-note"></small>
                 </div>
                 <div class="sphere-talent-workspace">
-                  <section class="sphere-selector-pane" aria-labelledby="sheetSpherePaneTitle">
-                    <h6 id="sheetSpherePaneTitle">Sphere Priorities</h6>
-                    <div class="choice-adder"><select id="sheetSphereAdd" data-multi-slot="sphere_priorities" aria-label="Sphere to add"></select><button type="button" data-add-slot="sphere_priorities">Add Sphere</button></div>
+                   <section class="sphere-selector-pane" aria-labelledby="sheetSpherePaneTitle">
+                     <h6 id="sheetSpherePaneTitle">Sphere Priorities</h6>
+                     <div id="sheetSphereBrowserCount" class="catalog-browser-count" role="status" aria-live="polite">Loading Sphere cards…</div>
+                     <div id="sheetSphereCatalog" class="sphere-card-browser" aria-live="polite" aria-label="Installed Sphere cards"></div>
+                     <div class="choice-adder"><select id="sheetSphereAdd" data-multi-slot="sphere_priorities" aria-label="Sphere to add"></select><button type="button" data-add-slot="sphere_priorities">Add Sphere</button></div>
                     <div id="sheetSphereList" class="sphere-card-list" data-chip-host="sphere_priorities" aria-live="polite"></div>
                   </section>
                   <section class="talent-selector-pane" aria-labelledby="sheetTalentPanelTitle">
@@ -183,13 +235,15 @@
               </article>
               <article class="choice-collection">
                 <h6>Insights</h6><p>Choose from the 542 ordinary Insights you want the Factory to consider. Background-Origin Insights are separate and are chosen above with the Background route.</p>
-                <div class="insight-browser-filters">
-                  <label>Category<select id="sheetInsightAuthorityFilter"><option value="">All ordinary categories</option><option value="general_cultivation_insights">General</option><option value="path_insights">Path</option><option value="sphere_insights">Sphere</option><option value="technique_forging_insights">Technique-Forging</option><option value="metatechnique_insights">Metatechnique</option><option value="companion_insights">Companion</option><option value="narrative_secret_insights">Narrative / Secret</option></select></label>
-                  <label id="sheetInsightHierarchyFilterWrap" hidden>Path group<select id="sheetInsightHierarchyFilter"><option value="">All Path groups</option></select></label>
-                  <label id="sheetInsightSphereFilterWrap" hidden>Sphere facet<select id="sheetInsightSphereFilter"><option value="">All Sphere facets</option></select></label>
-                  <label>Search Insights<input id="sheetInsightSearch" type="search" autocomplete="off" placeholder="Search by name or description"></label>
-                </div>
-                <div class="choice-adder"><select id="sheetInsightAdd" data-multi-slot="insight_priorities"></select><button type="button" data-add-slot="insight_priorities">Add</button></div>
+                 <div class="insight-browser-filters">
+                   <label>Category<select id="sheetInsightAuthorityFilter"><option value="">All ordinary categories</option><option value="general_cultivation_insights">General</option><option value="path_insights">Path</option><option value="sphere_insights">Sphere</option><option value="technique_forging_insights">Technique-Forging</option><option value="metatechnique_insights">Metatechnique</option><option value="companion_insights">Companion</option><option value="narrative_secret_insights">Narrative / Secret</option></select></label>
+                   <label id="sheetInsightHierarchyFilterWrap" hidden>Path group<select id="sheetInsightHierarchyFilter"><option value="">All Path groups</option></select></label>
+                   <label id="sheetInsightSphereFilterWrap" hidden>Sphere facet<select id="sheetInsightSphereFilter"><option value="">All Sphere facets</option></select></label>
+                   <label>Search Insights<input id="sheetInsightSearch" type="search" autocomplete="off" placeholder="Search by name or description"></label>
+                 </div>
+                 <div id="sheetInsightBrowserCount" class="catalog-browser-count" role="status" aria-live="polite">Loading ordinary Insight cards…</div>
+                 <div id="sheetInsightCards" class="insight-card-browser" aria-live="polite" aria-label="Ordinary Insight cards"></div>
+                 <div class="choice-adder"><select id="sheetInsightAdd" data-multi-slot="insight_priorities"></select><button type="button" data-add-slot="insight_priorities">Add</button></div>
                 <p id="sheetInsightAuthorityDetail" class="availability-note" role="status">Choose an Insight to see its category and requirements.</p>
                 <div id="sheetInsightList" class="choice-chips" data-chip-host="insight_priorities"></div>
                 <small id="sheetInsightHelp" class="availability-note"></small>
@@ -210,28 +264,66 @@
           <p id="sheetOptionsStatus" class="availability-note" role="status">Loading installed character choices…</p>
         </section>
 
-        <button id="guidedBuildButton" class="primary-action" type="submit">Continue to Build Mode</button>
+       <button id="guidedBriefContinue" class="primary-action large-owner-action" type="button">Continue to Paths &amp; Method <span aria-hidden="true">→</span></button>
       </form>
       <p class="plain-note">You do not need to choose content packs, rule IDs, or file versions. The Factory handles that setup.</p>
     </section>
 
-    <section class="builder-card" id="builderAI" hidden aria-labelledby="guidedModeHeading">
-      <p class="sheet-kicker">Step 2</p>
+     <section id="builderPaths" class="builder-card owner-step-panel owner-plan-panel" data-owner-panel="2" hidden>
+       <div class="owner-screen-heading"><div><p class="sheet-kicker">Step 2 of 8</p><h2>Choose the Paths this Method must advance</h2><p>All three tracks are visible at level 0. Select zero, one, two, or three requirements; the legal Method route chooses advancement when none are locked.</p></div><span id="ownerPathRequirementSummary" class="owner-status-pill">0–3 requirements</span></div>
+       <p class="planning-freeze-note" data-planning-freeze-note role="status" hidden>Edit Brief / Create New Request is required to change this frozen planning envelope.</p>
+       <div id="ownerPathCards" class="owner-path-card-grid" aria-label="Level-zero Path tracks"></div>
+      <div class="owner-plan-method-grid">
+        <div id="ownerCultivationHost"></div>
+        <aside class="owner-method-confirmation panel">
+          <p class="sheet-kicker">Validator-owned result</p>
+          <h3>Compatible Methods</h3>
+          <p>Only confirmed Method results appear here. Changing a Path requirement makes the previous result stale immediately.</p>
+          <button id="checkMethodCompatibility" class="secondary-action" type="button">Check Method compatibility</button>
+          <p id="ownerMethodCompatibilityStatus" class="friendly-status" role="status">Compatibility has not been checked.</p>
+          <div id="ownerCompatibleMethods" class="owner-compatible-methods" aria-live="polite"></div>
+        </aside>
+      </div>
+      <p id="guidedBuildButtonReason" class="disabled-reason">Continue creates the real project only after this screen is complete.</p>
+      <button id="guidedBuildButton" class="primary-action large-owner-action" form="guidedCreate" type="submit">Create project and choose AI route <span aria-hidden="true">→</span></button>
+      <button id="ownerPathsBack" class="text-action" type="button">← Back to brief</button>
+    </section>
+
+     <section id="builderInsights" class="builder-card owner-step-panel owner-catalog-panel" data-owner-panel="5" hidden>
+       <div class="owner-screen-heading"><div><p class="sheet-kicker">Step 5 of 8</p><h2>Browse Insights by meaning</h2><p>Use the ordinary catalog for planning priorities. Background-Origin records stay with Background creation and never appear as add-more choices.</p></div><span id="ownerInsightCount" class="owner-status-pill">Loading catalog</span></div>
+       <p class="planning-freeze-note" data-planning-freeze-note role="status" hidden>Edit Brief / Create New Request is required to change this frozen planning envelope.</p>
+       <div id="ownerInsightHost"></div>
+      <p class="catalog-integrity-note">Ordinary Insight authority remains separate from Background-Origin authority. Once the request freezes, planning changes require a new request.</p>
+      <div class="owner-screen-footer"><button class="text-action owner-step-back" data-owner-target="4" type="button">← Proposal review</button><button class="primary-action owner-step-next" data-owner-target="6" type="button">Review Spheres &amp; Talents <span aria-hidden="true">→</span></button></div>
+    </section>
+
+     <section id="builderSpheres" class="builder-card owner-step-panel owner-catalog-panel" data-owner-panel="6" hidden>
+       <div class="owner-screen-heading"><div><p class="sheet-kicker">Step 6 of 8</p><h2>Spheres explain what the character can do</h2><p>Player-facing automatic base-ability text comes first. Planning priorities, acquired Spheres, free Talents, and ordinary Talents remain distinct.</p></div><span id="ownerSphereCount" class="owner-status-pill">No priority cap</span></div>
+       <p class="planning-freeze-note" data-planning-freeze-note role="status" hidden>Edit Brief / Create New Request is required to change this frozen planning envelope.</p>
+       <div id="ownerSphereHost"></div>
+      <div class="owner-screen-footer"><button class="text-action owner-step-back" data-owner-target="5" type="button">← Insights</button><button class="primary-action owner-step-next" data-owner-target="7" type="button">Open character sheet <span aria-hidden="true">→</span></button></div>
+    </section>
+
+    <section class="builder-card owner-step-panel" id="builderAI" data-owner-panel="3" hidden aria-labelledby="guidedModeHeading">
+       <p class="sheet-kicker">Step 3 of 8</p>
       <h3 id="guidedModeHeading">Choose how to build the complete character</h3>
       <p>All three modes use the same accepted complete-character request, two isolated local builds, and the same authority gates.</p>
-      <fieldset class="build-mode-options" id="guidedModeChoices">
-        <legend>Build mode</legend>
-        <label class="build-mode-card"><input type="radio" name="guidedExecutionMode" value="MANUAL_CHAT" checked><span><strong>Manual Chat — no API key required</strong><small>Download one complete request ZIP, attach it to a compatible receiving chat, then load the returned complete response ZIP or JSON.</small></span></label>
-        <label class="build-mode-card"><input type="radio" name="guidedExecutionMode" value="STANDARD_API"><span><strong>API Provider — build a complete preview, then I approve</strong><small>Use the configured OpenAI-compatible Chat Completions API once, then stop for Finalize, Revise, or Cancel.</small></span></label>
-        <label class="build-mode-card"><input type="radio" name="guidedExecutionMode" value="AUTO_FINALIZE_WHEN_CLEAN"><span><strong>Auto-Finalize When Clean — finalize only when every gate is clean</strong><small>Warnings, uncertainties, fallbacks, stale authority, or blockers always return to review without canonical mutation.</small></span></label>
-      </fieldset>
-      <section id="guidedProviderSetup" class="sheet-section" aria-labelledby="guidedProviderHeading">
+       <div class="build-mode-options" id="guidedModeChoices" role="tablist" aria-label="AI routes">
+         <button id="guidedManualRouteTab" class="build-mode-card" type="button" role="tab" aria-selected="true" aria-controls="guidedManualTransfer" data-guided-route="MANUAL_CHAT" tabindex="0"><strong>Manual Chat — no API key required</strong><small>Download one complete request ZIP, attach it to a compatible receiving chat, then load the returned complete response ZIP or JSON.</small></button>
+         <button id="guidedProviderRouteTab" class="build-mode-card" type="button" role="tab" aria-selected="false" aria-controls="guidedProviderSetup" data-guided-route="STANDARD_API" tabindex="-1"><strong>API Provider — build a complete preview, then I approve</strong><small>Use the configured OpenAI-compatible Chat Completions API once, then stop for Finalize, Revise, or Cancel.</small></button>
+       </div>
+       <div class="route-mode-state" aria-hidden="true"><input id="guidedManualRouteInput" type="radio" name="guidedExecutionMode" value="MANUAL_CHAT" checked hidden><input id="guidedProviderRouteInput" type="radio" name="guidedExecutionMode" value="STANDARD_API" hidden></div>
+      <label class="auto-finalize-capability"><input id="guidedAutoFinalizeCapability" type="checkbox"><span><strong>Allow one-build Auto-Finalize after a clean candidate</strong><small>Optional capability, off by default. It is not a third route; Standard API remains the selected provider route.</small></span></label>
+       <section id="guidedProviderSetup" class="sheet-section" aria-labelledby="guidedProviderHeading" hidden>
         <div class="sheet-section-heading"><div><h4 id="guidedProviderHeading">API Provider setup — OpenAI-compatible Chat Completions API</h4></div></div>
         <p>Manual Chat remains available without a key. Choose a provider profile, save it, and run one explicit test. The protected key handling and local validation gates remain unchanged.</p>
         <div class="sheet-field-grid">
+          <details class="provider-advanced-disclosure span-2"><summary>Advanced provider routing</summary>
+          <div class="provider-advanced-grid">
           <label>Provider profile<select id="guidedProviderProfile"><option value="openai">OpenAI</option><option value="deepseek">DeepSeek (optional)</option><option value="custom">Custom OpenAI-compatible</option></select></label>
-          <label>Endpoint<input id="guidedProviderEndpoint" readonly aria-readonly="true" value="https://api.openai.com/v1/chat/completions"></label>
-          <label>Model<input id="guidedProviderModel" value="gpt-4o-mini" autocomplete="off"></label>
+          <label class="guided-provider-advanced">Endpoint<input id="guidedProviderEndpoint" readonly aria-readonly="true" value="https://api.openai.com/v1/chat/completions"></label>
+          <label class="guided-provider-advanced">Model<input id="guidedProviderModel" value="gpt-4o-mini" autocomplete="off"></label>
+          </div></details>
           <label><input id="guidedProviderEnabled" type="checkbox"> Enable API Provider</label>
           <label>Acknowledged by<input id="guidedProviderActor" autocomplete="off" placeholder="Owner name"></label>
         </div>
@@ -253,31 +345,38 @@
         <button id="guidedDownloadCompleteRequest" class="primary-action" type="button" disabled>Download Complete Request ZIP</button>
         <p id="guidedDownloadCompleteRequestStatus" class="availability-note" role="status" aria-live="polite"></p>
         <div class="numbered-action"><span>2</span><div><strong>Attach it to a compatible receiving chat.</strong><p>ChatGPT, ChatGPT Work, Codex, or another compatible chat may follow the enclosed response schema and return one complete response ZIP or JSON.</p></div></div>
-        <div class="numbered-action"><span>3</span><div><strong>Load the complete response.</strong><p>The Factory binds it to this exact request and runs two isolated scratch builds.</p></div></div>
-        <div id="guidedCompleteReplyDrop" class="reply-drop-zone" tabindex="0" role="button" aria-label="Drop complete character response ZIP or JSON here">
+         <div class="numbered-action"><span>3</span><div><strong>Load the complete response.</strong><p>The Factory binds it to this exact request and runs two isolated scratch builds.</p></div></div>
+         <div id="guidedImportTabs" class="production-import-tabs" role="tablist" aria-label="Response import method"><button id="guidedPasteTab" type="button" role="tab" aria-selected="true" aria-controls="guidedPasteImport">Paste JSON</button><button id="guidedFileTab" type="button" role="tab" aria-selected="false" aria-controls="guidedFileImport">Choose file or drop</button></div>
+          <div id="guidedFileImport">
+          <div id="guidedCompleteReplyDrop" class="reply-drop-zone" tabindex="0" role="button" aria-label="Drop complete character response ZIP or JSON here">
           <strong>Drop complete response ZIP or JSON here</strong><span>or choose a .zip, .json, .md, or .txt file</span>
           <button id="guidedChooseCompleteReply" type="button">Choose response file</button>
           <input id="guidedCompleteReplyFile" type="file" accept=".zip,.json,.md,.txt" hidden>
-        </div>
-        <p id="guidedCompleteReplyStatus" class="availability-note" aria-live="polite"></p>
-        <label class="friendly-label" for="guidedCompleteResponseText">Or paste the complete response JSON</label>
-        <textarea id="guidedCompleteResponseText" rows="10" spellcheck="false" placeholder="Paste one TianxiaFoundry.CharacterCreationPlan.v2 JSON object"></textarea>
-        <div class="response-source-controls" aria-label="Manual response source controls">
+          </div>
+          </div>
+         <p id="guidedCompleteReplyStatus" class="availability-note" aria-live="polite"></p>
+         <div id="guidedPasteImport">
+         <label class="friendly-label" for="guidedCompleteResponseText">Or paste the complete response JSON</label>
+         <textarea id="guidedCompleteResponseText" rows="10" spellcheck="false" placeholder="Paste one TianxiaFoundry.CharacterCreationPlan.v2 JSON object"></textarea>
+         </div>
+               <div class="response-source-controls" aria-label="Manual response source controls">
           <button id="guidedReplaceCompleteReply" type="button">Replace response source</button>
           <button id="guidedRemoveCompleteReply" type="button">Remove response source</button>
         </div>
         <p id="guidedResponseSourceState" class="response-source-state" role="status" aria-live="polite">Response source: none. Choose a file or paste a response.</p>
         <button id="guidedSubmitCompleteResponse" class="primary-action" type="button" disabled>Build Complete Candidate</button>
       </section>
-      <pre id="guidedBuildProgress" class="owner-readable-log" aria-live="polite">No complete-character build started.</pre>
+       <div id="guidedBuildProgress" class="owner-readable-log" aria-live="polite">No complete-character build started.</div>
       <details id="guidedDeveloperDiagnostics" class="developer-diagnostics"><summary>Developer / Diagnostics</summary><pre id="guidedDiagnosticsDetail">No technical diagnostics recorded.</pre></details>
     </section>
 
-    <section class="builder-card" id="builderReview" hidden aria-labelledby="guidedReviewHeading">
-      <p class="sheet-kicker">Step 3</p>
+    <section class="builder-card owner-step-panel" id="builderReview" data-owner-panel="4" hidden aria-labelledby="guidedReviewHeading">
+       <p class="sheet-kicker">Step 4 of 8</p>
       <h3 id="guidedReviewHeading">Review the complete compiled character</h3>
       <p>No canonical mutation has occurred. Review the locally compiled candidate, including acquired Spheres, free talents, automatic base abilities, ordinary talents, routes, and any exact blockers.</p>
       <div id="guidedCandidateSummary" class="candidate-review-summary" aria-live="polite"></div>
+      <div class="provenance-legend" aria-label="Proposal provenance legend"><span>Owner</span><span>AI proposed</span><span>Automatic</span><span>Needs owner decision</span></div>
+      <div id="ownerReviewGroups" class="owner-review-groups" aria-live="polite"></div>
       <section id="guidedDescriptiveFields" class="descriptive-review-panel" aria-labelledby="guidedDescriptiveHeading">
         <h4 id="guidedDescriptiveHeading">Character identity wording</h4>
         <p><strong>AI proposed</strong> wording is display/story content only. Accept it or edit it before Finalize; it does not change Paths, Method, Foundation, target CL, or catalog authority.</p>
@@ -291,16 +390,44 @@
         </div>
       </section>
       <p id="guidedNextAction" class="next-legal-action" aria-live="polite">Next legal action will appear after the candidate is reviewed.</p>
+      <section id="guidedRecoveryActions" class="recovery-action-panel" aria-labelledby="guidedRecoveryHeading">
+        <div>
+          <p class="sheet-kicker">Build recovery</p>
+          <h4 id="guidedRecoveryHeading">Choose one explicit next action</h4>
+          <p id="guidedRecoveryExplanation">These actions preserve the current request and attempt history unless you deliberately create a new brief.</p>
+        </div>
+        <div class="button-row recovery-action-buttons">
+          <button id="guidedReplaceResponse" type="button">Replace Response</button>
+          <button id="guidedRetryLocalBuild" type="button">Retry Local Build</button>
+          <button id="guidedEditBrief" type="button">Edit Brief / Create New Request</button>
+          <button id="guidedCancel" type="button">Cancel Build</button>
+        </div>
+        <details id="guidedAttemptHistoryDetails" class="attempt-history-details">
+          <summary>Attempt history</summary>
+          <div id="guidedAttemptHistory" class="attempt-history-list"></div>
+        </details>
+      </section>
       <details class="developer-diagnostics"><summary>Developer / Diagnostics: complete candidate and gate evidence</summary><pre id="guidedReviewDetail"></pre></details>
       <label class="friendly-label" for="guidedRevisionNotes">Revision notes <span class="optional">(optional)</span></label>
       <textarea id="guidedRevisionNotes" rows="4" placeholder="Describe what should change in the next complete-character request."></textarea>
       <div class="button-row">
         <button id="guidedFinalize" class="primary-action" type="button">Finalize Character</button>
-        <button id="guidedRevise" type="button">Revise</button>
-        <button id="guidedCancel" type="button">Cancel</button>
         <button id="guidedCopyErrorSummary" type="button">Copy error summary</button>
         <button id="guidedDownloadEvidence" type="button">Download build evidence JSON</button>
       </div>
+    </section>
+
+    <section id="builderSheet" class="builder-card owner-step-panel owner-sheet-preview-panel" data-owner-panel="7" hidden aria-labelledby="ownerSheetPreviewHeading">
+      <div class="owner-screen-heading"><div><p class="sheet-kicker" id="ownerSheetStateLabel">Step 7 of 8 · proposal preview</p><h2 id="ownerSheetPreviewHeading">Character sheet</h2><p id="ownerSheetPreviewIntro">Before Finalize, this is a noncanonical proposal preview derived from the server candidate.</p></div><span id="ownerSheetState" class="owner-status-pill">Pending compile</span></div>
+      <div id="ownerProductionSheet" class="owner-production-sheet" aria-live="polite"><p class="pending-copy">The Factory will show the proposal after a response is accepted.</p></div>
+      <div class="owner-screen-footer"><button class="text-action owner-step-back" data-owner-target="6" type="button">← Spheres &amp; Talents</button><button id="ownerSheetNext" class="primary-action" type="button">Save &amp; export <span aria-hidden="true">→</span></button></div>
+    </section>
+
+    <section id="builderExport" class="builder-card owner-step-panel owner-export-panel" data-owner-panel="8" hidden aria-labelledby="ownerExportHeading">
+      <div class="owner-screen-heading"><div><p class="sheet-kicker">Step 8 of 8</p><h2 id="ownerExportHeading">One clear next action</h2><p>The Factory exposes the next legal action. Advanced exports remain secondary and are unavailable until the real server state permits them.</p></div></div>
+      <article id="ownerNextActionCard" class="owner-next-action-card"><div class="next-action-number">1</div><div><p class="sheet-kicker">Next legal action</p><h3 id="ownerNextActionTitle">Describe a character first</h3><p id="ownerNextActionText">The next action will come from the active server lifecycle.</p><button id="ownerNextActionButton" class="primary-action" type="button">Return to active screen <span aria-hidden="true">→</span></button></div></article>
+      <details id="ownerAdvancedExports" class="owner-advanced-exports"><summary><strong>Advanced exports</strong><small>Backups, completed Character ZIP, GM package, and evidence</small></summary><div class="owner-export-grid"><button type="button" data-owner-export-kind="project_backup">Save project backup</button><button type="button" data-owner-export-kind="completed_character" disabled aria-describedby="ownerCompletedExportReason">Save completed Character ZIP</button><button type="button" data-owner-export-kind="gm_character" disabled aria-describedby="ownerGMExportReason">Save GM package</button><button type="button" data-owner-export-kind="chat_request">Save Chat request ZIP</button></div><p id="ownerCompletedExportReason" class="disabled-reason">Available only after validated Finalize.</p><p id="ownerGMExportReason" class="disabled-reason">Available only after the real GM export gate.</p><p id="ownerExportStatus" class="friendly-status" role="status">No export operation run.</p></details>
+      <div class="owner-screen-footer"><button class="text-action owner-step-back" data-owner-target="7" type="button">← Character sheet</button><button id="ownerExportOpenSheets" class="secondary-action" type="button">Open Character Sheets</button></div>
     </section>
 
     <section class="builder-card" id="builderDone" hidden aria-labelledby="guidedDoneHeading">
@@ -318,6 +445,7 @@
       </section>
 
     <p id="guidedStatus" class="friendly-status" role="status"></p>
+    </div>
   </section>
 
   <section id="screen-combat" class="screen" aria-labelledby="combatHeading">
@@ -914,8 +1042,14 @@
     </details>
   </section>
 </main>
+<aside id="diagnosticsDrawer" class="diagnostics-drawer" aria-hidden="true" aria-label="Developer and diagnostics panel" role="dialog" aria-modal="true" tabindex="-1">
+  <div class="drawer-head"><div><p class="eyebrow">Developer / Diagnostics</p><h2>Authority details</h2></div><button id="closeDiagnostics" class="icon-button" type="button" aria-label="Close diagnostics">×</button></div>
+  <p class="drawer-intro">Technical bindings, raw codes, source commitments, and lifecycle receipts stay here. Owner cards use the confirmed server projection.</p>
+  <div id="ownerDiagnosticsSummary" class="diagnostic-stack"><div><span>Current state</span><code id="diagnosticsLifecycleState">No active character run.</code></div><div><span>Method authority</span><code>Compatibility is returned by the Factory validator; the browser does not infer it.</code></div><div><span>Catalog authority</span><code id="diagnosticsCatalogState">Loading authenticated catalog state…</code></div><div><span>Technical details</span><code id="diagnosticsTechnicalState">Open Advanced Details on an existing product screen for raw receipts.</code></div></div>
+</aside>
+<div id="drawerScrim" class="drawer-scrim" hidden></div>
 <script src="/static/sphere_talent_logic.js?v=w5-p1r-primary-character-creation"></script>
 <script src="/static/complete_request_save.js?v=win1-p1r1-native-save-evidence"></script>
-<script src="/static/app.js?v=rec1-p1c-owner-workflow"></script>
+<script src="/static/app.js?v=rec1-p1cr3-owner-view"></script>
 </body>
 </html>

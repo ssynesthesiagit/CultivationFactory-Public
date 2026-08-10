@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import shlex
 import shutil
 import subprocess
 import sys
@@ -38,38 +39,121 @@ def _run(command: list[str], *, cwd: Path, timeout: int = 300) -> dict[str, Any]
     # front of PATH without modifying the copied vendor toolchain.
     interpreter = helper_python_executable()
     interpreter_dir = str(interpreter.parent)
+    runtime_shim_dir: Path | None = None
+    browser_runtime: dict[str, Any] = {
+        "kind": "none",
+        "runtime_kind": "none",
+        "requested_executable": os.environ.get("TIANXIA_BROWSER_EXECUTABLE"),
+        "resolved_executable": None,
+    }
+    requested_browser = os.environ.get("TIANXIA_BROWSER_EXECUTABLE")
+    if requested_browser:
+        requested_path = Path(requested_browser).expanduser().resolve()
+        browser_runtime.update(kind="explicit_executable", runtime_kind="explicit_executable")
+        if not requested_path.is_file() or not os.access(requested_path, os.X_OK):
+            return {
+                "command": command,
+                "cwd": str(cwd),
+                "exit_code": None,
+                "duration_seconds": round(time.monotonic() - started, 3),
+                "stdout": "",
+                "stderr": f"Explicit TIANXIA_BROWSER_EXECUTABLE is missing or not executable: {requested_path}",
+                "skipped": True,
+                "browser_runtime": browser_runtime,
+            }
     if os.name == "nt":
         python3_shim = interpreter.with_name("python3.exe")
         if not python3_shim.exists():
             shutil.copy2(interpreter, python3_shim)
+    else:
+        # The pinned vendor controller invokes nested helpers by the bare
+        # command name ``python3`` and its browser proof discovers Chromium
+        # only through PATH.  Keep those legacy entry points on the active
+        # runtime without modifying the pinned archive or falling back to a
+        # different interpreter/browser behind the caller's back.
+        runtime_shim_dir = Path(tempfile.mkdtemp(prefix="foundry-runtime-"))
+        python3_shim = runtime_shim_dir / "python3"
+        python3_shim.write_text(
+            f"#!/bin/sh\nexec {shlex.quote(str(interpreter))} \"$@\"\n",
+            encoding="utf-8",
+        )
+        python3_shim.chmod(0o755)
+        if requested_browser:
+            browser_path = Path(requested_browser).expanduser().resolve()
+            browser_runtime.update(kind="explicit_executable", runtime_kind="explicit_executable")
+            if browser_path.is_file() and os.access(browser_path, os.X_OK):
+                (runtime_shim_dir / "chromium").symlink_to(browser_path)
+                browser_runtime.update(kind="explicit_executable", resolved_executable=str(browser_path))
+            else:
+                result = {
+                    "command": command,
+                    "cwd": str(cwd),
+                    "exit_code": None,
+                    "duration_seconds": round(time.monotonic() - started, 3),
+                    "stdout": "",
+                    "stderr": f"Explicit TIANXIA_BROWSER_EXECUTABLE is missing or not executable: {browser_path}",
+                    "skipped": True,
+                    "browser_runtime": browser_runtime,
+                }
+                shutil.rmtree(runtime_shim_dir, ignore_errors=True)
+                return result
+        else:
+            from gm_export.exact_consumer_harness import _discover_browser_executable
+
+            resolved_browser = _discover_browser_executable()
+            if resolved_browser and Path(resolved_browser).is_file() and os.access(Path(resolved_browser), os.X_OK):
+                (runtime_shim_dir / "chromium").symlink_to(Path(resolved_browser))
+                browser_runtime.update(
+                    kind="discovered_executable",
+                    runtime_kind="discovered_executable",
+                    resolved_executable=str(Path(resolved_browser).resolve()),
+                )
     env = {
         **os.environ,
-        "PATH": interpreter_dir + os.pathsep + os.environ.get("PATH", ""),
+        "PATH": os.pathsep.join(
+            path for path in (
+                str(runtime_shim_dir) if runtime_shim_dir else None,
+                interpreter_dir,
+                os.environ.get("PATH", ""),
+            ) if path
+        ),
         "PYTHONUTF8": "1",
     }
+    application_root = Path(__file__).resolve().parents[1]
     runtime_shims = Path(__file__).resolve().parents[1] / "vendor_adapter" / "runtime_shims"
-    env["PYTHONPATH"] = str(runtime_shims) + os.pathsep + os.environ.get("PYTHONPATH", "")
-    browser = _windows_browser()
+    env["PYTHONPATH"] = os.pathsep.join(
+        path for path in (
+            str(application_root),
+            str(runtime_shims),
+            os.environ.get("PYTHONPATH", ""),
+        ) if path
+    )
+    browser = _windows_browser() if not os.environ.get("TIANXIA_BROWSER_EXECUTABLE") else None
     if browser:
         env["TIANXIA_BROWSER_EXECUTABLE"] = str(browser)
-    completed = subprocess.run(
-        command,
-        cwd=cwd,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        timeout=timeout,
-        env=env,
-    )
-    return {
-        "command": command,
-        "cwd": str(cwd),
-        "exit_code": completed.returncode,
-        "duration_seconds": round(time.monotonic() - started, 3),
-        "stdout": completed.stdout,
-        "stderr": completed.stderr,
-    }
+    try:
+        completed = subprocess.run(
+            command,
+            cwd=cwd,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=timeout,
+            env=env,
+        )
+        return {
+            "command": command,
+            "cwd": str(cwd),
+            "exit_code": completed.returncode,
+            "duration_seconds": round(time.monotonic() - started, 3),
+            "stdout": completed.stdout,
+            "stderr": completed.stderr,
+            "browser_runtime": browser_runtime,
+        }
+    finally:
+        if runtime_shim_dir is not None:
+            shutil.rmtree(runtime_shim_dir, ignore_errors=True)
 
 
 def _files_are_byte_identical(left: Path, right: Path) -> bool:

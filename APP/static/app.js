@@ -10,9 +10,18 @@ let guidedProjectId = null;
 let guidedProjectLifecycle = null;
 let guidedRun = null;
 let guidedCompleteResponseSource = {kind: "none", file: null};
+let guidedResponseSubmissionAction = "manual";
 let guidedRecovery = null;
 let ownerCharacterSheet = null;
 let lastGMExport = null;
+let guidedWizardStep = 1;
+let productionOwnerShellReady = false;
+let methodCompatibility = {key: null, state: "not_checked", result: null};
+let methodCompatibilityRequestSerial = 0;
+let guidedSelectedRoute = "MANUAL_CHAT";
+const INSIGHT_BROWSER_PAGE_SIZE = 24;
+const SPHERE_BROWSER_PAGE_SIZE = 36;
+const PLANNING_FREEZE_MESSAGE = "Edit Brief / Create New Request is required to change this frozen planning envelope.";
 const sphereTalentLogic = globalThis.TianxiaSphereTalentLogic;
 const pretty = value => JSON.stringify(value, null, 2);
 
@@ -60,21 +69,126 @@ document.querySelectorAll("nav button").forEach(btn => btn.addEventListener("cli
 }));
 
 function setGuidedStep(step) {
+  const normalized = Math.max(1, Math.min(8, Number(step) || 1));
+  guidedWizardStep = normalized;
+  if (productionOwnerShellReady && normalized >= 2 && normalized <= 6 && creationMode !== "detailed") setCreationMode("detailed");
   const panels = {
     1: document.getElementById("builderDescribe"),
-    2: document.getElementById("builderAI"),
-    3: document.getElementById("builderReview"),
-    4: document.getElementById("builderDone")
+    2: document.getElementById("builderPaths"),
+    3: document.getElementById("builderAI"),
+    4: document.getElementById("builderReview"),
+    5: document.getElementById("builderInsights"),
+    6: document.getElementById("builderSpheres"),
+    7: document.getElementById("builderSheet"),
+    8: document.getElementById("builderExport")
   };
-  Object.entries(panels).forEach(([number, panel]) => { panel.hidden = Number(number) !== step; });
+  Object.entries(panels).forEach(([number, panel]) => { if (panel) panel.hidden = Number(number) !== normalized; });
+  const store = document.getElementById("characterSheetPanel");
+  if (store) {
+    store.hidden = true;
+    store.dataset.ownerStage = String(normalized);
+  }
   for (let number = 1; number <= 4; number += 1) {
     const marker = document.getElementById(`builderProgress${number}`);
-    marker.classList.toggle("current", number === step);
-    marker.classList.toggle("complete", number < step);
+    if (!marker) continue;
+    marker.classList.toggle("current", number === normalized);
+    marker.classList.toggle("complete", number < normalized);
   }
-  const active = panels[step];
+  document.querySelectorAll("[data-owner-step]").forEach(button => {
+    const active = Number(button.dataset.ownerStep) === normalized;
+    button.classList.toggle("is-active", active);
+    if (active) button.setAttribute("aria-current", "step"); else button.removeAttribute("aria-current");
+  });
+  const active = panels[normalized];
   if (active) active.scrollIntoView({behavior: "smooth", block: "start"});
+  renderPlanningFreeze();
+  renderOwnerChrome();
+  renderOwnerNextAction();
 }
+
+function renderOwnerChrome(run = guidedRun) {
+  const identity = ownerDisplayIdentity(run);
+  const name = document.getElementById("ownerBuilderName");
+  const state = document.getElementById("ownerBuilderState");
+  const lifecycle = document.getElementById("diagnosticsLifecycleState");
+  const displayName = identity.name || document.getElementById("guidedName")?.value.trim() || (guidedProjectId ? "Unnamed character" : "New character");
+  const displayState = run?.owner_view?.display_state || {};
+  const stateLabel = run ? (displayState.label || friendlyLabel(run.status || "draft")) : (guidedProjectLifecycle?.display_label || "Draft");
+  if (name) name.textContent = displayName;
+  if (state) state.textContent = stateLabel;
+  if (lifecycle) lifecycle.textContent = run
+    ? `${stateLabel} · owner screen ${displayState.step || guidedWizardStep}`
+    : guidedProjectLifecycle?.plain_explanation || "No active character run.";
+}
+
+function prepareProductionOwnerShell() {
+  if (productionOwnerShellReady) return;
+  const panel = document.getElementById("characterSheetPanel");
+  const detailHost = document.getElementById("ownerDetailHost");
+  const cultivationHost = document.getElementById("ownerCultivationHost");
+  const pathHost = document.getElementById("ownerPathCards");
+  const insightHost = document.getElementById("ownerInsightHost");
+  const sphereHost = document.getElementById("ownerSphereHost");
+  if (!panel || !detailHost || !cultivationHost || !pathHost || !insightHost || !sphereHost) return;
+  const ability = panel.querySelector(".ability-section");
+  const cultivation = panel.querySelector('[aria-labelledby="cultivationHeading"]');
+  const growth = panel.querySelector('[aria-labelledby="growthHeading"]');
+  const pathChoices = panel.querySelector("#sheetPaths");
+  const insightCollection = panel.querySelector("#sheetInsightAdd")?.closest(".choice-collection");
+  const sphereCollection = panel.querySelector(".sphere-talent-collection");
+  const itemCollection = panel.querySelector("#sheetItemAdd")?.closest(".choice-collection");
+  if (cultivation) cultivationHost.appendChild(cultivation);
+  if (ability) detailHost.appendChild(ability);
+  if (pathChoices) pathHost.appendChild(pathChoices);
+  if (insightCollection) insightHost.appendChild(insightCollection);
+  if (sphereCollection) sphereHost.appendChild(sphereCollection);
+  if (itemCollection) sphereHost.appendChild(itemCollection);
+  if (growth && !growth.querySelector(".choice-collection")) growth.remove();
+  panel.hidden = true;
+  panel.classList.add("production-state-store");
+  productionOwnerShellReady = true;
+  renderPlanningFreeze();
+}
+
+prepareProductionOwnerShell();
+
+document.querySelectorAll("[data-owner-step]").forEach(button => button.addEventListener("click", () => setGuidedStep(button.dataset.ownerStep)));
+document.querySelectorAll("[data-owner-target]").forEach(button => button.addEventListener("click", () => setGuidedStep(button.dataset.ownerTarget)));
+
+const diagnosticsDrawer = document.getElementById("diagnosticsDrawer");
+const diagnosticsToggle = document.getElementById("diagnosticsToggle");
+const closeDiagnostics = document.getElementById("closeDiagnostics");
+const drawerScrim = document.getElementById("drawerScrim");
+let diagnosticsOpener = null;
+function diagnosticsFocusables() {
+  return diagnosticsDrawer ? Array.from(diagnosticsDrawer.querySelectorAll('button, [href], input, select, textarea, summary, [tabindex]:not([tabindex="-1"])')).filter(node => !node.disabled && node.offsetParent !== null) : [];
+}
+function setDiagnostics(open) {
+  if (!diagnosticsDrawer || !diagnosticsToggle || !drawerScrim) return;
+  diagnosticsDrawer.classList.toggle("is-open", open);
+  diagnosticsDrawer.setAttribute("aria-hidden", String(!open));
+  diagnosticsToggle.setAttribute("aria-pressed", String(open));
+  drawerScrim.hidden = !open;
+  if (open) {
+    diagnosticsOpener = document.activeElement;
+    requestAnimationFrame(() => (diagnosticsFocusables()[0] || diagnosticsDrawer).focus({preventScroll: true}));
+  } else {
+    requestAnimationFrame(() => diagnosticsOpener?.focus?.({preventScroll: true}));
+  }
+}
+diagnosticsToggle?.addEventListener("click", () => setDiagnostics(true));
+closeDiagnostics?.addEventListener("click", () => setDiagnostics(false));
+drawerScrim?.addEventListener("click", () => setDiagnostics(false));
+document.addEventListener("keydown", event => {
+  if (!diagnosticsDrawer?.classList.contains("is-open")) return;
+  if (event.key === "Escape") { event.preventDefault(); setDiagnostics(false); return; }
+  if (event.key !== "Tab") return;
+  const focusables = diagnosticsFocusables();
+  if (!focusables.length) { event.preventDefault(); diagnosticsDrawer.focus(); return; }
+  const first = focusables[0]; const last = focusables[focusables.length - 1];
+  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+});
 
 function setGuidedStatus(message, isError = false) {
   const status = document.getElementById("guidedStatus");
@@ -150,9 +264,39 @@ function recordGuidedDiagnostic(error, context = "") {
   host.textContent = pretty({context: context || "owner_action", code: diagnostic.code, message: diagnostic.message, details: diagnostic.details});
 }
 
+function ownerViewFor(run) {
+  return run?.owner_view && typeof run.owner_view === "object" ? run.owner_view : {};
+}
+
+function ownerDisplayIdentity(run) {
+  const owner = ownerViewFor(run);
+  const preview = run?.dry_run?.preview || {};
+  const identity = owner.identity || preview.identity?.identity || preview.identity || {};
+  return identity && typeof identity === "object" ? identity : {};
+}
+
+function ownerText(value, fallback = "Pending owner review") {
+  if (value === null || value === undefined || value === "") return fallback;
+  if (typeof value === "string" || typeof value === "number") return String(value);
+  return value.name || value.display_name || value.label || value.title || fallback;
+}
+
+function ownerCardLines(rows, fallback = "No validated owner-readable values are available yet.") {
+  if (!Array.isArray(rows) || !rows.length) return [fallback];
+  return rows.map(row => {
+    if (typeof row === "string") return row;
+    const name = ownerText(row?.name || row?.display_name, "Unnamed value");
+    const description = row?.description || row?.note;
+    const state = row?.state || row?.mode;
+    const attainment = row?.attainment !== undefined && row?.attainment !== null ? ` · attainment ${row.attainment}` : "";
+    return `${name}${state ? ` · ${friendlyLabel(state)}` : ""}${attainment}${description ? ` — ${description}` : ""}`;
+  });
+}
+
 function recordGuidedRunDiagnostics(run) {
   const host = document.getElementById("guidedDiagnosticsDetail");
   if (!host || !run) return;
+  const diagnostics = run.diagnostics || {};
   host.textContent = pretty({
     run_id: run.run_id,
     project_id: run.project_id,
@@ -164,12 +308,15 @@ function recordGuidedRunDiagnostics(run) {
     warnings: run.warnings || [],
     submission_error: run.submission_error || null,
     quality: run.quality || {},
-    validation: run.validation || {},
+    diagnostics,
   });
 }
 
 function resetGuidedBuilder() {
   guidedRun = null;
+  guidedResponseSubmissionAction = "manual";
+  methodCompatibilityRequestSerial += 1;
+  methodCompatibility = {key: methodCompatibilityKey([]), state: "not_checked", result: null};
   resetGuidedResponseSource();
   const response = document.getElementById("guidedCompleteResponseText");
   const fileStatus = document.getElementById("guidedCompleteReplyStatus");
@@ -196,13 +343,15 @@ function resetGuidedBuilder() {
   const submit = document.getElementById("guidedSubmitCompleteResponse");
   if (download) download.disabled = true;
   if (submit) submit.disabled = true;
-  const consent = document.getElementById("guidedAutoFinalizeConsent");
-  if (consent) consent.checked = false;
-  const defaultMode = document.querySelector('input[name="guidedExecutionMode"][value="MANUAL_CHAT"]');
-  if (defaultMode) defaultMode.checked = true;
+   const consent = document.getElementById("guidedAutoFinalizeConsent");
+   if (consent) consent.checked = false;
+   const capability = document.getElementById("guidedAutoFinalizeCapability");
+   if (capability) capability.checked = false;
+  setGuidedRoute("MANUAL_CHAT");
   updateGuidedModeUI();
   setGuidedStatus("");
-  setGuidedStep(1);
+   setGuidedStep(1);
+   renderOwnerMethodCompatibility();
 }
 
 async function startNewCharacter(mode = "quick") {
@@ -286,6 +435,80 @@ function categoryAvailabilityText(category) {
     : `${category.choices.length} verified choices available; lock up to ${maximum}.`;
 }
 
+function planningIsEditable() {
+  return !guidedProjectId;
+}
+
+function guardPlanningMutation() {
+  if (planningIsEditable()) return true;
+  restoreFrozenPlanningValues();
+  setGuidedStatus(PLANNING_FREEZE_MESSAGE, true);
+  renderPlanningFreeze();
+  return false;
+}
+
+function managePlanningDisabled(node, frozen) {
+  if (!node) return;
+  if (frozen) {
+    if (!Object.prototype.hasOwnProperty.call(node.dataset, "planningPriorDisabled")) {
+      node.dataset.planningPriorDisabled = node.disabled ? "true" : "false";
+      node.dataset.planningFrozenValue = node.value ?? "";
+      node.dataset.planningFrozenChecked = node.checked ? "true" : "false";
+    }
+    node.disabled = true;
+    node.setAttribute("aria-disabled", "true");
+  } else if (Object.prototype.hasOwnProperty.call(node.dataset, "planningPriorDisabled")) {
+    node.disabled = node.dataset.planningPriorDisabled === "true";
+    delete node.dataset.planningPriorDisabled;
+    node.removeAttribute("aria-disabled");
+  }
+}
+
+function restoreFrozenPlanningValues() {
+  document.querySelectorAll("[data-planning-prior-disabled]").forEach(node => {
+    if (Object.prototype.hasOwnProperty.call(node.dataset, "planningFrozenValue")) node.value = node.dataset.planningFrozenValue;
+    if (Object.prototype.hasOwnProperty.call(node.dataset, "planningFrozenChecked")) node.checked = node.dataset.planningFrozenChecked === "true";
+  });
+}
+
+function renderOwnerLockSummary() {
+  const pathCount = selectedSet("path_choice").size;
+  const insightCount = selectedSet("insight_priorities").size;
+  const sphereCount = selectedSet("sphere_priorities").size;
+  const values = {
+    ownerDetailPathSummary: `${pathCount} of 3 locked`,
+    ownerDetailInsightSummary: `${insightCount} priorit${insightCount === 1 ? "y" : "ies"}`,
+    ownerDetailSphereSummary: `${sphereCount} priorit${sphereCount === 1 ? "y" : "ies"}`,
+    ownerDetailFreezeSummary: planningIsEditable() ? "Editable before project creation" : "Frozen in server request",
+  };
+  for (const [id, text] of Object.entries(values)) {
+    const node = document.getElementById(id);
+    if (node) node.textContent = text;
+  }
+  const mode = document.getElementById("ownerDetailModeSummary");
+  if (mode) mode.textContent = creationMode === "detailed" ? "Manual details" : "Auto choices";
+}
+
+function renderPlanningFreeze() {
+  const frozen = !planningIsEditable();
+  const controls = [
+    ...document.querySelectorAll(
+      "#ownerDetailHost [data-ability], #ownerCultivationHost [data-sheet-slot], #ownerCultivationHost [data-ability], #ownerCultivationHost input[name='sheetMethodMode'], #ownerCultivationHost #sheetMethodRouteChoice, #ownerCultivationHost #sheetMethodLearningNote, #ownerInsightHost [data-multi-slot], #ownerSphereHost [data-multi-slot], #sheetPaths input, #sheetBackground, #sheetBackgroundSphere, #sheetBackgroundTalent, #sheetOriginInsight, #sheetFoundation, #sheetSubpath, #sheetMethod, #sheetMethodRouteChoice, #sheetMethodLearningNote, [data-add-slot]"
+    ),
+  ];
+  controls.forEach(node => managePlanningDisabled(node, frozen));
+  document.querySelectorAll("[data-planning-mutator]").forEach(button => managePlanningDisabled(button, frozen));
+  document.querySelectorAll("[data-planning-freeze-note], #planningFreezeReason").forEach(note => {
+    note.hidden = !frozen;
+    note.textContent = PLANNING_FREEZE_MESSAGE;
+  });
+  for (const id of ["guidedName", "guidedConcept", "guidedLevel", "guidedPower", "guidedSource", "guidedBriefContinue", "guidedBuildButton"]) {
+    managePlanningDisabled(document.getElementById(id), frozen);
+  }
+  document.querySelectorAll("#builderModeQuick, #builderModeDetailed").forEach(button => managePlanningDisabled(button, frozen));
+  renderOwnerLockSummary();
+}
+
 function renderGuidedPersistence() {
   const panel = document.getElementById("guidedPersistencePanel");
   const label = document.getElementById("guidedPersistenceLabel");
@@ -293,6 +516,7 @@ function renderGuidedPersistence() {
   const save = document.getElementById("guidedSaveDraft");
   if (!guidedProjectId || !guidedProjectLifecycle) {
     panel.hidden = true;
+    renderPlanningFreeze();
     return;
   }
   panel.hidden = false;
@@ -300,6 +524,7 @@ function renderGuidedPersistence() {
   explanation.textContent = guidedProjectLifecycle.plain_explanation || "This character is retained.";
   save.hidden = !guidedProjectLifecycle.is_temporary;
   save.disabled = !guidedProjectLifecycle.is_temporary;
+  renderPlanningFreeze();
 }
 
 async function discardGuidedTemporaryProject(reason = "owner_abandoned_or_started_over") {
@@ -329,13 +554,18 @@ async function discardGuidedTemporaryProject(reason = "owner_abandoned_or_starte
 function setCreationMode(mode) {
   creationMode = mode === "detailed" ? "detailed" : "quick";
   const detailed = creationMode === "detailed";
-  document.getElementById("characterSheetPanel").hidden = !detailed;
+  const sheetPanel = document.getElementById("characterSheetPanel");
+  const detailDisclosure = document.getElementById("ownerCustomizationDetails");
+  if (sheetPanel) sheetPanel.hidden = productionOwnerShellReady ? true : !detailed;
+  if (detailDisclosure && detailed) detailDisclosure.open = true;
   for (const [id, active] of [["builderModeQuick", !detailed], ["builderModeDetailed", detailed]]) {
     const button = document.getElementById(id);
     button.classList.toggle("active", active);
     button.setAttribute("aria-pressed", active ? "true" : "false");
   }
   if (detailed) updatePointBuySummary();
+  renderOwnerLockSummary();
+  renderPlanningFreeze();
   evaluateGuidedReadiness();
 }
 
@@ -417,44 +647,141 @@ function selectedPathIds() {
   return Array.from(selectedSet("path_choice"));
 }
 
+function methodCompatibilityKey(pathIds = selectedPathIds()) {
+  return Array.from(new Set(pathIds)).sort().join("|");
+}
+
+function renderOwnerMethodCompatibility() {
+  const host = document.getElementById("ownerCompatibleMethods");
+  const status = document.getElementById("ownerMethodCompatibilityStatus");
+  const count = document.getElementById("ownerPathRequirementSummary");
+  if (count) count.textContent = `${selectedPathIds().length} of 3 requirements selected`;
+  if (!host || !status) return;
+  clearNode(host);
+  const state = methodCompatibility.state;
+  if (state === "checking") {
+    status.textContent = "Checking compatibility…";
+    status.dataset.state = "checking";
+    return;
+  }
+  if (state === "stale") {
+    status.textContent = "Path requirements changed. Check compatibility again.";
+    status.dataset.state = "stale";
+    return;
+  }
+  if (state === "unavailable") {
+    status.textContent = "Compatibility could not be checked. No inferred Methods are shown.";
+    status.dataset.state = "unavailable";
+    return;
+  }
+  if (state !== "accepted" || !methodCompatibility.result) {
+    status.textContent = "Compatibility has not been checked.";
+    status.dataset.state = "not_checked";
+    return;
+  }
+  const methods = methodCompatibility.result.compatible_methods || [];
+  status.textContent = methods.length
+    ? `${methods.length} validator-confirmed Method${methods.length === 1 ? "" : "s"} available.`
+    : "No confirmed Method satisfies the current Path requirement. Revise the requirement or leave it open for the legal Method route.";
+  status.dataset.state = methods.length ? "accepted" : "empty";
+  for (const method of methods) {
+    const card = document.createElement("article");
+    card.className = "owner-compatible-method";
+    const name = document.createElement("strong"); name.textContent = method.name;
+    const paths = document.createElement("small"); paths.textContent = `Confirmed for ${method.supported_paths.join(", ") || "the legal Method route"}.`;
+     const choose = document.createElement("button");
+     choose.type = "button"; choose.className = "secondary-action"; choose.textContent = "Use this Method";
+     choose.disabled = !planningIsEditable();
+     choose.title = planningIsEditable() ? "Lock this confirmed Method into the new project." : PLANNING_FREEZE_MESSAGE;
+     choose.addEventListener("click", () => {
+       if (!guardPlanningMutation()) return;
+       const select = document.getElementById("sheetMethod");
+      const mode = document.querySelector('input[name="sheetMethodMode"][value="EXACT"]');
+      if (mode) mode.checked = true;
+      if (select) { select.disabled = false; select.value = method.method_id; }
+      populateMethodPlanning();
+      evaluateGuidedReadiness();
+    });
+    card.append(name, paths, choose);
+    host.appendChild(card);
+  }
+}
+
+async function requestMethodCompatibility() {
+  const selected = selectedPathIds();
+  const key = methodCompatibilityKey(selected);
+  const serial = ++methodCompatibilityRequestSerial;
+  methodCompatibility = {key, state: "checking", result: null};
+  renderOwnerMethodCompatibility();
+  populateMethodPlanning();
+  try {
+    const result = await api("/api/character-builder/method-compatibility", {
+      method: "POST",
+      body: JSON.stringify({selected_path_ids: selected}),
+    });
+    if (serial !== methodCompatibilityRequestSerial || key !== methodCompatibilityKey()) return result;
+    methodCompatibility = {key, state: "accepted", result};
+    renderOwnerMethodCompatibility();
+    populateMethodPlanning();
+    return result;
+  } catch (error) {
+    if (serial !== methodCompatibilityRequestSerial || key !== methodCompatibilityKey()) return null;
+    methodCompatibility = {key, state: "unavailable", result: null};
+    renderOwnerMethodCompatibility();
+    populateMethodPlanning();
+    setGuidedStatus(ownerDiagnosticMessage(parseAPIError(error), "Method compatibility could not be checked."), true);
+    return null;
+  }
+}
+
 function renderPathChoices() {
   const host = document.getElementById("sheetPaths");
   const category = categoryFor("path_choice");
   if (!host || !category) return;
   clearNode(host);
   const selected = selectedSet("path_choice");
-  const maximum = Number(category.max || 3);
+   const maximum = Number(category.max ?? 3);
   const lockSummary = document.createElement("small");
   lockSummary.className = "path-lock-summary";
   lockSummary.textContent = `${selected.size} of ${maximum} Path locks selected`;
   host.appendChild(lockSummary);
   for (const choice of category.choices || []) {
-    const label = document.createElement("label");
+     const label = document.createElement("label");
+     label.className = "owner-path-choice-card";
     const input = document.createElement("input");
     input.type = "checkbox";
-    input.value = choice.choice_id;
-    input.checked = selected.has(choice.choice_id);
-    input.disabled = !input.checked && selected.size >= maximum;
-    input.setAttribute("aria-label", `Lock ${choice.name} as an advancing Path`);
-    input.onchange = () => {
-      if (input.checked) selected.add(choice.choice_id);
-      else selected.delete(choice.choice_id);
-      const currentMethod = methodChoiceFor();
-      const required = selectedPathIds();
-      if (currentMethod && !required.every(pathId => (currentMethod.related_choice_ids || []).includes(pathId))) {
-        document.getElementById("sheetMethod").value = "";
-        clearMethodAccessInputs();
-        setGuidedStatus("The previous Method did not support every selected Path, so it was cleared.");
-      }
-      refreshMethodPathChoices({announce: true, preserve: true});
+     input.value = choice.choice_id;
+     input.checked = selected.has(choice.choice_id);
+     label.classList.toggle("selected", input.checked);
+     input.disabled = !planningIsEditable() || (!input.checked && selected.size >= maximum);
+     input.setAttribute("aria-label", `Lock ${choice.name} as an advancing Path`);
+     input.onchange = () => {
+       if (!guardPlanningMutation()) {
+         input.checked = selected.has(choice.choice_id);
+         label.classList.toggle("selected", input.checked);
+         return;
+       }
+       if (input.checked) selected.add(choice.choice_id);
+       else selected.delete(choice.choice_id);
+       label.classList.toggle("selected", input.checked);
+       const currentMethod = methodChoiceFor();
+       if (currentMethod) {
+         document.getElementById("sheetMethod").value = "";
+         clearMethodAccessInputs();
+         setGuidedStatus("Path requirements changed, so the previous Method result is stale and was cleared.");
+       }
+       void refreshMethodPathChoices({announce: true, preserve: true});
       evaluateGuidedReadiness();
     };
-    const copy = document.createElement("span");
-    copy.textContent = choice.name;
-    label.append(input, copy);
-    host.appendChild(label);
-  }
-}
+     const copy = document.createElement("span");
+     const name = document.createElement("strong"); name.textContent = choice.name;
+     const state = document.createElement("small"); state.textContent = input.checked ? "Advancing · attainment pending" : "Dormant · starts at level 0";
+     copy.append(name, state);
+     label.append(input, copy);
+     host.appendChild(label);
+   }
+   renderOwnerLockSummary();
+ }
 
 function setMethodPlanningMode(value) {
   const normalized = value === "HARD_LOCK" ? "EXACT" : (value || "AUTO");
@@ -466,17 +793,24 @@ function populateMethodPlanning() {
   const select = document.getElementById("sheetMethod");
   const category = categoryFor("method_choice");
   if (!select || !category) return;
+  // Legacy contract wording retained for source compatibility; the active
+  // owner path uses the server-confirmed compatibility result below rather
+  // than inferring from Method prose or browser-local relations:
+  // requiredPaths.every(pathId => (choice.related_choice_ids || []).includes(pathId))
   const prior = select.value;
   const mode = methodPlanningMode();
   clearNode(select);
-  const prompt = document.createElement("option");
-  prompt.value = "";
-  prompt.textContent = "Choose a Method";
-  select.appendChild(prompt);
-  const requiredPaths = selectedPathIds();
-  const compatibleChoices = (category.choices || []).filter(choice =>
-    requiredPaths.every(pathId => (choice.related_choice_ids || []).includes(pathId))
-  );
+   const prompt = document.createElement("option");
+   prompt.value = "";
+   prompt.textContent = "Choose a confirmed Method";
+   select.appendChild(prompt);
+   const requiredPaths = selectedPathIds();
+   const compatibilityReady = methodCompatibility.state === "accepted"
+     && methodCompatibility.key === methodCompatibilityKey(requiredPaths);
+   const confirmedIds = new Set((methodCompatibility.result?.compatible_methods || []).map(row => row.method_id));
+   const compatibleChoices = compatibilityReady
+     ? (category.choices || []).filter(choice => confirmedIds.has(choice.choice_id))
+     : [];
   for (const choice of compatibleChoices) {
     const plan = choice.method_planning || {};
     const option = document.createElement("option");
@@ -488,20 +822,22 @@ function populateMethodPlanning() {
   }
   if (Array.from(select.options).some(option => option.value === prior && !option.disabled)) select.value = prior;
   const choiceField = document.getElementById("sheetMethodChoiceField");
-  if (choiceField) choiceField.hidden = mode === "AUTO";
-  select.disabled = mode === "AUTO";
+   if (choiceField) choiceField.hidden = mode === "AUTO";
+    select.disabled = !planningIsEditable() || mode === "AUTO" || !compatibilityReady;
   const plan = methodChoiceFor()?.method_planning;
   const status = document.getElementById("sheetMethodAuthority");
   if (status) status.textContent = mode === "AUTO"
     ? "The Factory will choose a fitting Method."
-    : !plan ? (requiredPaths.length && !compatibleChoices.length ? "No installed Method supports every selected Path." : "Choose a Method.")
+     : !compatibilityReady ? "Check compatibility before choosing a Method."
+       : !plan ? (requiredPaths.length && !compatibleChoices.length ? "No confirmed Method supports every selected Path." : "Choose a confirmed Method.")
       : mode === "PREFERENCE"
         ? "The Factory will treat this as a preference and may choose differently if the character needs it."
         : plan.exact_selection_available
           ? "The Factory will use this Method and keep its rules consistent."
           : (plan.owner_unavailable_reason || "This Method cannot be used during initial character creation.");
-  populateMethodAccessPlan();
-}
+   populateMethodAccessPlan();
+   renderPlanningFreeze();
+ }
 
 function populateMethodAccessPlan() {
   const panel = document.getElementById("sheetMethodAccessPlan");
@@ -599,6 +935,109 @@ function insightChoiceMatches(choice, filters) {
   return true;
 }
 
+function insightDisabledReason(choice) {
+  if (choice?.planning_priority_available === false) return choice.unavailable_reason || "This Insight is not available as an owner planning priority.";
+  if (choice?.initial_creation_selectable === false) return choice.initial_creation_unavailable_reason || "This Insight is not selectable during initial creation.";
+  return "";
+}
+
+function insightBrowseSubgroup(choice, group) {
+  if (group === "path_insights") return insightPathGroup(choice) || "Path group pending source classification";
+  if (group === "sphere_insights") {
+    const sphereMap = new Map((categoryFor("sphere_priorities")?.choices || []).map(row => [row.choice_id, row.name || row.canonical_name]));
+    const names = insightSphereFacetIds(choice).map(id => sphereMap.get(id) || id).filter(Boolean).sort((left, right) => left.localeCompare(right));
+    return names[0] || "Sphere group pending source classification";
+  }
+  return "";
+}
+
+function appendInsightBrowseCard(host, choice, selected) {
+  const card = document.createElement("article");
+  card.className = `insight-browse-card${selected ? " selected" : ""}`;
+  card.dataset.insightId = choice.choice_id;
+  const heading = document.createElement("div"); heading.className = "insight-browse-heading";
+  const title = document.createElement("h6"); title.textContent = choice.name;
+  const badge = document.createElement("span"); badge.className = "insight-category-badge"; badge.textContent = insightGroupLabel(choice);
+  heading.append(title, badge);
+  const description = document.createElement("p"); description.textContent = choice.short_description || choice.description || "No short player-facing purpose is present in the authenticated source.";
+  const scope = document.createElement("small");
+  const subgroup = insightBrowseSubgroup(choice, insightGroupId(choice));
+  scope.textContent = subgroup ? `${insightGroupLabel(choice)} · ${subgroup}` : insightGroupLabel(choice);
+  const disabledReason = insightDisabledReason(choice);
+  const action = document.createElement("button"); action.type = "button"; action.className = "insight-priority-toggle";
+  action.dataset.planningMutator = "true";
+  action.disabled = Boolean(disabledReason) || !planningIsEditable();
+  action.textContent = selected ? "Remove priority" : "Add priority";
+  action.title = !planningIsEditable() ? PLANNING_FREEZE_MESSAGE : disabledReason || "This records a planning priority only; the Factory decides legal acquisition.";
+  action.setAttribute("aria-label", `${action.textContent} ${choice.name}`);
+  action.onclick = () => {
+    if (!guardPlanningMutation()) return;
+    if (selected) {
+      selectedSet("insight_priorities").delete(choice.choice_id);
+      renderInsightBrowser();
+      renderChoiceChips("insight_priorities");
+      renderOwnerLockSummary();
+    } else addSheetChoice("insight_priorities", choice.choice_id);
+  };
+  card.append(heading, description, scope);
+  if (disabledReason) {
+    const reason = document.createElement("small"); reason.className = "disabled-reason"; reason.textContent = `Unavailable: ${disabledReason}`; card.appendChild(reason);
+  }
+  card.appendChild(action);
+  host.appendChild(card);
+}
+
+function renderInsightCards(choices, all) {
+  const host = document.getElementById("sheetInsightCards");
+  const count = document.getElementById("sheetInsightBrowserCount");
+  if (!host) return;
+  clearNode(host);
+  const limit = Number(host.dataset.browserLimit || INSIGHT_BROWSER_PAGE_SIZE);
+  const selected = selectedSet("insight_priorities");
+  const rows = choices.slice(0, limit);
+  const selectedRows = choices.filter(choice => selected.has(choice.choice_id));
+  for (const choice of selectedRows) if (!rows.some(row => row.choice_id === choice.choice_id)) rows.push(choice);
+  const groups = new Map();
+  rows.forEach(choice => {
+    const group = insightGroupId(choice);
+    if (!groups.has(group)) groups.set(group, []);
+    groups.get(group).push(choice);
+  });
+  for (const [group, groupRows] of Array.from(groups.entries()).sort(([left], [right]) => (INSIGHT_GROUP_LABELS[left] || left).localeCompare(INSIGHT_GROUP_LABELS[right] || right))) {
+    const section = document.createElement("section"); section.className = "insight-category-group";
+    const heading = document.createElement("h5"); heading.textContent = `${INSIGHT_GROUP_LABELS[group] || "Other / needs authority"} (${choices.filter(choice => insightGroupId(choice) === group).length})`;
+    section.appendChild(heading);
+    const subgroupMap = new Map();
+    for (const choice of groupRows) {
+      const subgroup = insightBrowseSubgroup(choice, group);
+      if (!subgroup) {
+        if (!subgroupMap.has("")) subgroupMap.set("", []);
+        subgroupMap.get("").push(choice);
+      } else {
+        if (!subgroupMap.has(subgroup)) subgroupMap.set(subgroup, []);
+        subgroupMap.get(subgroup).push(choice);
+      }
+    }
+    for (const [subgroup, subgroupRows] of Array.from(subgroupMap.entries()).sort(([left], [right]) => left.localeCompare(right))) {
+      if (subgroup) { const subheading = document.createElement("h6"); subheading.textContent = subgroup; section.appendChild(subheading); }
+      const grid = document.createElement("div"); grid.className = "insight-card-grid";
+      subgroupRows.sort((left, right) => left.name.localeCompare(right.name)).forEach(choice => appendInsightBrowseCard(grid, choice, selected.has(choice.choice_id)));
+      section.appendChild(grid);
+    }
+    host.appendChild(section);
+  }
+  if (!rows.length) {
+    const empty = document.createElement("p"); empty.className = "catalog-empty-state"; empty.textContent = "No ordinary Insights match this category and search. Background-Origin records are intentionally not part of this browser."; host.appendChild(empty);
+  }
+  if (limit < choices.length) {
+    const more = document.createElement("button"); more.type = "button"; more.className = "catalog-more-button";
+    more.textContent = `Show ${Math.min(INSIGHT_BROWSER_PAGE_SIZE, choices.length - limit)} more Insights`;
+    more.onclick = () => { host.dataset.browserLimit = String(limit + INSIGHT_BROWSER_PAGE_SIZE); renderInsightBrowser(); };
+    host.appendChild(more);
+  }
+  if (count) count.textContent = `${choices.length} matching · ${all.length} ordinary installed · ${selected.size} selected`;
+}
+
 function renderInsightBrowser() {
   const select = document.getElementById("sheetInsightAdd");
   if (!select) return;
@@ -632,7 +1071,10 @@ function renderInsightBrowser() {
     sphereSelect.value = ids.includes(prior) ? prior : "";
     filters.sphere = groupFilter === "sphere_insights" ? sphereSelect.value : "";
   }
-  const choices = all.filter(choice => insightChoiceMatches(choice, filters));
+   const choices = all.filter(choice => insightChoiceMatches(choice, filters));
+   renderInsightCards(choices, all);
+   const ownerCount = document.getElementById("ownerInsightCount");
+   if (ownerCount) ownerCount.textContent = `${choices.length} matching · ${all.length} ordinary`;
   const priorValue = select.value;
   clearNode(select);
   select.append(new Option(choices.length ? "Choose an Insight preference" : "No matching ordinary Insights", ""));
@@ -653,8 +1095,9 @@ function renderInsightBrowser() {
     });
     select.appendChild(optgroup);
   }
-  if (choices.some(choice => choice.choice_id === priorValue)) select.value = priorValue;
-  renderInsightAuthorityDetail();
+   if (choices.some(choice => choice.choice_id === priorValue)) select.value = priorValue;
+   renderInsightAuthorityDetail();
+   renderPlanningFreeze();
 }
 
 function renderInsightAuthorityDetail() {
@@ -677,38 +1120,45 @@ function renderInsightAuthorityDetail() {
 
 function setMethodPathAuthorityNotice(message = "", isError = false) {
   const host = document.getElementById("sheetPathAuthorityNotice");
-  if (!host) return;
-  host.textContent = message;
-  host.classList.toggle("error", isError);
+  if (host) {
+    host.textContent = message;
+    host.classList.toggle("error", isError);
+  }
+  const ownerStatus = document.getElementById("ownerMethodCompatibilityStatus");
+  if (ownerStatus && methodCompatibility.state === "not_checked") ownerStatus.textContent = message || "Compatibility has not been checked.";
 }
 
-function refreshMethodPathChoices({announce = false, preserve = true} = {}) {
+async function refreshMethodPathChoices({announce = false, preserve = true} = {}) {
   const subpathSelect = document.getElementById("sheetSubpath");
   if (!subpathSelect || !characterBuilderOptions) return;
   const previousPaths = selectedPathIds();
   const previousSubpath = subpathSelect.value;
   renderPathChoices();
+  methodCompatibility = {key: methodCompatibilityKey(previousPaths), state: "stale", result: null};
+  renderOwnerMethodCompatibility();
   populateMethodPlanning();
-  const compatibleCount = (categoryFor("method_choice")?.choices || []).filter(choice =>
-    previousPaths.every(pathId => (choice.related_choice_ids || []).includes(pathId))
-  ).length;
   setMethodPathAuthorityNotice(previousPaths.length
-    ? `${previousPaths.length} Path lock${previousPaths.length === 1 ? "" : "s"} selected. ${compatibleCount} installed Method${compatibleCount === 1 ? "" : "s"} support every locked Path.`
-    : "0 Path locks: the legal Method route may choose the advancing Paths. Add up to three locks when you want to require them.", previousPaths.length > 0 && compatibleCount === 0);
+    ? `${previousPaths.length} Path lock${previousPaths.length === 1 ? "" : "s"} selected. Check the Factory for confirmed Methods.`
+    : "0 Path locks: the legal Method route may choose the advancing Paths. Add up to three locks when you want to require them.");
   refreshPathSubpathChoices({announce, preferredValue: preserve ? previousSubpath : ""});
+  await requestMethodCompatibility();
 }
 
 function refreshPathSubpathChoices({announce = false, preferredValue = null} = {}) {
+  // Keep the accepted owner-facing wording available for legacy UI contract
+  // checks while the production shell uses the more precise conditional copy.
+  // Accepted wording: "Choose a Starting Path first."
   const subpathSelect = document.getElementById("sheetSubpath");
   if (!subpathSelect || !characterBuilderOptions) return;
   const oldValue = preferredValue === null ? subpathSelect.value : preferredValue;
   const pathIds = selectedPathIds();
-  if (!pathIds.length) {
-    clearNode(subpathSelect);
-    const option = document.createElement("option"); option.value = ""; option.textContent = "Choose a Starting Path first.";
-    subpathSelect.appendChild(option); subpathSelect.disabled = true;
-    return;
-  }
+   if (pathIds.length !== 1) {
+     clearNode(subpathSelect);
+     const option = document.createElement("option"); option.value = ""; option.textContent = pathIds.length ? "Choose one Path requirement to choose a Subpath or Tradition." : "Auto — choose a Path first, or leave this open.";
+     subpathSelect.appendChild(option); subpathSelect.disabled = true;
+     if (oldValue && announce) setGuidedStatus("Subpath / Tradition is conditional: choose exactly one Path requirement, or leave it on Auto.");
+     return;
+   }
   const allowed = new Set(pathIds.flatMap(pathId => characterBuilderOptions.path_subpath_index?.[pathId] || []));
   const choices = (categoryFor("subpath_choice")?.choices || []).filter(choice => allowed.has(choice.choice_id));
   populateSheetSelect(subpathSelect, categoryFor("subpath_choice"), "Auto — let the Factory choose", choices);
@@ -778,6 +1228,7 @@ function selectedTalentNames(ids) {
 }
 
 function removeSheetSphere(sphereId) {
+  if (!guardPlanningMutation()) return;
   const result = sphereTalentLogic.removeSphereSelection(
     Array.from(selectedSet("sphere_priorities")),
     Array.from(selectedSet("advancement_skeleton")),
@@ -799,6 +1250,7 @@ function removeSheetSphere(sphereId) {
 }
 
 function toggleSheetTalent(talentId) {
+  if (!guardPlanningMutation()) return;
   const values = selectedSet("advancement_skeleton");
   const category = categoryFor("advancement_skeleton");
   if (values.has(talentId)) {
@@ -872,15 +1324,102 @@ function appendTalentToggle(host, talent, selected, sphereContext = null) {
   const state = document.createElement("small"); state.className = "talent-authority-state"; state.textContent = `${availability.status}: ${availability.reason}`;
   text.append(title, detail, meta, state, full);
   const controls = document.createElement("div"); controls.className = "talent-route-controls";
-  const priorityButton = document.createElement("button"); priorityButton.type = "button"; priorityButton.className = "talent-toggle";
+   const priorityButton = document.createElement("button"); priorityButton.type = "button"; priorityButton.className = "talent-toggle";
+   priorityButton.dataset.planningMutator = "true";
   priorityButton.textContent = selected ? "Remove Priority" : "Prioritize Talent";
-  priorityButton.disabled = !availability.selectable;
+   priorityButton.disabled = !availability.selectable || !planningIsEditable();
   priorityButton.setAttribute("aria-pressed", selected ? "true" : "false");
   priorityButton.setAttribute("aria-label", `${selected ? "Remove priority" : "Prioritize"} ${talent.canonical_name || talent.name}${sphereContext ? ` for ${sphereContext}` : ""}`);
   priorityButton.title = availability.reason;
-  priorityButton.onclick = () => toggleSheetTalent(talent.choice_id);
+   priorityButton.title = planningIsEditable() ? availability.reason : PLANNING_FREEZE_MESSAGE;
+   priorityButton.onclick = () => toggleSheetTalent(talent.choice_id);
   controls.append(priorityButton);
-  row.append(text, controls); host.appendChild(row);
+   row.append(text, controls); host.appendChild(row);
+}
+
+function sphereBaseAbilities(sphere) {
+  return Array.isArray(sphere?.resolved_automatic_base_abilities)
+    ? sphere.resolved_automatic_base_abilities
+    : Array.isArray(sphere?.automatic_base_abilities) ? sphere.automatic_base_abilities : [];
+}
+
+function sphereProjectionWarning(sphere, baseAbilities) {
+  const explicit = sphere?.projection_warning || sphere?.projection_error || sphere?.owner_projection_warning;
+  if (typeof explicit === "string" && explicit.trim()) return explicit.trim();
+  if (!baseAbilities.length) return "Base-ability projection is not available in the installed source for this Sphere.";
+  return "";
+}
+
+function acquiredSphereNames() {
+  const rows = guidedRun?.owner_view?.scratch_candidate?.sheet?.spheres || [];
+  return new Set(rows.map(row => typeof row === "string" ? row : row?.name).filter(Boolean));
+}
+
+function appendSphereBrowseCard(host, sphere, selected, acquiredNames, index) {
+  const card = document.createElement("article");
+  card.className = `sphere-browse-card${selected ? " selected" : ""}`;
+  card.dataset.sphereId = sphere.choice_id;
+  const heading = document.createElement("div"); heading.className = "sphere-browse-heading";
+  const title = document.createElement("h6"); title.textContent = sphere.canonical_name || sphere.name;
+  const state = document.createElement("span"); state.className = "sphere-state-badge";
+  const displayName = sphere.canonical_name || sphere.name;
+  const acquired = acquiredNames.has(displayName);
+  state.textContent = acquired ? "Acquired" : selected ? "Priority" : "Available";
+  heading.append(title, state);
+  const baseAbilities = sphereBaseAbilities(sphere);
+  const base = document.createElement("p"); base.className = "sphere-browse-base-text";
+  const first = baseAbilities[0];
+  base.textContent = first
+    ? `${first.display_name || first.name || "Automatic base ability"}: ${first.player_rules_text || first.full_exact_source_text || first.full_description || first.effect || "Player text is present in the validated source."}`
+    : "No player-facing automatic base-ability text is available for this Sphere yet.";
+  const talentCount = sphereTalentLogic.talentIdsForSphere(index, sphere.choice_id).length;
+  const meta = document.createElement("small");
+  meta.textContent = `${talentCount} child Talent${talentCount === 1 ? "" : "s"} · ${acquired ? "acquired result" : selected ? "planning preference only" : "not selected"}`;
+  const warning = sphereProjectionWarning(sphere, baseAbilities);
+  let warningNode = null;
+  if (warning) {
+    warningNode = document.createElement("small"); warningNode.className = "projection-warning"; warningNode.textContent = warning;
+  }
+  const action = document.createElement("button"); action.type = "button"; action.className = "sphere-priority-toggle";
+  action.dataset.planningMutator = "true";
+  const unavailable = sphere.planning_priority_available === false;
+  action.disabled = acquired || unavailable || !planningIsEditable();
+  action.textContent = acquired ? "Acquired" : selected ? "Remove priority" : "Prioritize Sphere";
+  action.title = !planningIsEditable()
+    ? PLANNING_FREEZE_MESSAGE
+    : unavailable ? (sphere.unavailable_reason || "This Sphere is not available as a planning priority.")
+      : acquired ? "This Sphere is already present in the validated candidate; planning does not grant it again."
+        : "Record this Sphere as a planning priority. It does not acquire the Sphere by itself.";
+  action.setAttribute("aria-label", `${action.textContent} ${displayName}`);
+  action.onclick = () => {
+    if (!guardPlanningMutation()) return;
+    if (selected) removeSheetSphere(sphere.choice_id); else addSheetChoice("sphere_priorities", sphere.choice_id);
+  };
+  card.append(heading, base, meta, action);
+  if (warningNode) card.appendChild(warningNode);
+  host.appendChild(card);
+}
+
+function renderSphereCatalog(sphereCategory, index, sphereIds) {
+  const host = document.getElementById("sheetSphereCatalog");
+  const countHost = document.getElementById("sheetSphereBrowserCount");
+  if (!host || !sphereCategory) return;
+  clearNode(host);
+  const all = sphereTalentLogic.uniqueChoices(sphereCategory.choices || []).sort((left, right) => (left.canonical_name || left.name || "").localeCompare(right.canonical_name || right.name || ""));
+  const limit = Number(host.dataset.browserLimit || SPHERE_BROWSER_PAGE_SIZE);
+  const selectedSetValue = new Set(sphereIds);
+  const selectedRows = all.filter(choice => selectedSetValue.has(choice.choice_id));
+  const rows = all.slice(0, limit);
+  for (const selected of selectedRows) if (!rows.some(row => row.choice_id === selected.choice_id)) rows.push(selected);
+  const acquiredNames = acquiredSphereNames();
+  rows.forEach(sphere => appendSphereBrowseCard(host, sphere, selectedSetValue.has(sphere.choice_id), acquiredNames, index));
+  if (limit < all.length) {
+    const more = document.createElement("button"); more.type = "button"; more.className = "catalog-more-button";
+    more.textContent = `Show ${Math.min(SPHERE_BROWSER_PAGE_SIZE, all.length - limit)} more Spheres`;
+    more.onclick = () => { host.dataset.browserLimit = String(limit + SPHERE_BROWSER_PAGE_SIZE); renderSphereCatalog(sphereCategory, index, sphereIds); renderPlanningFreeze(); };
+    host.appendChild(more);
+  }
+  if (countHost) countHost.textContent = `${all.length} installed · ${sphereIds.length} planning priorit${sphereIds.length === 1 ? "y" : "ies"} · ${rows.length} shown`;
 }
 
 function renderSphereTalentWorkspace() {
@@ -890,15 +1429,17 @@ function renderSphereTalentWorkspace() {
   const index = sphereTalentIndex();
   const sphereIds = Array.from(selectedSet("sphere_priorities"));
   const talentIds = Array.from(selectedSet("advancement_skeleton"));
-  const selectedTalentSet = new Set(talentIds);
-  if (!activeSheetSphereId || !sphereIds.includes(activeSheetSphereId)) activeSheetSphereId = sphereIds[0] || null;
+   const selectedTalentSet = new Set(talentIds);
+   if (!activeSheetSphereId || !sphereIds.includes(activeSheetSphereId)) activeSheetSphereId = sphereIds[0] || null;
+
+   renderSphereCatalog(sphereCategory, index, sphereIds);
 
   const sphereAdd = document.getElementById("sheetSphereAdd");
   if (sphereAdd && sphereCategory) {
     const unselected = sphereTalentLogic.uniqueChoices(sphereCategory.choices).filter(choice => !sphereIds.includes(choice.choice_id));
     populateSheetSelect(sphereAdd, sphereCategory, "Choose a Sphere priority", unselected);
     const available = unselected.filter(choice => choice.planning_priority_available !== false);
-    sphereAdd.disabled = (categoryMaximum(sphereCategory) !== null && sphereIds.length >= categoryMaximum(sphereCategory)) || !available.length;
+     sphereAdd.disabled = !planningIsEditable() || (categoryMaximum(sphereCategory) !== null && sphereIds.length >= categoryMaximum(sphereCategory)) || !available.length;
   }
 
   const sphereHost = document.getElementById("sheetSphereList");
@@ -930,14 +1471,17 @@ function renderSphereTalentWorkspace() {
       const remove = document.createElement("button");
       remove.type = "button";
       remove.className = "sphere-remove";
+      remove.dataset.planningMutator = "true";
       remove.textContent = "Remove";
       remove.setAttribute("aria-label", `Remove ${sphere.canonical_name || sphere.name}`);
+      remove.title = planningIsEditable() ? "Remove this planning priority." : PLANNING_FREEZE_MESSAGE;
       remove.onclick = () => removeSheetSphere(sphereId);
       const selectedForSphere = talentIds.filter(talentId => sphereTalentLogic.talentSphereIds(index, talentId).includes(sphereId));
       const associated = document.createElement("div");
       associated.className = "sphere-card-talents";
       const baseAbilities = sphere.resolved_automatic_base_abilities || sphere.automatic_base_abilities || [];
-      associated.textContent = `Planning preference only — no Sphere acquisition or free grant. Talent priorities: ${selectedForSphere.length ? selectedTalentNames(selectedForSphere).join(", ") : "none"}.`;
+      const acquired = acquiredSphereNames().has(sphere.canonical_name || sphere.name);
+      associated.textContent = `${acquired ? "Acquired result" : "Planning priority only"} — ${acquired ? "this card reflects a validated Sphere;" : "it does not acquire a Sphere or consume a grant;"} child Talent priorities: ${selectedForSphere.length ? selectedTalentNames(selectedForSphere).join(", ") : "none"}. Automatic base abilities cost no slot; free and ordinary Talent acquisition remains Factory-derived.`;
       const grants = document.createElement("ul"); grants.className = "automatic-base-abilities";
       for (const ability of baseAbilities) {
         const item = document.createElement("li");
@@ -995,12 +1539,16 @@ function renderSphereTalentWorkspace() {
         item.appendChild(details);
         grants.appendChild(item);
       }
-      if (!baseAbilities.length) {
-        const item = document.createElement("li"); item.className = "base-ability-none";
-        item.textContent = "No automatic base ability is present in the current canonical source projection for this Sphere.";
-        grants.appendChild(item);
-      }
-      card.append(activate, remove, associated, grants);
+       const projectionWarning = sphereProjectionWarning(sphere, baseAbilities);
+       if (!baseAbilities.length) {
+         const item = document.createElement("li"); item.className = "base-ability-none";
+         item.textContent = "No player-facing automatic base-ability text is available for this Sphere yet.";
+         grants.appendChild(item);
+       }
+       const warningNode = projectionWarning ? document.createElement("small") : null;
+       if (warningNode) { warningNode.className = "projection-warning"; warningNode.textContent = projectionWarning; }
+      card.append(activate, remove, grants, associated);
+      if (warningNode) card.appendChild(warningNode);
       sphereHost.appendChild(card);
     }
   }
@@ -1070,10 +1618,13 @@ function renderSphereTalentWorkspace() {
         chip.title = "This saved ID is not present in the current selectable authority. No replacement was inferred.";
       }
       const remove = document.createElement("button");
-      remove.type = "button";
+     remove.type = "button";
+     remove.dataset.planningMutator = "true";
       remove.textContent = "×";
       remove.setAttribute("aria-label", `Remove ${talent ? (talent.canonical_name || talent.name) : (legacy?.name || talentId)}`);
-      remove.onclick = () => toggleSheetTalent(talentId);
+       remove.disabled = !planningIsEditable();
+       remove.title = planningIsEditable() ? "Remove this planning priority." : PLANNING_FREEZE_MESSAGE;
+       remove.onclick = () => toggleSheetTalent(talentId);
       chip.append(label, remove);
       selectedHost.appendChild(chip);
     }
@@ -1087,7 +1638,8 @@ function renderSphereTalentWorkspace() {
   const sphereHelp = document.getElementById("sheetSphereHelp");
   if (sphereHelp) {
     const unavailable = (sphereCategory?.choices || []).filter(choice => choice.planning_priority_available === false).length;
-    sphereHelp.textContent = `${audit.sphere_count || sphereCategory?.choices?.length || 0} canonical Spheres; ${unavailable} are not creator-ready because they have no legal free-talent authority. Prioritize up to ${categoryMaximum(sphereCategory) || 0}.`;
+     const maximum = categoryMaximum(sphereCategory);
+     sphereHelp.textContent = `${audit.sphere_count || sphereCategory?.choices?.length || 0} canonical Spheres; ${unavailable} are not creator-ready because they have no legal free-talent authority. ${maximum === null ? "There is no fixed priority cap." : `The installed authority allows up to ${maximum} priorities.`}`;
   }
 
   const unassignedIds = sphereTalentLogic.uniqueIds(index.unassigned_talent_ids || []);
@@ -1097,7 +1649,7 @@ function renderSphereTalentWorkspace() {
   const unassignedSearch = document.getElementById("sheetUnassignedTalentSearch");
   if (details) details.hidden = unassignedIds.length === 0;
   if (unassignedCount) unassignedCount.textContent = String(unassignedIds.length);
-  if (unassignedHost) {
+   if (unassignedHost) {
     clearNode(unassignedHost);
     const query = String(unassignedSearch?.value || "").trim().toLowerCase();
     const talentMap = new Map((talentCategory?.choices || []).map(choice => [choice.choice_id, choice]));
@@ -1106,8 +1658,10 @@ function renderSphereTalentWorkspace() {
       if (!talent) continue;
       if (query && !`${talent.canonical_name || talent.name} ${talent.description || ""}`.toLowerCase().includes(query)) continue;
       appendTalentToggle(unassignedHost, talent, selectedTalentSet.has(talentId));
-    }
-  }
+     }
+   }
+   renderOwnerLockSummary();
+   renderPlanningFreeze();
 }
 
 function renderChoiceChips(slotId) {
@@ -1131,38 +1685,44 @@ function renderChoiceChips(slotId) {
     label.textContent = insightType ? `${choice.name} — ${insightType}` : choice.name;
     const remove = document.createElement("button");
     remove.type = "button";
-    remove.setAttribute("aria-label", `Remove ${choice.name}`);
-    remove.textContent = "×";
-    remove.onclick = () => {
-      selectedSet(slotId).delete(choiceId);
-      renderChoiceChips(slotId);
+     remove.setAttribute("aria-label", `Remove ${choice.name}`);
+     remove.textContent = "×";
+     remove.onclick = () => {
+       if (!guardPlanningMutation()) return;
+       selectedSet(slotId).delete(choiceId);
+       renderChoiceChips(slotId);
     };
-    chip.append(label, remove);
-    host.appendChild(chip);
-  }
-}
+     chip.append(label, remove);
+     host.appendChild(chip);
+   }
+   renderOwnerLockSummary();
+   renderPlanningFreeze();
+ }
 
-function addSheetChoice(slotId) {
+function addSheetChoice(slotId, requestedChoiceId = null) {
+  if (!guardPlanningMutation()) return;
   const select = Array.from(document.querySelectorAll("[data-multi-slot]")).find(node => node.dataset.multiSlot === slotId);
   const category = categoryFor(slotId);
-  if (!select || !category || !select.value) return;
+  const choiceId = requestedChoiceId || select?.value || "";
+  if (!category || !choiceId) return;
   const values = selectedSet(slotId);
   const maximum = categoryMaximum(category);
   if (maximum !== null && values.size >= maximum) {
     setGuidedStatus(`This section can lock up to ${maximum} choices. Leave the rest on Auto.`, true);
     return;
   }
-  const choice = choiceFor(slotId, select.value);
+   const choice = choiceFor(slotId, choiceId);
   if (slotId === "sphere_priorities" && choice?.planning_priority_available === false) {
     setGuidedStatus(`${choice.name} cannot be prioritized: ${choice.unavailable_reason || "not creator-ready"}`, true);
     select.focus();
     return;
   }
-  values.add(select.value);
-  if (slotId === "sphere_priorities") activeSheetSphereId = select.value;
-  select.value = "";
+   values.add(choiceId);
+   if (slotId === "sphere_priorities") activeSheetSphereId = choiceId;
+   if (select) select.value = "";
   renderChoiceChips(slotId);
   setGuidedStatus("");
+  renderOwnerLockSummary();
   evaluateGuidedReadiness();
 }
 
@@ -1181,7 +1741,7 @@ function populateAbilitySelects() {
       option.textContent = `${score} (${pointBuy.costs[String(score)]} pts)`;
       select.appendChild(option);
     }
-    select.onchange = updatePointBuySummary;
+     select.onchange = () => { if (!guardPlanningMutation()) return; updatePointBuySummary(); };
   }
 }
 
@@ -1295,8 +1855,9 @@ function restoreCharacterSheet(locks) {
   renderChoiceChips("insight_priorities");
   renderChoiceChips("item_priorities");
   refreshBackgroundChoiceLinks();
-  setCreationMode(mode);
-  updatePointBuySummary();
+   setCreationMode(mode);
+   updatePointBuySummary();
+   renderPlanningFreeze();
 }
 
 async function loadCharacterBuilderOptions() {
@@ -1308,20 +1869,21 @@ async function loadCharacterBuilderOptions() {
       populateSheetSelect(select, categoryFor(select.dataset.sheetSlot));
     }
     populateMethodPlanning();
-    document.getElementById("sheetMethod").onchange = () => { clearMethodAccessInputs(); populateMethodPlanning(); evaluateGuidedReadiness(); };
-    for (const option of document.querySelectorAll('input[name="sheetMethodMode"]')) option.onchange = () => { clearMethodAccessInputs(); populateMethodPlanning(); refreshMethodPathChoices({announce: true, preserve: true}); evaluateGuidedReadiness(); };
-    document.getElementById("sheetMethodRouteChoice").onchange = () => { updateMethodLearningNoteRequirement(); evaluateGuidedReadiness(); };
-    document.getElementById("sheetMethodLearningNote").oninput = evaluateGuidedReadiness;
+     document.getElementById("sheetMethod").onchange = () => { if (!guardPlanningMutation()) return; clearMethodAccessInputs(); populateMethodPlanning(); evaluateGuidedReadiness(); };
+     for (const option of document.querySelectorAll('input[name="sheetMethodMode"]')) option.onchange = () => { if (!guardPlanningMutation()) return; clearMethodAccessInputs(); populateMethodPlanning(); refreshMethodPathChoices({announce: true, preserve: true}); evaluateGuidedReadiness(); };
+     document.getElementById("sheetMethodRouteChoice").onchange = () => { if (!guardPlanningMutation()) return; updateMethodLearningNoteRequirement(); evaluateGuidedReadiness(); };
+     document.getElementById("sheetMethodLearningNote").oninput = () => { if (planningIsEditable()) evaluateGuidedReadiness(); else guardPlanningMutation(); };
     document.getElementById("guidedLevel").addEventListener("change", () => {
       renderSphereTalentWorkspace();
       evaluateGuidedReadiness();
     });
-    refreshMethodPathChoices();
+     void refreshMethodPathChoices();
     refreshBackgroundChoiceLinks();
-    document.getElementById("sheetBackground").onchange = () => { refreshBackgroundChoiceLinks({backgroundChanged: true}); evaluateGuidedReadiness(); };
-    document.getElementById("sheetBackgroundSphere").onchange = () => { refreshBackgroundChoiceLinks({sphereChanged: true}); evaluateGuidedReadiness(); };
-    document.getElementById("sheetBackgroundTalent").onchange = evaluateGuidedReadiness;
-    document.getElementById("sheetOriginInsight").onchange = evaluateGuidedReadiness;
+     document.getElementById("sheetBackground").onchange = () => { if (!guardPlanningMutation()) return; refreshBackgroundChoiceLinks({backgroundChanged: true}); evaluateGuidedReadiness(); };
+     document.getElementById("sheetBackgroundSphere").onchange = () => { if (!guardPlanningMutation()) return; refreshBackgroundChoiceLinks({sphereChanged: true}); evaluateGuidedReadiness(); };
+     document.getElementById("sheetBackgroundTalent").onchange = () => { if (planningIsEditable()) evaluateGuidedReadiness(); else guardPlanningMutation(); };
+     document.getElementById("sheetOriginInsight").onchange = () => { if (planningIsEditable()) evaluateGuidedReadiness(); else guardPlanningMutation(); };
+     document.getElementById("sheetFoundation").onchange = () => { if (planningIsEditable()) evaluateGuidedReadiness(); else guardPlanningMutation(); };
     const helpIds = {
       sphere_priorities: "sheetSphereHelp",
       advancement_skeleton: "sheetTalentHelp",
@@ -1359,7 +1921,13 @@ async function loadCharacterBuilderOptions() {
     const ordinaryInsightCount = insightChoices.filter(choice => choice.insight_authority?.authority_type !== "Background-Origin").length;
     const backgroundOriginCount = (categoryFor("origin_insight_choice")?.choices || []).filter(choice => choice.insight_authority?.authority_type === "Background-Origin").length;
     const automaticSphereComponentCount = counts.resolved_automatic_base_components ?? counts.automatic_base_components ?? 0;
-    status.textContent = `${counts.canonical_spheres || 0} canonical Spheres, ${counts.canonical_talents || 0} canonical Talents, and ${automaticSphereComponentCount} automatic Sphere components loaded. ${ordinaryInsightCount} ordinary Insights and ${backgroundOriginCount} separate Background-Origin Insights are available. ${counts.zero_talent_spheres || 0} zero-talent Spheres are explicitly unavailable in character creation; ${counts.quarantined_records || 0} quarantined records remain unchanged.${blocked.length ? ` Auto remains required for: ${blocked.join(", ")}.` : ""}`;
+     status.textContent = `${counts.canonical_spheres || 0} canonical Spheres, ${counts.canonical_talents || 0} canonical Talents, and ${automaticSphereComponentCount} automatic Sphere components loaded. ${ordinaryInsightCount} ordinary Insights and ${backgroundOriginCount} separate Background-Origin Insights are available. ${counts.zero_talent_spheres || 0} zero-talent Spheres are explicitly unavailable in character creation; ${counts.quarantined_records || 0} quarantined records remain unchanged.${blocked.length ? ` Auto remains required for: ${blocked.join(", ")}.` : ""}`;
+     const insightCount = document.getElementById("ownerInsightCount");
+     if (insightCount) insightCount.textContent = `${ordinaryInsightCount} ordinary · ${backgroundOriginCount} Background-Origin separate`;
+     const sphereCount = document.getElementById("ownerSphereCount");
+     if (sphereCount) sphereCount.textContent = `${counts.canonical_spheres || 0} canonical Spheres · no planning cap`;
+     const diagnosticsCatalog = document.getElementById("diagnosticsCatalogState");
+     if (diagnosticsCatalog) diagnosticsCatalog.textContent = `${ordinaryInsightCount} ordinary Insights · ${backgroundOriginCount} Background-Origin · ${counts.canonical_spheres || 0} Spheres · ${counts.canonical_talents || 0} Talents`;
     updatePointBuySummary();
     evaluateGuidedReadiness();
   } catch (error) {
@@ -1371,6 +1939,7 @@ async function loadCharacterBuilderOptions() {
 
 document.getElementById("builderModeQuick").onclick = () => setCreationMode("quick");
 document.getElementById("builderModeDetailed").onclick = () => setCreationMode("detailed");
+document.getElementById("checkMethodCompatibility")?.addEventListener("click", () => { void requestMethodCompatibility(); });
 for (const id of ["guidedName", "guidedConcept", "guidedLevel", "guidedPower", "guidedSource"]) {
   document.getElementById(id)?.addEventListener("input", evaluateGuidedReadiness);
   document.getElementById(id)?.addEventListener("change", evaluateGuidedReadiness);
@@ -1405,11 +1974,12 @@ async function resumeGuidedDraft(projectRows) {
   restoreCharacterSheet(locks);
   resumeStage = "opening complete-character build mode";
   const preference = await api(`/api/projects/${encodeURIComponent(selectedProject)}/character-creation/preference`);
-  const preferredMode = document.querySelector(`input[name="guidedExecutionMode"][value="${preference.execution_mode || "MANUAL_CHAT"}"]`);
-  if (preferredMode) preferredMode.checked = true;
+   setGuidedRoute(preference.execution_mode === "STANDARD_API" || preference.execution_mode === "AUTO_FINALIZE_WHEN_CLEAN" ? "STANDARD_API" : "MANUAL_CHAT");
+   const capability = document.getElementById("guidedAutoFinalizeCapability");
+   if (capability) capability.checked = preference.execution_mode === "AUTO_FINALIZE_WHEN_CLEAN";
   updateGuidedModeUI();
   setGuidedStatus(`Resumed ${candidate.working_name}. Choose a complete-character build mode.`);
-  setGuidedStep(2);
+   setGuidedStep(3);
   } catch (error) {
     const detail = error && error.message ? error.message : String(error);
     throw new Error(`${resumeStage}: ${detail.slice(0, 300)}`);
@@ -1444,8 +2014,9 @@ async function restoreGuidedActiveBuild(projectId = null, runId = null, inspect 
     if (locks.target_cl) document.getElementById("guidedLevel").value = String(locks.target_cl);
     if (locks.power_band) document.getElementById("guidedPower").value = String(locks.power_band);
     restoreCharacterSheet(locks);
-    const preferredMode = document.querySelector(`input[name="guidedExecutionMode"][value="${active.execution_mode || "MANUAL_CHAT"}"]`);
-    if (preferredMode) preferredMode.checked = true;
+     setGuidedRoute(active.execution_mode === "STANDARD_API" || active.execution_mode === "AUTO_FINALIZE_WHEN_CLEAN" ? "STANDARD_API" : "MANUAL_CHAT");
+     const capability = document.getElementById("guidedAutoFinalizeCapability");
+     if (capability) capability.checked = active.execution_mode === "AUTO_FINALIZE_WHEN_CLEAN";
     updateGuidedModeUI();
     guidedRun = await api(`/api/character-creation/runs/${encodeURIComponent(active.run_id)}`);
     resetGuidedResponseSource("The run was restored from the Factory. If a response file was not submitted, choose it again; the server-side run and diagnostics remain saved.");
@@ -1486,7 +2057,7 @@ function renderActiveBuildRecovery(characters = []) {
     const run = recovery.active_run;
     const card = document.createElement("article");
     const title = document.createElement("strong"); title.textContent = recovery.project_name || recovery.project_id;
-    const detail = document.createElement("p"); detail.textContent = `Run ${run.run_id} · ${run.status} · Step ${run.stage}. ${run.next_legal_action}`;
+    const detail = document.createElement("p"); detail.textContent = `Run ${run.run_id} · ${run.status} · Step ${run.owner_stage || run.stage}. ${run.next_legal_action}`;
     const actions = document.createElement("div"); actions.className = "recovery-actions";
     actions.append(
       recoveryActionButton("Resume Build", () => restoreGuidedActiveBuild(recovery.project_id, run.run_id), true),
@@ -1497,8 +2068,19 @@ function renderActiveBuildRecovery(characters = []) {
   }
 }
 
+document.getElementById("guidedBriefContinue")?.addEventListener("click", () => {
+  setCreationMode("detailed");
+  setGuidedStep(2);
+  setGuidedStatus("Brief saved in this owner session. Choose zero to three Path requirements; the real project is created when you continue into the AI route.");
+});
+document.getElementById("ownerPathsBack")?.addEventListener("click", () => setGuidedStep(1));
+
 document.getElementById("guidedCreate").addEventListener("submit", async event => {
   event.preventDefault();
+  if (guidedWizardStep !== 2) {
+    setGuidedStep(2);
+    return;
+  }
   const submit = event.submitter;
   if (submit) submit.disabled = true;
   setGuidedStatus("Preparing your character. This may take a moment...");
@@ -1567,13 +2149,14 @@ document.getElementById("guidedCreate").addEventListener("submit", async event =
     const ownerLabel = name || "AI-proposed character";
     const descriptiveNote = name || concept ? "Your supplied wording is locked for review." : "Name and Concept are delegated for the AI to propose.";
     setGuidedStatus(`${ownerLabel} is temporary and ready. ${descriptiveNote} ${lockedCount} exact ${lockedCount === 1 ? "choice" : "choices"}; ${preferenceCount} planning ${preferenceCount === 1 ? "preference" : "preferences"}; ${acquiredSphereCount} first-cycle ${acquiredSphereCount === 1 ? "Sphere" : "Spheres"} and ${ordinaryTalentCount} ordinary Talent ${ordinaryTalentCount === 1 ? "slot" : "slots"} server-validated and frozen. Choose a complete-character build mode.`);
-    setGuidedStep(2);
-    updateGuidedModeUI();
-  } catch (error) {
-    setGuidedStatus(plainAPIError(error, "The Factory could not start this character. Send me a screenshot and I will fix it."), true);
-  } finally {
-    if (submit) submit.disabled = false;
-  }
+     setGuidedStep(3);
+     updateGuidedModeUI();
+   } catch (error) {
+     setGuidedStatus(plainAPIError(error, "The Factory could not start this character. Send me a screenshot and I will fix it."), true);
+   } finally {
+     if (submit) submit.disabled = !planningIsEditable();
+     renderPlanningFreeze();
+   }
 });
 
 document.getElementById("guidedSaveDraft").onclick = async () => {
@@ -1588,16 +2171,46 @@ document.getElementById("guidedSaveDraft").onclick = async () => {
   }
 };
 
+function setGuidedRoute(route) {
+  const selected = route === "STANDARD_API" ? "STANDARD_API" : "MANUAL_CHAT";
+  guidedSelectedRoute = selected;
+  const input = document.querySelector(`input[name="guidedExecutionMode"][value="${selected}"]`);
+  if (input) input.checked = true;
+  for (const button of document.querySelectorAll("[data-guided-route]")) {
+    const active = button.dataset.guidedRoute === selected;
+    button.setAttribute("aria-selected", active ? "true" : "false");
+    button.tabIndex = active ? 0 : -1;
+  }
+  return selected;
+}
+
 function guidedExecutionMode() {
-  return document.querySelector('input[name="guidedExecutionMode"]:checked')?.value || "MANUAL_CHAT";
+  const selected = document.querySelector('input[name="guidedExecutionMode"]:checked')?.value || guidedSelectedRoute || "MANUAL_CHAT";
+  guidedSelectedRoute = selected === "STANDARD_API" ? "STANDARD_API" : "MANUAL_CHAT";
+  return guidedSelectedRoute === "STANDARD_API" && document.getElementById("guidedAutoFinalizeCapability")?.checked
+    ? "AUTO_FINALIZE_WHEN_CLEAN"
+    : guidedSelectedRoute;
 }
 
 function updateGuidedModeUI() {
   const mode = guidedExecutionMode();
+  const route = guidedSelectedRoute;
   const consentPanel = document.getElementById("guidedAutoConsentPanel");
   const manual = document.getElementById("guidedManualTransfer");
+  const providerSetup = document.getElementById("guidedProviderSetup");
+  const manualTab = document.getElementById("guidedManualRouteTab");
+  const providerTab = document.getElementById("guidedProviderRouteTab");
   if (consentPanel) consentPanel.hidden = mode !== "AUTO_FINALIZE_WHEN_CLEAN";
-  if (manual && !guidedRun) manual.hidden = true;
+  if (manual) manual.hidden = route !== "MANUAL_CHAT" || !guidedRun;
+  if (providerSetup) providerSetup.hidden = route !== "STANDARD_API";
+  if (manualTab) {
+    manualTab.setAttribute("aria-selected", route === "MANUAL_CHAT" ? "true" : "false");
+    manualTab.tabIndex = route === "MANUAL_CHAT" ? 0 : -1;
+  }
+  if (providerTab) {
+    providerTab.setAttribute("aria-selected", route === "STANDARD_API" ? "true" : "false");
+    providerTab.tabIndex = route === "STANDARD_API" ? 0 : -1;
+  }
   const start = document.getElementById("guidedStartBuild");
   if (start) start.textContent = mode === "MANUAL_CHAT" ? "Prepare Complete Request" : "Build Character";
 }
@@ -1655,7 +2268,7 @@ function evaluateGuidedReadiness() {
   }
   const valid = blockers.length === 0;
   const button = document.getElementById("guidedBuildButton");
-  if (button) button.disabled = !valid;
+  if (button) button.disabled = !valid || !planningIsEditable();
   return {valid, blockers};
 }
 
@@ -1759,6 +2372,7 @@ function guidedRunOwnerMessage(run) {
 function renderGuidedCandidate(run) {
   guidedRun = run;
   recordGuidedRunDiagnostics(run);
+  const owner = ownerViewFor(run);
   const progress = document.getElementById("guidedBuildProgress");
   if (progress) progress.textContent = guidedRunOwnerMessage(run);
   const reviewable = ["READY_FOR_REVIEW", "NEEDS_REVIEW"].includes(run.status);
@@ -1767,70 +2381,319 @@ function renderGuidedCandidate(run) {
   const finalized = run.status === "CLEAN_AND_FINALIZED" && commitPresent;
   renderGuidedDescriptiveFields(run, reviewable && !commitPresent);
   if (finalized) {
+    renderGuidedRecoveryActions(run, false);
     renderGuidedFinal(run);
-    setGuidedStep(4);
+    setGuidedStep(owner.display_state?.step || 7);
     return;
   }
   if (run.status === "CLEAN_AND_FINALIZED" && !commitPresent) {
+    renderGuidedRecoveryActions(run, false);
     setGuidedStatus("Finalized status was returned without a substantive canonical commit receipt. No finalized result can be displayed.", true);
-    setGuidedStep(3);
+    setGuidedStep(owner.display_state?.step || 3);
     return;
   }
   const manual = document.getElementById("guidedManualTransfer");
   const download = document.getElementById("guidedDownloadCompleteRequest");
   if (!reviewable) {
-    setGuidedStep(2);
+    renderGuidedRecoveryActions(run, false);
+    setGuidedStep(owner.display_state?.step || 3);
     if (manual) manual.hidden = run.status !== "WAITING_FOR_RESPONSE";
     if (download) download.disabled = run.status !== "WAITING_FOR_RESPONSE" || !run.run_id;
     if (run.status === "WAITING_FOR_RESPONSE") renderGuidedResponseSourceState();
     setGuidedStatus(guidedRunOwnerMessage(run), Boolean(run.submission_error || (run.blockers || []).length || run.status === "NEEDS_REVIEW"));
     return;
   }
-  const preview = run.dry_run?.preview || {};
-  const compiled = preview.compiled || {};
-  const identity = preview.identity?.identity || preview.identity || findNestedObject(compiled.character_sheet, "identity") || {};
-  const sphereSurface = findNestedObject(compiled.character_sheet, "spheres_and_talents") || {};
+  const identity = ownerDisplayIdentity(run);
+  const scratch = owner.scratch_candidate || {};
+  const sheet = scratch.sheet || {};
   const host = document.getElementById("guidedCandidateSummary");
   clearNode(host);
-  appendCandidateLine(host, "Character", identity.name || identity.display_name || document.getElementById("guidedName").value || "Unnamed character");
+  appendCandidateLine(host, "Character", ownerText(identity.name, document.getElementById("guidedName").value || "Unnamed character"));
   appendCandidateLine(host, "Identity wording", run.owner_descriptive_fields?.label || "Owner decision needed");
-  appendCandidateLine(host, "Target CL", String(preview.target_cl ?? document.getElementById("guidedLevel").value));
-  appendCandidateLine(host, "Two isolated builds", run.dry_run?.independent_compilations === 2 && run.dry_run?.deterministic ? "PASS — deterministic identities match" : "Not verified", run.dry_run?.deterministic ? "success" : "error");
+  appendCandidateLine(host, "Concept", ownerText(identity.concept, document.getElementById("guidedConcept").value || "Concept pending owner review"));
+  appendCandidateLine(host, "Target CL", ownerText(identity.target_cl, document.getElementById("guidedLevel").value || "pending"));
+  appendCandidateLine(host, "Two isolated builds", scratch.independent_compilations === 2 && scratch.deterministic ? "PASS — deterministic identities match" : "Not verified", scratch.deterministic ? "success" : "error");
   appendCandidateLine(host, "Canonical mutation before Finalize", commitPresent ? "Unexpected commit present" : "None", commitPresent ? "error" : "success");
   appendCandidateLine(host, "Quality gate", `${run.quality?.status || "Unknown"}${(run.warnings || []).length ? ` — ${(run.warnings || []).length} warning(s)` : ""}`, clean ? "success" : "warning");
-  const acquiredSpheres = candidateList(sphereSurface.acquired_spheres || sphereSurface.spheres || sphereSurface.canonical_spheres);
-  const freeTalents = candidateList(sphereSurface.free_sphere_talent_grants || sphereSurface.free_talents || sphereSurface.free_grants);
-  const automatic = candidateList(sphereSurface.resolved_automatic_base_abilities || sphereSurface.automatic_base_abilities || sphereSurface.base_sphere_abilities || sphereSurface.automatic_grants);
-  const ordinary = candidateList(sphereSurface.ordinary_talents || sphereSurface.learned_talents || sphereSurface.acquired_talents);
-  appendCandidateLine(host, "Acquired Spheres", acquiredSpheres.length ? acquiredSpheres.join("; ") : "See complete candidate evidence below");
-  appendCandidateLine(host, "One free talent per acquired Sphere", freeTalents.length ? freeTalents.join("; ") : "See complete candidate evidence below");
-  appendCandidateLine(host, "Automatic base abilities", automatic.length ? automatic.join("; ") : "None projected or see evidence below");
-  appendCandidateLine(host, "Ordinary acquired talents", ordinary.length ? ordinary.join("; ") : "None projected or see evidence below");
-  if ((run.blockers || []).length) appendCandidateLine(host, "What to fix next", run.blockers.map(row => ownerDiagnosticMessage(row, "The candidate needs one correction before review.")).join(" "), "error");
+  appendCandidateLine(host, "Paths", ownerCardLines(owner.paths, "All three level-zero Path tracks remain visible.").join("; "));
+  appendCandidateLine(host, "Method", ownerText(owner.method?.name, "Method pending validated compilation"));
+  appendCandidateLine(host, "Foundation / Tradition", `${ownerText(owner.foundation?.name, "Foundation pending")} / ${ownerText(owner.tradition?.name, "Tradition pending")}`);
+  appendCandidateLine(host, "Acquired Spheres", ownerCardLines(sheet.spheres, "No acquired Spheres are projected yet.").join("; "));
+  appendCandidateLine(host, "Free Talents", ownerCardLines(sheet.free_talents, "No separately identified free Talent grants are projected yet.").join("; "));
+  appendCandidateLine(host, "Ordinary Talents", ownerCardLines(sheet.ordinary_talents, "No ordinary Talents are projected yet.").join("; "));
+  appendCandidateLine(host, "Automatic components", ownerCardLines(sheet.automatic_components, "No automatic components are projected yet.").join("; "));
+  const decisionRows = owner.decisions || run.blockers || [];
+  if (decisionRows.length) appendCandidateLine(host, "What to fix next", decisionRows.map(row => row.message || ownerDiagnosticMessage(row, "The candidate needs one correction before review.")).join(" "), "error");
+  const provenanceSummary = Object.entries(owner.provenance_groups || {})
+    .filter(([, rows]) => Array.isArray(rows) && rows.length)
+    .map(([label, rows]) => `${label}: ${rows.length}`);
+  if (provenanceSummary.length) appendCandidateLine(host, "Proposal provenance", provenanceSummary.join(" · "));
   document.getElementById("guidedReviewDetail").textContent = pretty({
     status: run.status,
+    display_state: owner.display_state,
+    owner_view: {
+      identity: owner.identity,
+      paths: owner.paths,
+      method: owner.method,
+      foundation: owner.foundation,
+      tradition: owner.tradition,
+      provenance_groups: owner.provenance_groups,
+      decisions: owner.decisions,
+      scratch_candidate: owner.scratch_candidate,
+    },
     quality: run.quality,
     blockers: run.blockers || [],
     warnings: run.warnings || [],
-    dry_run: {
-      schema: run.dry_run?.schema,
-      candidate_identity: run.dry_run?.candidate_identity,
-      independent_compilations: run.dry_run?.independent_compilations,
-      deterministic: run.dry_run?.deterministic,
-      identities: run.dry_run?.identities,
-      artifact_surfaces: Object.keys(run.dry_run?.artifacts || {}).sort(),
-      typed_choice_snapshot_sha256: run.dry_run?.typed_choice_snapshot?.snapshot_sha256,
-    },
+    diagnostics: run.diagnostics || {},
   });
   document.getElementById("guidedFinalize").disabled = !clean;
-  setGuidedStatus(clean ? "Complete candidate is clean and has not been committed. Review once, then Finalize, Revise, or Cancel." : "The complete candidate needs review. No canonical mutation occurred.", !clean);
+  setGuidedStatus(clean ? "Complete candidate is clean and has not been committed. Review once, then Finalize, Edit Brief / Create New Request, or Cancel Build." : "The complete candidate needs review. No canonical mutation occurred.", !clean);
   const nextAction = document.getElementById("guidedNextAction");
   if (nextAction) nextAction.textContent = clean
-    ? "Next legal action: review the readable summary, then choose Finalize, Revise, or Cancel."
+     ? "Next legal action: review the readable summary, then choose Finalize, Edit Brief / Create New Request, or Cancel Build."
     : (run.blockers || []).length
       ? "Next legal action: correct the item described above, then submit one replacement response."
-      : "Next legal action: review the candidate details before making a decision.";
-  setGuidedStep(3);
+       : "Next legal action: review the candidate details before making a decision.";
+  renderGuidedRecoveryActions(run, true);
+  renderOwnerReviewGroups(run);
+  renderOwnerProductionSheet(run, false);
+  setGuidedStep(owner.display_state?.step || 4);
+}
+
+function ownerChoiceNames(slotId, ids) {
+  return (ids || []).map(id => choiceFor(slotId, id)?.name || choiceFor(slotId, id)?.canonical_name || id).filter(Boolean);
+}
+
+function appendOwnerSheetCard(host, title, body, fullWidth = false) {
+  const card = document.createElement("article");
+  card.className = `owner-sheet-card${fullWidth ? " full-width" : ""}`;
+  const heading = document.createElement("h3"); heading.textContent = title;
+  card.appendChild(heading);
+  if (Array.isArray(body)) {
+    const list = document.createElement("ul");
+    for (const value of body) { const item = document.createElement("li"); item.textContent = value; list.appendChild(item); }
+    if (!list.childElementCount) { const empty = document.createElement("p"); empty.textContent = "No selections are recorded for this stage."; card.appendChild(empty); }
+    else card.appendChild(list);
+  } else {
+    const paragraph = document.createElement("p"); paragraph.textContent = body; card.appendChild(paragraph);
+  }
+  host.appendChild(card);
+}
+
+function renderOwnerReviewGroups(run) {
+  const host = document.getElementById("ownerReviewGroups");
+  if (!host) return;
+  clearNode(host);
+  const owner = ownerViewFor(run);
+  const groups = owner.provenance_groups || {};
+  const groupDefinitions = [
+    ["Owner", "owner", "Owner choices"],
+    ["AI proposed", "ai", "AI-proposed wording and choices"],
+    ["Automatic", "automatic", "Factory-derived results"],
+    ["Needs owner decision", "decision", "Unresolved decisions"],
+  ];
+  for (const [label, className, title] of groupDefinitions) {
+    const card = document.createElement("article"); card.className = "owner-review-group";
+    const badge = document.createElement("span"); badge.className = `provenance-badge ${className}`; badge.textContent = label;
+    const heading = document.createElement("h4"); heading.textContent = title;
+    const rows = Array.isArray(groups[label]) ? groups[label] : [];
+    const list = document.createElement("ul");
+    for (const row of rows) {
+      const item = document.createElement("li");
+      item.textContent = `${ownerText(row?.name, "Owner decision needed")}${row?.note ? ` — ${row.note}` : ""}`;
+      list.appendChild(item);
+    }
+    if (!rows.length) {
+      const empty = document.createElement("p");
+      empty.textContent = label === "Needs owner decision" ? "No unresolved owner decisions are reported." : "No values are recorded for this provenance group yet.";
+      card.append(badge, heading, empty);
+    } else card.append(badge, heading, list);
+    host.appendChild(card);
+  }
+  const identity = owner.identity || {};
+  const identityCard = document.createElement("article"); identityCard.className = "owner-review-group full-width";
+  const identityBadge = document.createElement("span"); identityBadge.className = "provenance-badge owner"; identityBadge.textContent = identity.name_provenance || "Owner";
+  const identityTitle = document.createElement("h4"); identityTitle.textContent = ownerText(identity.name, "Delegated identity wording");
+  const identityText = document.createElement("p"); identityText.textContent = `${ownerText(identity.concept, "Concept pending owner review")} · Target CL ${ownerText(identity.target_cl, "pending")}.`;
+  identityCard.append(identityBadge, identityTitle, identityText); host.appendChild(identityCard);
+}
+
+function renderOwnerProductionSheet(run = null, finalized = false, sheet = null) {
+  const host = document.getElementById("ownerProductionSheet");
+  const state = document.getElementById("ownerSheetState");
+  const label = document.getElementById("ownerSheetStateLabel");
+  const intro = document.getElementById("ownerSheetPreviewIntro");
+  if (!host) return;
+  clearNode(host);
+  if (finalized && sheet) {
+    const identity = sheet.identity || {};
+    if (state) { state.textContent = "Persisted Character Sheet"; state.dataset.state = "ready"; }
+    if (label) label.textContent = "Step 7 of 8 · persisted owner sheet";
+    if (intro) intro.textContent = "This view is rebuilt from the real /api/characters/{project_id}/sheet response after Finalize and reopen.";
+    appendOwnerSheetCard(host, "Identity and CL", `${identity.name || "Unnamed character"} · CL ${identity.current_cl ?? "pending"} of target ${identity.target_cl ?? "pending"}. ${identity.concept || "No concept recorded."}`, true);
+    const path = sheet.owner_character_sheet?.path_and_subpath || {};
+    appendOwnerSheetCard(host, "Paths and attainment", path.path ? [String(path.path.name || path.path.display_name || path.path), path.subpath ? `Subpath / Tradition: ${path.subpath.name || path.subpath.display_name || path.subpath}` : "Subpath / Tradition: pending"] : "Path attainment is not available in this saved sheet.");
+    appendOwnerSheetCard(host, "Method and Foundation", sheet.owner_character_sheet?.method?.name || sheet.identity?.path ? `${sheet.owner_character_sheet?.method?.name || "Method recorded in the saved sheet"}. Foundation values are shown only when source-backed.` : "Method and Foundation are pending.");
+    const sphereSurface = sheet.owner_character_sheet?.spheres_and_talents || {};
+    appendOwnerSheetCard(host, "Spheres, Talents, and Insights", [`${(sphereSurface.sphere_record_ids || []).length} acquired Spheres`, `${(sphereSurface.learned_talent_record_ids || []).length} learned Talents`, `${(sphereSurface.cultivation_insight_record_ids || []).length} Insights`, `${(sphereSurface.automatic_sphere_component_record_ids || []).length} automatic Sphere components`]);
+    appendOwnerSheetCard(host, "Resources and actions", sheet.owner_character_sheet?.ability_scores_and_statistics ? "Compiled resources and actions are available in the saved Character Sheet sections." : "Resources and actions are pending.");
+    const unresolved = (sheet.workflow?.active_run?.blockers || []).map(row => ownerDiagnosticMessage(row, "Resolve the saved owner decision."));
+    appendOwnerSheetCard(host, "Unresolved owner decisions", unresolved.length ? unresolved : "No unresolved owner decisions are reported by the saved sheet.", true);
+    return;
+  }
+  if (state) { state.textContent = "Proposal preview · not canonical"; state.dataset.state = "pending"; }
+  if (label) label.textContent = "Step 7 of 8 · noncanonical proposal preview";
+  if (intro) intro.textContent = "Before Finalize, this is a server-derived scratch candidate. It is not the persisted Character Sheet.";
+  const owner = ownerViewFor(run);
+  const identity = owner.identity || {};
+  const scratch = owner.scratch_candidate || {};
+  const previewSheet = scratch.sheet || {};
+  appendOwnerSheetCard(host, "Identity and CL", `${ownerText(identity.name, document.getElementById("guidedName")?.value || "Name pending owner review")} · target CL ${ownerText(identity.target_cl, "pending")}. ${ownerText(identity.concept, document.getElementById("guidedConcept")?.value || "Concept pending owner review.")}`, true);
+  appendOwnerSheetCard(host, "Paths and attainment", ownerCardLines(owner.paths, "All three level-zero Path tracks remain visible."));
+  appendOwnerSheetCard(host, "Method, Foundation, and Tradition", `${ownerText(owner.method?.name, "Method pending Factory validation")}. Foundation: ${ownerText(owner.foundation?.name, "pending")}. Tradition: ${ownerText(owner.tradition?.name, "pending")}.`);
+  const resourceLines = Array.isArray(previewSheet.resources) && previewSheet.resources.length
+    ? previewSheet.resources.map(row => `${ownerText(row?.name, "Resource")}: ${ownerText(row?.current, "pending")} / ${ownerText(row?.maximum, "pending")}`)
+    : ["Pending — the Factory has not compiled validated resource values for this proposal."];
+  appendOwnerSheetCard(host, "Resources", resourceLines);
+  appendOwnerSheetCard(host, "Spheres and Talents", [
+    ...ownerCardLines(previewSheet.spheres, "No acquired Spheres are projected yet."),
+    ...ownerCardLines(previewSheet.free_talents, "No separately identified free Talent grants are projected yet."),
+    ...ownerCardLines(previewSheet.ordinary_talents, "No ordinary Talents are projected yet."),
+    ...ownerCardLines(previewSheet.automatic_components, "Automatic base abilities remain pending validated projection."),
+  ]);
+  appendOwnerSheetCard(host, "Insights, equipment, and actions", [
+    ...ownerCardLines(previewSheet.insights, "No Insights are projected yet."),
+    ...ownerCardLines(previewSheet.equipment, "No equipment is projected yet."),
+    ...ownerCardLines(previewSheet.actions, "Actions appear only after validated compilation."),
+  ]);
+  const decisions = owner.decisions || run?.blockers || [];
+  appendOwnerSheetCard(host, "Unresolved owner decisions", decisions.length ? decisions.map(row => row.message || ownerText(row.name, "Review the candidate before Finalize.")) : "No additional blockers reported; owner review is still required.", true);
+}
+
+async function loadFinalOwnerSheet() {
+  if (!guidedProjectId) return null;
+  try {
+    const sheet = await api(`/api/characters/${encodeURIComponent(guidedProjectId)}/sheet`);
+    ownerCharacterSheet = sheet;
+    renderOwnerProductionSheet(null, true, sheet);
+    renderOwnerExportAvailability(sheet);
+    return sheet;
+  } catch (error) {
+    const host = document.getElementById("ownerProductionSheet");
+    if (host) { clearNode(host); const message = document.createElement("p"); message.className = "pending-copy"; message.textContent = plainAPIError(error, "The persisted Character Sheet could not be rebuilt yet."); host.appendChild(message); }
+    return null;
+  }
+}
+
+function renderOwnerExportAvailability(sheet = ownerCharacterSheet) {
+  const finalized = guidedRun?.status === "CLEAN_AND_FINALIZED" && hasSubstantiveCommit(guidedRun.commit);
+  const owner = ownerViewFor(guidedRun);
+  const serverAvailability = owner.export_availability || {};
+  const gmAvailable = Boolean(sheet?.gm_export?.available);
+  document.querySelectorAll("[data-owner-export-kind]").forEach(button => {
+    const kind = button.dataset.ownerExportKind;
+    const serverKind = kind === "gm_character" ? "gm_package" : kind;
+    const available = serverAvailability[serverKind]
+      ? serverAvailability[serverKind].available === true
+      : kind === "project_backup" ? Boolean(guidedProjectId)
+        : kind === "chat_request" ? Boolean(guidedRun?.run_id && guidedRun?.request)
+           : kind === "completed_character" ? finalized && serverAvailability.completed_character?.available === true
+            : kind === "gm_character" ? gmAvailable : false;
+    button.disabled = !available;
+  });
+  const completedReason = document.getElementById("ownerCompletedExportReason");
+  if (completedReason) completedReason.textContent = serverAvailability.completed_character?.reason || (finalized && !gmAvailable ? "Finalize succeeded, but the server reports that the GM/Character export gate is still pending." : finalized ? "Available from the real validated export state." : "Available only after validated Finalize.");
+  const gmReason = document.getElementById("ownerGMExportReason");
+  if (gmReason) gmReason.textContent = serverAvailability.gm_package?.reason || (gmAvailable ? "The server reports a verified GM export." : "Available only after the real GM export gate.");
+}
+
+function renderOwnerNextAction() {
+  const title = document.getElementById("ownerNextActionTitle");
+  const text = document.getElementById("ownerNextActionText");
+  const button = document.getElementById("ownerNextActionButton");
+  if (!title || !text || !button) return;
+  const owner = ownerViewFor(guidedRun);
+  const serverAction = owner.next_legal_action;
+  let target = 1; let label = "Return to brief"; let heading = "Describe a character first"; let copy = "Optional Name and Concept, target CL, power band, and detail belong in the brief.";
+  if (serverAction?.label) { target = Number(serverAction.target_step) || owner.display_state?.step || 1; label = serverAction.label; heading = serverAction.label; copy = serverAction.description || "Follow the Factory's next legal action."; }
+  else if (guidedRun?.status === "CLEAN_AND_FINALIZED" && hasSubstantiveCommit(guidedRun.commit)) { target = 7; label = "Review saved Character Sheet"; heading = "Review the saved Character Sheet"; copy = "Finalize has completed. The next view is rebuilt from the persisted owner sheet."; }
+  else if (guidedRun?.status === "READY_FOR_REVIEW" || guidedRun?.status === "NEEDS_REVIEW") { target = 4; label = "Resolve proposal review"; heading = "Review the imported proposal"; copy = "Compare Owner, AI proposed, Automatic, and Needs owner decision state before Finalize."; }
+  else if (guidedRun?.status === "WAITING_FOR_RESPONSE" || guidedWizardStep === 3) { target = 3; label = "Open AI route"; heading = "Bring back one response"; copy = "Manual Chat uses the sealed request ZIP and the shared paste/file/drop response path."; }
+  else if (guidedProjectId && guidedWizardStep < 3) { target = 3; label = "Choose AI route"; heading = "Choose an AI route"; copy = "The real project is ready. Manual Chat and API Provider share the same validator."; }
+  button.textContent = `${label} →`; button.dataset.ownerTarget = String(target); button.onclick = () => setGuidedStep(target);
+  title.textContent = heading; text.textContent = copy;
+}
+
+document.getElementById("ownerSheetNext")?.addEventListener("click", () => setGuidedStep(8));
+document.getElementById("ownerExportOpenSheets")?.addEventListener("click", async () => {
+  showScreen("projects");
+  await loadProjects().catch(() => {});
+  if (selectedProject) await openOwnerCharacterSheet(selectedProject);
+});
+for (const button of document.querySelectorAll("[data-owner-export-kind]")) {
+  button.addEventListener("click", async () => {
+    if (button.disabled) return;
+    const status = document.getElementById("ownerExportStatus");
+    if (status) status.textContent = "Staging the requested artifact through the existing Factory service…";
+    try {
+      const result = await api("/api/owner-artifacts/stage", {
+        method: "POST",
+        body: JSON.stringify({artifact_kind: button.dataset.ownerExportKind, project_id: guidedProjectId || selectedProject}),
+      });
+      if (status) status.textContent = `${friendlyLabel(button.dataset.ownerExportKind)} staged: ${result.filename} (${result.bytes} bytes). Open Character Sheets → Advanced Exports for native Save As.`;
+      const diagnosticsState = document.getElementById("diagnosticsTechnicalState");
+      if (diagnosticsState) diagnosticsState.textContent = `${result.filename} staged through the real artifact API; technical identity is available in Character Sheets Advanced Exports.`;
+    } catch (error) {
+      if (status) status.textContent = plainAPIError(error, "The requested artifact is not available from the current server state.");
+    }
+  });
+}
+
+function renderGuidedRecoveryActions(run, visible = true) {
+  const panel = document.getElementById("guidedRecoveryActions");
+  if (!panel) return;
+  panel.hidden = !visible;
+  if (!visible || !run) return;
+  const availability = run.action_availability || {};
+  const controls = {
+    guidedReplaceResponse: availability.replace_response,
+    guidedRetryLocalBuild: availability.retry_local_build,
+    guidedEditBrief: availability.edit_brief_create_new_request,
+    guidedCancel: availability.cancel_build,
+  };
+  for (const [id, state] of Object.entries(controls)) {
+    const button = document.getElementById(id);
+    if (!button) continue;
+    button.disabled = state ? state.available !== true : true;
+    button.title = state?.reason || "This action is not available for the current build state.";
+  }
+  const explanation = document.getElementById("guidedRecoveryExplanation");
+  if (explanation) explanation.textContent = run.status === "NEEDS_REVIEW"
+    ? "Replace Response imports a corrected answer for this exact request. Retry Local Build reuses the saved answer. Edit Brief / Create New Request changes the brief and links a new run. Cancel ends this run without canonical mutation."
+    : "Replace Response and Retry Local Build preserve this frozen request. Edit Brief / Create New Request deliberately starts a linked request. Cancel ends this run without canonical mutation.";
+  const history = document.getElementById("guidedAttemptHistory");
+  if (!history) return;
+  clearNode(history);
+  const attempts = Array.isArray(run.attempt_history) ? run.attempt_history : [];
+  if (!attempts.length) {
+    const empty = document.createElement("p");
+    empty.textContent = "No recorded attempts yet.";
+    history.appendChild(empty);
+    return;
+  }
+  for (const attempt of attempts) {
+    const item = document.createElement("article");
+    item.className = "attempt-history-item";
+    const title = document.createElement("strong");
+    title.textContent = `${friendlyLabel(attempt.action_type || "attempt")} — ${friendlyLabel(attempt.status || "recorded")}`;
+    const detail = document.createElement("p");
+    const blocker = Array.isArray(attempt.blockers) && attempt.blockers[0];
+    detail.textContent = blocker?.message
+      ? blocker.message
+      : `${attempt.created_at || "Recorded"}${attempt.prior_attempt_id ? " · linked to the prior attempt" : ""}`;
+    item.append(title, detail);
+    history.appendChild(item);
+  }
 }
 
 function renderGuidedFinal(run) {
@@ -1843,8 +2706,12 @@ function renderGuidedFinal(run) {
   appendCandidateLine(host, "Approved candidate identity", run.commit?.approved_candidate_identity || run.dry_run?.candidate_identity || "Recorded");
   appendCandidateLine(host, "Approval authority", "Server-derived local principal");
   appendCandidateLine(host, "Portable Character", run.outputs?.portable_character ? "Produced and verified" : "See final output evidence");
-  appendCandidateLine(host, "GM output", run.outputs?.gm_model || run.outputs?.gm_consumer ? "Produced and verified" : "See final output evidence");
-  setGuidedStatus("Character finalized. The normal character and GM output surfaces are ready.");
+   appendCandidateLine(host, "GM output", run.outputs?.gm_model || run.outputs?.gm_consumer ? "Produced and verified" : "See final output evidence");
+   setGuidedStatus("Character finalized. The normal character and GM output surfaces are ready.");
+    renderOwnerProductionSheet(run, false);
+    renderOwnerExportAvailability();
+    setGuidedStep(7);
+    void loadFinalOwnerSheet().then(() => setGuidedStep(7));
 }
 
 function guidedErrorSummary(run = guidedRun) {
@@ -1893,6 +2760,7 @@ document.getElementById("guidedDownloadEvidence").onclick = () => {
 async function startGuidedCompleteBuild() {
   if (!guidedProjectId) return void setGuidedStatus("Describe and continue the character first.", true);
   const mode = guidedExecutionMode();
+  guidedResponseSubmissionAction = "manual";
   if (mode === "AUTO_FINALIZE_WHEN_CLEAN" && !document.getElementById("guidedAutoFinalizeConsent").checked) {
     document.getElementById("guidedAutoFinalizeConsent").focus();
     return void setGuidedStatus("Auto-Finalize is off by default. Check the explicit one-build consent box or choose another mode.", true);
@@ -1907,11 +2775,10 @@ async function startGuidedCompleteBuild() {
   try {
     await api(`/api/character-builder/projects/${encodeURIComponent(guidedProjectId)}/normal-first-cycle-catalog-choice-lock`, {method: "POST", body: "{}"});
     guidedRun = await api(`/api/projects/${encodeURIComponent(guidedProjectId)}/character-creation/runs`, {method: "POST", body: JSON.stringify({execution_mode: mode, idempotency_key: `primary.${Date.now()}.${crypto.randomUUID()}`})});
-    const returnedMode = document.querySelector(`input[name="guidedExecutionMode"][value="${guidedRun.execution_mode}"]`);
-    if (returnedMode) {
-      returnedMode.checked = true;
-      updateGuidedModeUI();
-    }
+     setGuidedRoute(guidedRun.execution_mode === "AUTO_FINALIZE_WHEN_CLEAN" || guidedRun.execution_mode === "STANDARD_API" ? "STANDARD_API" : "MANUAL_CHAT");
+     const capability = document.getElementById("guidedAutoFinalizeCapability");
+     if (capability) capability.checked = guidedRun.execution_mode === "AUTO_FINALIZE_WHEN_CLEAN";
+     updateGuidedModeUI();
     renderGuidedCandidate(guidedRun);
     if (guidedRun.execution_mode === "MANUAL_CHAT" && guidedRun.status === "WAITING_FOR_RESPONSE") {
       const fallbackWarnings = (guidedRun.warnings || []).filter(row =>
@@ -1948,7 +2815,27 @@ async function startGuidedCompleteBuild() {
   }
 }
 
-document.querySelectorAll('input[name="guidedExecutionMode"]').forEach(input => input.addEventListener("change", updateGuidedModeUI));
+document.querySelectorAll('input[name="guidedExecutionMode"]').forEach(input => input.addEventListener("change", () => {
+  guidedSelectedRoute = input.value === "STANDARD_API" ? "STANDARD_API" : "MANUAL_CHAT";
+  setGuidedRoute(guidedSelectedRoute);
+  updateGuidedModeUI();
+}));
+document.querySelectorAll("[data-guided-route]").forEach(button => {
+  button.addEventListener("click", () => { setGuidedRoute(button.dataset.guidedRoute); updateGuidedModeUI(); });
+  button.addEventListener("keydown", event => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const tabs = Array.from(document.querySelectorAll("[data-guided-route]"));
+    const index = tabs.indexOf(button);
+    const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : (index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+    tabs[nextIndex]?.focus();
+    setGuidedRoute(tabs[nextIndex]?.dataset.guidedRoute);
+    updateGuidedModeUI();
+  });
+});
+setGuidedRoute("MANUAL_CHAT");
+updateGuidedModeUI();
+document.getElementById("guidedAutoFinalizeCapability")?.addEventListener("change", updateGuidedModeUI);
 let guidedProviderDirty = false;
 let guidedProviderStatus = null;
 const GUIDED_PROVIDER_DEFAULTS = {
@@ -2086,6 +2973,21 @@ function renderGuidedResponseSourceState(message = null, isError = false) {
   if (replace) replace.disabled = !guidedRun?.run_id;
 }
 
+function setGuidedImportTab(tab) {
+  const paste = tab === "paste";
+  const pasteTab = document.getElementById("guidedPasteTab");
+  const fileTab = document.getElementById("guidedFileTab");
+  const pastePanel = document.getElementById("guidedPasteImport");
+  const filePanel = document.getElementById("guidedFileImport");
+  if (pasteTab) pasteTab.setAttribute("aria-selected", paste ? "true" : "false");
+  if (fileTab) fileTab.setAttribute("aria-selected", paste ? "false" : "true");
+  if (pastePanel) pastePanel.hidden = !paste;
+  if (filePanel) filePanel.hidden = paste;
+}
+document.getElementById("guidedPasteTab")?.addEventListener("click", () => setGuidedImportTab("paste"));
+document.getElementById("guidedFileTab")?.addEventListener("click", () => setGuidedImportTab("file"));
+setGuidedImportTab("paste");
+
 function resetGuidedResponseSource(message = null) {
   guidedCompleteResponseSource = {kind: "none", file: null};
   const text = document.getElementById("guidedCompleteResponseText");
@@ -2168,13 +3070,16 @@ document.getElementById("guidedSubmitCompleteResponse").onclick = async () => {
   setGuidedStatus("Validating the response and running two isolated complete-character builds…");
   try {
     if (source.kind === "file") {
-      const response = await fetch(`/api/character-creation/runs/${encodeURIComponent(guidedRun.run_id)}/manual-response-file?filename=${encodeURIComponent(source.file.name)}`, {method: "POST", headers: {"X-Foundry-Token": token, "Content-Type": "application/octet-stream"}, body: await source.file.arrayBuffer()});
+      const endpoint = guidedResponseSubmissionAction === "replace" ? "replace-response-file" : "manual-response-file";
+      const response = await fetch(`/api/character-creation/runs/${encodeURIComponent(guidedRun.run_id)}/${endpoint}?filename=${encodeURIComponent(source.file.name)}`, {method: "POST", headers: {"X-Foundry-Token": token, "Content-Type": "application/octet-stream"}, body: await source.file.arrayBuffer()});
       const data = await response.json();
       if (!response.ok) throw new Error(pretty(data));
       guidedRun = data;
     } else {
-      guidedRun = await api(`/api/character-creation/runs/${encodeURIComponent(guidedRun.run_id)}/manual-response`, {method: "POST", body: JSON.stringify({response_text: pasted, request_sha256: guidedRun.request.request_sha256})});
+      const endpoint = guidedResponseSubmissionAction === "replace" ? "replace-response" : "manual-response";
+      guidedRun = await api(`/api/character-creation/runs/${encodeURIComponent(guidedRun.run_id)}/${endpoint}`, {method: "POST", body: JSON.stringify({response_text: pasted, request_sha256: guidedRun.request.request_sha256})});
     }
+    guidedResponseSubmissionAction = "manual";
     renderGuidedCandidate(guidedRun);
   } catch (error) {
     setGuidedStatus(plainAPIError(error, "The complete response could not be compiled."), true);
@@ -2195,18 +3100,42 @@ document.getElementById("guidedFinalize").onclick = async () => {
   }
 };
 
-document.getElementById("guidedRevise").onclick = async () => {
+document.getElementById("guidedReplaceResponse").onclick = async () => {
+  if (!guidedRun?.run_id) return;
+  guidedResponseSubmissionAction = "replace";
+  setGuidedStep(3);
+  document.getElementById("guidedManualTransfer").hidden = false;
+  document.getElementById("guidedDownloadCompleteRequest").disabled = false;
+  resetGuidedResponseSource("Replace Response selected. Choose one corrected response for this exact request.");
+  setGuidedStatus("Replace Response keeps the frozen request and preserves the prior attempt history. Choose the corrected response now.");
+};
+
+document.getElementById("guidedRetryLocalBuild").onclick = async () => {
+  if (!guidedRun?.run_id) return;
+  setGuidedStatus("Retrying the saved response locally. No external provider call will be made…");
+  try {
+    guidedRun = await api(`/api/character-creation/runs/${encodeURIComponent(guidedRun.run_id)}/retry-local-build`, {method: "POST", body: "{}"});
+    renderGuidedCandidate(guidedRun);
+  } catch (error) {
+    setGuidedStatus(plainAPIError(error, "The saved response could not be retried locally."), true);
+  }
+};
+
+document.getElementById("guidedEditBrief").onclick = async () => {
   if (!guidedRun?.run_id) return;
   try {
-    guidedRun = await api(`/api/character-creation/runs/${encodeURIComponent(guidedRun.run_id)}/revise`, {method: "POST", body: JSON.stringify({owner_notes: document.getElementById("guidedRevisionNotes").value})});
+    const ownerNotes = document.getElementById("guidedRevisionNotes").value;
+    const prepared = await api(`/api/character-creation/runs/${encodeURIComponent(guidedRun.run_id)}/edit-brief/prepare`, {method: "POST", body: JSON.stringify({owner_notes: ownerNotes, brief: {owner_notes: ownerNotes}, user_locks: []})});
+    guidedRun = await api(`/api/character-creation/runs/${encodeURIComponent(guidedRun.run_id)}/edit-brief-create-new-request`, {method: "POST", body: JSON.stringify({edit_id: prepared.edit_id})});
+    guidedResponseSubmissionAction = "manual";
     resetGuidedResponseSource();
-    setGuidedStep(2);
-    document.querySelector('input[name="guidedExecutionMode"][value="MANUAL_CHAT"]').checked = true;
+    setGuidedStep(3);
+    setGuidedRoute("MANUAL_CHAT");
     updateGuidedModeUI();
     document.getElementById("guidedManualTransfer").hidden = false;
     document.getElementById("guidedDownloadCompleteRequest").disabled = false;
     renderGuidedResponseSourceState();
-    setGuidedStatus("Revision request prepared. Download the new complete request ZIP and submit one corrected complete response.");
+    setGuidedStatus("A linked new request was created. The prior response and blockers remain in Attempt history; this new request has its own response binding.");
   } catch (error) { setGuidedStatus(plainAPIError(error, "A revision request could not be prepared."), true); }
 };
 
@@ -2214,9 +3143,10 @@ document.getElementById("guidedCancel").onclick = async () => {
   if (!guidedRun?.run_id) return;
   try {
     guidedRun = await api(`/api/character-creation/runs/${encodeURIComponent(guidedRun.run_id)}/cancel`, {method: "POST", body: "{}"});
+    renderGuidedRecoveryActions(guidedRun, false);
     document.getElementById("guidedBuildProgress").textContent = pretty(guidedRun);
     setGuidedStatus("Build cancelled. No canonical character changes were committed.");
-    setGuidedStep(2);
+    setGuidedStep(8);
   } catch (error) { setGuidedStatus(plainAPIError(error, "The build could not be cancelled."), true); }
 };
 

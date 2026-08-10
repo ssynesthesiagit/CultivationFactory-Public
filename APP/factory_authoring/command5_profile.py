@@ -231,10 +231,19 @@ class CharacterGMCommand5Profile:
             "candidate_status":GM_CANDIDATE_READY,"project_id":project["project_id"],"project_revision":project["revision"],
             "event_count":auth.get("event_count"),"event_head_hash":auth.get("event_head_hash"),"content_lock_hash":auth.get("content_lock_hash"),
             "typed_choice_snapshot_sha256":auth.get("typed_choice_snapshot_sha256"),
-            "projection_id":auth.get("projection_id"),"character_sheet_sha256":sheet_response["sheet_artifact"]["sha256"],
-            "workspace_id":workspace_status.get("workspace_id"),"workspace_sha256":workspace_status.get("workspace_sha256"),
-            "consumer_verification":"NOT_ATTEMPTED","gm_export_available":False,"command6_status":"NOT_RUN",
-            "combat_execution":"NOT_ATTEMPTED_OR_UNSUPPORTED","cpk1_schemas_registered":False,
+             "projection_id":auth.get("projection_id"),"character_sheet_sha256":sheet_response["sheet_artifact"]["sha256"],
+             "workspace_id":workspace_status.get("workspace_id"),"workspace_sha256":workspace_status.get("workspace_sha256"),
+             "consumer_verification":"NOT_ATTEMPTED","gm_export_available":False,"command6_status":"NOT_RUN",
+             "combat":"NOT_ATTEMPTED","combat_execution":"NOT_ATTEMPTED",
+             "combat_runtime":"NOT_CLAIMED","combat_sheet":"NOT_CLAIMED",
+             "combat_ready_semantics":"NOT_CLAIMED","encounter":"NOT_ATTEMPTED",
+             "controller_selection":"NOT_ATTEMPTED","encounter_setup_required":True,
+             "current_resource_requirements":{"current_qi_required":False,"current_martial_focus_required":False},
+             "current_qi_required":False,"current_martial_focus_required":False,
+             "opponent_team_completion_required":True,"battlefield_choice":"NOT_ATTEMPTED",
+             "battlefield_owner_choice_committed":False,"token_placement":"NOT_ATTEMPTED",
+             "token_placement_committed":False,"initiative":"NOT_ATTEMPTED",
+             "initiative_attempted":False,"cpk1_schemas_registered":False,
         }
         gm_model = {
             "schema_version":"Tianxia_GM_Character_Model_v1","metadata":metadata,
@@ -255,7 +264,7 @@ class CharacterGMCommand5Profile:
             "forged_techniques":self._typed_none(snapshot,"forged_techniques"),
             "training_sources":deepcopy(training.get("training_sources") or []),"ai_behavior":deepcopy(ai),
             "diagnostics":{"valid":True,"gm_screen_consumer_verification":"NOT_ATTEMPTED","combat_execution_pending":True,"display_only_record_count":sum(1 for row in actions if row["display_only_not_execution_authority"]),"no_false_combat_claim":True},
-            "capability_readiness":{"advancement":"ADVANCEMENT_READY","character_sheet":"CHARACTER_SHEET_READY","gm_tactical_authoring":"COMPLETE","character_gm_command4":CHARACTER_GM_COMMAND4_PASS,"gm_model_candidate":GM_CANDIDATE_READY,"gm_screen_consumer":"NOT_ATTEMPTED","combat":"NOT_ATTEMPTED"},
+             "capability_readiness":{"advancement":"ADVANCEMENT_READY","character_sheet":"CHARACTER_SHEET_READY","gm_tactical_authoring":"COMPLETE","character_gm_command4":CHARACTER_GM_COMMAND4_PASS,"gm_model_candidate":GM_CANDIDATE_READY,"gm_screen_consumer":"NOT_ATTEMPTED","combat":"NOT_ATTEMPTED","combat_execution":"NOT_ATTEMPTED","combat_runtime":"NOT_CLAIMED","combat_sheet":"NOT_CLAIMED","combat_ready_semantics":"NOT_CLAIMED","encounter":"NOT_ATTEMPTED","controller_selection":"NOT_ATTEMPTED","encounter_setup_required":True,"current_resource_requirements":{"current_qi_required":False,"current_martial_focus_required":False},"current_qi_required":False,"current_martial_focus_required":False,"opponent_team_completion_required":True,"battlefield_choice":"NOT_ATTEMPTED","battlefield_owner_choice_committed":False,"token_placement":"NOT_ATTEMPTED","token_placement_committed":False,"initiative":"NOT_ATTEMPTED","initiative_attempted":False},
             "provenance":{"character_sheet":deepcopy(snapshot.get("section_provenance")),"command4_profile_validation_sha256":sha256_json(command4),"workspace_manifest_sha256":workspace_status.get("manifest_sha256"),"selected_record_identity_index":deepcopy(snapshot.get("selected_record_identity_index"))},
         }
         view = {

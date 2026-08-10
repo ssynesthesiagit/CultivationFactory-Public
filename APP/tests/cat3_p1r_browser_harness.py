@@ -21,6 +21,7 @@ from catalog.service import CatalogService
 from character_builder import CharacterBuilderService
 from character_creation.current_fixture import exact_stage1_response
 from character_creation.choice_snapshot import valid_choice_snapshot
+from non_sphere_authority.service import NonSphereAuthorityService
 from vendor_adapter.service import FactoryAdapter
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -64,8 +65,8 @@ CAT3_LEVEL_TALENTS = (
     "TAL_ATHLETICS_DIZZYING_TUMBLE",
     "TAL_ATHLETICS_MOVING_TARGET",
     "tianxia.talent.blood.blood_puppet",
-    "TAL_ATHLETICS_AIR_STUNT",
-    "TAL_ATHLETICS_SPARROW_S_PATH",
+    "ASH_TAL_SOOT_IN_LUNGS",
+    "ASH_TAL_ASHEN_BURIAL",
 )
 CAT3_LEVEL_FEATURES = (
     "tianxia.path.qi_cultivation.feature.qi_sensing",
@@ -93,10 +94,57 @@ def complete_cat3_plan(
     project_id: str,
     *,
     stage1_prompt: dict[str, Any],
+    delegated_envelope: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Deterministic external-provider output used only by this acceptance test."""
     project = CharacterBuilderService(db).projects.get_project(project_id)["project"]
     locks = {row["field"]: row["value"] for row in project["user_locks"]}
+    envelope = delegated_envelope or stage1_prompt["envelope"]
+    allowed = envelope.get("allowed_choice_ids_by_slot") or {}
+    background_authority = NonSphereAuthorityService(db).background_route_authority
+
+    # The installed P2A authority no longer publishes the old compact
+    # ``tianxia.sphere.scoundrel`` fixture as a delegated Background Sphere.
+    # Select one exact route from the sealed envelope instead of emitting a
+    # stale historical ID that the real delegated validator must reject.
+    background_route: tuple[str, str, str, str] | None = None
+    allowed_backgrounds = set(allowed.get("background_choice") or [])
+    allowed_spheres = set(allowed.get("background_sphere_choice") or [])
+    allowed_talents = set(allowed.get("background_talent_choice") or [])
+    allowed_insights = set(allowed.get("origin_insight_choice") or [])
+    for background_id in sorted(allowed_backgrounds):
+        authority = background_authority.get(background_id) or {}
+        for route in authority.get("route_options") or []:
+            sphere_id = route.get("background_sphere_choice_id")
+            talent_id = route.get("background_talent_choice_id")
+            if sphere_id not in allowed_spheres or talent_id not in allowed_talents:
+                continue
+            for origin in authority.get("origin_insight_options") or []:
+                origin_id = origin.get("origin_insight_choice_id")
+                if not isinstance(origin_id, str):
+                    continue
+                generic_origin_id = origin_id.rsplit(".origin_insight.", 1)[-1]
+                if ".origin_insight." in origin_id:
+                    generic_origin_id = f"tianxia.origin_insight.{generic_origin_id}"
+                if generic_origin_id in allowed_insights:
+                    background_route = (background_id, sphere_id, talent_id, generic_origin_id)
+                    break
+            if background_route is not None:
+                break
+        if background_route is not None:
+            break
+    if background_route is None:
+        # The W5 binding-error branch deliberately targets the historical
+        # sealed fixture, whose response is rejected before normalization.  It
+        # has no current delegated Background route, so retain the old payload
+        # only for that pre-compilation transport assertion.
+        background_route = (
+            "tianxia.background.abandoned_orphan",
+            "tianxia.sphere.scoundrel",
+            "TAL_SCOUNDREL_HIDDEN_TOOL_CACHE",
+            "tianxia.origin_insight.street_hardened",
+        )
+    background_id, background_sphere_id, background_talent_id, origin_insight_id = background_route
     committed_plan = locks.get("character_creation.committed_catalog_choice_plan")
     if isinstance(committed_plan, dict):
         committed_pairs = [
@@ -114,10 +162,10 @@ def complete_cat3_plan(
         committed_level_talents = CAT3_LEVEL_TALENTS
     choices = [
         _choice("starting_state", 0, "tianxia.source.canon.authority.manifest.p2a.json", "source-document", {"ability_scores": {"STR": 8, "DEX": 14, "CON": 14, "INT": 15, "WIS": 12, "CHA": 8}}),
-        _choice("background_acquisition", 1, "tianxia.background.abandoned_orphan", "background-selection", {"ability": "DEX", "amount": 2}),
-        _choice("background_sphere_acquisition", 1, "tianxia.sphere.scoundrel", "background-grant"),
-        _choice("background_talent_acquisition", 1, "TAL_SCOUNDREL_HIDDEN_TOOL_CACHE", "background-grant"),
-        _choice("origin_insight_acquisition", 1, "tianxia.origin_insight.street_hardened", "origin-selection"),
+        _choice("background_acquisition", 1, background_id, "background-selection", {"ability": "DEX", "amount": 2}),
+        _choice("background_sphere_acquisition", 1, background_sphere_id, "background-grant"),
+        _choice("background_talent_acquisition", 1, background_talent_id, "background-grant"),
+        _choice("origin_insight_acquisition", 1, origin_insight_id, "origin-selection"),
         _choice("path_acquisition", 1, "tianxia.path.qi_cultivation", "path-selection"),
     ]
     for sphere_id, talent_id in committed_pairs:
@@ -189,6 +237,7 @@ def provider_handler(context: dict[str, Any]):
             app.state.db,
             complete_request["project_id"],
             stage1_prompt=complete_request["stage1_prompt"],
+            delegated_envelope=complete_request.get("delegated_choice_envelope"),
         )
         plan["stage1_response"] = exact_stage1_response(complete_request["stage1_prompt"])
         plan["request_sha256"] = complete_request["request_sha256"]
@@ -308,7 +357,7 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
             # Phase 1: exact normal wizard selection and planning.
             stage("running normal wizard selection and planning proof")
             page.get_by_role("button", name="Detailed Character Intake", exact=True).click()
-            page.locator("#characterSheetPanel").wait_for(state="visible", timeout=60000)
+            page.locator("#ownerCustomizationSection").wait_for(state="visible", timeout=60000)
             page.locator("#sheetSphereAdd").wait_for(state="visible", timeout=60000)
             page.wait_for_function(
                 "document.querySelector('#sheetSphereAdd')?.options.length > 80",
@@ -414,7 +463,7 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
             assert len(darkness_rows) == 1
 
             page.evaluate(
-                "proof => { const pre=document.createElement('pre'); pre.id='cat3BrowserProof'; pre.textContent=JSON.stringify(proof,null,2); document.querySelector('#characterSheetPanel').prepend(pre); }",
+                "proof => { const pre=document.createElement('pre'); pre.id='cat3BrowserProof'; pre.textContent=JSON.stringify(proof,null,2); document.querySelector('#ownerDetailHost').prepend(pre); }",
                 {
                     "valid_projection_ready": valid_projection["ready"],
                     "cl7_talent": selected_dispositions["tianxia.talent.ash.burial_ground"],
@@ -432,7 +481,7 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
 
             # Commit the normal-wizard project and reopen its exact planning locks.
             stage("saving and reopening normal-wizard planning locks")
-            page.locator("#guidedBuildButton").click()
+            page.locator("#guidedBriefContinue").click(); page.locator("#guidedBuildButton").click()
             page.locator("#builderAI").wait_for(state="visible", timeout=180000)
             wizard_project_id = page.evaluate("guidedProjectId")
             assert wizard_project_id
@@ -498,9 +547,7 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
             stage("starting two-scratch real production compilation")
             build_dispatch = page.evaluate(
                 """() => {
-                    const input = document.querySelector('input[name="guidedExecutionMode"][value="STANDARD_API"]');
-                    input.checked = true;
-                    input.dispatchEvent(new Event('change', {bubbles: true}));
+                    document.querySelector('#guidedProviderRouteTab').click();
                     const button = document.querySelector('#guidedStartBuild');
                     const snapshot = {
                         disabled: button.disabled,
