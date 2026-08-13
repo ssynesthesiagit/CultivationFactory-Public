@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import os
 import shutil
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Sequence
+from tempfile import TemporaryDirectory
+from typing import Iterator, Sequence
 
 from common import (
     APP_ROOT,
@@ -33,7 +35,51 @@ class CommandStage:
     timeout_seconds: int
 
 
-def pytest_command(output: Path, report_name: str, tests: Sequence[str]) -> list[str]:
+def normalized_path(path: Path) -> Path:
+    return path.expanduser().resolve()
+
+
+def paths_overlap(first: Path, second: Path) -> bool:
+    return first == second or first in second.parents or second in first.parents
+
+
+def validate_work_root(output: Path, work_root: Path) -> Path:
+    evidence_root = normalized_path(output)
+    candidate = normalized_path(work_root)
+    if paths_overlap(evidence_root, candidate):
+        raise ValueError(
+            "CI pytest work root must be separate from evidence output: "
+            f"output={evidence_root}, work_root={candidate}"
+        )
+    return candidate
+
+
+@contextlib.contextmanager
+def pytest_work_session(output: Path, work_root: Path | None, tier: str) -> Iterator[Path]:
+    """Yield a dedicated pytest basetemp without taking ownership of work_root."""
+
+    if work_root is None:
+        with TemporaryDirectory(prefix=f"tianxia-ci1-{tier}-") as default_root:
+            with pytest_work_session(output, Path(default_root), tier) as basetemp:
+                yield basetemp
+        return
+
+    root = validate_work_root(output, work_root)
+    root.mkdir(parents=True, exist_ok=True)
+    if not root.is_dir():
+        raise NotADirectoryError(f"CI pytest work root is not a directory: {root}")
+    with TemporaryDirectory(prefix=f"tianxia-ci1-{tier}-", dir=str(root)) as owned_root:
+        yield Path(owned_root) / "pytest-tmp"
+
+
+def pytest_command(output: Path, basetemp: Path, report_name: str, tests: Sequence[str]) -> list[str]:
+    evidence_root = normalized_path(output)
+    selected_basetemp = normalized_path(basetemp)
+    if paths_overlap(evidence_root, selected_basetemp):
+        raise ValueError(
+            "CI pytest basetemp must be separate from evidence output: "
+            f"output={evidence_root}, basetemp={selected_basetemp}"
+        )
     return [
         sys.executable,
         "-m",
@@ -42,13 +88,13 @@ def pytest_command(output: Path, report_name: str, tests: Sequence[str]) -> list
         "-p",
         "no:cacheprovider",
         "--tb=short",
-        "--basetemp=" + str(output / "pytest-tmp"),
-        f"--junitxml={output / 'junit' / report_name}",
+        "--basetemp=" + str(selected_basetemp),
+        f"--junitxml={evidence_root / 'junit' / report_name}",
         *tests,
     ]
 
 
-def fast_stages(output: Path, node: str) -> list[CommandStage]:
+def fast_stages(output: Path, node: str, basetemp: Path) -> list[CommandStage]:
     run_a = output / "catalog" / "run-a"
     run_b = output / "catalog" / "run-b"
     for target in (run_a, run_b):
@@ -102,7 +148,7 @@ def fast_stages(output: Path, node: str) -> list[CommandStage]:
             [sys.executable, str(matrices), "--source-root", str(APP_ROOT), "--output-root", str(output / "catalog" / "acceptance")],
             300,
         ),
-        CommandStage("focused_tests", pytest_command(output, "fast-focused.xml", focused), 900),
+        CommandStage("focused_tests", pytest_command(output, basetemp, "fast-focused.xml", focused), 900),
         CommandStage(
             "ci_contract",
             [sys.executable, "-m", "unittest", "discover", "-s", str(REPOSITORY_ROOT / "ci" / "tests"), "-v"],
@@ -111,7 +157,7 @@ def fast_stages(output: Path, node: str) -> list[CommandStage]:
     ]
 
 
-def integration_stages(output: Path) -> list[CommandStage]:
+def integration_stages(output: Path, basetemp: Path) -> list[CommandStage]:
     return [
         CommandStage(
             "source_verification",
@@ -120,13 +166,14 @@ def integration_stages(output: Path) -> list[CommandStage]:
         ),
         CommandStage(
             "project_persistence",
-            pytest_command(output, "project-persistence.xml", ("tests/test_cat3_p1r_persistence.py",)),
+            pytest_command(output, basetemp, "project-persistence.xml", ("tests/test_cat3_p1r_persistence.py",)),
             900,
         ),
         CommandStage(
             "frozen_choices_and_finalization",
             pytest_command(
                 output,
+                basetemp,
                 "frozen-choices-finalization.xml",
                 ("tests/test_cg1_character_creation_modes.py", "tests/test_w5_production_receipt_identity.py"),
             ),
@@ -136,6 +183,7 @@ def integration_stages(output: Path) -> list[CommandStage]:
             "portable_export_clean_import_gm",
             pytest_command(
                 output,
+                basetemp,
                 "portable-gm-chain.xml",
                 (
                     "tests/test_c2ar1_owner_projection.py",
@@ -151,6 +199,7 @@ def integration_stages(output: Path) -> list[CommandStage]:
             "strict_pack_locks_and_historical_fixtures",
             pytest_command(
                 output,
+                basetemp,
                 "pack-locks-history.xml",
                 ("tests/test_c3d_p1_portable_live_combat.py", "tests/test_c3d_p1r_historical_compatibility.py"),
             ),
@@ -158,7 +207,12 @@ def integration_stages(output: Path) -> list[CommandStage]:
         ),
         CommandStage(
             "real_production_services",
-            pytest_command(output, "real-production-services.xml", ("tests/test_w5_p1r_r1_production_endpoints.py",)),
+            pytest_command(
+                output,
+                basetemp,
+                "real-production-services.xml",
+                ("tests/test_w5_p1r_r1_production_endpoints.py",),
+            ),
             1800,
         ),
     ]
@@ -209,10 +263,17 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("tier", choices=("fast", "integration"))
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--work-root",
+        type=Path,
+        help="External root for ephemeral pytest working data; a unique tier child is created and removed safely.",
+    )
     parser.add_argument("--node", default=shutil.which("node") or "node")
     parser.add_argument("--seed-timings", type=Path)
     args = parser.parse_args()
-    output = args.output.resolve()
+    output = normalized_path(args.output)
+    if args.work_root is not None:
+        validate_work_root(output, args.work_root)
     output.mkdir(parents=True, exist_ok=True)
     (output / "logs").mkdir(exist_ok=True)
     (output / "junit").mkdir(exist_ok=True)
@@ -222,38 +283,39 @@ def main() -> int:
     environment["PYTHONPYCACHEPREFIX"] = str(output / "pycache")
     environment["TIANXIA_VERIFIED_NODE"] = args.node
     recorder = StageRecorder(output / "stage-timings.json", seed_ndjson=args.seed_timings)
-    stages = fast_stages(output, args.node) if args.tier == "fast" else integration_stages(output)
     classification = "PASS"
     failed_stage = None
     failed_command = None
     failed_exit_code = None
-    for spec in stages:
-        exit_code = run_logged_command(
-            recorder=recorder,
-            stage=spec.name,
-            command=spec.command,
-            cwd=APP_ROOT if spec.name not in {"source_verification", "javascript_syntax", "json_schema_validation", "ci_contract"} else REPOSITORY_ROOT,
-            log_path=output / "logs" / f"{spec.name}.log",
-            env=environment,
-            timeout_seconds=spec.timeout_seconds,
-        )
-        if exit_code:
-            classification = classify_failure(spec.name, exit_code)
-            failed_stage = spec.name
-            failed_command = list(spec.command)
-            failed_exit_code = exit_code
-            break
-        if args.tier == "fast" and spec.name == "catalog_comparison":
-            try:
-                with recorder.measure("registry_commitment", "verify exact accepted CAT3 registry commitment"):
-                    verify_catalog(output)
-            except Exception as exc:
-                classification = "PRODUCT_FAILURE"
-                failed_stage = "registry_commitment"
-                failed_command = ["verify_catalog"]
-                failed_exit_code = 1
-                (output / "logs" / "registry_commitment.log").write_text(str(exc) + "\n", encoding="utf-8")
+    with pytest_work_session(output, args.work_root, args.tier) as basetemp:
+        stages = fast_stages(output, args.node, basetemp) if args.tier == "fast" else integration_stages(output, basetemp)
+        for spec in stages:
+            exit_code = run_logged_command(
+                recorder=recorder,
+                stage=spec.name,
+                command=spec.command,
+                cwd=APP_ROOT if spec.name not in {"source_verification", "javascript_syntax", "json_schema_validation", "ci_contract"} else REPOSITORY_ROOT,
+                log_path=output / "logs" / f"{spec.name}.log",
+                env=environment,
+                timeout_seconds=spec.timeout_seconds,
+            )
+            if exit_code:
+                classification = classify_failure(spec.name, exit_code)
+                failed_stage = spec.name
+                failed_command = list(spec.command)
+                failed_exit_code = exit_code
                 break
+            if args.tier == "fast" and spec.name == "catalog_comparison":
+                try:
+                    with recorder.measure("registry_commitment", "verify exact accepted CAT3 registry commitment"):
+                        verify_catalog(output)
+                except Exception as exc:
+                    classification = "PRODUCT_FAILURE"
+                    failed_stage = "registry_commitment"
+                    failed_command = ["verify_catalog"]
+                    failed_exit_code = 1
+                    (output / "logs" / "registry_commitment.log").write_text(str(exc) + "\n", encoding="utf-8")
+                    break
     if classification == "PASS" and args.tier == "integration":
         baseline = read_json(BASELINE_PATH)
         write_json(

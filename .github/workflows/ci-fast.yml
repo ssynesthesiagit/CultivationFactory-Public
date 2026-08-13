@@ -103,7 +103,7 @@ jobs:
           $record | ConvertTo-Json -Compress | Add-Content -Encoding utf8 "$env:BOOTSTRAP_TIMINGS"
 
       - name: Run fast tier
-        run: python ci/run_tier.py fast --output "$CI_OUTPUT" --node node --seed-timings "$BOOTSTRAP_TIMINGS"
+        run: python ci/run_tier.py fast --output "$CI_OUTPUT" --work-root "$RUNNER_TEMP/ci1-fast-work" --node node --seed-timings "$BOOTSTRAP_TIMINGS"
 
       - name: Finalize bounded evidence
         if: always()

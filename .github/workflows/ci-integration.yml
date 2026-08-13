@@ -81,7 +81,7 @@ jobs:
           @{stage=$state.stage; command_identity=$state.command_identity; started_at_utc=$state.started_at_utc; ended_at_utc=$ended.UtcDateTime.ToString("o"); elapsed_seconds=[Math]::Round(($ended.ToUnixTimeMilliseconds() - $state.started_epoch_ms) / 1000.0, 6); status=$dependencyStatus; exit_code=$dependencyExitCode} | ConvertTo-Json -Compress | Add-Content -Encoding utf8 "$env:BOOTSTRAP_TIMINGS"
 
       - name: Run integration tier
-        run: python ci/run_tier.py integration --output "${{ env.CI_OUTPUT }}" --seed-timings "${{ env.BOOTSTRAP_TIMINGS }}"
+        run: python ci/run_tier.py integration --output "${{ env.CI_OUTPUT }}" --work-root "$RUNNER_TEMP/ci1-integration-work" --seed-timings "${{ env.BOOTSTRAP_TIMINGS }}"
 
       - name: Finalize bounded evidence
         if: always()
