@@ -76,7 +76,7 @@
         <div>
           <p class="sheet-kicker">Character intake</p>
           <h3>Who are we making?</h3>
-            <p>Describe the character. Leave Name or Concept blank when you want the AI to propose wording for your review; mechanical choices remain Auto unless you customize them.</p>
+            <p>Describe the character. Leave Name or Concept blank and the AI will propose wording for your review; mechanical choices remain Auto unless you customize them.</p>
         </div>
         <div class="creation-mode" role="group" aria-label="Character intake detail">
           <button id="builderModeQuick" type="button" class="active" aria-pressed="true">Auto</button>
@@ -85,7 +85,7 @@
       </div>
       <form id="guidedCreate" class="friendly-form">
         <div class="identity-banner">
-          <label>Character name <span class="optional">(optional — the AI may propose one)</span>
+          <label>Character name <span class="optional">(optional — the AI will propose one)</span>
             <input id="guidedName" maxlength="240" placeholder="For example: Lin Mei">
           </label>
           <div class="friendly-grid">
@@ -101,7 +101,7 @@
             </label>
           </div>
         </div>
-        <label>Character concept <span class="optional">(optional — the AI may propose one)</span>
+        <label>Character concept <span class="optional">(optional — the AI will propose one)</span>
           <textarea id="guidedConcept" rows="5" placeholder="Describe their cultivation path, fighting style, personality, signature abilities, and anything you definitely want. Leave blank to delegate the concept."></textarea>
         </label>
          <label>Source or inspiration <span class="optional">(optional)</span>
@@ -172,7 +172,11 @@
                   <article class="path-track-card"><strong>Spirit Awakening</strong><span>Level 0 · Dormant until a validated Method grants AP</span></article>
                 </div>
               </fieldset>
-              <label>Subpath or Tradition<select id="sheetSubpath" data-sheet-slot="subpath_choice"></select></label>
+               <fieldset class="subpath-choice-field"><legend>Subpaths or Traditions (one per selected Path)</legend>
+                 <p class="field-help">Choose at most one Subpath or Tradition for each selected Path. Every selected row keeps its exact owning Path binding.</p>
+                 <select id="sheetSubpath" data-sheet-slot="subpath_choice" multiple size="6" aria-label="Subpaths or Traditions"></select>
+                 <small id="sheetSubpathAuthorityNotice" class="availability-note" role="status"></small>
+               </fieldset>
               <label>Background<select id="sheetBackground" data-sheet-slot="background_choice"></select></label>
               <label>Background Sphere<select id="sheetBackgroundSphere" data-sheet-slot="background_sphere_choice"></select></label>
               <label>Background Talent<select id="sheetBackgroundTalent" data-sheet-slot="background_talent_choice"></select></label>
@@ -273,8 +277,8 @@
        <div class="owner-screen-heading"><div><p class="sheet-kicker">Step 2 of 8</p><h2>Choose the Paths this Method must advance</h2><p>All three tracks are visible at level 0. Select zero, one, two, or three requirements; the legal Method route chooses advancement when none are locked.</p></div><span id="ownerPathRequirementSummary" class="owner-status-pill">0–3 requirements</span></div>
        <p class="planning-freeze-note" data-planning-freeze-note role="status" hidden>Edit Brief / Create New Request is required to change this frozen planning envelope.</p>
        <div id="ownerPathCards" class="owner-path-card-grid" aria-label="Level-zero Path tracks"></div>
-      <div class="owner-plan-method-grid">
-        <div id="ownerCultivationHost"></div>
+       <div class="owner-plan-method-grid">
+         <div id="ownerCultivationHost"></div>
         <aside class="owner-method-confirmation panel">
           <p class="sheet-kicker">Validator-owned result</p>
           <h3>Compatible Methods</h3>
@@ -283,8 +287,12 @@
           <p id="ownerMethodCompatibilityStatus" class="friendly-status" role="status">Compatibility has not been checked.</p>
           <div id="ownerCompatibleMethods" class="owner-compatible-methods" aria-live="polite"></div>
         </aside>
-      </div>
-      <p id="guidedBuildButtonReason" class="disabled-reason">Continue creates the real project only after this screen is complete.</p>
+       </div>
+        <section id="ownerEarlySpherePlan" class="owner-early-sphere-plan" data-planning-phase="pre-request-freeze" aria-labelledby="ownerEarlySphereHeading">
+         <div class="owner-screen-heading"><div><p class="sheet-kicker">Before request freeze</p><h3 id="ownerEarlySphereHeading">Sphere planning</h3><p>Set Sphere and Talent priorities here before the project request is created. These are planning preferences only; validated acquisition remains Factory-derived.</p></div></div>
+          <div id="ownerSphereHost" data-planning-surface="sphere-and-talent-priorities"></div>
+       </section>
+       <p id="guidedBuildButtonReason" class="disabled-reason">Continue creates the real project only after this screen is complete.</p>
       <button id="guidedBuildButton" class="primary-action large-owner-action" form="guidedCreate" type="submit">Create project and choose AI route <span aria-hidden="true">→</span></button>
       <button id="ownerPathsBack" class="text-action" type="button">← Back to brief</button>
     </section>
@@ -300,7 +308,7 @@
      <section id="builderSpheres" class="builder-card owner-step-panel owner-catalog-panel" data-owner-panel="6" hidden>
        <div class="owner-screen-heading"><div><p class="sheet-kicker">Step 6 of 8</p><h2>Spheres explain what the character can do</h2><p>Player-facing automatic base-ability text comes first. Planning priorities, acquired Spheres, free Talents, and ordinary Talents remain distinct.</p></div><span id="ownerSphereCount" class="owner-status-pill">No priority cap</span></div>
        <p class="planning-freeze-note" data-planning-freeze-note role="status" hidden>Edit Brief / Create New Request is required to change this frozen planning envelope.</p>
-       <div id="ownerSphereHost"></div>
+        <p class="catalog-integrity-note">Sphere planning is completed before request freeze on the Paths &amp; Method screen. This screen remains available for the proposal's validated Sphere and Talent result.</p>
       <div class="owner-screen-footer"><button class="text-action owner-step-back" data-owner-target="5" type="button">← Insights</button><button class="primary-action owner-step-next" data-owner-target="7" type="button">Open character sheet <span aria-hidden="true">→</span></button></div>
     </section>
 

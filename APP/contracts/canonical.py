@@ -252,6 +252,19 @@ def normalize_core_catalog_record(projection: dict[str, Any], *, pack_hash: str)
         ],
         "record_hash": ZERO_HASH,
     }
+    # Path ownership is a first-class typed relation for Subpaths/Traditions.
+    # Keep it on the canonical projection as well as inside the raw source
+    # envelope so downstream consumers never have to recover ownership from a
+    # live catalog or from dependency ordering.
+    raw_record = projection.get("raw_record") if isinstance(projection.get("raw_record"), dict) else {}
+    for owner_field in ("owning_path_id", "parent_path_id"):
+        owner_value = projection.get(owner_field)
+        if not isinstance(owner_value, str) or not owner_value:
+            owner_value = raw_record.get(owner_field)
+        if owner_field == "parent_path_id" and not isinstance(owner_value, str):
+            owner_value = raw_record.get("owning_path_id")
+        if isinstance(owner_value, str) and owner_value:
+            canonical[owner_field] = owner_value
     canonical["record_hash"] = canonical_record_hash(canonical)
     return canonical
 

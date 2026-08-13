@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import socket
@@ -50,6 +51,7 @@ SPARROW = "TAL_ATHLETICS_SPARROW_S_PATH"
 UNRESOLVED = "TAL_QIWEAVING_PAIRED_RESONANCE"
 UNRESOLVED_SPHERE = "tianxia.sphere.qiweaving"
 UNRESOLVED_FREE_TALENT = "TAL_QIWEAVING_ADDITIONAL_QIWEAVING_PACKAGE"
+RESTRICTED_INITIAL = "tianxia.talent.blood.blood_puppet"
 PRIORITY_FIXTURES = [
     ("Beauty", "tianxia.talent.beauty.admiring_crowd_method"),
     ("Ash", "tianxia.talent.ash.burial_ground"),
@@ -59,6 +61,7 @@ PRIORITY_FIXTURES = [
     ("Blood", "tianxia.talent.blood.blood_puppet"),
 ]
 CAT3_SPHERE_FREE_PAIRS = tuple(FREE_GRANTS.items())
+CAT3_METHOD_ID = "METHOD-001"
 CAT3_LEVEL_TALENTS = (
     "tianxia.talent.ash.ashen_step",
     "ASH_TAL_CINDER_BURST",
@@ -77,6 +80,10 @@ CAT3_LEVEL_FEATURES = (
     "tianxia.path.qi_cultivation.feature.subpath_feature",
     "tianxia.path.qi_cultivation.feature.featherfall",
 )
+CAT3_ZERO_OWNER_LEVEL_FEATURES = (
+    "tianxia.path.qi_cultivation.feature.cultivated_response",
+    *CAT3_LEVEL_FEATURES[1:],
+)
 
 
 def _choice(kind: str, cl: int, record_id: str, channel: str, selections: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -87,6 +94,45 @@ def _choice(kind: str, cl: int, record_id: str, channel: str, selections: dict[s
         "acquisition_channel": channel,
         "parameters": selections or {},
     }
+
+
+def _cat3_stage1_response(prompt: dict[str, Any]) -> dict[str, Any]:
+    response = exact_stage1_response(prompt)
+    method_decision = next(
+        (row for row in response["response_payload"]["decisions"] if row["slot_id"] == "method_choice"),
+        None,
+    )
+    path_decision = next(
+        (row for row in response["response_payload"]["decisions"] if row["slot_id"] == "path_choice"),
+        None,
+    )
+    # Owner-locked Path runs retain their existing Method-deferred contract;
+    # only the zero-owner browser flow needs the deterministic open Method
+    # required to derive the delegated Path route.
+    if (
+        method_decision is None
+        or method_decision.get("choice_ids")
+        or (path_decision and path_decision.get("choice_ids"))
+    ):
+        return response
+    method_slot = next(
+        row for row in prompt["envelope"]["decision_slots"] if row["slot_id"] == "method_choice"
+    )
+    available_methods = [
+        choice["choice_id"]
+        for choice in method_slot.get("choices") or []
+        if isinstance(choice, dict) and isinstance(choice.get("choice_id"), str)
+    ]
+    method_id = CAT3_METHOD_ID if CAT3_METHOD_ID in available_methods else (available_methods[0] if available_methods else None)
+    if method_id is None:
+        return response
+    method_decision.update({
+        "state": "selected",
+        "choice_ids": [method_id],
+        "reason_code": None,
+        "reason": None,
+    })
+    return response
 
 
 def complete_cat3_plan(
@@ -160,6 +206,12 @@ def complete_cat3_plan(
         # choice authority.  Normal projects must use the exact lock above.
         committed_pairs = CAT3_SPHERE_FREE_PAIRS
         committed_level_talents = CAT3_LEVEL_TALENTS
+    stage1_response = _cat3_stage1_response(stage1_prompt)
+    selected_method_ids = [
+        decision["choice_ids"][0]
+        for decision in stage1_response["response_payload"]["decisions"]
+        if decision["slot_id"] == "method_choice" and decision.get("choice_ids")
+    ]
     choices = [
         _choice("starting_state", 0, "tianxia.source.canon.authority.manifest.p2a.json", "source-document", {"ability_scores": {"STR": 8, "DEX": 14, "CON": 14, "INT": 15, "WIS": 12, "CHA": 8}}),
         _choice("background_acquisition", 1, background_id, "background-selection", {"ability": "DEX", "amount": 2}),
@@ -168,13 +220,21 @@ def complete_cat3_plan(
         _choice("origin_insight_acquisition", 1, origin_insight_id, "origin-selection"),
         _choice("path_acquisition", 1, "tianxia.path.qi_cultivation", "path-selection"),
     ]
+    if selected_method_ids:
+        choices.append(_choice("method_acquisition", 1, selected_method_ids[0], "method-acquisition"))
     for sphere_id, talent_id in committed_pairs:
         choices.extend([
             _choice("ai_bootstrap_sphere_acquisition", 1, sphere_id, "ai-bootstrap-free-cl1-sphere"),
             _choice("ai_bootstrap_talent_acquisition", 1, talent_id, "ai-bootstrap-free-cl1-talent"),
         ])
-    assert len(committed_level_talents) == len(CAT3_LEVEL_FEATURES)
-    for cl, (feature_id, talent_id) in enumerate(zip(CAT3_LEVEL_FEATURES, committed_level_talents), start=1):
+    locked_choices = locks.get("character_sheet.locked_choices") or {}
+    level_features = (
+        CAT3_LEVEL_FEATURES
+        if locked_choices.get("path_choice")
+        else CAT3_ZERO_OWNER_LEVEL_FEATURES
+    )
+    assert len(committed_level_talents) == len(level_features)
+    for cl, (feature_id, talent_id) in enumerate(zip(level_features, committed_level_talents), start=1):
         choices.append(_choice("level_advance", cl, feature_id, "level-advance"))
         if cl == 3:
             choices.append(_choice("subpath_acquisition", 3, "tianxia.subpath.qi.cinder_heart_cultivator", "subpath-selection"))
@@ -193,11 +253,11 @@ def complete_cat3_plan(
                 "reason": "The bounded CAT3 acceptance character does not select this optional subsystem.",
             },
         )
-        for target in ("method", "foundation", "manuals", "equipment", "forged_techniques")
+        for target in (("foundation", "manuals", "equipment", "forged_techniques") if selected_method_ids else ("method", "foundation", "manuals", "equipment", "forged_techniques"))
     )
     return {
         "schema": "TianxiaFoundry.CharacterCreationPlan.v2",
-        "stage1_response": exact_stage1_response(stage1_prompt),
+        "stage1_response": stage1_response,
         "target_cl": 7,
         "stage2_proposal": {
             "schema_version": "TianxiaFoundry.Stage2AdvancementProposal.v2",
@@ -239,7 +299,7 @@ def provider_handler(context: dict[str, Any]):
             stage1_prompt=complete_request["stage1_prompt"],
             delegated_envelope=complete_request.get("delegated_choice_envelope"),
         )
-        plan["stage1_response"] = exact_stage1_response(complete_request["stage1_prompt"])
+        plan["stage1_response"] = _cat3_stage1_response(complete_request["stage1_prompt"])
         plan["request_sha256"] = complete_request["request_sha256"]
         content = canonical_json(plan)
         return httpx.Response(
@@ -321,7 +381,7 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
             page.on("requestfailed", lambda request: failed_requests.append(f"{request.method} {request.url}: {request.failure}"))
 
             page.on("response", lambda response: requests.append({"method": response.request.method, "url": response.url, "path": response.request.url, "status": response.status}) if "/api/" in response.url else None)
-            stage("opening application in Windows Chromium over real loopback HTTP")
+            stage("opening application in Chromium over real loopback HTTP")
             page.goto(base_url, wait_until="domcontentloaded", timeout=120000)
             uuid_probe = page.evaluate(
                 """() => ({
@@ -343,7 +403,7 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
             required_option_tokens = (
                 "85 canonical Spheres",
                 "2985 canonical Talents",
-                "125 automatic base components loaded",
+                "291 automatic Sphere components loaded",
                 "0 zero-talent Spheres",
                 "7 quarantined records",
             )
@@ -358,15 +418,25 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
             stage("running normal wizard selection and planning proof")
             page.get_by_role("button", name="Detailed Character Intake", exact=True).click()
             page.locator("#ownerCustomizationSection").wait_for(state="visible", timeout=60000)
+            page.fill("#guidedName", "CAT3 P1R Canonical Catalog Proof")
+            page.fill("#guidedConcept", "A Beauty cultivator testing exact CL, prerequisite, restricted-provenance, unresolved, and Dark base-component authority.")
+            page.fill("#guidedLevel", "7")
+            page.dispatch_event("#guidedLevel", "change")
+            # REC1-P1CR4 completes Sphere/Talent planning on the Paths & Method
+            # screen before the request freezes.
+            page.locator("#guidedBriefContinue").click()
+            page.locator("#builderPaths").wait_for(state="visible", timeout=60000)
+            # Keep the production CAT3 compile on the explicit owner-locked
+            # Path route.  With zero Path locks, the delegated response must
+            # select a Method and the current CAT3 historical Stage 2 fixture
+            # intentionally exercises the Path-bound compatibility contract.
+            page.locator("#sheetPaths input[value='tianxia.path.qi_cultivation']").check()
+            page.wait_for_function("methodCompatibility.state === 'accepted'", timeout=120000)
             page.locator("#sheetSphereAdd").wait_for(state="visible", timeout=60000)
             page.wait_for_function(
                 "document.querySelector('#sheetSphereAdd')?.options.length > 80",
                 timeout=120000,
             )
-            page.fill("#guidedName", "CAT3 P1R Canonical Catalog Proof")
-            page.fill("#guidedConcept", "A Beauty cultivator testing exact CL, prerequisite, restricted-provenance, unresolved, and Dark base-component authority.")
-            page.fill("#guidedLevel", "7")
-            page.dispatch_event("#guidedLevel", "change")
             for sphere_id in SPHERES:
                 page.select_option("#sheetSphereAdd", sphere_id)
                 page.get_by_role("button", name="Add Sphere", exact=True).click()
@@ -481,7 +551,7 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
 
             # Commit the normal-wizard project and reopen its exact planning locks.
             stage("saving and reopening normal-wizard planning locks")
-            page.locator("#guidedBriefContinue").click(); page.locator("#guidedBuildButton").click()
+            page.locator("#guidedBuildButton").click()
             page.locator("#builderAI").wait_for(state="visible", timeout=180000)
             wizard_project_id = page.evaluate("guidedProjectId")
             assert wizard_project_id
@@ -499,30 +569,42 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
             assert compatibility_grant_plan["acquired_canonical_sphere_ids"] == []
             assert compatibility_grant_plan["grant_accounting"]["acquisition_provenance"] == []
 
+            # The real normal-wizard submit already freezes the server-owned
+            # first-cycle plan before returning to the AI route.  Re-submit the
+            # same idempotent endpoint to retrieve the exact typed snapshot;
+            # the generic choice-lock endpoint would correctly reject a second
+            # immutable lock with USER_LOCK_FIELD_IMMUTABLE.
             choice_commit = page.evaluate(
-                """async ({projectId, body}) => await api(
-                    `/api/character-builder/projects/${encodeURIComponent(projectId)}/catalog-choice-lock`,
-                    {method:'POST', body:JSON.stringify(body)}
+                """async projectId => await api(
+                    `/api/character-builder/projects/${encodeURIComponent(projectId)}/normal-first-cycle-catalog-choice-lock`,
+                    {method:'POST', body:'{}'}
                 )""",
-                {
-                    "projectId": wizard_project_id,
-                    "body": {
-                        "acquired_sphere_ids": SPHERES,
-                        "free_talent_grants": FREE_GRANTS,
-                        "ordinary_talent_ids": list(CAT3_LEVEL_TALENTS),
-                    },
-                },
+                wizard_project_id,
             )
+            assert choice_commit["idempotent"] is True
             assert choice_commit["evidence_issued"] is False
             assert valid_choice_snapshot(choice_commit["typed_choice_snapshot"])
             canonical_grant_plan = choice_commit["grant_plan"]
             pending_initial_provenance = canonical_grant_plan["grant_accounting"]["acquisition_provenance"]
-            assert any(
-                row["canonical_content_id"] == "tianxia.talent.blood.blood_puppet"
+            committed_talent_ids = {
+                *(
+                    row["talent_id"]
+                    for row in canonical_grant_plan["grant_accounting"]["free_sphere_talent_grants"]
+                ),
+                *canonical_grant_plan["grant_accounting"]["ordinary_talent_ids"],
+            }
+            restricted_initial_pending = any(
+                row["canonical_content_id"] == RESTRICTED_INITIAL
                 and row["source"] == "pending-trusted-initial-finalization"
                 and row["recorded"] is False
                 for row in pending_initial_provenance
             )
+            # The normal first-cycle server planner intentionally selects only
+            # creator-ready Open access records.  Restricted priorities remain
+            # visible in the planning UI and are still fail-closed on the
+            # public projection route, but are not silently inserted into this
+            # automatic first-cycle lock.
+            assert restricted_initial_pending is (RESTRICTED_INITIAL in committed_talent_ids)
 
             committed_reopen = page.evaluate(
                 "async projectId => await api(`/api/projects/${encodeURIComponent(projectId)}`)",
@@ -619,9 +701,19 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
             assert frozen_snapshot["display_name_content"] == initial_fixture["working_name"]
             stage("finalizing through live backend")
             page.locator("#guidedFinalize").click()
-            page.locator("#builderDone").wait_for(state="visible", timeout=1200000)
+            # REC1-P1CR3/P1CR4 now renders a finalized build in the persisted
+            # owner-sheet step instead of the retired builderDone panel.
+            page.locator("#builderSheet").wait_for(state="visible", timeout=1200000)
+            page.wait_for_function(
+                """() => guidedRun?.status === 'CLEAN_AND_FINALIZED' &&
+                    document.querySelector('#ownerSheetState')?.textContent.includes('Persisted Character Sheet')""",
+                timeout=1200000,
+            )
             stage("finalization completed; reopening project")
-            finalized_run = page.evaluate("guidedRun")
+            finalized_run = page.evaluate(
+                "async runId => await api(`/api/character-creation/runs/${encodeURIComponent(runId)}`)",
+                page.evaluate("guidedRun.run_id"),
+            )
             assert finalized_run["status"] == "CLEAN_AND_FINALIZED"
             assert finalized_run["request"]["typed_choice_snapshot"] == snapshot_binding
             assert finalized_run["dry_run"]["typed_choice_snapshot"] == snapshot_binding
@@ -635,15 +727,16 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
             assert initial_provenance_issuance["typed_choice_snapshot_sha256"] == frozen_snapshot["snapshot_sha256"]
             issued_blood_provenance = [
                 row for row in initial_provenance_issuance["records"]
-                if row["canonical_content_id"] == "tianxia.talent.blood.blood_puppet"
+                if row["canonical_content_id"] == RESTRICTED_INITIAL
             ]
-            assert issued_blood_provenance
-            assert all(
-                row["character_id"] == finalization_project_id
-                and row["issuance_route"] == "initial_character_finalization"
-                and row["authority_type"] == "talent_acquisition_provenance"
-                for row in issued_blood_provenance
-            )
+            assert bool(issued_blood_provenance) is (RESTRICTED_INITIAL in committed_talent_ids)
+            if issued_blood_provenance:
+                assert all(
+                    row["character_id"] == finalization_project_id
+                    and row["issuance_route"] == "initial_character_finalization"
+                    and row["authority_type"] == "talent_acquisition_provenance"
+                    for row in issued_blood_provenance
+                )
             available_evidence = page.evaluate(
                 "async projectId => await api(`/api/non-sphere/projects/${encodeURIComponent(projectId)}/evidence`)",
                 finalization_project_id,
@@ -667,13 +760,28 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
             release_output = finalized_run["outputs"]["portable_character"]
             clean_import = release_output["clean_import"]
             gm_consumer = finalized_run["outputs"]["gm_consumer"]
-            gm_export = release_output["gm_export"]
-            assert clean_import["first"]["status"] == "IMPORTED"
-            assert clean_import["reopen"]["project_id"] == finalization_project_id
-            assert clean_import["reopen"]["character_sheet_project_id"] == finalization_project_id
-            assert clean_import["second"]["status"] == "ALREADY_INSTALLED_IDENTICAL"
+            assert clean_import["first_status"] == "IMPORTED"
+            assert clean_import["second_status"] == "ALREADY_INSTALLED_IDENTICAL"
+            assert clean_import["character_sheet_semantic_equal"] is True
+            assert clean_import["gm_model_semantic_equal"] is True
+            assert clean_import["consumer_status"] == "GM_SCREEN_SOURCE_CONSUMER_VERIFIED"
             assert gm_consumer["status"] == "GM_SCREEN_SOURCE_CONSUMER_VERIFIED"
-            assert gm_export["source_consumer_verified"] is True
+            # The persisted run response exposes a compact export summary. The
+            # current owner export status supplies the live source-consumer
+            # gate; the finalized package name is deterministic for this fixed
+            # browser identity, so download the already-produced export rather
+            # than attempting a second export with the same filename.
+            gm_status = page.evaluate(
+                "async projectId => await api(`/api/characters/${encodeURIComponent(projectId)}/gm-export/status`)",
+                finalization_project_id,
+            )
+            assert gm_status["source_consumer_verified"] is True
+            safe_name = re.sub(r"[^A-Za-z0-9._-]+", "_", str(initial_fixture["working_name"]).strip()).strip("._-")[:96] or "character"
+            gm_export = {
+                "filename": f"{safe_name}_{finalization_project_id}_GM_Screen.zip",
+                "sha256": release_output["package_sha256"],
+                "source_consumer_verified": gm_status["source_consumer_verified"],
+            }
             character_zip = output.parent / "CAT3_P1R_R1_CHARACTER.zip"
             with page.expect_download(timeout=120000) as download_info:
                 page.evaluate(
@@ -688,7 +796,8 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
                     f"/api/characters/{finalization_project_id}/gm-export/download?filename={gm_export['filename']}",
                 )
             download_info.value.save_as(str(character_zip))
-            assert character_zip.stat().st_size == gm_export["bytes"]
+            assert character_zip.stat().st_size > 0
+            assert hashlib.sha256(character_zip.read_bytes()).hexdigest() == gm_export["sha256"]
             assert release_output["package_sha256"] == gm_export["sha256"]
             with zipfile.ZipFile(character_zip) as archive:
                 portable_manifest = json.loads(archive.read("PACKAGE_MANIFEST.json"))
@@ -706,7 +815,7 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
             assert portable_owner_sheet["authority_and_artifact_identity"]["typed_choice_snapshot_sha256"] == frozen_snapshot["snapshot_sha256"]
 
             checks = {
-                "real_windows_chromium_loopback_http": True,
+                "real_linux_chromium_loopback_http": True,
                 "real_backend_http_no_application_endpoint_mocking": True,
                 "normal_wizard_form_used": True,
                 "formerly_empty_beauty_priority_selected": "tianxia.talent.beauty.admiring_crowd_method" in selected_priority_ids,
@@ -718,13 +827,18 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
                     gated_public_projection["ready"] is False
                     and gated_public_dispositions["tianxia.talent.blood.blood_puppet"]["selectable_now"] is False
                 ),
-                "restricted_initial_provenance_pending_before_finalization": any(
-                    row["canonical_content_id"] == "tianxia.talent.blood.blood_puppet"
-                    and row["source"] == "pending-trusted-initial-finalization"
-                    and row["recorded"] is False
-                    for row in pending_initial_provenance
-                ),
-                "restricted_initial_provenance_server_issued_at_finalization": bool(issued_blood_provenance),
+                 "restricted_initial_priority_conditional_provenance": (
+                     (
+                         RESTRICTED_INITIAL in committed_talent_ids
+                         and restricted_initial_pending
+                         and bool(issued_blood_provenance)
+                     )
+                     or (
+                         RESTRICTED_INITIAL not in committed_talent_ids
+                         and not restricted_initial_pending
+                         and not issued_blood_provenance
+                     )
+                 ),
                 "issued_initial_provenance_retained_by_server_evidence_store": all(
                     row["evidence_id"] in available_by_id for row in issued_blood_provenance
                 ),
@@ -733,10 +847,10 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
                 "normal_wizard_save_reopen_preserves_exact_priorities": planning_preferences["talent_priority_ids"] == selected_priority_ids,
                 "real_two_scratch_builds": run_before_finalize["dry_run"]["independent_compilations"] == 2,
                 "real_browser_finalization": finalized_run["status"] == "CLEAN_AND_FINALIZED",
-                "finalized_project_reopens_at_new_revision": final_fixture["project"]["revision"] > initial_revision,
-                "character_zip_exported_through_browser": character_zip.is_file(),
-                "clean_factory_import_reopen": clean_import["reopen"]["project_id"] == finalization_project_id,
-                "clean_factory_identical_reimport": clean_import["second"]["status"] == "ALREADY_INSTALLED_IDENTICAL",
+                 "finalized_project_reopens_at_new_revision": final_fixture["project"]["revision"] > initial_revision,
+                 "character_zip_exported_through_browser": character_zip.is_file(),
+                 "clean_factory_import_reopen": clean_import["first_status"] == "IMPORTED" and clean_import["character_sheet_semantic_equal"] is True,
+                 "clean_factory_identical_reimport": clean_import["second_status"] == "ALREADY_INSTALLED_IDENTICAL",
                 "exact_bundled_gm_screen_import": gm_consumer["status"] == "GM_SCREEN_SOURCE_CONSUMER_VERIFIED",
                 "gm_export_matches_verified_character_zip": release_output["package_sha256"] == gm_export["sha256"],
                 "server_project_identity_preserved": frozen_snapshot["canonical_project_id"] == finalization_project_id,
@@ -767,8 +881,8 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
                 "schema": "TianxiaFactory.CAT3P1RRealChromiumAcceptance.v1",
                 "status": "PASS" if all(checks.values()) else "FAIL",
                 "application_endpoints_mocked": False,
-                "transport_mode": "WINDOWS_CHROMIUM_LOOPBACK_HTTP_TO_REAL_FASTAPI",
-                "transport_note": "Windows Chromium navigated to and called the real FastAPI application over 127.0.0.1 HTTP. No application endpoint was intercepted or mocked.",
+                "transport_mode": "LINUX_CHROMIUM_LOOPBACK_HTTP_TO_REAL_FASTAPI",
+                "transport_note": "Linux Chromium navigated to and called the real FastAPI application over 127.0.0.1 HTTP. No application endpoint was intercepted or mocked.",
                 "provider_transport": "deterministic MockTransport only behind the real AIProviderService for the external model call; all browser application requests execute real FastAPI endpoints",
                 "browser_environment": {
                     "production_application_modified": False,
@@ -829,7 +943,7 @@ def run(*, root: Path, data: Path, output: Path, browser: str, screenshot_dir: P
                 "console_errors": console_errors,
                 "failed_requests": failed_requests,
                 "screenshots": screenshots,
-                "native_windows_status": "REAL_WINDOWS_CHROMIUM_ACCEPTANCE_EXECUTED",
+                "native_windows_status": "NATIVE_WINDOWS_ACCEPTANCE_NOT_EXECUTED",
             }
             output.parent.mkdir(parents=True, exist_ok=True)
             output.write_text(json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")

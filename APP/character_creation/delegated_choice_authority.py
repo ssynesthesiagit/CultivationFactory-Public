@@ -30,6 +30,8 @@ FINAL_PLAN_SCHEMA = "TianxiaFoundry.CharacterCreationFinalPlan.v1"
 FROZEN_TARGET_CL_AUTHORITY_SCHEMA = "TianxiaFoundry.FrozenOwnerTargetCLAuthority.v1"
 TARGET_CL_MISMATCH_ERROR = "CG1_DELEGATED_TARGET_CL_MISMATCH"
 FINAL_PLAN_TARGET_CL_STALE_ERROR = "CG1_FINAL_PLAN_TARGET_CL_AUTHORITY_STALE"
+DELEGATED_NAME_REQUIRED_ERROR = "CG1_DELEGATED_NAME_REQUIRED"
+DELEGATED_NAME_REQUIREMENT_SCHEMA = "TianxiaFoundry.DelegatedNameRequirement.v1"
 
 _PATH_SLOT = "path_choice"
 _METHOD_SLOT = "method_choice"
@@ -192,6 +194,119 @@ def _slot_lock_values(lock_values: dict[str, Any], slot_id: str) -> list[str]:
         return []
     values = value.get(slot_id) or []
     return [value for value in values if isinstance(value, str)] if isinstance(values, list) else []
+
+
+def _method_planning_lock(lock_values: dict[str, Any]) -> dict[str, Any] | None:
+    """Project an exact owner Method planning lock without granting it.
+
+    ``character_sheet.method_access_plan`` proves the separate access route;
+    ``method_exact_choice_id`` proves the owner's planning selection.  Neither
+    field is an acquired Stage 2 event.  Keeping this projection explicit in
+    the frozen envelope lets owner surfaces report provenance without treating
+    access evidence as a Method acquisition lock.
+    """
+    mode = lock_values.get("character_sheet.method_planning_mode")
+    if mode not in {"EXACT", "HARD_LOCK"}:
+        return None
+    planning = lock_values.get("character_sheet.planning_preferences")
+    planning = planning if isinstance(planning, dict) else {}
+    locked_choices = lock_values.get("character_sheet.locked_choices")
+    locked_choices = locked_choices if isinstance(locked_choices, dict) else {}
+    method_ids = planning.get("method_exact_choice_id")
+    if not isinstance(method_ids, str) or not method_ids:
+        locked_method_ids = locked_choices.get(_METHOD_SLOT) or []
+        method_ids = locked_method_ids[0] if isinstance(locked_method_ids, list) and locked_method_ids else None
+    if not isinstance(method_ids, str) or not method_ids:
+        return None
+    access_plan = lock_values.get("character_sheet.method_access_plan")
+    access_plan = deepcopy(access_plan) if isinstance(access_plan, dict) else None
+    return {
+        "slot_id": _METHOD_SLOT,
+        "choice_ids": [method_ids],
+        "mode": mode,
+        "field": "character_sheet.planning_preferences.method_exact_choice_id",
+        "planning_authority": "owner_locked_planning_selection",
+        "acquisition_authority": "server_materialized_after_validated_response",
+        "access_authority": {
+            "field": "character_sheet.method_access_plan",
+            "present": access_plan is not None,
+            "method_id": access_plan.get("method_id") if access_plan else None,
+            "route_type": access_plan.get("route_type") if access_plan else None,
+            "route_commitment_sha256": access_plan.get("route_commitment_sha256") if access_plan else None,
+        },
+    }
+
+
+def _method_access_proof(
+    project: dict[str, Any],
+    method_id: str,
+    method_access: dict[str, Any] | None,
+) -> dict[str, Any]:
+    """Return the server-owned exact access proof for one restricted Method.
+
+    Compatibility is intentionally not part of this proof.  A Method can be
+    AP-compatible while still requiring either a complete owner-authored route
+    plan or an exact committed evidence record.  Merely displaying a route, or
+    putting a Method ID in an arbitrary lock, is not access authority.
+    """
+    metadata = method_access if isinstance(method_access, dict) else {}
+    direct = metadata.get("initial_creation_selectable") is True
+    locks = _locks(project)
+    plan = locks.get("character_sheet.method_access_plan")
+    plan = plan if isinstance(plan, dict) else {}
+    route_options = metadata.get("owner_route_options") or []
+    route_types = {
+        row.get("typed_route")
+        for row in route_options
+        if isinstance(row, dict) and isinstance(row.get("typed_route"), str)
+    }
+    plan_fields = (
+        "schema", "method_id", "access_tier", "route_type", "route_label",
+        "source_reference", "source_route_sha256", "route_commitment_sha256",
+        "method_registry_commitment_sha256", "status",
+    )
+    plan_missing = [field for field in plan_fields if plan.get(field) in (None, "", {})]
+    plan_route_advertised = (
+        plan.get("route_type") == "PUBLISHED_OPEN_INITIAL_AUTHORITY"
+        or plan.get("route_type") in route_types
+    )
+    # ``route_configurable`` describes an advertised owner route, not whether
+    # the project has already committed its route plan.  The latter remains an
+    # internal proof detail: a complete owner plan permits the exact Method to
+    # remain in the pending delegated selection, while access authorization is
+    # still false until the server commits its exact access record.
+    route_configurable = bool(route_options)
+    route_plan_configured = bool(
+        not plan_missing
+        and plan.get("schema") == "TianxiaFoundry.MethodAccessPlan.v2"
+        and plan.get("method_id") == method_id
+        and plan_route_advertised
+    )
+    evidence_rows = [
+        row for row in (locks.get("character_sheet.non_sphere_access_sources") or [])
+        if isinstance(row, dict)
+        and row.get("authority_type") == "method_access"
+        and row.get("method_id") == method_id
+        and isinstance(row.get("source_record_id"), str)
+        and bool(row["source_record_id"].strip())
+    ]
+    return {
+        "direct_access": direct,
+        "route_configurable": route_configurable,
+        "evidence_present": bool(evidence_rows),
+        # A displayed/configurable route is not proof that the route has been
+        # authorized.  Open Methods are authorized directly; restricted
+        # Methods require a committed exact access record.  The owner route
+        # plan is planning input and is materialized/committed later by the
+        # server-owned compilation boundary.
+        "access_authorized": direct or bool(evidence_rows),
+        "exact_access_record_present": bool(evidence_rows),
+        "selection_authorized": direct or route_plan_configured or bool(evidence_rows),
+        "route_plan_configured": route_plan_configured,
+        "route_plan_method_id": plan.get("method_id"),
+        "route_plan_missing_fields": plan_missing,
+        "evidence_count": len(evidence_rows),
+    }
 
 
 def _stable_hash(value: Any) -> str:
@@ -433,12 +548,16 @@ def build_delegated_choice_envelope(
         return None
     prompt_envelope = prompt.get("envelope") or {}
     locks = _locks(project)
+    method_planning_lock = _method_planning_lock(locks)
     by_slot: dict[str, list[str]] = {}
     offered: dict[str, list[str]] = {}
     allowed: dict[str, list[str]] = {}
     unavailable: dict[str, list[str]] = {}
     limits: dict[str, dict[str, Any]] = {}
     choices: dict[str, dict[str, Any]] = {}
+    method_access_by_id = (
+        (prompt_envelope.get("path_method_authority") or {}).get("method_access_by_id") or {}
+    )
     for slot_id, slot in sorted(slots.items()):
         rows = _choice_map(slot)
         ids = list(rows)
@@ -455,7 +574,19 @@ def build_delegated_choice_envelope(
             if selectable is None:
                 selectable = row.get("selectable", row.get("available", True))
             availability = row.get("availability") if isinstance(row.get("availability"), dict) else {}
-            if selectable is False or availability.get("available") is False:
+            method_access = method_access_by_id.get(choice_id) if slot_id == _METHOD_SLOT else None
+            access_proof = (
+                _method_access_proof(project, choice_id, method_access)
+                if slot_id == _METHOD_SLOT
+                else {}
+            )
+            owner_access = slot_id == _METHOD_SLOT and access_proof.get("selection_authorized") is True
+            access_required_without_proof = (
+                isinstance(method_access, dict)
+                and method_access.get("initial_creation_selectable") is False
+                and not owner_access
+            )
+            if selectable is False or availability.get("available") is False or access_required_without_proof:
                 rejected.append(choice_id)
             else:
                 permitted.append(choice_id)
@@ -494,6 +625,15 @@ def build_delegated_choice_envelope(
             "state": "owner_locked" if owner_name else "delegated",
             "owner_value": owner_name,
             "response_field": "owner_descriptive_fields.identity.name",
+            "required_in_response": True,
+            "nonblank_required": True,
+            "positive_delegation": not bool(owner_name),
+            "requirement_schema": DELEGATED_NAME_REQUIREMENT_SCHEMA,
+            "semantic_requirement": (
+                "The response must propose one nonblank descriptive character name for owner review."
+                if not owner_name
+                else "The response must repeat the exact owner-locked character name unchanged."
+            ),
         },
         "concept": {
             "state": "owner_locked" if owner_concept else "delegated",
@@ -529,6 +669,10 @@ def build_delegated_choice_envelope(
             "by_slot": by_slot,
             "lock_sha256": _stable_hash(project.get("user_locks") or []),
             "zero_owner_path_locks_are_legal": not bool(by_slot.get(_PATH_SLOT)),
+            "planning_by_slot": {
+                _METHOD_SLOT: method_planning_lock,
+            } if method_planning_lock else {},
+            "planning_lock_sha256": _stable_hash(method_planning_lock) if method_planning_lock else None,
         },
         "offered_choice_ids_by_slot": offered,
         "allowed_choice_ids_by_slot": allowed,
@@ -573,6 +717,16 @@ def build_delegated_choice_envelope(
             ),
         },
         "delegated_fields": delegated_fields,
+        "delegated_name_contract": {
+            "schema": DELEGATED_NAME_REQUIREMENT_SCHEMA,
+            "field": "owner_descriptive_fields.identity.name",
+            "state": delegated_fields["identity.name"]["state"],
+            "required": True,
+            "nonblank": True,
+            "positive_delegation": delegated_fields["identity.name"]["positive_delegation"],
+            "owner_locked_value": owner_name,
+            "instruction": delegated_fields["identity.name"]["semantic_requirement"],
+        },
         "unresolved_owner_decisions": unresolved,
         "one_shot": {
             "execution_mode": execution_mode,
@@ -1090,7 +1244,15 @@ def _ensure_allowed(
         if (
             availability.get("available") is False
             or choice.get("selectable") is False
-            or choice.get("initial_creation_selectable") is False
+            # Method access is checked against the exact owner route/evidence
+            # below, after the complete Method row and project locks are
+            # available.  Do not let this generic choice check accidentally
+            # turn a displayed, route-authorized restricted Method into an
+            # inaccessible one; also do not use it to grant access.
+            or (
+                choice.get("initial_creation_selectable") is False
+                and slot_id != _METHOD_SLOT
+            )
         ):
             _raise("CG1_DELEGATED_CHOICE_UNAVAILABLE", "The response selected an unavailable choice.", details={"slot_id": slot_id, "choice_id": choice_id})
 
@@ -1107,6 +1269,65 @@ def _relation_targets(relation: Any) -> list[str]:
         return [target for target in targets if isinstance(target, str)]
     target = relation.get("target_id") or relation.get("record_id") or relation.get("canonical_id") or relation.get("id")
     return [target] if isinstance(target, str) else []
+
+
+def _validate_path_subpath_bindings(
+    envelope: dict[str, Any],
+    selected_by_slot: dict[str, list[str]],
+) -> None:
+    """Require one frozen Path-owned Subpath/Tradition per selected owner.
+
+    The delegated envelope already contains the exact Stage 1 choice snapshots,
+    including their typed parent relationships.  This check deliberately uses
+    those relationships rather than names or a global first-subpath fallback.
+    """
+    path_ids = list(selected_by_slot.get(_PATH_SLOT) or [])
+    subpath_ids = list(selected_by_slot.get("subpath_choice") or [])
+    if not subpath_ids:
+        return
+    choices = (envelope.get("choices_by_slot") or {}).get("subpath_choice") or {}
+    selected_paths = set(path_ids)
+    by_owner: dict[str, str] = {}
+    for subpath_id in subpath_ids:
+        choice = choices.get(subpath_id) or {}
+        owning_path_id = choice.get("owning_path_id")
+        owning_path_choice_ids = choice.get("owning_path_choice_ids") or []
+        if not isinstance(owning_path_id, str) or owning_path_id not in CANONICAL_PATH_IDS:
+            _raise(
+                "CG1_PATH_SUBPATH_MISMATCH",
+                "Each selected Subpath or Tradition must publish one explicit canonical owning Path.",
+                details={"subpath_id": subpath_id, "selected_path_ids": path_ids},
+            )
+        if owning_path_choice_ids != [owning_path_id]:
+            _raise(
+                "CG1_PATH_SUBPATH_MISMATCH",
+                "The frozen Subpath ownership representations disagree.",
+                details={
+                    "subpath_id": subpath_id,
+                    "owning_path_id": owning_path_id,
+                    "owning_path_choice_ids": owning_path_choice_ids,
+                },
+            )
+        owners = {owning_path_id} & selected_paths
+        if len(owners) != 1:
+            _raise(
+                "CG1_PATH_SUBPATH_MISMATCH",
+                "Each selected Subpath or Tradition must belong to exactly one final selected Path.",
+                details={
+                    "subpath_id": subpath_id,
+                    "selected_path_ids": path_ids,
+                    "owning_path_ids": sorted(owners),
+                },
+            )
+        owner = next(iter(owners))
+        prior = by_owner.get(owner)
+        if prior is not None:
+            _raise(
+                "CG1_MULTIPLE_SUBPATHS_FOR_ONE_PATH",
+                "Each selected Path may have only one current Subpath or Tradition.",
+                details={"path_id": owner, "choice_ids": [prior, subpath_id]},
+            )
+        by_owner[owner] = subpath_id
 
 
 def _validate_frozen_legality(
@@ -1500,6 +1721,30 @@ def validate_delegated_choice_plan(
         compatibility = method_path_compatibility(selected_paths, {**method_row, "method_id": method_id, "related_choice_ids": grants})
         if compatibility["missing_path_ids"]:
             _raise("CG1_METHOD_PATH_INCOMPATIBLE", "The selected Method does not explicitly grant AP for every final selected Path.", details=compatibility)
+        method_access = (
+            (path_authority.get("method_access_by_id") or {}).get(method_id)
+            or method_row.get("method_access")
+            or {
+                "initial_creation_selectable": method_row.get("initial_creation_selectable") is True,
+                "owner_route_options": method_row.get("owner_route_options") or [],
+            }
+        )
+        if method_access.get("initial_creation_selectable") is False:
+            proof = _method_access_proof(project, method_id, method_access)
+            if proof.get("selection_authorized") is not True:
+                _raise(
+                    "CG1_METHOD_ACCESS_REQUIRED",
+                    "This Method is compatible with the selected Paths but cannot be selected without an advertised exact owner access route or evidence.",
+                    details={
+                        "method_id": method_id,
+                        "access_tier": method_access.get("access_tier"),
+                        "access_text": method_access.get("access_text") or "",
+                        "owner_route_options": deepcopy(method_access.get("owner_route_options") or []),
+                        "exact_selection_available": bool(method_access.get("exact_selection_available")),
+                        "route_configurable": proof.get("route_configurable"),
+                        "evidence_present": proof.get("evidence_present"),
+                    },
+                )
     else:
         # Historical owner-locked runs are allowed to leave Method deferred or
         # typed-none.  The compatibility state is explicit and never treated
@@ -1512,6 +1757,7 @@ def validate_delegated_choice_plan(
         plan,
         automatic_ids=set(grants),
     )
+    _validate_path_subpath_bindings(envelope, selected_by_slot)
     _validate_semantic_acquisition_intent(envelope, plan, selected_by_slot)
 
     foundation_values = list(selected_by_slot.get(_FOUNDATION_SLOT) or [])
@@ -1546,6 +1792,37 @@ def validate_delegated_choice_plan(
 
     descriptive = deepcopy(plan.get("owner_descriptive_fields") or {})
     identity = descriptive.get("identity") if isinstance(descriptive.get("identity"), dict) else {}
+    delegated_fields = envelope.get("delegated_fields") or {}
+    name_authority = delegated_fields.get("identity.name") or {}
+    response_identity_name = identity.get("name") if isinstance(identity, dict) else None
+    response_identity_name_text = (
+        response_identity_name.strip()
+        if isinstance(response_identity_name, str)
+        else ""
+    )
+    if name_authority.get("state") == "delegated" and not response_identity_name_text:
+        _raise(
+            DELEGATED_NAME_REQUIRED_ERROR,
+            "A delegated character name is required: owner_descriptive_fields.identity.name must contain a nonblank proposed name for owner review.",
+            details={
+                "field": "owner_descriptive_fields.identity.name",
+                "required": True,
+                "nonblank": True,
+                "state": "delegated",
+            },
+        )
+    if name_authority.get("state") == "owner_locked":
+        owner_name = str(name_authority.get("owner_value") or "").strip()
+        if not response_identity_name_text or response_identity_name_text != owner_name:
+            _raise(
+                "CG1_OWNER_LOCKED_DESCRIPTIVE_FIELD_CHANGED",
+                "The response must contain the exact owner-locked character name unchanged.",
+                details={
+                    "field": "owner_descriptive_fields.identity.name",
+                    "expected": owner_name,
+                    "actual": response_identity_name_text or None,
+                },
+            )
     name_values = [
         str(value).strip()
         for value in (identity.get("name"), descriptive.get("name"))
@@ -1562,8 +1839,6 @@ def validate_delegated_choice_plan(
         _raise("CG1_DELEGATED_AUTHORITY_CONFLICT", "The response supplied conflicting delegated concept representations.", details={"representations": concept_values})
     proposed_name = name_values[0] if name_values else ""
     proposed_concept = concept_values[0] if concept_values else ""
-    delegated_fields = envelope.get("delegated_fields") or {}
-    name_authority = delegated_fields.get("identity.name") or {}
     concept_authority = delegated_fields.get("concept") or {}
     if name_authority.get("state") == "owner_locked":
         owner_name = str(name_authority.get("owner_value") or "").strip()

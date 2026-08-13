@@ -10,7 +10,7 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any, Iterator
 
-from app.core import Database, FoundryError, canonical_json, sha256_bytes, sha256_json, utcnow
+from app.core import Database, FoundryError, canonical_json, sha256_bytes, sha256_file, sha256_json, utcnow
 from contracts.canonical import ZERO_HASH, canonical_event_hash, canonical_project_document, canonical_project_hash, canonical_record_hash
 from contracts.registry import SchemaRegistry
 from project_store.service import ProjectStore
@@ -856,7 +856,7 @@ class RulesCausalStage2Service:
                 blockers.append(_block("PUBLISHED_INCOMPATIBILITY_PRESENT", f"{pointer}/record/legality/incompatibilities/{index}", "The selected record is incompatible with an element already present in the causal state.", record_id=record["record_id"], incompatible_record_id=incompatible_id, causal_event_id=state["record_event_ids"].get(incompatible_id)))
         return blockers, bindings
 
-    def _cardinality_blockers(self, state: dict[str, Any], kind: str, choice: dict[str, Any], pointer: str) -> list[dict[str, Any]]:
+    def _cardinality_blockers(self, state: dict[str, Any], kind: str, record: dict[str, Any], choice: dict[str, Any], pointer: str) -> list[dict[str, Any]]:
         """Block event shapes the current reducer cannot represent without loss."""
         blockers: list[dict[str, Any]] = []
         occurrences = state.get("event_occurrences", {})
@@ -866,13 +866,24 @@ class RulesCausalStage2Service:
             "background_sphere_acquisition",
             "background_talent_acquisition",
             "origin_insight_acquisition",
-            "subpath_acquisition",
             "method_acquisition",
             "method_activation",
             "foundation_acquisition",
             "foundation_expression",
         }
-        if kind in singleton_character and occurrences.get(kind):
+        if kind == "subpath_acquisition":
+            current_authority = _authority(record)
+            current_parent = record.get("owning_path_id")
+            prior_same_parent: list[dict[str, Any]] = []
+            for prior in occurrences.get(kind, []):
+                prior_record = (state.get("authority_snapshots") or {}).get(prior.get("record_id"), {}).get("record") or {}
+                prior_authority = _authority(prior_record)
+                prior_parent = prior_record.get("owning_path_id")
+                if current_parent is None or prior_parent == current_parent:
+                    prior_same_parent.append(prior)
+            if prior_same_parent:
+                blockers.append(_block("SINGLETON_ADVANCEMENT_EVENT_REPEATED", pointer, "Each selected Path may receive only one Subpath or Tradition acquisition.", kind=kind, parent_path_id=current_parent, prior=prior_same_parent))
+        elif kind in singleton_character and occurrences.get(kind):
             blockers.append(_block("SINGLETON_ADVANCEMENT_EVENT_REPEATED", pointer, "This advancement channel is singleton in the current published character model.", kind=kind, prior=occurrences[kind]))
         cl = int(choice["effective_cl"])
         if kind in {"level_advance", "level_talent_acquisition", "ability_score_change"}:
@@ -1645,7 +1656,7 @@ class RulesCausalStage2Service:
             record_cache=record_cache,
         )
         blockers.extend(relation_blockers)
-        blockers.extend(self._cardinality_blockers(state, kind, choice, pointer))
+        blockers.extend(self._cardinality_blockers(state, kind, record, choice, pointer))
         insight_repeat_index: int | None = None
         if kind == "cultivation_insight_acquisition":
             insight_blockers, insight_repeat_index = self._insight_occurrence_blockers(state, record, choice, pointer)
@@ -1689,6 +1700,11 @@ class RulesCausalStage2Service:
         none_state: dict[str, Any] | None = None
         next_state = _deepcopy(state)
         auth = _authority(record)
+        # Keep the exact immutable authority available to later choices in
+        # this same proposal. In particular, Subpath cardinality and
+        # milestone checks must use explicit owning_path_id from the locked
+        # record, never a parent mirror or relationship fallback.
+        self._remember_authority(next_state, record, event_id)
 
         duplicate_kinds = {"background_sphere_acquisition", "background_talent_acquisition", "sect_trial_talent_acquisition", "level_talent_acquisition", "new_sphere_bonus_talent_acquisition", "equipment_acquisition"}
         if kind in duplicate_kinds:
@@ -1987,10 +2003,25 @@ class RulesCausalStage2Service:
             if isinstance(minimum_cl, int) and cl < minimum_cl:
                 blockers.append(_block("CATALOG_RECORD_ACQUIRED_TOO_EARLY", pointer, "The record cannot be acquired before its exact published minimum CL.", record_id=record["record_id"], minimum_cl=minimum_cl, cl=cl))
             if kind == "subpath_acquisition":
-                parent_path_id = auth.get("parent_path_id")
+                owner_path_id = record.get("owning_path_id")
+                parent_path_id = owner_path_id
+                if not isinstance(owner_path_id, str):
+                    blockers.append(_block("SUBPATH_OWNER_REQUIRED", pointer, "A Subpath or Tradition requires an explicit owning_path_id in frozen authority.", subpath_id=record["record_id"]))
+                if auth.get("parent_path_id") and auth.get("parent_path_id") != owner_path_id:
+                    blockers.append(_block("SUBPATH_OWNER_MISMATCH", pointer, "The Subpath Stage 2 parent mirror does not match its explicit owning_path_id.", subpath_id=record["record_id"], owning_path_id=owner_path_id, parent_path_id=auth.get("parent_path_id")))
                 if parent_path_id and parent_path_id not in state.get("paths", []):
                     blockers.append(_block("SUBPATH_PARENT_PATH_REQUIRED", pointer, "The selected Subpath requires its exact parent Path.", parent_path_id=parent_path_id, active_paths=state.get("paths", [])))
+                if record["record_id"] in state.get("subpaths", []):
+                    blockers.append(_block("SUBPATH_ALREADY_SELECTED", pointer, "A canonical Subpath or Tradition may be acquired only once.", subpath_id=record["record_id"]))
+                existing_by_parent = []
+                for existing_id in state.get("subpaths", []):
+                    existing = self.projects._resolve_locked_record_after_proof(conn, row["project_id"], existing_id)
+                    if parent_path_id and isinstance(existing, dict) and existing.get("owning_path_id") == parent_path_id:
+                        existing_by_parent.append(existing_id)
+                if existing_by_parent:
+                    blockers.append(_block("MULTIPLE_SUBPATHS_FOR_ONE_PATH", pointer, "Each selected Path may have only one current Subpath or Tradition.", parent_path_id=parent_path_id, existing_subpath_ids=existing_by_parent, proposed_subpath_id=record["record_id"]))
                 calculation["outputs"]["granted_feature_record_ids"] = deepcopy(auth.get("granted_feature_record_ids", []))
+                calculation["outputs"]["parent_path_id"] = parent_path_id
             if kind == "level_talent_acquisition" and cl < 2 and not self._project_uses_ai_bootstrap(project):
                 blockers.append(_block("CL1_LEVEL_TALENT_MUST_USE_SECT_TRIAL", pointer, "Player creation receives the CL1 level talent through the sect-trial event; only the explicit AI-bootstrap route receives a separate free pair."))
             if kind == "method_acquisition" and isinstance(state["method"], dict) and state["method"].get("state") != "none":
@@ -2211,13 +2242,76 @@ class RulesCausalStage2Service:
             return None, state, [_block("ADVANCEMENT_EVENT_SCHEMA_INVALID", pointer, "The deterministic HF1 event failed its canonical v3 schema.", diagnostics=getattr(exc, "to_dict", lambda: {"message": str(exc)})())]
         return event, next_state, []
 
-    def _completion_blockers(self, state: dict[str, Any], target_cl: int, events: list[dict[str, Any]], project: dict[str, Any]) -> list[dict[str, Any]]:
+    def _completion_blockers(
+        self,
+        state: dict[str, Any],
+        target_cl: int,
+        events: list[dict[str, Any]],
+        project: dict[str, Any],
+        *,
+        record_cache: dict[str, dict[str, Any] | None] | None = None,
+    ) -> list[dict[str, Any]]:
         blockers: list[dict[str, Any]] = []
         current_none = state.get("typed_none_states", {})
 
         def causally_none(target: str) -> bool:
             value = current_none.get(target)
             return isinstance(value, dict) and value.get("state") == "none" and value.get("source_backed") is True
+
+        def authenticated_historical_fixture() -> bool:
+            """Recognize only the sealed owner-ratified historical prefix.
+
+            The legacy single-Subpath milestone shape is a compatibility rule
+            for the authenticated C2A-R.1 proof fixture, not a generic way to
+            satisfy a Path-owned milestone.  The fixture marker is installed
+            only by ``ProjectStore.append_owner_fixture_locks`` after its exact
+            revision/event-prefix checks, so ordinary projects cannot opt into
+            this fallback by copying a display name or event count.
+            """
+            path = self.db.settings.root_dir / "authority" / "Tianxia_C2AR1_Fixture_Selections_R1.json"
+            try:
+                fixture = json.loads(path.read_text(encoding="utf-8"))
+            except Exception:
+                return False
+            seal = fixture.get("seal_sha256")
+            unsigned = {key: value for key, value in fixture.items() if key != "seal_sha256"}
+            if not isinstance(seal, str) or seal != sha256_json(unsigned):
+                return False
+            selections = fixture.get("selections") or {}
+            fixture_id = fixture.get("fixture_id")
+            locks = {
+                lock.get("field"): lock
+                for lock in project.get("user_locks") or []
+                if isinstance(lock, dict) and isinstance(lock.get("field"), str)
+            }
+            expected = {
+                "character.identity.display_name": selections.get("display_name"),
+                "character.choices.qi_cultivation_skills": selections.get("qi_cultivation_skills"),
+                "character.choices.street_hardened": selections.get("street_hardened"),
+                "character.choices.language": selections.get("language"),
+            }
+            expected_source = f"owner-ratified:{fixture_id}:{sha256_file(path)}" if isinstance(fixture_id, str) else None
+            prefix = fixture.get("required_prefix") or {}
+            expected_revision = prefix.get("revision")
+            marker_valid = (
+                isinstance(expected_revision, int)
+                and project.get("revision") == expected_revision + 1
+            )
+            for index, (field, value) in enumerate(expected.items(), start=1):
+                lock = locks.get(field)
+                marker_valid = marker_valid and (
+                    isinstance(lock, dict)
+                    and lock.get("lock_id") == f"lock.c2ar1.{index}"
+                    and lock.get("created_revision") == project.get("revision")
+                    and lock.get("value") == value
+                    and lock.get("source") == expected_source
+                )
+            if not isinstance(fixture_id, str) or not marker_valid:
+                return False
+            count = prefix.get("event_count")
+            if not isinstance(count, int) or count <= 0 or len(events) < count:
+                return False
+            return events[count - 1].get("event_hash") == prefix.get("event_head")
 
         if state["current_cl"] != target_cl or state["completed_levels"] != list(range(1, target_cl + 1)):
             blockers.append(_block("TARGET_CL_NOT_REACHED", "/target_cl", "The event stream does not contain one contiguous completed level for every CL through the target.", target_cl=target_cl, completed_levels=state["completed_levels"]))
@@ -2262,6 +2356,24 @@ class RulesCausalStage2Service:
             )
             if sect_valid == ai_valid:
                 blockers.append(_block("CREATION_ROUTE_COUNT_INVALID", "/levels/1/creation_route", "Exactly one complete initial-creation route is required, with one exact free Talent event paired to every acquired Sphere event.", sect_trial_counts={"sphere": len(sect_spheres), "talent": len(sect_talents)}, ai_bootstrap_counts={"sphere": len(ai_spheres), "talent": len(ai_talents)}, project_ai_bootstrap=self._project_uses_ai_bootstrap(project)))
+        subpath_parent_ids: list[str] = []
+        for event in events:
+            if (event.get("advancement") or {}).get("kind") != "subpath_acquisition":
+                continue
+            outputs = ((event.get("advancement") or {}).get("calculation") or {}).get("outputs") or {}
+            parent_path_id = outputs.get("parent_path_id")
+            record_id = (event.get("subject") or {}).get("record_id")
+            if not isinstance(parent_path_id, str):
+                snapshot = (state.get("authority_snapshots") or {}).get(record_id) or {}
+                if not snapshot and isinstance(record_cache, dict):
+                    snapshot = {"record": record_cache.get(record_id)}
+                snapshot_record = snapshot.get("record") or {}
+                parent_path_id = snapshot_record.get("owning_path_id")
+            if isinstance(parent_path_id, str):
+                subpath_parent_ids.append(parent_path_id)
+        path_aware_subpath_milestones = bool(subpath_parent_ids)
+        historical_fixture = authenticated_historical_fixture()
+
         for index, milestone in enumerate(state.get("required_milestones", [])):
             pointer = f"/required_milestones/{index}"
             if not isinstance(milestone, dict):
@@ -2275,10 +2387,81 @@ class RulesCausalStage2Service:
                 continue
             if milestone_cl > target_cl:
                 continue
+            milestone_path_id = milestone.get("path_id")
+            progression_path_by_cl: dict[int, str] = {}
+            for event in events:
+                advancement = event.get("advancement") or {}
+                if advancement.get("kind") != "level_advance":
+                    continue
+                event_cl = advancement.get("target_cl")
+                outputs = ((advancement.get("calculation") or {}).get("outputs") or {})
+                event_path_id = ((outputs.get("path_progression_authority") or {}).get("path_id"))
+                if not isinstance(event_path_id, str):
+                    record_id = (event.get("subject") or {}).get("record_id")
+                    event_path_id = record_id.split(".feature.", 1)[0] if isinstance(record_id, str) and ".feature." in record_id else None
+                if isinstance(event_cl, int) and isinstance(event_path_id, str):
+                    progression_path_by_cl[event_cl] = event_path_id
+            # A selected Path can be active while only one Path progression is
+            # advanced at a given CL.  Advancement-choice milestones therefore
+            # apply to the Path actually advanced at that CL; Subpath milestones
+            # remain independently Path-owned so two selected Paths can each
+            # receive their one exact Subpath at the same legal CL.
+            if (
+                milestone.get("feature_kind") == "advancement_choice"
+                and isinstance(milestone_path_id, str)
+                and progression_path_by_cl.get(milestone_cl) not in {None, milestone_path_id}
+            ):
+                continue
+
+            def matches_milestone_path(event: dict[str, Any]) -> bool:
+                if not isinstance(milestone_path_id, str):
+                    return True
+                if (
+                    milestone.get("feature_kind") == "subpath_selection"
+                    and not path_aware_subpath_milestones
+                ):
+                    # This is the sole historical compatibility exception. A
+                    # generic project with incomplete owner data must remain
+                    # blocked rather than borrowing a global Subpath event.
+                    return historical_fixture
+                advancement = event.get("advancement") or {}
+                outputs = ((advancement.get("calculation") or {}).get("outputs") or {})
+                record_id = (event.get("subject") or {}).get("record_id")
+                snapshot = (state.get("authority_snapshots") or {}).get(record_id) or {}
+                if not snapshot and isinstance(record_cache, dict):
+                    snapshot = {"record": record_cache.get(record_id)}
+                snapshot_record = snapshot.get("record") or {}
+                if milestone.get("feature_kind") == "subpath_selection":
+                    # Subpath ownership is authoritative only in the locked
+                    # record's explicit owning_path_id. Event outputs and the
+                    # Stage 2 parent mirror may confirm it but may not supply
+                    # one when the explicit field is absent.
+                    event_path_id = snapshot_record.get("owning_path_id")
+                    output_parent = outputs.get("parent_path_id")
+                    if not isinstance(event_path_id, str):
+                        return False
+                    if output_parent is not None and output_parent != event_path_id:
+                        return False
+                else:
+                    event_path_id = outputs.get("parent_path_id")
+                    if not isinstance(event_path_id, str):
+                        event_path_id = ((outputs.get("path_progression_authority") or {}).get("path_id"))
+                    if not isinstance(event_path_id, str) and isinstance(record_id, str) and ".feature." in record_id:
+                        event_path_id = record_id.split(".feature.", 1)[0]
+                    event_path_id = event_path_id or snapshot_record.get("owning_path_id")
+                if event_path_id is None and milestone.get("feature_kind") == "advancement_choice":
+                    # Insight event rows intentionally carry only the Insight
+                    # identity; the milestone/path binding was already fixed
+                    # by the server's progression route and the non-progressed
+                    # same-CL milestone was skipped above.
+                    return True
+                return event_path_id == milestone_path_id
+
             matching = [
                 e for e in events
                 if int(e["advancement"]["target_cl"]) == milestone_cl
                 and e["advancement"]["kind"] in allowed_kinds
+                and matches_milestone_path(e)
             ]
             if len(matching) != required_count:
                 code = "REQUIRED_PATH_MILESTONE_MISSING" if len(matching) < required_count else "REQUIRED_PATH_MILESTONE_COUNT_INVALID"
@@ -2499,7 +2682,15 @@ class RulesCausalStage2Service:
                 state = next_state
                 generic_prefix.append(event)
                 previous = event["event_hash"]
-        blockers.extend(self._completion_blockers(state, int(row["target_cl"]), existing_v3 + compiled, project))
+        blockers.extend(
+            self._completion_blockers(
+                state,
+                int(row["target_cl"]),
+                existing_v3 + compiled,
+                project,
+                record_cache=record_cache,
+            )
+        )
         report = {"schema_version": "TianxiaFoundry.Stage2BlockerReport.v1", "project_id": row["project_id"], "project_revision": project_row["revision"], "blocked": bool(blockers), "blockers": blockers}
         self.registry.validate(report)
         validation = {

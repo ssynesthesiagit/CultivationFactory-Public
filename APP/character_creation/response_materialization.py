@@ -754,6 +754,11 @@ def normalize_selection_intent(
             "planning_preferences_are_non_acquisitive": True,
             "acquisitions_are_semantic_and_explicit": True,
             "target_cl_server_owned": True,
+            "delegated_name_required": (
+                (delegated_envelope.get("delegated_name_contract") or {}).get("required") is True
+                and (delegated_envelope.get("delegated_name_contract") or {}).get("state") == "delegated"
+            ),
+            "delegated_name_field": "owner_descriptive_fields.identity.name",
         },
     }
     return CanonicalSelectionIntent.from_document({**unsigned, "intent_sha256": sha256_json(unsigned)})

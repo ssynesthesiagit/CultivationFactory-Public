@@ -89,7 +89,10 @@ def _plan(*, paths: list[str] | None = None, method: str | None = "METHOD-ALL", 
         "target_cl": 1,
         "delegated_choice_selections": {"by_slot": by_slot},
         "stage2_proposal": {"target_cl": 1, "choices": [], "planner_rationale": "Prose cannot grant a choice."},
-        "owner_descriptive_fields": {"identity": {"name": ""}, "concept": ""},
+        # Delegated-name responses are now positive delegation: use a valid
+        # fixture name by default and test the missing-name rejection explicitly
+        # below.
+        "owner_descriptive_fields": {"identity": {"name": "Delegated Fixture Name"}, "concept": ""},
     }
 
 
@@ -130,7 +133,7 @@ def test_zero_owner_locks_offer_all_paths_and_ai_method_grants_are_authoritative
     assert resolution["actual_advancing_path_ids"] == resolution["method_granted_path_ids"]
     assert resolution["selected_choices_by_slot"]["sphere_priorities"] == ["SPHERE-FIRE"]
     assert all(row["provenance"] == "AI" for row in resolution["provenance"] if row["slot_id"] == "path_choice")
-    assert resolution["descriptive_fields"] == {"name": None, "concept": None}
+    assert resolution["descriptive_fields"] == {"name": "Delegated Fixture Name", "concept": None}
     assert final_plan_sha256(final) == final["final_plan_sha256"]
 
 
@@ -150,6 +153,20 @@ def test_blank_delegated_name_and_concept_can_be_ai_proposed_for_owner_review():
         row["slot_id"] == "identity.name" and row["provenance"] == "needs_owner"
         for row in final["resolution"]["provenance"]
     ) is False
+
+
+def test_delegated_name_is_positive_required_and_missing_name_fails_closed():
+    project, envelope, run = _authority()
+    contract = envelope["delegated_name_contract"]
+    assert contract["state"] == "delegated"
+    assert contract["required"] is True
+    assert contract["nonblank"] is True
+    assert contract["positive_delegation"] is True
+    missing = _plan(paths=list(CANONICAL_PATH_IDS), method="METHOD-ALL")
+    missing["owner_descriptive_fields"] = {"identity": {"name": "   "}, "concept": "A valid concept"}
+    with pytest.raises(FoundryError) as exc:
+        validate_delegated_choice_plan(run, project, missing, response_sha256="RESPONSE-4")
+    assert exc.value.code == "CG1_DELEGATED_NAME_REQUIRED"
 
 
 @pytest.mark.parametrize("count", [0, 1, 2, 3])

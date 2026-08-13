@@ -33,8 +33,13 @@ def test_method_compatibility_is_bounded_and_shared_with_initial_creation_author
     assert result["selected_paths"] == ["Body Refining", "Qi Cultivation"]
     assert result["compatible_methods"]
     for method in result["compatible_methods"]:
-        assert method["initial_creation_selectable"] is True
         assert set(required).issubset(method["supported_path_ids"])
+        assert method["access_required"] is (not method["initial_creation_selectable"])
+        assert method["direct_access"] is method["initial_creation_selectable"]
+        assert method["route_configurable"] is bool(method["owner_route_options"])
+        assert method["access_authorized"] is method["direct_access"]
+        assert method["exact_access_record_present"] is False
+    assert any(not method["initial_creation_selectable"] for method in result["compatible_methods"])
 
     with pytest.raises(FoundryError) as duplicate:
         service.method_compatibility([CANONICAL_PATH_IDS[0], CANONICAL_PATH_IDS[0]])
@@ -81,7 +86,11 @@ def test_method_compatibility_endpoint_enforces_request_contract(catalog_environ
         assert response.status_code == 200
         payload = response.json()
         assert payload["selected_path_ids"] == [CANONICAL_PATH_IDS[0]]
-        assert all(row["initial_creation_selectable"] is True for row in payload["compatible_methods"])
+        assert all(
+            row["access_required"] is (not row["initial_creation_selectable"])
+            for row in payload["compatible_methods"]
+        )
+        assert any(not row["initial_creation_selectable"] for row in payload["compatible_methods"])
         assert payload["authority"]["authority_snapshot_sha256"]
 
         too_many = client.post(
@@ -116,6 +125,15 @@ def test_character_creation_api_view_uses_bounded_owner_projection_and_eight_scr
                     "subpath_choice": {"subpath-1": {"name": "Cinder Tradition"}},
                 },
                 "owner_locks": {"by_slot": {"path_choice": [CANONICAL_PATH_IDS[1]]}},
+                "path_method_authority": {
+                    "method_access_by_id": {
+                        "method-1": {
+                            "route_configurable": True,
+                            "access_authorized": False,
+                            "exact_access_record_present": False,
+                        },
+                    },
+                },
             },
         },
         "response": {"response_sha256": "response-hash"},
@@ -175,6 +193,9 @@ def test_character_creation_api_view_uses_bounded_owner_projection_and_eight_scr
     assert view["owner_view"]["paths"][1]["state"] == "advancing"
     assert view["owner_view"]["paths"][1]["attainment"] == 9
     assert view["owner_view"]["method"]["name"] == "Measured Method"
+    assert view["owner_view"]["method"]["route_configurable"] is True
+    assert view["owner_view"]["method"]["access_authorized"] is False
+    assert view["owner_view"]["method"]["exact_access_record_present"] is False
     assert view["owner_view"]["scratch_candidate"]["sheet"]["spheres"] == [{"name": "Flame Sphere"}]
     assert view["owner_view"]["scratch_candidate"]["sheet"]["free_talents"] == [{"name": "Free Flame Talent", "acquisition": "free"}]
     assert view["owner_view"]["scratch_candidate"]["sheet"]["ordinary_talents"] == [{"name": "Ordinary Flame Talent", "acquisition": "ordinary"}]
@@ -251,7 +272,13 @@ def test_production_owner_shell_has_one_eight_screen_contract_and_readable_respo
     assert 'id="sheetInsightCards"' in html
     assert 'id="sheetSphereCatalog"' in html
     assert 'id="ownerCustomizationSection"' in html
+    assert 'id="ownerEarlySpherePlan"' in html
+    assert 'data-planning-phase="pre-request-freeze"' in html
+    assert 'id="ownerSphereHost" data-planning-surface="sphere-and-talent-priorities"' in html
+    assert "Sphere planning is completed before request freeze" in html
     assert "planningIsEditable" in javascript
+    assert "ownerSphereHost" in javascript
+    assert "sphere_priorities" in javascript and "advancement_skeleton" in javascript
     assert "Edit Brief / Create New Request is required" in javascript
     assert 'aria-selected="true"' in html
     assert "setDiagnostics(false)" in javascript

@@ -107,9 +107,11 @@ class CharacterSheetService:
 
     def _display_contract(
         self,
-        ledger: dict[str, Any],
-        provenance: dict[str, Any],
+        ledger: dict[str, Any] | None = None,
+        provenance: dict[str, Any] | None = None,
     ) -> tuple[dict[str, Any], str]:
+        ledger = ledger or {}
+        provenance = provenance or {}
         project_contract = provenance.get("project_display_contract")
         if project_contract:
             unsigned = dict(project_contract)
@@ -460,8 +462,15 @@ class CharacterSheetService:
             selected_method.get("state") == "acquired"
             and bool(selected_method.get("record_id"))
         )
+        selected_foundation = snapshot.get("foundation") or {}
+        foundation_acquired = (
+            selected_foundation.get("state") == "acquired"
+            and bool(selected_foundation.get("record_id"))
+        )
         for name in ("method", "foundation", "manuals", "equipment", "forged_techniques"):
             if name == "method" and method_acquired:
+                continue
+            if name == "foundation" and foundation_acquired:
                 continue
             row = typed_none.get(name) or {}
             if row.get("state") != "none" or row.get("source_backed") is not True:
@@ -607,8 +616,40 @@ class CharacterSheetService:
         origin_card = cards_by_id.get(str(origin.get("origin_insight_id")))
         path_rows = deepcopy(ledger.get("path_selections") or [])
         subpath_rows = deepcopy(ledger.get("subpaths") or [])
-        path_card = cards_by_id.get(str(character.get("path_id")))
-        subpath_card = cards_by_id.get(str((subpath_rows[0] if subpath_rows else {}).get("subpath_id")))
+        path_cards = [
+            cards_by_id[str(row.get("path_id"))]
+            for row in path_rows
+            if isinstance(row, dict) and row.get("path_id") in cards_by_id
+        ]
+        path_card = cards_by_id.get(str(character.get("path_id"))) or (path_cards[0] if path_cards else None)
+        primary_path_id = str((path_card or {}).get("record_id") or character.get("path_id") or "")
+        subpath_cards = [
+            cards_by_id[str(row.get("subpath_id"))]
+            for row in subpath_rows
+            if isinstance(row, dict) and row.get("subpath_id") in cards_by_id
+        ]
+        primary_subpath_row = next(
+            (
+                row for row in subpath_rows
+                if isinstance(row, dict) and str(row.get("owning_path_id") or "") == primary_path_id
+            ),
+            None,
+        )
+        subpath_card = cards_by_id.get(str((primary_subpath_row or {}).get("subpath_id"))) if primary_subpath_row else None
+        invalid_subpath_rows = [
+            row for row in subpath_rows
+            if not isinstance(row, dict)
+            or not isinstance(row.get("owning_path_id"), str)
+            or not row.get("owning_path_id")
+            or row.get("owning_path_id") not in {path.get("path_id") for path in path_rows if isinstance(path, dict)}
+        ]
+        if invalid_subpath_rows:
+            raise FoundryError(
+                "CHARACTER_SHEET_SUBPATH_OWNER_UNRESOLVED",
+                "A selected Subpath or Tradition lacks one exact selected owning Path.",
+                details={"rows": invalid_subpath_rows},
+                status_code=409,
+            )
 
         canonical_allocations = []
         for packet in sorted(packets.get("packets") or [], key=lambda row: int(row.get("sequence") or 0)):
@@ -658,6 +699,8 @@ class CharacterSheetService:
                 "realm_display": f"{character.get('realm')} Realm" if character.get("realm") else None,
                 "path": character.get("path"),
                 "path_id": character.get("path_id"),
+                "paths": deepcopy(path_rows),
+                "path_ids": [row.get("path_id") for row in path_rows if isinstance(row, dict) and row.get("path_id")],
                 "key_ability": character.get("key_ability"),
                 "proficiency_bonus": character.get("pb"),
             },
@@ -709,10 +752,26 @@ class CharacterSheetService:
                 },
             },
             "path_and_subpath": {
-                "path": path_rows[0] if path_rows else None,
+                "path": next(
+                    (row for row in path_rows if isinstance(row, dict) and row.get("path_id") == primary_path_id),
+                    path_rows[0] if path_rows else None,
+                ),
                 "path_record_id": path_card.get("record_id") if path_card else None,
-                "subpath": subpath_rows[0] if subpath_rows else None,
+                "paths": deepcopy(path_rows),
+                "path_record_ids": [card["record_id"] for card in path_cards],
+                "subpaths": deepcopy(subpath_rows),
+                "subpath": primary_subpath_row,
                 "subpath_record_id": subpath_card.get("record_id") if subpath_card else None,
+                "subpath_record_ids": [card["record_id"] for card in subpath_cards],
+                "bindings": [
+                    {
+                        "path_id": row.get("owning_path_id"),
+                        "subpath_id": row.get("subpath_id"),
+                        "source_packet_ids": deepcopy(row.get("source_packet_ids") or []),
+                    }
+                    for row in subpath_rows
+                    if isinstance(row, dict)
+                ],
                 "path_feature_record_ids": [card["record_id"] for card in groups.get("path_features", [])],
                 "advancement_feature_record_ids": [card["record_id"] for card in groups.get("advancement_features", [])],
                 "source_granted_subpath_feature_record_ids": [
@@ -756,6 +815,7 @@ class CharacterSheetService:
             },
             "explicit_none_systems": deepcopy(ledger.get("typed_none") or {}),
             "method": deepcopy(ledger.get("method") or {}),
+            "foundation": deepcopy(ledger.get("foundation") or {}),
             "selected_record_sections": groups,
             "selected_record_identity_index": [card["record_id"] for card in cards],
             "capability_status": {
@@ -955,6 +1015,17 @@ class CharacterSheetService:
             subpath_rows = blueprint["selected_records"].get("subpath_choice") or []
             path_from_blueprint = (path_rows[0].get("canonical_name") or path_rows[0].get("name")) if path_rows else None
             subpath_from_blueprint = (subpath_rows[0].get("canonical_name") or subpath_rows[0].get("name")) if subpath_rows else None
+            subpaths_from_blueprint = [
+                {
+                    "name": row.get("canonical_name") or row.get("name"),
+                    "owning_path_id": row.get("owning_path_id"),
+                    "subpath_id": row.get("choice_id"),
+                }
+                for row in subpath_rows
+                if isinstance(row, dict) and (row.get("canonical_name") or row.get("name"))
+            ]
+        else:
+            subpaths_from_blueprint = []
 
         snapshot: dict[str, Any] | None = None
         sheet_artifact: dict[str, Any] | None = None
@@ -1000,6 +1071,9 @@ class CharacterSheetService:
                 "current_realm": snap_identity.get("realm"),
                 "path": snap_identity.get("path"),
                 "subpath": ((snapshot.get("path_and_subpath") or {}).get("subpath") or {}).get("name"),
+                "paths": deepcopy((snapshot.get("path_and_subpath") or {}).get("paths") or []),
+                "subpaths": deepcopy((snapshot.get("path_and_subpath") or {}).get("subpaths") or []),
+                "subpath_bindings": deepcopy((snapshot.get("path_and_subpath") or {}).get("bindings") or []),
                 "species": snap_identity.get("species"),
                 "creature_type": snap_identity.get("creature_type"),
                 "size": snap_identity.get("size"),
@@ -1023,6 +1097,21 @@ class CharacterSheetService:
                 "current_realm": compiled_character.get("realm"),
                 "path": compiled_path or path_from_blueprint,
                 "subpath": ((compiled_subpaths[0].get("name") if isinstance(compiled_subpaths[0], dict) else compiled_subpaths[0]) if compiled_subpaths else subpath_from_blueprint),
+                "paths": [
+                    row.get("name") if isinstance(row, dict) else row
+                    for row in ((ledger or {}).get("path_selections") or [])
+                ],
+                "subpaths": [
+                    row.get("name") if isinstance(row, dict) else row
+                    for row in compiled_subpaths
+                ] if compiled_subpaths else [
+                    row.get("name") for row in subpaths_from_blueprint if row.get("name")
+                ],
+                "subpath_bindings": deepcopy(
+                    ((ledger or {}).get("subpaths") or [])
+                    if compiled_subpaths
+                    else subpaths_from_blueprint
+                ),
                 "species": compiled_character.get("species"),
                 "key_ability": compiled_character.get("key_ability"),
             }

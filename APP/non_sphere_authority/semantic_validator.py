@@ -44,6 +44,7 @@ class NonSphereSemanticStateValidator:
         # still uses post-creation evidence.
         initial_method_ids = set(state.get("initial_creation_method_ids") or [])
         initial_method_active = bool(state.get("initial_creation_method_active"))
+        initial_subpath_ids = set(state.get("initial_creation_subpath_ids") or [])
         primary = state.get("primary_method_id")
         for method_id in state.get("known_method_ids") or []:
             method = self.service.methods[method_id]
@@ -105,11 +106,15 @@ class NonSphereSemanticStateValidator:
                     minimum_cl = self.service.subpath_minimum_cl(choice)
                     if int(path.get("attainment") or 0) < minimum_cl:
                         cause = {"code": "SUBPATH_MINIMUM_CL_NO_LONGER_MET", "minimum_cl": minimum_cl, "attainment": path.get("attainment")}
-                    elif (choice.get("access") or {}).get("access_source_record_required") and not self.service.has_exact_access_record(
+                    elif (
+                        (choice.get("access") or {}).get("access_source_record_required")
+                        and selection_id not in initial_subpath_ids
+                        and not self.service.has_exact_access_record(
                         records,
                         "subpath_access",
                         selection_id=selection_id,
                         path_id=path["path_id"],
+                        )
                     ):
                         cause = {
                             "code": "SUBPATH_EXACT_ACCESS_NO_LONGER_PRESENT",

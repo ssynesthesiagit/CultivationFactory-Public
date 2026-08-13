@@ -93,6 +93,24 @@ class ProjectStore:
         self.integrity = integrity or IntegrityService.for_database(db)
         self.registry = SchemaRegistry(db.settings.root_dir)
 
+    def _cached_non_sphere_authority(self):
+        """Load the authenticated non-Sphere authority once per store.
+
+        Proof-bound record reconstruction can visit the same authority surface
+        hundreds of times while replaying a project.  The authority service
+        verifies its sealed source files during construction, so recreating it
+        for every record is both needlessly expensive and obscures the
+        snapshot-vs-live boundary.  Callers may still inject a service for
+        tests or an already-authenticated transaction.
+        """
+        authority = getattr(self, "_non_sphere_authority_cache", None)
+        if authority is None:
+            from non_sphere_authority import NonSphereAuthorityService
+
+            authority = NonSphereAuthorityService(self.db)
+            self._non_sphere_authority_cache = authority
+        return authority
+
     @classmethod
     def _validate_builder_persistence_state(cls, state: str) -> str:
         normalized = str(state or "").strip()
@@ -202,6 +220,28 @@ class ProjectStore:
                     details={"project_id": project_id, "run_id": active_run["run_id"], "status": active_run["status"]},
                     status_code=409,
                 )
+            has_attempt_history = conn.execute(
+                "SELECT 1 FROM character_creation_attempt_history WHERE project_id=? LIMIT 1",
+                (project_id,),
+            ).fetchone() is not None
+            if has_attempt_history:
+                # A cancelled/replaced run is recoverable evidence.  Retain the
+                # project as a non-temporary draft instead of allowing the
+                # historical project CASCADE to erase immutable attempts.
+                self._set_builder_lifecycle(
+                    conn,
+                    project_id,
+                    "saved_draft",
+                    source="owner_discard_retained_attempt_history",
+                )
+                conn.execute("DELETE FROM ai_provider_runs WHERE project_id=?", (project_id,))
+                return {
+                    "project_id": project_id,
+                    "discarded": True,
+                    "retained": True,
+                    "reason": reason,
+                    "retention": "attempt_history",
+                }
             # HF2 snapshot rows are immutable by default. This one-transaction
             # authorization is created only after the explicit temporary marker
             # is verified. Triggers still reject every other deletion path.
@@ -232,6 +272,7 @@ class ProjectStore:
                 )
             ]
             skipped_project_ids = []
+            retained_history_project_ids = []
             for project_id in project_ids:
                 active_run = conn.execute(
                     "SELECT run_id FROM character_creation_runs WHERE project_id=? AND status IN ('PREPARING_REQUEST','WAITING_FOR_RESPONSE','READY_FOR_REVIEW','NEEDS_REVIEW') LIMIT 1",
@@ -239,6 +280,19 @@ class ProjectStore:
                 ).fetchone()
                 if active_run:
                     skipped_project_ids.append(project_id)
+                    continue
+                has_attempt_history = conn.execute(
+                    "SELECT 1 FROM character_creation_attempt_history WHERE project_id=? LIMIT 1",
+                    (project_id,),
+                ).fetchone() is not None
+                if has_attempt_history:
+                    self._set_builder_lifecycle(
+                        conn,
+                        project_id,
+                        "saved_draft",
+                        source="startup_cleanup_retained_attempt_history",
+                    )
+                    retained_history_project_ids.append(project_id)
                     continue
                 conn.execute(
                     "INSERT INTO character_builder_temporary_delete_authorizations(project_id,reason,authorized_at) VALUES(?,?,?)",
@@ -254,8 +308,18 @@ class ProjectStore:
                         status_code=500,
                     )
                 conn.execute("DELETE FROM character_builder_temporary_delete_authorizations WHERE project_id=?", (project_id,))
-        removed_project_ids = [project_id for project_id in project_ids if project_id not in skipped_project_ids]
-        return {"reason": reason, "removed_project_ids": removed_project_ids, "removed_count": len(removed_project_ids), "skipped_active_project_ids": skipped_project_ids}
+        removed_project_ids = [
+            project_id
+            for project_id in project_ids
+            if project_id not in skipped_project_ids and project_id not in retained_history_project_ids
+        ]
+        return {
+            "reason": reason,
+            "removed_project_ids": removed_project_ids,
+            "removed_count": len(removed_project_ids),
+            "skipped_active_project_ids": skipped_project_ids,
+            "retained_history_project_ids": retained_history_project_ids,
+        }
 
     def _record_validation(
         self,
@@ -951,6 +1015,18 @@ class ProjectStore:
             )
             if fallback is not None:
                 return fallback
+        if record_id.startswith(("tianxia.subpath.", "tianxia.tradition.")):
+            fallback = self._resolve_project_locked_subpath_after_proof(
+                conn, project_id, record_id, authority_service=authority_service,
+            )
+            if fallback is not None:
+                return fallback
+        if record_id.startswith(("ancient_", "FOUNDATION_")):
+            fallback = self._resolve_project_locked_foundation_after_proof(
+                conn, project_id, record_id, authority_service=authority_service,
+            )
+            if fallback is not None:
+                return fallback
         if record_id.startswith(("tianxia.background.", "tianxia.background_")) and not record.get("compatibility", {}).get("factory", {}).get("stage2_authority", {}).get("authority_complete"):
             fallback = self._resolve_project_locked_background_after_proof(conn, project_id, record_id)
             if fallback is not None:
@@ -1073,7 +1149,134 @@ class ProjectStore:
             or self._resolve_project_locked_path_after_proof(
                 conn, project_id, record_id, authority_service=authority_service,
             )
+            or self._resolve_project_locked_subpath_after_proof(
+                conn, project_id, record_id, authority_service=authority_service,
+            )
+            or self._resolve_project_locked_foundation_after_proof(
+                conn, project_id, record_id, authority_service=authority_service,
+            )
         )
+
+    def _resolve_project_locked_subpath_after_proof(
+        self,
+        conn,
+        project_id: str,
+        record_id: str,
+        *,
+        authority_service: Any | None = None,
+    ) -> dict[str, Any] | None:
+        if not isinstance(record_id, str) or ".feature." in record_id or not record_id.startswith(("tianxia.subpath.", "tianxia.tradition.")):
+            return None
+        row = conn.execute(
+            "SELECT record_hash,record_json FROM project_locked_records WHERE project_id=? AND record_id=?",
+            (project_id, record_id),
+        ).fetchone()
+        if not row:
+            # The live NS1R registry is discovery authority only.  A selected
+            # Subpath/Tradition is executable for this project only when the
+            # exact canonical catalog bytes are present in its immutable
+            # project-scoped snapshot.
+            return None
+        snapshot = json.loads(row["record_json"])
+        if (
+            canonical_json(snapshot) != row["record_json"]
+            or snapshot.get("record_hash") != row["record_hash"]
+            or snapshot.get("record_id") != record_id
+            or snapshot.get("content_type") not in {"subpath", "tradition"}
+        ):
+            raise FoundryError(
+                "PROJECT_LOCK_SNAPSHOT_MISMATCH",
+                "The immutable Subpath/Tradition snapshot record bytes do not match its project binding.",
+                details={"project_id": project_id, "record_id": record_id},
+            )
+        self._validate_or_raise(
+            snapshot,
+            boundary="non_sphere_subpath_snapshot_reconstruct",
+            family="rules_catalog_record",
+            key=record_id,
+            conn=conn,
+        )
+        authority = authority_service or self._cached_non_sphere_authority()
+        # Rebuild the typed event contract from the exact immutable snapshot
+        # row.  The live registry may authenticate the projection schema, but
+        # it must not supply project-specific ownership/features after the
+        # project lock has been proved.
+        projected = authority.project_locked_subpath_catalog_record(
+            record_id,
+            snapshot_record=snapshot,
+        )
+        if projected.get("record_id") != snapshot.get("record_id"):
+            raise FoundryError(
+                "PROJECT_LOCK_NON_SPHERE_IDENTITY_MISMATCH",
+                "The typed Subpath/Tradition projection does not match the immutable project snapshot identity.",
+                details={"project_id": project_id, "record_id": record_id, "snapshot_record_id": snapshot.get("record_id"), "projection_record_id": projected.get("record_id")},
+            )
+        self._validate_or_raise(
+            projected,
+            boundary="non_sphere_subpath_locked_record_reconstruct",
+            family="rules_catalog_record",
+            key=record_id,
+            conn=conn,
+        )
+        return projected
+
+    def _resolve_project_locked_foundation_after_proof(
+        self,
+        conn,
+        project_id: str,
+        record_id: str,
+        *,
+        authority_service: Any | None = None,
+    ) -> dict[str, Any] | None:
+        if not isinstance(record_id, str) or not (record_id.startswith("ancient_") or record_id.startswith("FOUNDATION_")):
+            return None
+        row = conn.execute(
+            "SELECT record_hash,record_json FROM project_locked_records WHERE project_id=? AND record_id=?",
+            (project_id, record_id),
+        ).fetchone()
+        if not row:
+            # Do not turn a live Foundation catalog match into project
+            # authority.  The exact canonical Foundation row must be present
+            # in this project's immutable snapshot first.
+            return None
+        snapshot = json.loads(row["record_json"])
+        if (
+            canonical_json(snapshot) != row["record_json"]
+            or snapshot.get("record_hash") != row["record_hash"]
+            or snapshot.get("record_id") != record_id
+            or snapshot.get("content_type") != "foundation"
+        ):
+            raise FoundryError(
+                "PROJECT_LOCK_SNAPSHOT_MISMATCH",
+                "The immutable Foundation snapshot record bytes do not match its project binding.",
+                details={"project_id": project_id, "record_id": record_id},
+            )
+        self._validate_or_raise(
+            snapshot,
+            boundary="non_sphere_foundation_snapshot_reconstruct",
+            family="rules_catalog_record",
+            key=record_id,
+            conn=conn,
+        )
+        authority = authority_service or self._cached_non_sphere_authority()
+        projected = authority.project_locked_foundation_catalog_record(
+            record_id,
+            snapshot_record=snapshot,
+        )
+        if projected.get("record_id") != snapshot.get("record_id"):
+            raise FoundryError(
+                "PROJECT_LOCK_NON_SPHERE_IDENTITY_MISMATCH",
+                "The typed Foundation projection does not match the immutable project snapshot identity.",
+                details={"project_id": project_id, "record_id": record_id, "snapshot_record_id": snapshot.get("record_id"), "projection_record_id": projected.get("record_id")},
+            )
+        self._validate_or_raise(
+            projected,
+            boundary="non_sphere_foundation_locked_record_reconstruct",
+            family="rules_catalog_record",
+            key=record_id,
+            conn=conn,
+        )
+        return projected
 
     def _resolve_project_locked_background_after_proof(self, conn, project_id: str, record_id: str) -> dict[str, Any] | None:
         """Attach typed C1A authority to the owner-facing Background projections.
@@ -1310,10 +1513,7 @@ class ProjectStore:
         access_plan = locks.get("character_sheet.method_access_plan")
         if not isinstance(access_plan, dict) or access_plan.get("method_id") != record_id:
             return None
-        authority = authority_service
-        if authority is None:
-            from non_sphere_authority import NonSphereAuthorityService
-            authority = NonSphereAuthorityService(self.db)
+        authority = authority_service or self._cached_non_sphere_authority()
         method = authority.methods.get(record_id)
         if method is None:
             return None
@@ -1376,10 +1576,7 @@ class ProjectStore:
         if feature_path_id is not None:
             if feature_path_id not in selected_paths:
                 return None
-            authority = authority_service
-            if authority is None:
-                from non_sphere_authority import NonSphereAuthorityService
-                authority = NonSphereAuthorityService(self.db)
+            authority = authority_service or self._cached_non_sphere_authority()
             record = authority.project_locked_path_feature_catalog_record(feature_path_id, record_id)
             self._validate_or_raise(
                 record,
@@ -1391,10 +1588,7 @@ class ProjectStore:
             return record
         if record_id not in selected_paths:
             return None
-        authority = authority_service
-        if authority is None:
-            from non_sphere_authority import NonSphereAuthorityService
-            authority = NonSphereAuthorityService(self.db)
+        authority = authority_service or self._cached_non_sphere_authority()
         record = authority.project_locked_path_catalog_record(record_id)
         self._validate_or_raise(record, boundary="non_sphere_path_locked_record_reconstruct", family="rules_catalog_record", key=record_id, conn=conn)
         return record
@@ -1674,7 +1868,14 @@ class ProjectStore:
             rid = event.get("subject", {}).get("record_id")
             if rid and rid not in result:
                 if rid not in cache:
-                    if isinstance(rid, str) and (rid.startswith("METHOD-") or rid.startswith("tianxia.path.")):
+                    if isinstance(rid, str) and (
+                        rid.startswith("METHOD-")
+                        or rid.startswith("tianxia.path.")
+                        or rid.startswith("tianxia.subpath.")
+                        or rid.startswith("tianxia.tradition.")
+                        or rid.startswith("ancient_")
+                        or rid.startswith("FOUNDATION_")
+                    ):
                         if authority is None:
                             from non_sphere_authority import NonSphereAuthorityService
                             authority = NonSphereAuthorityService(self.db)
@@ -2147,15 +2348,23 @@ class ProjectStore:
         expected_replay = json.loads(contents["replay.json"])
         compatibility_status = json.loads(contents["compatibility-projection-status.json"])
         project_id = project["project_id"]
+        # Validate the imported project envelope before its immutable locks are
+        # used to bind pre-persistence non-Sphere provenance.  The destination
+        # row does not exist yet, so this is the authenticated import boundary's
+        # exact project document rather than a database lookup.
+        self._validate_or_raise(project, boundary="project_import_parse", family="character_project", key=project_id)
         imported_non_sphere_state = None
         imported_non_sphere_hash = None
         imported_non_sphere_ledger = None
         if "non-sphere-authority.json" in contents:
             from non_sphere_authority import NonSphereAuthorityService
+            from non_sphere_authority.service import _TRUSTED_PROJECT_IMPORT_BOUNDARY
             imported_non_sphere_state, imported_non_sphere_hash, imported_non_sphere_ledger = NonSphereAuthorityService(self.db).validate_import_payload(
-                project_id, json.loads(contents["non-sphere-authority.json"])
+                project_id,
+                json.loads(contents["non-sphere-authority.json"]),
+                project_document=project,
+                _project_document_authority=_TRUSTED_PROJECT_IMPORT_BOUNDARY,
             )
-        self._validate_or_raise(project, boundary="project_import_parse", family="character_project", key=project_id)
         if canonical_project_hash(project) != manifest.get("canonical_project_hash"):
             raise FoundryError("PROJECT_CANONICAL_HASH_MISMATCH", "Imported canonical project hash does not match its manifest.")
         for event in events:

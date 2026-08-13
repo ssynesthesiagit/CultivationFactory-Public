@@ -18,6 +18,7 @@ from contracts.canonical import ZERO_HASH, canonical_project_document, canonical
 from contracts.registry import SchemaRegistry
 from non_sphere_authority import NonSphereAuthorityService
 from path_method_authority import (
+    CANONICAL_PATH_IDS,
     compatibility_envelope,
     canonicalize_path_ids,
     method_path_compatibility,
@@ -43,12 +44,19 @@ QUALITY_PATTERNS = (
 
 SLOT_SPECS: tuple[dict[str, Any], ...] = (
     {"slot_id": "path_choice", "label": "Advancing Path Requirements", "types": ("path",), "max": 3, "limit": 3, "allow_none": False},
-    {"slot_id": "subpath_choice", "label": "Subpath or Tradition", "types": ("subpath", "tradition"), "max": 1, "limit": 8, "allow_none": True},
+    # Subpaths are Path-owned: one may be selected for each selected Path, up
+    # to the three canonical Path tracks.  Do not truncate this catalog to the
+    # first few rows because that would make a valid owner binding depend on
+    # catalog sort order.
+    {"slot_id": "subpath_choice", "label": "Subpaths or Traditions", "types": ("subpath", "tradition"), "max": 3, "limit": None, "allow_none": True},
     {"slot_id": "background_choice", "label": "Background", "types": ("background",), "max": 1, "limit": 8, "allow_none": True},
     {"slot_id": "background_sphere_choice", "label": "Background Sphere", "types": ("background_sphere",), "max": 1, "limit": 8, "allow_none": True},
     {"slot_id": "background_talent_choice", "label": "Background Talent", "types": ("background_talent",), "max": 1, "limit": 8, "allow_none": True},
     {"slot_id": "origin_insight_choice", "label": "Origin Insight", "types": ("cultivation_insight", "origin_insight", "insight"), "max": 1, "limit": 8, "allow_none": True},
-    {"slot_id": "method_choice", "label": "Proposed Cultivation Method", "types": ("cultivation_method",), "max": 1, "limit": 8, "allow_none": True},
+    # Access is a separate authority surface.  Stage 1 must publish every
+    # typed Method that is compatible with the selected Paths; initial access
+    # is checked later by the server-owned Method access plan.
+    {"slot_id": "method_choice", "label": "Proposed Cultivation Method", "types": ("cultivation_method",), "max": 1, "limit": None, "allow_none": True},
     # Foundation packs can contain more than one hundred Path-bound expressions.
     # Truncating this slot silently changes legality, so the full bounded catalog
     # set is offered and cross-slot Path compatibility is checked below.
@@ -90,6 +98,21 @@ INTENT_OPTION_SLOTS = {
 }
 
 AUTHORITY_METHOD_SOURCE_PATH = "non_sphere_authority/authority/Tianxia_Methods_Typed_Registry_v0_6.json"
+
+
+def _relation_targets(relation: Any) -> list[str]:
+    """Extract typed relationship targets without interpreting display text."""
+    if isinstance(relation, str):
+        return [relation]
+    if not isinstance(relation, dict):
+        return []
+    targets = relation.get("target_ids") or relation.get("targets")
+    if isinstance(targets, str):
+        return [targets]
+    if isinstance(targets, list):
+        return [value for value in targets if isinstance(value, str)]
+    target = relation.get("target_id") or relation.get("record_id") or relation.get("canonical_id") or relation.get("id")
+    return [target] if isinstance(target, str) else []
 
 
 def _authority_method_record(method: dict[str, Any], *, pack_hash: str) -> dict[str, Any]:
@@ -246,7 +269,7 @@ class Stage1ClipboardService:
         legality = record.get("legality", {})
         dependencies = [x for x in record.get("dependencies", []) if isinstance(x, str)]
         parent_relationships = [{"relation": "dependency", "record_id": x} for x in dependencies]
-        return {
+        choice = {
             "choice_id": record["record_id"],
             "name": record["display_name"],
             "description": str(record.get("display_projection", {}).get("short_description") or record.get("summary") or record["display_name"])[:1000],
@@ -266,6 +289,24 @@ class Stage1ClipboardService:
             },
             "incompatibilities": deepcopy(legality.get("incompatibilities") or []),
         }
+        if record.get("content_type") in {"subpath", "tradition"}:
+            # Subpath ownership is a first-class source field.  Parent fields,
+            # generic dependencies, and related-choice metadata are not legal
+            # ownership fallbacks because they can describe procedures or
+            # historical compatibility relationships rather than the Path that
+            # owns the selection.
+            owner_path_id = record.get("owning_path_id")
+            if owner_path_id not in CANONICAL_PATH_IDS:
+                raise FoundryError(
+                    "STAGE1_SUBPATH_OWNER_UNRESOLVED",
+                    "A Subpath or Tradition lacks an explicit canonical owning Path.",
+                    details={"record_id": record.get("record_id"), "owning_path_id": owner_path_id},
+                    status_code=500,
+                )
+            choice["owning_path_id"] = owner_path_id
+            choice["owning_path_choice_ids"] = [owner_path_id]
+            choice["parent_relationships"] = [{"relation": "path_ownership", "record_id": owner_path_id}]
+        return choice
 
     def build_envelope(self, project_id: str) -> dict[str, Any]:
         project = self._project(project_id)
@@ -288,6 +329,28 @@ class Stage1ClipboardService:
             required_path_ids,
             authority_method_rows,
         )
+        # Compatibility answers only the Path/AP question.  Keep the typed
+        # access projection alongside it so the delegated boundary can require
+        # an exact owner access plan for a non-open Method without removing that
+        # Method from the all-102 planning inventory.
+        path_method_authority["method_access_by_id"] = {
+            row["method_id"]: {
+                "schema": "TianxiaFoundry.MethodAccessProjection.v1",
+                "initial_creation_selectable": bool(row.get("initial_creation_selectable")),
+                "direct_access": bool(row.get("initial_creation_selectable")),
+                "access_required": not bool(row.get("initial_creation_selectable")),
+                "route_configurable": bool(row.get("route_configurable")),
+                "access_authorized": bool(row.get("access_authorized")),
+                "exact_access_record_present": bool(row.get("exact_access_record_present")),
+                "exact_selection_available": bool((row.get("method_planning") or {}).get("exact_selection_available")),
+                "exact_lock_configurable": bool((row.get("method_planning") or {}).get("exact_selection_available")),
+                "access_tier": (row.get("method_planning") or {}).get("access_tier"),
+                "access_text": (row.get("method_planning") or {}).get("access_text") or "",
+                "owner_route_options": deepcopy((row.get("method_planning") or {}).get("owner_route_options") or []),
+            }
+            for row in authority_method_rows
+            if isinstance(row, dict) and isinstance(row.get("method_id"), str)
+        }
         if required_path_ids and not path_method_authority["compatible_method_ids"]:
             raise no_compatible_method_error(required_path_ids)
         with self.db.connection() as conn:
@@ -840,6 +903,64 @@ class Stage1ClipboardService:
                         },
                         "unsupported_path_ids": compatibility["missing_path_ids"],
                     })
+
+        # A Subpath/Tradition is not a global primary selection.  Its exact
+        # Path ownership is carried by the frozen parent relationships and the
+        # final response must preserve one binding per selected Path.
+        subpath_decision = by_slot.get("subpath_choice") or {}
+        if subpath_decision.get("state") == "selected":
+            subpath_choices = {
+                choice["choice_id"]: choice
+                for choice in slots.get("subpath_choice", {}).get("choices", [])
+                if isinstance(choice, dict) and isinstance(choice.get("choice_id"), str)
+            }
+            selected_path_ids = list(path_decision.get("choice_ids") or []) if path_decision.get("state") == "selected" else []
+            selected_path_set = set(selected_path_ids)
+            subpath_by_path: dict[str, str] = {}
+            for offset, subpath_id in enumerate(subpath_decision.get("choice_ids") or []):
+                choice = subpath_choices.get(subpath_id)
+                pointer = f"/response_payload/decisions/subpath_choice/choice_ids/{offset}"
+                if not choice:
+                    continue
+                owners = {
+                    choice.get("owning_path_id")
+                } if isinstance(choice.get("owning_path_id"), str) else set()
+                if owners and owners != set(choice.get("owning_path_choice_ids") or owners):
+                    diagnostics.append({
+                        "code": "NS1R_SUBPATH_OWNER_MISMATCH",
+                        "pointer": pointer,
+                        "subpath_id": subpath_id,
+                        "owning_path_id": choice.get("owning_path_id"),
+                        "owning_path_choice_ids": choice.get("owning_path_choice_ids"),
+                    })
+                matched = sorted(owners & selected_path_set)
+                if not selected_path_ids:
+                    diagnostics.append({
+                        "code": "NS1R_SUBPATH_PATH_BINDING_REQUIRED",
+                        "pointer": pointer,
+                        "subpath_id": subpath_id,
+                        "owning_path_ids": sorted(owners),
+                    })
+                elif len(matched) != 1:
+                    diagnostics.append({
+                        "code": "NS1R_PATH_SUBPATH_MISMATCH",
+                        "pointer": pointer,
+                        "subpath_id": subpath_id,
+                        "selected_path_ids": selected_path_ids,
+                        "owning_path_ids": sorted(owners),
+                    })
+                else:
+                    owner = matched[0]
+                    prior = subpath_by_path.get(owner)
+                    if prior is not None:
+                        diagnostics.append({
+                            "code": "NS1R_MULTIPLE_SUBPATHS_FOR_ONE_PATH",
+                            "pointer": pointer,
+                            "path_id": owner,
+                            "choice_ids": [prior, subpath_id],
+                        })
+                    else:
+                        subpath_by_path[owner] = subpath_id
 
         # Foundation Expressions are Path-specific published mechanics. Stage 1
         # chooses Path and Foundation in one response, so the relation cannot be

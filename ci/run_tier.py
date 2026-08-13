@@ -60,6 +60,7 @@ def fast_stages(output: Path, node: str) -> list[CommandStage]:
     focused = (
         "tests/test_combat_battle_history.py",
         "tests/test_windows_portable_packaging.py",
+        "tests/test_rec1_p1cr4_path_subpath_provenance.py",
     )
     return [
         CommandStage(

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import json
 import uuid
 
 import pytest
@@ -21,6 +22,7 @@ from character_creation.current_fixture import (
 )
 from character_creation.delegated_choice_authority import catalog_stage2_selections
 from path_method_authority import CANONICAL_PATH_IDS
+from non_sphere_authority import NonSphereAuthorityService
 from project_store.service import ProjectStore
 from stage1.service import Stage1ClipboardService
 
@@ -31,6 +33,54 @@ CANONICAL_FIRE_REPLACEMENTS = (
     "tianxia.talent.fire.combustive_step",
     "tianxia.talent.fire.heat_haze",
 )
+JIANG_SUBPATH_PREFERENCES = {
+    CANONICAL_PATH_IDS[0]: "tianxia.subpath.body.flesh_crucible",
+    CANONICAL_PATH_IDS[1]: CINDER_HEART,
+    CANONICAL_PATH_IDS[2]: "tianxia.tradition.spirit.dreamweaver",
+}
+
+
+def _jiang_subpath_ids(builder: CharacterBuilderService) -> list[str]:
+    """Resolve stable canonical choices against the current authority surface.
+
+    The IDs are canonical identities, not catalog positions.  Resolve them
+    through the Character Builder's current NonSphereAuthority-decorated
+    options so this fixture fails clearly if a source choice is no longer
+    published, rather than silently selecting a different catalog row.
+    """
+    category = next(
+        row for row in builder.options()["categories"]
+        if row["slot_id"] == "subpath_choice"
+    )
+    choices = {row["choice_id"]: row for row in category.get("choices") or []}
+    missing = sorted(set(JIANG_SUBPATH_PREFERENCES.values()) - set(choices))
+    assert not missing, {
+        "missing_canonical_subpath_ids": missing,
+        "available_count": len(choices),
+    }
+    selected: list[str] = []
+    for path_id in CANONICAL_PATH_IDS:
+        choice_id = JIANG_SUBPATH_PREFERENCES[path_id]
+        choice = choices[choice_id]
+        assert choice.get("owning_path_id") == path_id, {
+            "path_id": path_id,
+            "choice_id": choice_id,
+            "owning_path_id": choice.get("owning_path_id"),
+        }
+        assert choice.get("owning_path_choice_ids") == [path_id], choice
+        selected.append(choice_id)
+    return selected
+
+
+def _jiang_run_subpath_ids(run: dict) -> list[str]:
+    envelope = run["request"]["delegated_choice_envelope"]
+    selected = list(envelope["owner_locks"]["by_slot"]["subpath_choice"])
+    assert len(selected) == len(CANONICAL_PATH_IDS), selected
+    choices = envelope["choices_by_slot"]["subpath_choice"]
+    assert {
+        choices[subpath_id]["owning_path_id"] for subpath_id in selected
+    } == set(CANONICAL_PATH_IDS)
+    return selected
 
 
 def _new_jiang_normal_project(builder: CharacterBuilderService) -> dict:
@@ -40,6 +90,7 @@ def _new_jiang_normal_project(builder: CharacterBuilderService) -> dict:
         if row["choice_id"] == "METHOD-085"
     )
     route = method["method_planning"]["owner_route_options"][0]
+    subpath_ids = _jiang_subpath_ids(builder)
     return builder.create_project(
         working_name="Jiang Yun",
         concept="A corrected three-Path Jiang Yun normal-wizard package.",
@@ -50,7 +101,7 @@ def _new_jiang_normal_project(builder: CharacterBuilderService) -> dict:
         ability_scores={},
         selections={
             "path_choice": list(CANONICAL_PATH_IDS),
-            "subpath_choice": [CINDER_HEART],
+            "subpath_choice": subpath_ids,
             "background_choice": [ABANDONED_ORPHAN],
             "background_sphere_choice": [BACKGROUND_SPHERE],
             "background_talent_choice": [HIDDEN_TOOL_CACHE],
@@ -133,6 +184,7 @@ def _jiang_stage2_choices(run: dict, method_id: str) -> list[dict]:
     ]
     assert legal_fire_replacements, legal_fire_replacements
     replacement_by_legacy_id = dict(zip(sorted(LEGACY_NON_FIRE_TALENTS), legal_fire_replacements))
+    subpath_ids = _jiang_run_subpath_ids(run)
     for row in original_rows:
         if row["kind"] == "path_acquisition":
             output.extend(
@@ -168,6 +220,18 @@ def _jiang_stage2_choices(run: dict, method_id: str) -> list[dict]:
             output.append({**deepcopy(row), "record_id": replacement})
         elif row["kind"] == "typed_none" and row.get("parameters", {}).get("target") == "method":
             continue
+        elif row["kind"] == "subpath_acquisition":
+            # The fixture is intentionally a three-Path project.  Replace the
+            # old one-global-Subpath row with one exact owner-bound acquisition
+            # event for each selected Path; Stage 2 remains authoritative about
+            # validating those per-Path milestones.
+            output.extend(
+                {
+                    **deepcopy(row),
+                    "record_id": subpath_id,
+                }
+                for subpath_id in subpath_ids
+            )
         else:
             output.append(deepcopy(row))
     return output
@@ -177,6 +241,7 @@ def _jiang_plan(db, project_id: str, run: dict, method_id: str) -> dict:
     project_result = ProjectStore(db).get_project(project_id)
     project = project_result["project"]
     choices = _jiang_stage2_choices(run, method_id)
+    subpath_ids = _jiang_run_subpath_ids(run)
     plan = {
         "schema": "TianxiaFoundry.CharacterCreationPlan.v2",
         "request_sha256": run["request"]["request_sha256"],
@@ -215,6 +280,7 @@ def _jiang_plan(db, project_id: str, run: dict, method_id: str) -> dict:
         "by_slot": {
             "path_choice": list(CANONICAL_PATH_IDS),
             "method_choice": [method_id],
+            "subpath_choice": subpath_ids,
             "sphere_priorities": list(stage2["sphere_ids"]),
             "advancement_skeleton": final_talent_order,
         }
@@ -252,8 +318,27 @@ def test_jiang_yun_normal_wizard_delegated_authority_recovery(catalog_environmen
     )
     assert run["request"]["delegated_choice_envelope"]
     assert run["request"]["delegated_choice_envelope"]["owner_locks"]["by_slot"]["path_choice"] == list(CANONICAL_PATH_IDS)
+    subpath_ids = _jiang_run_subpath_ids(run)
+    subpath_choices = run["request"]["delegated_choice_envelope"]["choices_by_slot"]["subpath_choice"]
+    expected_subpath_bindings = {
+        path_id: next(
+            subpath_id
+            for subpath_id in subpath_ids
+            if subpath_choices[subpath_id]["owning_path_id"] == path_id
+        )
+        for path_id in CANONICAL_PATH_IDS
+    }
 
     plan = _jiang_plan(app.state.db, project_id, run, method_id)
+    assert plan["delegated_choice_selections"]["by_slot"]["subpath_choice"] == subpath_ids
+    proposed_subpath_rows = [
+        row
+        for row in plan["stage2_proposal"]["choices"]
+        if row["kind"] == "subpath_acquisition"
+    ]
+    assert [row["record_id"] for row in proposed_subpath_rows] == subpath_ids
+    assert [row["effective_cl"] for row in proposed_subpath_rows] == [3, 3, 3]
+    assert all(row["acquisition_channel"] == "subpath-selection" for row in proposed_subpath_rows)
     response_text = canonical_json(plan)
     before_preview = _canonical_state(app.state.db, project_id)
     preview = execution.submit_manual(
@@ -282,6 +367,17 @@ def test_jiang_yun_normal_wizard_delegated_authority_recovery(catalog_environmen
     assert final_plan["response_representations"]["stage2_mechanical_choices"]["ordinary_talent_ids"]
     assert final_plan["resolution"]["selected_choices_by_slot"]["path_choice"] == list(CANONICAL_PATH_IDS)
     assert final_plan["resolution"]["selected_choices_by_slot"]["method_choice"] == [method_id]
+    assert final_plan["resolution"]["selected_choices_by_slot"]["subpath_choice"] == subpath_ids
+    assert final_plan["response_representations"]["delegated_choice_selections"]["by_slot"]["subpath_choice"] == subpath_ids
+    assert final_plan["response_representations"]["stage2_mechanical_choices"]["subpath_or_tradition_ids"] == subpath_ids
+    assert {
+        path_id: next(
+            subpath_id
+            for subpath_id in final_plan["resolution"]["selected_choices_by_slot"]["subpath_choice"]
+            if subpath_choices[subpath_id]["owning_path_id"] == path_id
+        )
+        for path_id in CANONICAL_PATH_IDS
+    } == expected_subpath_bindings
     assert any(
         row["slot_id"] == "sphere_priorities" and row["provenance"] == "AI"
         for row in final_plan["resolution"]["provenance"]
@@ -305,6 +401,7 @@ def test_jiang_yun_normal_wizard_delegated_authority_recovery(catalog_environmen
     finalized = execution.finalize(run["run_id"])
     assert finalized["status"] == "CLEAN_AND_FINALIZED"
     assert finalized["final_plan"] == final_plan
+    assert finalized["final_plan"]["resolution"]["selected_choices_by_slot"]["subpath_choice"] == subpath_ids
     evidence = finalized["outputs"]["catalog_acquisition_evidence"]
     assert evidence["candidate_identity"] == finalized["dry_run"]["candidate_identity"]
     live_project = ProjectStore(app.state.db).get_project(project_id)["project"]
@@ -313,3 +410,19 @@ def test_jiang_yun_normal_wizard_delegated_authority_recovery(catalog_environmen
         if row["field"] == "character_creation.delegated_final_catalog_grant_plan"
     )
     assert materialized["value"] == accepted_grant_plan
+    live_state = NonSphereAuthorityService(app.state.db).get_state(project_id)
+    assert {
+        row["path_id"]: row["subpath_or_tradition_id"]
+        for row in live_state["paths"]
+        if row["path_id"] in CANONICAL_PATH_IDS
+    } == expected_subpath_bindings
+    persisted_subpath_events = [
+        json.loads(raw_event)
+        for raw_event in _canonical_state(app.state.db, project_id)["events"]
+        if json.loads(raw_event).get("advancement", {}).get("kind") == "subpath_acquisition"
+    ]
+    assert [event["subject"]["record_id"] for event in persisted_subpath_events] == subpath_ids
+    assert {
+        event["advancement"]["calculation"]["outputs"]["parent_path_id"]: event["subject"]["record_id"]
+        for event in persisted_subpath_events
+    } == expected_subpath_bindings

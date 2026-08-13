@@ -227,6 +227,18 @@
                     "type": "string"
                   }
                 },
+                "owning_path_id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+                },
+                "owning_path_choice_ids": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+                  }
+                },
                 "parent_relationships": {
                   "type": "array",
                   "items": {
@@ -300,7 +312,8 @@
         "method_granted_path_ids",
         "method_compatibility_predicate",
         "level_zero_track_semantics",
-        "method_access_note"
+        "method_access_note",
+        "method_access_by_id"
       ],
       "properties": {
         "schema": {"const": "TianxiaFoundry.PathMethodAuthorityEnvelope.v1"},
@@ -312,6 +325,37 @@
         "method_compatibility_predicate": {"type": "string"},
         "level_zero_track_semantics": {"type": "object"},
         "method_access_note": {"type": "string"},
+        "method_access_by_id": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "initial_creation_selectable",
+              "direct_access",
+              "route_configurable",
+              "access_authorized",
+              "exact_access_record_present",
+              "exact_selection_available",
+              "access_tier",
+              "owner_route_options"
+            ],
+            "properties": {
+              "schema": {"const": "TianxiaFoundry.MethodAccessProjection.v1"},
+              "initial_creation_selectable": {"type": "boolean"},
+              "direct_access": {"type": "boolean"},
+              "access_required": {"type": "boolean"},
+              "route_configurable": {"type": "boolean"},
+              "access_authorized": {"type": "boolean"},
+              "exact_access_record_present": {"type": "boolean"},
+              "exact_selection_available": {"type": "boolean"},
+              "exact_lock_configurable": {"type": "boolean"},
+              "access_tier": {"type": ["string", "null"]},
+              "access_text": {"type": "string"},
+              "owner_route_options": {"type": "array", "items": {"type": "object"}}
+            }
+          }
+        },
         "complete_character_source_authority": {"type": "object"}
       }
     },

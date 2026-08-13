@@ -7,13 +7,15 @@ import json
 import os
 import shutil
 import sqlite3
+import stat
 import tempfile
 import time
+import unicodedata
 import uuid
 import zipfile
 from contextlib import nullcontext
 from copy import deepcopy
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any, Callable
 
 from app.core import Database, FoundryError, Settings, canonical_json, sha256_bytes, sha256_file, sha256_json, utcnow
@@ -174,8 +176,11 @@ CHARACTER_CREATION_PROVIDER_SYSTEM_MESSAGE = (
     "select only offered and allowed IDs, preserve owner locks, and never infer hidden final choices. "
     "Keep ordered priorities separate from explicit acquisitions and provide only the exact bounded choices "
     "advertised by the request. Do not choose target_cl. "
+    "If delegated_fields marks identity.name as delegated, you MUST provide a nonblank proposed name at "
+    "owner_descriptive_fields.identity.name for owner review; never synthesize or omit that delegated name. "
     "If delegated_fields marks the name or concept as delegated, you may propose display-only text in "
-    "owner_descriptive_fields for owner review. Do not invent Stage 1 bindings, Stage 2 rows, event kinds, "
+    "owner_descriptive_fields for owner review. Owner-locked descriptive fields must be copied exactly. "
+    "Do not invent Stage 1 bindings, Stage 2 rows, event kinds, "
     "channels, effective CL values, automatic grants, hashes, compiled surfaces, readiness, artifact identities, "
     "actions, tools, or network instructions. The local Factory validates every choice, materializes the exact "
     "Stage 1/Stage 2 authority, performs two isolated compilations, and retains sole mechanical and commit authority."
@@ -756,6 +761,7 @@ class CharacterCreationExecutionService:
                 "submitted_request_sha256": (run.get("transport") or {}).get("submitted_request_sha256"),
                 "binding_status": "BOUND" if response.get("response_sha256") and not run.get("submission_error") else "NOT_BOUND_OR_REQUIRES_REVIEW",
             },
+            "source_provenance": deepcopy((run.get("transport") or {}).get("source_provenance") or {}),
             "response_view": {
                 "exact_response_present": bool(response.get("exact_response_text")),
                 "response_sha256": response.get("response_sha256"),
@@ -848,6 +854,9 @@ class CharacterCreationExecutionService:
         )
         if delegated is not None:
             request["delegated_choice_envelope"] = delegated
+            request["delegated_name_contract"] = deepcopy(
+                delegated.get("delegated_name_contract") or {}
+            )
             request["bounded_choice_contract"]["advertised_advancement_choice_milestones"] = deepcopy(
                 delegated.get("advancement_choice_milestones") or []
             )
@@ -1230,6 +1239,20 @@ class CharacterCreationExecutionService:
                 },
             }
 
+        delegated_name_contract = envelope.get("delegated_name_contract") or {}
+        delegated_name_state = str(delegated_name_contract.get("state") or "delegated")
+        name_schema: dict[str, Any] = {
+            "type": "string",
+            "minLength": 1,
+            # minLength alone accepts whitespace-only values; the delegated
+            # semantic contract requires one non-whitespace character.
+            "pattern": r".*\S.*",
+        }
+        if delegated_name_state == "owner_locked" and isinstance(
+            delegated_name_contract.get("owner_locked_value"), str
+        ):
+            name_schema = {"const": delegated_name_contract["owner_locked_value"]}
+
         preferred_response_schema = {
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             "title": "TianxiaFoundry delegated selection-intent response",
@@ -1265,12 +1288,19 @@ class CharacterCreationExecutionService:
                 "owner_descriptive_fields": {
                     "type": "object",
                     "additionalProperties": False,
+                    "required": ["identity"],
                     "properties": {
-                        "identity": {"type": "object", "additionalProperties": False, "properties": {"name": {"type": "string"}}},
+                        "identity": {
+                            "type": "object",
+                            "additionalProperties": False,
+                            "required": ["name"],
+                            "properties": {"name": name_schema},
+                        },
                         "concept": {"type": "string"},
                     },
                 },
             },
+            "x-delegated-name-contract": deepcopy(delegated_name_contract),
             "x-frozen-offered-choice-ids-by-slot": deepcopy(allowed_by_slot),
             "x-choice-records-by-slot": deepcopy(choices_by_slot),
             "x-advertised-advancement-choice-milestones": deepcopy(milestone_rows),
@@ -1320,7 +1350,9 @@ class CharacterCreationExecutionService:
                 b"and semantic acquisition intent/bounded choices only. Use Sphere/free-Talent pairs, ordinary "
                 b"Talent IDs, and source-backed Insight occurrences; the local Factory owns target CL, "
                 b"Stage 1/Stage 2 materialization, validation, compilation, and receipts. Any plan allowance "
-                b"described in the request is not direct API credit.\n"
+                b"described in the request is not direct API credit. If the delegated name contract is positive "
+                b"delegation, owner_descriptive_fields.identity.name is required and must contain a nonblank "
+                b"proposed name; if it is owner-locked, copy that exact name unchanged.\n"
             ),
             "PROMPT_INSTRUCTIONS.md": (
                 b"# Complete Character Creation Request\n\nReturn exactly one JSON object conforming "
@@ -1328,7 +1360,9 @@ class CharacterCreationExecutionService:
                 b"request_sha256 into the response. Do not choose or copy target CL, Stage 1 bindings, Stage 2 "
                 b"event kinds/channels/effective CL rows, automatic grants, hashes, readiness, or artifact "
                 b"identities. Select offered stable IDs only. Keep ordered priorities separate from an explicit "
-                b"acquisition_intent semantic object (never backend rows) and provide only exact bounded choices advertised by the request. Owner "
+                b"acquisition_intent semantic object (never backend rows) and provide only exact bounded choices advertised by the request. "
+                b"The delegated name contract is positive delegation: owner_descriptive_fields.identity.name "
+                b"must be present and nonblank when delegated, while an owner-locked name must be copied exactly. Owner "
                 b"descriptions are allowed; prose never creates mechanics. The local Factory validates and "
                 b"materializes every mechanical choice. Historical full-row responses remain compatibility input "
                 b"only and must equal the server materialization.\n"
@@ -1804,6 +1838,8 @@ class CharacterCreationExecutionService:
                 if isinstance(item, dict) and isinstance(item.get("field"), str)
             }
             selected_paths = (lock_values.get("character_sheet.locked_choices") or {}).get("path_choice") or []
+            selected_subpaths = (lock_values.get("character_sheet.locked_choices") or {}).get("subpath_choice") or []
+            selected_foundations = (lock_values.get("character_sheet.locked_choices") or {}).get("foundation_choice") or []
             authority = NonSphereAuthorityService(self.db)
             selected_feature_ids = {
                 feature.get("canonical_id")
@@ -1814,8 +1850,29 @@ class CharacterCreationExecutionService:
             access_plan = lock_values.get("character_sheet.method_access_plan")
             access_method_id = access_plan.get("method_id") if isinstance(access_plan, dict) else None
             result: dict[str, dict[str, Any]] = {}
+            # All project-specific non-Sphere records below are resolved through
+            # the proved immutable snapshot.  In particular, do not rebuild a
+            # selected Subpath directly from the live registry: its ownership
+            # and feature progression are part of the project's frozen
+            # authority boundary.
+            # Exact initial Methods are a separate authenticated authority
+            # surface rather than HF2 pack members.  Resolve only the Method
+            # named by the server-created access plan; the proof-bound resolver
+            # checks that plan's registry and record commitments before exposing
+            # the typed Stage 2 projection.
             if isinstance(access_method_id, str):
-                result[access_method_id] = authority.project_locked_method_catalog_record(access_method_id)
+                method_record = self.projects._resolve_locked_record_after_proof(
+                    conn,
+                    project_id,
+                    access_method_id,
+                    authority_service=authority,
+                )
+                if method_record is not None:
+                    result[access_method_id] = method_record
+            # Selected Subpaths are explicit owner choices.  They are resolved
+            # through the proved project snapshot below, even when a historical
+            # project did not persist the ordinary catalog row in the current
+            # executable set.  A missing row remains fail-closed.
             for row in rows:
                 record_id = row["record_id"]
                 if record_id.startswith("tianxia.path.") and ".feature." in record_id:
@@ -1830,27 +1887,29 @@ class CharacterCreationExecutionService:
                     if record_id not in selected_paths:
                         continue
                     record = authority.project_locked_path_catalog_record(record_id)
-                elif isinstance(access_method_id, str) and record_id == access_method_id:
-                    record = authority.project_locked_method_catalog_record(record_id)
                 else:
-                    record = None
+                    try:
+                        record = self.projects._resolve_locked_record_after_proof(
+                            conn,
+                            project_id,
+                            record_id,
+                            authority_service=authority,
+                        )
+                    except FoundryError as exc:
+                        # P2A progression may name source-text component IDs
+                        # that are evidence inside a feature, not executable
+                        # Stage 2 records.  They remain in the immutable
+                        # snapshot but are intentionally absent from the
+                        # materialization map.
+                        if exc.code != "NS1R_PATH_FEATURE_ID_UNKNOWN":
+                            raise
+                        record = None
                 if record is not None:
                     result[record_id] = record
                     continue
-                try:
-                    record = self.projects._resolve_locked_record_after_proof(
-                        conn, project_id, record_id
-                    )
-                except FoundryError as exc:
-                    # P2A progression may name source-text component IDs that
-                    # are evidence inside a feature, not executable Stage 2
-                    # records.  They remain in the immutable snapshot but are
-                    # intentionally absent from the materialization map.
-                    if exc.code != "NS1R_PATH_FEATURE_ID_UNKNOWN":
-                        raise
-                    continue
-                if isinstance(record, dict):
-                    result[record_id] = record
+                # No live-catalog fallback is permitted for a missing locked
+                # record.  The caller will receive the normal bounded,
+                # fail-closed missing-authority diagnostic.
             # Path features may not be persisted as ordinary catalog rows. Add
             # the complete selected top-level feature set from the authenticated
             # P2A source once, after the immutable project proof above.
@@ -1863,6 +1922,19 @@ class CharacterCreationExecutionService:
                     record = authority.project_locked_path_feature_catalog_record(path_id, feature_id)
                     if isinstance(record, dict):
                         result[feature_id] = record
+            # Exact selected Subpaths/Traditions are owner-bound records.  The
+            # resolver must have obtained each one from this project's proved
+            # snapshot; if a legacy row is absent it remains unresolved rather
+            # than being rebuilt from the live registry.
+            for subpath_id in selected_subpaths:
+                record = self.projects._resolve_locked_record_after_proof(
+                    conn,
+                    project_id,
+                    subpath_id,
+                    authority_service=authority,
+                )
+                if record is not None:
+                    result[subpath_id] = record
             return result
 
     @staticmethod
@@ -1937,7 +2009,24 @@ class CharacterCreationExecutionService:
         ]
         path_authority = NonSphereAuthorityService(self.db)
         for path_id in selected_path_ids:
-            path_record = path_authority.project_locked_path_catalog_record(path_id)
+            with self.db.connection() as conn:
+                self.projects.project_lock_proof(conn, run["project_id"])
+                path_record = self.projects._resolve_locked_record_after_proof(
+                    conn,
+                    run["project_id"],
+                    path_id,
+                    authority_service=path_authority,
+                )
+            if path_record is None:
+                # A delegated Path is not necessarily an owner lock, but it is
+                # still required to be authenticated by the exact project lock
+                # boundary before it can enter materialization.
+                raise FoundryError(
+                    "CG1_BOUNDED_DECISION_REQUIRED",
+                    "The frozen project does not contain the exact authority needed to materialize this Path.",
+                    details={"field": "path_choice", "record_id": path_id},
+                    status_code=409,
+                )
             if isinstance(path_record, dict):
                 records[path_id] = path_record
             profile = path_authority.path_profiles.get(path_id) or {}
@@ -2021,6 +2110,66 @@ class CharacterCreationExecutionService:
                 "Choose at least one advancing Path before the Factory can materialize Stage 2.",
                 status_code=409,
             )
+        subpath_ids = values("subpath_choice")
+        for subpath_id in subpath_ids:
+            if subpath_id not in records:
+                raise FoundryError(
+                    "CG1_BOUNDED_DECISION_REQUIRED",
+                    "The frozen project does not contain the exact authority needed to materialize this Subpath or Tradition.",
+                    details={"field": "subpath_choice", "record_id": subpath_id},
+                    status_code=409,
+                )
+        subpath_by_path: dict[str, str] = {}
+        for subpath_id in subpath_ids:
+            subpath_record = require_record(subpath_id, "subpath_choice")
+            subpath_authority = (
+                subpath_record.get("compatibility", {}).get("factory", {}).get("stage2_authority")
+                or {}
+            )
+            owner_path = subpath_record.get("owning_path_id")
+            if not isinstance(owner_path, str) or owner_path not in path_ids:
+                raise FoundryError(
+                    "CG1_PATH_SUBPATH_MISMATCH",
+                    "The selected Subpath or Tradition is not bound to one selected Path in frozen authority.",
+                    details={
+                        "subpath_id": subpath_id,
+                        "selected_path_ids": path_ids,
+                        "owning_path_id": owner_path,
+                        "stage2_parent_path_id": subpath_authority.get("parent_path_id"),
+                    },
+                    status_code=409,
+                )
+            if subpath_record.get("parent_path_id") != owner_path:
+                raise FoundryError(
+                    "CG1_PATH_SUBPATH_MISMATCH",
+                    "The frozen Subpath parent Path does not match its explicit owning Path.",
+                    details={
+                        "subpath_id": subpath_id,
+                        "owning_path_id": owner_path,
+                        "parent_path_id": subpath_record.get("parent_path_id"),
+                    },
+                    status_code=409,
+                )
+            if subpath_authority.get("owning_path_id") not in {None, owner_path} or subpath_authority.get("parent_path_id") not in {None, owner_path}:
+                raise FoundryError(
+                    "CG1_PATH_SUBPATH_MISMATCH",
+                    "The frozen Subpath Stage 2 ownership does not match its explicit owning Path.",
+                    details={
+                        "subpath_id": subpath_id,
+                        "owning_path_id": owner_path,
+                        "stage2_owning_path_id": subpath_authority.get("owning_path_id"),
+                        "stage2_parent_path_id": subpath_authority.get("parent_path_id"),
+                    },
+                    status_code=409,
+                )
+            if owner_path in subpath_by_path:
+                raise FoundryError(
+                    "CG1_MULTIPLE_SUBPATHS_FOR_ONE_PATH",
+                    "Each selected Path may have only one current Subpath or Tradition.",
+                    details={"path_id": owner_path, "choice_ids": [subpath_by_path[owner_path], subpath_id]},
+                    status_code=409,
+                )
+            subpath_by_path[owner_path] = subpath_id
         background_ids = values("background_choice")
         background_sphere_ids = values("background_sphere_choice")
         background_talent_ids = values("background_talent_choice")
@@ -2098,6 +2247,14 @@ class CharacterCreationExecutionService:
         rows.extend(row("path_acquisition", 1, path_id) for path_id in path_ids)
         method_ids = values("method_choice")
         foundation_ids = values("foundation_choice")
+        for foundation_id in foundation_ids:
+            if foundation_id not in records:
+                raise FoundryError(
+                    "CG1_BOUNDED_DECISION_REQUIRED",
+                    "The frozen project does not contain the exact authority needed to materialize this Foundation.",
+                    details={"field": "foundation_choice", "record_id": foundation_id},
+                    status_code=409,
+                )
         if method_ids:
             rows.append(row("method_acquisition", 1, method_ids[0]))
         if foundation_ids:
@@ -2251,6 +2408,7 @@ class CharacterCreationExecutionService:
             asi_by_milestone = {}
         resolved_milestones: set[str] = set()
         expected_milestones: dict[str, dict[str, Any]] = {}
+        emitted_subpath_ids: set[str] = set()
         for cl in range(1, target_cl + 1):
             requested_path = progression_choice.get(str(cl), progression_choice.get(cl)) if isinstance(progression_choice, dict) else None
             available_paths = [
@@ -2419,17 +2577,50 @@ class CharacterCreationExecutionService:
                         )
                     rows.append(row("ability_score_change", cl, milestone["feature_record_id"], parameters={"deltas": deepcopy(deltas)}))
                 resolved_milestones.add(milestone_id)
-            if cl == 3 and any(
-                path_feature_kind(records[feature]) == "subpath_selection"
-                for feature in feature_ids
-            ):
-                subpaths = values("subpath_choice")
-                if subpaths:
-                    subpath_record = require_record(subpaths[0], "subpath_choice")
-                    minimum = int(subpath_record.get("legality", {}).get("minimum_cl") or 3)
-                    if minimum <= cl:
-                        rows.append(row("subpath_acquisition", cl, subpaths[0]))
+            # Subpath milestones are Path-owned, not a single global CL3 row.
+            # Emit every selected binding once when its owning Path publishes
+            # the exact subpath-selection feature at or before the target CL.
+            if cl >= 3:
+                for owner_path, subpath_id in sorted(subpath_by_path.items()):
+                    if subpath_id in emitted_subpath_ids:
+                        continue
+                    owner_authority = path_authority_by_id.get(owner_path) or {}
+                    subpath_feature_cls = [
+                        int(raw_cl)
+                        for raw_cl, progression_row in (owner_authority.get("progression_by_cl") or {}).items()
+                        if isinstance(raw_cl, str)
+                        and raw_cl.isdigit()
+                        and any(
+                            path_feature_kind(records[feature]) == "subpath_selection"
+                            for feature in (progression_row.get("feature_record_ids") or [])
+                            if isinstance(feature, str) and feature in records
+                        )
+                    ]
+                    if not subpath_feature_cls:
+                        continue
+                    subpath_record = require_record(subpath_id, "subpath_choice")
+                    minimum = int(
+                        subpath_record.get("legality", {}).get("minimum_cl")
+                        or subpath_record.get("minimum_cl")
+                        or 3
+                    )
+                    acquisition_cl = max(minimum, min(subpath_feature_cls))
+                    if acquisition_cl <= cl:
+                        rows.append(row("subpath_acquisition", acquisition_cl, subpath_id))
+                        emitted_subpath_ids.add(subpath_id)
             rows.append(row("level_talent_acquisition", cl, ordinary_ids[cl - 1]))
+
+        if set(subpath_ids) != emitted_subpath_ids:
+            raise FoundryError(
+                "CG1_SUBPATH_BINDING_UNRESOLVED",
+                "Every selected Path-owned Subpath or Tradition must resolve to an authenticated Path milestone before compilation.",
+                details={
+                    "selected_subpath_ids": subpath_ids,
+                    "materialized_subpath_ids": sorted(emitted_subpath_ids),
+                    "unresolved_subpath_ids": sorted(set(subpath_ids) - emitted_subpath_ids),
+                },
+                status_code=409,
+            )
 
         for item in intent_doc.get("compatibility_item_occurrences") or []:
             if not isinstance(item, dict) or not isinstance(item.get("record_id"), str):
@@ -3659,6 +3850,103 @@ class CharacterCreationExecutionService:
             validation["materialized_stage2_hash"] = sha256_json(plan.get("stage2_proposal") or {})
         return {"plan":plan,"final_plan":final_plan or {},"validation":validation,"candidate":candidate,"quality":quality,"warnings":warnings,"raw_sha256":sha256_bytes(raw),"canonical_intent":canonical_intent.as_dict() if canonical_intent is not None else None}
 
+    @staticmethod
+    def _diagnostic_stage(code: str) -> str:
+        """Classify the first failed production boundary for owner recovery."""
+        normalized = str(code or "").strip().upper()
+        # Diagnostics are an external recovery contract.  Keep this table
+        # exact: substring matching misclassified unknown/compound codes (for
+        # example a semantic code containing ``PATH``) as an earlier boundary.
+        source_transport_codes = frozenset({
+            "CG1_MANUAL_RESPONSE_FILENAME_INVALID",
+            "CG1_MANUAL_RESPONSE_TOO_LARGE",
+            "CG1_MANUAL_RESPONSE_ZIP_ENTRY_LIMIT",
+            "CG1_MANUAL_RESPONSE_ZIP_PATH_INVALID",
+            "CG1_MANUAL_RESPONSE_ZIP_MEMBER_COLLISION",
+            "CG1_MANUAL_RESPONSE_ZIP_LINK_REJECTED",
+            "CG1_MANUAL_RESPONSE_ZIP_SPECIAL_FILE",
+            "CG1_MANUAL_RESPONSE_ZIP_ENCRYPTED",
+            "CG1_MANUAL_RESPONSE_ZIP_EXPANSION_LIMIT",
+            "CG1_MANUAL_RESPONSE_ZIP_CRC_INVALID",
+            "CG1_MANUAL_RESPONSE_ZIP_CONTENT_INVALID",
+            "CG1_MANUAL_RESPONSE_ZIP_INVALID",
+            "CG1_MANUAL_RESPONSE_TYPE_INVALID",
+            "CG1_MANUAL_RESPONSE_ENCODING_INVALID",
+            "CG1_MANUAL_RESPONSE_EMPTY",
+        })
+        json_schema_codes = frozenset({
+            "CG1_PLAN_JSON_INVALID",
+            "CG1_PLAN_SCHEMA_INVALID",
+            "CG1_PREFERRED_RESPONSE_SHAPE_INVALID",
+            "CG1_PREFERRED_RESPONSE_SELECTION_INVALID",
+            "CG1_PREFERRED_RESPONSE_ACQUISITION_INVALID",
+            "CG1_PREFERRED_RESPONSE_BOUNDED_FIELD_INVALID",
+        })
+        request_binding_codes = frozenset({
+            RESPONSE_BINDING_ERROR,
+            "CG1_IDEMPOTENCY_CONFLICT",
+            "CG1_DELEGATED_ENVELOPE_STALE",
+            "CG1_DELEGATED_ONE_SHOT_BINDING_MISMATCH",
+            "CG1_DELEGATED_OWNER_LOCKS_CHANGED",
+            "CG1_TYPED_CHOICE_SNAPSHOT_STALE",
+            "CG1_FROZEN_CATALOG_CHOICE_MISMATCH",
+            "CG1_EDIT_BRIEF_BINDING_MISMATCH",
+        })
+        semantic_authority_codes = frozenset({
+            "CG1_DELEGATED_AUTHORITY_CONFLICT",
+            "CG1_DELEGATED_ENVELOPE_TAMPERED",
+            "CG1_DELEGATED_METHOD_UNKNOWN",
+            "CG1_DELEGATED_METHOD_REQUIRED",
+            "CG1_METHOD_FOUNDATION_INCOMPATIBLE",
+            "CG1_AUTHORITY_SHAPE_UNRESOLVED",
+            "CG1_AUTHORITY_KIND_NOT_ALLOWED",
+            "CG1_AUTHORITY_CHANNEL_NOT_ALLOWED",
+            "CG1_INITIAL_PROVENANCE_CONTEXT_INVALID",
+            "CG1_CANONICAL_GRANT_PLAN_LOCK_MISSING",
+            "CG1_DELEGATED_FINAL_GRANT_PLAN_DIVERGED",
+        })
+        legality_codes = frozenset({
+            "CG1_DELEGATED_NAME_REQUIRED",
+            "CG1_DELEGATED_CHOICE_REQUIRED",
+            "CG1_DELEGATED_CHOICE_COUNT_INVALID",
+            "CG1_DELEGATED_CHOICE_OUT_OF_ENVELOPE",
+            "CG1_DELEGATED_CHOICE_UNAVAILABLE",
+            "CG1_DELEGATED_DUPLICATE_CHOICE",
+            "CG1_PATH_SUBPATH_MISMATCH",
+            "CG1_MULTIPLE_SUBPATHS_FOR_ONE_PATH",
+            "CG1_METHOD_PATH_INCOMPATIBLE",
+            "CG1_METHOD_ACCESS_REQUIRED",
+            "CG1_FOUNDATION_PATH_INCOMPATIBLE",
+            "CG1_DELEGATED_PREREQUISITE_UNSUPPORTED",
+            "CG1_DELEGATED_PREREQUISITE_UNMET",
+            "CG1_DELEGATED_INCOMPATIBILITY",
+            "CG1_BOUNDED_DECISION_REQUIRED",
+            "CG1_TARGET_CL_INVALID",
+            "CG1_ORDINARY_TALENT_COUNT_AUTHORITY_UNRESOLVED",
+            "CG1_SUBPATH_BINDING_UNRESOLVED",
+        })
+        compilation_codes = frozenset({
+            "CG1_STAGE1_INVALID",
+            "CG1_STAGE2_INVALID",
+            "CG1_NONDETERMINISTIC_COMPILATION",
+            "CG1_REQUIRED_COLLABORATOR_MISSING",
+            "CG1_PRODUCTION_AUTHORITY_NOT_READY",
+            "CG1_CANONICAL_PROVENANCE_BINDING_MISSING",
+        })
+        if normalized in source_transport_codes:
+            return "SOURCE_TRANSPORT"
+        if normalized in json_schema_codes:
+            return "JSON_SCHEMA"
+        if normalized in request_binding_codes:
+            return "REQUEST_BINDING"
+        if normalized in semantic_authority_codes:
+            return "SEMANTIC_AUTHORITY"
+        if normalized in legality_codes:
+            return "LEGALITY"
+        if normalized in compilation_codes:
+            return "COMPILATION"
+        return "VALIDATION"
+
     def _apply_response(
         self,
         run_id: str,
@@ -3728,7 +4016,8 @@ class CharacterCreationExecutionService:
                 )
         except FoundryError as exc:
             descriptive = self._descriptive_from_response_text(response_text)
-            diagnostic = {"code": exc.code, "message": exc.message, "details": exc.details}
+            diagnostic_category = self._diagnostic_stage(exc.code)
+            diagnostic = {"code": exc.code, "message": exc.message, "details": exc.details, "stage": diagnostic_category, "category": diagnostic_category}
             if exc.code == RESPONSE_BINDING_ERROR and binding_error_status:
                 validation = deepcopy(run.get("validation") or {})
                 validation["last_submission_error"] = diagnostic
@@ -3758,7 +4047,11 @@ class CharacterCreationExecutionService:
                 raise
             blocker = diagnostic
             validation = deepcopy(run.get("validation") or {})
-            validation.pop("last_submission_error", None)
+            # Keep the latest failed production boundary on the current run as
+            # well as in the append-only attempt ledger.  Owner recovery and
+            # the evidence endpoint must be able to restore the exact JSON
+            # schema/binding/semantic diagnostic after navigation or reload.
+            validation["last_submission_error"] = diagnostic
             validation["owner_descriptive_fields"] = descriptive
             with self.db.transaction() as conn:
                 conn.execute(
@@ -3914,6 +4207,24 @@ class CharacterCreationExecutionService:
                 "provider_called": False,
                 "transfer": "pasted_response",
                 "submitted_request_sha256": request_sha256,
+                "source_provenance": {
+                    "schema": "TianxiaFoundry.CharacterCreationResponseSourceProvenance.v1",
+                    "source_kind": "paste",
+                    "filename": None,
+                    "member_filename": None,
+                    "archive_sha256": None,
+                    "member_sha256": None,
+                    "raw_byte_count": len(response_text.encode("utf-8")),
+                    "raw_bytes_sha256": sha256_bytes(response_text.encode("utf-8")),
+                    "archive_members": [],
+                    "normalization": {
+                        "encoding": "utf-8",
+                        "bom_removed": False,
+                        "outer_whitespace_stripped": False,
+                        "normalized_text_bytes": len(response_text.encode("utf-8")),
+                        "normalized_text_sha256": sha256_bytes(response_text.encode("utf-8")),
+                    },
+                },
             },
             submitted_request_sha256=request_sha256,
             prior_attempt_id=prior_attempt_id,
@@ -3965,6 +4276,24 @@ class CharacterCreationExecutionService:
                 "transfer": "replaced_response",
                 "submitted_request_sha256": request_sha256,
                 "prior_attempt_id": prior_attempt_id,
+                "source_provenance": {
+                    "schema": "TianxiaFoundry.CharacterCreationResponseSourceProvenance.v1",
+                    "source_kind": "paste",
+                    "filename": None,
+                    "member_filename": None,
+                    "archive_sha256": None,
+                    "member_sha256": None,
+                    "raw_byte_count": len(response_text.encode("utf-8")),
+                    "raw_bytes_sha256": sha256_bytes(response_text.encode("utf-8")),
+                    "archive_members": [],
+                    "normalization": {
+                        "encoding": "utf-8",
+                        "bom_removed": False,
+                        "outer_whitespace_stripped": False,
+                        "normalized_text_bytes": len(response_text.encode("utf-8")),
+                        "normalized_text_sha256": sha256_bytes(response_text.encode("utf-8")),
+                        },
+                },
             },
             submitted_request_sha256=request_sha256,
             prior_attempt_id=prior_attempt_id,
@@ -3987,8 +4316,19 @@ class CharacterCreationExecutionService:
                 "Replace Response is available only for a Manual Chat response run.",
                 status_code=409,
             )
-        response_text, upload = self._manual_response_text(filename, payload)
         prior_attempt_id = self._latest_attempt_id(run_id)
+        try:
+            response_text, upload = self._manual_response_text(filename, payload)
+        except FoundryError as exc:
+            self._record_manual_transport_failure(
+                run_id,
+                filename=filename,
+                payload=payload,
+                error=exc,
+                action_type="REPLACE_RESPONSE",
+                prior_attempt_id=prior_attempt_id,
+            )
+            raise
         with self.db.transaction() as conn:
             conn.execute(
                 """UPDATE character_creation_runs SET
@@ -4014,6 +4354,81 @@ class CharacterCreationExecutionService:
             prior_attempt_id=prior_attempt_id,
             binding_error_status=True,
             action_type="REPLACE_RESPONSE",
+        )
+
+    def _record_manual_transport_failure(
+        self,
+        run_id: str,
+        *,
+        filename: str,
+        payload: bytes,
+        error: FoundryError,
+        action_type: str,
+        prior_attempt_id: str | None = None,
+    ) -> None:
+        """Persist bounded file-transfer failures without accepting their bytes."""
+        run = self.get(run_id)
+        raw_filename = str(filename or "")
+        suffix = Path(raw_filename).suffix.casefold()
+        details = deepcopy(error.details or {})
+        member_filename = details.get("member") if isinstance(details.get("member"), str) else None
+        uploaded_sha256 = sha256_bytes(payload)
+        provenance = {
+            "schema": "TianxiaFoundry.CharacterCreationResponseSourceProvenance.v1",
+            "source_kind": "zip" if suffix == ".zip" else "file",
+            "filename": raw_filename,
+            "uploaded_bytes": len(payload),
+            "archive_sha256": uploaded_sha256 if suffix == ".zip" else None,
+            "archive_bytes": len(payload) if suffix == ".zip" else None,
+            "member_filename": member_filename,
+            "member_sha256": None,
+            "raw_byte_count": len(payload),
+            "raw_bytes_sha256": uploaded_sha256,
+            "archive_members": [],
+            "normalization": {
+                "encoding": "unknown",
+                "bom_removed": None,
+                "outer_whitespace_stripped": None,
+                "normalized_text_bytes": None,
+                "normalized_text_sha256": None,
+            },
+            "transfer_status": "rejected_before_response_decode",
+        }
+        transport = {
+            "mode": "MANUAL_CHAT",
+            "provider_called": False,
+            "transfer": "rejected_response_file",
+            "uploaded_filename": raw_filename,
+            "uploaded_bytes": len(payload),
+            "uploaded_sha256": uploaded_sha256,
+            "submitted_request_sha256": (run.get("request") or {}).get("request_sha256"),
+            "source_provenance": provenance,
+        }
+        diagnostic = {
+            "code": error.code,
+            "message": error.message,
+            "details": details,
+            "stage": self._diagnostic_stage(error.code),
+            "category": self._diagnostic_stage(error.code),
+        }
+        validation = deepcopy(run.get("validation") or {})
+        validation["last_submission_error"] = diagnostic
+        with self.db.transaction() as conn:
+            conn.execute(
+                "UPDATE character_creation_runs SET transport_json=?,validation_json=?,updated_at=? WHERE run_id=?",
+                (canonical_json(transport), canonical_json(validation), utcnow(), run_id),
+            )
+        self._append_attempt(
+            run,
+            action_type=action_type,
+            status="BLOCKED",
+            prior_attempt_id=prior_attempt_id or self._latest_attempt_id(run_id),
+            binding={
+                "submitted_request_sha256": (run.get("request") or {}).get("request_sha256"),
+                "active_request_sha256": (run.get("request") or {}).get("request_sha256"),
+                "transport": transport,
+            },
+            error=diagnostic,
         )
 
     def retry_local_build(self, run_id: str) -> dict[str, Any]:
@@ -4042,16 +4457,21 @@ class CharacterCreationExecutionService:
                 status_code=409,
             )
         prior_attempt_id = self._latest_attempt_id(run_id)
+        prior_transport = run.get("transport") or {}
+        retry_transport = {
+            "mode": run.get("execution_mode"),
+            "provider_called": False,
+            "transfer": "retry_local_build",
+            "submitted_request_sha256": request_sha256,
+            "prior_attempt_id": prior_attempt_id,
+        }
+        for key in ("source_provenance", "uploaded_filename", "response_member", "uploaded_sha256"):
+            if key in prior_transport:
+                retry_transport[key] = deepcopy(prior_transport[key])
         return self._apply_response(
             run_id,
             response_text,
-            {
-                "mode": run.get("execution_mode"),
-                "provider_called": False,
-                "transfer": "retry_local_build",
-                "submitted_request_sha256": request_sha256,
-                "prior_attempt_id": prior_attempt_id,
-            },
+            retry_transport,
             submitted_request_sha256=request_sha256,
             prior_attempt_id=prior_attempt_id,
             binding_error_status=False,
@@ -4068,21 +4488,76 @@ class CharacterCreationExecutionService:
         suffix = Path(name).suffix.casefold()
         response_name = name
         response_payload = payload
+        archive_members: list[dict[str, Any]] = []
+        archive_sha256: str | None = None
         if suffix == ".zip":
             try:
                 with zipfile.ZipFile(io.BytesIO(payload)) as archive:
                     files = []
-                    for info in archive.infolist():
-                        path = Path(info.filename)
+                    infos = archive.infolist()
+                    if len(infos) > 64:
+                        raise FoundryError(
+                            "CG1_MANUAL_RESPONSE_ZIP_ENTRY_LIMIT",
+                            "The response ZIP contains too many members.",
+                            details={"entry_count": len(infos), "maximum": 64},
+                        )
+                    seen_names: set[str] = set()
+                    folded_names: set[str] = set()
+                    normalized_names: set[str] = set()
+                    expanded_bytes = 0
+                    compressed_bytes = 0
+                    for info in infos:
+                        raw_name = str(info.filename or "")
+                        normalized_name = raw_name.replace("\\", "/")
+                        path = PurePosixPath(normalized_name)
+                        if (
+                            not normalized_name
+                            or path.is_absolute()
+                            or ".." in path.parts
+                            or len(path.parts) != 1
+                            or (len(normalized_name) >= 2 and normalized_name[1] == ":")
+                        ):
+                            raise FoundryError("CG1_MANUAL_RESPONSE_ZIP_PATH_INVALID", "The response ZIP must contain safe top-level member paths.", details={"member": raw_name})
+                        canonical_name = unicodedata.normalize("NFC", path.as_posix())
+                        folded = canonical_name.casefold()
+                        if (
+                            canonical_name in seen_names
+                            or folded in folded_names
+                            or canonical_name in normalized_names
+                        ):
+                            raise FoundryError("CG1_MANUAL_RESPONSE_ZIP_MEMBER_COLLISION", "The response ZIP contains duplicate or colliding member names.", details={"member": raw_name})
+                        seen_names.add(canonical_name)
+                        folded_names.add(folded)
+                        normalized_names.add(canonical_name)
+                        mode = (info.external_attr >> 16) & 0xFFFF
+                        file_type = stat.S_IFMT(mode)
+                        if file_type == stat.S_IFLNK:
+                            raise FoundryError("CG1_MANUAL_RESPONSE_ZIP_LINK_REJECTED", "The response ZIP may not contain symbolic links.", details={"member": raw_name})
+                        if file_type not in (0, stat.S_IFREG, stat.S_IFDIR):
+                            raise FoundryError("CG1_MANUAL_RESPONSE_ZIP_SPECIAL_FILE", "The response ZIP may contain ordinary files only.", details={"member": raw_name})
                         if info.is_dir():
+                            archive_members.append({"filename": canonical_name, "directory": True, "file_size": 0, "compressed_size": int(info.compress_size)})
                             continue
                         if info.flag_bits & 0x1:
                             raise FoundryError("CG1_MANUAL_RESPONSE_ZIP_ENCRYPTED", "Encrypted response ZIPs are not accepted.")
-                        if path.is_absolute() or ".." in path.parts or len(path.parts) != 1:
-                            raise FoundryError("CG1_MANUAL_RESPONSE_ZIP_PATH_INVALID", "The response ZIP must contain one safe top-level response file.")
+                        expanded_bytes += int(info.file_size)
+                        compressed_bytes += int(info.compress_size)
+                        if expanded_bytes > 2_000_000 or compressed_bytes > 16_000_000:
+                            raise FoundryError("CG1_MANUAL_RESPONSE_ZIP_EXPANSION_LIMIT", "The response ZIP exceeds the safe expanded-size limit.")
+                        member_bytes = archive.read(info)
+                        archive_members.append({
+                            "filename": canonical_name,
+                            "directory": False,
+                            "file_size": int(info.file_size),
+                            "compressed_size": int(info.compress_size),
+                            "crc32": int(info.CRC),
+                            "sha256": sha256_bytes(member_bytes),
+                        })
                         if path.suffix.casefold() not in {".json", ".txt", ".md"}:
                             continue
                         files.append(info)
+                    if archive.testzip() is not None:
+                        raise FoundryError("CG1_MANUAL_RESPONSE_ZIP_CRC_INVALID", "The response ZIP failed its integrity check.")
                     if len(files) != 1:
                         raise FoundryError("CG1_MANUAL_RESPONSE_ZIP_CONTENT_INVALID", "The response ZIP must contain exactly one JSON, text, or Markdown response file.", details={"eligible_files": [row.filename for row in files]})
                     info = files[0]
@@ -4091,24 +4566,65 @@ class CharacterCreationExecutionService:
                     response_name = info.filename
                     response_payload = archive.read(info)
             except zipfile.BadZipFile as exc:
-                raise FoundryError("CG1_MANUAL_RESPONSE_ZIP_INVALID", "The selected response ZIP is not a valid ZIP archive.") from exc
+                code = "CG1_MANUAL_RESPONSE_ZIP_CRC_INVALID" if "crc" in str(exc).casefold() else "CG1_MANUAL_RESPONSE_ZIP_INVALID"
+                raise FoundryError(code, "The response ZIP failed its integrity check." if code.endswith("CRC_INVALID") else "The selected response ZIP is not a valid ZIP archive.") from exc
+            except (RuntimeError, OSError) as exc:
+                raise FoundryError("CG1_MANUAL_RESPONSE_ZIP_CRC_INVALID", "The response ZIP could not be read with integrity verification.") from exc
+            archive_sha256 = sha256_bytes(payload)
         elif suffix not in {".json", ".txt", ".md"}:
             raise FoundryError("CG1_MANUAL_RESPONSE_TYPE_INVALID", "Choose a .zip, .json, .txt, or .md complete response file.")
         if len(response_payload) > 2_000_000:
             raise FoundryError("CG1_MANUAL_RESPONSE_TOO_LARGE", "The complete response exceeds 2 MB.")
+        had_utf8_bom = response_payload.startswith(b"\xef\xbb\xbf")
         try:
-            text = response_payload.decode("utf-8-sig").strip()
+            decoded_text = response_payload.decode("utf-8-sig")
         except UnicodeDecodeError as exc:
-            raise FoundryError("CG1_MANUAL_RESPONSE_ENCODING_INVALID", "The complete response must be UTF-8 text.") from exc
+            raise FoundryError("CG1_MANUAL_RESPONSE_ENCODING_INVALID", "The complete response must be UTF-8 text.", details={"source_filename": name, "member": response_name, "byte_offset": exc.start}) from exc
+        text = decoded_text.strip()
         if not text:
             raise FoundryError("CG1_MANUAL_RESPONSE_EMPTY", "The selected complete response file is empty.")
-        return text, {"uploaded_filename": name, "response_member": response_name, "uploaded_sha256": sha256_bytes(payload)}
+        return text, {
+            "uploaded_filename": name,
+            "uploaded_bytes": len(payload),
+            "response_member": response_name,
+            "uploaded_sha256": sha256_bytes(payload),
+            "source_provenance": {
+                "schema": "TianxiaFoundry.CharacterCreationResponseSourceProvenance.v1",
+                "source_kind": "zip" if suffix == ".zip" else "file",
+                "filename": name,
+                "archive_sha256": archive_sha256,
+                "archive_bytes": len(payload) if suffix == ".zip" else None,
+                "member_filename": response_name,
+                "member_sha256": sha256_bytes(response_payload),
+                "member_bytes": len(response_payload),
+                "raw_byte_count": len(response_payload),
+                "archive_members": archive_members,
+                "raw_bytes_sha256": sha256_bytes(response_payload),
+                "normalization": {
+                    "encoding": "utf-8",
+                    "bom_removed": had_utf8_bom,
+                    "outer_whitespace_stripped": decoded_text != text,
+                    "normalized_text_bytes": len(text.encode("utf-8")),
+                    "normalized_text_sha256": sha256_bytes(text.encode("utf-8")),
+                },
+            },
+        }
 
     def submit_manual_file(self, run_id: str, *, filename: str, payload: bytes) -> dict[str, Any]:
         run = self.get(run_id)
         if run["execution_mode"] != "MANUAL_CHAT":
             raise FoundryError("CG1_MANUAL_RESPONSE_MODE_MISMATCH", "This run is not waiting for a Manual Chat response.")
-        response_text, upload = self._manual_response_text(filename, payload)
+        try:
+            response_text, upload = self._manual_response_text(filename, payload)
+        except FoundryError as exc:
+            self._record_manual_transport_failure(
+                run_id,
+                filename=filename,
+                payload=payload,
+                error=exc,
+                action_type="IMPORT_RESPONSE",
+            )
+            raise
         return self._apply_response(
             run_id,
             response_text,

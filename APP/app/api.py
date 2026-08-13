@@ -343,6 +343,51 @@ def _bounded_owner_scratch_sheet(compiled_sheet: dict[str, Any] | None) -> dict[
     subpath_value = path_surface.get("subpath") if isinstance(path_surface, dict) else None
     path_name = _owner_record_name(path_value)
     subpath_name = _owner_record_name(subpath_value)
+    subpaths: list[dict[str, Any]] = []
+    raw_subpaths = path_surface.get("subpaths") if isinstance(path_surface, dict) else None
+    if not isinstance(raw_subpaths, list):
+        raw_subpaths = []
+    for row in raw_subpaths:
+        if not isinstance(row, dict):
+            continue
+        subpath_id = row.get("subpath_id") or row.get("record_id")
+        name_value = _owner_record_name(row)
+        if not name_value and isinstance(subpath_id, str):
+            name_value = record_names.get(subpath_id)
+        if not name_value:
+            continue
+        owning_path_id = row.get("owning_path_id")
+        if not isinstance(owning_path_id, str) or not owning_path_id:
+            # A projected Subpath without an exact owner is not a usable
+            # Path/Subpath association. Do not inherit the primary Path.
+            continue
+        subpaths.append({
+            "name": name_value,
+            "path_id": owning_path_id,
+            "path": _OWNER_PATH_NAMES.get(owning_path_id, owning_path_id),
+            "state": "acquired",
+        })
+    if not subpaths and subpath_name:
+        owning_path_id = subpath_value.get("owning_path_id") if isinstance(subpath_value, dict) else None
+        # A Subpath cannot inherit ownership from the primary display Path.
+        # If the exact owner is absent, omit the association rather than
+        # presenting a fabricated Path/Subpath binding to downstream UX.
+        if isinstance(owning_path_id, str) and owning_path_id:
+            subpaths.append({
+                "name": subpath_name,
+                "path_id": owning_path_id,
+                "path": _OWNER_PATH_NAMES.get(owning_path_id, owning_path_id),
+                "state": "acquired",
+            })
+    subpath_bindings = [
+        {
+            "subpath": row["name"],
+            "path": row["path"],
+            "path_id": row.get("path_id"),
+            "state": row.get("state", "acquired"),
+        }
+        for row in subpaths
+    ]
     method_name = _owner_record_name(method)
 
     ability_surface = snapshot.get("ability_scores_and_statistics") or {}
@@ -377,6 +422,8 @@ def _bounded_owner_scratch_sheet(compiled_sheet: dict[str, Any] | None) -> dict[
         "method": {"name": method_name or "Method pending validated compilation", "state": "acquired" if method_name else "pending"},
         "foundation": {"name": _owner_record_name(snapshot.get("foundation")) or "Foundation pending validated compilation", "state": "acquired" if snapshot.get("foundation") else "pending"},
         "tradition": {"name": subpath_name or "Subpath / Tradition pending", "state": "acquired" if subpath_name else "pending"},
+        "subpaths": subpaths,
+        "subpath_bindings": subpath_bindings,
         "resources": resources or [{"name": "Cultivation resources", "current": "pending", "maximum": "pending"}],
         "spheres": cards_for("sphere"),
         "talents": talents,
@@ -430,6 +477,71 @@ def _owner_view(run: dict[str, Any]) -> dict[str, Any]:
 
     selected_by_slot = resolution.get("selected_choices_by_slot") or {}
     selected_by_slot = selected_by_slot if isinstance(selected_by_slot, dict) else {}
+    parsed_plan = (run.get("response") or {}).get("parsed_plan") or {}
+    parsed_plan = parsed_plan if isinstance(parsed_plan, dict) else {}
+    canonical_intent = parsed_plan.get("canonical_selection_intent") or run.get("canonical_selection_intent") or {}
+    canonical_intent = canonical_intent if isinstance(canonical_intent, dict) else {}
+    planning_preferences = canonical_intent.get("planning_preferences_by_slot") or {}
+    planning_preferences = planning_preferences if isinstance(planning_preferences, dict) else {}
+    # The owner may have frozen planning priorities before the Manual Chat
+    # response exists.  Preserve those visible preferences in the candidate
+    # view, while allowing a later AI response to add a planning-only slot
+    # such as Items / Equipment without promoting it to acquisition.
+    project_planning: dict[str, Any] = {}
+    for lock in ((request.get("stage1_prompt") or {}).get("envelope") or {}).get("user_locks") or []:
+        if isinstance(lock, dict) and lock.get("field") == "character_sheet.planning_preferences" and isinstance(lock.get("value"), dict):
+            project_planning = lock["value"]
+            break
+    planning_slot_aliases = {
+        "sphere_priority_ids": "sphere_priorities",
+        "talent_priority_ids": "advancement_skeleton",
+        "insight_priority_ids": "insight_priorities",
+        "item_priority_ids": "item_priorities",
+    }
+    merged_planning: dict[str, list[str]] = {}
+    for source_key, slot_id in planning_slot_aliases.items():
+        values = project_planning.get(source_key) or []
+        if isinstance(values, list):
+            merged_planning[slot_id] = [value for value in values if isinstance(value, str) and value]
+    for slot_id, values in planning_preferences.items():
+        if isinstance(values, list):
+            merged_planning[slot_id] = [value for value in values if isinstance(value, str) and value]
+    planning_preferences = merged_planning
+    owner_locked_by_slot = ((envelope.get("owner_locks") or {}).get("by_slot") or {})
+    owner_planning_locks = ((envelope.get("owner_locks") or {}).get("planning_by_slot") or {})
+    method_planning_lock = owner_planning_locks.get("method_choice")
+    method_planning_lock = method_planning_lock if isinstance(method_planning_lock, dict) else {}
+    method_planning_lock_ids = {
+        value for value in method_planning_lock.get("choice_ids") or []
+        if isinstance(value, str) and value
+    }
+    planning_owner_locked_ids = {
+        slot_id: set(values)
+        for source_key, slot_id in planning_slot_aliases.items()
+        for values in [project_planning.get(source_key) or []]
+        if isinstance(values, list)
+    }
+
+    def planning_rows(slot_id: str) -> list[dict[str, Any]]:
+        rows: list[dict[str, Any]] = []
+        for choice_id in planning_preferences.get(slot_id) or []:
+            if not isinstance(choice_id, str) or not choice_id:
+                continue
+            owner_locked = choice_id in (owner_locked_by_slot.get(slot_id) or []) or choice_id in planning_owner_locked_ids.get(slot_id, set())
+            rows.append({
+                "choice_id": choice_id,
+                "name": name(slot_id, choice_id),
+                "provenance": "Owner" if owner_locked else "AI proposed",
+                "state": "planning_only",
+                "planning_only": True,
+                "note": "Planning only; this does not grant or acquire the choice.",
+            })
+        return rows
+
+    planning_items = planning_rows("item_priorities")
+    planning_spheres = planning_rows("sphere_priorities")
+    planning_talents = planning_rows("advancement_skeleton")
+    planning_insights = planning_rows("insight_priorities")
     selected_paths = list(resolution.get("actual_advancing_path_ids") or resolution.get("selected_path_ids") or selected_by_slot.get("path_choice") or [])
     granted_paths = set(resolution.get("method_granted_path_ids") or [])
     paths = [
@@ -469,16 +581,87 @@ def _owner_view(run: dict[str, Any]) -> dict[str, Any]:
         if isinstance(reason, str) and reason.strip():
             item["note"] = reason.strip().replace("_", " ")
         provenance_groups[label].append(item)
+    for row in [*planning_spheres, *planning_talents, *planning_insights, *planning_items]:
+        label = row["provenance"] if row["provenance"] in provenance_groups else "AI proposed"
+        provenance_groups[label].append({
+            "name": row["name"],
+            "status": "planning_only",
+            "note": row["note"],
+        })
     if not provenance_groups["Owner"]:
         provenance_groups["Owner"].append({"name": "Target CL and locked brief", "status": "resolved"})
+
+    selected_subpath_ids = [
+        value for value in (selected_by_slot.get("subpath_choice") or [])
+        if isinstance(value, str) and value
+    ]
+    owner_locked_subpaths = set(
+        (envelope.get("owner_locks") or {}).get("by_slot", {}).get("subpath_choice") or []
+    )
+    subpath_rows: list[dict[str, Any]] = []
+    for subpath_id in selected_subpath_ids:
+        metadata = (choice_metadata.get("subpath_choice") or {}).get(subpath_id) or {}
+        owning_path_id = metadata.get("owning_path_id")
+        if not isinstance(owning_path_id, str) or not owning_path_id:
+            # The owner-facing delegated preview must not turn a missing
+            # explicit Subpath owner into a primary-Path association.
+            continue
+        subpath_rows.append({
+            "choice_id": subpath_id,
+            "name": name("subpath_choice", subpath_id),
+            "path_id": owning_path_id,
+            "path": _OWNER_PATH_NAMES.get(owning_path_id, owning_path_id),
+            "provenance": "Owner" if subpath_id in owner_locked_subpaths else "AI proposed",
+            "state": "selected",
+        })
+    if not subpath_rows and isinstance((scratch_sheet or {}).get("subpaths"), list):
+        subpath_rows = [deepcopy(row) for row in scratch_sheet["subpaths"] if isinstance(row, dict)]
+    subpath_bindings = [
+        {
+            "choice_id": row.get("choice_id"),
+            "subpath": row.get("name") or "Subpath / Tradition pending",
+            "path_id": row.get("path_id"),
+            "path": row.get("path") or _OWNER_PATH_NAMES.get(row.get("path_id"), "Path pending"),
+            "provenance": row.get("provenance", "AI proposed"),
+            "state": row.get("state", "selected"),
+        }
+        for row in subpath_rows
+    ]
+
+    selected_method_id = resolution.get("method_id")
+    method_choice_metadata = (
+        (choice_metadata.get("method_choice") or {}).get(selected_method_id)
+        if isinstance(selected_method_id, str)
+        else {}
+    ) or {}
+    method_access_metadata = (
+        (envelope.get("path_method_authority") or {}).get("method_access_by_id") or {}
+    ).get(selected_method_id, {}) if isinstance(selected_method_id, str) else {}
+    method_access_metadata = method_access_metadata or method_choice_metadata.get("method_access") or method_choice_metadata
+    direct_access = method_access_metadata.get("direct_access")
+    if direct_access is None:
+        direct_access = method_access_metadata.get("initial_creation_selectable")
+    access_required = method_access_metadata.get("access_required")
+    if access_required is None and direct_access is not None:
+        access_required = not bool(direct_access)
+    exact_lock_configurable = method_access_metadata.get("exact_lock_configurable")
+    if exact_lock_configurable is None:
+        exact_lock_configurable = method_access_metadata.get("exact_selection_available")
 
     descriptive = run.get("owner_descriptive_fields") or {}
     resolved = descriptive.get("resolved") or {}
     proposed = descriptive.get("proposed") or {}
+    accepted = descriptive.get("accepted") or {}
     resolved_identity = resolved.get("identity") if isinstance(resolved, dict) else {}
     proposed_identity = proposed.get("identity") if isinstance(proposed, dict) else {}
+    accepted_identity = accepted.get("identity") if isinstance(accepted, dict) else {}
     resolved_identity = resolved_identity if isinstance(resolved_identity, dict) else {}
     proposed_identity = proposed_identity if isinstance(proposed_identity, dict) else {}
+    accepted_identity = accepted_identity if isinstance(accepted_identity, dict) else {}
+    accepted_name = accepted_identity.get("name")
+    accepted_concept = accepted.get("concept") if isinstance(accepted, dict) else None
+    proposed_name = proposed_identity.get("name")
+    proposed_concept = proposed.get("concept") if isinstance(proposed, dict) else None
     blockers: list[dict[str, Any]] = []
     decisions: list[dict[str, Any]] = []
     for row in run.get("blockers") or []:
@@ -525,17 +708,51 @@ def _owner_view(run: dict[str, Any]) -> dict[str, Any]:
         "schema": "TianxiaFoundry.CharacterCreationOwnerView.v1",
         "display_state": {"status": status, "step": stage, "label": status.replace("_", " ").title()},
         "identity": {
-            "name": resolved_identity.get("name") or proposed_identity.get("name") or (scratch_sheet or {}).get("identity", {}).get("name") or "Name pending owner review",
-            "concept": resolved.get("concept") or proposed.get("concept") or (scratch_sheet or {}).get("identity", {}).get("concept") or "Concept pending owner review",
-            "name_provenance": "Owner" if resolved_identity.get("name") else "AI proposed" if proposed_identity.get("name") else "Needs owner decision",
-            "concept_provenance": "Owner" if resolved.get("concept") else "AI proposed" if proposed.get("concept") else "Needs owner decision",
+            "name": accepted_name or proposed_name or (scratch_sheet or {}).get("identity", {}).get("name") or "Name pending owner review",
+            "concept": accepted_concept or proposed_concept or (scratch_sheet or {}).get("identity", {}).get("concept") or "Concept pending owner review",
+            "name_provenance": "Owner" if accepted_name else "AI proposed" if proposed_name else "Needs owner decision",
+            "concept_provenance": "Owner" if accepted_concept else "AI proposed" if proposed_concept else "Needs owner decision",
             "target_cl": final_plan.get("target_cl") or (preview.get("target_cl") if isinstance(preview, dict) else None) or "pending",
             "power_band": _owner_lock_value(run, "power_band") or "pending",
         },
         "paths": paths,
-        "method": {"name": name("method_choice", resolution.get("method_id")) if resolution.get("method_id") else "Method pending owner decision", "provenance": "Owner" if resolution.get("method_id") in ((envelope.get("owner_locks") or {}).get("by_slot", {}).get("method_choice") or []) else "AI proposed" if resolution.get("method_id") else "Needs owner decision"},
-        "foundation": {"name": name("foundation_choice", resolution.get("foundation_id")) if resolution.get("foundation_id") else "Foundation pending owner decision", "provenance": "AI proposed" if resolution.get("foundation_id") else "Needs owner decision"},
+        "method": {
+            "name": name("method_choice", selected_method_id) if selected_method_id else "Method pending owner decision",
+            "provenance": "Owner" if selected_method_id in (
+                set(owner_locked_by_slot.get("method_choice") or []) | method_planning_lock_ids
+            ) else "AI proposed" if selected_method_id else "Needs owner decision",
+            "planning_lock": {
+                "choice_ids": sorted(method_planning_lock_ids),
+                "mode": method_planning_lock.get("mode"),
+                "planning_authority": method_planning_lock.get("planning_authority"),
+                "acquisition_authority": method_planning_lock.get("acquisition_authority"),
+                "access_authority": deepcopy(method_planning_lock.get("access_authority") or {}),
+            } if method_planning_lock else None,
+             "direct_access": direct_access,
+             "access_required": access_required,
+             "route_configurable": method_access_metadata.get("route_configurable"),
+             "access_authorized": method_access_metadata.get("access_authorized"),
+             "exact_access_record_present": method_access_metadata.get("exact_access_record_present"),
+             "access_tier": method_access_metadata.get("access_tier"),
+            "access_text": method_access_metadata.get("access_text") or method_access_metadata.get("owner_description") or "",
+            "owner_route_options": deepcopy(method_access_metadata.get("owner_route_options") or []),
+            "exact_selection_available": exact_lock_configurable,
+            "exact_lock_configurable": exact_lock_configurable,
+        },
+        "foundation": {
+            "name": name("foundation_choice", resolution.get("foundation_id")) if resolution.get("foundation_id") else "Foundation pending owner decision",
+            "provenance": "Owner" if resolution.get("foundation_id") in (owner_locked_by_slot.get("foundation_choice") or []) else "AI proposed" if resolution.get("foundation_id") else "Needs owner decision",
+        },
         "tradition": {"name": name("subpath_choice", (selected_by_slot.get("subpath_choice") or [None])[0]) if (selected_by_slot.get("subpath_choice") or []) else "Subpath / Tradition pending", "provenance": "Owner" if selected_by_slot.get("subpath_choice") else "Needs owner decision"},
+        "subpaths": subpath_rows,
+        "subpath_bindings": subpath_bindings,
+        "planning_preferences": {
+            "sphere_priorities": planning_spheres,
+            "talent_priorities": planning_talents,
+            "insight_priorities": planning_insights,
+            "item_priorities": planning_items,
+        },
+        "planning_items": planning_items,
         "provenance_groups": provenance_groups,
         "decisions": decisions,
         "blockers": blockers,
@@ -625,7 +842,7 @@ def _bounded_diagnostic_summary(value: Any, *, section: str) -> dict[str, Any]:
             "error_count": len(raw.get("errors") or []),
             "blocker_count": len(raw.get("blockers") or []),
             "warning_count": len(raw.get("warnings") or []),
-            "last_submission_error": {key: last_error.get(key) for key in ("code", "message") if key in last_error},
+            "last_submission_error": {key: last_error.get(key) for key in ("code", "message", "category", "stage") if key in last_error},
         })
     elif section == "transport":
         summary.update({

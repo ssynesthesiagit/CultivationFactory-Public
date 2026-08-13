@@ -107,6 +107,14 @@ def _stage_aware_diagnostics(ledger: dict[str, Any], packets: dict[str, Any], re
             and bool(method_projection.get("record_id"))
         )
     )
+    foundation_projection = ledger.get("foundation") or {}
+    foundation_authority_valid = (
+        typed_none.get("foundation", {}).get("state") == "none"
+        or (
+            foundation_projection.get("state") == "acquired"
+            and bool(foundation_projection.get("record_id"))
+        )
+    )
     required = {
         "identity": bool(
             character.get("name")
@@ -128,7 +136,7 @@ def _stage_aware_diagnostics(ledger: dict[str, Any], packets: dict[str, Any], re
         "background_origin": bool(ledger.get("background_origin")),
         "paths_subpaths": bool(ledger.get("path_selections") and ledger.get("subpaths")),
         "spheres_talents": bool(ledger.get("spheres") and ledger.get("talents")),
-        "typed_none": set(typed_none).issuperset({"foundation", "manuals", "equipment", "forged_techniques"}) and method_authority_valid,
+        "typed_none": set(typed_none).issuperset({"manuals", "equipment", "forged_techniques"}) and method_authority_valid and foundation_authority_valid,
         "provenance": bool(reduced.provenance),
         "coverage": bool(reduced.capability_coverage),
     }
@@ -256,6 +264,10 @@ class ProjectionService:
             record_id
             for record_id in referenced_record_ids
             if record_id.startswith(("METHOD-", "tianxia.path.", "tianxia.background.", "tianxia.background_", "tianxia.origin_insight."))
+            or (
+                record_id.startswith(("tianxia.subpath.", "tianxia.tradition.", "ancient_", "FOUNDATION_"))
+                and ".feature." not in record_id
+            )
             or record_id in background_event_record_ids
         }
         records: dict[str, dict[str, Any]] = {}

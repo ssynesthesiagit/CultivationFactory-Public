@@ -39,6 +39,47 @@ def _locks(project: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return result
 
 
+def _authenticated_fixture_prefix(
+    project: dict[str, Any],
+    events: list[dict[str, Any]],
+    fixture: dict[str, Any],
+    fixture_path: Path,
+) -> bool:
+    """Recognize the owner-ratified historical prefix, not just its hashes."""
+    fixture_id = fixture.get("fixture_id")
+    selections = fixture.get("selections") or {}
+    prefix = fixture.get("required_prefix") or {}
+    if not isinstance(fixture_id, str) or not isinstance(prefix, dict):
+        return False
+    expected_fields = {
+        "character.identity.display_name": selections.get("display_name"),
+        "character.choices.qi_cultivation_skills": selections.get("qi_cultivation_skills"),
+        "character.choices.street_hardened": selections.get("street_hardened"),
+        "character.choices.language": selections.get("language"),
+    }
+    expected_revision = prefix.get("revision")
+    locks = _locks(project)
+    marker = f"owner-ratified:{fixture_id}:{sha256_file(fixture_path)}"
+    if not isinstance(expected_revision, int) or project.get("revision") != expected_revision + 1:
+        return False
+    for index, (field, value) in enumerate(expected_fields.items(), start=1):
+        lock = locks.get(field)
+        if not isinstance(lock, dict) or (
+            lock.get("lock_id") != f"lock.c2ar1.{index}"
+            or lock.get("created_revision") != project.get("revision")
+            or lock.get("value") != value
+            or lock.get("source") != marker
+        ):
+            return False
+    count = prefix.get("event_count")
+    return (
+        isinstance(count, int)
+        and count > 0
+        and len(events) == count
+        and events[count - 1].get("event_hash") == prefix.get("event_head")
+    )
+
+
 def _display(record: dict[str, Any]) -> tuple[str, str]:
     projection = record.get("display_projection") or {}
     short = projection.get("short_description")
@@ -219,6 +260,100 @@ def _sphere_record_with_event_authority(record: dict[str, Any], event: dict[str,
     return result
 
 
+def _explicit_subpath_owner(event: dict[str, Any], record: dict[str, Any]) -> str:
+    """Return the Subpath owner only when every explicit mirror agrees.
+
+    ``owning_path_id`` on the locked catalog record is authoritative.  The
+    record's parent mirror, typed Stage 2 mirrors, and event output may confirm
+    that owner, but none of them may provide one when it is absent.  This is a
+    module-level boundary so the same fail-closed rule can be regression-tested
+    independently of the larger v3 fixture.
+    """
+    owner_path_id = record.get("owning_path_id")
+    if not isinstance(owner_path_id, str) or not owner_path_id:
+        raise FoundryError(
+            "PROJECTION_SUBPATH_OWNER_MISSING",
+            "A Subpath projection requires an explicit owning_path_id in the locked record.",
+            details={"event_id": event.get("event_id"), "record_id": record.get("record_id")},
+        )
+    authority = ((record.get("compatibility") or {}).get("factory", {}).get("stage2_authority") or {})
+    outputs = ((event.get("advancement") or {}).get("calculation") or {}).get("outputs") or {}
+    mirrors = {
+        "record_parent_path_id": record.get("parent_path_id"),
+        "stage2_owning_path_id": authority.get("owning_path_id"),
+        "stage2_parent_path_id": authority.get("parent_path_id"),
+        "output_parent_path_id": outputs.get("parent_path_id"),
+    }
+    conflicts = {
+        key: value
+        for key, value in mirrors.items()
+        if value is not None and (not isinstance(value, str) or value != owner_path_id)
+    }
+    if conflicts:
+        raise FoundryError(
+            "PROJECTION_SUBPATH_OWNER_MISMATCH",
+            "A Subpath projection contains conflicting explicit and mirrored Path ownership.",
+            details={
+                "event_id": event.get("event_id"),
+                "record_id": record.get("record_id"),
+                "owning_path_id": owner_path_id,
+                "mirrors": mirrors,
+                "conflicts": conflicts,
+            },
+        )
+    return owner_path_id
+
+
+def _validate_generic_subpath_owners(
+    subpath_events: list[dict[str, Any]],
+    event_records: dict[str, dict[str, Any]],
+    selected_path_ids: list[str],
+) -> dict[str, str]:
+    """Validate every generic Subpath owner against the selected Path set.
+
+    Stage 2 validates each acquisition while reducing its own causal state. The
+    projector repeats the cross-event invariant independently because the v3
+    projection is also a durable consumer boundary: a valid individual event
+    must not let one owner escape the selected Path set or be reused by a
+    second Subpath event.
+    """
+    selected = set(selected_path_ids)
+    owners_by_event: dict[str, str] = {}
+    event_ids_by_owner: dict[str, list[str]] = {}
+    for event in subpath_events:
+        event_id = event.get("event_id")
+        record = event_records.get(event_id) or {}
+        owner_path_id = _explicit_subpath_owner(event, record)
+        if owner_path_id not in selected:
+            raise FoundryError(
+                "PROJECTION_SUBPATH_OWNER_NOT_SELECTED",
+                "A generic Subpath acquisition is owned by a Path that was not selected in the projection.",
+                details={
+                    "event_id": event_id,
+                    "record_id": record.get("record_id"),
+                    "owning_path_id": owner_path_id,
+                    "selected_path_ids": list(selected_path_ids),
+                },
+            )
+        owners_by_event[event_id] = owner_path_id
+        event_ids_by_owner.setdefault(owner_path_id, []).append(event_id)
+    duplicates = {
+        owner_path_id: event_ids
+        for owner_path_id, event_ids in event_ids_by_owner.items()
+        if len(event_ids) > 1
+    }
+    if duplicates:
+        raise FoundryError(
+            "PROJECTION_SUBPATH_OWNER_DUPLICATE",
+            "A generic projection contains more than one Subpath acquisition for one selected Path owner.",
+            details={
+                "duplicates": duplicates,
+                "event_ids": [event_id for event_ids in duplicates.values() for event_id in event_ids],
+            },
+        )
+    return owners_by_event
+
+
 def _dynamic_display_contract(
     project: dict[str, Any],
     choice_snapshot: dict[str, Any],
@@ -226,11 +361,14 @@ def _dynamic_display_contract(
     packets: list[dict[str, Any]],
     granted_ids: list[str],
     subpath_packet_id: str,
+    granted_feature_sources: dict[str, list[dict[str, Any]]] | None = None,
 ) -> dict[str, Any]:
     packets_by_record: dict[str, list[dict[str, Any]]] = {}
     for packet in packets:
         packets_by_record.setdefault(str(packet["record_id"]), []).append(packet)
     required_ids = set(packets_by_record) | set(granted_ids)
+    granted_id_set = set(granted_ids)
+    granted_feature_sources = granted_feature_sources or {}
     rules: list[dict[str, Any]] = []
     automatic_component_ids: set[str] = set()
     for record_id in sorted(required_ids):
@@ -242,9 +380,32 @@ def _dynamic_display_contract(
                 details={"record_id": record_id},
             )
         record_packets = sorted(packets_by_record.get(record_id) or [], key=lambda row: int(row.get("sequence") or 0))
-        binding_packet = next(
-            (packet for packet in record_packets if packet.get("advancement_kind") == "level_advance"),
-            record_packets[0] if record_packets else None,
+        # A source-granted Subpath feature has no independent Stage 2 event of
+        # its own.  Its display authority must nevertheless retain the exact
+        # Subpath acquisition that granted it.  Do not fall back to the first
+        # (primary) Subpath packet when a second Path owns this feature.
+        source_bindings = [
+            row for row in granted_feature_sources.get(record_id, [])
+            if isinstance(row, dict) and isinstance(row.get("packet_id"), str)
+        ]
+        if record_id in granted_id_set and not source_bindings:
+            raise FoundryError(
+                "PROJECTION_SUBPATH_FEATURE_SOURCE_MISSING",
+                "A source-granted Subpath feature lacks an exact Subpath acquisition source binding.",
+                details={"record_id": record_id},
+            )
+        binding_packet = (
+            {
+                "packet_id": source_bindings[0]["packet_id"],
+                "event_id": source_bindings[0].get("event_id"),
+                "target_cl": source_bindings[0].get("target_cl", 3),
+                "advancement_kind": "subpath_acquisition",
+            }
+            if source_bindings
+            else next(
+                (packet for packet in record_packets if packet.get("advancement_kind") == "level_advance"),
+                record_packets[0] if record_packets else None,
+            )
         )
         if binding_packet is None:
             binding_packet = {
@@ -278,6 +439,9 @@ def _dynamic_display_contract(
                 "target_cl": binding_packet.get("target_cl"),
                 "advancement_kind": binding_packet.get("advancement_kind"),
                 "packet_ids": [binding_packet["packet_id"]],
+                "event_ids": [binding_packet.get("event_id")]
+                if binding_packet.get("event_id")
+                else [],
             },
             "stage2_rule_id": stage2.get("rule_id"),
             "display_timing_or_category": None,
@@ -382,8 +546,18 @@ def _validate_binding(event: dict[str, Any], record: dict[str, Any], project: di
         binding.get("pack_id") == "tianxia.non_sphere.authority"
         and (record.get("selected_authority") is True or raw_projection.get("selected_authority") is True)
         and record.get("publication", {}).get("status") == "published"
-        and record.get("record_id", "").startswith(("METHOD-", "tianxia.path."))
-        and str(record.get("source", {}).get("path", "")).startswith("non_sphere_authority/authority/")
+        and record.get("record_id", "").startswith(("METHOD-", "tianxia.path.", "tianxia.subpath.", "tianxia.tradition.", "ancient_", "FOUNDATION_"))
+        and (
+            str(record.get("source", {}).get("path", "")).startswith("non_sphere_authority/authority/")
+            or (
+                record.get("record_id", "").startswith(("ancient_", "FOUNDATION_"))
+                and str(record.get("source", {}).get("path", "")) == "Foundation_Trait_Reference_v0_6.json"
+            )
+            or (
+                record.get("record_id", "").startswith(("tianxia.subpath.", "tianxia.tradition."))
+                and str(record.get("source", {}).get("path", "")).startswith("09_RULES/Source_Text/Paths/")
+            )
+        )
         and (factory.get("stage2_authority", {}).get("authority_complete") is True)
     )
     if (binding.get("pack_id"), binding.get("pack_version"), binding.get("pack_hash")) not in allowed and not non_sphere_authority:
@@ -539,6 +713,44 @@ def _validate_non_sphere_method_acquisition_event(
         )
 
 
+def _validate_non_sphere_foundation_acquisition_event(
+    event: dict[str, Any],
+    record: dict[str, Any],
+) -> None:
+    """Validate a named Foundation selection without projecting mechanics."""
+    advancement = event.get("advancement") or {}
+    details = advancement.get("details") or {}
+    subject = event.get("subject") or {}
+    stage2 = (record.get("compatibility") or {}).get("factory", {}).get("stage2_authority") or {}
+    raw_projection = ((record.get("compatibility") or {}).get("factory") or {}).get("raw_projection") or {}
+    checks = {
+        "legal_channel": event.get("legal_channel") == "foundation-selection",
+        "subject_content_type": subject.get("content_type") == "foundation",
+        "subject_record_id": subject.get("record_id") == record.get("record_id"),
+        "record_content_type": record.get("content_type") == "foundation",
+        "published": record.get("publication", {}).get("status") == "published",
+        "selected_authority": record.get("selected_authority") is True or raw_projection.get("selected_authority") is True,
+        "authority_complete": stage2.get("authority_complete") is True,
+        "kind_allowed": "foundation_acquisition" in (stage2.get("allowed_kinds") or []),
+        "channel_allowed": "foundation-selection" in (stage2.get("allowed_channels") or []),
+        "detail_record_id": details.get("foundation_id") is None or details.get("foundation_id") == record.get("record_id"),
+    }
+    invalid = not all(checks.values())
+    if invalid:
+        raise FoundryError(
+            "PROJECTION_NON_SPHERE_AUTHORITY_INVALID",
+            "A named Foundation acquisition event failed its authenticated authority boundary.",
+            details={
+                "event_id": event.get("event_id"),
+                "foundation_id": record.get("record_id"),
+                "checks": checks,
+                "legal_channel": event.get("legal_channel"),
+                "subject": subject,
+                "stage2_authority": stage2,
+            },
+        )
+
+
 def _non_sphere_event_provenance(
     event: dict[str, Any],
     record: dict[str, Any],
@@ -601,10 +813,11 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
 
     supported_kinds = set(contract["supported_event_kinds"])
     non_projecting_kinds = set(contract.get("non_projecting_event_kinds") or [])
-    # The sealed C2A-R.1 contract predates the normal-wizard initial Method
-    # acquisition.  It is accepted here only as a strictly validated audit
-    # event; it contributes no projected mechanics.
+    # The sealed C2A-R.1 contract predates the normal-wizard initial Method and
+    # named Foundation acquisitions.  They are accepted here only as strictly
+    # validated audit events; neither contributes projected mechanics.
     non_projecting_kinds.add("method_acquisition")
+    non_projecting_kinds.add("foundation_acquisition")
     supported_records = set(contract["supported_record_ids"])
     previous = ZERO_HASH
     by_kind: dict[str, list[dict[str, Any]]] = {}
@@ -630,6 +843,8 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         if kind in non_projecting_kinds:
             if kind == "method_acquisition":
                 _validate_non_sphere_method_acquisition_event(event, record)
+            elif kind == "foundation_acquisition":
+                _validate_non_sphere_foundation_acquisition_event(event, record)
             elif kind != "non_sphere_method_access":
                 raise FoundryError("PROJECTION_V3_KIND_UNSUPPORTED", "The v3 projection contract declares an unsupported non-projecting event kind.", details={"kind": kind, "event_id": event["event_id"]})
             else:
@@ -653,11 +868,7 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         and locks.get("character.identity.display_name", {}).get("value")
         == "W5 Current Fire-Qi Owner-Test Fixture"
     )
-    required_prefix = fixture["required_prefix"]
-    historical_fixture = (
-        len(events) == int(required_prefix["event_count"])
-        and previous == required_prefix["event_head"]
-    )
+    historical_fixture = _authenticated_fixture_prefix(project, events, fixture, fixture_path)
     generic_project = not current_fixture and not historical_fixture
     if current_fixture and len(events) != 25:
         raise FoundryError("CG1_CURRENT_PROJECTION_EVENT_COUNT_INVALID", "The bounded current fixture requires the exact 25-event Fire/Qi route.", details={"event_count": len(events)})
@@ -732,22 +943,72 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         # three-Path grant.  Keep the historical single-Path projection
         # shape as the primary view, while retaining every Path below.
         pass
+    elif (
+        generic_project
+        and 1 < len(path_events) < len(canonical_all_path_ids)
+        and len(path_ids) == len(set(path_ids))
+        and set(path_ids).issubset(canonical_all_path_ids)
+    ):
+        # A generic production project may deliberately select a bounded
+        # subset of the canonical Paths; preserve every selected Path while
+        # retaining the primary-path ledger shape below.
+        pass
     else:
         raise FoundryError(
             "PROJECTION_REQUIRED_EVENT_COUNT_INVALID",
-            "The projection requires either one Path or the authenticated canonical three-Path grant.",
+            "The projection requires one Path, a bounded canonical Path subset, or the authenticated canonical three-Path grant.",
             details={"kind": "path_acquisition", "count": len(path_events), "record_ids": path_ids},
         )
     path_event = next(
         (event for event in path_events if event["subject"]["record_id"] == "tianxia.path.qi_cultivation"),
         path_events[0] if path_events else None,
     )
-    subpath = only("subpath_acquisition")
-    score_changes = by_kind.get("ability_score_change") or []
-    if len(score_changes) > 1:
+    subpath_events = sorted(
+        by_kind.get("subpath_acquisition") or [],
+        key=lambda event: (int(event["sequence"]), event["subject"]["record_id"]),
+    )
+    if not subpath_events:
         raise FoundryError(
             "PROJECTION_REQUIRED_EVENT_COUNT_INVALID",
-            "The projection permits at most one CL-specific ability-score change event.",
+            "The projection requires at least one authenticated Subpath or Tradition acquisition.",
+            details={"kind": "subpath_acquisition", "count": 0},
+        )
+
+    generic_subpath_owners: dict[str, str] = {}
+    if generic_project:
+        generic_subpath_owners = _validate_generic_subpath_owners(
+            subpath_events,
+            event_records,
+            path_ids,
+        )
+
+    def subpath_parent_path(event: dict[str, Any]) -> str | None:
+        if generic_project and event.get("event_id") in generic_subpath_owners:
+            return generic_subpath_owners[event["event_id"]]
+        record = event_records.get(event.get("event_id")) or {}
+        return _explicit_subpath_owner(event, record)
+
+    subpath = next(
+        (
+            event for event in subpath_events
+            if subpath_parent_path(event) == path_event["subject"]["record_id"]
+        ),
+        None,
+    )
+    if subpath is None:
+        raise FoundryError(
+            "PROJECTION_SUBPATH_PRIMARY_OWNER_MISSING",
+            "No authenticated Subpath acquisition is bound to the projection's explicit primary Path.",
+            details={
+                "primary_path_id": path_event["subject"]["record_id"],
+                "subpath_event_ids": [event["event_id"] for event in subpath_events],
+            },
+        )
+    score_changes = by_kind.get("ability_score_change") or []
+    if len(score_changes) > 1 and not generic_project:
+        raise FoundryError(
+            "PROJECTION_REQUIRED_EVENT_COUNT_INVALID",
+            "The bounded historical projection permits at most one CL-specific ability-score change event.",
             details={"kind": "ability_score_change", "count": len(score_changes)},
         )
     insight_events = by_kind.get("cultivation_insight_acquisition") or []
@@ -804,14 +1065,30 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         })
         if event["advancement"]["kind"] not in non_projecting_kinds:
             capability.append(_capability_entry(record, event["advancement"]["target_cl"], event))
-    # Include source-granted Subpath features without inventing independent events.
-    granted_ids = subpath["advancement"]["calculation"]["outputs"].get("granted_feature_record_ids") or []
-    for granted_id in granted_ids:
-        record = locked_records.get(granted_id)
-        granted_authority = ((record or {}).get("compatibility") or {}).get("factory", {}).get("stage2_authority") or {}
-        if record is None or (granted_id not in supported_records and granted_authority.get("authority_complete") is not True):
-            raise FoundryError("PROJECTION_V3_RECORD_AUTHORITY_MISSING", "A source-granted feature lacks complete locked typed authority.", details={"record_id": granted_id})
-        capability.append(_capability_entry(record, 3, subpath))
+    # Include source-granted Subpath features without inventing independent
+    # events.  There may be one exact Subpath binding for each selected Path.
+    granted_ids_by_subpath_event: dict[str, list[str]] = {}
+    subpath_events_by_id = {
+        event["event_id"]: event
+        for event in subpath_events
+    }
+    for subpath_event in subpath_events:
+        granted_ids = (
+            subpath_event["advancement"]["calculation"]["outputs"].get("granted_feature_record_ids")
+            or []
+        )
+        granted_ids_by_subpath_event[subpath_event["event_id"]] = list(granted_ids)
+        for granted_id in granted_ids:
+            record = locked_records.get(granted_id)
+            granted_authority = ((record or {}).get("compatibility") or {}).get("factory", {}).get("stage2_authority") or {}
+            if record is None or (granted_id not in supported_records and granted_authority.get("authority_complete") is not True):
+                raise FoundryError("PROJECTION_V3_RECORD_AUTHORITY_MISSING", "A source-granted feature lacks complete locked typed authority.", details={"record_id": granted_id, "subpath_event_id": subpath_event["event_id"]})
+            capability.append(_capability_entry(record, 3, subpath_event))
+    granted_ids = sorted({
+        granted_id
+        for values in granted_ids_by_subpath_event.values()
+        for granted_id in values
+    })
 
     spheres = []
     sphere_packets: dict[str, dict[str, Any]] = {}
@@ -920,18 +1197,20 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
             "source_packet_ids": [packet_by_event[event["event_id"]]],
             "category": "path_feature",
         })
-    for granted_id in granted_ids:
-        record = locked_records[granted_id]
-        features.append({
-            "feature_id": granted_id,
-            "allocation_id": f"allocation.{subpath['event_id']}.{granted_id}",
-            "name": record.get("display_name") or granted_id,
-            "gained_at_cl": 3,
-            "mechanical_summary": _display(record)[0],
-            "source_packet_ids": [packet_by_event[subpath["event_id"]]],
-            "category": "subpath_feature",
-            "grant_source_record_id": subpath["subject"]["record_id"],
-        })
+    for subpath_event in subpath_events:
+        for granted_id in granted_ids_by_subpath_event.get(subpath_event["event_id"], []):
+            record = locked_records[granted_id]
+            features.append({
+                "feature_id": granted_id,
+                "allocation_id": f"allocation.{subpath_event['event_id']}.{granted_id}",
+                "name": record.get("display_name") or granted_id,
+                "gained_at_cl": 3,
+                "mechanical_summary": _display(record)[0],
+                "source_packet_ids": [packet_by_event[subpath_event["event_id"]]],
+                "category": "subpath_feature",
+                "grant_source_record_id": subpath_event["subject"]["record_id"],
+                "owning_path_id": subpath_parent_path(subpath_event),
+            })
     features.sort(key=lambda x: (x["gained_at_cl"], x["feature_id"]))
 
     def primary_resource_id(resources: dict[str, Any]) -> str:
@@ -1000,21 +1279,41 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         event for event in events
         if event["advancement"]["kind"] == "method_acquisition"
     ]
+    foundation_acquisition_events = [
+        event for event in events
+        if event["advancement"]["kind"] == "foundation_acquisition"
+    ]
     if len(method_acquisition_events) > 1:
         raise FoundryError(
             "PROJECTION_REQUIRED_EVENT_COUNT_INVALID",
             "The initial proof stream may contain at most one authenticated Method acquisition.",
             details={"kind": "method_acquisition", "count": len(method_acquisition_events)},
         )
-    required_typed_none_targets = {"foundation", "manuals", "equipment", "forged_techniques"}
+    if len(foundation_acquisition_events) > 1:
+        raise FoundryError(
+            "PROJECTION_REQUIRED_EVENT_COUNT_INVALID",
+            "The initial proof stream may contain at most one authenticated Foundation acquisition.",
+            details={"kind": "foundation_acquisition", "count": len(foundation_acquisition_events)},
+        )
+    required_typed_none_targets = {"manuals", "equipment", "forged_techniques"}
     missing_typed_none_targets = sorted(required_typed_none_targets - set(typed_none))
-    if missing_typed_none_targets or (not method_acquisition_events and "method" not in typed_none):
+    if (
+        missing_typed_none_targets
+        or (not method_acquisition_events and "method" not in typed_none)
+        or (not foundation_acquisition_events and "foundation" not in typed_none)
+    ):
         raise FoundryError("PROJECTION_REQUIRED_FIELD_AUTHORITY_MISSING", "The proof stream does not contain all required exact typed-none sections.", details={"present": sorted(typed_none)})
     if method_acquisition_events and "method" in typed_none:
         raise FoundryError(
             "PROJECTION_METHOD_AUTHORITY_CONFLICT",
             "An authenticated Method acquisition and a typed-none Method cannot both be present.",
             details={"method_event_id": method_acquisition_events[0]["event_id"]},
+        )
+    if foundation_acquisition_events and "foundation" in typed_none:
+        raise FoundryError(
+            "PROJECTION_FOUNDATION_AUTHORITY_CONFLICT",
+            "An authenticated Foundation acquisition and a typed-none Foundation cannot both be present.",
+            details={"foundation_event_id": foundation_acquisition_events[0]["event_id"]},
         )
     method_projection = deepcopy(typed_none.get("method"))
     if method_acquisition_events:
@@ -1028,6 +1327,20 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
             "event_id": method_event["event_id"],
             "record_hash": method_record["record_hash"],
             "source_packet_ids": [packet_by_event[method_event["event_id"]]],
+            "mechanical_projection": False,
+        }
+    foundation_projection = deepcopy(typed_none.get("foundation"))
+    if foundation_acquisition_events:
+        foundation_event = foundation_acquisition_events[0]
+        foundation_record = event_records[foundation_event["event_id"]]
+        foundation_projection = {
+            "state": "acquired",
+            "status": "acquired",
+            "record_id": foundation_record["record_id"],
+            "display_name": foundation_event["subject"]["display_name"],
+            "event_id": foundation_event["event_id"],
+            "record_hash": foundation_record["record_hash"],
+            "source_packet_ids": [packet_by_event[foundation_event["event_id"]]],
             "mechanical_projection": False,
         }
 
@@ -1063,6 +1376,20 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
             "selected_skills": deepcopy(selected_skills) if event["event_id"] == path_event["event_id"] else [],
             "source_packet_ids": [packet_by_event[event["event_id"]]],
         })
+    primary_subpath_row = next(
+        row for row in (
+            {
+                "subpath_id": event["subject"]["record_id"],
+                "name": event["subject"]["display_name"],
+                "owning_path_id": subpath_parent_path(event),
+                "selected_at_cl": 3,
+                "feature_ids_expected": deepcopy(granted_ids_by_subpath_event.get(event["event_id"], [])),
+                "source_packet_ids": [packet_by_event[event["event_id"]]],
+            }
+            for event in subpath_events
+        )
+        if row["owning_path_id"] == path_event["subject"]["record_id"]
+    )
 
     readiness = {
         "active_profile": "ADVANCEMENT_READY",
@@ -1081,7 +1408,7 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
     display_packets = [
         packet for packet in packets_list
         if packet["advancement_kind"] not in non_projecting_kinds
-        or packet["advancement_kind"] == "method_acquisition"
+        or packet["advancement_kind"] in {"method_acquisition", "foundation_acquisition"}
     ]
     display_locked_records = deepcopy(locked_records)
     for event in events:
@@ -1100,6 +1427,18 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
             display_packets,
             granted_ids,
             packet_by_event[subpath["event_id"]],
+            {
+                granted_id: [
+                    {
+                        "event_id": event_id,
+                        "packet_id": packet_by_event[event_id],
+                        "target_cl": subpath_events_by_id[event_id]["advancement"].get("target_cl", 3),
+                    }
+                    for event_id, granted_event_ids in granted_ids_by_subpath_event.items()
+                    if granted_id in granted_event_ids
+                ]
+                for granted_id in granted_ids
+            },
         )
         if generic_project
         else None
@@ -1130,6 +1469,8 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
             "realm": "Mortal",
             "path": path_event["subject"]["display_name"],
             "path_id": path_event["subject"]["record_id"],
+            "paths": deepcopy(path_selection_rows),
+            "subpath": deepcopy(primary_subpath_row),
             "key_ability": key_ability,
             "pb": final_pb,
             "title": None,
@@ -1192,7 +1533,17 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         },
         "advancement": {"levels": levels, "event_count": len(events), "event_head_hash": previous, "historical_prefix_preserved": historical_fixture},
         "path_selections": path_selection_rows,
-        "subpaths": [{"subpath_id": subpath["subject"]["record_id"], "name": subpath["subject"]["display_name"], "owning_path_id": path_event["subject"]["record_id"], "selected_at_cl": 3, "feature_ids_expected": granted_ids, "source_packet_ids": [packet_by_event[subpath["event_id"]]]}],
+        "subpaths": [
+            {
+                "subpath_id": event["subject"]["record_id"],
+                "name": event["subject"]["display_name"],
+                "owning_path_id": subpath_parent_path(event),
+                "selected_at_cl": 3,
+                "feature_ids_expected": deepcopy(granted_ids_by_subpath_event.get(event["event_id"], [])),
+                "source_packet_ids": [packet_by_event[event["event_id"]]],
+            }
+            for event in subpath_events
+        ],
         "spheres": spheres,
         "automatic_sphere_component_receipts": automatic_sphere_component_receipts,
         "automatic_sphere_components": automatic_sphere_components,
@@ -1202,7 +1553,7 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
         "features": features,
         "resources": [{"resource_id": primary_resource["resource_id"], "name": resource_display_name(primary_resource["resource_id"]), "current": primary_resource["current"], "max": primary_resource["maximum"], "formula_id": primary_resource["formula_id"], "authority_components": primary_resource["authority_components"]}],
         "method": method_projection,
-        "foundation": deepcopy(typed_none["foundation"]),
+        "foundation": foundation_projection,
         "recorded_arts": deepcopy(typed_none["manuals"]),
         "equipment": deepcopy(typed_none["equipment"]),
         "forged_techniques": deepcopy(typed_none["forged_techniques"]),
@@ -1275,6 +1626,8 @@ def reduce_v3(*, root_dir: Path, registry: Any, project: dict[str, Any], events:
             destinations = [f"/rules_selection_packets/packets/{event['sequence'] - 1}"]
             if kind == "method_acquisition":
                 destinations.append("/ledger/method")
+            elif kind == "foundation_acquisition":
+                destinations.append("/ledger/foundation")
             semantic[f"event:{event['sequence']:03d}:{event['event_id']}"] = _non_sphere_event_provenance(event, record, contract, destinations)
             continue
         destinations = [f"/ledger/advancement/events/{event['sequence']}", f"/rules_selection_packets/packets/{event['sequence'] - 1}"]

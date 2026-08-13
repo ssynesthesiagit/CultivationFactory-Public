@@ -285,11 +285,14 @@ function ownerCardLines(rows, fallback = "No validated owner-readable values are
   if (!Array.isArray(rows) || !rows.length) return [fallback];
   return rows.map(row => {
     if (typeof row === "string") return row;
-    const name = ownerText(row?.name || row?.display_name, "Unnamed value");
-    const description = row?.description || row?.note;
-    const state = row?.state || row?.mode;
-    const attainment = row?.attainment !== undefined && row?.attainment !== null ? ` · attainment ${row.attainment}` : "";
-    return `${name}${state ? ` · ${friendlyLabel(state)}` : ""}${attainment}${description ? ` — ${description}` : ""}`;
+     const name = ownerText(row?.name || row?.subpath || row?.display_name, "Unnamed value");
+     const description = row?.description || row?.note;
+      const state = row?.state || row?.mode;
+      const attainment = row?.attainment !== undefined && row?.attainment !== null ? ` · attainment ${row.attainment}` : "";
+      const owningPath = row?.path || row?.owning_path_name;
+      const provenance = row?.provenance ? ` · ${row.provenance}` : "";
+      const planning = row?.planning_only ? " · planning only" : "";
+      return `${name}${owningPath ? ` · ${owningPath}` : ""}${state ? ` · ${friendlyLabel(state)}` : ""}${provenance}${planning}${attainment}${description ? ` — ${description}` : ""}`;
   });
 }
 
@@ -684,27 +687,53 @@ function renderOwnerMethodCompatibility() {
     ? `${methods.length} validator-confirmed Method${methods.length === 1 ? "" : "s"} available.`
     : "No confirmed Method satisfies the current Path requirement. Revise the requirement or leave it open for the legal Method route.";
   status.dataset.state = methods.length ? "accepted" : "empty";
-  for (const method of methods) {
-    const card = document.createElement("article");
-    card.className = "owner-compatible-method";
-    const name = document.createElement("strong"); name.textContent = method.name;
-    const paths = document.createElement("small"); paths.textContent = `Confirmed for ${method.supported_paths.join(", ") || "the legal Method route"}.`;
-     const choose = document.createElement("button");
-     choose.type = "button"; choose.className = "secondary-action"; choose.textContent = "Use this Method";
-     choose.disabled = !planningIsEditable();
-     choose.title = planningIsEditable() ? "Lock this confirmed Method into the new project." : PLANNING_FREEZE_MESSAGE;
-     choose.addEventListener("click", () => {
-       if (!guardPlanningMutation()) return;
+   for (const method of methods) {
+     const card = document.createElement("article");
+     card.className = "owner-compatible-method";
+     const name = document.createElement("strong"); name.textContent = method.name;
+     const paths = document.createElement("small"); paths.textContent = `Confirmed for ${method.supported_paths.join(", ") || "the legal Method route"}.`;
+     const access = document.createElement("div");
+     access.className = "method-compatibility-access";
+     const direct = document.createElement("small");
+     direct.textContent = method.direct_access
+       ? "Direct access: available during initial creation."
+       : "Access required: compatibility does not grant access.";
+     const tier = document.createElement("small");
+     tier.textContent = `Access tier: ${method.access_tier || "not published"}.`;
+     const accessText = document.createElement("small");
+     accessText.textContent = method.access_text || method.owner_description || "No additional access text was published.";
+     access.append(direct, tier, accessText);
+     const routes = document.createElement("small");
+     const routeOptions = method.owner_route_options || [];
+     routes.textContent = routeOptions.length
+       ? `Owner route options: ${routeOptions.map(row => row.label || row.typed_route || row.choice_id).join(", ")}.`
+       : "Owner route options: none published.";
+     const exact = document.createElement("small");
+     const exactConfigurable = method.exact_lock_configurable ?? method.exact_selection_available ?? false;
+     exact.textContent = `Exact lock: ${exactConfigurable ? "configurable" : "not configurable"}.`;
+      const choose = document.createElement("button");
+      choose.type = "button"; choose.className = "secondary-action"; choose.textContent = "Use this Method";
+      choose.disabled = !planningIsEditable() || !exactConfigurable;
+      choose.title = !planningIsEditable()
+        ? PLANNING_FREEZE_MESSAGE
+        : exactConfigurable
+          ? method.access_required
+            ? "Open the exact Method route controls; a route or evidence is still required before compilation."
+            : "Lock this confirmed Method into the new project."
+          : "This compatible Method has no exact owner route that can be configured, so it remains unavailable.";
+      choose.addEventListener("click", () => {
+        if (!guardPlanningMutation()) return;
        const select = document.getElementById("sheetMethod");
       const mode = document.querySelector('input[name="sheetMethodMode"][value="EXACT"]');
       if (mode) mode.checked = true;
-      if (select) { select.disabled = false; select.value = method.method_id; }
-      populateMethodPlanning();
-      evaluateGuidedReadiness();
-    });
-    card.append(name, paths, choose);
-    host.appendChild(card);
-  }
+       if (select) { select.disabled = false; select.value = method.method_id; }
+       populateMethodPlanning();
+       evaluateGuidedReadiness();
+       if (method.access_required) document.getElementById("sheetMethodAccessPlan")?.scrollIntoView({behavior: "smooth", block: "nearest"});
+     });
+     card.append(name, paths, access, routes, exact, choose);
+     host.appendChild(card);
+   }
 }
 
 async function requestMethodCompatibility() {
@@ -1132,7 +1161,7 @@ async function refreshMethodPathChoices({announce = false, preserve = true} = {}
   const subpathSelect = document.getElementById("sheetSubpath");
   if (!subpathSelect || !characterBuilderOptions) return;
   const previousPaths = selectedPathIds();
-  const previousSubpath = subpathSelect.value;
+  const previousSubpaths = Array.from(selectedSet("subpath_choice"));
   renderPathChoices();
   methodCompatibility = {key: methodCompatibilityKey(previousPaths), state: "stale", result: null};
   renderOwnerMethodCompatibility();
@@ -1140,30 +1169,102 @@ async function refreshMethodPathChoices({announce = false, preserve = true} = {}
   setMethodPathAuthorityNotice(previousPaths.length
     ? `${previousPaths.length} Path lock${previousPaths.length === 1 ? "" : "s"} selected. Check the Factory for confirmed Methods.`
     : "0 Path locks: the legal Method route may choose the advancing Paths. Add up to three locks when you want to require them.");
-  refreshPathSubpathChoices({announce, preferredValue: preserve ? previousSubpath : ""});
+  refreshPathSubpathChoices({announce, preferredValues: preserve ? previousSubpaths : []});
   await requestMethodCompatibility();
 }
 
-function refreshPathSubpathChoices({announce = false, preferredValue = null} = {}) {
-  // Keep the accepted owner-facing wording available for legacy UI contract
-  // checks while the production shell uses the more precise conditional copy.
-  // Accepted wording: "Choose a Starting Path first."
+function refreshPathSubpathChoices({announce = false, preferredValue = null, preferredValues = null} = {}) {
+  // Subpaths are grouped by their exact owning Path.  The underlying select is
+  // still retained for compatibility with existing browser harnesses, but it
+  // is now a bounded multi-select rather than a global primary Subpath field.
   const subpathSelect = document.getElementById("sheetSubpath");
   if (!subpathSelect || !characterBuilderOptions) return;
-  const oldValue = preferredValue === null ? subpathSelect.value : preferredValue;
+  const oldValues = preferredValues !== null
+    ? Array.from(new Set(preferredValues || []))
+    : preferredValue !== null
+      ? (preferredValue ? [preferredValue] : [])
+      : Array.from(selectedSet("subpath_choice"));
   const pathIds = selectedPathIds();
-   if (pathIds.length !== 1) {
-     clearNode(subpathSelect);
-     const option = document.createElement("option"); option.value = ""; option.textContent = pathIds.length ? "Choose one Path requirement to choose a Subpath or Tradition." : "Auto — choose a Path first, or leave this open.";
-     subpathSelect.appendChild(option); subpathSelect.disabled = true;
-     if (oldValue && announce) setGuidedStatus("Subpath / Tradition is conditional: choose exactly one Path requirement, or leave it on Auto.");
-     return;
-   }
+  const category = categoryFor("subpath_choice");
+  const byId = new Map((category?.choices || []).map(choice => [choice.choice_id, choice]));
+  const selected = selectedSet("subpath_choice");
   const allowed = new Set(pathIds.flatMap(pathId => characterBuilderOptions.path_subpath_index?.[pathId] || []));
-  const choices = (categoryFor("subpath_choice")?.choices || []).filter(choice => allowed.has(choice.choice_id));
-  populateSheetSelect(subpathSelect, categoryFor("subpath_choice"), "Auto — let the Factory choose", choices);
-  if (oldValue && allowed.has(oldValue)) subpathSelect.value = oldValue;
-  else if (oldValue && announce) setGuidedStatus("The previous Subpath did not belong to the new Primary Path, so it was cleared.");
+  const retained = oldValues.filter(choiceId => allowed.has(choiceId));
+  selected.clear();
+  const ownerBySelection = new Map();
+  for (const choiceId of retained) {
+    const choice = byId.get(choiceId);
+    const ownerId = choice?.owning_path_id;
+    const owners = ownerId && pathIds.includes(ownerId) ? [ownerId] : [];
+    if (owners.length !== 1 || ownerBySelection.has(owners[0])) continue;
+    ownerBySelection.set(owners[0], choiceId);
+    selected.add(choiceId);
+  }
+
+  clearNode(subpathSelect);
+  subpathSelect.multiple = true;
+  subpathSelect.size = Math.min(10, Math.max(4, pathIds.length * 3));
+  if (!pathIds.length) {
+    const option = document.createElement("option");
+    option.value = "";
+    option.textContent = "Choose a Starting Path first.";
+    option.disabled = true;
+    subpathSelect.appendChild(option);
+    subpathSelect.disabled = true;
+  } else {
+    for (const pathId of pathIds) {
+      const group = document.createElement("optgroup");
+      const pathChoice = choiceFor("path_choice", pathId);
+      group.label = `${pathChoice?.name || pathId} — choose up to one`;
+      for (const choiceId of characterBuilderOptions.path_subpath_index?.[pathId] || []) {
+        const choice = byId.get(choiceId);
+        if (!choice) continue;
+        const option = document.createElement("option");
+        option.value = choiceId;
+        option.textContent = optionLabel(choice);
+        option.title = choice.description || choice.name;
+        option.selected = selected.has(choiceId);
+        group.appendChild(option);
+      }
+      if (group.children.length) subpathSelect.appendChild(group);
+    }
+    subpathSelect.disabled = !planningIsEditable();
+  }
+  subpathSelect.onchange = () => {
+    if (!guardPlanningMutation()) {
+      refreshPathSubpathChoices({announce: false});
+      return;
+    }
+    const requested = Array.from(subpathSelect.selectedOptions || []).map(option => option.value).filter(Boolean);
+    const next = new Set();
+    const owners = new Set();
+    const dropped = [];
+    for (const choiceId of requested) {
+      const choice = byId.get(choiceId);
+      const ownerId = choice?.owning_path_id;
+      const owner = ownerId && pathIds.includes(ownerId) ? ownerId : null;
+      if (!owner || owners.has(owner)) {
+        dropped.push(choiceId);
+        continue;
+      }
+      owners.add(owner);
+      next.add(choiceId);
+    }
+    selected.clear();
+    for (const choiceId of next) selected.add(choiceId);
+    if (dropped.length) {
+      setGuidedStatus("Only one Subpath or Tradition can be bound to each selected Path; the duplicate binding was cleared.", true);
+    }
+    refreshPathSubpathChoices({announce: false});
+    evaluateGuidedReadiness();
+  };
+  const notice = document.getElementById("sheetSubpathAuthorityNotice");
+  if (notice) notice.textContent = pathIds.length
+    ? `${selected.size} of ${pathIds.length} Path-owned Subpath${pathIds.length === 1 ? "" : "s"} selected.`
+    : "Select a Path to browse its owned Subpaths or Traditions.";
+  if (announce && oldValues.some(choiceId => !allowed.has(choiceId))) {
+    setGuidedStatus("A previous Subpath binding no longer belongs to a selected Path, so it was cleared.", true);
+  }
 }
 
 function exactBackgroundRoutes(backgroundId) {
@@ -1777,7 +1878,12 @@ function updatePointBuySummary() {
 function collectSheetSelections() {
   const result = {};
   for (const select of document.querySelectorAll("[data-sheet-slot]")) {
-    if (select.value && (select.dataset.sheetSlot !== "method_choice" || methodPlanningMode() === "EXACT")) result[select.dataset.sheetSlot] = [select.value];
+    const values = select.multiple
+      ? Array.from(select.selectedOptions || []).map(option => option.value).filter(Boolean)
+      : (select.value ? [select.value] : []);
+    if (values.length && (select.dataset.sheetSlot !== "method_choice" || methodPlanningMode() === "EXACT")) {
+      result[select.dataset.sheetSlot] = values;
+    }
   }
   if (selectedSet("path_choice").size) result.path_choice = selectedPathIds();
   for (const [slotId, values] of sheetSelectedChoices.entries()) {
@@ -1832,9 +1938,14 @@ function restoreCharacterSheet(locks) {
   setMethodPlanningMode(locks["character_sheet.method_planning_mode"] || (locked.method_choice?.length ? "EXACT" : planning.method_preference_id ? "PREFERENCE" : "AUTO"));
   for (const select of document.querySelectorAll("[data-sheet-slot]")) {
     const values = locked[select.dataset.sheetSlot] || [];
-    select.value = values[0] || "";
+    if (select.multiple) {
+      Array.from(select.options || []).forEach(option => { option.selected = values.includes(option.value); });
+    } else {
+      select.value = values[0] || "";
+    }
   }
   sheetSelectedChoices.set("path_choice", new Set(locked.path_choice || []));
+  sheetSelectedChoices.set("subpath_choice", new Set(locked.subpath_choice || []));
   if (planning.method_preference_id) document.getElementById("sheetMethod").value = planning.method_preference_id;
   if (planning.method_exact_choice_id) document.getElementById("sheetMethod").value = planning.method_exact_choice_id;
   populateMethodPlanning();
@@ -1844,7 +1955,7 @@ function restoreCharacterSheet(locks) {
   const learningNote = document.getElementById("sheetMethodLearningNote");
   if (learningNote) learningNote.value = savedMethodPlan.owner_annotation || "";
   refreshMethodPathChoices({preserve: true});
-  refreshPathSubpathChoices({preferredValue: (locked.subpath_choice || [])[0] || ""});
+  refreshPathSubpathChoices({preferredValues: locked.subpath_choice || []});
   sheetSelectedChoices.set("sphere_priorities", new Set(planning.sphere_priority_ids || locked.sphere_priorities || []));
   sheetSelectedChoices.set("advancement_skeleton", new Set(planning.talent_priority_ids || locked.advancement_skeleton || []));
   for (const slotId of ["insight_priorities", "item_priorities"]) {
@@ -2147,7 +2258,7 @@ document.getElementById("guidedCreate").addEventListener("submit", async event =
     const preferenceCount = (planning.sphere_priority_ids || []).length + (planning.talent_priority_ids || []).length
       + (planning.method_preference_id ? 1 : 0);
     const ownerLabel = name || "AI-proposed character";
-    const descriptiveNote = name || concept ? "Your supplied wording is locked for review." : "Name and Concept are delegated for the AI to propose.";
+     const descriptiveNote = name || concept ? "Your supplied wording is locked for review." : "Name and Concept are delegated; the AI will propose both for your review.";
     setGuidedStatus(`${ownerLabel} is temporary and ready. ${descriptiveNote} ${lockedCount} exact ${lockedCount === 1 ? "choice" : "choices"}; ${preferenceCount} planning ${preferenceCount === 1 ? "preference" : "preferences"}; ${acquiredSphereCount} first-cycle ${acquiredSphereCount === 1 ? "Sphere" : "Spheres"} and ${ordinaryTalentCount} ordinary Talent ${ordinaryTalentCount === 1 ? "slot" : "slots"} server-validated and frozen. Choose a complete-character build mode.`);
      setGuidedStep(3);
      updateGuidedModeUI();
@@ -2415,10 +2526,12 @@ function renderGuidedCandidate(run) {
   appendCandidateLine(host, "Two isolated builds", scratch.independent_compilations === 2 && scratch.deterministic ? "PASS — deterministic identities match" : "Not verified", scratch.deterministic ? "success" : "error");
   appendCandidateLine(host, "Canonical mutation before Finalize", commitPresent ? "Unexpected commit present" : "None", commitPresent ? "error" : "success");
   appendCandidateLine(host, "Quality gate", `${run.quality?.status || "Unknown"}${(run.warnings || []).length ? ` — ${(run.warnings || []).length} warning(s)` : ""}`, clean ? "success" : "warning");
-  appendCandidateLine(host, "Paths", ownerCardLines(owner.paths, "All three level-zero Path tracks remain visible.").join("; "));
-  appendCandidateLine(host, "Method", ownerText(owner.method?.name, "Method pending validated compilation"));
-  appendCandidateLine(host, "Foundation / Tradition", `${ownerText(owner.foundation?.name, "Foundation pending")} / ${ownerText(owner.tradition?.name, "Tradition pending")}`);
-  appendCandidateLine(host, "Acquired Spheres", ownerCardLines(sheet.spheres, "No acquired Spheres are projected yet.").join("; "));
+   appendCandidateLine(host, "Paths", ownerCardLines(owner.paths, "All three level-zero Path tracks remain visible.").join("; "));
+   appendCandidateLine(host, "Method", ownerText(owner.method?.name, "Method pending validated compilation"));
+   appendCandidateLine(host, "Foundation", ownerText(owner.foundation?.name, "Foundation pending"));
+   appendCandidateLine(host, "Subpaths / Traditions", ownerCardLines(owner.subpath_bindings || owner.subpaths, "No Subpath or Tradition selected.").join("; "));
+   appendCandidateLine(host, "Items / Equipment planning", ownerCardLines(owner.planning_items, "No Items / Equipment planning proposal is recorded yet.").join("; "));
+   appendCandidateLine(host, "Acquired Spheres", ownerCardLines(sheet.spheres, "No acquired Spheres are projected yet.").join("; "));
   appendCandidateLine(host, "Free Talents", ownerCardLines(sheet.free_talents, "No separately identified free Talent grants are projected yet.").join("; "));
   appendCandidateLine(host, "Ordinary Talents", ownerCardLines(sheet.ordinary_talents, "No ordinary Talents are projected yet.").join("; "));
   appendCandidateLine(host, "Automatic components", ownerCardLines(sheet.automatic_components, "No automatic components are projected yet.").join("; "));
@@ -2434,10 +2547,14 @@ function renderGuidedCandidate(run) {
     owner_view: {
       identity: owner.identity,
       paths: owner.paths,
-      method: owner.method,
-      foundation: owner.foundation,
-      tradition: owner.tradition,
-      provenance_groups: owner.provenance_groups,
+       method: owner.method,
+       foundation: owner.foundation,
+       tradition: owner.tradition,
+       subpaths: owner.subpaths,
+       subpath_bindings: owner.subpath_bindings,
+       planning_preferences: owner.planning_preferences,
+       planning_items: owner.planning_items,
+       provenance_groups: owner.provenance_groups,
       decisions: owner.decisions,
       scratch_candidate: owner.scratch_candidate,
     },
@@ -2531,8 +2648,15 @@ function renderOwnerProductionSheet(run = null, finalized = false, sheet = null)
     if (label) label.textContent = "Step 7 of 8 · persisted owner sheet";
     if (intro) intro.textContent = "This view is rebuilt from the real /api/characters/{project_id}/sheet response after Finalize and reopen.";
     appendOwnerSheetCard(host, "Identity and CL", `${identity.name || "Unnamed character"} · CL ${identity.current_cl ?? "pending"} of target ${identity.target_cl ?? "pending"}. ${identity.concept || "No concept recorded."}`, true);
-    const path = sheet.owner_character_sheet?.path_and_subpath || {};
-    appendOwnerSheetCard(host, "Paths and attainment", path.path ? [String(path.path.name || path.path.display_name || path.path), path.subpath ? `Subpath / Tradition: ${path.subpath.name || path.subpath.display_name || path.subpath}` : "Subpath / Tradition: pending"] : "Path attainment is not available in this saved sheet.");
+     const path = sheet.owner_character_sheet?.path_and_subpath || {};
+     const savedPaths = (path.paths || []).map(row => `${row.name || row.display_name || row.path_id || "Path"}${row.attainment !== undefined ? ` · attainment ${row.attainment}` : ""}`);
+     const savedSubpaths = (path.bindings || path.subpaths || []).map(row => {
+       const subpath = row.subpath || row.name || row.display_name || row.subpath_id || "Subpath / Tradition";
+       const pathName = row.path || row.owning_path_name || row.path_id || "Path pending";
+       return `${subpath} · ${pathName}`;
+     });
+     appendOwnerSheetCard(host, "Paths and attainment", savedPaths.length ? savedPaths : path.path ? [String(path.path.name || path.path.display_name || path.path)] : "Path attainment is not available in this saved sheet.");
+     appendOwnerSheetCard(host, "Subpaths / Traditions", savedSubpaths.length ? savedSubpaths : "No Subpath or Tradition is recorded.");
     appendOwnerSheetCard(host, "Method and Foundation", sheet.owner_character_sheet?.method?.name || sheet.identity?.path ? `${sheet.owner_character_sheet?.method?.name || "Method recorded in the saved sheet"}. Foundation values are shown only when source-backed.` : "Method and Foundation are pending.");
     const sphereSurface = sheet.owner_character_sheet?.spheres_and_talents || {};
     appendOwnerSheetCard(host, "Spheres, Talents, and Insights", [`${(sphereSurface.sphere_record_ids || []).length} acquired Spheres`, `${(sphereSurface.learned_talent_record_ids || []).length} learned Talents`, `${(sphereSurface.cultivation_insight_record_ids || []).length} Insights`, `${(sphereSurface.automatic_sphere_component_record_ids || []).length} automatic Sphere components`]);
@@ -2550,8 +2674,15 @@ function renderOwnerProductionSheet(run = null, finalized = false, sheet = null)
   const previewSheet = scratch.sheet || {};
   appendOwnerSheetCard(host, "Identity and CL", `${ownerText(identity.name, document.getElementById("guidedName")?.value || "Name pending owner review")} · target CL ${ownerText(identity.target_cl, "pending")}. ${ownerText(identity.concept, document.getElementById("guidedConcept")?.value || "Concept pending owner review.")}`, true);
   appendOwnerSheetCard(host, "Paths and attainment", ownerCardLines(owner.paths, "All three level-zero Path tracks remain visible."));
-  appendOwnerSheetCard(host, "Method, Foundation, and Tradition", `${ownerText(owner.method?.name, "Method pending Factory validation")}. Foundation: ${ownerText(owner.foundation?.name, "pending")}. Tradition: ${ownerText(owner.tradition?.name, "pending")}.`);
-  const resourceLines = Array.isArray(previewSheet.resources) && previewSheet.resources.length
+   appendOwnerSheetCard(host, "Method and Foundation", `${ownerText(owner.method?.name, "Method pending Factory validation")}. Foundation: ${ownerText(owner.foundation?.name, "pending")}.`);
+   appendOwnerSheetCard(host, "Subpaths / Traditions", ownerCardLines(owner.subpath_bindings || owner.subpaths, "No Subpath or Tradition is projected yet."));
+   appendOwnerSheetCard(host, "Planning preferences · non-acquisitive", [
+     ...ownerCardLines(owner.planning_preferences?.sphere_priorities, "No Sphere planning priorities are recorded."),
+     ...ownerCardLines(owner.planning_preferences?.talent_priorities, "No Talent planning priorities are recorded."),
+     ...ownerCardLines(owner.planning_preferences?.insight_priorities, "No Insight planning priorities are recorded."),
+     ...ownerCardLines(owner.planning_items, "No Items / Equipment planning proposal is recorded."),
+   ]);
+   const resourceLines = Array.isArray(previewSheet.resources) && previewSheet.resources.length
     ? previewSheet.resources.map(row => `${ownerText(row?.name, "Resource")}: ${ownerText(row?.current, "pending")} / ${ownerText(row?.maximum, "pending")}`)
     : ["Pending — the Factory has not compiled validated resource values for this proposal."];
   appendOwnerSheetCard(host, "Resources", resourceLines);

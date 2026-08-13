@@ -16,6 +16,8 @@ from catalog_choice_authority import committed_catalog_grant_plan
 from .semantic_validator import NonSphereSemanticStateValidator
 
 _TRUSTED_INITIAL_CATALOG_FINALIZATION = object()
+_TRUSTED_INITIAL_CREATION_BOUNDARY = object()
+_TRUSTED_PROJECT_IMPORT_BOUNDARY = object()
 
 
 @dataclass(frozen=True, slots=True)
@@ -528,6 +530,7 @@ class NonSphereAuthorityService:
                     "allowed_kinds": allowed_kinds,
                     "cl": milestone_cl,
                     "count": 1,
+                    "path_id": path_id,
                     "milestone_id": f"{feature.get('canonical_id')}.cl{milestone_cl}",
                     "feature_record_id": feature.get("canonical_id"),
                     "feature_kind": feature_kind,
@@ -729,6 +732,10 @@ class NonSphereAuthorityService:
             acquisition = deepcopy(method.get("acquisition") or {})
             method_id = method["method_id"]
             exact_access_present = self.has_exact_access_record(access, "method_access", method_id=method_id)
+            route_options = self.method_owner_route_options(method)
+            direct_access = bool(initial_legal)
+            route_configurable = bool(route_options)
+            access_authorized = bool(direct_access or exact_access_present)
             currently_acquired = initial_legal if initial_creation else self.method_acquisition_satisfied(method, access)
             method_planning = {
                 "schema": "TianxiaFoundry.MethodPlanningAuthority.v1",
@@ -736,7 +743,7 @@ class NonSphereAuthorityService:
                 "display_name": method["name"],
                 "access_tier": acquisition.get("access_tier") or "UNRESOLVED",
                 "access_routes": list(acquisition.get("routes") or []),
-                "owner_route_options": self.method_owner_route_options(method),
+                 "owner_route_options": route_options,
                 "access_text": acquisition.get("becoming_primary") or "",
                 "currently_acquired": bool(currently_acquired),
                 "direct_selection_allowed": bool(initial_legal),
@@ -748,17 +755,20 @@ class NonSphereAuthorityService:
                 # gated by an exact owner-supplied route at local compilation.
                 "hard_lock_allowed": True,
                 "hard_lock_available": True,
-                "exact_selection_available": bool(initial_legal or self.method_owner_route_options(method)),
-                "owner_unavailable_reason": None if (initial_legal or self.method_owner_route_options(method)) else "This Method cannot be used during initial character creation.",
+                 "exact_selection_available": bool(initial_legal or route_configurable),
+                 "owner_unavailable_reason": None if (initial_legal or route_configurable) else "This Method cannot be used during initial character creation.",
                 "auto_allowed": True,
                 "automatic_planning_available": True,
                 "required_access_record_type": "method_access",
                 "required_typed_access_fields": ["method_id", "access_tier", "route_type", "source_name", "source_reference"],
-                "required_record": {
+                 "required_record": {
                     "authority_type": "method_access",
                     "required_target_fields": {"method_id": method_id},
-                    "exact_access_record_present": exact_access_present,
-                },
+                     "exact_access_record_present": exact_access_present,
+                 },
+                 "route_configurable": route_configurable,
+                 "access_authorized": access_authorized,
+                 "exact_access_record_present": exact_access_present,
                 "unavailable_code": None,
                 "unavailable_reason": None,
                 "source_reference": {
@@ -786,10 +796,14 @@ class NonSphereAuthorityService:
                 "per_path_resource_profiles": deepcopy(method["per_path_resource_profiles"]),
                 "per_path_breakthrough_profiles": deepcopy(method["per_path_breakthrough_profiles"]),
                 "acquisition": deepcopy(method["acquisition"]), "switching_lifecycle": deepcopy(method["switching_lifecycle"]),
-                "initial_creation_selectable": initial_legal,
+                 "initial_creation_selectable": initial_legal,
                 "initial_creation_unavailable_reason": None if initial_legal else disposition["reason"],
-                "method_planning": method_planning,
-                "disposition": disposition,
+                 "method_planning": method_planning,
+                 "direct_access": direct_access,
+                 "route_configurable": route_configurable,
+                 "access_authorized": access_authorized,
+                 "exact_access_record_present": exact_access_present,
+                 "disposition": disposition,
             })
         return {"schema": "Tianxia.NonSphereMethodCatalog.v1", "count": len(rows), "records": rows}
 
@@ -861,6 +875,376 @@ class NonSphereAuthorityService:
             row["minimum_cl"] = self.subpath_minimum_cl(row)
         return {"schema": "Tianxia.NonSphereSubpathCatalog.v2", "count": len(rows), "records": rows}
 
+    def project_locked_subpath_catalog_record(
+        self,
+        selection_id: str,
+        *,
+        snapshot_record: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        """Project one authenticated Subpath/Tradition into Stage 2 authority.
+
+        The public content-pack row carries the owner-facing choice, while the
+        executable parent/selection event contract lives in the typed NS1R
+        subpath registry.  Keep the two surfaces separate and bind the
+        projection to the registry source hash, just as Path features are
+        projected above.
+
+        When a project-scoped snapshot is supplied, every owner and feature
+        value is reconstructed from that immutable row.  The live NS1R
+        registry remains the authenticated schema/identity authority, but it
+        must not become a project-specific fallback for a persisted Subpath.
+        """
+        canonical_snapshot_top_level: dict[str, Any] = {}
+        snapshot_raw_projection: dict[str, Any] = {}
+        snapshot_raw_record: dict[str, Any] | None = None
+        snapshot_stage2_authority: dict[str, Any] = {}
+        if snapshot_record is not None:
+            canonical_snapshot_top_level = snapshot_record if isinstance(snapshot_record, dict) else {}
+            snapshot_factory = (canonical_snapshot_top_level.get("compatibility") or {}).get("factory") or {}
+            snapshot_raw_projection = (
+                snapshot_factory.get("raw_projection")
+                if isinstance(snapshot_factory, dict)
+                and isinstance(snapshot_factory.get("raw_projection"), dict)
+                else {}
+            )
+            snapshot_raw_record = (
+                deepcopy(snapshot_raw_projection.get("raw_record"))
+                if isinstance(snapshot_raw_projection.get("raw_record"), dict)
+                else None
+            )
+            source_record = snapshot_raw_record
+            if not isinstance(source_record, dict):
+                raise FoundryError(
+                    "PROJECT_LOCK_SUBPATH_AUTHORITY_MISSING",
+                    "The immutable Subpath snapshot has no complete source-backed Subpath authority.",
+                    details={"selection_id": selection_id},
+                    status_code=409,
+                )
+            if source_record.get("canonical_id") != selection_id:
+                raise FoundryError(
+                    "PROJECT_LOCK_SUBPATH_IDENTITY_MISMATCH",
+                    "The immutable Subpath snapshot identity does not match the requested selection.",
+                    details={"selection_id": selection_id, "snapshot_id": source_record.get("canonical_id")},
+                    status_code=409,
+                )
+            snapshot_stage2_authority = (
+                deepcopy(snapshot_factory.get("stage2_authority"))
+                if isinstance(snapshot_factory, dict)
+                and isinstance(snapshot_factory.get("stage2_authority"), dict)
+                else deepcopy(
+                    (
+                        ((snapshot_raw_projection.get("compatibility") or {}).get("factory") or {}).get(
+                            "stage2_authority"
+                        )
+                    )
+                    if isinstance(snapshot_raw_projection.get("compatibility"), dict)
+                    and isinstance(
+                        (((snapshot_raw_projection.get("compatibility") or {}).get("factory") or {}).get("stage2_authority")),
+                        dict,
+                    )
+                    else {}
+                )
+            )
+        else:
+            source_record = next(
+                (row for row in self.subpath_catalog()["records"] if row.get("canonical_id") == selection_id),
+                None,
+            )
+        if not isinstance(source_record, dict):
+            raise FoundryError(
+                "NS1R_SUBPATH_ID_UNKNOWN",
+                "The selected Subpath or Tradition is not accepted authority.",
+                details={"selection_id": selection_id},
+            )
+        # Ownership is intentionally reconciled across every representation
+        # that can be persisted in a project snapshot.  Keep each layer named:
+        # the immutable canonical row, its outer raw projection, the nested
+        # source record, and the immutable Stage 2 authority.  In particular,
+        # do not reuse ``raw_projection`` for the nested source record; the
+        # outer raw projection is itself an ownership mirror.
+        source_factory = (source_record.get("compatibility") or {}).get("factory") or {}
+        source_stage2_authority = (
+            deepcopy(source_factory.get("stage2_authority"))
+            if isinstance(source_factory, dict)
+            and isinstance(source_factory.get("stage2_authority"), dict)
+            else {}
+        )
+
+        nested_source_records: list[tuple[str, dict[str, Any]]] = []
+
+        def collect_nested_source_records(label: str, container: dict[str, Any] | None) -> None:
+            if not isinstance(container, dict):
+                return
+            for nested_key in ("raw_record", "source_record"):
+                nested = container.get(nested_key)
+                if isinstance(nested, dict):
+                    nested_source_records.append((f"{label}.{nested_key}", nested))
+            nested_projection = container.get("raw_projection")
+            if isinstance(nested_projection, dict) and isinstance(nested_projection.get("raw_record"), dict):
+                nested_source_records.append((f"{label}.raw_projection.raw_record", nested_projection["raw_record"]))
+
+        collect_nested_source_records("snapshot_raw_projection", snapshot_raw_projection)
+        collect_nested_source_records("snapshot_raw_record", snapshot_raw_record)
+        collect_nested_source_records("source_record", source_record)
+
+        ownership_containers: list[tuple[str, dict[str, Any]]] = [
+            ("snapshot_top_level", canonical_snapshot_top_level),
+            ("snapshot_raw_projection", snapshot_raw_projection),
+            ("source_record", source_record),
+            *nested_source_records,
+        ]
+        if isinstance(snapshot_raw_record, dict):
+            ownership_containers.insert(2, ("snapshot_raw_record", snapshot_raw_record))
+        owner_sources: dict[str, Any] = {}
+        for label, container in ownership_containers:
+            owner_sources[f"{label}_owning_path_id"] = container.get("owning_path_id")
+            owner_sources[f"{label}_parent_path_id"] = container.get("parent_path_id")
+        owner_sources["snapshot_stage2_owning_path_id"] = snapshot_stage2_authority.get("owning_path_id")
+        owner_sources["snapshot_stage2_parent_path_id"] = snapshot_stage2_authority.get("parent_path_id")
+        owner_sources["source_stage2_owning_path_id"] = source_stage2_authority.get("owning_path_id")
+        owner_sources["source_stage2_parent_path_id"] = source_stage2_authority.get("parent_path_id")
+
+        relation_sources: dict[str, str] = {}
+
+        def canonical_path_values(value: Any) -> list[str]:
+            if isinstance(value, str):
+                return [value] if value in CANONICAL_TO_COMPACT else []
+            if isinstance(value, list):
+                result: list[str] = []
+                for item in value:
+                    result.extend(canonical_path_values(item))
+                return result
+            if isinstance(value, dict):
+                result: list[str] = []
+                for item in value.values():
+                    result.extend(canonical_path_values(item))
+                return result
+            return []
+
+        for label, container in ownership_containers:
+            for relation_key in (
+                "dependencies",
+                "parent_relationships",
+                "parent_variant_relationship",
+                "relationships",
+                "relations",
+                "owning_path_choice_ids",
+                "related_choice_ids",
+                "linked_procedure_modules",
+            ):
+                for index, path_id in enumerate(canonical_path_values(container.get(relation_key))):
+                    relation_sources[f"{label}.{relation_key}[{index}]"] = path_id
+
+        invalid_owner_sources = {
+            key: value
+            for key, value in owner_sources.items()
+            if key.endswith("owning_path_id")
+            and value is not None
+            and (not isinstance(value, str) or value not in CANONICAL_TO_COMPACT)
+        }
+        owner_values = {
+            value
+            for key, value in owner_sources.items()
+            if key.endswith("owning_path_id")
+            and isinstance(value, str)
+            and value in CANONICAL_TO_COMPACT
+        }
+        invalid_parent_sources = {
+            key: value
+            for key, value in owner_sources.items()
+            if key.endswith("parent_path_id")
+            and value is not None
+            and (not isinstance(value, str) or value not in CANONICAL_TO_COMPACT)
+        }
+        parent_values = {
+            value
+            for key, value in owner_sources.items()
+            if key.endswith("parent_path_id")
+            and isinstance(value, str)
+            and value in CANONICAL_TO_COMPACT
+        }
+        owner_mismatch_details = {
+            "selection_id": selection_id,
+            "owner_sources": owner_sources,
+            "relation_sources": relation_sources,
+        }
+        if (
+            invalid_owner_sources
+            or invalid_parent_sources
+            or len(owner_values) != 1
+            or (parent_values and (len(parent_values) != 1 or parent_values != owner_values))
+            or (relation_sources and set(relation_sources.values()) != owner_values)
+        ):
+            raise FoundryError(
+                "PROJECT_LOCK_SUBPATH_OWNER_MISMATCH",
+                "The immutable Subpath snapshot contains conflicting Path-ownership representations.",
+                details={**owner_mismatch_details, "invalid_owner_sources": invalid_owner_sources, "invalid_parent_sources": invalid_parent_sources},
+                status_code=409,
+            )
+        owning_path_id = next(iter(owner_values))
+        source_rows = source_record.get("feature_progression") or []
+        source = (source_rows[0].get("source") if isinstance(source_rows[0], dict) else {}) if source_rows else {}
+        source = source if isinstance(source, dict) else {}
+        source_path = str(source.get("factory_source_path") or source.get("corpus_path") or "non-sphere-authority.subpath")
+        source_hash = str(source.get("source_file_sha256") or source.get("section_sha256") or self.authority_snapshot_hash)
+        minimum_cl = self.subpath_minimum_cl(source_record)
+        stage2_authority = {
+            "authority_complete": True,
+            "allowed_kinds": ["subpath_acquisition"],
+            "allowed_channels": ["subpath-selection"],
+            "minimum_cl": minimum_cl,
+            "parent_path_id": owning_path_id,
+            "owning_path_id": owning_path_id,
+            "feature_progression": deepcopy(source_record.get("feature_progression") or []),
+            "subpath_index_source": {
+                "selection_id": selection_id,
+                "owning_path_id": owning_path_id,
+                "source_path": source_path,
+                "source_hash": source_hash,
+                "authority_snapshot_hash": self.authority_snapshot_hash,
+            },
+            "rule_id": f"ns1r.{selection_id}.initial-subpath-acquisition.v1",
+        }
+        projection = {
+            "record_id": selection_id,
+            # Stage 2's acquisition reducer treats both ordinary Subpaths and
+            # Spirit Traditions as the same parent-bound Subpath content type;
+            # retain the original option_type in ``non_sphere_subpath``.
+            "content_type": "subpath",
+            "display_name": source_record.get("display_name") or selection_id,
+            "owning_path_id": owning_path_id,
+            "parent_path_id": owning_path_id,
+            "pack_id": "tianxia.non_sphere.authority",
+            "pack_version": "P2A",
+            "authority": "canonical",
+            "publication_state": "published",
+            "source": {
+                "path": source_path,
+                "anchor": f"subpath:{selection_id}",
+                "source_hash": source_hash,
+            },
+            "summary": (source_record.get("identity") or {}).get("primary_role") or source_record.get("display_name") or selection_id,
+            "minimum_cl": minimum_cl,
+            "prerequisites": [],
+            "acquisition_channels": ["subpath-selection"],
+            "grants": [],
+            "execution_records": [],
+            "compatibility": {"factory": {"stage2_authority": stage2_authority}},
+            "dependencies": [owning_path_id],
+            "supersedes": None,
+            "unresolved_normalization_notes": [],
+            "selected_authority": True,
+            "non_sphere_subpath": deepcopy(source_record),
+        }
+        return normalize_core_catalog_record(projection, pack_hash=self.authority_snapshot_hash)
+
+    def project_locked_foundation_catalog_record(
+        self,
+        foundation_id: str,
+        *,
+        snapshot_record: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        """Project one orthodox Foundation into the initial Stage 2 boundary.
+
+        A project snapshot may contain a source-backed Foundation projection
+        whose bytes predate the typed NS1R projection.  In that case the live
+        authority supplies only the accepted identity/schema boundary; display
+        and authored Foundation values are rebuilt from the immutable snapshot,
+        just as Subpaths are.
+        """
+        if snapshot_record is not None:
+            if (
+                snapshot_record.get("record_id") != foundation_id
+                or snapshot_record.get("content_type") != "foundation"
+            ):
+                raise FoundryError(
+                    "PROJECT_LOCK_FOUNDATION_IDENTITY_MISMATCH",
+                    "The immutable Foundation snapshot identity does not match the requested selection.",
+                    details={
+                        "foundation_id": foundation_id,
+                        "snapshot_id": snapshot_record.get("record_id"),
+                        "snapshot_content_type": snapshot_record.get("content_type"),
+                    },
+                    status_code=409,
+                )
+            raw_projection = (
+                (snapshot_record.get("compatibility") or {})
+                .get("factory", {})
+                .get("raw_projection")
+                or {}
+            )
+            snapshot_foundation = deepcopy(raw_projection.get("raw_record"))
+            if not isinstance(snapshot_foundation, dict):
+                raise FoundryError(
+                    "PROJECT_LOCK_FOUNDATION_AUTHORITY_MISSING",
+                    "The immutable Foundation snapshot has no complete source-backed Foundation authority.",
+                    details={"foundation_id": foundation_id},
+                    status_code=409,
+                )
+            foundation = snapshot_foundation
+            display_name = snapshot_record.get("display_name") or foundation.get("display_name") or foundation.get("name") or foundation_id
+            summary = snapshot_record.get("summary") or foundation.get("summary") or foundation.get("overview") or display_name
+            source = snapshot_record.get("source") if isinstance(snapshot_record.get("source"), dict) else {}
+            source_path = str(source.get("path") or "non-sphere-authority.foundation")
+            source_hash = str(source.get("source_hash") or self.authority_snapshot_hash)
+        else:
+            foundation = self.foundations.get(foundation_id)
+            display_name = None
+            summary = None
+            source_path = None
+            source_hash = None
+        if not isinstance(foundation, dict):
+            raise FoundryError(
+                "NS1R_FOUNDATION_ID_UNKNOWN",
+                "The selected Foundation is not orthodox authority.",
+                details={"foundation_id": foundation_id},
+            )
+        if display_name is None:
+            display_name = foundation.get("display_name") or foundation_id
+        if summary is None:
+            summary = foundation.get("summary") or foundation.get("display_name") or foundation_id
+        if source_path is None or source_hash is None:
+            source = foundation.get("source") if isinstance(foundation.get("source"), dict) else {}
+            source_path = str(source.get("path") or source.get("artifact") or "Foundation_Trait_Reference_v0_6.json")
+            source_hash = str(source.get("source_hash") or source.get("file_sha256") or source.get("artifact_sha256") or self.authority_snapshot_hash)
+        stage2_authority = {
+            "authority_complete": True,
+            "allowed_kinds": ["foundation_acquisition"],
+            "allowed_channels": ["foundation-selection"],
+            "minimum_cl": 1,
+            "foundation_id": foundation_id,
+            "foundation_index_source": {
+                "foundation_id": foundation_id,
+                "source_path": source_path,
+                "source_hash": source_hash,
+                "authority_snapshot_hash": self.authority_snapshot_hash,
+            },
+            "rule_id": f"ns1r.{foundation_id}.initial-foundation-acquisition.v1",
+        }
+        projection = {
+            "record_id": foundation_id,
+            "content_type": "foundation",
+            "display_name": display_name,
+            "pack_id": "tianxia.non_sphere.authority",
+            "pack_version": "P2A",
+            "authority": "canonical",
+            "publication_state": "published",
+            "source": {"path": source_path, "anchor": f"foundation:{foundation_id}", "source_hash": source_hash},
+            "summary": summary,
+            "minimum_cl": 1,
+            "prerequisites": [],
+            "acquisition_channels": ["foundation-selection"],
+            "grants": [],
+            "execution_records": [],
+            "compatibility": {"factory": {"stage2_authority": stage2_authority}},
+            "dependencies": [],
+            "supersedes": None,
+            "unresolved_normalization_notes": [],
+            "selected_authority": True,
+            "non_sphere_foundation": deepcopy(foundation),
+        }
+        return normalize_core_catalog_record(projection, pack_hash=self.authority_snapshot_hash)
+
     @staticmethod
     def subpath_minimum_cl(choice: dict[str, Any]) -> int:
         return int(choice.get("minimum_cl") or choice.get("prerequisites", {}).get("minimum_cl") or choice.get("prerequisites", {}).get("selection_level") or 3)
@@ -882,6 +1266,7 @@ class NonSphereAuthorityService:
             "authority_snapshot_hash": self.authority_snapshot_hash, "target_cl": target_cl,
             "paths": paths, "known_method_ids": [], "primary_method_id": None,
             "initial_creation_method_ids": [], "initial_creation_method_active": False,
+            "initial_creation_subpath_ids": [],
             "access_source_records": [], "foundation_id": None, "background": None,
             "compatibility_result": None, "migration": {"status": "NATIVE_NS1R_R1"},
             "ap_transaction_history": [], "revision": 0, "updated_at": utcnow(),
@@ -922,9 +1307,17 @@ class NonSphereAuthorityService:
         path_attainment_by_id: dict[str, int] | None = None,
         subpath_ids: list[str] | None = None, background_route_ids: dict[str, Any] | None = None,
         trusted_initial_creation: bool = False,
+        _initial_creation_authority: object | None = None,
     ) -> dict[str, Any]:
         if not self._project_exists(project_id):
             raise FoundryError("PROJECT_NOT_FOUND", "Project not found.", details={"project_id": project_id}, status_code=404)
+        trusted_initial_creation_active = trusted_initial_creation is True
+        if trusted_initial_creation_active and _initial_creation_authority is not _TRUSTED_INITIAL_CREATION_BOUNDARY:
+            raise FoundryError(
+                "NS1R_INITIAL_CREATION_AUTHORITY_FORBIDDEN",
+                "Trusted initial Subpath/Tradition issuance is available only at the Character Builder initial-creation boundary.",
+                status_code=403,
+            )
         state = self.blank_state(project_id, target_cl)
         records, access_blockers = self._resolve_access_records(project_id, deepcopy(access_source_records or []))
         if access_blockers:
@@ -947,7 +1340,7 @@ class NonSphereAuthorityService:
             method_legal = (
                 self.method_initial_creation_satisfied(self.methods[method_id])
                 or self.method_acquisition_satisfied(self.methods[method_id], records)
-                if trusted_initial_creation
+                if trusted_initial_creation_active
                 else self.method_acquisition_satisfied(self.methods[method_id], records)
             )
             if not method_legal:
@@ -1003,15 +1396,22 @@ class NonSphereAuthorityService:
                 "source_record_id": "native_initialization",
                 "at": utcnow(),
             })
-        if trusted_initial_creation and method_id:
+        if trusted_initial_creation_active and method_id:
             state["initial_creation_method_ids"] = [method_id]
             state["initial_creation_method_active"] = True
+        if trusted_initial_creation_active and subpath_ids:
+            state["initial_creation_subpath_ids"] = list(subpath_ids)
         state = self._derive_state(state, operation="initialize_for_project")
-        if not trusted_initial_creation and state["readiness"]["status"] == "BLOCKED" and any(b["code"] == "METHOD_ACQUISITION_EVIDENCE_REQUIRED" for b in state["readiness"]["blockers"]):
+        if not trusted_initial_creation_active and state["readiness"]["status"] == "BLOCKED" and any(b["code"] == "METHOD_ACQUISITION_EVIDENCE_REQUIRED" for b in state["readiness"]["blockers"]):
             raise FoundryError("NS1R_METHOD_ACCESS_REQUIRED", "Initialization failed Method acquisition authority.", details={"blockers": state["readiness"]["blockers"]})
         return self._persist_state(project_id, state)
 
-    def _validate_state_shape(self, state: dict[str, Any]) -> None:
+    def _validate_state_shape(
+        self,
+        state: dict[str, Any],
+        *,
+        project_document: dict[str, Any] | None = None,
+    ) -> None:
         if state.get("schema_version") != self.STATE_SCHEMA:
             raise FoundryError("NS1R_STATE_SCHEMA_INVALID", "The non-Sphere state schema is unsupported.")
         if state.get("authority_snapshot_hash") != self.authority_snapshot_hash:
@@ -1053,6 +1453,145 @@ class NonSphereAuthorityService:
                 raise FoundryError("THEORETICAL_CHAKRA_FOUNDATION_NONPLAYABLE", "Theoretical Chakra concepts cannot be selected or exported.", details={"foundation_id": foundation_id})
             raise FoundryError("NS1R_FOUNDATION_ID_UNKNOWN", "The selected Foundation is not orthodox authority.", details={"foundation_id": foundation_id})
 
+        # A non-empty initial-creation restricted-selection grant is not a
+        # caller-authored flag. It must match both the immutable Character
+        # Builder lock and the exact active Path-owned selections. The field
+        # remains optional for pre-field state.
+        if "initial_creation_subpath_ids" in state:
+            initial_ids = _unique_strings(
+                state.get("initial_creation_subpath_ids"),
+                code="NS1R_INITIAL_CREATION_SUBPATH_IDS_INVALID",
+                field="initial-creation Subpath",
+            )
+            if initial_ids:
+                project_id = state.get("project_id")
+                if project_document is None:
+                    with self.db.connection() as conn:
+                        project_row = conn.execute(
+                            "SELECT project_json FROM projects WHERE project_id=?",
+                            (project_id,),
+                        ).fetchone()
+                    if project_row is None:
+                        raise FoundryError(
+                            "NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                            "Trusted initial Subpath provenance requires the exact existing project lock.",
+                            details={"project_id": project_id},
+                        )
+                    try:
+                        project_doc = json.loads(project_row["project_json"])
+                    except (TypeError, json.JSONDecodeError) as exc:
+                        raise FoundryError(
+                            "NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                            "Trusted initial Subpath provenance requires valid immutable project JSON.",
+                            details={"project_id": project_id},
+                        ) from exc
+                else:
+                    project_doc = deepcopy(project_document)
+                if not isinstance(project_doc, dict) or project_doc.get("project_id") != project_id:
+                    raise FoundryError(
+                        "NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                        "Trusted initial Subpath provenance requires the exact existing project identity.",
+                        details={"project_id": project_id},
+                    )
+                locks = {
+                    item.get("field"): item.get("value")
+                    for item in project_doc.get("user_locks") or []
+                    if isinstance(item, dict) and isinstance(item.get("field"), str)
+                }
+                locked_choices = locks.get("character_sheet.locked_choices")
+                if not isinstance(locked_choices, dict):
+                    raise FoundryError(
+                        "NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                        "Trusted initial Subpath provenance requires the exact typed Character Builder choice lock.",
+                        details={"project_id": project_id},
+                    )
+                locked_subpath_ids = locked_choices.get("subpath_choice")
+                if not isinstance(locked_subpath_ids, list):
+                    raise FoundryError(
+                        "NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                        "Trusted initial Subpath provenance requires a typed locked Subpath selection list.",
+                        details={"project_id": project_id, "locked_subpath_ids": locked_subpath_ids},
+                    )
+                locked_subpath_ids = _unique_strings(
+                    locked_subpath_ids,
+                    code="NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                    field="locked initial Subpath",
+                )
+                locked_path_values = locked_choices.get("path_choice")
+                if not isinstance(locked_path_values, list):
+                    raise FoundryError(
+                        "NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                        "Trusted initial Subpath provenance requires an exact typed Path choice lock.",
+                        details={"project_id": project_id, "locked_path_ids": locked_path_values},
+                    )
+                locked_path_ids = set(_unique_strings(
+                    locked_path_values,
+                    code="NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                    field="locked initial Path",
+                ))
+                if not locked_path_ids.issubset(CANONICAL_TO_COMPACT):
+                    raise FoundryError(
+                        "NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                        "Trusted initial Subpath provenance names a noncanonical locked Path.",
+                        details={"project_id": project_id, "locked_path_ids": sorted(locked_path_ids)},
+                    )
+                active_subpath_ids: list[str] = []
+                for path in rows:
+                    selection_id = path.get("subpath_or_tradition_id")
+                    if selection_id is None:
+                        continue
+                    if not isinstance(selection_id, str) or not selection_id:
+                        raise FoundryError(
+                            "NS1R_INITIAL_CREATION_SUBPATH_IDS_INVALID",
+                            "Active Path Subpath selections must be non-empty stable IDs.",
+                            details={"path_id": path.get("path_id"), "selection_id": selection_id},
+                        )
+                    choice = self.subpaths.get(selection_id)
+                    if choice is None:
+                        raise FoundryError(
+                            "NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                            "Initial restricted-selection provenance names an unknown active Subpath or Tradition.",
+                            details={"selection_id": selection_id},
+                        )
+                    if choice.get("owning_path_id") != path.get("path_id"):
+                        raise FoundryError(
+                            "NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                            "Active Subpath selection is not owned by its Path track.",
+                            details={"selection_id": selection_id, "path_id": path.get("path_id"), "owning_path_id": choice.get("owning_path_id")},
+                        )
+                    active_subpath_ids.append(selection_id)
+                if (
+                    len(initial_ids) != len(locked_subpath_ids)
+                    or set(initial_ids) != set(locked_subpath_ids)
+                    or len(initial_ids) != len(active_subpath_ids)
+                    or set(initial_ids) != set(active_subpath_ids)
+                ):
+                    raise FoundryError(
+                        "NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                        "Initial restricted-selection provenance must equal the immutable locked and active Subpath selections.",
+                        details={
+                            "project_id": project_id,
+                            "initial_creation_subpath_ids": initial_ids,
+                            "locked_subpath_ids": locked_subpath_ids,
+                            "active_subpath_ids": active_subpath_ids,
+                        },
+                    )
+                for selection_id in initial_ids:
+                    choice = self.subpaths.get(selection_id)
+                    if choice is None:
+                        raise FoundryError(
+                            "NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                            "Initial restricted-selection provenance names an unknown Subpath or Tradition.",
+                            details={"selection_id": selection_id},
+                        )
+                    owner = choice.get("owning_path_id")
+                    if owner not in locked_path_ids:
+                        raise FoundryError(
+                            "NS1R_INITIAL_CREATION_SUBPATH_BINDING_INVALID",
+                            "Initial restricted-selection provenance does not bind the selected choice to its exact selected Path.",
+                            details={"selection_id": selection_id, "owning_path_id": owner, "locked_path_ids": sorted(locked_path_ids)},
+                        )
+
     def _method_profile_for_path(self, method: dict[str, Any] | None, compact_path_id: str) -> dict[str, Any] | None:
         if not method:
             return None
@@ -1064,8 +1603,9 @@ class NonSphereAuthorityService:
         *,
         operation: str,
         prevalidated_access_records: list[dict[str, Any]] | None = None,
+        project_document: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        self._validate_state_shape(state)
+        self._validate_state_shape(state, project_document=project_document)
         state = deepcopy(state)
         method = self.methods.get(state.get("primary_method_id"))
         granted = {row["path_id"] for row in (method or {}).get("explicit_ap_grants", []) if row.get("grants_attainment_points")}
@@ -1133,11 +1673,56 @@ class NonSphereAuthorityService:
         "BACKGROUND_AUTHORITY_ROUTE_MISMATCH",
     }
 
-    def save_state(self, project_id: str, state: dict[str, Any], *, operation: str = "save_state") -> dict[str, Any]:
+    def save_state(
+        self,
+        project_id: str,
+        state: dict[str, Any],
+        *,
+        operation: str = "save_state",
+    ) -> dict[str, Any]:
         if state.get("project_id") != project_id:
             raise FoundryError("NS1R_PROJECT_STATE_MISMATCH", "The non-Sphere state belongs to a different project.")
         current_revision = int(state.get("revision") or 0)
         state = deepcopy(state)
+        with self.db.connection() as conn:
+            persisted = conn.execute(
+                "SELECT state_json FROM non_sphere_character_states WHERE project_id=?",
+                (project_id,),
+            ).fetchone()
+        try:
+            persisted_state = json.loads(persisted["state_json"]) if persisted else None
+        except (TypeError, json.JSONDecodeError) as exc:
+            raise FoundryError(
+                "NS1R_STATE_HASH_MISMATCH",
+                "The persisted non-Sphere state failed its integrity check.",
+                details={"project_id": project_id},
+            ) from exc
+        persisted_initial_ids = (persisted_state or {}).get("initial_creation_subpath_ids")
+        incoming_initial_ids = state.get("initial_creation_subpath_ids")
+        if isinstance(persisted_initial_ids, list) and persisted_initial_ids:
+            persisted_initial_ids = _unique_strings(
+                persisted_initial_ids,
+                code="NS1R_INITIAL_CREATION_SUBPATH_IDS_INVALID",
+                field="persisted initial-creation Subpath",
+            )
+        if "initial_creation_subpath_ids" in state:
+            incoming_initial_ids = _unique_strings(
+                incoming_initial_ids,
+                code="NS1R_INITIAL_CREATION_SUBPATH_IDS_INVALID",
+                field="initial-creation Subpath",
+            )
+        if incoming_initial_ids != persisted_initial_ids:
+            if incoming_initial_ids or persisted_initial_ids:
+                raise FoundryError(
+                    "NS1R_INITIAL_CREATION_STATE_MUTATION_FORBIDDEN",
+                    "Trusted initial restricted-selection provenance is immutable and may only be preserved exactly.",
+                    details={
+                        "project_id": project_id,
+                        "persisted_initial_creation_subpath_ids": persisted_initial_ids,
+                        "incoming_initial_creation_subpath_ids": incoming_initial_ids,
+                    },
+                    status_code=403,
+                )
         state["updated_at"] = utcnow()
         state["revision"] = current_revision + 1
         state = self._derive_state(state, operation=operation)
@@ -1192,6 +1777,12 @@ class NonSphereAuthorityService:
     }
 
     def _validate_authority_targets(self, authority_type: str, targets: dict[str, Any]) -> dict[str, Any]:
+        if not isinstance(targets, dict):
+            raise FoundryError(
+                "NS1R_AUTHORITY_TARGET_SCHEMA_INVALID",
+                "Authority evidence targets must be an object.",
+                details={"authority_type": authority_type, "supplied_type": type(targets).__name__},
+            )
         exact = {
             "method_access": {
                 "method_id": str,
@@ -1242,6 +1833,9 @@ class NonSphereAuthorityService:
         foundation_id = targets.get("foundation_id")
         if method_id is not None and method_id not in self.methods:
             raise FoundryError("NS1R_AUTHORITY_TARGET_UNKNOWN", "Authority event references an unknown Method.", details={"method_id": method_id})
+        path_id = targets.get("path_id")
+        if path_id is not None and path_id not in CANONICAL_TO_COMPACT:
+            raise FoundryError("NS1R_AUTHORITY_TARGET_UNKNOWN", "Authority event references an unknown Path.", details={"path_id": path_id})
         if authority_type == "method_access" and "route_type" in targets:
             method = self.methods[method_id]
             acquisition = method.get("acquisition") or {}
@@ -1279,7 +1873,9 @@ class NonSphereAuthorityService:
             raise FoundryError("NS1R_AUTHORITY_TARGET_UNKNOWN", "Authority event references an unknown Foundation.", details={"foundation_id": foundation_id})
         if authority_type == "subpath_access":
             choice = self.subpaths.get(targets["selection_id"])
-            if choice is None or choice.get("owning_path_id") != targets["path_id"]:
+            if choice is None:
+                raise FoundryError("NS1R_AUTHORITY_TARGET_UNKNOWN", "Authority event references an unknown Subpath or Tradition.", details={"selection_id": targets["selection_id"]})
+            if choice.get("owning_path_id") != targets["path_id"]:
                 raise FoundryError("NS1R_AUTHORITY_TARGET_RELATIONSHIP_INVALID", "Restricted selection does not belong to the declared Path.")
         if authority_type == "compatibility_adjudication" and targets["adjudication_outcome"] not in {"WORKABLE", "WORKABLE_WITH_FRICTION", "STRAINED", "NATURAL_AFFINITY"}:
             raise FoundryError("NS1R_AUTHORITY_TARGET_SCHEMA_INVALID", "Compatibility adjudication outcome is not accepted.")
@@ -1288,14 +1884,27 @@ class NonSphereAuthorityService:
             interfaces = foundation.get("compatibility_traits", {}).get("repair_interfaces", [])
             matched = next((row for row in interfaces if row.get("tag") == targets["repair_interface"]), None)
             accepted = set((matched or {}).get("repair_practice_names") or foundation.get("repair_practice_names") or [])
-            if matched is None or targets["repair_practice_name"] not in accepted:
+            if matched is None:
+                raise FoundryError("NS1R_AUTHORITY_TARGET_UNKNOWN", "Authority event references an unknown Foundation repair interface.", details={"foundation_id": targets["foundation_id"], "repair_interface": targets["repair_interface"]})
+            if targets["repair_practice_name"] not in accepted:
                 raise FoundryError("NS1R_AUTHORITY_TARGET_RELATIONSHIP_INVALID", "Repair completion does not match the exact Foundation repair interface and practice.")
-        if authority_type == "transformation_completion" and targets["completion_type"] not in {"FOUNDATION_CHALLENGE", "GM_AUTHORED_TRANSFORMATION_EVENT"}:
-            raise FoundryError("NS1R_AUTHORITY_TARGET_SCHEMA_INVALID", "Transformation completion type is not accepted.")
+        if authority_type == "transformation_completion":
+            if targets["completion_type"] not in {"FOUNDATION_CHALLENGE", "GM_AUTHORED_TRANSFORMATION_EVENT"}:
+                raise FoundryError("NS1R_AUTHORITY_TARGET_SCHEMA_INVALID", "Transformation completion type is not accepted.")
+            routes = foundation_id and self.foundations[foundation_id].get("compatibility_traits", {}).get("transformation_routes", [])
+            if not any(row.get("tag") == targets["transformation_route"] for row in routes or []):
+                raise FoundryError("NS1R_AUTHORITY_TARGET_UNKNOWN", "Authority event references an unknown Foundation transformation route.", details={"foundation_id": foundation_id, "transformation_route": targets["transformation_route"]})
         if authority_type == "background_choice":
             if targets["background_id"] not in self.backgrounds:
                 raise FoundryError("NS1R_AUTHORITY_TARGET_UNKNOWN", "Authority event references an unknown background.")
             valid_routes = {row["background_route_record_id"] for row in self.background_route_authority[targets["background_id"]].get("route_options", [])}
+            unknown_routes = sorted(set(targets["route_ids"]) - valid_routes)
+            if unknown_routes:
+                raise FoundryError(
+                    "NS1R_AUTHORITY_TARGET_UNKNOWN",
+                    "Authority event references an unknown Background route.",
+                    details={"background_id": targets["background_id"], "route_ids": unknown_routes},
+                )
             if not set(targets["route_ids"]).issubset(valid_routes):
                 raise FoundryError("NS1R_AUTHORITY_TARGET_RELATIONSHIP_INVALID", "Background evidence references a route outside the exact background relationship.")
             # Lists in evidence semantics are sets unless the registered schema
@@ -1309,7 +1918,16 @@ class NonSphereAuthorityService:
             if not re.fullmatch(r"[a-f0-9]{64}", targets["catalog_record_commitment_sha256"]):
                 raise FoundryError("NS1R_AUTHORITY_TARGET_SCHEMA_INVALID", "Catalog record commitment must be an exact SHA-256 digest.")
             from canonical_catalog.service import CanonicalCatalogAuthorityService
-            talent = CanonicalCatalogAuthorityService(self.root).get_talent(targets["canonical_content_id"])
+            try:
+                talent = CanonicalCatalogAuthorityService(self.root).get_talent(targets["canonical_content_id"])
+            except FoundryError as exc:
+                if exc.code in {"CANONICAL_TALENT_NOT_FOUND", "CANONICAL_LEGACY_NON_TALENT"}:
+                    raise FoundryError(
+                        "NS1R_AUTHORITY_TARGET_UNKNOWN",
+                        "Authority event references an unknown canonical catalog record.",
+                        details={"canonical_content_id": targets["canonical_content_id"]},
+                    ) from None
+                raise
             if talent["record_commitment_sha256"] != targets["catalog_record_commitment_sha256"]:
                 raise FoundryError("NS1R_AUTHORITY_TARGET_STALE", "Catalog evidence targets a stale canonical Talent commitment.")
             predicate = next((row for row in talent["typed_prerequisites"] if row["predicate_id"] == targets["binding_id"]), None)
@@ -1400,106 +2018,413 @@ class NonSphereAuthorityService:
                 status_code=409,
             )
 
-    @staticmethod
-    def _record_contains_exact_id(document: Any, stable_id: str) -> bool:
-        if isinstance(document, dict):
-            return any(
-                (isinstance(value, str) and value == stable_id)
-                or NonSphereAuthorityService._record_contains_exact_id(value, stable_id)
-                for value in document.values()
-            )
-        if isinstance(document, list):
-            return any(NonSphereAuthorityService._record_contains_exact_id(value, stable_id) for value in document)
-        return False
-
     def _locked_target_bindings(self, conn, project_id: str, targets: dict[str, Any], lock_proof: dict[str, Any]) -> list[dict[str, Any]]:
         """Resolve the complete semantic target set through immutable project records.
 
         Every semantic role is retained even when multiple roles are embedded in
-        one parent record.  The relationship payload is canonical and independently
-        hashed, so caller ordering cannot alter evidence identity.
+        one parent record.  A role's relationship identity and its exact source
+        record identity are separate values: nested Foundation/Background
+        relationships bind their parent record, never an unrelated record that
+        happens to mention the nested ID.  The relationship payload is canonical
+        and independently hashed, so caller ordering cannot alter evidence
+        identity.
         """
-        identifiers: list[tuple[str, str, dict[str, Any]]] = []
-        def add(role: str, stable_id: str, relationship: dict[str, Any] | None = None) -> None:
-            identifiers.append((role, stable_id, relationship or {"role": role, "stable_id": stable_id}))
+        if not isinstance(targets, dict):
+            raise FoundryError(
+                "NS1R_AUTHORITY_TARGET_SCHEMA_INVALID",
+                "Authority target bindings must be resolved from an object.",
+                details={"supplied_type": type(targets).__name__},
+            )
+        for field in (
+            "method_id",
+            "path_id",
+            "selection_id",
+            "foundation_id",
+            "background_id",
+            "canonical_content_id",
+            "repair_interface",
+            "repair_practice_name",
+            "transformation_route",
+        ):
+            if field in targets and (
+                not isinstance(targets[field], str) or not targets[field].strip()
+            ):
+                raise FoundryError(
+                    "NS1R_AUTHORITY_TARGET_SCHEMA_INVALID",
+                    "Authority target IDs and nested relationship values must be non-empty stable strings.",
+                    details={"field": field, "value": targets[field]},
+                )
+        if "route_ids" in targets and (
+            not isinstance(targets["route_ids"], list)
+            or any(
+                not isinstance(route_id, str) or not route_id.strip()
+                for route_id in targets["route_ids"]
+            )
+        ):
+            raise FoundryError(
+                "NS1R_AUTHORITY_TARGET_SCHEMA_INVALID",
+                "Background route IDs must be non-empty stable strings.",
+                details={"field": "route_ids", "value": targets["route_ids"]},
+            )
+
+        identifiers: list[tuple[str, str, str, dict[str, Any]]] = []
+
+        def authority_lookup(mapping: dict[str, Any], value: Any, *, kind: str) -> Any:
+            if not isinstance(value, str) or not value.strip():
+                raise FoundryError(
+                    "NS1R_AUTHORITY_TARGET_SCHEMA_INVALID",
+                    f"Authority target {kind} must be a non-empty stable ID.",
+                    details={"target": kind, "value": value},
+                )
+            result = mapping.get(value)
+            if result is None:
+                raise FoundryError(
+                    "NS1R_AUTHORITY_TARGET_UNKNOWN",
+                    f"Authority event references an unknown {kind}.",
+                    details={f"{kind}_id": value},
+                )
+            return result
+
+        def add(
+            role: str,
+            stable_id: str,
+            source_record_id: str,
+            relationship: dict[str, Any] | None = None,
+        ) -> None:
+            identifiers.append((
+                role,
+                stable_id,
+                source_record_id,
+                relationship or {"role": role, "stable_id": stable_id},
+            ))
 
         if isinstance(targets.get("method_id"), str):
-            mid=targets["method_id"]; add("method", mid, {"method_id":mid,"authority":self.methods[mid]})
+            mid = targets["method_id"]
+            method = authority_lookup(self.methods, mid, kind="Method")
+            add("method", mid, mid, {"method_id": mid, "authority": method})
         if isinstance(targets.get("path_id"), str):
-            pid=targets["path_id"]; add("path", pid, {"path_id":pid,"authority":self.path_profiles[pid]})
+            pid = targets["path_id"]
+            path = authority_lookup(self.path_profiles, pid, kind="Path")
+            add("path", pid, pid, {"path_id": pid, "authority": path})
         if isinstance(targets.get("selection_id"), str):
-            sid=targets["selection_id"]; choice=self.subpaths[sid]
-            add("restricted_selection", sid, {"selection_id":sid,"owning_path_id":choice["owning_path_id"],"authority":choice})
+            sid = targets["selection_id"]
+            choice = authority_lookup(self.subpaths, sid, kind="Subpath or Tradition")
+            add(
+                "restricted_selection",
+                sid,
+                sid,
+                {"selection_id": sid, "owning_path_id": choice["owning_path_id"], "authority": choice},
+            )
         if isinstance(targets.get("foundation_id"), str):
-            fid=targets["foundation_id"]; foundation=self.foundations[fid]
-            add("foundation", fid, {"foundation_id":fid,"authority":foundation})
+            fid = targets["foundation_id"]
+            foundation = authority_lookup(self.foundations, fid, kind="Foundation")
+            add("foundation", fid, fid, {"foundation_id": fid, "authority": foundation})
             if targets.get("repair_interface"):
-                interface=next(row for row in foundation.get("compatibility_traits",{}).get("repair_interfaces",[]) if row.get("tag")==targets["repair_interface"])
-                add("repair_interface", fid, {"foundation_id":fid,"repair_interface":interface})
+                if not isinstance(targets["repair_interface"], str) or not targets["repair_interface"].strip():
+                    raise FoundryError(
+                        "NS1R_AUTHORITY_TARGET_SCHEMA_INVALID",
+                        "Foundation repair interface must be a non-empty stable ID.",
+                        details={"foundation_id": fid, "repair_interface": targets["repair_interface"]},
+                    )
+                interface = next((
+                    row
+                    for row in foundation.get("compatibility_traits", {}).get("repair_interfaces", [])
+                    if row.get("tag") == targets["repair_interface"]
+                ), None)
+                if interface is None:
+                    raise FoundryError(
+                        "NS1R_AUTHORITY_TARGET_UNKNOWN",
+                        "Authority event references an unknown Foundation repair interface.",
+                        details={"foundation_id": fid, "repair_interface": targets["repair_interface"]},
+                    )
+                add(
+                    "repair_interface",
+                    targets["repair_interface"],
+                    fid,
+                    {"foundation_id": fid, "repair_interface": interface},
+                )
             if targets.get("repair_practice_name"):
-                add("repair_practice", fid, {"foundation_id":fid,"repair_interface":targets.get("repair_interface"),"repair_practice_name":targets["repair_practice_name"]})
+                if not isinstance(targets["repair_practice_name"], str) or not targets["repair_practice_name"].strip():
+                    raise FoundryError(
+                        "NS1R_AUTHORITY_TARGET_SCHEMA_INVALID",
+                        "Foundation repair practice must be a non-empty stable name.",
+                        details={"foundation_id": fid, "repair_practice_name": targets["repair_practice_name"]},
+                    )
+                if not targets.get("repair_interface"):
+                    raise FoundryError(
+                        "NS1R_AUTHORITY_TARGET_SCHEMA_INVALID",
+                        "A Foundation repair practice target requires its exact repair interface target.",
+                        details={"foundation_id": fid, "repair_practice_name": targets["repair_practice_name"]},
+                    )
+                matched_interface = next(
+                    row
+                    for row in foundation.get("compatibility_traits", {}).get("repair_interfaces", [])
+                    if row.get("tag") == targets["repair_interface"]
+                )
+                accepted = set(
+                    matched_interface.get("repair_practice_names")
+                    or foundation.get("repair_practice_names")
+                    or []
+                )
+                if targets["repair_practice_name"] not in accepted:
+                    raise FoundryError(
+                        "NS1R_AUTHORITY_TARGET_RELATIONSHIP_INVALID",
+                        "Repair completion does not match the exact Foundation repair interface and practice.",
+                        details={"foundation_id": fid, "repair_interface": targets["repair_interface"], "repair_practice_name": targets["repair_practice_name"]},
+                    )
+                add(
+                    "repair_practice",
+                    targets["repair_practice_name"],
+                    fid,
+                    {
+                        "foundation_id": fid,
+                        "repair_interface": targets.get("repair_interface"),
+                        "repair_practice_name": targets["repair_practice_name"],
+                    },
+                )
+            elif targets.get("repair_interface"):
+                raise FoundryError(
+                    "NS1R_AUTHORITY_TARGET_SCHEMA_INVALID",
+                    "A Foundation repair interface target requires its exact repair practice target.",
+                    details={"foundation_id": fid, "repair_interface": targets["repair_interface"]},
+                )
             if targets.get("transformation_route"):
-                add("transformation_route", fid, {"foundation_id":fid,"transformation_route":targets["transformation_route"],"completion_type":targets.get("completion_type")})
+                if not isinstance(targets["transformation_route"], str) or not targets["transformation_route"].strip():
+                    raise FoundryError(
+                        "NS1R_AUTHORITY_TARGET_SCHEMA_INVALID",
+                        "Foundation transformation route must be a non-empty stable ID.",
+                        details={"foundation_id": fid, "transformation_route": targets["transformation_route"]},
+                    )
+                routes = foundation.get("compatibility_traits", {}).get("transformation_routes", [])
+                if not any(row.get("tag") == targets["transformation_route"] for row in routes or []):
+                    raise FoundryError(
+                        "NS1R_AUTHORITY_TARGET_UNKNOWN",
+                        "Authority event references an unknown Foundation transformation route.",
+                        details={"foundation_id": fid, "transformation_route": targets["transformation_route"]},
+                    )
+                add(
+                    "transformation_route",
+                    targets["transformation_route"],
+                    fid,
+                    {
+                        "foundation_id": fid,
+                        "transformation_route": targets["transformation_route"],
+                        "completion_type": targets.get("completion_type"),
+                    },
+                )
         if isinstance(targets.get("background_id"), str):
-            bid=targets["background_id"]; add("background", bid, {"background_id":bid,"authority":self.backgrounds[bid]})
-            route_by_id={r["background_route_record_id"]:r for r in self.background_route_authority[bid].get("route_options",[])}
-            for route_id in sorted(targets.get("route_ids") or []):
-                add("background_route", route_id, {"background_id":bid,"route_id":route_id,"relationship":route_by_id[route_id]})
+            bid = targets["background_id"]
+            background = authority_lookup(self.backgrounds, bid, kind="Background")
+            add("background", bid, bid, {"background_id": bid, "authority": background})
+            route_authority = self.background_route_authority.get(bid)
+            if not isinstance(route_authority, dict):
+                raise FoundryError(
+                    "NS1R_AUTHORITY_TARGET_UNKNOWN",
+                    "Authority event references a Background without route authority.",
+                    details={"background_id": bid},
+                )
+            route_ids = targets.get("route_ids")
+            if not isinstance(route_ids, list) or any(not isinstance(route_id, str) or not route_id.strip() for route_id in route_ids):
+                raise FoundryError(
+                    "NS1R_AUTHORITY_TARGET_SCHEMA_INVALID",
+                    "Background route IDs must be non-empty stable IDs.",
+                    details={"background_id": bid, "route_ids": route_ids},
+                )
+            route_by_id = {
+                r["background_route_record_id"]: r
+                for r in route_authority.get("route_options", [])
+            }
+            for route_id in sorted(route_ids):
+                route = route_by_id.get(route_id)
+                if route is None:
+                    raise FoundryError(
+                        "NS1R_AUTHORITY_TARGET_UNKNOWN",
+                        "Authority event references an unknown Background route.",
+                        details={"background_id": bid, "route_id": route_id},
+                    )
+                add(
+                    "background_route",
+                    route_id,
+                    bid,
+                    {"background_id": bid, "route_id": route_id, "relationship": route},
+                )
         if isinstance(targets.get("canonical_content_id"), str):
             cid = targets["canonical_content_id"]
-            add("canonical_talent", cid, {
-                "canonical_content_id": cid,
-                "binding_type": targets.get("binding_type"),
-                "binding_id": targets.get("binding_id"),
-                "catalog_record_commitment_sha256": targets.get("catalog_record_commitment_sha256"),
-            })
+            from canonical_catalog.service import CanonicalCatalogAuthorityService
+            try:
+                talent = CanonicalCatalogAuthorityService(self.root).get_talent(cid)
+            except FoundryError:
+                raise FoundryError(
+                    "NS1R_AUTHORITY_TARGET_UNKNOWN",
+                    "Authority event references an unknown canonical catalog record.",
+                    details={"canonical_content_id": cid},
+                ) from None
+            add(
+                "canonical_talent",
+                cid,
+                cid,
+                {
+                    "canonical_content_id": cid,
+                    "binding_type": targets.get("binding_type"),
+                    "binding_id": targets.get("binding_id"),
+                    "catalog_record_commitment_sha256": targets.get("catalog_record_commitment_sha256"),
+                },
+            )
 
-        rows = [dict(row) for row in conn.execute(
-            """SELECT r.record_id,r.pack_id,r.pack_version,r.record_hash,r.record_json,l.pack_hash
-               FROM project_locked_records r
-               JOIN project_content_locks l ON l.project_id=r.project_id AND l.pack_id=r.pack_id AND l.version=r.pack_version
-               WHERE r.project_id=? ORDER BY r.record_id""", (project_id,)
-        )]
+        from project_store.service import ProjectStore
+
+        store = ProjectStore(self.db)
+        reconstructable_roles = {
+            "method",
+            "path",
+            "restricted_selection",
+            "foundation",
+            "repair_interface",
+            "repair_practice",
+            "transformation_route",
+            "background",
+            "background_route",
+        }
         bindings: list[dict[str, Any]] = []
-        for role, stable_id, relationship in identifiers:
-            matches=[]
-            for row in rows:
-                try: doc=json.loads(row["record_json"])
-                except Exception: continue
-                if row["record_id"] == stable_id or self._record_contains_exact_id(doc, stable_id): matches.append(row)
-            if not matches and role == "method":
-                # Exact initial Methods can be authenticated by the project
-                # access plan and the non-sphere registry without pretending
-                # they are members of the ordinary HF2 catalog pack.
-                from project_store.service import ProjectStore
-
-                fallback = ProjectStore(self.db)._resolve_locked_record_after_proof(conn, project_id, stable_id)
+        for role, stable_id, source_record_id, relationship in identifiers:
+            # The record ID is the only source identity accepted here.  A
+            # nested relationship (for example a repair practice) deliberately
+            # uses its parent Foundation/Background record ID.  Never search
+            # arbitrary record fields: a bundle or unrelated record may mention
+            # the same stable ID without being that authority record.
+            exact_rows = [dict(row) for row in conn.execute(
+                """SELECT r.record_id,r.pack_id,r.pack_version,r.record_hash,r.record_json,l.pack_hash
+                   FROM project_locked_records r
+                   JOIN project_content_locks l ON l.project_id=r.project_id AND l.pack_id=r.pack_id AND l.version=r.pack_version
+                   WHERE r.project_id=? AND r.record_id=?""",
+                (project_id, source_record_id),
+            ).fetchall()]
+            if len(exact_rows) > 1:
+                raise FoundryError(
+                    "NS1R_LOCKED_TARGET_RESOLUTION_FAILED",
+                    "Authority target has more than one exact immutable project-locked record.",
+                    details={
+                        "project_id": project_id,
+                        "role": role,
+                        "stable_id": stable_id,
+                        "source_record_id": source_record_id,
+                        "matches": [row["record_id"] for row in exact_rows],
+                    },
+                )
+            row = exact_rows[0] if exact_rows else None
+            if row is None and role in reconstructable_roles:
+                # The caller has already proved the complete project lock above.
+                # This resolver may reconstruct only an authenticated
+                # project-bound non-Sphere record; it is never a live-catalog
+                # fallback and its returned identity must remain exact.
+                fallback = store._resolve_locked_record_after_proof(
+                    conn,
+                    project_id,
+                    source_record_id,
+                    authority_service=self,
+                )
                 if fallback is not None:
+                    if fallback.get("record_id") != source_record_id:
+                        raise FoundryError(
+                            "NS1R_LOCKED_TARGET_RESOLUTION_FAILED",
+                            "Proof-bound authority reconstruction returned a different record identity.",
+                            details={
+                                "project_id": project_id,
+                                "role": role,
+                                "stable_id": stable_id,
+                                "source_record_id": source_record_id,
+                                "resolved_record_id": fallback.get("record_id"),
+                            },
+                        )
                     binding = fallback["content_binding"]
-                    matches.append({
+                    row = {
                         "record_id": fallback["record_id"],
                         "pack_id": binding["pack_id"],
                         "pack_version": binding["pack_version"],
                         "record_hash": fallback["record_hash"],
                         "record_json": canonical_json(fallback),
                         "pack_hash": binding["pack_hash"],
-                    })
-            if len(matches) != 1:
-                raise FoundryError("NS1R_LOCKED_TARGET_RESOLUTION_FAILED", "Authority target must resolve to exactly one immutable project-locked record.", details={"project_id":project_id,"role":role,"stable_id":stable_id,"matches":[r["record_id"] for r in matches]})
-            row=matches[0]
-            locked_doc=json.loads(row["record_json"])
+                    }
+            if row is None:
+                raise FoundryError(
+                    "NS1R_LOCKED_TARGET_RESOLUTION_FAILED",
+                    "Authority target must resolve to exactly one immutable project-locked record.",
+                    details={
+                        "project_id": project_id,
+                        "role": role,
+                        "stable_id": stable_id,
+                        "source_record_id": source_record_id,
+                        "matches": [],
+                    },
+                )
+            if row["record_id"] != source_record_id:
+                raise FoundryError(
+                    "NS1R_LOCKED_TARGET_RESOLUTION_FAILED",
+                    "Authority target resolved to a record with a different immutable source identity.",
+                    details={
+                        "project_id": project_id,
+                        "role": role,
+                        "stable_id": stable_id,
+                        "source_record_id": source_record_id,
+                        "resolved_record_id": row["record_id"],
+                    },
+                )
+            try:
+                locked_doc = json.loads(row["record_json"])
+            except (TypeError, json.JSONDecodeError) as exc:
+                raise FoundryError(
+                    "NS1R_LOCKED_TARGET_HASH_DRIFT",
+                    "A project-locked authority record is not valid canonical JSON.",
+                    details={"project_id": project_id, "record_id": source_record_id},
+                ) from exc
+            if not isinstance(locked_doc, dict):
+                raise FoundryError(
+                    "NS1R_LOCKED_TARGET_HASH_DRIFT",
+                    "A project-locked authority record must be a JSON object.",
+                    details={"project_id": project_id, "record_id": source_record_id},
+                )
+            if locked_doc.get("record_id") != source_record_id:
+                raise FoundryError(
+                    "NS1R_LOCKED_TARGET_RESOLUTION_FAILED",
+                    "The immutable authority record body does not match its exact source identity.",
+                    details={
+                        "project_id": project_id,
+                        "role": role,
+                        "stable_id": stable_id,
+                        "source_record_id": source_record_id,
+                        "record_body_id": locked_doc.get("record_id"),
+                    },
+                )
             # The exact immutable bytes are independently rehashed at use time.
             if canonical_record_hash(locked_doc) != row["record_hash"]:
-                raise FoundryError("NS1R_LOCKED_TARGET_HASH_DRIFT", "A project-locked authority record no longer matches its immutable hash.", details={"record_id":row["record_id"]})
-            relationship_hash=sha256_json(relationship)
+                raise FoundryError(
+                    "NS1R_LOCKED_TARGET_HASH_DRIFT",
+                    "A project-locked authority record no longer matches its immutable hash.",
+                    details={"record_id": row["record_id"]},
+                )
+            relationship_hash = sha256_json(relationship)
             bindings.append({
-                "role":role,"relationship_id":f"{role}:{stable_id}","relationship_hash":relationship_hash,
-                "record_id":row["record_id"],"record_hash":row["record_hash"],"pack_id":row["pack_id"],
-                "pack_version":row["pack_version"],"pack_hash":row["pack_hash"],"source_id":row["record_id"],
-                "source_hash":row["record_hash"],
-                "source_anchor":("non_sphere_authority_registry" if row["pack_id"] == "tianxia.non_sphere.authority" else "project_locked_records"),
-                "source_path":(("non_sphere_authority/authority/" + row["record_id"]) if row["pack_id"] == "tianxia.non_sphere.authority" else "project_locked_records/" + row["record_id"]),
-                "causal_event_id":None,
+                "role": role,
+                "relationship_id": f"{role}:{stable_id}",
+                "relationship_hash": relationship_hash,
+                "record_id": row["record_id"],
+                "record_hash": row["record_hash"],
+                "pack_id": row["pack_id"],
+                "pack_version": row["pack_version"],
+                "pack_hash": row["pack_hash"],
+                "source_id": row["record_id"],
+                "source_hash": row["record_hash"],
+                "source_anchor": (
+                    "non_sphere_authority_registry"
+                    if row["pack_id"] == "tianxia.non_sphere.authority"
+                    else "project_locked_records"
+                ),
+                "source_path": (
+                    "non_sphere_authority/authority/" + row["record_id"]
+                    if row["pack_id"] == "tianxia.non_sphere.authority"
+                    else "project_locked_records/" + row["record_id"]
+                ),
+                "causal_event_id": None,
             })
         if not bindings:
             raise FoundryError("NS1R_LOCKED_TARGET_BINDING_REQUIRED", "Authority events require at least one exact locked target binding.")
@@ -2472,7 +3397,20 @@ class NonSphereAuthorityService:
         ledger={"evidence":evidence,"ap_consumptions":consumptions}
         return {"schema":"Tianxia.NonSphereStateExport.v2","state":state,"state_hash":sha256_json(state),"authority_snapshot_hash":self.authority_snapshot_hash,"evidence_ledger":ledger,"evidence_ledger_hash":sha256_json(ledger)}
 
-    def validate_import_payload(self, project_id: str, payload: dict[str, Any]) -> tuple[dict[str, Any], str, dict[str, Any]]:
+    def validate_import_payload(
+        self,
+        project_id: str,
+        payload: dict[str, Any],
+        *,
+        project_document: dict[str, Any] | None = None,
+        _project_document_authority: object | None = None,
+    ) -> tuple[dict[str, Any], str, dict[str, Any]]:
+        if project_document is not None and _project_document_authority is not _TRUSTED_PROJECT_IMPORT_BOUNDARY:
+            raise FoundryError(
+                "NS1R_IMPORTED_PROJECT_DOCUMENT_FORBIDDEN",
+                "Imported trusted provenance may use a project document only at the authenticated project-import boundary.",
+                status_code=403,
+            )
         if payload.get("schema")!="Tianxia.NonSphereStateExport.v2" or payload.get("authority_snapshot_hash")!=self.authority_snapshot_hash:
             raise FoundryError("NS1R_IMPORTED_STATE_AUTHORITY_MISMATCH","Imported non-Sphere state uses an unsupported authority identity.")
         state=deepcopy(payload.get("state")); ledger=payload.get("evidence_ledger")
@@ -2586,6 +3524,7 @@ class NonSphereAuthorityService:
             deepcopy(state),
             operation="validate_import_payload",
             prevalidated_access_records=imported_access_records,
+            project_document=project_document,
         )
         authority_fields=("paths","primary_method_id","known_method_ids","foundation_id","compatibility_result","revision")
         readiness_fields=("status","ready","blockers","warnings","blocker_count","warning_count","authority_snapshot_hash")

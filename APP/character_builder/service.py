@@ -12,6 +12,7 @@ from canonical_catalog import CanonicalCatalogAuthorityService
 from content_packs.service import ContentPackManager
 from project_store.service import ProjectStore
 from non_sphere_authority import NonSphereAuthorityService
+from non_sphere_authority.service import _TRUSTED_INITIAL_CREATION_BOUNDARY
 from path_method_authority import (
     CANONICAL_PATH_IDS,
     compatibility_envelope,
@@ -28,7 +29,11 @@ POINT_BUY_BUDGET = 27
 
 CATEGORY_CONFIG: tuple[dict[str, Any], ...] = (
     {"slot_id": "path_choice", "label": "Advancing Path Requirements", "kind": "multi", "max": 3},
-    {"slot_id": "subpath_choice", "label": "Subpath or Tradition", "kind": "single", "max": 1},
+    # A character may bind one Subpath/Tradition to each selected Path.  The
+    # owner surface and the Stage 1 envelope both preserve this as an ordered
+    # multi-selection; the per-Path uniqueness rule is checked below rather
+    # than collapsing the selection to one global "primary" Subpath.
+    {"slot_id": "subpath_choice", "label": "Subpaths or Traditions", "kind": "multi", "max": 3},
     {"slot_id": "background_choice", "label": "Background", "kind": "single", "max": 1},
     {"slot_id": "background_sphere_choice", "label": "Background Sphere", "kind": "single", "max": 1},
     {"slot_id": "background_talent_choice", "label": "Background Talent", "kind": "single", "max": 1},
@@ -638,9 +643,14 @@ class CharacterBuilderService:
                 "description": row.get("identity", {}).get("primary_role") or row.get("identity", {}).get("identity") or row["display_name"],
                 "content_type": row["option_type"], "option_type": row["option_type"],
                 "owning_path_name": row["owning_path_name"],
+                # Subpath ownership is an explicit typed relation.  It is not
+                # a generic catalog relationship and must never be recovered
+                # from dependencies or a related-choice list at validation.
+                "owning_path_id": row["owning_path_id"],
+                "owning_path_choice_ids": [row["owning_path_id"]],
+                "parent_relationships": [{"relation": "path_ownership", "record_id": row["owning_path_id"]}],
                 "minimum_cl": int(row.get("minimum_cl") or 3),
                 "pack_id": CORE_PACK_ID, "pack_version": CORE_PACK_VERSION,
-                "related_choice_ids": [row["owning_path_id"]], "owning_path_choice_ids": [row["owning_path_id"]],
                 "access": deepcopy(row["access"]), "ns1r_authority": deepcopy(row), "canonical_non_sphere_authority": True,
             } for row in authority.subpath_catalog()["records"]]
             subpath_category["status"] = "offered"
@@ -656,12 +666,36 @@ class CharacterBuilderService:
                 "content_type": "method", "minimum_cl": None,
                 "pack_id": CORE_PACK_ID, "pack_version": CORE_PACK_VERSION,
                 "related_choice_ids": [],
-                "initial_creation_selectable": bool(row.get("initial_creation_selectable")),
-                "initial_creation_unavailable_reason": row.get("initial_creation_unavailable_reason"),
-                "method_planning": deepcopy(row["method_planning"]),
-                "ns1r_disposition": deepcopy(row["disposition"]), "ns1r_authority": deepcopy(row),
-                "canonical_non_sphere_authority": True,
-            } for row in authority.method_catalog(initial_creation=True)["records"]]
+                 "initial_creation_selectable": bool(row.get("initial_creation_selectable")),
+                 "initial_creation_unavailable_reason": row.get("initial_creation_unavailable_reason"),
+                 "method_planning": deepcopy(row["method_planning"]),
+                  "method_access": {
+                       "schema": "TianxiaFoundry.MethodAccessProjection.v1",
+                       "initial_creation_selectable": bool(row.get("initial_creation_selectable")),
+                       "direct_access": bool(row.get("initial_creation_selectable")),
+                       "access_required": not bool(row.get("initial_creation_selectable")),
+                       "route_configurable": bool(row.get("route_configurable")),
+                       "access_authorized": bool(row.get("access_authorized")),
+                       "exact_access_record_present": bool(row.get("exact_access_record_present")),
+                       "access_tier": (row.get("method_planning") or {}).get("access_tier"),
+                      "access_text": (row.get("method_planning") or {}).get("access_text") or "",
+                      "exact_selection_available": bool((row.get("method_planning") or {}).get("exact_selection_available")),
+                      "exact_lock_configurable": bool((row.get("method_planning") or {}).get("exact_selection_available")),
+                      "owner_route_options": deepcopy((row.get("method_planning") or {}).get("owner_route_options") or []),
+                  },
+                   "direct_access": bool(row.get("initial_creation_selectable")),
+                   "access_required": not bool(row.get("initial_creation_selectable")),
+                   "route_configurable": bool(row.get("route_configurable")),
+                   "access_authorized": bool(row.get("access_authorized")),
+                   "exact_access_record_present": bool(row.get("exact_access_record_present")),
+                   "access_tier": (row.get("method_planning") or {}).get("access_tier"),
+                  "access_text": (row.get("method_planning") or {}).get("access_text") or "",
+                  "owner_route_options": deepcopy((row.get("method_planning") or {}).get("owner_route_options") or []),
+                  "exact_selection_available": bool((row.get("method_planning") or {}).get("exact_selection_available")),
+                  "exact_lock_configurable": bool((row.get("method_planning") or {}).get("exact_selection_available")),
+                  "ns1r_disposition": deepcopy(row["disposition"]), "ns1r_authority": deepcopy(row),
+                 "canonical_non_sphere_authority": True,
+             } for row in authority.method_catalog(initial_creation=True)["records"]]
             for choice in method_category["choices"]:
                 choice["related_choice_ids"] = [
                     {"BODY_REFINING": "tianxia.path.body_refining", "QI_CULTIVATION": "tianxia.path.qi_cultivation", "SPIRIT_AWAKENING": "tianxia.path.spirit_awakening"}[grant["path_id"]]
@@ -915,7 +949,11 @@ class CharacterBuilderService:
         path_ids = {choice["choice_id"] for choice in path_category.get("choices", [])}
         path_subpath_index: dict[str, list[str]] = {path_id: [] for path_id in sorted(path_ids)}
         for subpath in subpath_category.get("choices", []):
-            owning_path_ids = sorted(path_ids.intersection(subpath.get("related_choice_ids") or []))
+            # ``owning_path_id`` is the sole ownership authority.  The
+            # choice-id list is a presentation mirror and must not become a
+            # fallback when the explicit source field is absent or corrupt.
+            owner_path_id = subpath.get("owning_path_id")
+            owning_path_ids = [owner_path_id] if owner_path_id in path_ids else []
             subpath["owning_path_choice_ids"] = owning_path_ids
             for path_id in owning_path_ids:
                 path_subpath_index[path_id].append(subpath["choice_id"])
@@ -940,8 +978,11 @@ class CharacterBuilderService:
             "category_rules": {
                 "subpath_choice": {
                     "requires_slot": "path_choice",
-                    "empty_prompt": "Choose a Primary Path first.",
-                    "relationship_authority": "exact stable IDs from authoritative dependencies/owning_path_id",
+                    "empty_prompt": "Choose at least one Path before choosing Subpaths or Traditions.",
+                    "relationship_authority": "exact stable owning_path_id from authenticated Subpath authority",
+                    "max_selections": 3,
+                    "max_per_owning_path": 1,
+                    "binding_field": "owning_path_choice_ids",
                     "general_unlock_note": "Subpath availability follows the Path rules; no individual CL is shown unless the record has an authoritative minimum_cl.",
                 }
             },
@@ -970,12 +1011,14 @@ class CharacterBuilderService:
         return result
 
     def method_compatibility(self, selected_path_ids: list[str] | None = None) -> dict[str, Any]:
-        """Return only validator-confirmed initial-creation Methods.
+        """Return validator-confirmed Methods with access status kept separate.
 
         The browser must not reproduce the Method/Path predicate from visible
         option metadata.  This operation deliberately delegates canonical Path
         validation and compatibility to the same shared authority used by the
-        Builder and returns a bounded owner projection of the confirmed rows.
+        Builder and returns the complete compatible Method inventory.  Initial
+        acquisition access is exposed as metadata and is enforced separately
+        when an exact Method is selected.
         An empty requirement is legal: the Method route may choose the
         advancing Paths later.
         """
@@ -995,21 +1038,48 @@ class CharacterBuilderService:
         confirmed = []
         for method_id in envelope["compatible_method_ids"]:
             row = records.get(method_id)
-            if not row or row.get("initial_creation_selectable") is not True:
+            if not row:
                 continue
             granted = list(envelope["method_granted_path_ids"].get(method_id) or [])
+            planning = row.get("method_planning") or {}
+            direct_access = bool(row.get("initial_creation_selectable"))
+            access_required = not direct_access
+            exact_selection_available = bool(planning.get("exact_selection_available"))
+            route_configurable = bool(row.get("route_configurable"))
+            access_authorized = bool(row.get("access_authorized"))
+            exact_access_record_present = bool(row.get("exact_access_record_present"))
             confirmed.append({
                 "method_id": method_id,
                 "name": row.get("name") or method_id,
                 "supported_path_ids": granted,
                 "supported_paths": [display_names.get(path_id, path_id) for path_id in granted],
-                "initial_creation_selectable": True,
+                "initial_creation_selectable": direct_access,
+                "direct_access": direct_access,
+                "direct_access_status": "DIRECT_ACCESS" if direct_access else "ACCESS_REQUIRED",
+                "route_configurable": route_configurable,
+                "access_authorized": access_authorized,
+                "exact_access_record_present": exact_access_record_present,
+                "access_required": access_required,
+                "access_status": "direct" if direct_access else "owner_route_or_evidence_required",
+                "access_tier": planning.get("access_tier"),
+                "access_text": str(planning.get("access_text") or ""),
+                "owner_route_options": deepcopy(planning.get("owner_route_options") or []),
                 "owner_description": str(
-                    ((row.get("method_planning") or {}).get("access_text") or "")
+                    (planning.get("access_text") or "")
                 ).strip(),
+                "exact_selection_available": exact_selection_available,
+                "exact_lock_configurable": exact_selection_available,
                 "requirements": {
-                    "access_tier": (row.get("method_planning") or {}).get("access_tier"),
-                    "access_available": True,
+                    "direct_access": direct_access,
+                    "access_required": access_required,
+                    "access_tier": planning.get("access_tier"),
+                    "access_text": str(planning.get("access_text") or ""),
+                    "route_configurable": route_configurable,
+                    "access_authorized": access_authorized,
+                    "exact_access_record_present": exact_access_record_present,
+                    "owner_route_options": deepcopy(planning.get("owner_route_options") or []),
+                    "exact_selection_available": exact_selection_available,
+                    "exact_lock_configurable": exact_selection_available,
                 },
             })
         return {
@@ -1145,7 +1215,7 @@ class CharacterBuilderService:
         if subpath_ids and not path_ids:
             raise FoundryError(
                 "CHARACTER_SHEET_SUBPATH_REQUIRES_PATH",
-                "Choose a Primary Path before choosing a Subpath or Tradition.",
+                "Choose at least one Path before choosing a Subpath or Tradition.",
                 details={"subpath_id": subpath_ids[0]},
             )
         if path_ids and subpath_ids:
@@ -1153,7 +1223,9 @@ class CharacterBuilderService:
             subpath_by_owner: dict[str, str] = {}
             for subpath_id in subpath_ids:
                 subpath = selected_choices[subpath_id]
-                owning_path_ids = set(subpath.get("related_choice_ids") or [])
+                owning_path_ids = {
+                    subpath.get("owning_path_id")
+                } if isinstance(subpath.get("owning_path_id"), str) else set()
                 matched = sorted(selected_path_set & owning_path_ids)
                 if len(matched) != 1:
                     raise FoundryError(
@@ -1962,6 +2034,7 @@ class CharacterBuilderService:
                 locked_choices, background_route_ids or {}, authority=NonSphereAuthorityService(self.db)
             ),
             trusted_initial_creation=True,
+            _initial_creation_authority=_TRUSTED_INITIAL_CREATION_BOUNDARY,
         )
         return {
             **result,
