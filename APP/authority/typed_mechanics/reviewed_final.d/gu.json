@@ -1,0 +1,1357 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_GRAVITY_EXTERNAL_WEIGHT_SHIFT": {
+      "text_sha256": "d3a5ee19537f1f2e9b08fed6f3bc24f6796701d6ba024bbca19d1170b5e1814d",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 1
+          }
+        ]
+      ],
+      "effects": [],
+      "options": [
+        {
+          "label": "Willing: Body Lightening",
+          "effects": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": 10,
+              "formula": "none",
+              "duration": "concentration",
+              "evidence": "Your Speed increases by 10 feet."
+            },
+            {
+              "type": "advantage",
+              "applies_to": "target",
+              "on": "Dexterity (Acrobatics) checks made to escape a Grapple or move across narrow, fragile, or unstable footing",
+              "duration": "concentration",
+              "evidence": "You gain Advantage on Dexterity (Acrobatics) checks made to escape a Grapple or move across narrow, fragile, or unstable footing."
+            }
+          ],
+          "riders": [
+            "Willing target only (the table does not check willingness).",
+            "Objects: the GM determines how increased or decreased weight affects doors, bridges, ropes, carts, armor, siege engines, or carried objects. Gravity does not automatically destroy objects without a talent that deals damage or causes structural stress."
+          ]
+        },
+        {
+          "label": "Willing: Body Heavying",
+          "effects": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -5,
+              "formula": "none",
+              "duration": "concentration",
+              "evidence": "Your Speed is reduced by 5 feet, to a minimum of 5 feet."
+            },
+            {
+              "type": "advantage",
+              "applies_to": "target",
+              "on": "resisting Shove, Grapple, forced movement, and effects that would knock you Prone",
+              "duration": "concentration",
+              "evidence": "You count as one size larger when resisting Shove, Grapple, forced movement, and effects that would knock you Prone."
+            }
+          ],
+          "riders": [
+            "Willing target only (the table does not check willingness).",
+            "Objects: the GM determines how increased or decreased weight affects doors, bridges, ropes, carts, armor, siege engines, or carried objects. Gravity does not automatically destroy objects without a talent that deals damage or causes structural stress."
+          ]
+        },
+        {
+          "label": "Unwilling: Burden",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "rider_repeat_group",
+                  "name": "Burden",
+                  "duration": "concentration",
+                  "effects": [
+                    {
+                      "type": "condition",
+                      "condition": "burdened",
+                      "applies_to": "target",
+                      "duration": "concentration",
+                      "repeat_save": {
+                        "ability": "STR",
+                        "when": "end"
+                      },
+                      "evidence": "At the end of each of its turns, it repeats the save, ending the effect on itself on a success."
+                    },
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -10,
+                      "formula": "none",
+                      "duration": "concentration",
+                      "evidence": "its Speed is reduced by 10 feet"
+                    },
+                    {
+                      "type": "disadvantage",
+                      "applies_to": "target",
+                      "on": "Strength (Athletics) and Dexterity (Acrobatics) checks",
+                      "duration": "concentration",
+                      "evidence": "it has Disadvantage on Strength (Athletics) and Dexterity (Acrobatics) checks"
+                    }
+                  ],
+                  "evidence": "On a failed save, its Speed is reduced by 10 feet, its jump distance is halved, and it has Disadvantage on Strength (Athletics) and Dexterity (Acrobatics) checks. At the end of each of its turns, it repeats the save, ending the effect on itself on a success."
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "speed",
+                  "applies_to": "target",
+                  "flat": -10,
+                  "formula": "none",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "its Speed is reduced by 10 feet until the start of its next turn"
+                }
+              ]
+            }
+          ],
+          "riders": [
+            "Unwilling target only. Jump-distance halving is not tracked (the table has no jump mechanic). The printed 'repeats the save at the end of each of its turns, ending the effect on itself on a success' is not modeled for a Speed penalty (the table's repeat-save machinery only re-rolls on a Condition, not a bare Speed change); the GM should end Burden's Speed penalty early on a successful Strength save if asked, or let the table's Concentration-duration stand in for it.",
+            "Objects: the GM determines how increased or decreased weight affects doors, bridges, ropes, carts, armor, siege engines, or carried objects. Gravity does not automatically destroy objects without a talent that deals damage or causes structural stress."
+          ]
+        },
+        {
+          "label": "Unwilling: Uplift",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [],
+              "on_success": []
+            }
+          ],
+          "riders": [
+            "Unwilling target only. On a failed save, the target's first movement on its next turn is unstable -- it must spend 10 feet of movement to remain grounded, or it rises 10 feet upward and then falls at the end of the turn if nothing holds it aloft. On a successful save, it rises only 5 feet or may immediately fall Prone to avoid the rise. Vertical position and falling are not modeled on this grid; the GM adjudicates the rise/fall and any fall damage.",
+            "Objects: the GM determines how increased or decreased weight affects doors, bridges, ropes, carts, armor, siege engines, or carried objects. Gravity does not automatically destroy objects without a talent that deals damage or causes structural stress."
+          ]
+        }
+      ],
+      "riders": [
+        "Choose one creature or object no larger than Large. If the target is willing, you may choose Body Lightening or Body Heavying for it. If the target is unwilling, choose Burden or Uplift.",
+        "Burden: its jump distance is halved (the table has no jumping).",
+        "Uplift: On a failed save, its first movement on its next turn is unstable: it must spend 10 feet of movement to remain grounded, or it rises 10 feet upward and then falls at the end of the turn if nothing holds it aloft. On a successful save, it rises only 5 feet or may immediately fall Prone to avoid the rise.",
+        "Objects: The GM determines how increased or decreased weight affects doors, bridges, ropes, carts, armor, siege engines, or carried objects. Gravity does not automatically destroy objects without a talent that deals damage or causes structural stress."
+      ]
+    },
+    "TAL_BRUTE_MUSCULAR_SURGE": {
+      "text_sha256": "cf99cd5a533023329d28d9872b0928e77c83f5f89911a7b2c86a7518689ae8b0",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [
+        {
+          "type": "state",
+          "name": "muscular_surge",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "label": "Muscular Surge (1 minute): you count as one size larger for the creatures you may Shove (Brutal Shove)",
+          "evidence": "For the duration: count as one size larger when determining which creatures you may Shove or Grapple (rider lane C16: combat/ext/brute_shove.py)"
+        },
+        {
+          "type": "condition",
+          "condition": "brute_muscular_surge_grapple_size",
+          "applies_to": "self",
+          "condition_data": {
+            "brute_grapple_steps": 1,
+            "brute_surge_gate": 1,
+            "label": "Muscular Surge: counts 1 size larger for Grapple while this ability lasts"
+          },
+          "evidence": "count as one size larger for Grapple"
+        }
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": "You are not Exhausted.",
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Psych yourself into a larger expression of strength.",
+        "add your Proficiency Bonus to your Strength score only when determining carrying capacity",
+        "add your Proficiency Bonus to your running long-jump distance",
+        "This Advantage does not apply to an attack roll or a contested check.",
+        "When Muscular Surge ends for any reason, you gain one temporary level of Exhaustion for 10 minutes. That temporary level ends when the 10 minutes expire and does not remove any other Exhaustion you possess. You cannot activate Muscular Surge while you have any level of Exhaustion.",
+        "GM: choose before an eligible non-contested Strength check whether to end Muscular Surge for Advantage; that per-check choice and its separately owned ten-minute Exhaustion level need a strict check/expiry lifecycle."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": {
+        "text": "Self"
+      }
+    },
+    "TAL_SAND_SAND_SHELL": {
+      "text_sha256": "fb7b68a36a2568b037d03f53ada9d5f76b20836503bbd23eee5a907df0614d3f",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [
+        {
+          "type": "temp_hp",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "you gain Temporary HP equal to your Proficiency Bonus",
+          "origin": "model_v2"
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "+ your key ability modifier",
+          "origin": "model_v2"
+        },
+        {
+          "type": "damage",
+          "applies_to": "attacker",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [
+            "slashing"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "the first creature that hits you with a melee attack on each round takes Slashing damage equal to your Proficiency Bonus",
+          "origin": "model_v2"
+        },
+        {
+          "type": "temp_hp",
+          "dice": null,
+          "formula": "text:your proficiency bonus + your key ability modifier",
+          "evidence": "gain Temporary HP equal to your Proficiency Bonus + your key ability modifier",
+          "origin": "parser"
+        },
+        {
+          "type": "state",
+          "name": "sand_shell",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "label": "Sand Shell: while its Temporary HP last, the first creature to hit it in melee each round takes Slashing damage",
+          "evidence": "While any of these Temporary HP remain, the first creature that hits you with a melee attack on each round takes Slashing damage equal to your Proficiency Bonus."
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": false,
+        "limit": "once_per_round",
+        "group": "",
+        "precondition": "the first creature that hits you with a melee attack on each round",
+        "effects": [
+          {
+            "type": "damage",
+            "applies_to": "attacker",
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [
+              "slashing"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "takes Slashing damage equal to your Proficiency Bonus",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "GM: the shell also ends early if you are submerged in water or restrained in a sealed fluid medium (losing its Temporary HP is automated)."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_SAND_SAND_COFFIN": {
+      "text_sha256": "2602ff3bdc4c53fb9064f2a7e6a30560302f677a1be87fdf2cacfa3f74e7cb0e",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str_or_con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "restrained",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_end_of_your_next_turn",
+              "evidence": "the target is Restrained",
+              "origin": "model_v2"
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "condition": "silenced",
+              "duration": "until_end_of_your_next_turn"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_your_next_turn",
+              "evidence": "it cannot take Reactions until the start of your next turn",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "until_end_of_turn",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One Buried creature in Sand Terrain you control"
+      },
+      "description": [
+        "This does not automatically suffocate the target."
+      ]
+    },
+    "TAL_WRESTLING_MOUNTAIN_CRASHING_SUPLEX": {
+      "text_sha256": "765f32be9f36055bbcc7c2c14416f299065d76a99fdb3aa17b6fa342d7182d5b",
+      "reviewed_by": "w4-roster 2026-09-28; Claude riders/c2 2026-09-30",
+      "effects": [
+        {
+          "type": "wrestling_release",
+          "applies_to": "target",
+          "evidence": "End the grapple"
+        },
+        {
+          "type": "damage",
+          "applies_to": "target",
+          "dice": {
+            "count": 3,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [
+            "bludgeoning"
+          ],
+          "ability": "str",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "3d8 + Strength modifier Bludgeoning damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "condition",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "prone",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "becomes Prone",
+          "origin": "model_v2"
+        },
+        {
+          "type": "forced_movement",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "instant",
+          "evidence": "slam the target into one legal space within 10 feet",
+          "origin": "model"
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Prerequisite: CL 7+",
+        "Mountain-Crashing Suplex does not automatically damage artifacts, Formation cores, or Realm-defining structures."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature Grappled by you",
+        "requires_condition": "grappled"
+      }
+    },
+    "TAL_BRUTE_TERRAIN_TRASHER": {
+      "text_sha256": "664eca5cdb8f8c5e00b0788738dcd15a71d6f631676a69899b99f2a46171400f",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Prerequisite: CL 10+",
+        "Grab a solid surface within reach and attempt to destroy it.",
+        "The surface must be: a wall; door; floor; barrier section; comparable solid structure.",
+        "It cannot be: loose dirt; liquid; iron or harder material without a specific enabling feature; an artifact; a Formation core; a Realm-defining structure.",
+        "Make: DC 10 Strength check",
+        "Success: Tear out a section approximately your own size.",
+        "Against a surface thicker than 1 foot, destroy only 1 foot of thickness per use."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "BRUTE_BASE_BRUTAL_SHOVE": {
+      "text_sha256": "69f76e0b4497f838d437d86f8379727ad947249ccb306114107c1bf713f9eca2",
+      "reviewed_by": "w4-roster 2026-09-28; Claude riders/c13 2026-09-30; rider lane C16 2026-09-30 (Athletics contest: combat/ext/brute_shove.py)",
+      "effects": [
+        {
+          "type": "brutal_shove",
+          "applies_to": "target",
+          "harmful": true,
+          "success_branch": true,
+          "on_success": [],
+          "evidence": "Make: Strength (Athletics) contested by the target's Strength (Athletics) or Dexterity (Acrobatics). The target chooses its skill. Success: Choose to push the target 5 feet away or give it the Prone condition. Then: move it an additional 5 feet for every 5 points by which your Athletics check exceeds its opposing check; apply this additional movement even when you chose Prone; deal Bludgeoning damage equal to your Strength modifier, minimum 0; apply one Manhandle talent you know. Unless a talent says otherwise, Brutal Shove obeys the normal size limit above.",
+          "auto51_strength_score": true
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Brutal Shove is a sphere-specific maneuver. It is not the ordinary 2024 Shove option.",
+        "Replace one attack when you take the Attack action."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature no more than one size larger than you"
+      }
+    },
+    "HUNGER_BASE_REFINE_THE_MEAL": {
+      "text_sha256": "4fa788ed64c9412d48970caf6027bb310b92b0e209486cd8a98204ef03df96ef",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [
+        {
+          "type": "gain_resource",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "gain 1 Satiety charge tied to the meal source",
+          "origin": "model_v2"
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "gain Temporary HP equal to your Proficiency Bonus",
+          "origin": "model_v2"
+        },
+        {
+          "type": "temp_hp",
+          "dice": null,
+          "formula": "pb",
+          "evidence": "gain Temporary HP equal to your Proficiency Bonus",
+          "origin": "parser"
+        }
+      ],
+      "activation": {
+        "economy": "special",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "Make a Hunger Check. Common Portion DC 12. Notable Portion DC 15. Mighty Portion DC 18. Corrupted Portion increases the DC by 2. A portion from a creature above your Realm increases the DC by 2",
+        "reduce Impurity by 1",
+        "the next Digestive Mantle using this Satiety costs 0 CP",
+        "learn one harmless sensory memory from the ingredient",
+        "Failure: you do not gain Satiety. The ingredient is consumed",
+        "Failure by 5 or More: you do not gain Satiety and gain 1 Impurity"
+      ],
+      "range": {
+        "kind": "touch",
+        "feet": 5
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "1 CP, plus the ingredient"
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One Essence Portion, prepared meal, spiritual ingredient, or suitable corpse portion"
+      }
+    },
+    "HUNGER_BASE_TASTE_THE_QI": {
+      "text_sha256": "8361381f5bff47c0f3491b90e488ea0a2a4487e2abfad2cb27ded812090dd053",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [],
+      "options": [
+        {
+          "label": "Read an openly shown nature",
+          "effects": [],
+          "riders": [
+            "No roll: the GM supplies the answer to your chosen Taste the Qi question. This does not reveal secret names, full statistics or hidden information."
+          ]
+        },
+        {
+          "label": "Unwilling, concealed nature: oppose Charisma",
+          "effects": [
+            {
+              "type": "contest_against",
+              "harmful": true,
+              "applies_to": "target",
+              "actor_check": {
+                "kind": "cultivation",
+                "label": "Hunger Check"
+              },
+              "target_check": {
+                "kind": "save",
+                "ability": "CHA",
+                "label": "Charisma saving throw"
+              },
+              "on_success": [],
+              "on_fail": []
+            }
+          ],
+          "riders": [
+            "Use only for an unwilling creature actively concealing its nature, when the GM chooses Charisma. The table rolls both sides. Success: the GM answers your chosen Taste the Qi question. Failure or tie: learn only whether it is spiritually nourishing or dangerous. No CP cost; the reading lasts until the end of your next turn."
+          ]
+        },
+        {
+          "label": "Unwilling, concealed nature: oppose Constitution",
+          "effects": [
+            {
+              "type": "contest_against",
+              "harmful": true,
+              "applies_to": "target",
+              "actor_check": {
+                "kind": "cultivation",
+                "label": "Hunger Check"
+              },
+              "target_check": {
+                "kind": "save",
+                "ability": "CON",
+                "label": "Constitution saving throw"
+              },
+              "on_success": [],
+              "on_fail": []
+            }
+          ],
+          "riders": [
+            "Use only for an unwilling creature actively concealing its nature, when the GM chooses Constitution. The table rolls both sides. Success: the GM answers your chosen Taste the Qi question. Failure or tie: learn only whether it is spiritually nourishing or dangerous. No CP cost; the reading lasts until the end of your next turn."
+          ]
+        }
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Choose one question: Is this target spiritually nourishing, poisonous, corrupted, empty, undead, demonic, beast-born, cultivator-born, artificial, or spiritually inert? Is this creature Bloodied? What is the strongest obvious qi expression in this target? Does this meal or ingredient contain Impurity? Is this creature or ingredient suitable for a Hunger talent you know? Is this target protected by an obvious anti-consumption ward, corpse seal, preservation formation, or oath-mark?",
+        "The GM determines whether the target is unwilling and actively concealing its nature and chooses its Charisma or Constitution saving throw. Use the matching concealed-nature option for the table's opposed rolls; otherwise use the open-nature option without a roll.",
+        "Success: you learn the answer. Failure: you learn only whether the target is spiritually nourishing or spiritually dangerous.",
+        "Taste the Qi does not reveal full stat blocks, secret names, exact levels, complete sphere lists, hidden plot information, or the full contents of a sealed storage treasure."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "until_end_of_turn",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature, corpse, meal, ingredient, beast core, spiritual dish, visible residue, or container you can perceive"
+      }
+    },
+    "SAND_BASE_GATHER_SAND": {
+      "text_sha256": "5ad8bdec62aeee510fdd00cf67264fa4bbbc115247bcca61fbe5e051137ca9f3",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Those squares become Shallow Sand Terrain for the duration.",
+          "origin": "model_v2"
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "At CL 5, this creates up to four contiguous 5-foot squares. At CL 11, up to six. At CL 17, up to eight."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "square",
+        "size_ft": 5,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "0 CP if drawing from an existing Sand Source; 1 CP if creating sand where no Sand Source exists"
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null
+    },
+    "tianxia.subpath.qi.dust_cultivator.feature.dust_cloud": {
+      "text_sha256": "fe6fe00d0f54e4068d83ec162abc4ff5b7e27a8034bd29e593d33c646a0b0ea0",
+      "reviewed_by": "Codex riders/lane11 2026-09-29",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "enemies_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "Lightly Obscured",
+          "duration": "one_minute",
+          "evidence": "Create a cloud centered on one point within range",
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone_sight",
+          "team": false
+        }
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Dust Cloud blocks clear visual detail beyond 10 feet; passes through air openings but cannot pass an airtight barrier; is dispersed while wholly inside an effect explicitly removing smoke, dust or airborne particles; and may remain within 60 feet of your Domain Armament when moved. These branches are not yet automated."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "options": null,
+      "modifier": null
+    },
+    "tianxia.subpath.qi.dust_cultivator.feature.choking_dust": {
+      "text_sha256": "cfa4fe60be59df9699d95bf97b86ec204b69a51423ba6a3901b7fdf134066be4",
+      "reviewed_by": "Codex A2GQISUB9 2026-10-11",
+      "effects": [],
+      "options": [
+        {
+          "label": "Choking Mode",
+          "effects": [
+            {
+              "type": "dust_choking_save",
+              "mode": "breathing",
+              "effects": [
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "applies_to": "target",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "damage_types": [
+                        "poison"
+                      ],
+                      "dice": {
+                        "count": 3,
+                        "sides": 6
+                      },
+                      "dice_by_cl": [
+                        [
+                          6,
+                          10,
+                          3,
+                          6
+                        ],
+                        [
+                          11,
+                          16,
+                          4,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          5,
+                          6
+                        ]
+                      ]
+                    },
+                    {
+                      "type": "condition",
+                      "condition": "poisoned",
+                      "applies_to": "target",
+                      "expires_on": "START_OF_SOURCE_NEXT_TURN"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage"
+                    }
+                  ]
+                }
+              ],
+              "harmful": true,
+              "applies_to": "target"
+            }
+          ]
+        },
+        {
+          "label": "Eroding Mode",
+          "effects": [
+            {
+              "type": "dust_choking_save",
+              "mode": "corporeal",
+              "effects": [
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "applies_to": "target",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "damage_types": [
+                        "necrotic"
+                      ],
+                      "dice": {
+                        "count": 3,
+                        "sides": 6
+                      },
+                      "dice_by_cl": [
+                        [
+                          6,
+                          10,
+                          3,
+                          6
+                        ],
+                        [
+                          11,
+                          16,
+                          4,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          5,
+                          6
+                        ]
+                      ]
+                    },
+                    {
+                      "type": "dust_eroding_ac",
+                      "flat": -1,
+                      "applies_to": "target",
+                      "expires_on": "START_OF_SOURCE_NEXT_TURN"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage"
+                    }
+                  ]
+                }
+              ],
+              "harmful": true,
+              "applies_to": "target"
+            }
+          ]
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature",
+        "kind": "any_creature"
+      }
+    },
+    "TAL_BRUTE_HAMMER": {
+      "text_sha256": "96b615076114092a322fe7fffdec153b3507c5d84d2b5b747e6aa0b01f5e36bb",
+      "reviewed_by": "gu 2026-09-28",
+      "effects": [],
+      "modifier": null,
+      "riders": [
+        "While holding Martial Focus, when a shove would move a creature into a wall, creature, or solid object no more than one size smaller than the shoved creature, create an Impact Collision: the shoved creature and the collided object or creature each take 1d6 Bludgeoning damage, +1d6 for every 5 feet of forced movement that could not be completed.",
+        "Hammer deals this extra damage only while you hold Martial Focus and the collision prevents part of the shove's movement."
+      ]
+    },
+    "TAL_BERSERKER_SHATTER_EARTH": {
+      "text_sha256": "be9891162b4bc8f0a2095c89a56f4bcd421f16dd4cdea9066e439e3cb55f9f8c",
+      "reviewed_by": "gu 2026-09-28",
+      "activation": {
+        "economy": "action"
+      },
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "effects": [],
+      "riders": [
+        "The ground must be stone or softer material.",
+        "Clear one 5-foot square as an Action or through an appropriate repair effect."
+      ],
+      "options": [
+        {
+          "label": "Spaces within 5 feet",
+          "area": {
+            "shape": "sphere",
+            "size_ft": 5,
+            "evidence": "spaces within 5 feet"
+          },
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "creatures_in_area",
+              "ability": "STR_OR_DEX",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "creatures_in_area",
+                  "condition": "prone",
+                  "evidence": "Failed Save: Fall Prone."
+                }
+              ],
+              "on_success": [],
+              "evidence": "Creatures standing inside make a Strength or Dexterity saving throw, choosing which."
+            }
+          ]
+        },
+        {
+          "label": "10-foot cone",
+          "area": {
+            "shape": "cone",
+            "size_ft": 10,
+            "evidence": "10-foot cone"
+          },
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "creatures_in_area",
+              "ability": "STR_OR_DEX",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "creatures_in_area",
+                  "condition": "prone",
+                  "evidence": "Failed Save: Fall Prone."
+                }
+              ],
+              "on_success": [],
+              "evidence": "Creatures standing inside make a Strength or Dexterity saving throw, choosing which."
+            }
+          ]
+        },
+        {
+          "label": "15-foot line",
+          "area": {
+            "shape": "line",
+            "size_ft": 15,
+            "evidence": "15-foot line"
+          },
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "creatures_in_area",
+              "ability": "STR_OR_DEX",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "creatures_in_area",
+                  "condition": "prone",
+                  "evidence": "Failed Save: Fall Prone."
+                }
+              ],
+              "on_success": [],
+              "evidence": "Creatures standing inside make a Strength or Dexterity saving throw, choosing which."
+            }
+          ]
+        }
+      ]
+    },
+    "HUNGER_BASE_DIGESTIVE_MANTLE": {
+      "text_sha256": "5b9db3148380430fd94bd8563566664ce8c40ab4decfbf3a9746e4f64bd21cfd",
+      "reviewed_by": "gu 2026-09-28",
+      "effects": [
+        {
+          "type": "temp_hp",
+          "applies_to": "self",
+          "dice": {
+            "count": 0,
+            "sides": 0,
+            "bonus_formula": "key_ability_modifier"
+          },
+          "formula": "double_pb",
+          "duration": "one_minute",
+          "evidence": "When you activate Digestive Mantle, gain Temporary HP equal to twice your Proficiency Bonus + your Hunger key ability modifier."
+        }
+      ],
+      "riders": [],
+      "options": [
+        {
+          "label": "Beast Strength",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you activate Digestive Mantle, gain Temporary HP equal to twice your Proficiency Bonus + your Hunger key ability modifier."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The selected Mantle benefit is resolved by the sealed Hunger policy."
+            }
+          ]
+        },
+        {
+          "label": "Predator Step",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you activate Digestive Mantle, gain Temporary HP equal to twice your Proficiency Bonus + your Hunger key ability modifier."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The selected Mantle benefit is resolved by the sealed Hunger policy."
+            }
+          ]
+        },
+        {
+          "label": "Iron Stomach",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you activate Digestive Mantle, gain Temporary HP equal to twice your Proficiency Bonus + your Hunger key ability modifier."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The selected Mantle benefit is resolved by the sealed Hunger policy."
+            }
+          ]
+        },
+        {
+          "label": "Thick Hide",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you activate Digestive Mantle, gain Temporary HP equal to twice your Proficiency Bonus + your Hunger key ability modifier."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The selected Mantle benefit is resolved by the sealed Hunger policy."
+            }
+          ]
+        },
+        {
+          "label": "Venom Belly",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you activate Digestive Mantle, gain Temporary HP equal to twice your Proficiency Bonus + your Hunger key ability modifier."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The selected Mantle benefit is resolved by the sealed Hunger policy."
+            }
+          ]
+        },
+        {
+          "label": "Furnace Belly",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you activate Digestive Mantle, gain Temporary HP equal to twice your Proficiency Bonus + your Hunger key ability modifier."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The selected Mantle benefit is resolved by the sealed Hunger policy."
+            }
+          ]
+        },
+        {
+          "label": "Elemental Gut",
+          "include_in_menu": true,
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you activate Digestive Mantle, gain Temporary HP equal to twice your Proficiency Bonus + your Hunger key ability modifier."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The selected Mantle benefit is resolved by the sealed Hunger policy."
+            }
+          ]
+        },
+        {
+          "label": "Deep Nourishment",
+          "include_in_menu": true,
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you activate Digestive Mantle, gain Temporary HP equal to twice your Proficiency Bonus + your Hunger key ability modifier."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The selected Mantle benefit is resolved by the sealed Hunger policy."
+            }
+          ]
+        },
+        {
+          "label": "Demon-Beast Course",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you activate Digestive Mantle, gain Temporary HP equal to twice your Proficiency Bonus + your Hunger key ability modifier."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "Choose two basic Mantle benefits instead of one. Gain 1 Impurity when the Mantle ends unless another talent changes this."
+            }
+          ],
+          "include_in_menu": true
+        }
+      ]
+    }
+  }
+}
