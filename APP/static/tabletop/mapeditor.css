@@ -1,0 +1,67 @@
+/* Tabletop map editor (owner 2026-09-25) — extends tabletop.css. */
+body.me-app { grid-template-rows: auto 1fr; }
+.me-main { grid-template-columns: 290px 1fr 280px; }
+.me-input { background: var(--panel); border: 1px solid var(--line); border-radius: 7px; padding: 5px 8px; color: var(--text); }
+.me-num { width: 64px; }
+#meName { width: 220px; }
+.me-toolgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.me-tool { display: grid; place-items: center; gap: 2px; padding: 8px 4px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel);
+  cursor: pointer; font-size: calc(20px * var(--cf-text-scale, 1)); line-height: 1; }
+.me-tool span { font-size: calc(11px * var(--cf-text-scale, 1)); color: var(--muted); }
+.me-tool.is-active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--glow); }
+.me-tool.is-active span { color: var(--text); }
+.me-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 6px 0; font-size: calc(13px * var(--cf-text-scale, 1)); }
+.me-row select, .me-row input[type=range] { flex: 1; min-width: 0; }
+.me-upload { cursor: pointer; }
+.me-stats { display: grid; grid-template-columns: max-content 1fr; gap: 2px 10px; margin: 0 0 8px; font-size: calc(13px * var(--cf-text-scale, 1)); }
+.me-stats dt { color: var(--muted); }
+.me-stats dd { margin: 0; font-weight: 700; }
+.me-walls { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; max-height: 40vh; overflow-y: auto; overflow-x: hidden; min-width: 0; }
+/* Each wall: its description and Delete on the first line, its look select on a full-width second line, so the row
+   always fits the 280 px details panel (SOL196w review). */
+.me-walls li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px 6px; min-width: 0; font-size: calc(12px * var(--cf-text-scale, 1)); padding: 4px 6px; border-radius: 6px; background: var(--panel); }
+.me-walls li:hover { outline: 1px solid var(--line-strong); }
+.me-walls button { font-size: calc(11px * var(--cf-text-scale, 1)); padding: 2px 6px; }
+.me-walls li > button { grid-column: 2; grid-row: 1; }
+.me-walls li > label { grid-column: 1 / -1; grid-row: 3; display: flex; align-items: center; gap: 6px; }
+.me-walls li > span { min-width: 0; overflow-wrap: anywhere; }
+.me-walls .me-wall-look { grid-column: 1 / -1; grid-row: 2; width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box; font-size: calc(11px * var(--cf-text-scale, 1)); text-overflow: ellipsis; }
+#meHint { top: auto; bottom: 12px; pointer-events: none; font-weight: 500; }
+.me-app .tt-viewport.tool-draw { cursor: crosshair; }
+.me-app .tt-viewport.tool-erase { cursor: not-allowed; }
+.tt-draft-shape { fill: color-mix(in srgb, var(--accent) 25%, transparent); stroke: var(--accent); stroke-width: .08; stroke-dasharray: .2 .1; }
+.tt-draft-shape.is-line { fill: none; stroke-width: .18; }
+/* Where a door, gate or window will snap while the pointer moves (mapeditor.js drawOpeningPreview). */
+.tt-wall.tt-opening-preview { fill: none; stroke: var(--accent); stroke-width: .22; stroke-dasharray: .22 .12; }
+.tt-wall.is-hot { stroke: var(--danger) !important; stroke-width: .16 !important; }
+.tt-wall-styled.is-hot * { stroke: var(--danger) !important; }  /* a wall with a look (wall-art.js) */
+
+/* Narrow windows (owner 2026-09-28: "the menu is getting cut off in the map editor"): the tools panel never grows past
+   its own width (long dropdowns and the terrain DC/PB boxes stay inside it), the tool grid reflows, and the layout
+   drops to two columns (the right panel under the map), then stacks on a phone-sized window. */
+.me-tools { min-width: 0; overflow-x: hidden; }
+.me-tools > *, .me-tools .tt-card { min-width: 0; max-width: 100%; }
+.me-tools select, .me-tools input:not([type=checkbox]):not([type=radio]) { max-width: 100%; min-width: 0; }
+.me-toolgrid { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); }
+.me-row > span, .me-row > label { min-width: 0; }
+.me-roof-openings { margin-top: 10px; font-size: calc(13px * var(--cf-text-scale, 1)); }
+.me-roof-openings summary { cursor: pointer; }
+.me-roof-openings .me-row > label { display: flex; align-items: center; gap: 4px; }
+.me-roof-openings .me-num { width: 52px; }
+.me-main > .me-tools { grid-area: tools; }
+.me-main > .tt-stage { grid-area: stage; }
+.me-main > .tt-right { grid-area: right; }
+.me-main { grid-template-areas: "tools stage right"; }
+@media (max-width: 1100px) {
+  .me-main { grid-template-columns: minmax(210px, 260px) minmax(0, 1fr); grid-template-rows: minmax(60vh, 1fr) auto;
+             grid-template-areas: "tools stage" "right right"; }
+  .me-main > .tt-right { max-height: 32vh; border-left: 0; border-top: 1px solid var(--line); }
+  .me-main > .me-tools { max-height: none; border-top: 0; }
+}
+@media (max-width: 640px) {
+  .me-main { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(55vh, 1fr) auto; grid-template-areas: "tools" "stage" "right"; }
+  .me-main > .me-tools { max-height: 42vh; border-right: 0; border-bottom: 1px solid var(--line); }
+}
+
+/* SOL201: the selected object in a shared square glows, so it is clear which one Rotate, Remove or a drag acts on. */
+.tt-token.is-object.is-selected .tt-token-face { filter: drop-shadow(0 0 2px #ffd36b) drop-shadow(0 0 5px rgba(255, 211, 107, .8)); }
