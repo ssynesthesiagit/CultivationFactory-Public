@@ -1,0 +1,535 @@
+"""Source-specific appraisal consumers on the public encounter/observer seams.
+
+All choices use the native owner-bound transport. Unknown facts stay unknown;
+only question-sized answers reach the observer projection. Object targeting uses
+the existing object hooks; it never inserts objects into the creature roster.
+"""
+from copy import deepcopy
+from . import hook, effect
+from .needle import ask, checkpoint_id, CHOICE
+from ..encounter_sources import facts
+
+QI='HUNGER_BASE_TASTE_THE_QI'
+TRACE='INK_BASE_READ_THE_TRACE'
+VESSEL='IMBUEMENT_BASE_READ_THE_VESSEL'
+VENOM='POISON_BASE_APPRAISE_THE_VENOM'
+METAL='METAL_BASE_METAL_APPRAISAL'
+SKY='WEATHER_BASE_READ_THE_SKY'
+QUESTIONS={
+ QI: ['qi.nature','qi.bloodied','qi.expression','qi.impurity','qi.suitable','qi.ward'],
+ TRACE:['trace.nature','trace.contents','trace.age','trace.hand','trace.alteration'],
+ VESSEL:['vessel.mandate','vessel.safe','vessel.resists','vessel.nature','vessel.bonus','vessel.enhancement','vessel.backlash'],
+ VENOM:['poison.kind','poison.poisoned','poison.dose','poison.burden','poison.ingrained','poison.timing','poison.antidote','poison.safe','poison.sphere'],
+ METAL:['metal.material','metal.nature','metal.structure','metal.suitable','metal.properties'],
+}
+LABELS={
+ 'qi.fallback':'Spiritually nourishing or dangerous?', 'poison.present':'Is poison present?',
+ 'qi.nature':'Spiritual nature or nourishment', 'qi.bloodied':'Is this creature Bloodied?',
+ 'qi.expression':'Strongest obvious qi expression', 'qi.impurity':'Does this meal or ingredient contain Impurity?',
+ 'qi.suitable':'Suitable for a Hunger talent I know?', 'qi.ward':'Obvious anti-consumption protection',
+ 'trace.nature':'Ordinary, magical, spiritual, forged or sphere-created?',
+ 'trace.contents':'Active Ink Mark, seal, curse, ward or hidden script?', 'trace.age':'Written recently or long ago?',
+ 'trace.hand':'Living hand, spirit, construct, item, formation or sphere effect?',
+ 'trace.alteration':'Altered, forged, erased or overwritten?',
+ 'vessel.mandate':'Currently affected by a Mandate?', 'vessel.safe':'One property it can receive safely',
+ 'vessel.resists':'One property it resists', 'vessel.nature':'Mundane, magical, awakened, construct-like, soul-bound or artifact-grade?',
+ 'vessel.bonus':'Suppressed or active magical bonus?', 'vessel.enhancement':'Active creature enhancement',
+ 'vessel.backlash':'Backlash from careless imbuement?',
+ 'poison.kind':'Poison family', 'poison.poisoned':'Is the target Poisoned?', 'poison.dose':'Does it carry any of my Dose Marks?',
+ 'poison.burden':'Toxin Burden?', 'poison.ingrained':'Ingrained Toxin?', 'poison.timing':'Immediate, delayed or long-term danger?',
+ 'poison.antidote':'Might an ordinary antidote help?', 'poison.safe':'Safe to handle in this scene?', 'poison.sphere':'Associated sphere',
+ 'metal.material':'Obvious metal, alloy, ore or mineral quality', 'metal.nature':'Mundane, spiritual, cursed, oath-bound, corpse-touched, crafted or artifact-like?',
+ 'metal.structure':'Damaged, brittle, reinforced, warded or poorly balanced?', 'metal.suitable':'Suitable for a Metal talent I know?',
+ 'metal.properties':'Conductive, magnetic, brittle, hardened, hollow or resonant?',
+}
+KINDS={
+ QI:{'creature','corpse','meal','ingredient','beast_core','spiritual_dish','residue','container'},
+ TRACE:{'text','mark','seal','rune','painting','inscription','talisman','formation_mark','ink_mark'},
+ VESSEL:{'creature','object','weapon','armor','tool','construct','vessel','construct_part','formation_node'},
+ VENOM:{'creature','corpse','object','wound','food','drink','weapon','sample','terrain','contamination','meal','ingredient'},
+ METAL:{'object','weapon','armor','restraint','gate','lock','bell','ore','mineral','construct_part','formation_node','metal_creature'},
+}
+
+def questions_for(source, kind):
+    result=list(QUESTIONS[source])
+    if source==QI:
+        if kind not in {'creature','metal_creature','construct'}:
+            result.remove('qi.bloodied')
+        if kind not in {'meal','ingredient','spiritual_dish'}:
+            result.remove('qi.impurity')
+        if kind not in {'creature','metal_creature','construct','ingredient'}:
+            result.remove('qi.suitable')
+    return result
+
+
+def answer_value(value):
+    """Question answers persist as readable text/integers, never float flags."""
+    if type(value) is bool:return 'Yes' if value else 'No'
+    if isinstance(value,dict):return {k:answer_value(v) for k,v in value.items()}
+    if isinstance(value,list):return [answer_value(v) for v in value]
+    return value
+
+
+def higher_realm(source_cl,reader_cl):
+    if source_cl is None or reader_cl is None:
+        return False
+    from ..table_advance import realm_of
+    return source_cl>reader_cl and realm_of(source_cl)!=realm_of(reader_cl)
+
+
+def source_of(action):
+    return ((getattr(action,'parameters',None) or {}).get('typed') or {}).get('source')
+
+
+def choice(ctx, key, options, *, labels=None, count=1, optional=False, target_id=None, prompt=None):
+    if not options:
+        return []
+    return ask(ctx.engine, ctx.intent, checkpoint_id(ctx.engine, 'READ_'+key, ctx.actor.entity_id), ctx.actor,
+        CHOICE+'reading_'+key, options, labels=labels or {k:LABELS.get(k,k) for k in options},
+        minimum=count, maximum=count, allow_decline=optional, default='decline' if optional else 'first',
+        target_id=target_id, name=ctx.action.display_name, feature_id=ctx.action.display_name,
+        prompt=prompt or f"{ctx.action.display_name}{' on '+ctx.damage_cache['reading_inventory']['name'] if ctx.damage_cache.get('reading_inventory') else ''}: choose {count} question(s). Answers are private to you.")
+
+
+@hook('compile_action')
+def compile_reading(action, info):
+    source=source_of(action)
+    option=(action.parameters.get('typed') or {}).get('option_label','')
+    if source not in QUESTIONS or source not in info['owned_ids'] or ((action.parameters.get('typed') or {}).get('option_of') and (source!=QI or not option.startswith('Read an openly'))):
+        return None
+    typed=deepcopy(action.parameters['typed'])
+    typed.pop('option_of',None);typed.pop('option_label',None)
+    typed['numbers']={**typed.get('numbers',{}),'ability_mods':dict(info['mods'])}
+    background=info['owner_sheet'].get('background_origin',{})
+    proficient=list((background.get('background') or {}).get('tool_proficiencies',[]))
+    proficient+=list((info['owner_sheet'].get('ability_scores_and_statistics') or {}).get('tool_proficiencies',[]))
+    origin=background.get('origin_insight') or {}
+    if origin.get('selected_tool'):
+        proficient.append(origin['selected_tool'])
+    normalize=lambda name:str(name).replace('’',"'").casefold()
+    ranks={normalize(name):1 for name in proficient}
+    ranks.update({normalize(name):2 for name in origin.get('tool_expertise',[])})
+    typed['reading_tool_proficiencies']=ranks
+    from ..factory_compiler import primary_resource
+    typed['reading_cp_pool']=primary_resource(info['owner_sheet'])[0]
+    if source in {QI,METAL}:
+        sphere='tianxia.sphere.hunger' if source==QI else 'tianxia.sphere.metal'
+        typed['reading_known_talents']={k:info['mechanics'][k].get('name','Known talent')
+            for k in sorted(info['owned_ids']) if info['mechanics'].get(k,{}).get('kind')=='talent'
+            and info['mechanics'][k].get('sphere_id')==sphere}
+
+    typed.update(effects=[{'type':'knowledge_inventory_reading' if typed.get('reading_inventory') else 'knowledge_reading'}], riders=[])
+    if source==QI:typed['manual_inline_choice']=True
+    range_ft=5 if source==TRACE else 30
+    if typed.get('reading_internal'):
+        range_ft=5
+    typed['range']={'kind':'touch' if range_ft==5 else 'feet','distance_ft':range_ft}
+    return action.model_copy(update={'display_name':'Taste the Qi' if source==QI and not typed.get('reading_object') else action.display_name,'target_kind':'SELF' if typed.get('reading_inventory') else 'OBJECT' if typed.get('reading_object') else 'ANY_CREATURE',
+        'range_ft':range_ft,'parameters':{**action.parameters,**({'deferred_target_label':'choose one visible or physically presented item'} if typed.get('reading_inventory') else {}),'scene_check_source':True,'typed':typed}})
+
+
+@hook('compile_actions')
+def reading_variants(info):
+    additions=[]
+    for base in info['actions']:
+        source=source_of(base)
+        option=base.parameters['typed'].get('option_label','')
+        if source not in QUESTIONS or source not in info['owned_ids'] or (base.parameters['typed'].get('option_of') and (source!=QI or not option.startswith('Read an openly'))):
+            continue
+        copies=[base]
+        if source==VESSEL:
+            copies.append(base.model_copy(update={'source_definition_id':base.source_definition_id+'#internal',
+                'display_name':base.display_name+' (internal properties, touch)',
+                'parameters':{**base.parameters,'typed':{**base.parameters['typed'],'reading_internal':1}}}))
+        if source==VENOM:
+            copies.append(base.model_copy(update={'source_definition_id':base.source_definition_id+'#three',
+                'display_name':base.display_name+' (three facts, 1 CP)',
+                'costs':((base.costs[0][0] if base.costs else 'resource:core.'+info['primary'],1),),
+                'parameters':{**base.parameters,'typed':{**base.parameters['typed'],'reading_count':3}}}))
+        if source==METAL:
+            copies.append(base.model_copy(update={'source_definition_id':base.source_definition_id+'#search',
+                'display_name':base.display_name+' (Search)'}))
+        additions.extend(copies[1:])
+        for cast in copies:
+            additions.append(cast.model_copy(update={'source_definition_id':cast.source_definition_id+'#inventory',
+                'display_name':cast.display_name+' (carried or dropped item)',
+                'parameters':{**cast.parameters,'typed':{**cast.parameters['typed'],'reading_inventory':1}}}))
+            additions.append(cast.model_copy(update={'source_definition_id':cast.source_definition_id+'#object',
+                'display_name':cast.display_name+' (object)',
+                'parameters':{**cast.parameters,'typed':{**cast.parameters['typed'],'reading_object':1}}}))
+    return additions or None
+
+
+def subject_kind(engine, subject, source=None):
+    supplied=facts(engine,subject).get('subject.kind',{}).get('value')
+    target=engine.state.actors.get(subject)
+    if target:
+        from ..typed_executor import mark_condition_id
+        if source==TRACE and any(c.condition_id==mark_condition_id('Ink Mark',c.source_actor_id) for c in target.conditions.values()):
+            return 'ink_mark'
+        from .life_state import is_deceased
+        if is_deceased(target):return 'corpse'
+        if source in {QI,VESSEL,VENOM}:return 'creature'
+        return supplied or 'creature'
+    return supplied or 'object'
+
+
+def eligible(engine, actor, action, subject):
+    from ..senses import perceives, perceives_object
+    source=source_of(action)
+    if action.owner_id!=actor.entity_id or action.source_definition_id not in actor.action_ids:
+        return False
+    target=engine.state.actors.get(subject) or engine.state.objects.get(subject)
+    if target is None or getattr(target,'destroyed',False):
+        return False
+    kind=subject_kind(engine,subject,source)
+    if source==METAL and subject in engine.state.actors:
+        if facts(engine,subject).get('metal.bearing',{}).get('value') is not True:
+            return False
+    elif kind not in KINDS[source] and not (source==VESSEL and subject in engine.state.objects) and not (source==TRACE and facts(engine,subject).get('trace.present',{}).get('value') is True):
+        return False
+    if source==METAL and subject in engine.state.objects:
+        bearing=facts(engine,subject).get('metal.bearing',{}).get('value')
+        material=(target.component or {}).get('material')
+        if bearing is not True and material not in {'iron','steel','iron or steel','copper','bronze','brass','gold','silver','mithral','adamantine'} and kind not in {'ore','mineral'}:
+            return False
+    if subject in engine.state.actors:
+        from ..targeting import line_of_effect
+        if target is not actor and not line_of_effect(engine,actor,target=target):return False
+        distance=engine._distance_actor_to_actor(actor,target)
+        visible=target is actor or perceives(engine,actor,target,locate_concealed=True,sight_only=source==METAL)
+    else:
+        from ..object_geometry import target_cells
+        cells=[cell for cell in target_cells(engine,target) if engine._effect_distance_to_cell(actor,cell)<=(action.range_ft or 0) and engine._line_of_sight_actor_to_cell(actor,cell)]
+        if not cells:return False
+        distance=min(engine._effect_distance_to_cell(actor,cell) for cell in cells)
+        visible=perceives_object(engine,actor,target,sight_only=source==METAL,cells=cells)
+    if distance > (action.range_ft or 0):
+        return False
+    # Touch is itself sufficient for the printed nonvisual examinations. Qi
+    # requires perception even in reach; metal requires a visible structure.
+    return visible or distance<=5 and source in {TRACE,VESSEL,VENOM}
+
+
+@hook('object_targets')
+def reading_objects(engine, actor, action):
+    if source_of(action) not in QUESTIONS or not action.parameters['typed'].get('reading_object'):
+        return []
+    return [oid for oid in engine.state.objects if eligible(engine,actor,action,oid)]
+
+
+@hook('candidate_allowed')
+def reading_allowed(engine, actor, candidate, action):
+    if source_of(action) not in QUESTIONS:
+        return None
+    if action.parameters.get('typed',{}).get('reading_inventory'):
+        from ..knowledge_inventory import options
+        return bool(options(engine,actor,action))
+    if source_of(action)==QI and action.parameters.get('typed',{}).get('option_label','').startswith('Unwilling, concealed'):
+        return False
+    if candidate.target_ids:
+        return len(candidate.target_ids)==1 and eligible(engine,actor,action,candidate.target_ids[0])
+    return None
+
+
+@hook('object_action')
+def read_object(engine, actor, action, obj, candidate, intent):
+    if source_of(action) not in QUESTIONS or not action.parameters['typed'].get('reading_object'):
+        return None
+    if not eligible(engine,actor,action,obj.object_id):
+        raise ValueError('This examination is no longer available.')
+    from ..typed_executor import Context
+    ctx=Context(engine,actor,action,intent,action.parameters['typed'],[],damage_cache={'_object':obj})
+    resolve(ctx,obj.object_id)
+    return True
+
+
+@effect('knowledge_reading')
+def reading_effect(ctx, spec):
+    if ctx.target is not None:
+        resolve(ctx,ctx.target.entity_id)
+
+
+def reading_data(ctx,subject):
+    item=ctx.damage_cache.get('reading_inventory')
+    return facts(ctx.engine,subject,item['scope'] if item else 'scene')
+
+
+def reading_kind(ctx,subject):
+    item=ctx.damage_cache.get('reading_inventory')
+    return item['kind'] if item else subject_kind(ctx.engine,subject,source_of(ctx.action))
+
+
+def native_fact(ctx, subject, key):
+    """Actual committed state precedes external input for mechanically tracked facts."""
+    if getattr(ctx,'damage_cache',{}).get('reading_inventory'):return None
+    target=ctx.engine.state.actors.get(subject)
+    if target is None:
+        obj=ctx.engine.state.objects.get(subject)
+        if key=='metal.material' and obj and (obj.component or {}).get('material'):
+            return obj.component['material']
+        if key=='metal.structure' and obj and obj.current_hp is not None and obj.maximum_hp is not None and obj.current_hp<obj.maximum_hp:
+            return 'Damaged'
+        return None
+    if key=='vessel.mandate':
+        from .imbuement_mandates import active_mandates
+        if active_mandates(ctx.engine,target):return True
+    if key=='vessel.enhancement':
+        enhanced=set()
+        from fractions import Fraction
+        for modifier in target.modifiers.values():
+            if modifier.consumed:continue
+            field=modifier.target_field
+            if field=='damage_resistance':enhanced.add('resistance')
+            if field=='speed_ft':
+                if modifier.operation=='ADD' and type(modifier.value) is int and modifier.value>0 or modifier.operation=='MULTIPLY' and Fraction(modifier.value)>1 or modifier.operation=='SET' and type(modifier.value) is int and modifier.value>target.speed_ft:
+                    enhanced.add('speed')
+            if field in {'strength_score','dexterity_score','constitution_score','intelligence_score','wisdom_score','charisma_score'} and modifier.operation=='ADD' and type(modifier.value) is int and modifier.value>0:
+                enhanced.add('body' if field in {'strength_score','dexterity_score','constitution_score'} else 'mind')
+        from ..observer_information import sources
+        allowed={'body','mind','speed','weight','sense','speech','resistance'}
+        for record in sources(ctx.engine):
+            if record.get('holder_id')==target.entity_id:
+                enhanced.update(tag.removesuffix('_enhancement') for tag in record.get('tags',[]) if tag.endswith('_enhancement') and tag.removesuffix('_enhancement') in allowed)
+        if enhanced:return 'Active '+', '.join(sorted(enhanced))+' enhancement; other enhancements are unknown.'
+    if key=='poison.present':
+        from .stacking_marks import count
+        if any(c.condition_id in ('poisoned','condition:typed.poisoned') for c in target.conditions.values()) or any(count(ctx.engine,owner,target,name)>0 for owner in ctx.engine.state.actors.values() for name in ('Dose Mark','Toxin Burden','Ingrained Toxin')):
+            return True
+    if key in {'trace.nature','trace.contents','trace.hand'}:
+        from ..typed_executor import mark_condition_id
+        marks=[c for c in target.conditions.values() if c.condition_id==mark_condition_id('Ink Mark',c.source_actor_id)]
+        if marks:
+            if key=='trace.contents':
+                return 'An active Ink Mark; other contents are unknown.'
+            return 'Sphere-created' if key=='trace.nature' else 'A sphere effect'
+    if key=='qi.bloodied':
+        return target.current_hp*2 <= target.maximum_hp
+    if key=='poison.poisoned':
+        from ..typed_executor import condition_rules
+        return any(c.condition_id in ('poisoned','condition:typed.poisoned') for c in target.conditions.values()) or any(
+            r.get('poisoned') for r in condition_rules(target))
+    if key in {'poison.dose','poison.burden','poison.ingrained'}:
+        from .stacking_marks import count as mark_count
+        name={'poison.dose':'Dose Mark','poison.burden':'Toxin Burden','poison.ingrained':'Ingrained Toxin'}[key]
+        return (True if any(mark_count(ctx.engine,owner,target,name)>0 for owner in ctx.engine.state.actors.values()) else None) if key!='poison.dose' else mark_count(ctx.engine,ctx.actor,target,name)>0
+    if key=='trace.contents':
+        from .stacking_marks import count as mark_count
+        if mark_count(ctx.engine,ctx.actor,target,'Ink Mark'):
+            return 'An active Ink Mark from you; other contents are unknown.'
+    return None
+
+
+def check_spec(ctx, source):
+    if source==QI:
+        pool=ctx.typed['reading_cp_pool']
+        maximum=min(ctx.actor.proficiency_bonus,ctx.actor.resources.get(pool,0))
+        from ..resource_labels import resource_name
+        labels={str(n):f'Spend {n} {resource_name(pool)} for +{n} to this Hunger Check' if n else 'Spend no CP' for n in range(maximum+1)}
+        picked=choice(ctx,'hunger_steady',list(labels),labels=labels,
+            prompt='Taste the Qi: before the Hunger Check, you may spend up to your Proficiency Bonus in CP. Each point adds +1 to this check.')
+        amount=int(picked[0]) if picked else 0
+        if amount:
+            ctx.engine._spend_resource(ctx.actor,pool,amount,ctx.source)
+        ctx.damage_cache['hunger_steady']=amount
+        return {'kind':'cultivation','label':'Hunger Check'}
+    if source==TRACE:
+        choices={'INT:Arcana':'Intelligence (Arcana)','INT:Investigation':'Intelligence (Investigation)',
+            'WIS:Insight':'Wisdom (Insight)','cultivation':'Cultivation Check'}
+    else:
+        choices={f'{a}:{s}':f'{name} ({s})' for a,name in [('INT','Intelligence'),('WIS','Wisdom'),('CHA','Charisma')]
+            for s in ('Arcana','Insight','Investigation','Medicine')}
+    from ..carry import carrying_of,holds
+    subject=ctx.damage_cache.get('reading_subject')
+    data=reading_data(ctx,subject) if subject else {}
+    tools=data.get('trace.tools' if source==TRACE else 'vessel.tools',{}).get('value',{})
+    normalize=lambda name:str(name).replace('’',"'").casefold()
+    carried=(carrying_of(ctx.engine,ctx.actor.entity_id) or {}).get('items',[])
+    for item in carried:
+        name=item.get('name','');key=item.get('key')
+        rank=ctx.typed.get('reading_tool_proficiencies',{}).get(normalize(name),0)
+        if not key or not holds(ctx.engine,ctx.actor,key):
+            continue
+        if source==TRACE and normalize(name) not in {"calligrapher's supplies","painter's supplies"}:
+            continue
+        if source==VESSEL and not rank:
+            continue
+        for ability in tools.get(key,[]):
+            choices[ability+':'+name]=ability+' ('+name+')'
+    picked=choice(ctx,'check',list(choices),labels=choices,prompt=ctx.action.display_name+': choose the printed check you use.')
+    key=picked[0] if picked else next(iter(choices))
+    if key=='cultivation':
+        return {'kind':'cultivation','label':'Cultivation Check'}
+    ability,skill=key.split(':',1)
+    ctx.damage_cache['reading_check']={'ability':ability,'skill':skill}
+    return {'kind':'check','ability':ability,'skill':skill,'label':choices[key]}
+
+
+@hook('check_bonus')
+def hunger_steady_bonus(ctx,subject):
+    if source_of(ctx.action)==QI and subject is ctx.actor:
+        return int(ctx.damage_cache.get('hunger_steady',0))
+    return None
+
+
+@hook('check_bonus')
+def chosen_check_proficiency(ctx, subject):
+    selected=ctx.damage_cache.get('reading_check')
+    if not selected or subject is not ctx.actor or source_of(ctx.action) not in {TRACE,VESSEL}:
+        return None
+    ability,skill=selected['ability'],selected['skill']
+    modifiers=ctx.numbers.get('ability_mods',{})
+    bundle=next((b for b in ctx.engine.typed_bundle_documents if b['actor_id']==subject.entity_id),{})
+    standard={'Arcana':'INT','Investigation':'INT','Insight':'WIS','Medicine':'WIS'}
+    if skill in (bundle.get('skills') or {}):
+        return int(modifiers.get(ability,0))-int(modifiers.get(standard.get(skill,ability),0))
+    name=skill.replace('’',"'").casefold()
+    rank=ctx.typed.get('reading_tool_proficiencies',{}).get(name,0)
+    return int(ctx.numbers.get('pb',subject.proficiency_bonus))*rank if skill not in standard else None
+
+
+def answer(ctx, subject, selected, *, failed=False):
+    from ..observer_information import publish
+    from .effect_durations import token
+    source=source_of(ctx.action)
+    data=reading_data(ctx,subject)
+    answers={}
+    for key in selected:
+        native=native_fact(ctx,subject,key)
+        fact=data.get(key,{})
+        if failed and key!='qi.fallback':
+            answers[LABELS.get(key,key)]='Unknown: this reading has not been resolved.'
+            continue
+        access=fact.get('access','surface')
+        if native is not None:
+            value=native
+            if key in {'metal.structure','vessel.enhancement'} and isinstance(fact.get('value'),str):value=str(native)+'; '+fact['value']
+        elif access=='internal' and not ctx.typed.get('reading_internal') or access=='concealed' and source not in {TRACE,VESSEL} and not ctx.damage_cache.get('reading_overcame_concealment'):
+            value='Unknown'
+        elif key in {'qi.suitable','metal.suitable'}:
+            names=ctx.typed.get('reading_known_talents',{})
+            value={names[k]:result for k,result in fact.get('value',{}).items() if k in names} or 'Unknown: no known talent has a suitability fact.'
+        else:
+            value=fact.get('value','Unknown')
+        answers[LABELS.get(key,key)]=answer_value(value)
+    expiry=token('end',ctx.actor.entity_id,ctx.actor.turns_started+1) if source==QI and not getattr(ctx.engine,'scene_mode',False) else 'UNTIL_REMOVED'
+    publish(ctx.engine,ctx.actor,ctx.action.source_definition_id,ctx.actor,'answer',
+        {'ability':ctx.action.display_name,'subject_id':ctx.damage_cache.get('reading_inventory',{}).get('reference',subject),'scope':ctx.damage_cache.get('reading_inventory',{}).get('reference','scene'),'subject_name':ctx.damage_cache.get('reading_inventory',{}).get('name',ctx.target_display()),'answers':answers,'check_failed':int(failed and selected==['qi.fallback']),'resolution':'unresolved' if failed and selected!=['qi.fallback'] else 'failed' if failed else 'success'},expiry)
+
+
+def trace_context(engine,reader,subject,data):
+    if subject not in engine.state.actors:return data
+    from ..typed_executor import mark_condition_id
+    from ..observer_information import source_numbers
+    for mark in engine.state.actors[subject].conditions.values():
+        if mark.condition_id!=mark_condition_id('Ink Mark',mark.source_actor_id):continue
+        numbers=source_numbers(engine,mark.source_definition_id,mark.source_actor_id)
+        if higher_realm(numbers.get('cl'),reader):
+            data={**data,'trace.high_realm':{'value':True}}
+            if numbers.get('save_dc') is not None:data.setdefault('trace.dc',{'value':numbers['save_dc']})
+    return data
+
+
+def resolve(ctx, subject):
+    source=source_of(ctx.action)
+    ctx.damage_cache['reading_subject']=subject
+    item=ctx.damage_cache.get('reading_inventory')
+    if item:
+        from ..knowledge_inventory import options
+        if item['reference'] not in options(ctx.engine,ctx.actor,ctx.action):raise ValueError('This item examination is no longer available.')
+    elif not eligible(ctx.engine,ctx.actor,ctx.action,subject):
+        raise ValueError('This examination is no longer available.')
+    data=reading_data(ctx,subject)
+    if source==TRACE and not item:data=trace_context(ctx.engine,ctx.numbers.get('cl'),subject,data)
+    count=2 if source==VESSEL else int(ctx.typed.get('reading_count',1))
+    selected=choice(ctx,'questions',questions_for(source,reading_kind(ctx,subject)),count=count,target_id=ctx.actor.entity_id if item else subject)
+    if len(selected)!=count:
+        return
+    if source==QI and not item and subject in ctx.engine.state.actors and subject_kind(ctx.engine,subject,source)!='corpse':
+        target=ctx.engine.state.actors[subject]
+        declarations={'open':'I am willing and not actively concealing my nature',
+            'unwilling_open':'I am unwilling, but not actively concealing my nature',
+            'willing_concealed':'I am willing, while actively concealing my nature',
+            'unwilling_concealed':'I am unwilling and actively concealing my nature'}
+        from ..fact_consent_admission import admit_choice
+        from .effect_durations import token
+        scene=getattr(ctx.engine,'scene_source_session',None)
+        if scene is not None:
+            from ..fact_consent_admission import read
+            declared=read(scene,QI,subject,'qi_nature','scene',ctx.actor.entity_id)
+        else:declared=None
+        if declared is None:
+            declared=admit_choice(ctx,target,ctx.source,'qi_nature',ctx.intent.intent_id+':'+subject,
+                list(declarations),labels=declarations,
+                prompt=f'{ctx.actor.display_name} uses Taste the Qi on {target.display_name}. Declare your own willingness and active concealment; your nature is not disclosed.',
+                expires_on=token('end',ctx.actor.entity_id,ctx.actor.turns_started+1),readers=[ctx.actor.entity_id])
+        if declared is None:
+            answer(ctx,subject,selected,failed=True)
+            return
+        key=declared['value']
+        data={**data,'qi.unwilling':{'value':key in {'unwilling_open','unwilling_concealed'}},
+              'qi.concealing':{'value':key in {'willing_concealed','unwilling_concealed'}}}
+    if source in {TRACE,VESSEL,QI}:
+        contested=source==QI and data.get('qi.unwilling',{}).get('value') is True and data.get('qi.concealing',{}).get('value') is True
+        need=source==VESSEL or source==TRACE and (any(data.get('trace.'+k,{}).get('value') is True for k in ('concealed','hostile','high_realm')) or any(data.get(k,{}).get('access')=='concealed' or higher_realm(data.get(k,{}).get('cl'),ctx.numbers.get('cl')) for k in selected))
+        if contested or need:
+            from ..typed_executor import resolve_opposed_check
+            target=ctx.actor if item else ctx.engine.state.actors.get(subject) or ctx.actor
+            if contested:
+                defense=data.get('qi.defense',{}).get('value')
+                if defense not in ('CHA','CON') or subject not in ctx.engine.state.actors:
+                    answer(ctx,subject,selected,failed=True)
+                    return
+                against={'kind':'save','ability':defense}
+            else:
+                dc=data.get('trace.dc' if source==TRACE else 'vessel.dc',{}).get('value')
+                if dc is None:
+                    creator=next((data[k].get('creator_id') for k in selected if data.get(k,{}).get('creator_id')),None)
+                    if creator in ctx.engine.state.actors:
+                        from .needle import save_dc
+                        dc=save_dc(ctx.engine,ctx.engine.state.actors[creator])
+                if dc is None:
+                    # No invented DC or success. The source must specify one.
+                    answer(ctx,subject,selected,failed=True)
+                    return
+                against={'kind':'dc','dc':dc}
+            result=resolve_opposed_check(ctx,target,check_spec(ctx,source),against)
+            ctx.damage_cache['reading_check_total']=result.actor.total
+            if result.success and contested:
+                ctx.damage_cache['reading_overcame_concealment']=1
+            if not result.success:
+                if source==QI:
+                    answer(ctx,subject,['qi.fallback'],failed=True)
+                else:
+                    from ..observer_information import publish
+                    publish(ctx.engine,ctx.actor,ctx.action.source_definition_id,ctx.actor,'answer',
+                        {'ability':ctx.action.display_name,'subject_id':item['reference'] if item else subject,'answers':{},'check_failed':1},'UNTIL_REMOVED')
+                return
+    if source==VENOM:
+        selected=['poison.present',*selected]
+    answer(ctx,subject,selected)
+    exceptional=data.get('vessel.exceptional_threshold',{}).get('value')
+    if source==VESSEL and exceptional is not None and ctx.damage_cache.get('reading_check_total',-1)>=exceptional:
+        extra=data.get('vessel.exceptional_facts',{}).get('value',{})
+        if extra:
+            from ..observer_information import publish
+            publish(ctx.engine,ctx.actor,ctx.action.source_definition_id,ctx.actor,'answer',
+                {'ability':'Read the Vessel — exceptional result','subject_id':item['reference'] if item else subject,
+                 'answers':{k.replace('_',' ').title():v for k,v in extra.items()}},'UNTIL_REMOVED')
+    if source==VENOM:
+        present=data.get('poison.present',{}).get('value') is True or reading_kind(ctx,subject)=='sample' or native_fact(ctx,subject,'poison.poisoned') is True
+        if present and choice(ctx,'profile',['create'],optional=True,labels={'create':'Create an Antidote Profile'},target_id=ctx.actor.entity_id if item else subject):
+            from ..antidote_profiles import create
+            create(ctx,item['reference'] if item else subject,item['reference'] if item else 'scene')
+
+
+@hook('inactive_recipient_allowed')
+def inactive_examination(engine,actor,target,action):
+    if source_of(action) not in QUESTIONS:return None
+    return eligible(engine,actor,action,target.entity_id)
+
+
+@hook('target_sight_bypass')
+def touch_examination(engine,actor,target,action):
+    if source_of(action) not in {TRACE,VESSEL,VENOM}:return None
+    return engine._distance_actor_to_actor(actor,target)<=5 and eligible(engine,actor,action,target.entity_id)
