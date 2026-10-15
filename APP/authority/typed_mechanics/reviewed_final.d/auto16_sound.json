@@ -1,0 +1,1332 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "mechanics": {
+  "TAL_SOUND_RESONANCE_FIELD": {
+   "effects": [
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "triggers": [
+      {
+       "on": [
+        "enter",
+        "start"
+       ],
+       "who": "hostile",
+       "effects": [
+        {
+         "type": "save",
+         "recipient_text": "Once per turn when a hostile creature enters the aura for the first time on a turn or starts its turn there, it makes a Constitution saving throw.",
+         "applies_to": "enemies_in_area",
+         "ability": "con",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "damage",
+           "applies_to": "target",
+           "flat": 0,
+           "formula": "pb",
+           "damage_types": [
+            "thunder"
+           ],
+           "ability": "none",
+           "condition": "none",
+           "distance_ft": 0,
+           "on": "",
+           "duration": "instant",
+           "evidence": "takes Thunder damage equal to your Proficiency Bonus",
+           "origin": "model_v2"
+          },
+          {
+           "type": "mark",
+           "mark": "Resonance",
+           "applies_to": "target",
+           "duration": {
+            "kind": "until_start_of_your_next_turn"
+           },
+           "evidence": "Failed Save: It gains Resonance and takes Thunder damage equal to your Proficiency Bonus"
+          }
+         ],
+         "on_success": [
+          {
+           "type": "mark",
+           "mark": "Resonance",
+           "applies_to": "target",
+           "duration": {
+            "kind": "until_start_of_your_next_turn"
+           },
+           "evidence": "Successful Save: It gains Resonance only"
+          }
+         ],
+         "origin": "model_v2"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "advantage",
+     "applies_to": "ally",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "saving throws against Deafened and hostile voice-command effects",
+     "duration": "one_minute",
+     "evidence": "allies gain Advantage on saving throws against Deafened and hostile voice-command effects",
+     "origin": "model_v2"
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "bonus_action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [],
+   "range": {
+    "kind": "self",
+    "feet": 0
+   },
+   "area": {
+    "shape": "emanation",
+    "size_ft": 15,
+    "centered_on_self": true
+   },
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 4,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   },
+   "target": null,
+   "text_sha256": "4049417a0544eb2838cc4352409527352762f24f5e17b91c5a3bec23602e0c37",
+   "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+  },
+  "TAL_SOUND_DAMPEN_SOUND": {
+   "text_sha256": "b08cd8e27ab5f3bbdafee06cbeed891e5fb41772dc3feff0deaa743f88ce0369",
+   "reviewed_by": "Claude riders/c13 2026-09-30",
+   "effects": [
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 10,
+     "on": "",
+     "duration": "concentration",
+     "evidence": "Area: 10-foot cube",
+     "origin": "model_v2"
+    },
+    {
+     "type": "disadvantage",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "Wisdom (Perception) checks relying on hearing to notice sounds from inside",
+     "duration": "concentration",
+     "evidence": "creatures outside the area have Disadvantage on Wisdom (Perception) checks relying on hearing to notice sounds from inside",
+     "origin": "model_v2"
+    },
+    {
+     "type": "advantage",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "checks to move quietly if the only issue is sound",
+     "duration": "concentration",
+     "evidence": "creatures inside have Advantage on checks to move quietly if the only issue is sound",
+     "origin": "model_v2"
+    },
+    {
+     "type": "damage_modifier",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "pb",
+     "damage_types": [
+      "thunder"
+     ],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "concentration",
+     "evidence": "Thunder damage dealt entirely inside the area is reduced by your Proficiency Bonus",
+     "origin": "model_v2"
+    }
+   ],
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [],
+   "range": {
+    "kind": "feet",
+    "feet": 30
+   },
+   "area": {
+    "shape": "cube",
+    "size_ft": 10,
+    "centered_on_self": false
+   },
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 1,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   },
+   "target": null
+  },
+  "TAL_SOUND_MUFFLE_FOOTFALL": {
+   "text_sha256": "f857186974780a805db1383265fb4fea21a4f122f3ea48de170ef26b0fcc479d",
+   "reviewed_by": "riders-lane5 2026-09-29 (full typing; willing recipient selection)",
+   "activation": {
+    "economy": "bonus_action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "effects": [
+    {
+     "type": "choose_willing",
+     "applies_to": "self",
+     "range_ft": 30,
+     "evidence": "Choose yourself or one willing creature within 30 feet.",
+     "effects": [
+      {
+       "type": "advantage",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "Dexterity (Stealth) checks made to avoid sound detection",
+       "duration": "special",
+       "evidence": "the target has Advantage on Dexterity (Stealth) checks made to avoid sound detection",
+       "origin": "model_v2"
+      }
+     ]
+    }
+   ],
+   "options": [],
+   "modifier": null,
+   "riders": [],
+   "range": null,
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 1,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "minutes",
+    "amount": 10,
+    "concentration": false
+   },
+   "target": null
+  },
+  "TAL_SOUND_TEN_THOUSAND_ECHOES_FIELD": {
+   "effects": [
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 120,
+     "on": "",
+     "duration": "concentration",
+     "evidence": "Area: 120-foot-radius sphere centered on you",
+     "origin": "model_v2",
+     "triggers": [
+      {
+       "on": [
+        "start"
+       ],
+       "who": "hostile",
+       "effects": [
+        {
+         "type": "save",
+         "recipient_text": "Hostile creatures inside: make a Wisdom saving throw when they start their turn inside.",
+         "applies_to": "enemies_in_area",
+         "ability": "wis",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "reaction_denied",
+           "applies_to": "target",
+           "flat": 0,
+           "formula": "none",
+           "damage_types": [],
+           "ability": "none",
+           "condition": "none",
+           "distance_ft": 0,
+           "on": "",
+           "duration": "until_start_of_next_turn",
+           "evidence": "lose its Reaction until the start of its next turn",
+           "origin": "model_v2"
+          }
+         ],
+         "on_success": [],
+         "origin": "model_v2"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "advantage",
+     "applies_to": "ally",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "Dexterity (Stealth) checks relying on sound",
+     "duration": "concentration",
+     "evidence": "gain Advantage on Dexterity (Stealth) checks relying on sound",
+     "origin": "model_v2"
+    },
+    {
+     "type": "movement",
+     "applies_to": "ally",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 5,
+     "on": "",
+     "duration": "until_end_of_turn",
+     "evidence": "may move 5 feet without provoking opportunity attacks after using a Sound talent, once per turn",
+     "origin": "model_v2",
+     "deferred": true
+    },
+    {
+     "type": "disadvantage",
+     "applies_to": "enemies_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "Wisdom (Perception) checks relying on hearing",
+     "duration": "concentration",
+     "evidence": "have Disadvantage on Wisdom (Perception) checks relying on hearing",
+     "origin": "model_v2"
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [
+    "Allies inside may communicate in whispers across the Field.",
+    "A creature cannot gain Advantage on an attack only because it heard where you are.",
+    "A creature that fails the save may also treat every space more than 30 feet away as lightly obscured by echo confusion until the start of its next turn.",
+    "The five-foot step happens after that ally uses a Sound talent, once per turn; casting the Field moves nobody."
+   ],
+   "range": {
+    "kind": "self",
+    "feet": 0
+   },
+   "area": {
+    "shape": "sphere",
+    "size_ft": 120,
+    "centered_on_self": true
+   },
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 12,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": "once_per_long_rest",
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   },
+   "target": null,
+   "text_sha256": "74d278e9fdc5c50084688fe2d2af573361cdf0c7955c43dab7bdcb0a7cdeb893",
+   "reviewed_by": "Astra sw-smoke 2026-09-29"
+  },
+  "TAL_SOUND_COURT_OF_THE_WORLD_RINGING_BELL": {
+   "effects": [],
+   "options": [
+    {
+     "label": "Ringing Court",
+     "effects": [
+      {
+       "type": "zone",
+       "applies_to": "creatures_in_area",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 60,
+       "on": "",
+       "duration": "concentration",
+       "evidence": "Ringing Court: hostile creatures that start their turn inside make Constitution saving throws",
+       "origin": "model_v2",
+       "triggers": [
+        {
+         "on": [
+          "start"
+         ],
+         "who": "hostile",
+         "effects": [
+          {
+           "type": "save",
+           "applies_to": "enemies_in_area",
+           "ability": "con",
+           "dc": "technique_save_dc",
+           "on_fail": [
+            {
+             "type": "damage",
+             "applies_to": "target",
+             "dice": {
+              "count": 4,
+              "count_formula": null,
+              "sides": 8,
+              "bonus": null,
+              "bonus_formula": null
+             },
+             "flat": 0,
+             "formula": "none",
+             "damage_types": [
+              "thunder"
+             ],
+             "ability": "none",
+             "condition": "none",
+             "distance_ft": 0,
+             "on": "",
+             "duration": "instant",
+             "evidence": "They take 4d8 Thunder damage and gain Resonance",
+             "origin": "model_v2"
+            },
+            {
+             "type": "mark",
+             "mark": "Resonance",
+             "applies_to": "target",
+             "duration": {
+              "kind": "until_start_of_your_next_turn"
+             },
+             "evidence": "Failed Save: They take 4d8 Thunder damage and gain Resonance"
+            }
+           ],
+           "on_success": [
+            {
+             "type": "mark",
+             "mark": "Resonance",
+             "applies_to": "target",
+             "duration": {
+              "kind": "until_start_of_your_next_turn"
+             },
+             "evidence": "Successful Save: They gain Resonance"
+            }
+           ],
+           "origin": "model_v2"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "resistance",
+       "applies_to": "ally",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [
+        "thunder"
+       ],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "concentration",
+       "evidence": "allies inside gain Resistance to Thunder damage",
+       "origin": "model_v2"
+      }
+     ]
+    },
+    {
+     "label": "Silent Court",
+     "effects": [
+      {
+       "type": "zone",
+       "applies_to": "creatures_in_area",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 60,
+       "on": "",
+       "duration": "concentration",
+       "evidence": "Silent Court: hostile creatures that start their turn inside make Constitution saving throws",
+       "origin": "model_v2",
+       "triggers": [
+        {
+         "on": [
+          "start"
+         ],
+         "who": "hostile",
+         "effects": [
+          {
+           "type": "save",
+           "applies_to": "enemies_in_area",
+           "ability": "con",
+           "dc": "technique_save_dc",
+           "on_fail": [
+            {
+             "type": "condition",
+             "applies_to": "target",
+             "condition": "silenced",
+             "duration": "until_start_of_next_turn",
+             "evidence": "Failed Save: They cannot speak above a whisper until the start of their next turn"
+            }
+           ],
+           "on_success": [],
+           "origin": "model_v2"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "advantage",
+       "applies_to": "ally",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "saving throws against voice, command, and sound effects",
+       "duration": "concentration",
+       "evidence": "allies inside gain Advantage on saving throws against voice, command, and sound effects",
+       "origin": "model_v2"
+      }
+     ]
+    }
+   ],
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [
+    "Ringing Court: allies inside may communicate in whispers across the Domain.",
+    "Silent Court: ordinary speech and loud sound cannot pass beyond the Domain boundary."
+   ],
+   "range": null,
+   "area": {
+    "shape": "sphere",
+    "size_ft": 60,
+    "centered_on_self": true
+   },
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 9,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   },
+   "target": null,
+   "text_sha256": "27a129387fb06ad38eb49dbd1998dbd7445b640266971e4c049b8e9734e58014",
+   "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+  },
+  "TAL_SOUND_TRUE_SILENCE": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_SOUND_TRUE_SILENCE",
+   "text_sha256": "48822c2fe4607b0719617b26b5d98bee1d0c4fe3b12382c388fd7ecb636aa598",
+   "effects": [
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 15,
+     "on": "",
+     "duration": "concentration",
+     "evidence": "Area: 15-foot-radius sphere",
+     "origin": "model_v2",
+     "inside": [
+      {
+       "id": "true_silence",
+       "who": "any",
+       "name": "True Silence",
+       "rule": {
+        "silenced": true
+       },
+       "reading": "A creature entirely inside the field cannot use an ability that needs its own voice: a shout, chant, song, spoken command or Verbal component."
+      }
+     ]
+    },
+    {
+     "type": "condition",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "deafened",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "concentration",
+     "evidence": "creatures are Deafened",
+     "origin": "model_v2"
+    },
+    {
+     "type": "half_damage",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [
+      "thunder"
+     ],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "concentration",
+     "evidence": "Thunder damage is halved before other reductions",
+     "origin": "model_v2"
+    },
+    {
+     "type": "advantage",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "saving throws against Voice talents that require hearing",
+     "duration": "concentration",
+     "evidence": "creatures have Advantage on saving throws against Voice talents that require hearing",
+     "origin": "model_v2"
+    },
+    {
+     "type": "resistance",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [
+      "thunder"
+     ],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "concentration",
+     "evidence": "Thunder damage is halved before other reductions",
+     "origin": "model_v2"
+    }
+   ],
+   "riders": [
+    "Ordinary sound cannot be created inside the field or pass through it.",
+    "Your own Sound talents are also restricted unless they use silent vibration, contact resonance, soul-sound, or a feature that pierces Silence."
+   ]
+  },
+  "TAL_SOUND_FORBIDDEN_SILENCE_FIELD": {
+   "effects": [
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 20,
+     "on": "",
+     "duration": "concentration",
+     "evidence": "Area: 20-foot-radius sphere",
+     "origin": "model_v2",
+     "triggers": [
+      {
+       "on": [
+        "enter",
+        "start"
+       ],
+       "who": "hostile",
+       "effects": [
+        {
+         "type": "save",
+         "recipient_text": "hostile creatures entering for the first time on a turn or starting their turns there make Constitution saving throws.",
+         "applies_to": "enemies_in_area",
+         "ability": "con",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "condition",
+           "condition": "silenced",
+           "applies_to": "target",
+           "duration": "until_start_of_next_turn",
+           "expires_on": "START_OF_TARGET_NEXT_TURN"
+          }
+         ],
+         "on_success": [],
+         "origin": "model_v2"
+        }
+       ]
+      }
+     ],
+     "inside": [
+      {
+       "id": "forbidden_silence",
+       "who": "any",
+       "recipient_text": "All creatures inside the area are Deafened and cannot use their voices or verbal components.",
+       "name": "Forbidden Silence Field",
+       "rule": {
+        "silenced": true,
+        "cant_hear": true
+       },
+       "reading": "While inside Forbidden Silence Field, creatures are Deafened and cannot use their voice or verbal components."
+      },
+      {
+       "id": "forbidden_thunder",
+       "who": "any",
+       "name": "Forbidden Silence Field: Thunder damage halved while inside",
+       "modifiers": [{"field": "damage_resistance", "value": "THUNDER"}],
+       "reading": "Thunder damage is halved while inside Forbidden Silence Field."
+      }
+     ]
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [
+    "Ordinary sound cannot be created inside the Field or pass through it.",
+    "A creature inside the Field cannot benefit from hearing-based Blindsight.",
+    "Your own Sound talents work inside the Field only when they run through silent vibration, contact resonance, soul-sound, or a special feature."
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 90
+   },
+   "area": {
+    "shape": "sphere",
+    "size_ft": 20,
+    "centered_on_self": false
+   },
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 7,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   },
+   "target": null,
+   "text_sha256": "9c3f46594c08a01c124fd55f852e490d52ce80d4f08560bd0d9beca25578c3df",
+   "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+  },
+  "TAL_SOUND_SILENCE_THAT_SWALLOWS_THUNDER": {
+   "effects": [
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "triggers": [
+      {
+       "on": [
+        "start"
+       ],
+       "who": "hostile",
+       "effects": [
+        {
+         "type": "save",
+         "recipient_text": "hostile creatures that start their turn inside make Constitution saving throws.",
+         "applies_to": "enemies_in_area",
+         "ability": "con",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "condition",
+           "condition": "silenced",
+           "applies_to": "target",
+           "duration": "until_start_of_next_turn",
+           "expires_on": "START_OF_TARGET_NEXT_TURN"
+          }
+         ],
+         "on_success": [],
+         "origin": "model_v2"
+        }
+       ]
+      }
+     ],
+     "inside": [
+      {
+       "id": "swallowed_thunder",
+       "who": "any",
+       "name": "Silence That Swallows Thunder",
+       "rule": {
+        "silenced": true,
+        "sound_hostile_thunder": "check"
+       },
+       "reading": "A creature entirely inside the area cannot use an ability that needs its own voice: a shout, chant, song, spoken command or Verbal component."
+      },
+      {
+       "id": "swallowed_deafened",
+       "who": "any",
+       "name": "Deafened inside devouring silence",
+       "rule": {
+        "cant_hear": true
+       },
+       "reading": "Creatures are Deafened only while inside this area."
+      }
+     ]
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [
+    "Your own Sound talents and your allies' work inside the area only when they run through silent vibration, soul-sound, or contact resonance."
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 120
+   },
+   "area": {
+    "shape": "sphere",
+    "size_ft": 30,
+    "centered_on_self": false
+   },
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 12,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": "once_per_long_rest",
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   },
+   "target": null,
+   "text_sha256": "769c246f3999a510e071af4eacb715d5c551ff3819496c3ec67aea3cfa6da7e7",
+   "reviewed_by": "A2SOUNDSEC 2026-10-10"
+  },
+  "tianxia.talent.sound.the_first_sound_before_heaven": {
+   "effects": [],
+   "options": [
+    {
+     "label": "Heaven-Ringing Mode",
+     "effects": [
+      {
+       "type": "save",
+       "applies_to": "creatures_in_area",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "con",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "Creatures in the area make Constitution saving throws",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "creatures_in_area",
+         "dice": {
+          "count": 16,
+          "count_formula": null,
+          "sides": 10,
+          "bonus": null,
+          "bonus_formula": null
+         },
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [
+          "thunder",
+          "psychic"
+         ],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "Take 16d10 Thunder or Psychic damage"
+        },
+        {
+         "type": "condition",
+         "applies_to": "creatures_in_area",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "deafened",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "one_minute",
+         "evidence": "become Deafened for 1 minute"
+        },
+        {
+         "type": "condition",
+         "applies_to": "creatures_in_area",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "stunned",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "until_end_of_next_turn",
+         "evidence": "become Stunned until the end of your next turn"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "applies_to": "creatures_in_area",
+         "dice": {
+          "count": 16,
+          "count_formula": null,
+          "sides": 10,
+          "bonus": null,
+          "bonus_formula": null
+         },
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [
+          "thunder",
+          "psychic"
+         ],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "Take half damage"
+        },
+        {
+         "type": "condition",
+         "applies_to": "creatures_in_area",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "deafened",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "until_end_of_next_turn",
+         "evidence": "become Deafened until the end of your next turn"
+        }
+       ],
+       "origin": "model_options"
+      }
+     ]
+    },
+    {
+     "label": "Silence-Before-Sound Mode",
+     "effects": [
+      {
+       "type": "zone",
+       "applies_to": "creatures_in_area",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 60,
+       "on": "",
+       "duration": {
+        "kind": "until_end_of_your_next_turn",
+        "amount": null,
+        "concentration": false
+       },
+       "evidence": "Create a 60-foot-radius field until the end of your next turn",
+       "origin": "model_options",
+       "inside": [
+        {
+         "id": "silence_before_sound",
+         "who": "hostile",
+         "name": "Silence Before Sound",
+         "rule": {
+          "silenced": true,
+          "sound_hostile_thunder": "zero"
+         },
+         "reading": "A hostile creature entirely inside the field cannot use an ability that needs its own voice: a shout, chant, song, spoken command or Verbal component. You and your allies are unaffected."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Structure-Shattering Mode",
+     "effects": [
+      {
+       "type": "object_damage",
+       "attack_roll": true,
+       "dice": {
+        "count": 20,
+        "count_formula": null,
+        "sides": 10,
+        "bonus": null,
+        "bonus_formula": null
+       },
+       "damage_types": [
+        "thunder"
+       ],
+       "ignore_threshold": true,
+       "ignore_resistance": true,
+       "evidence": "Make a Sound Cultivation Attack ... Success: Deal 20d10 Thunder damage to the target, ignoring ordinary Resistance and hardness."
+      }
+     ]
+    }
+   ],
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [
+    "Structure-Shattering Mode: if the target survives, you choose one ordinary function of it to suppress until the end of your next turn, and the Game Master decides whether that function can be suppressed (the attack is rolled against the target's Armor Class, the printed \"GM-set DC\").",
+    "Silence-Before-Sound Mode: ordinary sound cannot exist inside the field; creatures you choose can still hear your command, bell, or soul-tone.",
+    "This talent does not automatically destroy artifacts, Domains, immortal formations, permanent karmic bonds, or Realm-defining structures; the Game Master decides whether it cracks, suppresses, reveals, or contests them."
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 300
+   },
+   "area": {
+    "shape": "sphere",
+    "size_ft": 60,
+    "centered_on_self": false
+   },
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 15,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": "text:once per week",
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "text_sha256": "a2beac514a5b081ed9c760bdb2e2413a9a80e038776ec9035f7ac916975b807e",
+   "reviewed_by": "A2SOUNDSEC 2026-10-10"
+  },
+  "TAL_SOUND_NAME_STRIKING_TONE": {
+   "effects": [
+    {
+     "type": "sound_name_tone",
+     "harmful": true,
+     "applies_to": "target"
+    }
+   ],
+   "options": [],
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [],
+   "range": {
+    "kind": "feet",
+    "feet": 60
+   },
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 6,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "text_sha256": "fb4cc858cf2f13defa1c37965fc9b4805c78e382eee853809786c8aa5c0a6be6",
+   "reviewed_by": "A2SOUNDSEC 2026-10-10"
+  },
+  "TAL_SOUND_COUNTER_CHANT": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_SOUND_COUNTER_CHANT",
+   "text_sha256": "cdbb63b1f960a7260d7303fc584b17808de88848062bb1a67dfdb6767b7cecc9",
+   "options": [
+    {
+     "label": "Disadvantage on Trigger",
+     "effects": [
+      {
+       "type": "contest_against",
+       "applies_to": "target",
+       "harmful": true,
+       "actor_check": {
+        "kind": "cultivation",
+        "label": "Sound Check"
+       },
+       "target_check": {
+        "options": [
+         {
+          "kind": "key_ability",
+          "label": "its spellcasting ability check"
+         },
+         {
+          "kind": "cultivation",
+          "label": "Cultivation Check"
+         },
+         {
+          "kind": "dc",
+          "basis": "save_dc",
+          "label": "its Save DC"
+         }
+        ]
+       },
+       "evidence": "Make a Sound Check opposed by the target's spellcasting ability check, cultivation check, or saving throw DC converted to a check DC.",
+       "on_success": [
+        {
+         "type": "disadvantage",
+         "applies_to": "target",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "the triggering attack roll or ability check",
+         "duration": "instant",
+         "evidence": "it has Disadvantage on the triggering attack roll or ability check",
+         "origin": "model_options"
+        }
+       ],
+       "on_fail": []
+      }
+     ]
+    },
+    {
+     "label": "Advantage on Save",
+     "effects": [
+      {
+       "type": "contest_against",
+       "applies_to": "target",
+       "harmful": true,
+       "actor_check": {
+        "kind": "cultivation",
+        "label": "Sound Check"
+       },
+       "target_check": {
+        "options": [
+         {
+          "kind": "key_ability",
+          "label": "its spellcasting ability check"
+         },
+         {
+          "kind": "cultivation",
+          "label": "Cultivation Check"
+         },
+         {
+          "kind": "dc",
+          "basis": "save_dc",
+          "label": "its Save DC"
+         }
+        ]
+       },
+       "evidence": "Make a Sound Check opposed by the target's spellcasting ability check, cultivation check, or saving throw DC converted to a check DC.",
+       "on_success": [
+        {
+         "type": "advantage",
+         "applies_to": "ally",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "its saving throw",
+         "duration": "instant",
+         "evidence": "one target of the triggering effect has Advantage on its saving throw",
+         "origin": "model_options"
+        }
+       ],
+       "on_fail": []
+      }
+     ]
+    }
+   ],
+   "riders": [
+    "The triggering sound comes out audible but distorted, so it cannot carry a clear command.",
+    "If the triggering effect is harmless communication only, it fails to carry beyond 30 feet.",
+    "Counter-Chant never counters a spell by itself: it only disrupts a voice-dependent one."
+   ]
+  },
+  "TAL_SOUND_SHATTER_THE_CHANT": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_SOUND_SHATTER_THE_CHANT",
+   "text_sha256": "1b5ab62b8b804de205bea644f45896abf2f6e52d987ff0b68b6f805573b0355e",
+   "effects": [
+    {
+     "type": "contest_against",
+     "applies_to": "target",
+     "harmful": true,
+     "actor_check": {
+      "kind": "cultivation",
+      "label": "Sound Check"
+     },
+     "target_check": {
+      "options": [
+       {
+        "kind": "dc",
+        "basis": "save_dc",
+        "label": "its Save DC"
+       },
+       {
+        "kind": "dc",
+        "basis": "cultivation",
+        "label": "its Cultivation Save DC"
+       },
+       {
+        "kind": "dc",
+        "basis": "sphere",
+        "label": "its named sphere Save DC"
+       }
+      ]
+     },
+     "evidence": "Make a Sound Check against the triggering creature's Save DC, Cultivation Save DC, or named sphere Save DC.",
+     "on_success": [
+      {
+       "type": "advantage",
+       "on": "its saving throw",
+       "evidence": "Advantage on its saving throw",
+       "origin": "parser"
+      }
+     ],
+     "on_fail": [],
+     "success_by": [
+      {
+       "margin": 5,
+       "optional": true,
+       "label": "Resonance on the triggering creature",
+       "reading": "Resonance is a mark your Sound abilities use; leaving it on that creature costs you nothing extra and it lasts until the end of your next turn.",
+       "effects": [
+        {
+         "type": "mark",
+         "mark": "Resonance",
+         "applies_to": "target",
+         "duration": {
+          "kind": "until_end_of_your_next_turn"
+         },
+         "evidence": "Critical Success or success by 5 or more: You may also apply Resonance to the triggering creature."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "riders": [
+    "Success, choose one: the triggering effect occurs, but one target has Advantage on its saving throw; or it occurs, but its range is halved; or it occurs, but it cannot affect you; or, if the effect is communication, command, or coordination only, it fails.",
+    "Halving a triggering effect's range, protecting yourself from it, and cancelling a command-only effect need the Game Master: the table has no seam for changing an effect that is already declared.",
+    "Shatter the Chant is not a universal counterspell; it only attacks sound-dependent execution."
+   ]
+  }
+ }
+}
