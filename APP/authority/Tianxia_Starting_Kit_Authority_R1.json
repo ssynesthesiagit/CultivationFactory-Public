@@ -1,0 +1,1873 @@
+{
+  "schema_version": "TianxiaFoundry.StartingKitAuthority.v1",
+  "rules": {
+    "starting_kit": "Printed Background kit plus the kit of the character's highest Path (ties: the Method's first Path), option A or B.",
+    "choices": "Every choice is a closed menu; the local model picks, and the first option is the deterministic fallback.",
+    "trinkets": "Printed entries with no catalog item are kept verbatim with value 0; nothing is invented.",
+    "unprinted_quantity": "Where the printed kit names an item without a quantity, one is given (quantity_printed false).",
+    "currency": "Coin in Copper Cash (1 ST = 10 CC, 1 GT = 100 CC); low-gold economy."
+  },
+  "sources": {
+    "catalog": {
+      "path": "authority/Tianxia_Mundane_Equipment_Catalog_R1.json",
+      "sha256": "dced77a989b795bfb9860aabd18ef0bd7694f498bc245314ba14dcb0c3f81754"
+    },
+    "background_authority": {
+      "path": "non_sphere_authority/authority/Background_Core_Authority_v1.json",
+      "sha256": "58dce7a049a379d01ac268a9e08085af8a62a1a4ba1376dbfc7a2f9c14993774"
+    },
+    "path_kit_design": "docs/plans/EQUIPMENT_AND_TREASURE_DRAFT_2026-09-22.md §3"
+  },
+  "wealth": {
+    "rule": "Treasure budget = CL budget x Background wealth tier x seeded 1d20 fortune multiplier; the Realm grade cap still applies.",
+    "tiers": {
+      "destitute": 0.25,
+      "poor": 0.5,
+      "modest": 1.0,
+      "comfortable": 2.0,
+      "wealthy": 3.0,
+      "rich": 4.0
+    },
+    "fortune_roll": [
+      {
+        "min_roll": 1,
+        "multiplier": 0.1,
+        "label": "ruined"
+      },
+      {
+        "min_roll": 2,
+        "multiplier": 0.4,
+        "label": "hard times"
+      },
+      {
+        "min_roll": 5,
+        "multiplier": 0.7,
+        "label": "lean"
+      },
+      {
+        "min_roll": 9,
+        "multiplier": 1.0,
+        "label": "ordinary"
+      },
+      {
+        "min_roll": 13,
+        "multiplier": 1.3,
+        "label": "fortunate"
+      },
+      {
+        "min_roll": 17,
+        "multiplier": 1.8,
+        "label": "prosperous"
+      },
+      {
+        "min_roll": 20,
+        "multiplier": 3.0,
+        "label": "windfall"
+      }
+    ]
+  },
+  "category_menus": {
+    "simple_weapon": [
+      "tianxia.mortal.weapon.bang",
+      "tianxia.mortal.weapon.bi_shou",
+      "tianxia.mortal.weapon.bi_zhang_nu",
+      "tianxia.mortal.weapon.biao_qiang",
+      "tianxia.mortal.weapon.dan_gong",
+      "tianxia.mortal.weapon.duan_gong",
+      "tianxia.mortal.weapon.duan_qiang",
+      "tianxia.mortal.weapon.fei_biao",
+      "tianxia.mortal.weapon.gan_bang",
+      "tianxia.mortal.weapon.gu_duo",
+      "tianxia.mortal.weapon.gun",
+      "tianxia.mortal.weapon.lian",
+      "tianxia.mortal.weapon.shou_chui",
+      "tianxia.mortal.weapon.shou_fu",
+      "tianxia.mortal.weapon.tie_chi",
+      "tianxia.mortal.weapon.tong_zhu"
+    ],
+    "simple_ranged": [
+      "tianxia.mortal.weapon.bi_zhang_nu",
+      "tianxia.mortal.weapon.dan_gong",
+      "tianxia.mortal.weapon.duan_gong",
+      "tianxia.mortal.weapon.fei_biao",
+      "tianxia.mortal.weapon.tong_zhu"
+    ],
+    "small_weapon": [
+      "tianxia.mortal.weapon.bang",
+      "tianxia.mortal.weapon.bi_shou",
+      "tianxia.mortal.weapon.lian",
+      "tianxia.mortal.weapon.shou_chui",
+      "tianxia.mortal.weapon.shou_fu"
+    ],
+    "martial_melee": [
+      "tianxia.mortal.weapon.cha_hu_cha",
+      "tianxia.mortal.weapon.chang_qiang",
+      "tianxia.mortal.weapon.chui",
+      "tianxia.mortal.weapon.da_chui",
+      "tianxia.mortal.weapon.dao",
+      "tianxia.mortal.weapon.duan_cha",
+      "tianxia.mortal.weapon.duan_dao",
+      "tianxia.mortal.weapon.duan_jian",
+      "tianxia.mortal.weapon.fu",
+      "tianxia.mortal.weapon.gang_cha",
+      "tianxia.mortal.weapon.ge",
+      "tianxia.mortal.weapon.guandao_yanyuedao",
+      "tianxia.mortal.weapon.hu_die_dao",
+      "tianxia.mortal.weapon.ji",
+      "tianxia.mortal.weapon.jian",
+      "tianxia.mortal.weapon.lang_ya_bang",
+      "tianxia.mortal.weapon.lian_jia_bang",
+      "tianxia.mortal.weapon.liu_ye_dao",
+      "tianxia.mortal.weapon.mao",
+      "tianxia.mortal.weapon.mei_jian_dao",
+      "tianxia.mortal.weapon.qiang",
+      "tianxia.mortal.weapon.ruan_bian",
+      "tianxia.mortal.weapon.tie_bian",
+      "tianxia.mortal.weapon.tie_jian",
+      "tianxia.mortal.weapon.xi_jian",
+      "tianxia.mortal.weapon.yue",
+      "tianxia.mortal.weapon.zhan_chui",
+      "tianxia.mortal.weapon.zhan_fu",
+      "tianxia.mortal.weapon.zhan_gao",
+      "tianxia.mortal.weapon.zhan_ma_dao"
+    ],
+    "artisan_tool": [
+      "tianxia.mortal.tool.alchemist_s_supplies",
+      "tianxia.mortal.tool.brewer_s_supplies",
+      "tianxia.mortal.tool.calligrapher_s_supplies",
+      "tianxia.mortal.tool.carpenter_s_tools",
+      "tianxia.mortal.tool.cartographer_s_tools",
+      "tianxia.mortal.tool.cobbler_s_tools",
+      "tianxia.mortal.tool.cook_s_utensils",
+      "tianxia.mortal.tool.glassblower_s_tools",
+      "tianxia.mortal.tool.jeweler_s_tools",
+      "tianxia.mortal.tool.leatherworker_s_tools",
+      "tianxia.mortal.tool.mason_s_tools",
+      "tianxia.mortal.tool.painter_s_supplies",
+      "tianxia.mortal.tool.potter_s_tools",
+      "tianxia.mortal.tool.smith_s_tools",
+      "tianxia.mortal.tool.tinker_s_tools",
+      "tianxia.mortal.tool.weaver_s_tools",
+      "tianxia.mortal.tool.woodcarver_s_tools"
+    ],
+    "musical_instrument": [
+      "tianxia.mortal.instrument.bo",
+      "tianxia.mortal.instrument.dizi",
+      "tianxia.mortal.instrument.gu",
+      "tianxia.mortal.instrument.guqin",
+      "tianxia.mortal.instrument.guzheng",
+      "tianxia.mortal.instrument.jiao",
+      "tianxia.mortal.instrument.konghou",
+      "tianxia.mortal.instrument.luo",
+      "tianxia.mortal.instrument.paixiao",
+      "tianxia.mortal.instrument.pipa",
+      "tianxia.mortal.instrument.ruan",
+      "tianxia.mortal.instrument.sheng",
+      "tianxia.mortal.instrument.suona",
+      "tianxia.mortal.instrument.xiao",
+      "tianxia.mortal.instrument.xiqin",
+      "tianxia.mortal.instrument.xun",
+      "tianxia.mortal.instrument.yangqin"
+    ]
+  },
+  "background_kits": {
+    "tianxia.background.abandoned_orphan": {
+      "display_name": "Abandoned Orphan",
+      "raw_authority": "You begin with worn common clothes, a small knife, thieves' tools, a bedroll, a hidden pouch, three days of poor rations, and one keepsake from the life you lost or never had.",
+      "raw_authority_sha256": "a22c9482284933e8419a0c356e7b387b48cc86f71f0c5da4ddd0318a5e68c303",
+      "entries": [
+        {
+          "printed": "worn common clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a small knife",
+          "kind": "item",
+          "item_id": "tianxia.mortal.weapon.bi_shou",
+          "quantity": 1
+        },
+        {
+          "printed": "thieves' tools",
+          "kind": "item",
+          "item_id": "tianxia.mortal.tool.thieves_tools",
+          "quantity": 1
+        },
+        {
+          "printed": "a bedroll",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.bedroll",
+          "quantity": 1
+        },
+        {
+          "printed": "a hidden pouch",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.pouch",
+          "quantity": 1
+        },
+        {
+          "printed": "three days of poor rations",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.rations",
+          "quantity": 3
+        },
+        {
+          "printed": "one keepsake from the life you lost or never had",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "destitute"
+    },
+    "tianxia.background.ancestral_shrine_keeper": {
+      "display_name": "Ancestral Shrine Keeper",
+      "raw_authority": "You begin with plain ritual clothes, incense, calligrapher’s supplies, a family or shrine token, a small bell, a pouch of offerings, and a copied list of names.",
+      "raw_authority_sha256": "1efb1521623bd9f85f5bd7a2ebd66d6a3cb14993466d0c5cd7c095c98e738182",
+      "entries": [
+        {
+          "printed": "plain ritual clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.robe",
+          "quantity": 1
+        },
+        {
+          "printed": "incense",
+          "kind": "trinket"
+        },
+        {
+          "printed": "calligrapher’s supplies",
+          "kind": "item",
+          "item_id": "tianxia.mortal.tool.calligrapher_s_supplies",
+          "quantity": 1
+        },
+        {
+          "printed": "a family or shrine token",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a small bell",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.bell",
+          "quantity": 1
+        },
+        {
+          "printed": "a pouch of offerings",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.pouch",
+          "quantity": 1
+        },
+        {
+          "printed": "a copied list of names",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "modest"
+    },
+    "tianxia.background.artisan_s_child": {
+      "display_name": "Artisan’s Child",
+      "raw_authority": "You begin with work clothes, one artisan’s tool, a measuring cord, chalk or charcoal, repair scraps, a half-finished object, and a promise owed to or by your teacher.",
+      "raw_authority_sha256": "9d408ea5cff8be0d0c8b40a01484d7bcec320ae2e2f5c18cfdc33deae5fa12c9",
+      "entries": [
+        {
+          "printed": "work clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "one artisan’s tool",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "category",
+              "menu": "artisan_tool"
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "a measuring cord",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.string",
+          "quantity": 1
+        },
+        {
+          "printed": "chalk or charcoal",
+          "kind": "trinket"
+        },
+        {
+          "printed": "repair scraps",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a half-finished object",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a promise owed to or by your teacher",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "modest"
+    },
+    "tianxia.background.beast_hunter": {
+      "display_name": "Beast Hunter",
+      "raw_authority": "You begin with travel clothes, a hunting knife, a simple ranged weapon or spear, trapper’s tools or leatherworker’s tools, a coil of cord, trail rations, and a trophy from a beast you survived.",
+      "raw_authority_sha256": "1446e99cf21df1d513b5fcf1e81344150c323e37d0efb3c05a7ecfb9efd2049d",
+      "entries": [
+        {
+          "printed": "travel clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a hunting knife",
+          "kind": "item",
+          "item_id": "tianxia.mortal.weapon.bi_shou",
+          "quantity": 1
+        },
+        {
+          "printed": "a simple ranged weapon or spear",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "category",
+              "menu": "simple_ranged"
+            },
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.weapon.duan_qiang",
+              "quantity": 1
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "trapper’s tools or leatherworker’s tools",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "trinket",
+              "text": "trapper’s tools"
+            },
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.tool.leatherworker_s_tools",
+              "quantity": 1
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "a coil of cord",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.rope",
+          "quantity": 1
+        },
+        {
+          "printed": "trail rations",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.rations",
+          "quantity": 1,
+          "quantity_printed": false
+        },
+        {
+          "printed": "a trophy from a beast you survived",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.border_scout": {
+      "display_name": "Border Scout",
+      "raw_authority": "You begin with travel clothes, a shortbow or simple ranged weapon, a map case, chalk or trail markers, a weather cloak, five days of rations, and a warning token from a border post.",
+      "raw_authority_sha256": "89aef89e9674131486dfe45e09a393126b8d3b21f312768bbc922e5b1ee66774",
+      "entries": [
+        {
+          "printed": "travel clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a shortbow or simple ranged weapon",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.weapon.duan_gong",
+              "quantity": 1
+            },
+            {
+              "kind": "category",
+              "menu": "simple_ranged"
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "a map case",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.case_map_or_scroll",
+          "quantity": 1
+        },
+        {
+          "printed": "chalk or trail markers",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a weather cloak",
+          "kind": "trinket"
+        },
+        {
+          "printed": "five days of rations",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.rations",
+          "quantity": 5
+        },
+        {
+          "printed": "a warning token from a border post",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "modest"
+    },
+    "tianxia.background.clan_heir": {
+      "display_name": "Clan Heir",
+      "raw_authority": "You begin with quality clothes, a clan token, writing tools, a family letter, a signet or seal, and a small inherited keepsake.",
+      "raw_authority_sha256": "cd9f672b066388232fe7f1191d44638c79207fc9ffb61c3dedb433caa8b4193f",
+      "entries": [
+        {
+          "printed": "quality clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_fine",
+          "quantity": 1
+        },
+        {
+          "printed": "a clan token",
+          "kind": "trinket"
+        },
+        {
+          "printed": "writing tools",
+          "kind": "bundle",
+          "items": [
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.gear.ink",
+              "quantity": 1
+            },
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.gear.ink_pen",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "printed": "a family letter",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a signet or seal",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a small inherited keepsake",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "rich"
+    },
+    "tianxia.background.criminal_runner": {
+      "display_name": "Criminal Runner",
+      "raw_authority": "You begin with practical dark clothes, thieves’ tools, a small knife, a coded token, a concealed pouch, cheap travel papers, and one sealed message you were never supposed to read.",
+      "raw_authority_sha256": "59e2cfd6d4a940a0cc786ca29dd17feb94046f5830b17d0cb5e18935fcf71e7d",
+      "entries": [
+        {
+          "printed": "practical dark clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "thieves’ tools",
+          "kind": "item",
+          "item_id": "tianxia.mortal.tool.thieves_tools",
+          "quantity": 1
+        },
+        {
+          "printed": "a small knife",
+          "kind": "item",
+          "item_id": "tianxia.mortal.weapon.bi_shou",
+          "quantity": 1
+        },
+        {
+          "printed": "a coded token",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a concealed pouch",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.pouch",
+          "quantity": 1
+        },
+        {
+          "printed": "cheap travel papers",
+          "kind": "trinket"
+        },
+        {
+          "printed": "one sealed message you were never supposed to read",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.cursed_bloodline": {
+      "display_name": "Cursed Bloodline",
+      "raw_authority": "You begin with travel clothes, a hooded cloak, a family token, a charm meant to hide or suppress your mark, ink and paper, and a small weapon.",
+      "raw_authority_sha256": "b13a0c6ae1dfa363427e4c57b557f3dc3890eb520771a8ab70a746fbad0e7cb2",
+      "entries": [
+        {
+          "printed": "travel clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a hooded cloak",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a family token",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a charm meant to hide or suppress your mark",
+          "kind": "trinket"
+        },
+        {
+          "printed": "ink and paper",
+          "kind": "bundle",
+          "items": [
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.gear.ink",
+              "quantity": 1
+            },
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.gear.paper",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "printed": "a small weapon",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "category",
+              "menu": "small_weapon"
+            }
+          ],
+          "fallback_index": 0
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.dream_touched": {
+      "display_name": "Dream-Touched",
+      "raw_authority": "You begin with soft travel clothes, a dream journal, ink, a sleeping mat, incense, a small charm against nightmares, and one strange object you do not remember obtaining.",
+      "raw_authority_sha256": "46bd245dad95be7881ed999cac90bca24cef12c24408755bb3ea80899dbbc744",
+      "entries": [
+        {
+          "printed": "soft travel clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a dream journal",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.book",
+          "quantity": 1
+        },
+        {
+          "printed": "ink",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.ink",
+          "quantity": 1
+        },
+        {
+          "printed": "a sleeping mat",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.bedroll",
+          "quantity": 1
+        },
+        {
+          "printed": "incense",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a small charm against nightmares",
+          "kind": "trinket"
+        },
+        {
+          "printed": "one strange object you do not remember obtaining",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.exiled_noble": {
+      "display_name": "Exiled Noble",
+      "raw_authority": "You begin with worn fine clothes, a concealed family token, a small weapon, a letter you have not decided whether to destroy, and enough coin to look respectable once.",
+      "raw_authority_sha256": "9f8a703f1ab6a6e5b5f359177b07c61c5ff5b8674c1a949f6423857a8c46546d",
+      "entries": [
+        {
+          "printed": "worn fine clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_fine",
+          "quantity": 1
+        },
+        {
+          "printed": "a concealed family token",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a small weapon",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "category",
+              "menu": "small_weapon"
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "a letter you have not decided whether to destroy",
+          "kind": "trinket"
+        },
+        {
+          "printed": "enough coin to look respectable once",
+          "kind": "coin",
+          "roll": {
+            "count": 1,
+            "sides": 20
+          },
+          "unit": "GT",
+          "note": "The printed kit names coin without an amount; owner ruling 2026-09-22 sets 1d20 Gold Taels."
+        }
+      ],
+      "wealth_tier": "wealthy"
+    },
+    "tianxia.background.forest_hermit": {
+      "display_name": "Forest Hermit",
+      "raw_authority": "You begin with weathered travel clothes, a staff or simple weapon, an herbalism kit, a waterskin, a bedroll, five days of trail rations, and a pouch of useful herbs.",
+      "raw_authority_sha256": "bedbf1de44a9ee92b62fe4b299c600eac3cfa3c6d5b1da1092c126d4e256801c",
+      "entries": [
+        {
+          "printed": "weathered travel clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a staff or simple weapon",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.weapon.gun",
+              "quantity": 1
+            },
+            {
+              "kind": "category",
+              "menu": "simple_weapon"
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "an herbalism kit",
+          "kind": "item",
+          "item_id": "tianxia.mortal.tool.herbalism_kit",
+          "quantity": 1
+        },
+        {
+          "printed": "a waterskin",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.waterskin",
+          "quantity": 1
+        },
+        {
+          "printed": "a bedroll",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.bedroll",
+          "quantity": 1
+        },
+        {
+          "printed": "five days of trail rations",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.rations",
+          "quantity": 5
+        },
+        {
+          "printed": "a pouch of useful herbs",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.pouch",
+          "quantity": 1
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.furnace_laborer": {
+      "display_name": "Furnace Laborer",
+      "raw_authority": "You begin with work clothes, heavy gloves, a simple tool from your trade, a waterskin, a whetstone or chalk line, and a scar from work that should have broken you.",
+      "raw_authority_sha256": "7af37883cc22317b63bbc633de222145b983d3195fec83322d89dcf79a14ca0b",
+      "entries": [
+        {
+          "printed": "work clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "heavy gloves",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a simple tool from your trade",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "category",
+              "menu": "artisan_tool"
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "a waterskin",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.waterskin",
+          "quantity": 1
+        },
+        {
+          "printed": "a whetstone or chalk line",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a scar from work that should have broken you",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.herb_gatherer": {
+      "display_name": "Herb-Gatherer",
+      "raw_authority": "You begin with travel clothes, an herbalism kit, drying paper, small jars, a gathering knife, a field pouch, and a packet of common medicinal herbs.",
+      "raw_authority_sha256": "f97ca7d58656bd2675e958fca122b283cc0f531ead22346b840a77344349cb89",
+      "entries": [
+        {
+          "printed": "travel clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "an herbalism kit",
+          "kind": "item",
+          "item_id": "tianxia.mortal.tool.herbalism_kit",
+          "quantity": 1
+        },
+        {
+          "printed": "drying paper",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.paper",
+          "quantity": 1
+        },
+        {
+          "printed": "small jars",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a gathering knife",
+          "kind": "item",
+          "item_id": "tianxia.mortal.weapon.bi_shou",
+          "quantity": 1
+        },
+        {
+          "printed": "a field pouch",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.pouch",
+          "quantity": 1
+        },
+        {
+          "printed": "a packet of common medicinal herbs",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.imperial_scholar": {
+      "display_name": "Imperial Scholar",
+      "raw_authority": "You begin with scholar's robes, calligrapher's supplies, a writing brush, ink, a seal or school token, a copybook of laws or histories, and travel papers.",
+      "raw_authority_sha256": "50707adf7d2876d5642bce8e1a7a72e3a0d044dd46b33b4675bac18258db7c44",
+      "entries": [
+        {
+          "printed": "scholar's robes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.robe",
+          "quantity": 1
+        },
+        {
+          "printed": "calligrapher's supplies",
+          "kind": "item",
+          "item_id": "tianxia.mortal.tool.calligrapher_s_supplies",
+          "quantity": 1
+        },
+        {
+          "printed": "a writing brush",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.ink_pen",
+          "quantity": 1
+        },
+        {
+          "printed": "ink",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.ink",
+          "quantity": 1
+        },
+        {
+          "printed": "a seal or school token",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a copybook of laws or histories",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.book",
+          "quantity": 1
+        },
+        {
+          "printed": "travel papers",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "comfortable"
+    },
+    "tianxia.background.jambudvipan_mystic": {
+      "display_name": "Jambudvipan Mystic",
+      "raw_authority": "You begin with travel robes, prayer beads or a meditation cord, an herbalism kit, incense, a small ritual text, and a satchel of medicinal roots.",
+      "raw_authority_sha256": "4e0f765c2fe826f75e1f2dc18ecc4a699b927d1bc6315b7794eefdf5986dea9f",
+      "entries": [
+        {
+          "printed": "travel robes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.robe",
+          "quantity": 1
+        },
+        {
+          "printed": "prayer beads or a meditation cord",
+          "kind": "trinket"
+        },
+        {
+          "printed": "an herbalism kit",
+          "kind": "item",
+          "item_id": "tianxia.mortal.tool.herbalism_kit",
+          "quantity": 1
+        },
+        {
+          "printed": "incense",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a small ritual text",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.book",
+          "quantity": 1
+        },
+        {
+          "printed": "a satchel of medicinal roots",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.pouch",
+          "quantity": 1
+        }
+      ],
+      "wealth_tier": "modest"
+    },
+    "tianxia.background.merchant_clan_scion": {
+      "display_name": "Merchant Clan Scion",
+      "raw_authority": "You begin with fine travel clothes, a ledger, writing tools, a merchant token, a purse of mixed coin, a trade sample, and one letter of introduction.",
+      "raw_authority_sha256": "20845305994564a09d209a740a64dad8062dc3ca0ab840f7b719c09ccc0b68e8",
+      "entries": [
+        {
+          "printed": "fine travel clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_fine",
+          "quantity": 1
+        },
+        {
+          "printed": "a ledger",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.book",
+          "quantity": 1
+        },
+        {
+          "printed": "writing tools",
+          "kind": "bundle",
+          "items": [
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.gear.ink",
+              "quantity": 1
+            },
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.gear.ink_pen",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "printed": "a merchant token",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a purse of mixed coin",
+          "kind": "coin",
+          "roll": {
+            "count": 1,
+            "sides": 20
+          },
+          "unit": "GT",
+          "note": "The printed kit names coin without an amount; owner ruling 2026-09-22 sets 1d20 Gold Taels."
+        },
+        {
+          "printed": "a trade sample",
+          "kind": "trinket"
+        },
+        {
+          "printed": "one letter of introduction",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "rich"
+    },
+    "tianxia.background.military_brat": {
+      "display_name": "Military Brat",
+      "raw_authority": "You begin with sturdy clothes, a simple weapon, a bedroll, a whetstone, a unit token or old insignia, and field rations.",
+      "raw_authority_sha256": "e3af308eb080e499aac574ae1e60813adab3fec32ce57be3371876ae88f8cea4",
+      "entries": [
+        {
+          "printed": "sturdy clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a simple weapon",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "category",
+              "menu": "simple_weapon"
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "a bedroll",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.bedroll",
+          "quantity": 1
+        },
+        {
+          "printed": "a whetstone",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a unit token or old insignia",
+          "kind": "trinket"
+        },
+        {
+          "printed": "field rations",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.rations",
+          "quantity": 1,
+          "quantity_printed": false
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.monastery_novice": {
+      "display_name": "Monastery Novice",
+      "raw_authority": "You begin with simple robes, a staff, prayer beads or training beads, a begging bowl, sandals, and a copied verse.",
+      "raw_authority_sha256": "a73d7f218c1839e28cfccbf313aa0f80502edaf44770391283e5e5867515ffbc",
+      "entries": [
+        {
+          "printed": "simple robes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.robe",
+          "quantity": 1
+        },
+        {
+          "printed": "a staff",
+          "kind": "item",
+          "item_id": "tianxia.mortal.weapon.gun",
+          "quantity": 1
+        },
+        {
+          "printed": "prayer beads or training beads",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a begging bowl",
+          "kind": "trinket"
+        },
+        {
+          "printed": "sandals",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a copied verse",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.northern_steppe_rider": {
+      "display_name": "Northern Steppe Rider",
+      "raw_authority": "You begin with riding clothes, a shortbow or simple weapon, a riding kit, a weather cloak, a clan token, dried meat, and a horsehair charm.",
+      "raw_authority_sha256": "40010d102d7bfebdfb3adc28cfcf01d96de4fbd4e6d5be1a8dfe56562aaf03a6",
+      "entries": [
+        {
+          "printed": "riding clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a shortbow or simple weapon",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.weapon.duan_gong",
+              "quantity": 1
+            },
+            {
+              "kind": "category",
+              "menu": "simple_weapon"
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "a riding kit",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a weather cloak",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a clan token",
+          "kind": "trinket"
+        },
+        {
+          "printed": "dried meat",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.rations",
+          "quantity": 1,
+          "quantity_printed": false
+        },
+        {
+          "printed": "a horsehair charm",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "modest"
+    },
+    "tianxia.background.puppeteer_s_child": {
+      "display_name": "Puppeteer’s Child",
+      "raw_authority": "You begin with performer’s clothes, woodcarver’s tools, carving knives, paint, string, a small puppet or doll, and a repair kit.",
+      "raw_authority_sha256": "09024f68f12f4ce6a252535920c1b0c66d29cf17cf4c47da5e506ab35cee5250",
+      "entries": [
+        {
+          "printed": "performer’s clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.costume",
+          "quantity": 1
+        },
+        {
+          "printed": "woodcarver’s tools",
+          "kind": "item",
+          "item_id": "tianxia.mortal.tool.woodcarver_s_tools",
+          "quantity": 1
+        },
+        {
+          "printed": "carving knives",
+          "kind": "trinket"
+        },
+        {
+          "printed": "paint",
+          "kind": "trinket"
+        },
+        {
+          "printed": "string",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.string",
+          "quantity": 1
+        },
+        {
+          "printed": "a small puppet or doll",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a repair kit",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.river_child": {
+      "display_name": "River Child",
+      "raw_authority": "You begin with practical clothes, a fishing line or net, a river knife, waterproof wrapping, a small charm for safe crossings, and a coil of rope.",
+      "raw_authority_sha256": "a6694307bff89143b2077a350e36966861746631e4630bd5059f49ae0e706bb2",
+      "entries": [
+        {
+          "printed": "practical clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a fishing line or net",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "trinket",
+              "text": "fishing line"
+            },
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.gear.net",
+              "quantity": 1
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "a river knife",
+          "kind": "item",
+          "item_id": "tianxia.mortal.weapon.bi_shou",
+          "quantity": 1
+        },
+        {
+          "printed": "waterproof wrapping",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a small charm for safe crossings",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a coil of rope",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.rope",
+          "quantity": 1
+        }
+      ],
+      "wealth_tier": "destitute"
+    },
+    "tianxia.background.sect_servant": {
+      "display_name": "Sect Servant",
+      "raw_authority": "You begin with plain sect-issued clothes, a work knife, a cleaning or cooking kit, a copied schedule, a hidden scrap of overheard instruction, and a servant token.",
+      "raw_authority_sha256": "36bbb9d28321cd80dcc0ddc291ab9d2849a616322939adec73908392a39da8c4",
+      "entries": [
+        {
+          "printed": "plain sect-issued clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a work knife",
+          "kind": "item",
+          "item_id": "tianxia.mortal.weapon.bi_shou",
+          "quantity": 1
+        },
+        {
+          "printed": "a cleaning or cooking kit",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "trinket",
+              "text": "cleaning kit"
+            },
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.tool.cook_s_utensils",
+              "quantity": 1
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "a copied schedule",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a hidden scrap of overheard instruction",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a servant token",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "destitute"
+    },
+    "tianxia.background.shinobi_apprentice": {
+      "display_name": "Shinobi Apprentice",
+      "raw_authority": "You begin with dark travel clothes, a simple weapon, a climbing cord, a poisoner’s kit, thieves’ tools, smoke pellets with no combat effect unless a printed rule allows, and coded training notes.",
+      "raw_authority_sha256": "98aa2542942353ad54bad9329c2e7eb3241b89b1262e0c29261ceba02f3cd0aa",
+      "entries": [
+        {
+          "printed": "dark travel clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a simple weapon",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "category",
+              "menu": "simple_weapon"
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "a climbing cord",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.rope",
+          "quantity": 1
+        },
+        {
+          "printed": "a poisoner’s kit",
+          "kind": "item",
+          "item_id": "tianxia.mortal.tool.poisoner_s_kit",
+          "quantity": 1
+        },
+        {
+          "printed": "thieves’ tools",
+          "kind": "item",
+          "item_id": "tianxia.mortal.tool.thieves_tools",
+          "quantity": 1
+        },
+        {
+          "printed": "smoke pellets with no combat effect unless a printed rule allows",
+          "kind": "trinket"
+        },
+        {
+          "printed": "coded training notes",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "modest"
+    },
+    "tianxia.background.spirit_medium": {
+      "display_name": "Spirit Medium",
+      "raw_authority": "You begin with ritual clothes, incense, a bell or spirit token, chalk or ash, a pouch of offerings, and a charm given by someone who believed you.",
+      "raw_authority_sha256": "4a876dbfda1a2aa7ec029395a477bca759dfdfb6495355393780461394bae2ac",
+      "entries": [
+        {
+          "printed": "ritual clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.robe",
+          "quantity": 1
+        },
+        {
+          "printed": "incense",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a bell or spirit token",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.gear.bell",
+              "quantity": 1
+            },
+            {
+              "kind": "trinket",
+              "text": "spirit token"
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "chalk or ash",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a pouch of offerings",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.pouch",
+          "quantity": 1
+        },
+        {
+          "printed": "a charm given by someone who believed you",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.talisman_apprentice": {
+      "display_name": "Talisman Apprentice",
+      "raw_authority": "You begin with work robes, calligrapher’s supplies, blank paper, practice talisman scraps with no supernatural effect, ink, a straightedge, and a sealed lesson you cannot yet read.",
+      "raw_authority_sha256": "56ec1dee7a8bd8977ce50323cd660c5e2e65873eb94888fac8f82da9cd20f5c7",
+      "entries": [
+        {
+          "printed": "work robes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.robe",
+          "quantity": 1
+        },
+        {
+          "printed": "calligrapher’s supplies",
+          "kind": "item",
+          "item_id": "tianxia.mortal.tool.calligrapher_s_supplies",
+          "quantity": 1
+        },
+        {
+          "printed": "blank paper",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.paper",
+          "quantity": 1
+        },
+        {
+          "printed": "practice talisman scraps with no supernatural effect",
+          "kind": "trinket"
+        },
+        {
+          "printed": "ink",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.ink",
+          "quantity": 1
+        },
+        {
+          "printed": "a straightedge",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a sealed lesson you cannot yet read",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "modest"
+    },
+    "tianxia.background.temple_initiate": {
+      "display_name": "Temple Initiate",
+      "raw_authority": "You begin with simple robes, prayer beads, calligrapher’s supplies, incense, a temple token, a small ritual text, and a charm against misfortune.",
+      "raw_authority_sha256": "fcb6cafa871021c3f68f8827a8f42323bd628e387a424ab772175cea87774cbf",
+      "entries": [
+        {
+          "printed": "simple robes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.robe",
+          "quantity": 1
+        },
+        {
+          "printed": "prayer beads",
+          "kind": "trinket"
+        },
+        {
+          "printed": "calligrapher’s supplies",
+          "kind": "item",
+          "item_id": "tianxia.mortal.tool.calligrapher_s_supplies",
+          "quantity": 1
+        },
+        {
+          "printed": "incense",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a temple token",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a small ritual text",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.book",
+          "quantity": 1
+        },
+        {
+          "printed": "a charm against misfortune",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "modest"
+    },
+    "tianxia.background.traveling_performer": {
+      "display_name": "Traveling Performer",
+      "raw_authority": "You begin with performer’s clothes, a costume piece or mask, one instrument or performer’s kit, travel papers, a small blade, a collection bowl, and a rumor learned from an audience member who thought you were not listening.",
+      "raw_authority_sha256": "2eab8c8ecb3f7b30b64e4dbfb98004bd337e9dd087a815bd35b8809f247d8567",
+      "entries": [
+        {
+          "printed": "performer’s clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.costume",
+          "quantity": 1
+        },
+        {
+          "printed": "a costume piece or mask",
+          "kind": "trinket"
+        },
+        {
+          "printed": "one instrument or performer’s kit",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "category",
+              "menu": "musical_instrument"
+            },
+            {
+              "kind": "trinket",
+              "text": "performer’s kit"
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "travel papers",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a small blade",
+          "kind": "item",
+          "item_id": "tianxia.mortal.weapon.bi_shou",
+          "quantity": 1
+        },
+        {
+          "printed": "a collection bowl",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a rumor learned from an audience member who thought you were not listening",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.village_child": {
+      "display_name": "Village Child",
+      "raw_authority": "You begin with plain work clothes, a farming tool or staff, a blanket, a waterskin, five days of simple food, a village charm, and a small gift from someone who hoped you would return.",
+      "raw_authority_sha256": "a602eb0d7a711cf6cd7b399ec00d09d2455c063afa5db50620684b5501ad4da0",
+      "entries": [
+        {
+          "printed": "plain work clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a farming tool or staff",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.weapon.lian",
+              "quantity": 1
+            },
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.gear.shovel",
+              "quantity": 1
+            },
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.weapon.gun",
+              "quantity": 1
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "a blanket",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.blanket",
+          "quantity": 1
+        },
+        {
+          "printed": "a waterskin",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.waterskin",
+          "quantity": 1
+        },
+        {
+          "printed": "five days of simple food",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.rations",
+          "quantity": 5
+        },
+        {
+          "printed": "a village charm",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a small gift from someone who hoped you would return",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.wandering_healer": {
+      "display_name": "Wandering Healer",
+      "raw_authority": "You begin with plain travel clothes, a healer’s kit or herbalism kit, bandages, needle and thread, a small knife, a medicine pouch, and a list of patients you could not save.",
+      "raw_authority_sha256": "bd8b0b2b190022f10cf6fd52faa81d789360d079fd62acb2907f7c286b0fe43d",
+      "entries": [
+        {
+          "printed": "plain travel clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a healer’s kit or herbalism kit",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.gear.healer_s_kit",
+              "quantity": 1
+            },
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.tool.herbalism_kit",
+              "quantity": 1
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "bandages",
+          "kind": "trinket"
+        },
+        {
+          "printed": "needle and thread",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a small knife",
+          "kind": "item",
+          "item_id": "tianxia.mortal.weapon.bi_shou",
+          "quantity": 1
+        },
+        {
+          "printed": "a medicine pouch",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.pouch",
+          "quantity": 1
+        },
+        {
+          "printed": "a list of patients you could not save",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "poor"
+    },
+    "tianxia.background.war_refugee": {
+      "display_name": "War Refugee",
+      "raw_authority": "You begin with patched clothes, a blanket, a small weapon, a family keepsake, travel rations, a waterskin, and something you carried from home when you should have dropped it.",
+      "raw_authority_sha256": "1707b1b427d1c1b30772bebcc40352270425070ea16b465a1837ee75eb5b0ade",
+      "entries": [
+        {
+          "printed": "patched clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "a blanket",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.blanket",
+          "quantity": 1
+        },
+        {
+          "printed": "a small weapon",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "category",
+              "menu": "small_weapon"
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "a family keepsake",
+          "kind": "trinket"
+        },
+        {
+          "printed": "travel rations",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.rations",
+          "quantity": 1,
+          "quantity_printed": false
+        },
+        {
+          "printed": "a waterskin",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.waterskin",
+          "quantity": 1
+        },
+        {
+          "printed": "something you carried from home when you should have dropped it",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "destitute"
+    },
+    "tianxia.background.workshop_apprentice": {
+      "display_name": "Workshop Apprentice",
+      "raw_authority": "You begin with work clothes, one artisan’s tool, chalk or measuring string, a repair kit, a half-finished project, and a debt or promise owed to your teacher.",
+      "raw_authority_sha256": "678161aa66f5cc7d7d7111786182a97dd72dbaaf90c850462fdd14c0e0a3c5e2",
+      "entries": [
+        {
+          "printed": "work clothes",
+          "kind": "item",
+          "item_id": "tianxia.mortal.gear.clothes_traveler_s",
+          "quantity": 1
+        },
+        {
+          "printed": "one artisan’s tool",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "category",
+              "menu": "artisan_tool"
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "chalk or measuring string",
+          "kind": "choice",
+          "options": [
+            {
+              "kind": "trinket",
+              "text": "chalk"
+            },
+            {
+              "kind": "item",
+              "item_id": "tianxia.mortal.gear.string",
+              "quantity": 1
+            }
+          ],
+          "fallback_index": 0
+        },
+        {
+          "printed": "a repair kit",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a half-finished project",
+          "kind": "trinket"
+        },
+        {
+          "printed": "a debt or promise owed to your teacher",
+          "kind": "trinket"
+        }
+      ],
+      "wealth_tier": "modest"
+    }
+  },
+  "path_kits": {
+    "tianxia.path.body_refining": {
+      "model": "5.5e Fighter/Monk",
+      "option_a": {
+        "entries": [
+          {
+            "kind": "item",
+            "item_id": "tianxia.mortal.armor.lacquered_lamellar",
+            "quantity": 1
+          },
+          {
+            "kind": "choice",
+            "options": [
+              {
+                "kind": "item",
+                "item_id": "tianxia.mortal.weapon.jian",
+                "quantity": 1
+              },
+              {
+                "kind": "item",
+                "item_id": "tianxia.mortal.weapon.dao",
+                "quantity": 1
+              },
+              {
+                "kind": "item",
+                "item_id": "tianxia.mortal.weapon.qiang",
+                "quantity": 1
+              },
+              {
+                "kind": "item",
+                "item_id": "tianxia.mortal.weapon.chui",
+                "quantity": 1
+              },
+              {
+                "kind": "item",
+                "item_id": "tianxia.mortal.weapon.guandao_yanyuedao",
+                "quantity": 1
+              }
+            ],
+            "fallback_index": 0
+          },
+          {
+            "kind": "choice",
+            "options": [
+              {
+                "kind": "item",
+                "item_id": "tianxia.mortal.armor.shield",
+                "quantity": 1
+              },
+              {
+                "kind": "category",
+                "menu": "martial_melee"
+              }
+            ],
+            "fallback_index": 0
+          },
+          {
+            "kind": "item",
+            "item_id": "tianxia.mortal.weapon.biao_qiang",
+            "quantity": 4
+          },
+          {
+            "kind": "item",
+            "item_id": "tianxia.mortal.gear.explorer_s_pack",
+            "quantity": 1
+          }
+        ],
+        "coin_cc": 100
+      },
+      "option_b": {
+        "entries": [],
+        "coin_cc": 1550
+      },
+      "fallback_option": "option_a"
+    },
+    "tianxia.path.qi_cultivation": {
+      "model": "5.5e Wizard/Sorcerer",
+      "option_a": {
+        "entries": [
+          {
+            "kind": "item",
+            "item_id": "tianxia.mortal.armor.lacquered_leather",
+            "quantity": 1
+          },
+          {
+            "kind": "choice",
+            "options": [
+              {
+                "kind": "item",
+                "item_id": "tianxia.mortal.weapon.gun",
+                "quantity": 1
+              },
+              {
+                "kind": "item",
+                "item_id": "tianxia.mortal.weapon.bi_shou",
+                "quantity": 2
+              }
+            ],
+            "fallback_index": 0
+          },
+          {
+            "kind": "item",
+            "item_id": "tianxia.mortal.focus.qi_focus_jade_orb",
+            "quantity": 1
+          },
+          {
+            "kind": "item",
+            "item_id": "tianxia.mortal.gear.scholar_s_pack",
+            "quantity": 1
+          }
+        ],
+        "coin_cc": 50
+      },
+      "option_b": {
+        "entries": [],
+        "coin_cc": 550
+      },
+      "fallback_option": "option_a"
+    },
+    "tianxia.path.spirit_awakening": {
+      "model": "5.5e Cleric/Druid",
+      "option_a": {
+        "entries": [
+          {
+            "kind": "choice",
+            "options": [
+              {
+                "kind": "item",
+                "item_id": "tianxia.mortal.weapon.gun",
+                "quantity": 1
+              },
+              {
+                "kind": "item",
+                "item_id": "tianxia.mortal.weapon.lian",
+                "quantity": 1
+              }
+            ],
+            "fallback_index": 0
+          },
+          {
+            "kind": "choice",
+            "options": [
+              {
+                "kind": "item",
+                "item_id": "tianxia.mortal.focus.spirit_tablet_amulet",
+                "quantity": 1
+              },
+              {
+                "kind": "item",
+                "item_id": "tianxia.mortal.focus.spirit_tablet_emblem",
+                "quantity": 1
+              },
+              {
+                "kind": "item",
+                "item_id": "tianxia.mortal.focus.spirit_tablet_reliquary",
+                "quantity": 1
+              }
+            ],
+            "fallback_index": 0
+          },
+          {
+            "kind": "item",
+            "item_id": "tianxia.mortal.tool.herbalism_kit",
+            "quantity": 1
+          },
+          {
+            "kind": "item",
+            "item_id": "tianxia.mortal.gear.priest_s_pack",
+            "quantity": 1
+          }
+        ],
+        "coin_cc": 90
+      },
+      "option_b": {
+        "entries": [],
+        "coin_cc": 500
+      },
+      "fallback_option": "option_a"
+    }
+  }
+}
