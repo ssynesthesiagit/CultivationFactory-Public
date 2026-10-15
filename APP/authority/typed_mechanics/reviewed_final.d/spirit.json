@@ -1,0 +1,208 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "tianxia.path.spirit_awakening.feature.mind_spike": {
+      "text_sha256": "0a988962577d73f89c0edfd04a0905e1c43a0e966df420bd1c27625b2f855e85",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [
+        {
+          "type": "save", "ability": "wis", "dc": "technique_save_dc",
+          "evidence": "The target makes a Wisdom saving throw against your Cultivation Save DC.",
+          "on_fail": [
+            {
+              "type": "damage", "applies_to": "target", "dice": {"count": 1, "sides": 8}, "formula": "key_ability_modifier",
+              "damage_types": ["psychic"], "dice_by_cl": [[1, 4, 1, 8], [5, 10, 2, 8], [11, 16, 3, 8], [17, 20, 4, 8]],
+              "evidence": "takes Psychic damage equal to the listed dice plus your Wisdom modifier"
+            },
+            {
+              "type": "if_marked", "mark": "Resonance", "applies_to": "target",
+              "evidence": "At CL5, when a creature already Resonance Marked by you fails against Mind Spike, you may also impose one ordinary Spiritual Pressure effect on it.",
+              "effects": [
+                {"type": "spiritual_pressure", "applies_to": "target", "min_cl": 5,
+                 "evidence": "you may also impose one ordinary Spiritual Pressure effect on it"}
+              ]
+            },
+            {
+              "type": "mark", "mark": "Resonance", "applies_to": "target", "duration": {"kind": "until_end_of_your_next_turn"},
+              "evidence": "becomes Resonance Marked by you"
+            }
+          ],
+          "on_success": [
+            {"type": "half_damage", "evidence": "The target takes half damage and is not marked."}
+          ]
+        }
+      ],
+      "riders": [
+        "Mind Spike is not an ordinary weapon attack, unarmed strike, spell, or Attack action. A weapon, unarmed strike, natural weapon, martial Subpath, Recorded Art, or Forged Technique can deliver or modify Mind Spike only when its Source Rule expressly says so. A martial description does not grant Extra Attack, martial weapon proficiency, weapon delivery, physical damage, or permission to substitute an attack roll for Mind Spike's Wisdom saving throw."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.domain_pressure": {
+      "text_sha256": "3fb4c012a93c8ad196e1336ccee750792aa251c078409955e307f614c60c3a40",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "area": {
+        "shape": "cone",
+        "size_ft_by_cl": [[5, 10, 15], [11, 16, 30], [17, 20, 60]],
+        "evidence": "Cone Length by CL: 5-10 15 feet; 11-16 30 feet; 17-20 60 feet"
+      },
+      "effects": [
+       {"type": "rider_choose_area_recipients", "evidence": "Choose which creatures in the area are affected, as printed.", "origin": "reviewed", "automatic_side": "ENEMY", "automatic_perceived_only": true},
+        {
+          "type": "save", "ability": "wis", "dc": "technique_save_dc",
+          "evidence": "Each creature of your choice in the area makes a Wisdom saving throw.",
+          "on_fail": [
+            {
+              "type": "domain_pressure_fear", "applies_to": "target",
+              "evidence": "The creature is Frightened of you until the end of your next turn and becomes Resonance Marked by you. If immune to Frightened, choose two different ordinary Spiritual Pressure effects instead."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "spiritual_pressure", "applies_to": "target",
+              "evidence": "The creature suffers one ordinary Spiritual Pressure effect of your choice until the start of your next turn."
+            }
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.path.spirit_awakening.feature.spiritual_sense": {
+      "text_sha256": "44b0ffc86383567132ace273bf04c350bfbfa18cce603e0be67d579ebf521ae1",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "activation": {"economy": "passive"},
+      "effects": [],
+      "riders": [
+        "Read the Spirit (Action, your Spiritual Sense range): choose one perceived soul, spirit or spiritual effect and learn its broad category, relative Source CL and stability/concealment. This is narrative information; the GM adjudicates it directly (no separate reveal channel on the table)."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.soul_gaze": {
+      "text_sha256": "f53e2378a3d83a1687ee83c1c7653e50249d8dc15e644bfb2d075260ed9ad882",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [
+        {"type": "soul_gaze_reveal", "applies_to": "target", "evidence": "Learn its current and maximum Hit Points ... damage resistances, immunities, and vulnerabilities ... whether it bears one of your Resonance Marks."}
+      ],
+      "riders": [
+        "Soul Gaze does not automatically reveal a protected Soul Anchor, a spirit's complete Nature or Bond contract, Secret or divine identity, or a concealed effect whose Source Rule defeats ordinary spiritual diagnosis -- the GM adjudicates those and any contested Cultivation Check."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.domain_manifestation": {
+      "text_sha256": "be9f376ad95941ae555d165562d09cc75c981fe129155b0b3c68e337d0ac420a",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [
+        {
+          "type": "zone", "applies_to": "self", "distance_ft": 30, "duration": "special", "follows_owner": true,
+          "evidence": "30-foot aura centered on you; The Domain moves with you"
+        },
+        {
+          "type": "advantage", "applies_to": "ally", "distance_ft": 0, "duration": "special",
+          "on": "Intelligence, Wisdom, and Charisma saving throws against Charmed and Frightened; possession and coercive Hosting; dream intrusion; memory alteration; emotional domination; soul displacement",
+          "evidence": "Allies of your choice in the Domain have Advantage on Intelligence, Wisdom, and Charisma saving throws"
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1", "source": "reviewed", "targets": [], "scope": "own_path_features",
+        "when": "failed_save", "optional": false, "limit": "once_per_turn", "group": "", "precondition": "",
+        "effects": [
+          {"type": "spiritual_pressure", "applies_to": "target",
+           "evidence": "Once on each of your turns, when a creature in the Domain fails a saving throw against one of your Spirit Awakening Path or Subpath features, impose one ordinary Spiritual Pressure effect on it without additional cost."}
+        ]
+      },
+      "riders": [
+        "Unfading Marks, Revealed Spirits, Subpath Domain Expression and Domain Collision are not automated: the table does not track which Resonance Marks or spirits are inside a moving 30-foot aura, or a second Domain's collision priority. The GM applies them.",
+        "Domain Pressure itself is automated: on each of your turns, the first creature that fails a saving throw while standing inside your live Domain aura, against one of your own Spirit Awakening Path or Subpath features, suffers one ordinary Spiritual Pressure effect of your choice for free; the table asks you which effect when it happens."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.soul_vessel": {
+      "text_sha256": "a70fc3041266abad51b06ef6ec67da4131a0de3bd415be4a2047297d9606c3c5",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [],
+      "riders": [
+        "Soul Vessel creates a Spirit Cultivation Asset with its own AC, Hit Points and immunities, and a Vessel Imprint with direction-sensing, unfading-mark and shared-benefit rules -- the table does not track non-actor assets or the imprint's bookkeeping. The GM tracks the Vessel and resolves the Charisma saving throw an unwilling Vessel Imprint target makes."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.astral_projection": {
+      "text_sha256": "6ab8d1fde5511f5ffa2067922a7480ded4d6efdc576508882e94823fc31052b7",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [
+        {
+          "type": "condition", "condition": "invisible", "applies_to": "self", "duration": {"kind": "minutes", "amount": 10},
+          "evidence": "You are invisible to ordinary sight but visible to spiritual perception and spirit-revealing effects."
+        }
+      ],
+      "riders": [
+        "While Astral Projection lasts, the table blocks attacks, hostile techniques, Domains, Companion commands, items and other physical actions. Perception, movement and free dismissal remain available; damage ends the projection. The table still has one position: the GM must track the Unconscious body's position and vulnerability, spiritual visibility, telepathy, hovering flight, passing through up to 5 feet of nonmagical material, the 300-foot/1-mile tether, blocked soul routes and Incapacitation when return is trapped. Do not treat the body as an invisible, moving combatant."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.soul_splitting": {
+      "text_sha256": "de5f47c0e4ce31228de3f763d54af346bbbc77951a7c6bfedf97a300458f7b51",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [],
+      "options": [],
+      "riders": [
+        "Soul Splitting is GM-run. The table's rules button creates no fragment and spends no action or Resonance. To activate it, the GM must spend your Action and 8 Resonance once and place one fragment in a legal empty space within 30 feet for the scene. The GM tracks its defenses, Hit Points, movement, 300-foot tether and destruction backlash. Echo Spike, Maintain Pressure, Guard Soul and Subpath Expressions remain GM-run: choose only one once on each of your turns after spending Resonance on a Spirit Awakening Path or Subpath feature or using Mind Spike.",
+        "Second Origin (choosing the fragment as a feature's point of origin) needs the same untracked fragment position; the GM measures range/area/cover from it by hand."
+      ]
+    },
+    "tianxia.path.qi_cultivation.feature.nine_heavens_gaze": {
+      "text_sha256": "6625afad700f93e91bff85c1732c41afa95abbfedc6ff0a5abdff39431819e58",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [
+        {
+          "type": "gain_sense",
+          "sense": "truesight",
+          "range_ft": 60,
+          "evidence": "Truesight 60 feet."
+        },
+        {
+          "type": "gain_sense",
+          "sense": "qi_sensing",
+          "range_ft": 120,
+          "evidence": "Qi Sensing range 120 feet."
+        }
+      ],
+      "modifier": null,
+      "riders": [
+        "For 1 hour, see invisible creatures and through magical darkness within 60 feet, and sense active supernatural energy within 120 feet. This does not reveal dormant abilities, thoughts, memories or future actions.",
+        "Heavenly Analysis and sensing through physical materials are not automated yet."
+      ]
+    },
+    "tianxia.path.qi_cultivation.feature.perfected_golden_core": {
+      "text_sha256": "466b33dcb9060a3f620bf6343f674309ebdeb6ad397aaf051c6b06cb578ac38d",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [],
+      "riders": [
+        "At Cultivation Level 17, Circulating Golden Core lets you choose two different benefits after a successfully resolved Qi spend. Movement is 10 feet, Temporary Hit Points are twice your Proficiency Bonus, and Armament movement is 20 feet. Stable Core's hostile Qi-loss protection still needs to be applied by hand."
+      ]
+    },
+    "tianxia.path.qi_cultivation.feature.second_golden_core_form": {
+      "text_sha256": "69dc10f0906c59442f17944903aabd2787719115fe9f8abb77a862b82c550bb9",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [],
+      "riders": [
+        "Not automated: combat/ext/qi_path.py's Golden Core Form condition holds one chosen Form at a time. A genuinely simultaneous second Form (CL20, both Perfected) needs a second tracked slot and doubled turn_start/circulating handling; only Lingyue Frostveil and Lingfeng Frostblade (CL20) have it. Flagged as a follow-up, not built this pass."
+      ]
+    },
+    "tianxia.path.qi_cultivation.feature.immortal_of_qi": {
+      "text_sha256": "e52f1d0a9b5f7baed0ea75e2b1ee544350c2c24e928196bb26a8af77e77bb975",
+      "reviewed_by": "w4-spirit 2026-09-28; printed Trigger line added by auto/paths-b 2026-10-04",
+      "activation": {
+        "economy": "passive", "trigger": "At the start of each of your turns.", "requirement": null, "source": "printed_trigger"
+      },
+      "effects": [
+        {"type": "gain_resource", "applies_to": "self", "formula": "none", "flat": 5, "evidence": "At the start of each of your turns, regain 5 Qi."}
+      ],
+      "riders": [
+        "At the start of your turn, regain 5 Qi without using an action or spending Qi.",
+        "Immortal Circulation runs at the start of each of your turns, and only then: while an effect suppresses it, or after your Qi is spent again, it does not carry over.",
+        "Nine Heavens Gaze is always active: Truesight 60 feet and Qi Sensing 120 feet, with no action or Qi cost. Twin Domain Armaments, Twin Assault, Twin Guard and their Remote Origins are not automated yet. Complete Cultivated Response and all simultaneous Form interactions still need full verification."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.immortal_spirit": {
+      "text_sha256": "c9473be9780c6a2d768fe8a376a166df1f173490457f27ab4382228af08666ee",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [],
+      "riders": [
+        "Sovereign Identity's contested Wisdom save only triggers against an external effect that targets the bearer -- it is not an action the bearer takes, so no compiled action exists for it; the GM rolls it when an appropriate effect lands. Continue Without the Body (0 HP with the soul free), the 28-day Immortal Restoration Capacity and Ageless Soul are outside a single fight's scope and are GM-tracked."
+      ]
+    }
+  }
+}
