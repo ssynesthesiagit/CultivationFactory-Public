@@ -1,0 +1,24 @@
+{
+  "schema": "TianxiaFoundry.CreaturePhysiology.v1",
+  "description": "Explicit printed physiology overrides creature-type defaults. Traits never come from names, damage immunities or flavour text.",
+  "traits": {
+    "breath_dependent": "Needs to breathe; water breathing and holding breath do not remove this need.",
+    "animating_current": "An equivalent animating current is explicitly permitted as a target of Empty-Lung Edict.",
+    "has_body": "Has a body, as stated by its printed creature record.",
+    "pressure_channels": "Has pressure channels, as stated by its printed creature record.",
+    "exposed_airlike_current": "Has an exposed supernatural airlike current, explicitly permitted for Air techniques.",
+    "water_breathing": "Can breathe underwater; still breath-dependent unless its printed traits say otherwise.",
+    "voice_and_breath_channel": "Has a meaningful mouth, throat, breath channel, or equivalent anatomy, as stated by its printed creature record. Not stated means unknown, not absent: a creature that does not need to breathe may still have such anatomy."
+  },
+  "defaults": {"breath_dependent": true, "animating_current": false},
+  "creature_type_defaults": {
+    "construct": {"breath_dependent": false},
+    "undead": {"breath_dependent": false}
+  },
+  "sources": [
+    "Owner SOL94 instruction: constructs and undead do not breathe; explicit printed traits take precedence.",
+    "authority/typed_mechanics/rules_text.json: Breathless Chamber, Breath-Stealing Palm, Empty-Lung Edict, Breath Beyond the Skin.",
+    "authority/typed_mechanics/rules_text.json: Haymaker - \"A creature without a meaningful mouth, throat, breath channel, or equivalent anatomy is immune.\"",
+    "https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary/ : holding breath does not eliminate the need to breathe."
+  ]
+}
