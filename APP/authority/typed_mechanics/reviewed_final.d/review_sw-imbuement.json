@@ -1,0 +1,2210 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "IMBUEMENT_BASE_FRAY_MANDATE": {
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "0 CP unless the Mandate talent says otherwise"
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 10,
+        "concentration": true
+      },
+      "target": {
+        "text": "One creature, object, held item, worn item, construct, or legal Vessel"
+      },
+      "text_sha256": "8a0cda6cdfa65a83098f1d0df478706a8272f708f99ad31dc15e667cb25c13d1",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.imbuement.twin_fray": {
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you use Fray Mandate",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Fray Mandate"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "c1167ef275bf33886a2fbf2fa3830c222de16bc94622d46b360ef57d8e7d89cd",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.imbuement.court_of_ten_thousand_mandates": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Area: 30-foot Emanation",
+          "origin": "model_v2"
+        },
+        {
+          "type": "mandate_load",
+          "temp_hp": "key",
+          "radius_ft": 30,
+          "evidence": "For the duration: your Mandate Load increases by your Proficiency Bonus; when a willing creature inside the Court receives one of your Imbue Mandates, it gains temporary hit points equal to your key ability modifier."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Objects inside the Court count as in range for your Read the Vessel (the table has no loose-object Vessels to read: Read the Vessel aims at creatures).",
+        "When a hostile creature inside the Court succeeds on a saving throw against one of your Fray Mandates, you may spend 1 CP to make the Mandate linger until the start of your next turn in a lesser form chosen by the GM (a lesser form is a GM's: the table has no reduced version of an option).",
+        "The Court does not override artifacts, permanent soul contracts, sect treasures, Secret Inheritances, or unwilling creatures without saving throws."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": {
+        "shape": "emanation",
+        "size_ft": 30,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3
+          }
+        ]
+      ],
+      "use_limit": "once_per_short_rest_or_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "e436d87cbde0b25943a47ea559045d88e182c9d41e3d604cd0d1f776596052f9",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.imbuement.reverse_the_weight_of_heaven": {
+      "effects": [
+        {
+          "type": "save", "recipient_text": "A creature that can grab a fixed object may make a Dexterity saving throw to secure itself and avoid falling. Creatures with a fly speed may use their movement to resist as normal. When the effect ends, normal gravity resumes.", "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [],
+          "on_success": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Choose one direction: up, down, north, south, east, west, or toward a visible anchor point.",
+        "Creatures with a fly speed may use their movement to resist as normal. When the effect ends, normal gravity resumes.",
+        "Cost: 5 CP; once per long rest",
+        "This is a magical cultivation effect and can be countered by Qiweaving, Space, Earth, Force, or comparable superior gravity law."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": {
+        "shape": "cube",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "cf487a033125f575bdc87d9df3d499b5e92c4b6506a80f7ba5df2c03007b7104",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.imbuement.unmake_the_king_s_armor": {
+      "effects": [
+        {
+          "type": "damage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "cl",
+          "damage_types": [
+            "force"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "You take force damage equal to your Cultivation Level",
+          "origin": "model_v2",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Range: 120 feet; Target: One creature wearing, wielding, or carrying imbued, magical, spiritual, or artifact-like equipment; Cost: 4 CP; once per long rest",
+        "Choose one item or equipment layer you can perceive. Make an Imbuement Check against the target's Cultivation Save DC or the item's DC, whichever is higher.",
+        "Success: suppress one equipment-based bonus, defensive property, weapon property, mobility property, or item activation until the end of your next turn. If the target is not artifact-grade or inheritance-grade, the suppression lasts 1 minute.",
+        "Failure: the item flares in resistance. You take force damage equal to your Cultivation Level and cannot target that item again until after a long rest.",
+        "On a failed Imbuement Check you take Force damage equal to your Cultivation Level. The check and its suppression result require GM adjudication; no unconditional self-damage is dealt at activation."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature wearing, wielding, or carrying imbued, magical, spiritual, or artifact-like equipment"
+      },
+      "text_sha256": "a7f424db064c334d6cdf52fefde1bd19d94ec8be681aef714974cbb594048f6c",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.imbuement.sovereign_of_the_true_name_of_things": {
+      "effects": [],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Place Mandate",
+          "Fray Mandate",
+          "Counter-Mandate"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [],
+        "add_range_ft": 90
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "Your Mandates can briefly touch the true name of a vessel rather than only its surface property.",
+        "you can target incorporeal objects, spiritual equipment, visible soul-weapons, projected armor, or spiritual vessels when the GM agrees there is a perceivable Vessel"
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "eb432b433780d95c6bba61a73a8df3c0ac0f19fad458d02976705ca541aa1f6d",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "INK_BASE_INK_LASH": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "slashing",
+                "psychic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "At CL 1-4, the damage is 1d8 + your key ability modifier",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ]
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Brush Shape: Ink Lash may appear as a cutting stroke, a hooked character, a whip of black ink, a vermilion slash, a painted fang, or a line of scripture.",
+        "Objects: Against unattended objects, Ink Lash may cut, stain, write across, or weaken the target at the GM's discretion."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature or object you can see."
+      },
+      "text_sha256": "50efe035a63155854c3bfdb2fdf80d8e6069928c179f9be8284f19ac8fcd4290",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.ink.brushstroke_shield": {
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Reduce the damage by 1d8 + your key ability modifier",
+          "origin": "model_v2",
+          "dice_by_cl": [
+            [
+              1,
+              10,
+              1,
+              8
+            ],
+            [
+              11,
+              16,
+              2,
+              8
+            ],
+            [
+              17,
+              20,
+              3,
+              8
+            ]
+          ]
+        },
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "formula": "pb",
+          "if_protected_marked": "ink_mark",
+          "evidence": "If the protected creature bears one of your Ink Marks, increase the reduction by your Proficiency Bonus."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "You or an ally within 30 feet is hit by an attack or takes damage from a visible effect.",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "28ee5c5d5f4a6b118b78f396d7fab6edc2424a92a95752fa2feeb4a55fce6b1e",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.ink.ink_cloud": {
+      "effects": [
+        {
+          "type": "rider_choose_area_recipients",
+          "summary": "Choose which creatures have Disadvantage on sight-based Perception checks until the start of your next turn."
+        },
+        {
+          "type": "ink_cloud",
+          "obscured": "light",
+          "evidence": "The area is lightly obscured."
+        },
+        {
+          "type": "zone",
+          "deferred": true,
+          "obscured": "light",
+          "evidence": "Ink Cloud places this zone through the ink_cloud effect, including its optional heavy obscurity."
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Wisdom (Perception) checks relying on sight",
+          "duration": "until_start_of_next_turn",
+          "evidence": "Creatures of your choice inside the area have Disadvantage on Wisdom (Perception) checks relying on sight.",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Wind, water, or strong dispersing effects may end the cloud early."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "until_start_of_next_turn",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "b04f3e863f1fd59c507cf3f6fa660fe3d9141bd3e619fdf70ff36b237b48927c",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.ink.ink_domain": {
+      "effects": [
+        {
+          "type": "disadvantage",
+          "applies_to": "enemies_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "checks made to detect illusions, traps, and Ink Marks inside the Domain",
+          "duration": "one_minute",
+          "evidence": "have Disadvantage on checks made to detect illusions, traps, and Ink Marks inside the Domain",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "flat": 2,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "checks made to escape Grappled or Restrained",
+          "duration": "one_minute",
+          "evidence": "gain +2 to checks made to escape Grappled or Restrained",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "state",
+          "name": "ink_domain",
+          "applies_to": "self",
+          "duration": "concentration",
+          "range_for": {"INK_BASE_PRESS_MARK": 30},
+          "free_use": [
+            {
+              "of": [
+                "Press Mark"
+              ],
+              "once": "turn"
+            }
+          ],
+          "label": "Ink Domain: one free Press Mark each turn",
+          "evidence": "Once on each of your turns, you may place one simple Ink Mark on a creature, object, or surface inside the Domain without spending CP or using an action."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "GM: allies may Hide while lightly obscured inside the Domain (the +2 on escape checks, marked enemies' lost Invisible and the free Press Mark are automated).",
+        "This Domain does not create true illusions by itself. It makes the battlefield resemble a painting and supports Ink effects."
+      ],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 30,
+        "centered_on_self": true,
+        "follows_owner": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "e9c72fc7c5878c93679ab03454cb59b89d15ac1596c9ffdf58ffd877c13d0ee9",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.ink.ink_doppelganger": {
+      "effects": [
+        {
+          "type": "ac_bonus",
+          "applies_to": "target",
+          "flat": 13,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "The duplicate has AC 13",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "healing",
+          "applies_to": "target",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "The duplicate has AC 13, 1 HP",
+          "origin": "model",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Create an ink copy of the target in an unoccupied space. The duplicate has AC 13, 1 HP, Speed 30 feet, and repeats simple gestures, posture, and brief phrases.",
+        "It can use the Help action and can serve as the origin of your Ink Lash when you take that action.",
+        "The duplicate does not copy statistics, memories, special senses, class features, talents, items, or spells. It disappears when damaged.",
+        "A creature may identify the doppelganger as false with an Intelligence (Investigation) or Wisdom (Insight) check against your Cultivation Save DC.",
+        "AC 13 and 1 Hit Point describe the ink copy, not a bonus or healing on the caster or target. Creating and controlling the copy requires GM adjudication."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": {
+        "text": "One creature you can see."
+      },
+      "text_sha256": "f19e8ccf83435839b54cc6c2e164c8226b6c2281f49b5549a5526988bf438868",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.ink.scripture_wall": {
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "GM: the wall can also be curved or segmented, or hold weight like a temporary bridge (a straight wall that blocks movement, with AC 14 and 10 x PB Hit Points, is automated).",
+        "Marked Wall: You may place one simple Ink Mark on the Scripture Wall when you create it."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "ef846d315652741555327136a60e62ce92e91d65f3e19771d396b56cf6c0462e",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.ink.thousand_brushstrokes": {
+      "effects": [
+        {
+          "type": "save", "recipient_text": "Effect: Creatures in the area make Dexterity saving throws as cutting characters fill the air.", "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "creatures_in_area",
+              "dice": {
+                "count": 4,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "slashing"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "A creature takes 4d6 Slashing damage",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  10,
+                  4,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  6,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  8,
+                  6
+                ]
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "A creature takes half damage",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  10,
+                  4,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  6,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  8,
+                  6
+                ]
+              ]
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Marked Ground: If the cone originates from one of your Ink Marks, increase the cone to 20 feet."
+      ],
+      "range": null,
+      "area": {
+        "shape": "cone",
+        "size_ft": 15,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "a951cc505bbffe1f3aefea6c4d9f496c2d41af1767ee002e4e12ba40c239b1b3",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.ink.heaven_sealing_writ": {
+      "effects": [
+        {
+          "type": "ink_edict",
+          "applies_to": "target",
+          "harmful": true,
+          "evidence": "Choose one function to suppress"
+        },
+        {
+          "type": "save",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "ink_edict_apply",
+              "applies_to": "target",
+              "hold": true,
+              "evidence": "Failed Save: Choose one function to suppress for the duration."
+            }
+          ],
+          "on_success": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Make a Cultivation Check against the target's save DC, effect DC, or a GM-set DC. If the target is a creature, it makes a Charisma saving throw instead.",
+        "The target is disrupted until the start of your next turn, but the full suppression does not take hold.",
+        "GM: possession, shapechanging, a summoning link, a portal, a marked item or an inscription can be suppressed instead, and a non-creature target uses a Cultivation Check (teleportation and invisibility on a creature are automated)."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 12,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": {
+        "text": "One creature, portal, summoned creature, magic item, possessed body, or active sphere effect bearing one of your Ink Marks."
+      },
+      "text_sha256": "09e938476e5ee14c124c7da110731a72cb2797ce4898b5d7d45cc9dbcfe27bbc",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.ink.scripture_prison": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "restrained",
+              "action_escape": {"ability": "STR", "name": "Scripture Prison"},
+              "distance_ft": 0,
+              "on": "",
+              "duration": "one_minute",
+              "evidence": "The target is Restrained",
+              "origin": "model_v2",
+              "repeat_save": {
+                "ability": "DEX",
+                "when": "end"
+              }
+            }
+          ],
+          "on_success": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "expires_on": "START_OF_TARGET_NEXT_TURN",
+              "evidence": "The target’s Speed is reduced by 10 feet",
+              "origin": "model_v2"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "expires_on": "START_OF_TARGET_NEXT_TURN",
+              "evidence": "it cannot take Reactions until the start of its next turn",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2",
+          "disadvantage_if_marked": "ink_mark"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 6,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": {
+        "text": "One creature you can see."
+      },
+      "text_sha256": "4ea77e23c45419ab37c3c74e954050dc28e55418d0c2e51c4f467c676484f2a0",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "TAL_IRON_FIST_BREATH_EXTENDED_STRIKE": {
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 5,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 5,
+          "on": "",
+          "duration": "instant",
+          "evidence": "your Unarmed Strike reach increases by 5 feet",
+          "origin": "model"
+        },
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 30,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "instant",
+          "evidence": "your reach for that strike becomes 30 feet",
+          "origin": "model"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "martial_focus": true,
+        "add_range_ft": 25,
+        "effects": []
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "While holding Martial Focus",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "This is still an Unarmed Strike. It does not allow general telekinesis, object manipulation, grappling through walls, or sustained remote force."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "6adc6e20710d5fcefe1781caec1462a08c52ec94511671ba51b90030c48fd996",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "TAL_IRON_FIST_INTERNAL_HAMMER": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [],
+          "on_success": [],
+          "evidence": "makes a Constitution saving throw",
+          "origin": "parser"
+        },
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [],
+          "on_success": [],
+          "evidence": "makes a Constitution saving throw",
+          "origin": "parser"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "martial_focus": true,
+        "effects": [
+          {
+            "type": "if_marked",
+            "mark": "Opened",
+            "effects": [
+              {
+                "type": "save",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "con",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "instant",
+                "evidence": "The target makes a Constitution saving throw",
+                "origin": "model_v2",
+                "on_fail": [
+                  {
+                    "type": "end_effect",
+                    "applies_to": "target",
+                    "select": "beneficial",
+                    "bodily_only": true,
+                    "choose_instance": true,
+                    "on_success": "suppress",
+                    "until": "holder",
+                    "evidence": "Choose one ongoing physical or martial effect affecting the target, such as a stance, guard, body enhancement, rage-like state, mobility technique, or temporary damage reduction. Suppress that effect until the end of the target's next turn.",
+                    "origin": "model_v2"
+                  }
+                ],
+                "on_success": []
+              }
+            ],
+            "evidence": "The target makes a Constitution saving throw",
+            "origin": "structure"
+          },
+          {
+            "type": "if_marked",
+            "mark": "Opened",
+            "effects": [
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "its next attack roll",
+                "duration": "until_end_of_next_turn",
+                "evidence": "the target cannot benefit from Advantage on its next attack roll before the end of its next turn",
+                "origin": "model_v2",
+                "deferred": true
+              }
+            ],
+            "evidence": "the target cannot benefit from Advantage on its next attack roll before the end of its next turn",
+            "origin": "structure"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hit an Opened creature with an Unarmed Strike",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "Failed Save: Choose one ongoing physical or martial effect affecting the target, such as a stance, guard, body enhancement, rage-like state, mobility technique, or temporary damage reduction. Suppress that effect until the end of the target's next turn.",
+        "Internal Hammer does not suppress Domains, Secret Inheritances, permanent transformations, artifacts, or effects that do not depend on the target's bodily or spiritual structure.",
+        "A successful save prevents benefiting from Advantage on the next attack roll; it does not impose Disadvantage on that roll. The Advantage denial is still GM adjudicated, because the table cannot take Advantage away from an attack roll that another source granted. It must never be typed as granting Advantage."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "4a1f850189d61979e440d0e7fd8f21ebcf15b828122ef75d5a30047afd187edc",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29; OpenCode AUTO118 2026-10-05"
+    },
+    "TAL_IRON_FIST_ONE_INCH_HEAVENQUAKE": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "unarmed",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "ignore_resistance",
+              "damage_types": [
+                "bludgeoning",
+                "force"
+              ],
+              "if_marked": "Opened",
+              "origin": "riders_lane2"
+            },
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "Make one Unarmed Strike."
+            },
+            {
+              "type": "extra_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 4,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "force"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "On a hit, add 4d8 Force damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "save",
+              "ability": "con",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "stunned",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "It is Stunned until the start of your next turn",
+                  "origin": "model_v2"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "Successful Save: It cannot take Reactions until the start of your next turn."
+                }
+              ]
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2",
+          "strike_with": "unarmed"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "One-Inch Heavenquake can damage unattended objects and temporary Barriers. It does not automatically destroy artifacts, Domains, Formation cores, or Realm-defining structures."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "d719eda52e8b515bf7fabaf3864019a3d2060483b46a016cd64c60b62a0fc896",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29; riders lane 2 edit 2026-09-29"
+    },
+    "TAL_IRON_FIST_PALM_THAT_MOVES_THE_EMPTY_BELL": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 8,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "force"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Deal 8d8 Force damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "directed_forced_movement",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 20,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Move it 20 feet in one legal direction",
+                  "origin": "model"
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "prone",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "knock it Prone",
+                  "origin": "model"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "directed_forced_movement",
+                  "applies_to": "target",
+                  "distance_ft": 5,
+                  "evidence": "Successful Save: Move it 5 feet in one legal direction."
+                }
+              ]
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "This is not general Force control. The attack must travel along a clear route or continuous surface from you to the target."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "after": null,
+      "min_cp_cost": null,
+      "text_sha256": "22f8a7f83b28314d10577cfa6ec7d5d66eebb75c69207ae469a7837ca34bc1f4",
+      "reviewed_by": "Codex A2IRONFIST 2026-10-10"
+    },
+    "TAL_IRON_FIST_ROOTING_STANCE": {
+     "schema": "TianxiaFoundry.TypedMechanic.v1",
+     "mechanic_id": "TAL_IRON_FIST_ROOTING_STANCE",
+     "kind": "talent",
+     "name": "Rooting Stance",
+     "sphere_id": "tianxia.sphere.iron_fist",
+     "source": {
+      "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+      "line": 47044,
+      "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+      "text_sha256": "6a31612ea4988ae645543adf80b4958be054930d2fac6b941b63b2ea182f8ffd"
+     },
+     "activation": {
+      "economy": "bonus_action",
+      "trigger": null,
+      "requirement": null,
+      "source": "printed_action_type"
+     },
+     "header_economy": true,
+     "cost": [],
+     "duration": {
+      "kind": "until_start_of_next_turn",
+      "amount": null,
+      "concentration": false
+     },
+     "effects": [
+      {
+       "type": "advantage",
+       "applies_to": "self",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "Strength and Dexterity saving throws against effects that would move you or knock you Prone",
+       "duration": "until_start_of_next_turn",
+       "evidence": "gain Advantage on Strength and Dexterity saving throws against effects that would move you or knock you Prone",
+       "origin": "model_v2"
+      },
+      {
+       "type": "iron_rooting",
+       "reduction": 5,
+       "evidence": "reduce forced movement affecting you by 5 feet"
+      },
+      {
+       "type": "paid_option",
+       "talent": "TAL_IRON_FIST_ROOTING_STANCE",
+       "name": "Rooting Stance focus",
+       "ways": [
+        [
+         {
+          "resource_id": "resource:core.martial_focus",
+          "amount": 1
+         }
+        ]
+       ],
+       "effects": [
+        {
+         "type": "iron_rooting",
+         "reduction": 10,
+         "evidence": "If you expend Martial Focus ... reduce forced movement by 10 feet instead."
+        }
+       ]
+      }
+     ],
+     "riders": [],
+     "description": [
+      "Root your breath and lower body.",
+      "Until the duration ends:"
+     ],
+     "coverage": "CORE_WITH_RIDERS",
+     "provenance": {
+      "method": "typed-mechanics-parser.v1"
+     },
+     "typing_status": "reviewed_final",
+     "structure_source": "model_v2",
+     "text_sha256": "6a31612ea4988ae645543adf80b4958be054930d2fac6b941b63b2ea182f8ffd",
+     "reviewed_by": "Codex riders lane 2 continuation 2026-09-29"
+    },
+    "TAL_IRON_FIST_SKY_SHATTERING_AXE_KICK": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "unarmed",
+          "strike_with": "unarmed",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "Make one Unarmed Strike."
+            },
+            {
+              "type": "extra_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 4,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "bludgeoning",
+                "force"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Add 4d6 Bludgeoning or Force damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "condition": "prone",
+                  "applies_to": "target",
+                  "duration": "instant",
+                  "evidence": "Failed Save: Fall Prone."
+                },
+                {
+                  "type": "mark",
+                  "mark": "Opened",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_end_of_your_next_turn"
+                  },
+                  "evidence": "become Opened until the end of your next turn."
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "speed",
+                  "amount": -15,
+                  "applies_to": "target",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "Successful Save: The target’s Speed is reduced by 15 feet until the start of your next turn."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Before the strike, move up to half your Speed to a legal adjacent space, including a vertical leap up to 15 feet, without Opportunity Attacks from the target. Selecting and resolving that approach remains GM adjudicated; the automated strike requires the target to be in reach."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "c0540786b0a78617bb71248c1de62568c023073b0b87b9de6c0a0cd6c69a94ea",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29; riders lane 2 edit 2026-09-29"
+    },
+    "TAL_IRON_FIST_THOUSAND_HAND_WAR_BODY": {
+      "effects": [
+        {
+          "type": "rider_choose_area_recipients",
+          "summary": "Selected creatures make Dexterity saving throws. Failure: 8d8 Bludgeoning or Force damage, Opened until the end of your next turn, and no Reactions until the start of your next turn. Success: half damage and Opened until the start of your next turn. Then you may move up to half your Speed without provoking Opportunity Attacks. Expend Martial Focus; once per long rest.",
+          "glossary": [
+            "Opened is your martial opening on that creature, usable by your Iron Fist talents."
+          ]
+        },
+        {
+          "type": "save",
+          "recipient_text": "Choose any number of creatures in the area. Each target makes a Dexterity saving throw.",
+          "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 8,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "bludgeoning",
+                "force"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take 8d8 Bludgeoning or Force damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "cannot take Reactions until the start of your next turn",
+              "origin": "model_v2"
+            },
+            {
+              "type": "mark",
+              "mark": "Opened",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_end_of_your_next_turn"
+              },
+              "evidence": "become Opened until the end of your next turn"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 8,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "bludgeoning",
+                "force"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take half damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "mark",
+              "mark": "Opened",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_next_turn"
+              },
+              "evidence": "become Opened until the start of your next turn"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "speed_based_step",
+          "distance_ft": "half_speed",
+          "applies_to": "self",
+          "no_oa": true,
+          "evidence": "After resolving the technique, move up to half your Speed without provoking Opportunity Attacks."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 30,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "after": null,
+      "min_cp_cost": null,
+      "text_sha256": "077352f44eff6cea7ed7174d8686ba52e17221a33b4c6e7881f8833462ab704f",
+      "reviewed_by": "Codex A2IRONFIST 2026-10-10",
+      "notes": "Long-rest refresh belongs to rest/character management outside the fight; the native once-per-fight pool enforces the combat use."
+    },
+    "tianxia.talent.imbuement.elemental_mantle": {
+      "effects": [
+        {
+          "type": "mandate_option",
+          "side": "imbue",
+          "label": "Elemental Mantle",
+          "effects": [],
+          "vessel": "weapon",
+          "choose": {
+            "prompt": "choose the element",
+            "ai": "first",
+            "choices": [
+              {
+                "id": "acid",
+                "label": "Acid",
+                "effects": [
+                  {
+                    "type": "vessel_rule",
+                    "once_extra_dice": {
+                      "count_by_cl": [
+                        [
+                          1,
+                          4,
+                          1
+                        ],
+                        [
+                          5,
+                          10,
+                          2
+                        ],
+                        [
+                          11,
+                          16,
+                          3
+                        ],
+                        [
+                          17,
+                          20,
+                          4
+                        ]
+                      ],
+                      "count": 1,
+                      "sides": 6,
+                      "type": "acid"
+                    },
+                    "evidence": "Once per turn, an attack with the Vessel deals an extra 1d6 Acid damage (2d6 at CL 5, 3d6 at CL 11, 4d6 at CL 17)."
+                  }
+                ]
+              },
+              {
+                "id": "cold",
+                "label": "Cold",
+                "effects": [
+                  {
+                    "type": "vessel_rule",
+                    "once_extra_dice": {
+                      "count_by_cl": [
+                        [
+                          1,
+                          4,
+                          1
+                        ],
+                        [
+                          5,
+                          10,
+                          2
+                        ],
+                        [
+                          11,
+                          16,
+                          3
+                        ],
+                        [
+                          17,
+                          20,
+                          4
+                        ]
+                      ],
+                      "count": 1,
+                      "sides": 6,
+                      "type": "cold"
+                    },
+                    "evidence": "Once per turn, an attack with the Vessel deals an extra 1d6 Cold damage (2d6 at CL 5, 3d6 at CL 11, 4d6 at CL 17)."
+                  }
+                ]
+              },
+              {
+                "id": "fire",
+                "label": "Fire",
+                "effects": [
+                  {
+                    "type": "vessel_rule",
+                    "once_extra_dice": {
+                      "count_by_cl": [
+                        [
+                          1,
+                          4,
+                          1
+                        ],
+                        [
+                          5,
+                          10,
+                          2
+                        ],
+                        [
+                          11,
+                          16,
+                          3
+                        ],
+                        [
+                          17,
+                          20,
+                          4
+                        ]
+                      ],
+                      "count": 1,
+                      "sides": 6,
+                      "type": "fire"
+                    },
+                    "evidence": "Once per turn, an attack with the Vessel deals an extra 1d6 Fire damage (2d6 at CL 5, 3d6 at CL 11, 4d6 at CL 17)."
+                  }
+                ]
+              },
+              {
+                "id": "lightning",
+                "label": "Lightning",
+                "effects": [
+                  {
+                    "type": "vessel_rule",
+                    "once_extra_dice": {
+                      "count_by_cl": [
+                        [
+                          1,
+                          4,
+                          1
+                        ],
+                        [
+                          5,
+                          10,
+                          2
+                        ],
+                        [
+                          11,
+                          16,
+                          3
+                        ],
+                        [
+                          17,
+                          20,
+                          4
+                        ]
+                      ],
+                      "count": 1,
+                      "sides": 6,
+                      "type": "lightning"
+                    },
+                    "evidence": "Once per turn, an attack with the Vessel deals an extra 1d6 Lightning damage (2d6 at CL 5, 3d6 at CL 11, 4d6 at CL 17)."
+                  }
+                ]
+              },
+              {
+                "id": "necrotic",
+                "label": "Necrotic",
+                "effects": [
+                  {
+                    "type": "vessel_rule",
+                    "once_extra_dice": {
+                      "count_by_cl": [
+                        [
+                          1,
+                          4,
+                          1
+                        ],
+                        [
+                          5,
+                          10,
+                          2
+                        ],
+                        [
+                          11,
+                          16,
+                          3
+                        ],
+                        [
+                          17,
+                          20,
+                          4
+                        ]
+                      ],
+                      "count": 1,
+                      "sides": 6,
+                      "type": "necrotic"
+                    },
+                    "evidence": "Once per turn, an attack with the Vessel deals an extra 1d6 Necrotic damage (2d6 at CL 5, 3d6 at CL 11, 4d6 at CL 17)."
+                  }
+                ]
+              },
+              {
+                "id": "radiant",
+                "label": "Radiant",
+                "effects": [
+                  {
+                    "type": "vessel_rule",
+                    "once_extra_dice": {
+                      "count_by_cl": [
+                        [
+                          1,
+                          4,
+                          1
+                        ],
+                        [
+                          5,
+                          10,
+                          2
+                        ],
+                        [
+                          11,
+                          16,
+                          3
+                        ],
+                        [
+                          17,
+                          20,
+                          4
+                        ]
+                      ],
+                      "count": 1,
+                      "sides": 6,
+                      "type": "radiant"
+                    },
+                    "evidence": "Once per turn, an attack with the Vessel deals an extra 1d6 Radiant damage (2d6 at CL 5, 3d6 at CL 11, 4d6 at CL 17)."
+                  }
+                ]
+              },
+              {
+                "id": "thunder",
+                "label": "Thunder",
+                "effects": [
+                  {
+                    "type": "vessel_rule",
+                    "once_extra_dice": {
+                      "count_by_cl": [
+                        [
+                          1,
+                          4,
+                          1
+                        ],
+                        [
+                          5,
+                          10,
+                          2
+                        ],
+                        [
+                          11,
+                          16,
+                          3
+                        ],
+                        [
+                          17,
+                          20,
+                          4
+                        ]
+                      ],
+                      "count": 1,
+                      "sides": 6,
+                      "type": "thunder"
+                    },
+                    "evidence": "Once per turn, an attack with the Vessel deals an extra 1d6 Thunder damage (2d6 at CL 5, 3d6 at CL 11, 4d6 at CL 17)."
+                  }
+                ]
+              }
+            ]
+          },
+          "summary": "Once per turn, attacks with the chosen weapon deal an extra 1d6 of the chosen element (2d6 at CL 5, 3d6 at CL 11, 4d6 at CL 17)."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "passive",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "A Vessel cannot benefit from more than one Elemental Mantle at a time (the GM applies it).",
+        "Fray - Elemental Dimming. Fray Mandate can target one weapon or natural weapon currently dealing extra elemental damage from a spell, sphere, item, or technique. On a failed save, reduce one extra damage die from that effect by one step (the GM applies it)."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "ceffc8a2a9a01ecf16198d682507b6295eab0a387d07cdecdf21f87d3f35df2d",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "tianxia.talent.ink.living_seal_script": {
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "instant",
+          "evidence": "cause the Mark to crawl up to 10 feet along a connected surface or across the marked creature’s body",
+          "origin": "model",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Ink Mark"
+        ],
+        "scope": "named",
+        "when": "success",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": []
+      },
+      "activation": {
+        "economy": "reaction",
+        "trigger": "When an unwilling creature successfully saves against one of your Ink Marks",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "When you create an Ink Mark on a surface, object, or willing creature, you may cause the Mark to crawl up to 10 feet along a connected surface or across the marked creature's body as part of the same action. This movement cannot cross an open gap unless the surfaces touch.",
+        "you may spend 1 CP as a Reaction to move the failed mark onto one object the creature is carrying or one adjacent surface instead.",
+        "Living Seal Script moves the Ink Mark along a surface or redirects a failed mark; it does not grant movement to the caster or marked creature. The object/surface transfer remains GM adjudicated."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "6628c9ea454d5dcefe48c3c16285b0ab9c851b486c2438a8ee8713ea20bbd8cf",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    },
+    "TAL_IRON_FIST_EMPTY_HAND_BREAKS_THE_FORMATION_DOOR": {
+      "effects": [
+        {
+          "type": "extra_damage",
+          "applies_to": "target",
+          "dice": {
+            "count": 6,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "force"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "add 6d8 Force damage",
+          "origin": "model"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "One-Inch Heavenquake"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "If the target is not an artifact, Domain, Secret Inheritance, or Realm-defining structure",
+        "effects": [
+          {
+            "type": "rider",
+            "applies_to": "target",
+            "dice": {
+              "count": 6,
+              "count_formula": null,
+              "sides": 8,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "force"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "add 6d8 Force damage",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When One-Inch Heavenquake hits a temporary Barrier, Formation Anchor, sealed door, artifact shell, or other defensive structure",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "One-Inch Heavenquake"
+      },
+      "riders": [
+        "Failed Check: Suppress one defensive property of the target until the end of your next turn.",
+        "Successful Check: No suppression.",
+        "A permanent Formation, artifact, sect gate, or comparable structure may require a dedicated scene or project to fully destroy.",
+        "The additional 6d8 Force damage applies only when One-Inch Heavenquake hits a defensive structure. It never applies to a creature; object damage and suppression checks remain GM adjudicated."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "501fa88a0d4b242cd6405bacc918da87dd510b48cf3c51c594759a167a55f067",
+      "reviewed_by": "Astra sw-imbuement 2026-09-29"
+    }
+  }
+}
