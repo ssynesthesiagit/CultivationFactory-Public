@@ -1,0 +1,4190 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "mechanics": {
+  "TAL_AXES_HEWING_STRIKE": {
+   "text_sha256": "76fffefa680f90ceb98c6205813f0f10c45a757bf93e6c315cf34a02f7801d77",
+   "reviewed_by": "martial 2026-09-28",
+   "options": [
+    {
+     "label": "Bite",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "mark",
+         "mark": "Bite",
+         "applies_to": "target",
+         "duration": {
+          "kind": "until_start_of_next_turn"
+         },
+         "evidence": "The target gains Bite from you until the start of your next turn."
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Drive",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "forced_movement",
+         "applies_to": "target",
+         "distance_ft": 5,
+         "evidence": "push it 5 feet directly away from you"
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Hook",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "forced_movement",
+         "applies_to": "target",
+         "distance_ft": 5,
+         "evidence": "pull it 5 feet toward you or move it 5 feet to another space within your reach"
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Split Guard",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "break_guard",
+         "applies_to": "target",
+         "shield": true,
+         "next": true,
+         "axe": true,
+         "evidence": "Split Guard. Until the end of your current turn, the target cannot benefit from Shield AC against the next axe attack you make against it."
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Hamper",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "speed",
+         "applies_to": "target",
+         "flat": -5,
+         "duration": "until_start_of_next_turn",
+         "evidence": "The target's Speed is reduced by 5 feet until the start of your next turn."
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    }
+   ],
+   "riders": []
+  },
+  "TAL_AXES_CAST_AXE": {
+   "text_sha256": "e33f3a5d4501fa7ddabc9effbda8727bece4430934eb7779205ea4bbbee40c18",
+   "reviewed_by": "martial 2026-09-28; Claude riders/c13 2026-09-30",
+   "options": [
+    {
+     "label": "Shock Cast",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_thrown",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "reaction_denied",
+         "applies_to": "target",
+         "duration": "until_start_of_next_turn",
+         "evidence": "The target cannot take Reactions against you until the start of your next turn."
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Lodging Cast",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_thrown",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "mark",
+         "mark": "Bite",
+         "applies_to": "target",
+         "duration": {
+          "kind": "until_start_of_next_turn"
+         },
+         "evidence": "The axe lodges and the target gains Bite from you until the start of your next turn."
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Turning Cast",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_thrown",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "if_size_at_most",
+         "larger": 1,
+         "effects": [
+          {
+           "type": "axes_turning_cast",
+           "evidence": "it must choose either to be pushed 5 feet or to have its Speed reduced by 5 feet until the start of your next turn"
+          }
+         ],
+         "evidence": "Turning Cast. If the target is no more than one size larger than you, it must choose either to be pushed 5 feet or to have its Speed reduced by 5 feet."
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Splinter Cast",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_thrown",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage_modifier",
+         "flat": 0,
+         "formula": "pb",
+         "evidence": "Splinter Cast: against an unattended object only, add your Proficiency Bonus to the damage (this table does not separately track object AC/HP, so a GM applies this against object targets)."
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    }
+   ],
+   "riders": [
+    "A creature can remove the lodged axe as an Object Interaction if it has a free hand and is not Incapacitated."
+   ]
+  },
+  "TAL_AXES_CLOSE_HAFT_STRIKE": {
+   "text_sha256": "64f42600d0d75fb3286c97bd613530e1bbb456cde8fa879b99fc4fdba223d616",
+   "reviewed_by": "martial 2026-09-28 + sweep sw-athletics 2026-09-28",
+   "options": [
+    {
+     "label": "Push (loses Bite)",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 1,
+          "sides": 4
+         },
+         "formula": "attack_ability_modifier",
+         "damage_types": [
+          "bludgeoning"
+         ],
+         "evidence": "the target takes bludgeoning damage equal to 1d4 + the ability modifier used for the attack",
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           4
+          ],
+          [
+           5,
+           10,
+           1,
+           6
+          ],
+          [
+           11,
+           20,
+           1,
+           8
+          ]
+         ]
+        },
+        {
+         "type": "spend_mark",
+         "mark": "Bite",
+         "applies_to": "target",
+         "evidence": "it loses Bite"
+        },
+        {
+         "type": "forced_movement",
+         "applies_to": "target",
+         "distance_ft": 5,
+         "evidence": "but is pushed 5 feet"
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Keep Bite (deny Reactions)",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 1,
+          "sides": 4
+         },
+         "formula": "attack_ability_modifier",
+         "damage_types": [
+          "bludgeoning"
+         ],
+         "evidence": "the target takes bludgeoning damage equal to 1d4 + the ability modifier used for the attack",
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           4
+          ],
+          [
+           5,
+           10,
+           1,
+           6
+          ],
+          [
+           11,
+           20,
+           1,
+           8
+          ]
+         ]
+        },
+        {
+         "type": "reaction_denied",
+         "applies_to": "target",
+         "duration": "until_start_of_next_turn",
+         "evidence": "it keeps Bite and cannot take Reactions against you until the start of your next turn"
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    }
+   ],
+   "effects": [
+    {
+     "type": "attack",
+     "attack_kind": "cultivation_melee",
+     "count": 1,
+     "on_hit": [
+      {
+       "type": "damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 1,
+        "count_formula": null,
+        "sides": 4,
+        "bonus": null,
+        "bonus_formula": null
+       },
+       "flat": 0,
+       "formula": "attack_ability_modifier",
+       "damage_types": [
+        "bludgeoning"
+       ],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "the target takes bludgeoning damage equal to 1d4 + the ability modifier used for the attack",
+       "origin": "model_v2",
+       "dice_by_cl": [
+        [
+         1,
+         4,
+         1,
+         4
+        ],
+        [
+         5,
+         10,
+         1,
+         6
+        ],
+        [
+         11,
+         20,
+         1,
+         8
+        ]
+       ]
+      },
+      {
+       "type": "forced_movement",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 5,
+       "on": "",
+       "duration": "instant",
+       "evidence": "it loses Bite but is pushed 5 feet",
+       "origin": "model"
+      },
+      {
+       "type": "reaction_denied",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "if it keeps Bite",
+       "duration": "until_start_of_next_turn",
+       "evidence": "it keeps Bite and cannot take Reactions against you until the start of your next turn",
+       "origin": "model_v2"
+      }
+     ],
+     "on_miss": [],
+     "origin": "model_v2"
+    }
+   ],
+   "target": {
+    "text": "A creature within your reach that has Bite from you",
+    "requires_mark": "Bite"
+   },
+   "riders": []
+  },
+  "TAL_AXES_ARMOR_JOINT_HOOK": {
+   "text_sha256": "00bd4deeb2e2020b5170be413ad9bc14c383ad68a3476c64d3277b0f7bd086ff",
+   "reviewed_by": "martial 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [
+     "Hewing Strike"
+    ],
+    "scope": "named",
+    "when": "hit",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "hits a creature wearing armor, natural armor, heavy robes, a shell, scales, or a comparable protective layer",
+    "effects": [
+     {
+      "type": "save",
+      "ability": "str",
+      "dc": "technique_save_dc",
+      "on_fail": [
+       {
+        "type": "next_attack_ac",
+        "applies_to": "target",
+        "amount": -2,
+        "duration": "until_start_of_next_turn",
+        "evidence": "Failed Save: Until the start of your next turn, the next attack roll made against the target by you or an ally gains a +2 bonus."
+       }
+      ],
+      "on_success": [
+       {
+        "type": "next_attack_ac",
+        "applies_to": "target",
+        "amount": -2,
+        "duration": "until_end_of_turn",
+        "evidence": "Successful Save: Until the end of your current turn, your next attack roll against the target gains a +2 bonus.",
+        "expires_on": "END_OF_CURRENT_TURN"
+       }
+      ],
+      "evidence": "The target makes a Strength saving throw."
+     }
+    ]
+   },
+   "riders": []
+  },
+  "TAL_AXES_AXE_AND_SHIELD_PRESS": {
+   "text_sha256": "20c6ae25a4c50fcdc12c35a9b8dbac3e836896a3dfc2cebab2aed56982c1b133",
+   "reviewed_by": "martial 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [
+     "Hewing Strike"
+    ],
+    "scope": "named",
+    "when": "hit",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "while wielding a one-handed axe and a shield",
+    "effects": [
+     {
+      "type": "save",
+      "ability": "str",
+      "dc": "technique_save_dc",
+      "on_fail": [
+       {
+        "type": "mark",
+        "mark": "Bite",
+        "applies_to": "target",
+        "duration": {
+         "kind": "until_start_of_next_turn"
+        },
+        "evidence": "the target gains Bite"
+       },
+       {
+        "type": "if_failed_by",
+        "min": 5,
+        "effects": [
+         {
+          "type": "forced_movement",
+          "applies_to": "target",
+          "distance_ft": 5,
+          "direction": "away",
+          "duration": "instant",
+          "evidence": "If the target fails the save by 5 or more, it is also pushed 5 feet."
+         }
+        ],
+        "evidence": "If the target fails the save by 5 or more, it is also pushed 5 feet."
+       }
+      ],
+      "on_success": [],
+      "evidence": "unless it succeeds on a Strength saving throw"
+     }
+    ]
+   },
+   "riders": []
+  },
+  "TAL_AXES_SHIELD_CATCHING_BEARD": {
+   "text_sha256": "47aa70fc08f93807156eedd89afa14a74892c14a64da7c793cb1ec986a061d3c",
+   "reviewed_by": "martial 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [
+     "Hewing Strike"
+    ],
+    "scope": "named",
+    "when": "hit",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "a creature wielding a shield",
+    "effects": [
+     {
+      "type": "save",
+      "ability": "str",
+      "dc": "technique_save_dc",
+      "on_fail": [
+       {
+        "type": "break_guard",
+        "applies_to": "target",
+        "shield": true,
+        "next": false,
+        "axe": false,
+        "evidence": "Failed Save: Until the start of your next turn, the target cannot benefit from Shield AC against your attacks."
+       }
+      ],
+      "on_success": [
+       {
+        "type": "break_guard",
+        "applies_to": "target",
+        "shield": true,
+        "next": true,
+        "axe": true,
+        "evidence": "Successful Save: Until the end of your current turn, the target cannot benefit from Shield AC against your next axe attack."
+       }
+      ],
+      "evidence": "The target makes a Strength saving throw"
+     }
+    ]
+   },
+   "riders": []
+  },
+  "TAL_AXES_SHIELD_WALL_SPLITTER": {
+   "text_sha256": "ef5c140ffc6a03582ab56785a1ab6657b6d5c2b9eb268dcb3414b071c7aaefa6",
+   "reviewed_by": "martial 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [
+     "Hewing Strike"
+    ],
+    "scope": "named",
+    "when": "hit",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "a creature benefiting from a shield, Half Cover, or Three-Quarters Cover",
+    "extra_cp": 1,
+    "martial_focus": true,
+    "options": [
+     {
+      "label": "Split the Shield",
+      "effects": [
+       {
+        "type": "rider",
+        "evidence": "Split the Shield: the target cannot benefit from Shield AC against any of your axe attacks until the start of your next turn (no separate Shield-AC value to suppress; GM applies manually)."
+       }
+      ]
+     },
+     {
+      "label": "Split the Cover",
+      "effects": [
+       {
+        "type": "rider",
+        "evidence": "Split the Cover: if the cover is a breakable or carried object, it takes your weapon damage as well; if destroyed or moved, the target loses that cover (this table does not track object HP separately from creatures; GM adjudicates)."
+       }
+      ]
+     },
+     {
+      "label": "Split the Line",
+      "effects": [
+       {
+        "type": "movement",
+        "applies_to": "ally",
+        "distance_ft": 5,
+        "evidence": "One ally within 5 feet of you may move 5 feet without provoking Opportunity Attacks from the target."
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "TAL_AXES_DEEP_BITE": {
+   "text_sha256": "c3d7e774efcc487e3c70d4f068a789ce620c7b2184aba680c611898edd6a4f47",
+   "reviewed_by": "martial 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [
+     "Hewing Strike: Bite",
+     "Cast Axe: Lodging Cast"
+    ],
+    "scope": "named",
+    "when": "hit",
+    "optional": true,
+    "limit": "none",
+    "group": "Realm Evolution",
+    "precondition": "",
+    "extra_cp": 1,
+    "martial_focus": true,
+    "effects": [
+     {
+      "type": "axes_deep_bite_extend",
+      "escape_policy": 1,
+      "applies_to": "target"
+     }
+    ]
+   },
+   "riders": ["Applying or extending Bite on map objects remains manual: the object attack path does not retain owner-specific Bite marks. The creature escape Action and adjacent-ally Help are automated."]
+  },
+  "TAL_AXES_TWO_HANDED_COMMITMENT": {
+   "text_sha256": "e66fa1fb479456cdb085d2d54726ec7444c5c4670813b4f95c88f9aadd741e3a",
+   "reviewed_by": "martial 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [
+     "Hewing Strike"
+    ],
+    "scope": "named",
+    "when": "hit",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "wielding an axe in two hands and you are not wielding a shield or second weapon",
+    "effects": [
+     {
+      "type": "rider",
+      "evidence": "Two-Handed Commitment: reroll one weapon damage die and use the new roll (no generic reroll effect exists on this table; GM applies the reroll)."
+     },
+     {
+      "type": "advantage",
+      "applies_to": "self",
+      "ability": "str",
+      "on": "the next Strength (Athletics) check you make before the start of your next turn to pull, shove, drag, climb, hold, or break an object connected to that Bite",
+      "duration": "until_start_of_next_turn",
+      "evidence": "you also gain Advantage on the next Strength (Athletics) check you make before the start of your next turn to pull, shove, drag, climb, hold, or break an object connected to that Bite"
+     }
+    ]
+   },
+   "riders": [
+    "When you hit with Hewing Strike while wielding an axe in two hands and you are not wielding a shield or second weapon, you may reroll one weapon damage die. You must use the new roll."
+   ]
+  },
+  "SPEAR_BASE_SPEAR_THRUST": {
+   "text_sha256": "a10958cd26a8fedf5997ff7f40312ec32b60a8c87a02ac9fbf93e802db17bdc3",
+   "reviewed_by": "martial 2026-09-28; Claude riders/c13 2026-09-30; AUTO56 2026-10-05: the printed header 'Cost: None Replace one attack with one attack using an approved Spear weapon...' reads as no cost, but the parser kept the whole line as a free-text cost, so the tooltip said the table could not charge a cost the printed text says is None; it is now the empty cost the printed 'None' says",
+   "cost": [],
+   "options": [
+    {
+     "label": "Push Target",
+     "effects": [
+      {
+       "type": "attach_spear_weapon",
+       "evidence": "Replace one attack with one attack using an approved Spear weapon."
+      },
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "weapon_damage": true,
+         "evidence": "normal weapon damage"
+        },
+        {
+         "type": "forced_movement",
+         "applies_to": "target",
+         "distance_ft": 5,
+         "evidence": "push the target 5 feet away from you"
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Close Distance",
+     "effects": [
+      {
+       "type": "attach_spear_weapon",
+       "evidence": "Replace one attack with one attack using an approved Spear weapon."
+      },
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "weapon_damage": true,
+         "evidence": "normal weapon damage"
+        },
+        {
+         "type": "movement",
+         "applies_to": "self",
+         "distance_ft": 5,
+         "evidence": "move 5 feet toward the target without provoking opportunity attacks from it"
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Reduce Speed",
+     "effects": [
+      {
+       "type": "attach_spear_weapon",
+       "evidence": "Replace one attack with one attack using an approved Spear weapon."
+      },
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "weapon_damage": true,
+         "evidence": "normal weapon damage"
+        },
+        {
+         "type": "speed",
+         "applies_to": "target",
+         "flat": -5,
+         "duration": "until_start_of_next_turn",
+         "evidence": "reduce the target's Speed by 5 feet until the start of your next turn"
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Gain AC",
+     "effects": [
+      {
+       "type": "attach_spear_weapon",
+       "evidence": "Replace one attack with one attack using an approved Spear weapon."
+      },
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "weapon_damage": true,
+         "evidence": "normal weapon damage"
+        },
+        {
+         "type": "ac_bonus",
+         "applies_to": "self",
+         "flat": 1,
+         "duration": "until_start_of_next_turn",
+         "evidence": "gain +1 AC against the target until the start of your next turn"
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Apply Spear Intent",
+     "effects": [
+      {
+       "type": "attach_spear_weapon",
+       "evidence": "Replace one attack with one attack using an approved Spear weapon."
+      },
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "weapon_damage": true,
+         "evidence": "normal weapon damage"
+        },
+        {
+         "type": "mark",
+         "mark": "Spear Intent",
+         "applies_to": "target",
+         "duration": {
+          "kind": "until_start_of_next_turn"
+         },
+         "evidence": "apply Spear Intent until the start of your next turn"
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    }
+   ],
+   "riders": []
+  },
+  "TAL_SPEAR_ARMY_BREAKING_THRUST": {
+   "text_sha256": "7b944e55ae777d085bfbe1a6912a3a98bfe68daf9466486db3a2e507802ce4f2",
+   "reviewed_by": "martial 2026-09-28; AUTO56 2026-10-05: 'Cost: 2 Spear Resource or expend Martial Focus' and 'Use Limit: Once per turn' are already typed as cost and use_limit, so listing them again as riders only told the player the table would not do what it does; the modifier's five options were already typed too",
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 2
+     }
+    ]
+   ],
+   "riders": []
+  },
+  "TAL_SPEAR_COILING_SOFT_SPEAR": {
+   "text_sha256": "c0f4d12dff84ab4ae44571a13f434f4e1c4b8c989e4381cadbf516cad1f21171",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "advantage",
+     "applies_to": "self",
+     "on": "one check made to resist Disarm",
+     "duration": "special",
+     "evidence": "gain Advantage on one check made to resist Disarm per short rest"
+    },
+    {
+     "type": "rider",
+     "evidence": "Coiling Soft Spear: ignore Half Cover with approved Spear weapon attacks against targets inside your Spear Line (this table does not track a suppressible Half-Cover flag per attack; GM applies manually)."
+    }
+   ],
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [
+     "Shaft Reversal"
+    ],
+    "scope": "named",
+    "when": "use",
+    "optional": false,
+    "limit": "none",
+    "group": "",
+    "precondition": "",
+    "effects": [
+     {
+      "type": "rider",
+      "evidence": "Coiling Soft Spear: Shaft Reversal may move the target diagonally as well as directly (this table's forced movement does not distinguish diagonal from straight; no mechanical change)."
+     }
+    ]
+   }
+  },
+  "TAL_SPEAR_DRAGON_SPEAR_CHARGE": {
+   "text_sha256": "5932d8c08487d96f52b9524f33664ca66e8cef570eda0ca138661c2b03d6c2ae",
+   "reviewed_by": "martial 2026-09-28; AUTO56 2026-10-05: 'Cost: 3 Spear Resource' is already charged, so that rider is dropped. The two terrain lines stay: 'ignore nonmagical difficult terrain' and 'pass through one hostile creature's space as though it were difficult terrain' are about how the ground is priced, and this table prices ground natively",
+   "riders": [
+    "ignore nonmagical difficult terrain",
+    "pass through one hostile creature's space as though it were difficult terrain"
+   ],
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 3
+     }
+    ]
+   ],
+   "effects": [
+    {
+     "type": "attach_spear_weapon",
+     "evidence": "make one approved Spear weapon attack"
+    },
+    {
+     "type": "attack",
+     "attack_kind": "cultivation_melee",
+     "count": 1,
+     "on_hit": [
+      {
+       "type": "damage",
+       "weapon_damage": true,
+       "evidence": "Deal normal damage"
+      },
+      {
+       "type": "extra_damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 2,
+        "sides": 8
+       },
+       "damage_types": [
+        "piercing",
+        "force"
+       ],
+       "evidence": "plus: 2d8 Piercing or Force damage"
+      },
+      {
+       "type": "save",
+       "applies_to": "target",
+       "ability": "str",
+       "on_fail": [
+        {
+         "type": "forced_movement",
+         "applies_to": "target",
+         "distance_ft": 15,
+         "evidence": "Push 15 feet"
+        },
+        {
+         "type": "condition",
+         "applies_to": "target",
+         "condition": "prone",
+         "evidence": "or knock Prone"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "forced_movement",
+         "applies_to": "target",
+         "distance_ft": 5,
+         "evidence": "Successful Save: Push 5 feet"
+        }
+       ],
+       "evidence": "The target makes a Strength saving throw."
+      }
+     ],
+     "on_miss": []
+    }
+   ]
+  },
+  "TAL_SPEAR_INTERCEPTING_THRUST": {
+   "text_sha256": "4205bc6e11c8b0f40609bb7042506f7540f2f4f2939ce735bf640b37e833461e",
+   "reviewed_by": "martial 2026-09-28; AUTO56 2026-10-05: the printed words are about the movement a creature has LEFT this turn, not its Speed, and the rows said Speed (flat -999 inside if_marked, flat -10 outside). remaining_movement is the engine's own row for exactly this sentence (combat/typed_executor.block_remaining_movement, used by Chains and Gravity), so both branches clamp at 0 and a marked creature really ends with no movement",
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 1
+     }
+    ]
+   ],
+   "effects": [
+    {
+     "type": "attach_spear_weapon",
+     "evidence": "Make one attack with an approved Spear weapon against the triggering creature."
+    },
+    {
+     "type": "attack",
+     "attack_kind": "cultivation_melee",
+     "count": 1,
+     "on_hit": [
+      {
+       "type": "damage",
+       "weapon_damage": true,
+       "evidence": "the weapon's normal damage"
+      },
+      {
+       "type": "if_marked",
+       "mark": "Spear Intent",
+       "effects": [
+        {
+         "type": "remaining_movement",
+         "applies_to": "target",
+         "becomes": 0,
+         "evidence": "If it bears your Spear Intent, reduce its remaining movement to 0 instead"
+        }
+       ]
+      },
+      {
+       "type": "remaining_movement",
+       "applies_to": "target",
+       "flat": -10,
+       "evidence": "Hit: Reduce its remaining movement by 10 feet"
+      }
+     ],
+     "on_miss": []
+    }
+   ],
+   "riders": []
+  },
+  "TAL_SPEAR_PINNING_STRIKE": {
+   "text_sha256": "93e7d06bb300deecbdc4d6e851be5c879139c9552e29da2c9964c2d9062810a7",
+   "reviewed_by": "martial 2026-09-28; AUTO56 2026-10-05: 'Choose one', 'apply Spear Intent until the start of your next turn' and 'Successful Save: Apply Spear Intent ...' are all already in the four typed options below, so they are dropped as riders; the one option the table could not run was Prevent Approach, whose row said out loud 'no engine rule blocks a specific direction of movement', and it now uses the shared held_at_distance effect (combat/ext/approach_lock.py), which stops the step that would close the distance",
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 1
+     }
+    ],
+    [
+     {
+      "resource": "martial_focus",
+      "amount": 1
+     }
+    ]
+   ],
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [],
+    "scope": "any_attack",
+    "when": "hit",
+    "optional": true,
+    "limit": "once_per_turn",
+    "group": "",
+    "precondition": "",
+    "martial_focus": true,
+    "options": [
+     {
+      "label": "Reduce Speed",
+      "effects": [
+       {
+        "type": "save",
+        "ability": "dex",
+        "dc": "technique_save_dc",
+        "on_fail": [
+         {
+          "type": "speed",
+          "applies_to": "target",
+          "flat": -10,
+          "duration": "until_start_of_next_turn",
+          "evidence": "reduce Speed by 10 feet until the start of your next turn"
+         }
+        ],
+        "on_success": [
+         {
+          "type": "mark",
+          "mark": "Spear Intent",
+          "applies_to": "target",
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "apply Spear Intent until the start of your next turn"
+         }
+        ],
+        "evidence": "The target makes a Dexterity saving throw."
+       }
+      ]
+     },
+     {
+      "label": "Prevent Reactions",
+      "effects": [
+       {
+        "type": "save",
+        "ability": "dex",
+        "dc": "technique_save_dc",
+        "on_fail": [
+         {
+          "type": "reaction_denied",
+          "applies_to": "target",
+          "duration": "until_start_of_next_turn",
+          "evidence": "prevent Reactions until the start of your next turn"
+         }
+        ],
+        "on_success": [
+         {
+          "type": "mark",
+          "mark": "Spear Intent",
+          "applies_to": "target",
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "apply Spear Intent until the start of your next turn"
+         }
+        ],
+        "evidence": "The target makes a Dexterity saving throw."
+       }
+      ]
+     },
+     {
+      "label": "Prevent Approach",
+      "effects": [
+       {
+        "type": "save",
+        "ability": "dex",
+        "dc": "technique_save_dc",
+        "on_fail": [
+         {
+          "type": "held_at_distance",
+          "applies_to": "target",
+          "mode": "closer",
+          "duration": "until_start_of_your_next_turn",
+          "evidence": "prevent the target from willingly moving closer to you until the start of your next turn"
+         }
+        ],
+        "on_success": [
+         {
+          "type": "mark",
+          "mark": "Spear Intent",
+          "applies_to": "target",
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "apply Spear Intent until the start of your next turn"
+         }
+        ],
+        "evidence": "The target makes a Dexterity saving throw."
+       }
+      ]
+     },
+     {
+      "label": "Apply Spear Intent",
+      "effects": [
+       {
+        "type": "save",
+        "ability": "dex",
+        "dc": "technique_save_dc",
+        "on_fail": [
+         {
+          "type": "mark",
+          "mark": "Spear Intent",
+          "applies_to": "target",
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "apply Spear Intent until the start of your next turn"
+         }
+        ],
+        "on_success": [
+         {
+          "type": "mark",
+          "mark": "Spear Intent",
+          "applies_to": "target",
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "apply Spear Intent until the start of your next turn"
+         }
+        ],
+        "evidence": "The target makes a Dexterity saving throw."
+       }
+      ]
+     }
+    ]
+   },
+   "riders": []
+  },
+  "TAL_SPEAR_PURSUIT_SPEAR": {
+   "text_sha256": "d6fe1362dc8030a63d5471abd238b4dfb39084f0d42cd4f9c022ab2ae8a3dc36",
+   "reviewed_by": "martial 2026-09-28; AUTO56 2026-10-05: 'choose one' and 'apply Spear Intent' are the two halves of the four typed options below; both riders were the table repeating what its own menu already does",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [],
+    "scope": "any_attack",
+    "when": "hit",
+    "optional": true,
+    "limit": "once_per_turn",
+    "group": "",
+    "precondition": "",
+    "options": [
+     {
+      "label": "Damage Bonus",
+      "effects": [
+       {
+        "type": "extra_damage",
+        "applies_to": "target",
+        "formula": "pb",
+        "evidence": "add Proficiency Bonus to one damage roll"
+       }
+      ]
+     },
+     {
+      "label": "Push 5 Feet",
+      "effects": [
+       {
+        "type": "forced_movement",
+        "applies_to": "target",
+        "distance_ft": 5,
+        "evidence": "push the creature 5 feet"
+       }
+      ]
+     },
+     {
+      "label": "Follow 5 Feet",
+      "effects": [
+       {
+        "type": "movement",
+        "applies_to": "self",
+        "distance_ft": 5,
+        "evidence": "move 5 feet toward the creature after the attack"
+       }
+      ]
+     },
+     {
+      "label": "Apply Spear Intent",
+      "effects": [
+       {
+        "type": "mark",
+        "mark": "Spear Intent",
+        "applies_to": "target",
+        "duration": {
+         "kind": "until_start_of_next_turn"
+        },
+        "evidence": "apply Spear Intent until the start of your next turn"
+       }
+      ]
+     }
+    ]
+   },
+   "riders": []
+  },
+  "TAL_SPEAR_SHAFT_REVERSAL": {
+   "text_sha256": "b4c5873ef383a1fc98cdfc65003682a3d203486fa035e1009c6861af91559e60",
+   "reviewed_by": "martial 2026-09-28; AUTO56 2026-10-05: 'Choose one' is the modifier's typed option menu. What stays is printed and not run: knocking a loose object out of a hand needs the Disarm maneuver's own adjudication, and a bonus-action Shove is a follow-up Action the table has no way to grant from inside a hit",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [],
+    "scope": "any_attack",
+    "when": "hit",
+    "optional": true,
+    "limit": "once_per_turn",
+    "group": "",
+    "precondition": "",
+    "options": [
+     {
+      "label": "Move Target 5 Feet",
+      "effects": [
+       {
+        "type": "forced_movement",
+        "applies_to": "target",
+        "distance_ft": 5,
+        "evidence": "move the target 5 feet to one legal space within your Spear Line"
+       }
+      ]
+     },
+     {
+      "label": "Disarm Object",
+      "effects": [
+       {
+        "type": "save",
+        "ability": "str",
+        "dc": "technique_save_dc",
+        "on_fail": [
+         {
+          "type": "rider",
+          "evidence": "knock one unsecured object from the target's hand (this table has no generic object-drop effect outside the Disarm maneuver; GM adjudicates)."
+         }
+        ],
+        "on_success": [],
+        "evidence": "knock one unsecured object from the target's hand if it fails a Strength saving throw"
+       }
+      ]
+     },
+     {
+      "label": "Move Around Target",
+      "effects": [
+       {
+        "type": "movement",
+        "applies_to": "self",
+        "distance_ft": 5,
+        "evidence": "move 5 feet around the target without provoking opportunity attacks from it"
+       }
+      ]
+     },
+     {
+      "label": "Shove Attempt",
+      "effects": [
+       {
+        "type": "rider",
+        "evidence": "Shaft Reversal: make one Shove attempt against the target as a Bonus Action before the end of your turn (this table has no generic Shove action to grant as a follow-up; GM runs it as a normal Shove)."
+       }
+      ]
+     }
+    ]
+   },
+   "riders": [
+    "knock one unsecured object from the target's hand if it fails a Strength saving throw",
+    "make one Shove attempt against the target as a Bonus Action before the end of your turn"
+   ]
+  },
+  "TAL_SPEAR_SPEAR_GUARD": {
+   "text_sha256": "b2fe9b0a20c9fbc6240051cb6a50e2f7c342570d3568e13383419c9cb7222e08",
+   "reviewed_by": "martial 2026-09-28",
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 1
+     }
+    ]
+   ]
+  },
+  "TAL_SPEAR_SPEAR_LIGHT_INFUSION": {
+   "text_sha256": "ea2a079bed8b5fa68d5535dc1a5c9c71fff799a39bc384b5eb83f68e0cdd1c09",
+   "reviewed_by": "martial 2026-09-28; AUTO56 2026-10-05: 'At CL 11, increase the extra damage to: 2d6; At CL 17: 3d6' is already the typed dice_by_cl on the extra_damage row and 'Duration: Concentration, up to 1 minute' is already the typed duration, so both are dropped as riders. 'apply Spear Intent' stays a rider: it belongs to the same once-per-turn hit as the deferred extra_damage row, and combat/typed_executor._registered_effect only looks up a deferred row whose type is extra_damage, so a deferred mark on that hit cannot be typed until that filter is widened (AUTO56 report, lock-round list). 'the weapon counts as magical for overcoming ordinary Resistance' is a property of the weapon this sheet does not carry",
+   "modifier": null,
+   "effects": [
+    {"type": "bind_spear_weapon"},
+    {"type": "limit_concentration_duration"},
+    {
+     "type": "extra_damage",
+     "applies_to": "target",
+     "dice": {"count": 1, "sides": 6},
+     "dice_by_cl": [[5, 10, 1, 6], [11, 16, 2, 6], [17, 20, 3, 6]],
+     "damage_types": ["piercing", "force"],
+     "deferred": true,
+     "evidence": "Once per turn when you hit with a weapon, add 1d6 Piercing or Force damage (2d6 at CL 11; 3d6 at CL 17)"
+    }
+   ],
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 1
+     }
+    ]
+   ],
+   "riders": [
+    "the weapon counts as magical for overcoming ordinary Resistance",
+    "apply Spear Intent"
+   ]
+  },
+  "tianxia.talent.weapons.binding_line": {
+   "text_sha256": "dd3af5694fdc2090bfebe3248f0eb95c746dfabcaa83c54f960f21b824e5a08f",
+   "reviewed_by": "martial 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [
+     "Hooking Method",
+     "Pinning Method"
+    ],
+    "scope": "named",
+    "when": "use",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "",
+    "effects": [
+     {
+      "type": "rider",
+      "evidence": "Binding Line: while bound, the target cannot move farther from you unless it succeeds on a Strength check against your Weapon Method DC (this table has no conditional, check-gated movement lock; GM enforces manually)."
+     }
+    ]
+   }
+  },
+  "TAL_DUAL_WIELDING_DUAL_OPPORTUNITY": {
+   "text_sha256": "74bc8032ed4818cbb1485b0e062da8421f51639caffeee478ca114c0bc859868",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "attack",
+     "attack_kind": "cultivation_melee",
+     "count": 2,
+     "on_hit": [
+      {
+       "type": "damage",
+       "weapon_damage": true,
+       "evidence": "normal weapon damage"
+      }
+     ],
+     "on_miss": []
+    }
+   ]
+  },
+  "TAL_DAEMONIC_CULTIVATION_BLACK_CLAW_MANIFESTATION": {
+   "effects": [
+    {
+     "type": "rider_black_claw",
+     "options": [
+      {
+       "id": "temp_hp",
+       "label": "Gain Temporary HP",
+       "effects": [
+        {
+         "type": "temp_hp",
+         "applies_to": "self",
+         "formula": "pb",
+         "evidence": "gain Temporary HP equal to Proficiency Bonus"
+        }
+       ]
+      },
+      {
+       "id": "move",
+       "label": "Move 5 Feet",
+       "effects": [
+        {
+         "type": "rider_claw_step"
+        }
+       ]
+      },
+      {
+       "id": "speed",
+       "label": "Reduce Target Speed",
+       "effects": [
+        {
+         "type": "speed",
+         "applies_to": "target",
+         "flat": -5,
+         "duration": "until_start_of_next_turn",
+         "evidence": "reduce the target's Speed by 5 feet until the start of your next turn"
+        }
+       ]
+      },
+      {
+       "id": "mark",
+       "label": "Apply Demon Mark",
+       "effects": [
+        {
+         "type": "mark",
+         "mark": "Demon Mark",
+         "applies_to": "target",
+         "duration": {
+          "kind": "until_start_of_next_turn"
+         },
+         "evidence": "apply your demonic mark until the start of your next turn"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "options": [],
+   "modifier": null,
+   "activation": {
+    "economy": "bonus_action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [],
+   "range": null,
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 1,
+      "amount_formula": null
+     }
+    ],
+    [
+     {
+      "resource": "stamina",
+      "amount": 1,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "special",
+    "amount": null,
+    "concentration": false,
+    "text": "While Demon Seed is active"
+   },
+   "target": {
+    "kind": "self"
+   },
+   "text_sha256": "0c9c57efee8f8469c70e2e069136397d6e7edd316b741e2bc85f0a05512b2cf2",
+   "reviewed_by": "martial 2026-09-28; riders-lane1 Codex 2026-09-29"
+  },
+  "TAL_DAEMONIC_CULTIVATION_BLOODLESS_DEVOURING": {
+    "text_sha256": "87b198f9cae4aaa464d6c8617fd7478c675db2fe19c9bbbf4dcc569b51f7c02c",
+    "reviewed_by": "martial 2026-09-28",
+    "activation": {
+      "economy": "passive",
+      "trigger": "When you deal damage to a creature below half its maximum HP",
+      "requirement": null,
+      "source": "printed_trigger"
+    },
+    "cost": [
+      [
+        {
+          "resource": "devoured_essence",
+          "amount": 1,
+          "amount_formula": null
+        }
+      ]
+    ],
+    "options": [
+      {
+        "label": "Regain HP",
+        "effects": [
+          {
+            "type": "healing",
+            "applies_to": "self",
+            "formula": "key_ability_modifier",
+            "dice": {
+              "bonus_formula": "pb"
+            },
+            "flat": 0,
+            "evidence": "regain HP equal to Proficiency Bonus + your Daemonic key ability modifier"
+          }
+        ]
+      },
+      {
+        "label": "Regain CP",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "applies_to": "self",
+            "flat": 1,
+            "evidence": "regain 1 CP or 1 Stamina"
+          }
+        ]
+      },
+      {
+        "label": "Gain Temporary HP",
+        "effects": [
+          {
+            "type": "temp_hp",
+            "applies_to": "self",
+            "formula": "pb",
+            "dice": {
+              "bonus_formula": "pb"
+            },
+            "flat": 0,
+            "evidence": "gain Temporary HP equal to twice your Proficiency Bonus"
+          }
+        ]
+      },
+      {
+        "label": "Reduce Corruption",
+        "effects": [
+          {
+            "type": "spend_resource",
+            "resource_id": "resource:named.corruption",
+            "applies_to": "self",
+            "flat": 1,
+            "evidence": "Reduce Corruption by 1 only after damaging an explicitly eligible creature."
+          }
+        ]
+      }
+    ],
+    "riders": []
+  },
+  "TAL_DAEMONIC_CULTIVATION_DEMON_COURT_RETAINER": {
+   "text_sha256": "53c23c4ddba78901d93251e0ddd9fe7c60908df7367bd0122a41655436ea8cb0",
+   "reviewed_by": "martial 2026-09-28",
+   "cost": [
+    [
+     {
+      "resource": "devoured_essence",
+      "amount": 2
+     }
+    ]
+   ],
+   "effects": [
+    {
+     "type": "rider",
+     "evidence": "Demon Court Retainer: instead of killing it, a demonic echo appears for 1 minute near the creature; once, it may use your Bonus Action to Help an attack against a Demon-Marked creature, impose Disadvantage on one enemy's Opportunity Attack, deal Psychic damage equal to your Proficiency Bonus to a Frightened creature within 30 feet, or carry a short message (GM runs the echo; this table has no standing-companion slot for a one-off echo)."
+    }
+   ]
+  },
+  "TAL_DAEMONIC_CULTIVATION_DEMON_SHADOW_STEP": {
+   "effects": [
+    {
+     "type": "rider_shadow_gate"
+    },
+    {
+     "type": "teleport",
+     "applies_to": "self",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 30,
+     "on": "",
+     "duration": "instant",
+     "evidence": "Teleport to an unoccupied space within range",
+     "origin": "model_v2"
+    },
+    {
+     "type": "extra_damage",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "pb",
+     "damage_types": [
+      "necrotic",
+      "psychic"
+     ],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "until_end_of_turn",
+     "evidence": "The next time you hit with a melee attack before the end of the turn, deal additional Necrotic or Psychic damage equal to Proficiency Bonus.",
+     "origin": "model_v2",
+     "deferred": true
+    }
+   ],
+   "activation": {
+    "economy": "bonus_action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [],
+   "range": {
+    "kind": "feet",
+    "feet": 30
+   },
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 2,
+      "amount_formula": null
+     }
+    ],
+    [
+     {
+      "resource": "stamina",
+      "amount": 2,
+      "amount_formula": null
+     }
+    ],
+    [
+     {
+      "resource": "devoured_essence",
+      "amount": 2,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "until_end_of_turn",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "text_sha256": "b807eb092ac687fa99aa8db78ccc5283cdaa431e61b854f409c582257d495ca5",
+   "reviewed_by": "riders-lane1 Codex 2026-09-29"
+  },
+  "TAL_DAEMONIC_CULTIVATION_DREAD_APPETITE": {
+    "text_sha256": "53913b5522119125583ce56c24d05c67bf8ee5cdaf5465747d70ce41716c336a",
+    "reviewed_by": "martial 2026-09-28",
+    "options": [
+      {
+        "label": "Frighten",
+        "effects": [
+          {
+            "type": "save",
+            "ability": "wis",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "condition",
+                "applies_to": "target",
+                "condition": "frightened",
+                "duration": "until_end_of_turn",
+                "evidence": "It is Frightened of you until the end of your next turn"
+              }
+            ],
+            "on_success": [
+              {
+                "type": "mark",
+                "mark": "Dread Appetite immunity",
+                "applies_to": "target",
+                "duration": {
+                  "kind": "until_removed"
+                },
+                "evidence": "It cannot be affected by your Dread Appetite again until your next Short Rest."
+              }
+            ],
+            "evidence": "It makes a Wisdom saving throw.",
+            "auto63_dread_senses": true
+          }
+        ]
+      },
+      {
+        "label": "Press the Fear (already Frightened)",
+        "effects": [
+          {
+            "type": "save",
+            "ability": "wis",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "speed",
+                "applies_to": "target",
+                "flat": -10,
+                "duration": "until_end_of_turn",
+                "evidence": "reduce its Speed by 10 feet until the end of your next turn"
+              }
+            ],
+            "on_success": [
+              {
+                "type": "mark",
+                "mark": "Dread Appetite immunity",
+                "applies_to": "target",
+                "duration": {
+                  "kind": "until_removed"
+                },
+                "evidence": "It cannot be affected by your Dread Appetite again until your next Short Rest."
+              }
+            ],
+            "evidence": "It makes a Wisdom saving throw (only legal if the target is already Frightened).",
+            "auto63_dread_senses": true,
+            "auto63_requires_frightened": true
+          }
+        ]
+      }
+    ],
+    "riders": []
+  },
+  "TAL_DAEMONIC_CULTIVATION_DEMONIC_TECHNIQUE_THEFT": {
+   "text_sha256": "464f8198619ebf31da3f1995817bf4b9d52dcc1b0ad4064b8df7fe9da922b282",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [],
+   "options": null
+  },
+  "TAL_DAEMONIC_CULTIVATION_CORRUPT_THE_RIGHTEOUS_LAW": {
+   "text_sha256": "e0495c407eaf3f958185a77f8f595df5fe5fc14105eedf52b4d9c64d1baaf258",
+   "reviewed_by": "martial 2026-09-28",
+   "options": [
+    {
+     "label": "Reduce Healing",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "cha",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "healing_reduction",
+         "applies_to": "target",
+         "flat": 0,
+         "formula": "2d8+pb",
+         "duration": "until_start_of_next_turn",
+         "evidence": "reduce healing by 2d8 + Proficiency Bonus"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "rider",
+         "evidence": "The protective effect works normally, but you learn its general source."
+        }
+       ],
+       "evidence": "The target makes a Charisma saving throw."
+      }
+     ]
+    },
+    {
+     "label": "Reduce Temporary HP",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "cha",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "rider",
+         "evidence": "reduce Temporary HP gained by 2d8 + Proficiency Bonus (no generic effect caps a temp-HP grant already in progress; GM applies manually)."
+        }
+       ],
+       "on_success": [],
+       "evidence": "The target makes a Charisma saving throw."
+      }
+     ]
+    },
+    {
+     "label": "Deny Reactions",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "cha",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "reaction_denied",
+         "applies_to": "target",
+         "duration": "until_start_of_next_turn",
+         "evidence": "suppress one ordinary defensive bonus until the start of your next turn (approximated as denying Reactions)."
+        }
+       ],
+       "on_success": [],
+       "evidence": "The target makes a Charisma saving throw."
+      }
+     ]
+    },
+    {
+     "label": "Mark the Target",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "cha",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "mark",
+         "mark": "Demon Mark",
+         "applies_to": "target",
+         "duration": {
+          "kind": "until_start_of_next_turn"
+         },
+         "evidence": "mark the target with your Demon Mark until the start of your next turn"
+        }
+       ],
+       "on_success": [],
+       "evidence": "The target makes a Charisma saving throw."
+      }
+     ]
+    }
+   ],
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 5
+     }
+    ]
+   ]
+  },
+  "TAL_DAEMONIC_CULTIVATION_HUNGER_REFINING_BREATH": {
+   "effects": [
+    {
+     "type": "rider_defeats",
+     "effects": [
+      {
+       "type": "save", "recipient_text": "Creatures in the cone make Constitution saving throws.", "applies_to": "creatures_in_area",
+       "ability": "con",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "creatures_in_area",
+         "dice": {
+          "count": 2,
+          "sides": 6
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           2,
+           6
+          ],
+          [
+           5,
+           10,
+           3,
+           6
+          ],
+          [
+           11,
+           16,
+           5,
+           6
+          ],
+          [
+           17,
+           20,
+           7,
+           6
+          ]
+         ],
+         "damage_types": [
+          "necrotic",
+          "poison"
+         ],
+         "evidence": "Take 2d6 Necrotic or Poison damage. At CL 5, damage becomes 3d6. At CL 11, damage becomes 5d6. At CL 17, damage becomes 7d6."
+        },
+        {
+         "type": "disadvantage",
+         "applies_to": "target",
+         "on": "the next saving throw made before the end of your next turn",
+         "duration": "until_end_of_turn",
+         "evidence": "suffer Disadvantage on the next saving throw made before the end of your next turn"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "applies_to": "target",
+         "evidence": "Take half damage"
+        }
+       ]
+      }
+     ],
+     "per_defeat": [
+      {
+       "type": "gain_resource",
+       "resource_id": "resource:named.devoured_essence",
+       "applies_to": "self",
+       "flat": 1
+      }
+     ],
+     "evidence": "A creature reduced to 0 HP by this talent grants you 1 Devoured Essence."
+    }
+   ],
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [],
+   "range": {
+    "kind": "special",
+    "feet": null,
+    "text": "30-foot cone"
+   },
+   "area": {
+    "shape": "cone",
+    "size_ft": 30,
+    "evidence": "30-foot cone",
+    "source": "text"
+   },
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 2,
+      "amount_formula": null
+     }
+    ],
+    [
+     {
+      "resource": "stamina",
+      "amount": 2,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "text_sha256": "5710aa6dd4923d857e3acc4a58d74e37dacc9d9c8d4ae296d23c9a3e9b42be00",
+   "reviewed_by": "riders-lane1 Codex 2026-09-29"
+  },
+  "TAL_DAEMONIC_CULTIVATION_DEMON_MARK": {
+   "text_sha256": "92e678dcd5e4de638c3d72c28bcc1897ca2ca014378686591497bf1b3a144acc",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "save",
+     "ability": "cha",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "extra_damage",
+       "applies_to": "target",
+       "formula": "pb",
+       "duration": "one_minute",
+       "deferred": true,
+       "evidence": "once per turn when you damage it, add Proficiency Bonus to the damage"
+      },
+      {
+       "type": "gain_resource",
+       "applies_to": "self",
+       "flat": 1,
+       "formula": "none",
+       "deferred": true,
+       "evidence": "when it drops to 0 HP, gain 1 Devoured Essence"
+      },
+      {
+       "type": "disadvantage",
+       "applies_to": "target",
+       "on": "checks made to hide from you",
+       "distance_ft": 60,
+       "duration": "one_minute",
+       "evidence": "it has Disadvantage on checks made to hide from you while within 60 feet"
+      },
+      {
+       "type": "mark",
+       "mark": "Demon Mark",
+       "applies_to": "target",
+       "duration": {
+        "kind": "one_minute"
+       },
+       "evidence": "It bears your Demon Mark."
+      }
+     ],
+     "on_success": []
+    }
+   ],
+  "riders": []
+  },
+  "TAL_DAEMONIC_CULTIVATION_PARASITE_MERIDIAN_NEEDLE": {
+   "text_sha256": "23048642e518cc6e53c31b8e3e5d6314995d7d7ef16d61688b5c72abd1acf01e",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "attack",
+     "attack_kind": "cultivation_melee",
+     "count": 1,
+     "on_hit": [
+      {
+       "type": "damage",
+       "weapon_damage": true,
+       "evidence": "Deal normal damage"
+      },
+      {
+       "type": "save",
+       "applies_to": "target",
+       "ability": "con",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "rider",
+         "evidence": "Failed Save, choose one: it cannot regain HP until the start of your next turn; Disadvantage on its next Concentration save; -5 feet Speed until the start of your next turn; or you learn its CP relative to yours (this table has no generic \"prevent healing\" block outside healing_reduction, which caps the AMOUNT healed rather than forbidding it outright, so all four remain a GM-adjudicated pick)."
+        }
+       ],
+       "on_success": [],
+       "evidence": "the target makes a Constitution saving throw"
+      }
+     ],
+     "on_miss": []
+    }
+   ]
+  },
+  "TAL_DAEMONIC_CULTIVATION_THOUSAND_HUNGER_ADAPTATION": {
+   "text_sha256": "7910cba069ba804d93d08f77445e11ad0508547552976e45f9aedfb41dbd8f99",
+   "reviewed_by": "auto103 2026-10-05",
+   "effects": [
+    {
+     "type": "rider_thousand_hunger",
+     "evidence": "When you take Acid, Cold, Fire, Lightning, Necrotic, Poison, Psychic, Radiant, Thunder, or Force damage while Demon Seed is active, you may spend 1 Devoured Essence. Gain Resistance to that damage type until the start of your next turn. At CL 11, the Resistance lasts until the end of your next turn. At CL 17, when you gain this Resistance, your next damage roll with a Daemonic talent deals additional damage of that type equal to Proficiency Bonus.",
+     "note": "Resolved by combat/ext/thousand_hunger.py: Seed gate, the 1 Devoured Essence payment, the CL 11 end-of-turn expiry and the CL 17 next-roll bonus are all settled at the table, so no line is left for the GM."
+    }
+   ],
+   "riders": []
+  },
+  "TAL_DAEMONIC_CULTIVATION_HELL_OPENS_BENEATH_THE_SECT_GATE": {
+   "text_sha256": "7c03267b6ef6eba3c72683fd45621fa182e1a255f9f0f9ef9506668ca5998b53",
+   "reviewed_by": "martial 2026-09-28",
+   "options": [
+    {
+     "label": "Damage",
+     "effects": [
+      {
+       "type": "zone",
+       "triggers": [
+        {
+         "who": "hostile",
+         "on": [
+          "start"
+         ],
+         "effects": [
+          {
+           "type": "save", "applies_to": "enemies_in_area",
+           "ability": "wis",
+           "dc": "technique_save_dc",
+           "on_fail": [
+            {
+             "type": "damage",
+             "applies_to": "enemies_in_area",
+             "dice": {
+              "count": 8,
+              "sides": 8
+             },
+             "damage_types": [
+              "psychic",
+              "necrotic",
+              "fire",
+              "force"
+             ],
+             "evidence": "take 8d8 Psychic, Necrotic, Fire, or Force damage"
+            }
+           ],
+           "on_success": [
+            {
+             "type": "damage",
+             "applies_to": "enemies_in_area",
+             "formula": "pb",
+             "evidence": "Take damage equal to Proficiency Bonus"
+            }
+           ],
+           "evidence": "Enemies that start their turn inside make Wisdom saving throws (typed as a one-time save on cast, not a recurring per-round aura save -- see feature_status.d)."
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Frighten",
+     "effects": [
+      {
+       "type": "zone",
+       "triggers": [
+        {
+         "who": "hostile",
+         "on": [
+          "start"
+         ],
+         "effects": [
+          {
+           "type": "save", "applies_to": "enemies_in_area",
+           "ability": "wis",
+           "dc": "technique_save_dc",
+           "on_fail": [
+            {
+             "type": "condition",
+             "applies_to": "enemies_in_area",
+             "condition": "frightened",
+             "duration": "until_start_of_next_turn",
+             "evidence": "become Frightened until the start of the next turn"
+            }
+           ],
+           "on_success": [
+            {
+             "type": "damage",
+             "applies_to": "enemies_in_area",
+             "formula": "pb",
+             "evidence": "Take damage equal to Proficiency Bonus"
+            }
+           ],
+           "evidence": "Enemies that start their turn inside make Wisdom saving throws (typed as a one-time save on cast, not a recurring per-round aura save -- see feature_status.d)."
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Deny Healing",
+     "effects": [
+      {
+       "type": "zone",
+       "triggers": [
+        {
+         "who": "hostile",
+         "on": [
+          "start"
+         ],
+         "effects": [
+          {
+           "type": "save", "applies_to": "enemies_in_area",
+           "ability": "wis",
+           "dc": "technique_save_dc",
+           "on_fail": [
+            {
+             "type": "healing_reduction",
+             "applies_to": "enemies_in_area",
+             "flat": 0,
+             "formula": "none",
+             "duration": "until_start_of_next_turn",
+             "evidence": "cannot regain HP until the start of the next turn"
+            }
+           ],
+           "on_success": [
+            {
+             "type": "damage",
+             "applies_to": "enemies_in_area",
+             "formula": "pb",
+             "evidence": "Take damage equal to Proficiency Bonus"
+            }
+           ],
+           "evidence": "Enemies that start their turn inside make Wisdom saving throws (typed as a one-time save on cast, not a recurring per-round aura save -- see feature_status.d)."
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Deny Reactions",
+     "effects": [
+      {
+       "type": "zone",
+       "triggers": [
+        {
+         "who": "hostile",
+         "on": [
+          "start"
+         ],
+         "effects": [
+          {
+           "type": "save", "applies_to": "enemies_in_area",
+           "ability": "wis",
+           "dc": "technique_save_dc",
+           "on_fail": [
+            {
+             "type": "reaction_denied",
+             "applies_to": "enemies_in_area",
+             "duration": "until_start_of_next_turn",
+             "evidence": "cannot take Reactions until the start of the next turn"
+            }
+           ],
+           "on_success": [
+            {
+             "type": "damage",
+             "applies_to": "enemies_in_area",
+             "formula": "pb",
+             "evidence": "Take damage equal to Proficiency Bonus"
+            }
+           ],
+           "evidence": "Enemies that start their turn inside make Wisdom saving throws (typed as a one-time save on cast, not a recurring per-round aura save -- see feature_status.d)."
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Suppress Resistance",
+     "effects": [
+      {
+       "type": "zone",
+       "triggers": [
+        {
+         "who": "hostile",
+         "on": [
+          "start"
+         ],
+         "effects": [
+          {
+           "type": "save", "applies_to": "enemies_in_area",
+           "ability": "wis",
+           "dc": "technique_save_dc",
+           "on_fail": [
+            {
+             "type": "rider",
+             "evidence": "lose Resistance to one damage type of your choice until the start of the next turn (this table has a suppress_resistance block for a fixed damage-type list, not a free per-target choice; GM applies manually)."
+            }
+           ],
+           "on_success": [
+            {
+             "type": "damage",
+             "applies_to": "enemies_in_area",
+             "formula": "pb",
+             "evidence": "Take damage equal to Proficiency Bonus"
+            }
+           ],
+           "evidence": "Enemies that start their turn inside make Wisdom saving throws (typed as a one-time save on cast, not a recurring per-round aura save -- see feature_status.d)."
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Mark",
+     "effects": [
+      {
+       "type": "zone",
+       "triggers": [
+        {
+         "who": "hostile",
+         "on": [
+          "start"
+         ],
+         "effects": [
+          {
+           "type": "save", "applies_to": "enemies_in_area",
+           "ability": "wis",
+           "dc": "technique_save_dc",
+           "on_fail": [
+            {
+             "type": "mark",
+             "mark": "Demon Mark",
+             "applies_to": "target",
+             "duration": {
+              "kind": "one_minute"
+             },
+             "evidence": "gain your Demon Mark for 1 minute"
+            }
+           ],
+           "on_success": [
+            {
+             "type": "damage",
+             "applies_to": "enemies_in_area",
+             "formula": "pb",
+             "evidence": "Take damage equal to Proficiency Bonus"
+            }
+           ],
+           "evidence": "Enemies that start their turn inside make Wisdom saving throws (typed as a one-time save on cast, not a recurring per-round aura save -- see feature_status.d)."
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "effects": [
+    {
+     "type": "zone",
+     "triggers": [
+      {
+       "who": "hostile",
+       "on": [
+        "start"
+       ],
+       "effects": [
+        {
+         "type": "save", "recipient_text": "Enemies that start their turn inside make Wisdom saving throws.", "applies_to": "enemies_in_area",
+         "ability": "wis",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "damage",
+           "applies_to": "enemies_in_area",
+           "dice": {
+            "count": 8,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+           },
+           "flat": 0,
+           "formula": "none",
+           "damage_types": [
+            "psychic",
+            "necrotic",
+            "fire",
+            "force"
+           ],
+           "ability": "none",
+           "condition": "none",
+           "distance_ft": 0,
+           "on": "",
+           "duration": "instant",
+           "evidence": "take 8d8 Psychic, Necrotic, Fire, or Force damage",
+           "origin": "model_v2"
+          },
+          {
+           "type": "condition",
+           "applies_to": "enemies_in_area",
+           "flat": 0,
+           "formula": "none",
+           "damage_types": [],
+           "ability": "none",
+           "condition": "frightened",
+           "distance_ft": 0,
+           "on": "",
+           "duration": "until_start_of_next_turn",
+           "evidence": "become Frightened until the start of the next turn",
+           "origin": "model_v2"
+          },
+          {
+           "type": "reaction_denied",
+           "applies_to": "enemies_in_area",
+           "flat": 0,
+           "formula": "none",
+           "damage_types": [],
+           "ability": "none",
+           "condition": "none",
+           "distance_ft": 0,
+           "on": "",
+           "duration": "until_start_of_next_turn",
+           "evidence": "cannot take Reactions until the start of the next turn",
+           "origin": "model_v2"
+          },
+          {
+           "type": "mark",
+           "mark": "Demon Mark",
+           "applies_to": "target",
+           "duration": {
+            "kind": "until_removed"
+           },
+           "evidence": "gain your Demon Mark",
+           "origin": "structure"
+          }
+         ],
+         "on_success": [
+          {
+           "type": "damage",
+           "applies_to": "enemies_in_area",
+           "flat": 0,
+           "formula": "pb",
+           "damage_types": [],
+           "ability": "none",
+           "condition": "none",
+           "distance_ft": 0,
+           "on": "",
+           "duration": "instant",
+           "evidence": "Take damage equal to Proficiency Bonus",
+           "origin": "model_v2"
+          }
+         ],
+         "origin": "model_v2"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 120
+   },
+   "riders": [
+    "Failed Save: Choose one",
+    "The area becomes Difficult Terrain for enemies.",
+    "cannot regain HP until the start of the next turn",
+    "lose Resistance to one damage type of your choice until the start of the next turn",
+    "gain your Demon Mark for 1 minute",
+    "treat the area as Difficult Terrain until the start of the next turn",
+    "Allies you choose inside gain Temporary HP equal to twice your Proficiency Bonus at the start of their turns and may spend 1 Hit Die when they reduce a hostile creature to 0 HP.",
+    "After the Domain ends, the site remains spiritually stained unless purified.",
+    "The area becomes Difficult Terrain for enemies. All chosen options resolve at the start of enemy turns, not on casting."
+   ]
+  },
+  "TAL_SHIELD_REACTIVE_DEFENSE": {
+   "text_sha256": "713fbc46f632218102039df48ab6ce5284f5da69b981d1d0bb13c68cd4b80235",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "attack",
+     "attack_kind": "cultivation_melee",
+     "count": 1,
+     "on_hit": [
+      {
+       "type": "damage",
+       "weapon_damage": true,
+       "evidence": "one melee weapon attack or Unarmed Strike"
+      }
+     ],
+     "on_miss": []
+    }
+   ],
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [
+     "Dodge"
+    ],
+    "scope": "named",
+    "when": "use",
+    "optional": true,
+    "limit": "none",
+    "group": "COUNTER",
+    "precondition": "",
+    "effects": []
+   },
+   "riders": []
+  },
+  "TAL_SHIELD_REDIRECTING_SHIELD": {
+   "text_sha256": "53400159fb32d70fc092caf36f23d0f50c39b3ebcbcdc73d6c8be5b222aa8771",
+   "reviewed_by": "martial 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [
+     "Active Defense"
+    ],
+    "scope": "named",
+    "when": "miss",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "",
+    "martial_focus": true,
+    "effects": [
+     {
+      "type": "rider",
+      "evidence": "Redirecting Shield: choose one new legal target for the missed attack; compare the original roll to the new target's AC and apply the attack's original damage/effects there instead (no block re-aims an attack already rolled against its own target; GM re-resolves manually)."
+     }
+    ]
+   },
+   "riders": []
+  },
+  "tianxia.talent.shield.sacrificial_shield": {
+   "text_sha256": "6223cbe7ba50c60f07258a17066785870b94081ff4d4e88e45e16a3579029507",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "rider",
+     "evidence": "Sacrificial Shield: when the triggering attack hits and is a Critical Hit, you may break your Shield to make it a normal hit instead (removing the Critical Hit's extra dice/effects after it has already been rolled has no block on this table, and shield-breaking equipment durability is not tracked; GM adjudicates both manually)."
+    }
+   ],
+   "riders": []
+  },
+  "tianxia.talent.shield.projected_shield_face": {
+   "text_sha256": "e76b7493e21a03460e39b06edc3ccbce27884b9f0ab337a784e03a5f093bbe07",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "rider",
+     "evidence": "Projected Shield Face: Active Defense already applies to every attack roll on this table regardless of type, so the 'affects magical/incorporeal attacks normally' clause needs no change; Cover Ally's 15-foot range increase has no compiled ability on this table to extend."
+    }
+   ],
+   "riders": [
+    "Projected Shield Face does not: become a free-standing Barrier; block movement; grant general telekinesis; pass through Total Cover or a sealed Barrier; protect against teleportation, gaze effects, possession, or effects that do not cross its surface; allow a mundane Shield to answer a narrative-scale calamity without an appropriate higher-Realm talent."
+   ]
+  },
+  "TAL_SHIELD_GREATER_DEFLECT": {
+   "text_sha256": "8cd60e3559c17d18a0530674fa9172d622170e784b4d20593709aa127ff793d8",
+   "reviewed_by": "martial 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [
+     "Active Defense"
+    ],
+    "scope": "named",
+    "when": "use",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "",
+    "martial_focus": true,
+    "effects": [
+     {
+      "type": "rider",
+      "evidence": "Greater Deflect: expend Martial Focus to apply a second Deflect talent to this Active Defense (e.g. Interposing Shield's damage reduction alongside Redirecting Shield's retarget); this table's Deflect talents mostly resolve as GM-adjudicated riders already (Redirecting Shield, Sacrificial Shield), so combining two is likewise GM-run rather than an automated stacked menu."
+     }
+    ]
+   },
+   "riders": []
+  },
+  "tianxia.talent.warleader.coordinated_aid": {
+   "text_sha256": "efa89f1eda91da5bd2e33cd59666ed1599e275dfbbbad30779c4d4c9904ade4b",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "mark",
+     "mark": "Momentum Mark",
+     "applies_to": "self",
+     "duration": {
+      "kind": "until_removed"
+     },
+     "evidence": "gain 1 Momentum Mark even if you have already gained a Momentum Mark this turn"
+    },
+    {
+     "type": "rider",
+     "evidence": "you may spend 1 Momentum Mark to allow a Commanded ally to take the Help action as a Reaction to aid another Commanded ally within 5 feet (this table does not track which allies are 'Commanded' or run an ally's Reaction on the player's behalf; GM adjudicates)."
+    }
+   ]
+  },
+  "tianxia.talent.warleader.darklands_cry": {
+   "text_sha256": "01bdb89ab9f7f2ddaf0bb0d954241f6e66cb51a5a7cc9cc8678018d08b308cb4",
+   "reviewed_by": "sys-resources-states 2026-09-29",
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "reviewed",
+    "modifies": null
+   },
+   "area": {
+    "shape": "emanation",
+    "size_ft": 15,
+    "centered_on_self": true
+   },
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "cost": [
+    [
+     {
+      "resource": "martial_focus",
+      "amount": 1
+     }
+    ]
+   ],
+   "effects": [
+    {
+     "type": "warleader_shout",
+     "shout": "darklands_cry",
+     "hostile": true,
+     "applies_to": "ally",
+     "evidence": "Hostile creatures in the Shout area."
+    },
+    {
+     "type": "save",
+     "ability": "con",
+     "dc": "technique_save_dc",
+     "applies_to": "enemies_in_area",
+     "evidence": "Hostile creatures in the Shout area make a Constitution saving throw.",
+     "on_fail": [
+      {
+       "type": "warleader_exhaust",
+       "applies_to": "target",
+       "evidence": "The creature gains 1 level of Exhaustion. A creature can gain Exhaustion from your Darklands Cry once per long rest."
+      }
+     ],
+     "on_success": []
+    }
+   ],
+   "riders": []
+  },
+  "tianxia.talent.warleader.fortifying_phalanx": {
+   "text_sha256": "f91f26a50bae9121f9c8e53c288366640839f7992472a5e65d33de11ea7c04f7",
+   "reviewed_by": "sys-resources-states 2026-09-29",
+   "activation": {
+    "economy": "bonus_action",
+    "trigger": null,
+    "requirement": null,
+    "source": "reviewed",
+    "modifies": null
+   },
+   "effects": [
+    {
+     "type": "warleader_standard",
+     "standard": "fortifying_phalanx",
+     "applies_to": "self",
+     "evidence": "Set the Standard: Fortifying Phalanx."
+    }
+   ],
+   "riders": []
+  },
+  "TAL_DEATH_ROTTING_GRASP": {
+   "text_sha256": "abbbfb9db59dc8cb2a1665f1a59e5fdc8de4d8b995a4ea78052818e71c08b922",
+   "reviewed_by": "martial 2026-09-28; w4-roster 2026-09-28 (residue rider dropped)",
+   "effects": [
+    {
+     "type": "attack",
+     "attack_kind": "cultivation_melee",
+     "count": 1,
+     "on_hit": [
+      {
+       "type": "damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 2,
+        "sides": 8
+       },
+       "dice_by_cl": [
+        [
+         1,
+         4,
+         1,
+         8
+        ],
+        [
+         5,
+         10,
+         2,
+         8
+        ],
+        [
+         11,
+         16,
+         3,
+         8
+        ],
+        [
+         17,
+         20,
+         4,
+         8
+        ]
+       ],
+       "damage_types": [
+        "necrotic"
+       ],
+       "evidence": "The target takes your Withering Hand damage (CL 1-4: 1d8; CL 5-10: 2d8; CL 11-16: 3d8; CL 17-20: 4d8 Necrotic)."
+      },
+      {
+       "type": "disadvantage",
+       "applies_to": "target",
+       "on": "the next Strength saving throw or Constitution saving throw it makes before the start of your next turn",
+       "duration": "until_start_of_next_turn",
+       "evidence": "Disadvantage on the next Strength saving throw or Constitution saving throw it makes before the start of your next turn"
+      }
+     ],
+     "on_miss": []
+    }
+   ],
+   "riders": [],
+   "notes": ["Rotting Grasp attacks represented unattended nonmagical objects. The player may choose maximum Withering Hand damage on explicitly decaying material; other object damage is rolled normally."]
+  },
+  "TAL_DEATH_SOUL_HOOK": {
+   "riders": [
+      "If it is possessing another creature, the possessed creature gains Advantage on saving throws against the possession."
+    ],
+   "modifier": null,
+   "options": null,
+   "target": {
+     "text": "One ghost, possessing spirit, incorporeal undead, or soul-bound creature",
+     "creature_types_any": [["ghost"], ["possessing spirit"], ["incorporeal undead"], ["incorporeal", "undead"], ["soul-bound creature"], ["soul-bound"]]
+   },
+   "duration": {
+     "kind": "minutes",
+     "amount": 1,
+     "concentration": true
+   },
+   "area": null,
+   "range": {
+     "kind": "feet",
+     "feet": 60
+   },
+   "use_limit": null,
+   "cost": [
+     [
+       {
+         "resource": "cp",
+         "amount": 4,
+         "amount_formula": null
+       }
+     ]
+   ],
+   "activation": {
+     "economy": "action",
+     "trigger": null,
+     "requirement": null,
+     "source": "printed_action_type"
+   },
+   "text_sha256": "6df90a883a16eeef00d8167d3f6d11eab2c6b73a26cea71332aa0fd91c57c894",
+   "reviewed_by": "astra sw-death printed-text review",
+   "effects": [
+     {
+       "type": "save",
+       "ability": "cha",
+       "dc": "technique_save_dc",
+       "on_fail": [
+         {
+           "type": "ongoing",
+           "condition": "death_soul_hook",
+           "applies_to": "target",
+           "duration": "concentration",
+           "rule": {
+             "speed_zero": true
+           },
+           "repeat_save": {
+             "ability": "CHA"
+           },
+           "turn_start_effects": []
+         }
+       ],
+       "on_success": [
+         {
+           "type": "speed",
+           "applies_to": "target",
+           "flat": -10,
+           "duration": "until_start_of_next_turn",
+           "evidence": "The target's Speed is reduced by 10 feet until the start of your next turn"
+         }
+       ],
+       "evidence": "The target makes a Charisma saving throw."
+     }
+   ]
+  },
+  "TAL_DEATH_MARK_FOR_THE_GRAVE": {
+   "text_sha256": "4c6e633ede4c65811fb36fd1808657aebd68be84960777924792dc8430dacfc1",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "mark",
+     "mark": "Grave Mark",
+     "applies_to": "target",
+     "duration": {
+      "kind": "one_minute"
+     },
+     "evidence": "It bears your Grave Mark."
+    },
+    {
+     "type": "disadvantage",
+     "applies_to": "target",
+     "on": "the first death saving throw it makes",
+     "duration": "one_minute",
+     "evidence": "Disadvantage on the first death saving throw it makes during the duration"
+    }
+   ],
+   "riders": []
+  },
+  "TAL_DEATH_HARVEST_THE_FALLEN": {
+   "text_sha256": "039fd900ec3b40628ac4758c8971355cd2153b2ad159fbcfe4926a5fd1cd6a3e",
+   "reviewed_by": "martial 2026-09-28",
+   "options": [
+    {
+     "label": "Regain CP",
+     "effects": [
+      {
+       "type": "gain_resource",
+       "applies_to": "self",
+       "formula": "pb",
+       "evidence": "regain CP equal to your Proficiency Bonus, not exceeding your maximum CP"
+      }
+     ]
+    },
+    {
+     "label": "Servant Recovers HP",
+     "effects": [
+      {
+       "type": "healing",
+       "applies_to": "ally",
+       "formula": "cl",
+       "evidence": "one Death servant you control regains HP equal to 2 x your CL"
+      }
+     ]
+    },
+    {
+     "label": "Move Servant",
+     "effects": [
+      {
+       "type": "movement",
+       "applies_to": "ally",
+       "distance_ft": "speed",
+       "evidence": "immediately move one Death servant you control up to its Speed"
+      }
+     ]
+    },
+    {
+     "label": "Mark a Creature",
+     "effects": [
+      {
+       "type": "mark",
+       "mark": "Grave Mark",
+       "applies_to": "target",
+       "duration": {
+        "kind": "until_removed"
+       },
+       "evidence": "apply a Grave Mark to one creature within 30 feet of the fallen creature"
+      }
+     ]
+    },
+    {
+     "label": "Preserve the Corpse",
+     "effects": [
+      {
+       "type": "rider",
+       "evidence": "preserve the corpse for 24 hours as if with Funerary Preservation (an out-of-fight, multi-hour effect; GM tracks it)."
+      }
+     ]
+    }
+   ]
+  },
+  "TAL_DEATH_LAST_BREATH_WITNESS": {
+   "text_sha256": "4b140a19f92ecf45ae08453e9d5cb372c243780b4fa56a06125d57c521109619",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "advantage",
+     "applies_to": "self",
+     "on": "your next Death talent used on that corpse within 1 hour",
+     "duration": "special",
+     "evidence": "gain Advantage on your next Death talent used on that corpse within 1 hour"
+    },
+    {
+     "type": "rider",
+     "evidence": "The other four printed choices (learn the killer's direction, learn an image/word/emotion, prevent the corpse rising for 24 hours, let the dying creature speak one sentence) are pure information or narrative with no HP/condition/resource change; GM adjudicates whichever the player picks instead."
+    }
+   ]
+  },
+  "tianxia.talent.disease.epidemic_surge": {
+   "riders": [],
+   "modifier": null,
+   "options": null,
+   "target": {
+     "requires_mark": "Contagion Token"
+   },
+   "duration": {
+     "kind": "instant",
+     "amount": null,
+     "concentration": false
+   },
+   "area": null,
+   "range": {
+     "kind": "feet",
+     "feet": 90
+   },
+   "use_limit": null,
+   "cost": [
+     [
+       {
+         "resource": "cp",
+         "amount": 4,
+         "amount_formula": null
+       }
+     ]
+   ],
+   "activation": {
+     "economy": "bonus_action",
+     "trigger": null,
+     "requirement": null,
+     "source": "printed_action_type"
+   },
+   "text_sha256": "feec8298488aa3fd39609f4eae4ddf940ec2ef80508bc2d4b5ff16b76d6c662a",
+   "reviewed_by": "astra sw-death printed-text review; riders-lane10 2026-09-29 (riders)",
+   "effects": [
+     {
+       "type": "disease_surge",
+       "range_ft": 90,
+       "effects": [
+         {
+           "type": "save",
+           "ability": "con",
+           "dc": "technique_save_dc",
+           "on_fail": [
+             {
+               "type": "damage",
+               "applies_to": "target",
+               "dice": {
+                 "count": 3,
+                 "sides": 8
+               },
+               "damage_types": [
+                 "necrotic",
+                 "poison",
+                 "psychic"
+               ],
+               "evidence": "The target takes 3d8 Necrotic, Poison, or Psychic damage",
+               "dice_by_cl": [
+                 [
+                   1,
+                   14,
+                   3,
+                   8
+                 ],
+                 [
+                   15,
+                   20,
+                   4,
+                   8
+                 ]
+               ]
+             },
+             {
+               "type": "condition",
+               "applies_to": "target",
+               "condition": "sickened",
+               "duration": "until_start_of_next_turn",
+               "evidence": "becomes Sickened until the start of your next turn."
+             }
+           ],
+           "on_success": [
+             {
+               "type": "half_damage",
+               "applies_to": "target",
+               "evidence": "The target takes half damage"
+             }
+           ],
+           "evidence": "Each target makes a Constitution saving throw."
+         }
+       ],
+       "evidence": "Choose up to your Proficiency Bonus creatures bearing your Contagion Tokens. Spend one Contagion Token from each chosen creature. Each target makes a Constitution saving throw (combat/ext/disease.py).",
+       "harmful": true,
+       "applies_to": "target"
+     }
+   ]
+  },
+  "tianxia.talent.disease.fever_symptom": {
+   "riders": [],
+   "modifier": {
+     "schema": "TianxiaFoundry.TypedModifier.v1",
+     "source": "model_v2",
+     "targets": [
+       "Sow the Fever Seed"
+     ],
+     "scope": "named",
+     "when": "hit",
+     "optional": true,
+     "limit": "none",
+     "group": "",
+     "precondition": "",
+     "extra_cp": 1,
+     "effects": [
+       {
+         "type": "save",
+         "ability": "con",
+         "dc": "technique_save_dc",
+         "on_fail": [
+           {
+             "type": "condition",
+             "applies_to": "target",
+             "condition": "sickened",
+             "duration": "until_start_of_next_turn",
+             "evidence": "becomes Sickened until the start of your next turn."
+           },
+           {
+             "type": "extra_damage",
+             "applies_to": "target",
+             "formula": "key_ability_modifier",
+             "evidence": "At Core Formation, a failed save also deals additional Disease damage equal to your key ability modifier.",
+             "min_cl": 10
+           }
+         ],
+         "on_success": [
+           {
+             "type": "healing_reduction",
+             "applies_to": "target",
+             "evidence": "The target’s next healing is reduced by your Proficiency Bonus.",
+             "duration": "until_start_of_your_next_turn"
+           }
+         ],
+         "evidence": "force the target to make a Constitution saving throw"
+       }
+     ]
+   },
+   "options": null,
+   "target": null,
+   "duration": {
+     "kind": "instant",
+     "amount": null,
+     "concentration": false
+   },
+   "area": null,
+   "range": null,
+   "use_limit": null,
+   "cost": [
+     [
+       {
+         "resource": "cp",
+         "amount": 1,
+         "amount_formula": null
+       }
+     ]
+   ],
+   "activation": {
+     "economy": "passive",
+     "trigger": "When you hit a creature with Sow the Fever Seed",
+     "requirement": null,
+     "source": "model_v2",
+     "modifies": "Sow the Fever Seed"
+   },
+   "text_sha256": "22e1f56c2709cdbbdd5225fae8eb13763601ff5d3068af91db37d436895b432d",
+   "reviewed_by": "astra sw-death printed-text review; riders-lane10 2026-09-29 (riders)",
+   "effects": [
+     {
+       "type": "save",
+       "ability": "con",
+       "dc": "technique_save_dc",
+       "on_fail": [
+         {
+           "type": "condition",
+           "applies_to": "target",
+           "condition": "sickened",
+           "duration": "until_start_of_next_turn",
+           "evidence": "becomes Sickened until the start of your next turn."
+         },
+         {
+           "type": "extra_damage",
+           "applies_to": "target",
+           "formula": "key_ability_modifier",
+           "evidence": "At Core Formation, a failed save also deals additional Disease damage equal to your key ability modifier."
+         }
+       ],
+       "on_success": [
+         {
+           "type": "healing_reduction",
+           "applies_to": "target",
+           "flat": 0,
+           "formula": "pb",
+           "duration": "until_start_of_next_turn",
+           "evidence": "The target's next healing before the start of your next turn is reduced by your Proficiency Bonus."
+         }
+       ],
+       "evidence": "force the target to make a Constitution saving throw"
+     }
+   ]
+  },
+  "tianxia.talent.disease.living_plague": {
+   "riders": [
+     "Climb 30 feet (the GM's: climbing is not on the table)."
+   ],
+   "modifier": null,
+   "options": null,
+   "target": null,
+   "duration": {
+     "kind": "minutes",
+     "amount": 1,
+     "concentration": true
+   },
+   "area": null,
+   "range": {
+     "kind": "feet",
+     "feet": 30
+   },
+   "use_limit": null,
+   "cost": [
+     [
+       {
+         "resource": "cp",
+         "amount": 6,
+         "amount_formula": null
+       }
+     ]
+   ],
+   "activation": {
+     "economy": "action",
+     "trigger": null,
+     "requirement": null,
+     "source": "printed_action_type"
+   },
+   "text_sha256": "7c4050e4b5a922d5c34cce5792a3c94e3358fb8bc3efde6ac2b9a1c806ffa439",
+   "reviewed_by": "astra sw-death printed-text review; riders-lane10 2026-09-29 (riders)",
+   "effects": []
+  },
+  "tianxia.talent.disease.plague_bearing_body": {
+   "riders": [
+     "Suppressing the grappler's Contagion Token is the GM's (the table always gives it); immunity to ordinary disease is the GM's."
+   ],
+   "modifier": null,
+   "options": null,
+   "target": null,
+   "duration": {
+     "kind": "minutes",
+     "amount": 1,
+     "concentration": false
+   },
+   "area": null,
+   "range": null,
+   "use_limit": null,
+   "cost": [
+     [
+       {
+         "resource": "cp",
+         "amount": 3,
+         "amount_formula": null
+       }
+     ]
+   ],
+   "activation": {
+     "economy": "bonus_action",
+     "trigger": null,
+     "requirement": null,
+     "source": "printed_action_type"
+   },
+   "text_sha256": "489833f7e0dda734a08dc3a6bc890b8c8554ad4938c0a03e963c38c08dfe8550",
+   "reviewed_by": "astra sw-death printed-text review; riders-lane10 2026-09-29 (riders)",
+   "effects": [
+     {
+       "type": "resistance",
+       "applies_to": "self",
+       "damage_types": [
+         "poison",
+         "necrotic"
+       ],
+       "duration": "one_minute",
+       "evidence": "Resistance to Poison and Necrotic damage"
+     },
+     {
+       "type": "advantage",
+       "applies_to": "self",
+       "on": "saving throws against Disease",
+       "duration": "one_minute",
+       "evidence": "Advantage on saving throws against Disease"
+     },
+     {
+       "type": "rider",
+       "evidence": "Immunity to ordinary disease and to Sickened (this table defines neither a disease-immunity flag nor a Sickened condition), and a creature Grappling you or touching your blood/sweat/bite/claws/breath/open wound gains one Contagion Token at the start of its turn unless you suppress it (no per-toucher reactive trigger exists on this table); GM adjudicates all three manually."
+     },
+     {
+       "type": "ongoing",
+       "condition": "plague_body_immunity",
+       "applies_to": "self",
+       "duration": "one_minute",
+       "rule": {
+         "condition_immunities": [
+           "sickened"
+         ]
+       }
+     }
+   ]
+  },
+  "DISEASE_BASE_RAISE_THE_QUARANTINE_VEIL": {
+   "riders": [],
+   "modifier": null,
+   "effects": [
+     {
+       "type": "zone",
+       "applies_to": "creatures_in_area",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 10,
+       "on": "",
+       "duration": "concentration",
+       "evidence": "Area: 10-foot-radius sphere"
+     }
+   ],
+   "target": null,
+   "duration": {
+     "kind": "minutes",
+     "amount": 1,
+     "concentration": true
+   },
+   "area": {
+     "shape": "sphere",
+     "size_ft": 10,
+     "centered_on_self": false
+   },
+   "range": {
+     "kind": "feet",
+     "feet": 60
+   },
+   "use_limit": null,
+   "cost": [
+     [
+       {
+         "resource": "cp",
+         "amount": 2,
+         "amount_formula": null
+       }
+     ]
+   ],
+   "activation": {
+     "economy": "action",
+     "trigger": null,
+     "requirement": null,
+     "source": "printed_action_type"
+   },
+   "text_sha256": "d27332b1718b2acfdb2aeecd3b1e3a538ad37c832bec3d349e7b6084c529b507",
+   "reviewed_by": "astra sw-death printed-text review; riders-lane10 2026-09-29 (riders); Claude riders/c13 2026-09-30",
+   "options": [
+     {
+       "label": "Containment Mode",
+       "effects": [
+         {
+           "type": "zone",
+           "applies_to": "creatures_in_area",
+           "distance_ft": 10,
+           "duration": "concentration",
+           "evidence": "Area: 10-foot-radius sphere",
+           "inside": [
+             {
+               "id": "containment",
+               "who": "ally",
+               "name": "Quarantine Veil (Containment)",
+               "reading": "Sheds one Contagion Token at the start of its turn",
+               "rule": {
+                 "disease_containment": true
+               }
+             }
+           ]
+         },
+         {
+           "type": "advantage",
+           "applies_to": "ally",
+           "on": "saving throws against Disease",
+           "duration": "concentration",
+           "evidence": "Chosen creatures gain Advantage on saving throws against Disease while they remain inside the veil."
+         }
+       ],
+       "area": {
+         "shape": "sphere",
+         "size_ft": 10
+       }
+     },
+     {
+       "label": "Outbreak Mode",
+       "effects": [
+         {
+           "type": "zone",
+           "triggers": [
+             {
+               "on": [
+                 "enter",
+                 "start"
+               ],
+               "who": "hostile",
+               "effects": [
+                 {
+                   "type": "save",
+                   "applies_to": "enemies_in_area",
+                   "ability": "con",
+                   "on_fail": [
+                     {
+                       "type": "damage",
+                       "applies_to": "target",
+                       "dice": {
+                         "count": 1,
+                         "sides": 6
+                       },
+                       "damage_types": [
+                         "necrotic",
+                         "poison",
+                         "psychic"
+                       ],
+                       "evidence": "The creature takes 1d6 Necrotic, Poison, or Psychic damage",
+                       "dice_by_cl": [
+                         [
+                           1,
+                           4,
+                           1,
+                           6
+                         ],
+                         [
+                           5,
+                           9,
+                           2,
+                           6
+                         ],
+                         [
+                           10,
+                           14,
+                           3,
+                           6
+                         ],
+                         [
+                           15,
+                           20,
+                           4,
+                           6
+                         ]
+                       ]
+                     },
+                     {
+                       "type": "condition",
+                       "applies_to": "target",
+                       "condition": "sickened",
+                       "duration": "until_start_of_next_turn",
+                       "evidence": "becomes Sickened until the start of your next turn."
+                     }
+                   ],
+                   "on_success": [
+                     {
+                       "type": "half_damage",
+                       "applies_to": "target",
+                       "evidence": "The creature takes half damage and is not Sickened."
+                     }
+                   ],
+                   "evidence": "it must make a Constitution saving throw"
+                 }
+               ]
+             }
+           ]
+         }
+       ],
+       "area": {
+         "shape": "sphere",
+         "size_ft": 10
+       }
+     }
+   ]
+  },
+  "tianxia.talent.disease.world_of_pestilence": {
+   "riders": [],
+   "modifier": null,
+   "options": null,
+   "target": null,
+   "duration": {
+     "kind": "minutes",
+     "amount": 1,
+     "concentration": true
+   },
+   "area": {
+     "shape": "sphere",
+     "size_ft": 60,
+     "centered_on_self": false
+   },
+   "range": {
+     "kind": "feet",
+     "feet": 120
+   },
+   "use_limit": "once_per_long_rest",
+   "cost": [
+     [
+       {
+         "resource": "cp",
+         "amount": 12,
+         "amount_formula": null
+       }
+     ]
+   ],
+   "activation": {
+     "economy": "action",
+     "trigger": null,
+     "requirement": null,
+     "source": "printed_action_type"
+   },
+   "text_sha256": "8a71973d867a2d721df0c20bf5f768342ed38cff07a2e6d3ad9baf419475c08f",
+   "reviewed_by": "astra sw-death printed-text review; riders-lane10 2026-09-29 (riders)",
+   "effects": [
+     {
+       "type": "zone",
+       "triggers": [
+         {
+           "on": [
+             "enter",
+             "start"
+           ],
+           "who": "hostile",
+           "effects": [
+             {"recipient_text": "Enemies inside the area suffer the following effects: when they enter for the first time on a turn or start their turn inside, they make a Constitution saving throw.",
+               "type": "save", "applies_to": "enemies_in_area",
+               "ability": "con",
+               "dc": "technique_save_dc",
+               "on_fail": [
+                 {
+                   "type": "damage",
+                   "applies_to": "creatures_in_area",
+                   "dice": {
+                     "count": 8,
+                     "sides": 8
+                   },
+                   "damage_types": [
+                     "necrotic",
+                     "poison",
+                     "psychic"
+                   ],
+                   "evidence": "The creature takes 8d8 Necrotic, Poison, or Psychic damage"
+                 },
+                 {
+                   "type": "condition",
+                   "applies_to": "enemies_in_area",
+                   "condition": "sickened",
+                   "duration": "until_start_of_next_turn",
+                   "evidence": "becomes Sickened until the start of your next turn."
+                 }
+               ],
+               "on_success": [
+                 {
+                   "type": "half_damage",
+                   "applies_to": "creatures_in_area",
+                   "evidence": "The creature takes half damage and is not Sickened"
+                 }
+               ],
+               "evidence": "Enemies inside the area suffer the following effects"
+             }
+           ]
+         },
+         {
+           "on": [
+             "enter"
+           ],
+           "who": "hostile",
+           "effects": [
+             {
+               "type": "mark",
+               "mark": "Contagion Token",
+               "applies_to": "target",
+               "duration": {
+                 "kind": "until_removed"
+               }
+             }
+           ]
+         }
+       ],
+       "inside": [
+         {
+           "id": "pestilence_healing",
+           "who": "hostile",
+           "rule": {
+             "healing_halved": true
+           }
+         }
+       ]
+     },
+     {
+       "type": "resistance",
+       "applies_to": "ally",
+       "damage_types": [
+         "poison",
+         "necrotic"
+       ],
+       "duration": "concentration",
+       "evidence": "Resistance to Poison and Necrotic damage"
+     },
+     {
+       "type": "advantage",
+       "applies_to": "ally",
+       "on": "saving throws against Disease",
+       "duration": "concentration",
+       "evidence": "Advantage on saving throws against Disease"
+     },
+     {
+       "type": "disadvantage",
+       "applies_to": "enemies_in_area",
+       "on": "concentration saving throws",
+       "duration": "concentration",
+       "evidence": "they have Disadvantage on concentration saving throws"
+     },
+     {
+       "type": "rider",
+       "evidence": "Allies you choose gain immunity to your Contagion Tokens and Disease terrain effects (no generic per-source mark/zone immunity flag exists on this table); GM exempts them manually."
+     }
+   ]
+  },
+  "tianxia.talent.disease.clean_carrier_method": {
+   "text_sha256": "77ca590e664081d5db5d186e5226d0662c028c5402250c6b77a26d5e76567d39",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "advantage",
+     "applies_to": "self",
+     "on": "saving throws against ordinary disease",
+     "duration": "special",
+     "evidence": "Advantage on saving throws against ordinary disease"
+    },
+    {
+     "type": "rider",
+     "evidence": "When you succeed on a saving throw against a Disease effect, you may gain one harmless Contagion Token instead of no effect (this table's Contagion Token mark has no 'harmless, enemy-unusable' variant; GM tracks the distinction)."
+    },
+    {
+     "type": "temp_hp",
+     "applies_to": "self",
+     "formula": "pb",
+     "once_per_turn": true,
+     "evidence": "Once per round, when you voluntarily remove one of your own harmless Contagion Tokens, gain Temporary HP equal to your Proficiency Bonus (approximated as once per turn)."
+    }
+   ]
+  },
+  "tianxia.talent.disease.plague_cloud": {
+   "text_sha256": "c3e5fff4078441b1b8c146b48a9c9345e1c49b699ef660e2aa008fc8dc44600e",
+   "reviewed_by": "martial 2026-09-28; AUTO89 disease lane 2026-10-05: the Core Formation healing cap runs in combat/ext/disease.py, so the GM line is stale; the cloud's look is printed description, not adjudication",
+   "riders": [],
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [
+     "Raise the Quarantine Veil"
+    ],
+    "scope": "named",
+    "when": "use",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "in Outbreak Mode",
+    "extra_cp": 2,
+    "effects": [],
+    "note": "Plague Cloud's printed effects -- the area becomes lightly obscured, and enemies that fail their save against the veil also gain one Contagion Token; at Core Formation, they also cannot regain more than half the normal Hit Points from healing until the start of your next turn -- are applied by combat/ext/disease.py (cloud_obscures, cloud_failed_save), which is gated on this modifier plus the Outbreak Mode option. The typed effect list is therefore empty: the table already applies all of it, so no GM rider is recorded. (This modifier applies to whichever Raise the Quarantine Veil mode is chosen -- Containment or Outbreak -- since the two modes compile as separate options this table cannot gate a modifier to just one of; the plug-in is inert unless Outbreak Mode was actually chosen.)"
+   }
+  },
+  "tianxia.talent.sabers.army_line_chopping_field": {
+   "text_sha256": "c1a524a80bea32801bea8551a234491e8e0182a6b01a6658b3205d573f978706",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "save",
+     "ability": "dex",
+     "dc": "technique_save_dc",
+     "applies_to": "creatures_in_area",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 4,
+        "sides": 8
+       },
+       "damage_types": [
+        "slashing"
+       ]
+      },
+      {
+       "type": "mark",
+       "mark": "Guard Pressured",
+       "applies_to": "target",
+       "duration": {
+        "kind": "until_start_of_your_next_turn"
+       },
+       "evidence": "Guard Pressured until the start of your next turn"
+      },
+      {
+       "type": "cone_passage",
+       "evidence": "Until the start of your next turn, allies who move through the cone's area do not provoke Opportunity Attacks from creatures that failed the save."
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage"
+      }
+     ],
+     "evidence": "creatures in the line make a saving throw"
+    }
+   ],
+   "riders": []
+  },
+  "tianxia.talent.sabers.battlefield_beheading_line": {
+   "text_sha256": "8d428cad73a73360d858a79e54c3f1dabdb74aeab5da429793d8477d30f93069",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "save",
+     "ability": "dex",
+     "dc": "technique_save_dc",
+     "applies_to": "target",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 10,
+        "sides": 8
+       },
+       "damage_types": [
+        "slashing"
+       ]
+      },
+      {
+       "type": "mark",
+       "mark": "Guard Pressured",
+       "applies_to": "target",
+       "duration": {
+        "kind": "target_next_turn"
+       },
+       "evidence": "becomes Guard Pressured until the end of its next turn"
+      },
+      {
+       "type": "end_effect",
+       "applies_to": "target",
+       "select": "beneficial",
+       "on_success": "suppress",
+       "until": "holder",
+       "choose_instance": true,
+       "defensive_only": true,
+       "evidence": "loses one ordinary guard, stance, or defensive posture until the end of its next turn"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage"
+      }
+     ],
+     "evidence": "creatures in the line make a saving throw"
+    }
+   ],
+   "riders": [
+    "This cannot remove Secret inheritances, domain-scale protections, artifacts, or stronger authority without an opposed check (the GM's call)."
+   ]
+  },
+  "tianxia.talent.sabers.battleline_shove_cut": {
+    "text_sha256": "e0f52ce7db0f4aa3d745aee0b2afdb38b81c2681688055dcccbdbb4ab135182a",
+    "reviewed_by": "martial 2026-09-28; AUTO92 cloud worker 1",
+    "modifier": null,
+    "riders": [],
+    "effects": []
+  },
+  "tianxia.talent.sabers.horse_cutting_arc": {
+    "text_sha256": "6b2e2072a7aac080c550b0b92e2e2937580f8f1104a9a25ae1e7695b3fae7941",
+    "reviewed_by": "martial 2026-09-28; AUTO92 cloud worker 1",
+    "options": null,
+    "effects": [
+      {
+        "type": "save",
+        "recipient_text": "Creatures in the line make a Dexterity saving throw.",
+        "applies_to": "creatures_in_area",
+        "ability": "dex",
+        "dc": "technique_save_dc",
+        "on_fail": [
+          {
+            "type": "damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 5,
+              "count_formula": null,
+              "sides": 8,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "slashing"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "takes 5d8 slashing damage",
+            "origin": "model_v2"
+          },
+          {
+            "type": "if_size_at_most",
+            "effects": [
+              {
+                "type": "choose_effects",
+                "name": "Horse-Cutting Arc",
+                "count": 1,
+                "result": "failed its Dexterity save",
+                "options": [
+                  {
+                    "label": "Knocked Prone",
+                    "effects": [
+                      {
+                        "type": "condition",
+                        "applies_to": "target",
+                        "condition": "prone",
+                        "evidence": "knocked Prone"
+                      }
+                    ]
+                  },
+                  {
+                    "label": "Pushed 5 feet",
+                    "effects": [
+                      {
+                        "type": "forced_movement",
+                        "applies_to": "target",
+                        "distance_ft": 5,
+                        "direction": "away",
+                        "evidence": "pushed 5 feet"
+                      }
+                    ]
+                  }
+                ],
+                "evidence": "Failed Save: ... pushed 5 feet or knocked Prone if Large or smaller, your choice."
+              }
+            ],
+            "max_size": "Large"
+          }
+        ],
+        "on_success": [
+          {
+            "type": "half_damage",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "takes half damage and is not moved",
+            "origin": "model_v2"
+          }
+        ],
+        "origin": "model_v2"
+      }
+    ]
+  },
+  "tianxia.talent.sabers.bloodless_butcher_s_lesson": {
+   "text_sha256": "59c5e366ebafecaff6554f7559c2d35ba47aca7a44ac472ee33c0784a62f4056",
+   "reviewed_by": "martial 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [
+     "Saber Wound"
+    ],
+    "scope": "named",
+    "when": "use",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "options": [
+     {
+      "label": "Reduce Speed",
+      "effects": [
+       {
+        "type": "speed",
+        "applies_to": "target",
+        "flat": -5,
+        "duration": "until_start_of_next_turn",
+        "evidence": "reduce Speed by 5 feet"
+       }
+      ]
+     },
+     {
+      "label": "Disadvantage",
+      "effects": [
+       {
+        "type": "disadvantage",
+        "applies_to": "target",
+        "on": "its next attack roll",
+        "duration": "until_start_of_next_turn",
+        "evidence": "Disadvantage on its next attack roll"
+       }
+      ]
+     },
+     {
+      "label": "Reduce Healing",
+      "effects": [
+       {
+        "type": "healing_reduction",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "pb",
+        "duration": "until_start_of_next_turn",
+        "evidence": "healing it receives is reduced by your Proficiency Bonus"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "tianxia.talent.sabers.crescent_through_the_shield_wall": {
+   "text_sha256": "c4e7931bb47770932b63f460d6a08089b8d5884fb5cea32e006af86b087ac11d",
+   "reviewed_by": "martial 2026-09-28",
+   "modifier": {
+     "schema": "TianxiaFoundry.TypedModifier.v1",
+     "source": "martial",
+     "targets": [],
+     "scope": "any_sphere_technique",
+     "when": "use",
+     "optional": true,
+     "limit": "none",
+     "group": "",
+     "effects": [
+       {
+         "type": "save",
+         "ability": "str",
+         "dc": "technique_save_dc",
+         "on_fail": [
+           {
+             "type": "rider",
+             "evidence": "suppresses the target's guard, parry, or shield AC bonus until the start of your next turn (no separate Shield-AC value on this table; GM applies manually)."
+           }
+         ],
+         "on_success": [
+           {
+             "type": "mark",
+             "mark": "Guard Pressured",
+             "applies_to": "target",
+             "duration": {
+               "kind": "until_start_of_your_next_turn"
+             },
+             "evidence": "Guard Pressured until the start of your next turn"
+           }
+         ],
+         "evidence": "The target makes a Strength saving throw.",
+         "deferred": true
+       }
+     ]
+   },
+      "riders": [
+        "Failed Save: One non-Secret guard, parry, shield bonus, or defensive stance of your choice is suppressed until the start of your next turn",
+        "Successful Save: No suppression, but the target is Guard Pressured",
+        "GM: only after a Sabers talent damages at least two creatures this turn, select one damaged creature with an eligible shield/guard/temporary AC benefit and resolve this STR save and suppression."
+      ]
+    },
+  "tianxia.talent.sabers.cruel_draw_cut": {
+   "text_sha256": "4bcef1c08e854b2605e90998b8ceacb630483917b4fbe35aa5eceb975c725f04",
+   "reviewed_by": "martial 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [],
+    "scope": "any_attack",
+    "when": "hit",
+    "optional": false,
+    "limit": "none",
+    "group": "",
+    "extra_cp": 1,
+    "effects": [
+     {
+      "type": "rider",
+      "evidence": "Cruel Draw Cut: deal one extra saber weapon damage die (this table has no generic 'reroll the weapon die' effect); if the target already has two of your Saber Wounds (a stacked mark count this table does not track), add your Proficiency Bonus instead. GM applies whichever is correct."
+     }
+    ]
+   }
+  },
+  "tianxia.talent.sabers.execution_platform_presence": {
+   "text_sha256": "5d9d41271a0b9b695969abe2d230b562849a6e7123eba2a590af4d87421e881a",
+   "reviewed_by": "A2SABERS source/service review 2026-10-10",
+   "modifier": null,
+   "effects": [
+    {
+     "type": "stance",
+     "name": "Execution Platform Presence",
+     "rounds": 10,
+     "kill_ends_frightened_ft": 30,
+     "evidence": "For the duration",
+     "hit_riders": [
+      {
+       "attack_kinds": [
+        "weapon"
+       ],
+       "or_sphere": "tianxia.sphere.sabers",
+       "once_per_turn": true,
+       "if_target": {
+        "conditions": [
+         "prone",
+         "restrained",
+         "stunned",
+         "incapacitated"
+        ],
+        "bloodied": true,
+        "marks_any_source": [
+         "Guard Pressured"
+        ]
+       },
+       "label": "+1d8 slashing damage",
+       "effects": [
+        {
+         "type": "extra_damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 1,
+          "sides": 8
+         },
+         "damage_types": [
+          "slashing"
+         ],
+         "evidence": "once per turn when you hit a Guard Pressured, Prone, Restrained, Stunned, Incapacitated, or Bloodied creature with a saber, add 1d8 slashing damage"
+        }
+       ],
+       "turn_clock": "current",
+       "weapon_name_words": [
+        "saber",
+        "dao"
+       ],
+       "target_at_hit": true
+      }
+     ],
+     "kill_ally_consent": true
+    }
+   ],
+   "riders": []
+  },
+  "tianxia.talent.sabers.shield_hacking_rhythm": {
+   "text_sha256": "227f7d0963a7d62a41ed6c07c09bdf72c171c074a1d8589ae028e946fa034d86",
+   "reviewed_by": "martial 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "martial",
+    "targets": [],
+    "scope": "any_attack",
+    "when": "hit",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "effects": [
+     {
+      "type": "rider",
+      "evidence": "Shield-Hacking Rhythm: on a failed save, the target loses its next shield, parry, guard, or temporary AC bonus (no separate AC-bonus-by-source tracking on this table; GM applies it)."
+     }
+    ]
+   }
+  },
+  "tianxia.talent.sabers.banner_cleaving_advance": {
+    "text_sha256": "bb1799f9893735197d54a6126ce20fcf9e3b0bb5bd3f2f9ca5da0e2970103fb9",
+    "reviewed_by": "martial 2026-09-28; AUTO92 cloud worker 1",
+    "effects": [
+      {
+        "type": "gain_resource",
+        "applies_to": "self",
+        "flat": 1,
+        "formula": "none",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "instant",
+        "evidence": "gain 1 Edge Momentum",
+        "origin": "model_v2",
+        "deferred": true
+      }
+    ],
+    "modifier": {
+      "schema": "TianxiaFoundry.TypedModifier.v1",
+      "source": "martial",
+      "targets": [],
+      "scope": "any_attack",
+      "when": "hit",
+      "optional": false,
+      "limit": "none",
+      "group": "",
+      "effects": [
+        {
+          "type": "gain_resource",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "evidence": "gain 1 Edge Momentum (text limits this to hits with a saber; this table's any_attack scope is broader -- no saber-specific scope exists on this compiler to narrow it further)."
+        }
+      ]
+    },
+    "riders": [
+      "The GM ignores only nonmagical difficult terrain from ordinary battlefield debris until this turn ends and awards 1 Edge Momentum only on a later saber hit. The table cannot distinguish the listed mundane terrain from magical terrain."
+    ]
+  },
+  "TAL_FENCING_LEG_SLASH": {
+   "text_sha256": "3ded024c91bae5626e3cab59b209035445788cbcab4bd44a5342b051754ae3ae",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "speed",
+     "applies_to": "target",
+     "halved": true,
+     "duration": "until_start_of_next_turn",
+     "evidence": "Until the start of your next turn, each of the target's Speeds is halved."
+    }
+   ]
+  },
+  "TAL_FENCING_LUNGE": {
+   "text_sha256": "5ea4fba64ab892ff4048d50673c1610e658d8753d271f3a366818a235df59aca",
+   "reviewed_by": "martial 2026-09-28; riders-lane10 2026-09-29 (riders)",
+   "effects": [
+    {
+     "type": "rider",
+     "evidence": "While holding Martial Focus, you may increase your reach for melee attacks by 5 feet until the end of the current turn (a blanket reach increase to every melee attack, not one action's own range; GM applies it manually)."
+    },
+    {
+     "type": "attack_modifier",
+     "applies_to": "self",
+     "flat": -2,
+     "on": "attack rolls against targets within 5 feet of you",
+     "duration": "until_start_of_next_turn",
+     "evidence": "take a -2 penalty to attack rolls against targets within 5 feet of you until the start of your next turn"
+    }
+   ],
+   "riders": []
+  },
+  "TAL_FENCING_PARRY_AND_RIPOSTE": {
+   "text_sha256": "cf82a03cfa43b4200dd0292c4d1a4d2d2e2fbba4fa09a5faef57b06ac01ba734",
+   "reviewed_by": "martial 2026-09-28; riders-lane10 2026-09-29 (riders)",
+   "effects": [
+    {
+     "type": "damage_modifier",
+     "applies_to": "self",
+     "weapon_damage": true,
+     "evidence": "Choose one melee weapon you wield or your Unarmed Strike. Roll the normal damage of that attack form (its damage dice, the ability modifier it adds and a magic weapon's ordinary bonus; no extra dice) and reduce the triggering attack's damage by the amount rolled; an Unarmed Strike with no damage die reduces it by 1 + the ability modifier (combat/ext/needle.py parry_damage, the fencer's own melee weapon). The retaliatory melee attack, with one Exploit that needs no Advantage or ally, is made by combat/ext/needle.py parry_riposte when the reduction reaches 0."
+    }
+   ],
+   "riders": []
+  },
+  "TAL_FENCING_ARM_STRIKE": {
+   "text_sha256": "f4d231a9a9a6a8df5ed7e1fce816bc9cfde1e66a182465bf99c2888b2cd7ab89",
+   "reviewed_by": "needle 2026-09-29; riders-lane10 2026-09-29 (riders)",
+   "effects": [
+    {
+     "type": "needle_rounds",
+     "rounds": "pb",
+     "effects": [
+      {
+       "type": "needle_condition",
+       "key": "arm_strike",
+       "label": "Arm Strike: -2 to weapon attacks and Strength/Dexterity checks",
+       "evidence": "The target takes a -2 penalty to attack rolls made with a weapon held by the affected limb and to Strength/Dexterity ability checks that rely on that limb."
+      }
+     ]
+    }
+   ],
+   "riders": [
+    "The GM narrows the -2 to the one affected limb (a target that attacks or checks with another free limb) and rules on a target without a suitable limb (immune); the table applies it to every weapon or Unarmed Strike attack roll the target makes and to its checks to escape a grapple."
+   ]
+  },
+  "TAL_FENCING_BIND_WEAPON": {
+   "text_sha256": "ca92c28502cd84072bc95ab9d00493ee8b221b0791670c26783efc13b074a1fe",
+   "reviewed_by": "martial 2026-09-28; riders-lane10 2026-09-29 (riders)",
+   "modifier": null,
+   "riders": [
+    "A bound hand, natural weapon or limb (a creature holding no weapon): the table grapples it and the GM rules which of its attacks the bound limb stops."
+   ]
+  },
+  "TAL_AXES_HAFT_GUARD": {
+   "text_sha256": "c6a5542eb705f9c90386afb77c56ea972e9b1b1e6d33e1a001b95cc619afcc96",
+   "reviewed_by": "martial 2026-09-28",
+   "effects": [
+    {
+     "type": "damage_modifier",
+     "applies_to": "self",
+     "dice": {
+      "count": 1,
+      "sides": 8
+     },
+     "dice_by_cl": [
+      [
+       1,
+       4,
+       1,
+       8
+      ],
+      [
+       5,
+       10,
+       2,
+       8
+      ],
+      [
+       11,
+       16,
+       3,
+       8
+      ],
+      [
+       17,
+       20,
+       4,
+       8
+      ]
+     ],
+     "formula": "pb",
+     "evidence": "Reduce the triggering attack's damage by 1d8 + your Proficiency Bonus (2d8 at CL 5, 3d8 at CL 11, 4d8 at CL 17)."
+    },
+    {
+     "type": "reaction_move",
+     "applies_to": "self",
+     "distance_ft": 5,
+     "direction": "away",
+     "evidence": "If this reduces the damage to 0, you may move 5 feet without provoking Opportunity Attacks from the attacker, or you may place Bite on the attacker's weapon until the start of your next turn (the Bite goes on the attacker, who holds the weapon).",
+     "only_if_zero": true
+    }
+   ],
+   "options": [
+    {
+     "label": "Step away",
+     "effects": [
+      {
+       "type": "damage_modifier",
+       "applies_to": "self",
+       "dice": {
+        "count": 1,
+        "sides": 8
+       },
+       "dice_by_cl": [
+        [
+         1,
+         4,
+         1,
+         8
+        ],
+        [
+         5,
+         10,
+         2,
+         8
+        ],
+        [
+         11,
+         16,
+         3,
+         8
+        ],
+        [
+         17,
+         20,
+         4,
+         8
+        ]
+       ],
+       "formula": "pb",
+       "evidence": "Reduce the triggering attack's damage by 1d8 + your Proficiency Bonus (2d8 at CL 5, 3d8 at CL 11, 4d8 at CL 17)."
+      },
+      {
+       "type": "reaction_move",
+       "applies_to": "self",
+       "distance_ft": 5,
+       "direction": "away",
+       "evidence": "If this reduces the damage to 0, you may move 5 feet without provoking Opportunity Attacks from the attacker, or you may place Bite on the attacker's weapon until the start of your next turn (the Bite goes on the attacker, who holds the weapon).",
+       "only_if_zero": true
+      }
+     ]
+    },
+    {
+     "label": "Bite the weapon",
+     "effects": [
+      {
+       "type": "damage_modifier",
+       "applies_to": "self",
+       "dice": {
+        "count": 1,
+        "sides": 8
+       },
+       "dice_by_cl": [
+        [
+         1,
+         4,
+         1,
+         8
+        ],
+        [
+         5,
+         10,
+         2,
+         8
+        ],
+        [
+         11,
+         16,
+         3,
+         8
+        ],
+        [
+         17,
+         20,
+         4,
+         8
+        ]
+       ],
+       "formula": "pb",
+       "evidence": "Reduce the triggering attack's damage by 1d8 + your Proficiency Bonus (2d8 at CL 5, 3d8 at CL 11, 4d8 at CL 17)."
+      },
+      {
+       "type": "mark",
+       "mark": "Bite",
+       "applies_to": "target",
+       "only_if_zero": true,
+       "duration": {
+        "kind": "until_start_of_next_turn"
+       },
+       "evidence": "If this reduces the damage to 0, you may place Bite on the attacker's weapon until the start of your next turn."
+      }
+     ]
+    }
+   ],
+   "riders": []
+  }
+ }
+}
