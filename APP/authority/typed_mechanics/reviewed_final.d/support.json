@@ -1,0 +1,921 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "mechanics": {
+  "tianxia.talent.space.dimensional_seal": {
+   "text_sha256": "1eb4ddf3534d76c6869a12dc67634600966cb002dd7ee211eb6ea8c40544b87d",
+   "reviewed_by": "w2-support 2026-09-28",
+   "effects": [
+    {
+     "type": "save",
+     "recipient_text": "If the target is a creature, it makes a Charisma saving throw.",
+     "applies_to": "creatures_in_area",
+     "ability": "cha",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "condition",
+       "condition": "cannot_teleport",
+       "applies_to": "target",
+       "repeat_save": {
+        "ability": "cha",
+        "when": "end"
+       },
+       "evidence": "cannot teleport ... At the end of each of its turns, it repeats the save, ending the effect on itself on a success."
+      }
+     ],
+     "on_success": [
+      {
+       "type": "condition",
+       "condition": "cannot_teleport",
+       "applies_to": "target",
+       "expires_on": "START_OF_SOURCE_NEXT_TURN",
+       "evidence": "Successful Save: The creature cannot teleport until the start of its next turn."
+      }
+     ],
+     "origin": "reviewed"
+    }
+   ],
+   "riders": [
+    "If the target is an object, doorway, portal, or area instead of a creature, teleportation and portals through it are blocked unless an opposing effect beats your CSDC with a Cultivation Check (GM call: no object/portal state on the table)."
+   ]
+  },
+  "tianxia.talent.space.space_between_blades": {
+   "text_sha256": "37518cc4438cd74598f274e45bd1e50aafd5a02253c266afa4bf94bea8bd25c3",
+   "reviewed_by": "w2-support 2026-09-28; AUTO23 Space lane 2026-10-04: the printed \"Then choose one\" menu is three separate choices; AUTO23f1 2026-10-05: the menu is asked at resolution, each choice does what its own printed line says, and the third one is a real bound next-melee-attack bonus; AUTO23r1f1 2026-10-05: the third choice is the printed \"the next melee attack\", not \"the next melee hit\", so it is spent by that attack whether or not it lands; the first choice's step carries no generic trigger phrase either, because its question now names the attack that set it off",
+   "effects": [
+    {
+     "type": "teleport",
+     "applies_to": "self",
+     "distance_ft": 5,
+     "duration": "instant",
+     "evidence": "Teleport 5 feet to an unoccupied space you can see.",
+     "origin": "reviewed"
+    },
+    {
+     "type": "choose_effects",
+     "name": "Space Between Blades",
+     "result": "after a creature missed you with a melee attack",
+     "count": 1,
+     "origin": "reviewed",
+     "options": [
+      {
+       "label": "Move 5 more feet, and it cannot make an Opportunity Attack against you for it",
+       "evidence": "You may move 5 additional feet without provoking Opportunity Attacks from the attacker.",
+       "effects": [
+        {
+         "type": "rider_step",
+         "distance_ft": 5,
+         "no_oa_from_target": true,
+         "label": "Space Between Blades: your 5 extra feet",
+         "evidence": "You may move 5 additional feet without provoking Opportunity Attacks from the attacker.",
+         "origin": "reviewed"
+        }
+       ]
+      },
+      {
+       "label": "It cannot make an Opportunity Attack against you until the start of your next turn",
+       "evidence": "The attacker cannot make Opportunity Attacks against you until the start of your next turn.",
+       "effects": [
+        {
+         "type": "space_blades_no_oa",
+         "applies_to": "target",
+         "evidence": "The attacker cannot make Opportunity Attacks against you until the start of your next turn.",
+         "origin": "reviewed"
+        }
+       ]
+      },
+      {
+       "label": "Your next melee attack on it deals extra Force damage equal to your Proficiency Bonus",
+       "evidence": "The next melee attack you make against the attacker before the end of your next turn deals additional Force damage equal to your Proficiency Bonus.",
+       "effects": [
+        {
+         "type": "space_blades_bonus",
+         "applies_to": "target",
+         "evidence": "The next melee attack you make against the attacker before the end of your next turn deals additional Force damage equal to your Proficiency Bonus.",
+         "origin": "reviewed"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "modifier": null,
+   "riders": [
+    "This talent represents tiny combat-space corrections, not a full escape."
+   ],
+   "options": null
+  },
+  "tianxia.talent.space.close_gate": {
+   "text_sha256": "6599c0a6a9397bda6c9ac6d4aa0a8cd1152d773ddfdb3f2973377d8ed212451a",
+   "reviewed_by": "w2-support 2026-09-28",
+   "effects": [
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "distance_ft": 120,
+     "duration": "concentration",
+     "evidence": "Create two linked openings on surfaces or in open spaces you can see within range. Each opening is up to 5 feet in diameter.",
+     "origin": "reviewed"
+    }
+   ]
+  },
+  "TAL_QIWEAVING_QI_BOND": {
+   "text_sha256": "920e83ce5f7f84c2976ba6f4c28a97559d91bf47fa9de6fbeb70ae006ca97892",
+   "reviewed_by": "w2-support 2026-09-28; Claude riders/c13 2026-09-30",
+   "effects": [
+    {
+     "type": "attack",
+     "attack_kind": "cultivation_ranged",
+     "count": 1,
+     "on_hit": [
+      {
+       "type": "mark",
+       "mark": "qi_bond",
+       "applies_to": "target",
+       "duration": {
+        "kind": "concentration"
+       },
+       "evidence": "Hit: Create a Qi Bond.",
+       "origin": "reviewed"
+      }
+     ],
+     "on_miss": [],
+     "origin": "reviewed"
+    }
+   ],
+   "riders": []
+  },
+  "TAL_QIWEAVING_TURBULENT_FIELD": {
+   "text_sha256": "411115aff94057f399c5e13fc971a7304fead527af5bd4481f800f4ffb5ccecf",
+   "reviewed_by": "sys-resources-states 2026-09-29; Claude riders/c13 2026-09-30",
+   "area": {
+    "shape": "emanation",
+    "size_ft_by_cl": [
+     [
+      1,
+      4,
+      5
+     ],
+     [
+      5,
+      10,
+      10
+     ],
+     [
+      11,
+      16,
+      15
+     ],
+     [
+      17,
+      20,
+      20
+     ]
+    ],
+    "centered_on_self": true,
+    "evidence": "5-foot-radius Emanation. Radius by Cultivation Level: 1-4: 5 feet; 5-10: 10 feet; 11-16: 15 feet; 17-20: 20 feet."
+   },
+   "effects": [
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "distance_ft": 5,
+     "duration": "concentration",
+     "evidence": "You emit a field of unstable Qi.",
+     "origin": "reviewed",
+     "follows_owner": true,
+     "triggers": [
+      {
+       "on": [
+        "technique"
+       ],
+       "who": "any",
+       "effects": [
+        {
+         "type": "save",
+         "ability": "con",
+         "dc": "technique_save_dc",
+         "applies_to": "target",
+         "duration": "special",
+         "evidence": "The first time on a turn that a creature inside the area activates a technique that costs CP or casts a spell using a spell slot, it makes a Constitution saving throw.",
+         "on_fail": [
+          {
+           "type": "condition",
+           "condition": "turbulent",
+           "applies_to": "target",
+           "evidence": "Failed Save: The technique is Turbulent until it resolves; the creature stays marked Turbulent until the end of your next turn."
+          }
+         ],
+         "on_success": []
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "riders": [
+    "The Emanation is centered on you and moves with you; it does not affect you (combat/ext/qi_instability.py). Its radius is 5 / 10 / 15 / 20 feet at Cultivation Level 1-4 / 5-10 / 11-16 / 17-20.",
+    "The first time on a turn a creature inside the area activates a technique that costs CP (Qi, Stamina or Resonance), it makes a Constitution save against your technique save DC. A failure marks it Turbulent until the end of your next turn: the technique suffers one complication the GM picks (visible backlash, noisy activation, reduced range, accidental self-exposure, or minor damage to an unattended nearby object) and is not wasted (the log names it). Casting a spell with a spell slot: this engine has no spell slots.",
+    "If the campaign uses wild magic or Qi-deviation rules, the instability chance of creatures inside the area rises by 50 percent (not used: no such system here; the fallback above is)."
+   ],
+   "range": {
+    "kind": "self",
+    "feet": 0
+   },
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "cost": [],
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   }
+  },
+  "TAL_THREAD_BORROW_THE_ALLY_S_ARM": {
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 1,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "activation": {
+    "economy": "reaction",
+    "trigger": "A willing ally connected to one of your Thread Lines misses with a melee attack or fails a Strength or Dexterity ability check.",
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "text_sha256": "125394df8b82a31448ca045d278ae3d4e8688ed2b88e994e5e8ff6c30887486b",
+   "reviewed_by": "Astra sw-thread printed-text review 2026-09-29; AUTO19 2026-10-04 the printed +Proficiency Bonus is added to the ally's missed melee attack or failed Strength/Dexterity check by combat/ext/thread_correction.py",
+   "effects": [],
+   "riders": []
+  },
+  "TAL_THREAD_REELING_SILK_BODY": {
+  "effects": [],
+  "riders": [
+    "Reeling Silk Body: the hit-triggered 5-foot movement follows the line direction or circles the connected creature."
+  ],
+  "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "reviewed",
+    "targets": [
+      "Threaded Strike",
+      "Draw the Line"
+    ],
+    "scope": "named",
+    "when": "hit",
+    "optional": true,
+    "limit": "once_per_turn",
+    "options": [
+      {
+        "label": "Move Yourself",
+        "effects": [
+          {
+            "type": "movement",
+            "applies_to": "self",
+            "distance_ft": 5,
+            "duration": "instant",
+            "evidence": "you may move either yourself or the target 5 feet"
+          },
+          {
+            "type": "ignore_oa_from_target",
+            "applies_to": "target",
+            "evidence": "without provoking Opportunity Attacks from the target"
+          }
+        ]
+      },
+      {
+        "label": "Move the Target",
+        "effects": [
+          {
+            "type": "forced_movement",
+            "applies_to": "target",
+            "distance_ft": 5,
+            "duration": "instant",
+            "evidence": "you may move either yourself or the target 5 feet"
+          }
+        ]
+      }
+    ]
+  },
+  "activation": {
+    "economy": "passive",
+    "trigger": "Once per turn when you hit with Threaded Strike or Draw the Line",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+  },
+  "cost": [],
+  "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+  },
+  "range": null,
+  "area": null,
+  "target": null,
+  "text_sha256": "2fda380e63514626f027034242b64ecd413d89d4f5ef4001b5aa8a724300fc6c",
+  "reviewed_by": "A2THREAD printed-text second pass 2026-10-08",
+  "options": null,
+  "use_limit": null,
+  "after": null,
+  "min_cp_cost": null,
+  "weapon_delivery": null,
+  "min_cl": null
+},
+  "TAL_THREAD_STITCH_THE_FALLING_BODY": {
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 1,
+      "amount_formula": null
+     }
+    ],
+    [
+     {
+      "resource": "martial_focus",
+      "amount": 1
+     }
+    ]
+   ],
+   "activation": {
+    "economy": "reaction",
+    "trigger": "You or a creature within Thread range falls, is pushed, is pulled, or is knocked Prone.",
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "text_sha256": "33bf7da5a060118029ad8fbaf6f5ba230c28b04794ac2f1d46af19892d7ced37",
+   "reviewed_by": "Astra sw-thread printed-text review 2026-09-29",
+   "effects": [
+    {
+     "type": "rider",
+     "evidence": "#### Stitch the Falling Body\nTalent Type: Movement and Protection.\nPrerequisite: CL 5.\nAction Type: Reaction\nTrigger: You or a creature within Thread range falls, is pushed, is pulled, or is knocked Prone.\nCost: 1 CP or expend Martial Focus.\nEffect: You attach a thread and catch the movement. Reduce falling damage by 5 times your CL, and you may move the target up to 10 feet to a safe surface or leave it hanging from a line. If the trigger would knock the target Prone, the target may make a Dexterity saving throw against the triggering effect’s DC or your Cultivation Save DC, whichever is higher, to remain standing."
+    }
+   ],
+   "riders": [
+    "Reduce falling damage by 5 times your CL: falling/elevation damage isn't modeled on this table; apply narratively if the GM is adjudicating an actual fall.",
+    "#### Stitch the Falling Body\nTalent Type: Movement and Protection.\nPrerequisite: CL 5.\nAction Type: Reaction\nTrigger: You or a creature within Thread range falls, is pushed, is pulled, or is knocked Prone.\nCost: 1 CP or expend Martial Focus.\nEffect: You attach a thread and catch the movement. Reduce falling damage by 5 times your CL, and you may move the target up to 10 feet to a safe surface or leave it hanging from a line. If the trigger would knock the target Prone, the target may make a Dexterity saving throw against the triggering effect’s DC or your Cultivation Save DC, whichever is higher, to remain standing."
+   ]
+  },
+  "TAL_THREAD_MERIDIAN_SNARE": {
+   "text_sha256": "39660331139b8fa956b51bd750d1221a3dd996597b56bfae20dfeea954a3516a",
+   "reviewed_by": "Astra sw-thread printed-text review 2026-09-29 + riders-lane4 2026-09-29",
+   "effects": [],
+   "options": [
+    {
+     "label": "Arm Line",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "save",
+         "applies_to": "target",
+         "ability": "con",
+         "duration": "instant",
+         "evidence": "the target makes a Constitution saving throw",
+         "on_fail": [
+          {
+           "type": "disadvantage",
+           "applies_to": "target",
+           "evidence": "disadvantage on the next attack roll it makes with one arm, weapon, or manipulator",
+           "duration": "until_end_of_your_next_turn",
+           "on": "the next attack roll it makes"
+          },
+          {
+           "type": "mark",
+           "applies_to": "target",
+           "mark": "Meridian Snare",
+           "duration": {
+            "kind": "until_end_of_your_next_turn"
+           },
+           "evidence": "Repeat Use: A creature affected by Meridian Snare has advantage on saves against your Meridian Snare until the end of your next turn."
+          }
+         ],
+         "on_success": []
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Leg Line",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "save",
+         "applies_to": "target",
+         "ability": "con",
+         "duration": "instant",
+         "evidence": "the target makes a Constitution saving throw",
+         "on_fail": [
+          {
+           "type": "speed",
+           "applies_to": "target",
+           "flat": -15,
+           "provenance": "meridian_constriction",
+           "evidence": "speed is reduced by 15 feet",
+           "duration": "until_end_of_your_next_turn"
+          },
+          {
+           "type": "mark",
+           "applies_to": "target",
+           "mark": "Meridian Snare",
+           "duration": {
+            "kind": "until_end_of_your_next_turn"
+           },
+           "evidence": "Repeat Use: A creature affected by Meridian Snare has advantage on saves against your Meridian Snare until the end of your next turn."
+          }
+         ],
+         "on_success": []
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Breath Line",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "save",
+         "applies_to": "target",
+         "ability": "con",
+         "duration": "instant",
+         "evidence": "the target makes a Constitution saving throw",
+         "on_fail": [
+          {
+           "type": "condition",
+           "condition": "cannot_advantage_con_saves",
+           "applies_to": "target",
+           "evidence": "cannot benefit from Advantage on Constitution saving throws",
+           "duration": "until_end_of_your_next_turn"
+          },
+          {
+           "type": "mark",
+           "applies_to": "target",
+           "mark": "Meridian Snare",
+           "duration": {
+            "kind": "until_end_of_your_next_turn"
+           },
+           "evidence": "Repeat Use: A creature affected by Meridian Snare has advantage on saves against your Meridian Snare until the end of your next turn."
+          }
+         ],
+         "on_success": []
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Focus Line",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "save",
+         "applies_to": "target",
+         "ability": "con",
+         "duration": "instant",
+         "evidence": "the target makes a Constitution saving throw",
+         "on_fail": [
+          {
+           "type": "disadvantage",
+           "applies_to": "target",
+           "evidence": "disadvantage on the next Concentration saving throw",
+           "duration": "until_end_of_your_next_turn",
+           "on": "the next Constitution saving throw to maintain Concentration"
+          },
+          {
+           "type": "mark",
+           "applies_to": "target",
+           "mark": "Meridian Snare",
+           "duration": {
+            "kind": "until_end_of_your_next_turn"
+           },
+           "evidence": "Repeat Use: A creature affected by Meridian Snare has advantage on saves against your Meridian Snare until the end of your next turn."
+          }
+         ],
+         "on_success": []
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    }
+   ],
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [],
+   "range": {
+    "kind": "feet",
+    "feet": 30,
+    "evidence": "Range: Qi Thread range (30 feet from Spool and Strand)."
+   },
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 2,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null
+  },
+  "tianxia.talent.formations.formation_step": {
+   "text_sha256": "7a3b95e5c99e1203b94d04f94c7bc491d54ca5cbea68a0f2acdd5925049461c3",
+   "reviewed_by": "w2-support 2026-09-28",
+   "effects": [
+    {
+     "type": "teleport",
+     "applies_to": "self",
+     "distance_ft": 30,
+     "duration": "instant",
+     "evidence": "teleport to an unoccupied space inside the same array",
+     "origin": "reviewed"
+    }
+   ],
+   "riders": []
+  },
+  "tianxia.talent.formations.formation_maze": {
+   "text_sha256": "999bc564ef1d3f34540771c77d4dcda8a78d6f3485a4b669dc56740a037260e6",
+   "reviewed_by": "AUTO114 2026-10-05 (Formation Maze run at the table)",
+   "effects": [
+    {
+     "type": "save",
+     "ability": "wis",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "movement_bar",
+       "applies_to": "target",
+       "avoid": "ally",
+       "duration": "until_start_of_next_turn",
+       "evidence": "cannot willingly move closer to a chosen keyed ally, Array Eye, exit, door, or Node inside the array",
+       "origin": "reviewed"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "movement",
+       "applies_to": "target",
+       "flat": 10,
+       "distance_ft": 10,
+       "evidence": "Its next 10 feet of movement inside the array costs 10 additional feet",
+       "origin": "reviewed"
+      }
+     ],
+     "origin": "reviewed"
+    }
+   ],
+   "riders": [
+    "GM: identify exits that have no door or gate on the map. Map doors and gates inside the array can be chosen normally; on a failed Wisdom save, the creature cannot willingly move closer until the start of the owner's next turn.",
+    "GM: apply the successful-save movement tax manually. Charge 10 additional feet for the creature's next 10 feet of movement actually completed inside the array; refused steps and movement outside spend no tax, and unused tax has no turn deadline."
+   ]
+  },
+  "TAL_BEASTMASTERY_DOUBLE_TEAM": {
+   "text_sha256": "5a25e0582cc3b71c236c8ed07b4748ad380d007d575c375200d1a09dc54763f2",
+   "reviewed_by": "w2-support 2026-09-28",
+   "effects": [
+    {
+     "type": "attack",
+     "attack_kind": "cultivation_melee",
+     "count": 1,
+     "on_hit": [
+      {
+       "type": "damage",
+       "weapon_damage": true,
+       "evidence": "make one weapon attack or unarmed strike against the same target"
+      }
+     ],
+     "on_miss": [],
+     "origin": "reviewed"
+    }
+   ],
+   "riders": [
+    "Triggers when your Tame Creature or Bonded Companion succeeds on a Grapple or Shove (GM call on when the summon's own AI-driven action counts)."
+   ]
+  },
+  "TAL_BEASTMASTERY_BEAST_TAMER": {
+    "effects": [
+      {
+        "type": "save",
+        "ability": "cha",
+        "dc": "technique_save_dc",
+        "on_fail": [
+          {
+            "type": "rider_break_on_allied_damage",
+            "name": "Beast Tamer",
+            "effects": [
+              {
+                "type": "condition",
+                "condition": "charmed",
+                "applies_to": "target",
+                "evidence": "It serves as a temporary Tame Creature for the duration and counts against your limits.",
+                "origin": "reviewed"
+              }
+            ]
+          }
+        ],
+        "on_success": [],
+        "origin": "reviewed",
+        "nonbeast_bonus": 2
+      }
+    ],
+    "activation": {
+      "economy": "action",
+      "trigger": null,
+      "requirement": null,
+      "source": "printed_action_type"
+    },
+    "riders": [
+      "Failed save: it takes only the Actions you direct and cannot take other Actions (GM-adjudicated command resolution).",
+      "Beast Tamer ends early for non-damage harm by you or an ally, an obviously suicidal command, exceeding your Tamer capacity, or a stronger control effect (GM adjudication).",
+      "Successful save: it becomes immune to your Beast Tamer until you complete a long rest (not auto-tracked)."
+    ],
+    "range": {
+      "kind": "feet",
+      "feet": 30
+    },
+    "area": null,
+    "cost": [
+      [
+        {
+          "resource": "martial_focus",
+          "amount": 1
+        }
+      ]
+    ],
+    "use_limit": null,
+    "duration": {
+      "kind": "minutes",
+      "amount": 10,
+      "concentration": false
+    },
+    "target": null,
+    "text_sha256": "60d4ba5d9a48dffc93c205027b61114b7243c0d3dafbb0ca04797fbbb91f26cf",
+    "reviewed_by": "w2-support 2026-09-28; riders-lane1 Codex 2026-09-29",
+    "options": []
+  },
+  "TAL_BEASTMASTERY_BRONCO_BUSTER": {
+   "text_sha256": "f821cc39eafb50eff362e2782d6dd23c77db5f867479df4cabae66005872aece",
+   "reviewed_by": "w2-support 2026-09-28",
+   "effects": [
+    {
+     "type": "save",
+     "ability": "cha",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "condition",
+       "condition": "charmed",
+       "applies_to": "target",
+       "evidence": "it acts as a willing mount; it takes only Actions you direct; it cannot take other Actions.",
+       "expires_on": "START_OF_SOURCE_NEXT_TURN",
+       "origin": "reviewed"
+      }
+     ],
+     "on_success": [],
+     "origin": "reviewed"
+    }
+   ],
+   "riders": [
+    "Successful save: it resists, and repeats the saving throw at the start of each of its turns while you remain grappling/mounted (not auto-repeated here; re-use the action to try again).",
+    "A non-Beast target gets +2 to this saving throw (apply manually)."
+   ]
+  },
+  "tianxia.talent.destruction.calamity_sovereign_incarnation": {
+   "modifier": null,
+   "options": null,
+   "target": null,
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": false
+   },
+   "area": null,
+   "range": null,
+   "use_limit": "once_per_long_rest",
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 5,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "activation": {
+    "economy": "bonus_action",
+    "trigger": null,
+    "requirement": "Nascent Soul Realm",
+    "source": "printed_action_type"
+   },
+   "text_sha256": "4799d65429f232767d008611bd9f0b8c4cd97494afae70352d2ee566ac37f379",
+   "reviewed_by": "astra sw-death printed-text review; riders-lane10 2026-09-29 (riders)",
+   "effects": [
+    {
+     "type": "condition",
+     "condition": "calamity_sovereign_incarnation",
+     "applies_to": "self",
+     "evidence": "You become a temporary incarnation of destructive authority.",
+     "origin": "reviewed"
+    }
+   ],
+   "riders": [
+    "Your Destructive Blast ignores half cover; objects and structures damaged by your Destructive Blast take one additional Destruction Die (the GM applies these). The augment discount (1 CP back once a turn) and the CP-free Returning Calamity once a round run at the table."
+   ]
+  },
+  "INK_BASE_PRESS_MARK": {
+   "text_sha256": "08f7a37909d7c443c42bb98c8d7949c64e23bdb080741250851ca2ce429ff524",
+   "reviewed_by": "AUTO138: creature consent, optional manual concealment payment, and printed one-hour lifetime",
+   "target": {"kind": "any_creature", "text": "One creature (a willing creature accepts; an unwilling creature makes a Dexterity save)."},
+   "effects": [
+    {
+     "type": "ink_press_mark",
+     "harmful": true,
+     "applies_to": "target",
+     "evidence": "Place a simple Ink Mark. Unwilling Creature: the target makes a Dexterity saving throw. Combat Marking: spend 1 CP to conceal it as part of the same action."
+    }
+   ],
+   "riders": [
+    "Ink Marks on objects, surfaces, doorways, containers, tools, corpses, and wall sections are outside the creature combat table.",
+    "Concealment costs 1 CP and lasts with the mark for 1 hour. Payment is recorded, but concealment is manual: the shared table and history still show the mark; the GM decides who notices it."
+   ]
+  },
+  "tianxia.talent.ink.vermilion_correction": {
+  "activation": {
+    "economy": "reaction",
+    "trigger": "A creature within 30 feet that bears one of your Ink Marks makes an ability check.",
+    "requirement": null,
+    "source": "printed_action_type"
+  },
+  "range": null,
+  "area": null,
+  "cost": [
+    [
+      {
+        "resource": "cp",
+        "amount": 1,
+        "amount_formula": null
+      }
+    ]
+  ],
+  "use_limit": "once_per_round",
+  "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+  },
+  "target": null,
+  "after": null,
+  "min_cp_cost": null,
+  "weapon_delivery": null,
+  "text_sha256": "1b2515ec5ca071dbc1b219850e1f1cfbc2a70b38f1217e8d8a08be77c5095756",
+  "reviewed_by": "A2INK: exact printed combat implementation in ink_second_pass",
+  "effects": [
+    {
+      "type": "state",
+      "name": "ink_correction",
+      "deferred": true,
+      "evidence": "React to a marked creature ability check within 30 feet: add or subtract 1d4 before outcome; 1 CP; once per round per recipient."
+    }
+  ],
+  "riders": [],
+  "modifier": null,
+  "options": null
+},
+  "tianxia.talent.ink.concealing_script": {
+   "text_sha256": "7ec5a21d53afbcc5caae54a0e3734d22168a22f1785fc3dd166321889998ffda",
+   "reviewed_by": "w2-support 2026-09-28",
+   "effects": [
+    {
+     "type": "disadvantage",
+     "applies_to": "enemies_in_area",
+     "on": "Wisdom (Perception) or Intelligence (Investigation) checks made to find the marked subject",
+     "duration": "special",
+     "evidence": "must succeed on a Wisdom (Perception) or Intelligence (Investigation) check against your Cultivation Save DC",
+     "origin": "reviewed"
+    }
+   ],
+   "riders": [
+    "The check is contested against your Cultivation Save DC, not a flat DC; apply Disadvantage as the automated part and judge the DC manually."
+   ]
+  },
+  "tianxia.talent.ink.black_seal_edict": {
+   "text_sha256": "6ba98879ad12bceab041ec65d593b73b2f2f4403c5ae49df99a6520ec88d270f",
+   "reviewed_by": "w2-support 2026-09-28",
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   },
+   "effects": [
+    {
+     "type": "ink_edict",
+     "applies_to": "target",
+     "harmful": true,
+     "evidence": "Choose one type of action or movement to forbid."
+    },
+    {
+     "type": "save",
+     "ability": "cha",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "ink_edict_apply",
+       "applies_to": "target",
+       "repeat": true,
+       "evidence": "Failed Save: The target cannot perform the forbidden act for the duration. At the end of each of its turns, it repeats the saving throw."
+      }
+     ],
+     "on_success": [
+      {
+       "type": "ink_edict_apply",
+       "applies_to": "target",
+       "evidence": "Successful Save: The target cannot perform the forbidden act until the start of your next turn."
+      }
+     ],
+     "origin": "reviewed"
+    }
+   ],
+   "riders": [
+    "GM: speaking a command, changing shape, a marked passage/weapon/focus, or moving farther than 30 feet from the Mark can be forbidden instead (teleporting and turning Invisible are automated)."
+   ]
+  },
+  "tianxia.talent.talismans.demon_subduing_tag": {
+   "text_sha256": "cc4449be8116b1dbb6b66bb207662db21441f51244f67e8caec32102f83e5da8",
+   "reviewed_by": "A2TAL 2026-10-08",
+   "options": [],
+   "effects": [
+    {
+     "type": "save", "ability": "cha", "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "talisman_demon_hold",
+       "effects": [
+        {"type": "condition", "condition": "restrained", "applies_to": "target", "duration": "until_end_of_your_next_turn", "evidence": "It is Restrained until the end of your next turn"},
+        {"type": "condition", "condition": "cannot_teleport", "applies_to": "target", "duration": "until_end_of_your_next_turn", "evidence": "cannot teleport until the end of your next turn"},
+        {"type": "deny_invisible", "applies_to": "target", "duration": "until_end_of_your_next_turn", "evidence": "cannot turn invisible until the end of your next turn"}
+       ],
+       "evidence": "Failed Save: It is Restrained and cannot teleport, possess a new host, turn invisible, or willingly enter another plane until the end of your next turn."
+      }
+     ],
+     "on_success": [
+      {"type": "reaction_denied", "applies_to": "target", "expires_on": "START_OF_SOURCE_NEXT_TURN", "evidence": "It cannot take Reactions until the start of your next turn"}
+     ]
+    }
+   ],
+   "riders": [
+    "While the Demon-Subduing Tag binds this creature, it also cannot possess a new host or willingly enter another plane. The table does not yet carry out possession or planar travel."
+   ],
+   "note": "The ordinary restrictions end on the caster's next turn, not the target's. The player-only prepared-site action lasts one minute and makes one shared Charisma repeat save per turn; success removes only this seal's exact restriction instances. Site preparation, surface triggers, possession and planar travel are not certified FULL."
+  }
+ }
+}
