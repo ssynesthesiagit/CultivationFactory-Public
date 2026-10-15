@@ -1,0 +1,352 @@
+{
+ "schema": "TianxiaFoundry.FeatureBlocks.v1",
+ "note": "Rider lane 9 (2026-09-29): blocks for printed lines that were GM riders.",
+ "features": {
+  "JESTER_BASE_DELIVER_THE_PUNCHLINE": {
+   "block": "lane9_jester",
+   "kind": "flustered_checks",
+   "auto65": true,
+   "keeps_compiling": true,
+   "covers": [],
+   "why": "New Jester packets: Flustered penalizes the next actual attack or ability check, then retains Reaction denial until expiry."
+  },
+  "tianxia.talent.equipment.mountain_pattern_grand_shell": {
+   "block": "lane9_equipment",
+   "kind": "grand_shell",
+   "why": "Once per round, medium or heavy armor, not Incapacitated: bludgeoning, piercing or slashing damage reduced by PB; one passive Equipment reduction per damage (combat/ext/equipment_armor.py)."
+  },
+  "tianxia.talent.equipment.circuit_armor": {
+   "block": "lane9_equipment",
+   "kind": "circuit",
+   "keeps_compiling": true,
+   "why": "While the circuit is awake (1 minute): once per round, damage reduced by the key ability modifier (minimum 1); it ends when you are Incapacitated (combat/ext/equipment_armor.py)."
+  },
+  "tianxia.talent.equipment.beast_hide_harness_scripture": {
+   "block": "lane9_equipment",
+   "kind": "beast_hide",
+   "why": "Padded Layers also reduces slashing damage while wearing leather, hide, scale, lamellar, padded or robe-style armor, still once per round (combat/ext/equipment_armor.py)."
+  },
+  "tianxia.talent.equipment.qi_conductive_lacing": {
+   "block": "lane9_equipment",
+   "kind": "qi_lacing",
+   "why": "Once per turn, CP spent on an Equipment talent while armored gives Temporary HP equal to PB (combat/ext/equipment_armor.py)."
+  },
+  "tianxia.talent.equipment.black_armor_legion_scripture": {
+   "block": "lane9_equipment",
+   "kind": "legion",
+   "why": "Temporary HP equal to PB + key modifier (minimum 1) when the fight begins, while armored (combat/ext/equipment_armor.py)."
+  },
+  "tianxia.talent.jester.a_fine_display": {
+   "block": "lane9_jester",
+   "kind": "fine_display",
+   "why": "A Strike the Fool Punchline: the Jester's Reaction when its Foil attacks it (combat/ext/jester_riders.py)."
+  },
+  "tianxia.talent.jester.banquet_escape": {
+   "block": "lane9_jester",
+   "kind": "banquet_escape",
+   "why": "A Strike the Fool Punchline: move half Speed, a miss if out of reach, else 2d6 + CHA less damage (combat/ext/jester_riders.py)."
+  },
+  "tianxia.talent.jester.pratfall_exit": {
+   "block": "lane9_jester",
+   "kind": "pratfall_exit",
+   "why": "Falling Prone: a 5-foot move without Opportunity Attacks, once per round (combat/ext/jester_riders.py)."
+  },
+  "tianxia.talent.jester.focused_applause": {
+   "block": "lane9_jester",
+   "kind": "focused_applause",
+   "why": "A Punchline's miss or Prone gives back Martial Focus (combat/ext/jester_riders.py)."
+  },
+  "tianxia.talent.jester.false_opening": {
+   "block": "lane9_jester",
+   "kind": "false_opening",
+   "why": "The 'False Opening (-2 AC)' choice and its first-miss benefit (combat/ext/jester_riders.py)."
+  },
+  "tianxia.talent.jester.grand_entrance": {
+   "block": "lane9_jester",
+   "kind": "grand_entrance",
+   "why": "A free Set the Scene on your first turn (combat/ext/jester_riders.py)."
+  },
+  "tianxia.talent.jester.mock_praise_scripture": {
+   "block": "lane9_jester",
+   "kind": "mock_praise",
+   "why": "Set the Scene with two Propositions (combat/ext/jester_riders.py)."
+  },
+  "tianxia.talent.shield.smashing_counter": {
+   "block": "lane9_shield",
+   "kind": "smashing_counter",
+   "keeps_compiling": false,
+   "why": "Deflect: a Shove after a missed attack Active Defense answered (combat/ext/shield_riders.py)."
+  },
+  "TAL_SHIELD_HEAVEN_REBUKING_BASH": {
+   "block": "lane9_shield",
+   "kind": "heaven_rebuking",
+   "keeps_compiling": false,
+   "why": "One more effect after a successful Smashing Counter (combat/ext/shield_riders.py)."
+  },
+  "TAL_SHIELD_RAIN_ON_THE_LOTUS_DEFLECTION": {
+   "block": "lane9_shield",
+   "kind": "rain_lotus",
+   "keeps_compiling": false,
+   "why": "Deflect: send a missed projectile back (combat/ext/shield_riders.py)."
+  },
+  "TAL_SHIELD_PUNCH_BLOCK": {
+   "block": "lane9_shield",
+   "kind": "punch_block",
+   "keeps_compiling": true,
+   "why": "An Unarmed Strike roll in place of AC (combat/ext/shield_riders.py)."
+  },
+  "tianxia.talent.shield.sacrificial_shield": {
+   "block": "lane9_shield",
+   "kind": "sacrificial",
+   "keeps_compiling": false,
+   "why": "Deflect: break the Shield to make a critical hit normal (combat/ext/shield_riders.py)."
+  },
+  "TAL_SHIELD_GREATER_DEFLECT": {
+   "block": "lane9_shield",
+   "kind": "greater_deflect",
+   "keeps_compiling": false,
+   "why": "Two Deflects for Martial Focus (combat/ext/shield_riders.py); the plug-in owns the payment, so do not attach the older GM modifier to Active Defense."
+  },
+  "TAL_SHIELD_BLOCKADE": {
+   "block": "lane9_shield",
+   "kind": "blockade",
+   "keeps_compiling": true,
+   "why": "Active Defense on a Dexterity save for half damage (combat/ext/shield_riders.py)."
+  },
+  "TAL_SHIELD_REACTIVE_DEFENSE": {
+   "block": "lane9_shield",
+   "kind": "reactive_defense",
+   "keeps_compiling": true,
+   "why": "After the Dodge action, one melee counter against a creature that misses (combat/ext/shield_riders.py)."
+  },
+  "TAL_SHIELD_SHIELD_OF_THE_SECOND_ANSWER": {
+   "block": "lane9_shield",
+   "kind": "second_answer",
+   "keeps_compiling": false,
+   "why": "An echo: the next attack meets +2 AC without a Reaction (combat/ext/shield_riders.py)."
+  },
+  "TAL_SHIELD_MOUNTAIN_ROOTED_RIM": {
+   "block": "lane9_shield",
+   "kind": "mountain_rim",
+   "keeps_compiling": false,
+   "why": "Reduce forced movement and resist Prone after Active Defense (combat/ext/shield_riders.py); do not also execute the older modifier's mistranslated immediate push."
+  },
+  "TAL_SHIELD_COVER_ALLY": {
+   "block": "lane9_shield",
+   "kind": "cover_ally",
+   "keeps_compiling": true,
+   "why": "Cover Ally's Reaction row compiles; Extensive Defense reaches covered allies (combat/ext/shield_riders.py)."
+  },
+  "TAL_FATE_SUBVERT_HARM": {
+   "block": "lane9_fate",
+   "kind": "subvert",
+   "keeps_compiling": false,
+   "why": "Reaction as a creature would deal damage: it deals the damage to itself on a failed Charisma save, or the damage drops by the Fate Die (combat/ext/fate_riders.py)."
+  },
+  "TAL_FATE_BORROWED_LIFESPAN_TALISMAN": {
+   "block": "lane9_fate",
+   "kind": "borrowed",
+   "keeps_compiling": true,
+   "why": "Once per protected creature; the cost is chosen after the Reaction (combat/ext/fate_riders.py)."
+  },
+  "TAL_FATE_MARKED_BY_THE_LEDGER": {
+   "block": "lane9_fate",
+   "kind": "ledger",
+   "keeps_compiling": true,
+   "why": "A Bonus Action moves the mark after its creature drops to 0 HP (combat/ext/fate_riders.py)."
+  },
+  "ICE_BASE_SPENDING_A_FRACTURE_MARK": {
+   "block": "lane9_ice",
+   "kind": "fracture",
+   "auto66": true,
+   "keeps_compiling": false,
+   "why": "The Fracture Responses at their triggers, once per round (combat/ext/ice_fracture.py)."
+  },
+  "ICE_BASE_CRYSTALLIZE_PATH": {
+   "block": "lane9_ice",
+   "kind": "crystallize",
+   "keeps_compiling": true,
+   "why": "A creature moving 10 feet across your Lattice Spaces gains a Fracture Mark (combat/ext/ice_fracture.py)."
+  },
+  "TAL_ICE_NINEFOLD_CRACK_CALCULATION": {
+   "block": "lane9_ice",
+   "kind": "ninefold",
+   "keeps_compiling": false,
+   "why": "A second response on the same event for 1 CP (combat/ext/ice_fracture.py)."
+  },
+  "TAL_ICE_RIME_HOOK": {
+   "block": "lane9_ice",
+   "kind": "rime_hook",
+   "auto66": true,
+   "keeps_compiling": false,
+   "why": "After Catch Step or Shatter Space the target is dragged across the lattice (combat/ext/ice_fracture.py)."
+  },
+  "TAL_ICE_DIAMOND_RIME_BODY": {
+   "block": "lane9_ice",
+   "kind": "diamond_rime",
+   "auto66": true,
+   "keeps_compiling": true,
+   "covers": [],
+   "why": "New packets ask where to create the optional melee-hit Lattice Space; the Crystal Guard exemption is retained by its owned condition."
+  },
+  "TAL_ICE_FROZEN_MERIDIAN_BIND": {
+   "block": "lane9_ice",
+   "kind": "meridian_bind",
+   "keeps_compiling": false,
+   "why": "After Catch Step near your lattice: Strength save or Restrained (combat/ext/ice_fracture.py)."
+  },
+  "TAL_ICE_MIRROR_SLICK_FLOOR": {
+   "block": "lane9_ice",
+   "kind": "mirror_slick",
+   "keeps_compiling": false,
+   "why": "A creature marked for crossing your lattice saves or falls Prone (combat/ext/ice_fracture.py)."
+  },
+  "TAL_ICE_WINTER_STORES_THE_BLOW": {
+   "block": "lane9_ice",
+   "kind": "winter_stores",
+   "keeps_compiling": false,
+   "why": "Reaction: damage on your lattice is stored for the next shatter (combat/ext/ice_fracture.py)."
+  },
+  "TAL_ICE_WHITE_STEP_COUNTER": {
+   "block": "lane9_ice",
+   "kind": "white_step",
+   "keeps_compiling": false,
+   "why": "Reaction: a creature leaving the ground near your lattice gains a Fracture Mark (combat/ext/ice_fracture.py)."
+  },
+  "TAL_ICE_FROZEN_RIVER_REVERSAL": {
+   "block": "lane9_ice",
+   "kind": "river_reversal",
+   "keeps_compiling": false,
+   "why": "Reaction: a marked creature sliding between Lattice Spaces is returned (combat/ext/ice_fracture.py)."
+  },
+  "tianxia.talent.ice.nascent_soul_glacier_soul_takes_shape": {
+   "block": "lane9_ice",
+   "kind": "nascent",
+   "keeps_compiling": false,
+   "why": "Lattice Limit + PB, one more Fracture Mark (combat/ext/ice_fracture.py, ice_lattice.py)."
+  },
+  "tianxia.talent.hunger.marrow_furnace_pulse": {
+   "block": "lane9_hunger",
+   "kind": "marrow",
+   "keeps_compiling": false,
+   "reads": [
+    "demon_beast"
+   ],
+   "why": "PB Temporary HP once per turn when CP goes into a Hunger talent while the Mantle lasts (combat/ext/hunger_riders.py). From a demon-beast Mantle it is instead your PB on one damage roll that turn, and 1 Impurity when the Mantle ends, which is why this row reads the kind of Satiety the Mantle burns."
+  },
+  "tianxia.talent.hunger.bitter_medicine_belly": {
+   "block": "lane9_hunger",
+   "kind": "bitter",
+   "keeps_compiling": true,
+   "why": "1 CP: PB Temporary HP after a successful save against Poisoned (combat/ext/hunger_riders.py)."
+  },
+  "tianxia.talent.hunger.the_empty_bowl_watches": {
+   "block": "lane9_hunger",
+   "kind": "empty_bowl",
+   "keeps_compiling": true,
+   "why": "Taste the Qi on a Bloodied or Poisoned creature gives PB Temporary HP once a round (combat/ext/hunger_riders.py)."
+  },
+  "tianxia.talent.karma.borrowed_tomorrow": {
+   "block": "lane9_karma",
+   "kind": "borrowed",
+   "keeps_compiling": false,
+   "why": "Reaction: a failed save succeeds, or 1 HP instead of 0 (combat/ext/karma_riders.py)."
+  },
+  "tianxia.talent.karma.fate_deferred": {
+   "block": "lane9_karma",
+   "kind": "deferred",
+   "keeps_compiling": false,
+   "why": "Reaction: damage that would drop a creature waits until the end of its next turn (combat/ext/karma_riders.py)."
+  },
+  "GLASS_BASE_REFRACTION_RESPONSES": {
+   "block": "lane9_glass",
+   "kind": "refraction",
+   "keeps_compiling": false,
+   "why": "Turn the Angle, Visible Crack, Bitter Edge and Shatter Warning at their triggers (combat/ext/glass_refraction.py)."
+  },
+  "TAL_GLASS_LENS_OF_STORED_PRESSURE": {
+   "block": "lane9_glass",
+   "kind": "stored_pressure",
+   "keeps_compiling": false,
+   "why": "After Turn the Angle, the next Faultline Strike or Glass Shard hit adds damage (combat/ext/glass_refraction.py)."
+  },
+  "TAL_GLASS_LIVING_PANE_SUTRA": {
+   "block": "lane9_glass",
+   "kind": "living_pane",
+   "keeps_compiling": true,
+   "why": "Once a fight, 1 HP instead of 0 while the body is tempered (combat/ext/glass_refraction.py)."
+  },
+  "TAL_GLASS_CAREFUL_FEET_ON_BROKEN_LIGHT": {
+   "block": "lane9_glass",
+   "kind": "careful_feet",
+   "keeps_compiling": true,
+   "why": "Your own Shattered Glass Terrain is not difficult for you (combat/ext/glass_refraction.py)."
+  },
+  "TAL_GLASS_CLEAN_BREAK": {
+   "block": "lane9_glass",
+   "kind": "clean_break",
+   "keeps_compiling": true,
+   "why": "Breaking glass you reduce to 0 HP: its three printed answers, asked (combat/ext/glass_pane.py)."
+  },
+  "TAL_GLASS_REFRACTION_OF_THE_OBVIOUS_BLOW": {
+   "block": "lane9_glass",
+   "kind": "obvious_blow",
+   "keeps_compiling": true,
+   "why": "A marked creature that misses you answers to one Refraction Response without spending your Reaction, once per round (combat/ext/glass_refraction.py)."
+  },
+  "TAL_GLASS_FAULTLINE_TRANSFER": {
+   "block": "lane9_glass",
+   "kind": "transfer",
+   "keeps_compiling": true,
+   "why": "Spending a Faultline Mark may move one other mark once per round (combat/ext/glass_refraction.py)."
+  },
+  "TAL_GLASS_WALKING_PANE_BODY": {
+   "block": "lane9_glass",
+   "kind": "walking_pane",
+   "keeps_compiling": true,
+   "why": "The Faultline Mark a melee hit earns you, and the Temporary HP spending it pays (combat/ext/glass_refraction.py)."
+  },
+  "TAL_GLASS_TEN_ANGLE_REFRACTION": {
+   "block": "lane9_glass",
+   "kind": "ten_angle",
+   "keeps_compiling": true,
+   "why": "Spending a mark lets one ally step 5 feet out of the marked creature's reach (combat/ext/glass_refraction.py)."
+  },
+  "TAL_GLASS_PANE_STEP_PROJECTION": {
+   "block": "lane9_glass",
+   "kind": "pane_step",
+   "keeps_compiling": true,
+   "why": "When you create a projected Glass Pane, it may rise within 10 feet of you without anchoring to a solid surface, and then collapses at the end of your next turn (asked; combat/ext/glass_pane.py)."
+  },
+  "TAL_RETRIBUTION_HEADFAKE": {
+   "block": "lane9_retribution",
+   "kind": "headfake",
+   "keeps_compiling": true,
+   "why": "Opportunity Attacks against you have Disadvantage while you hold Martial Focus (combat/ext/retribution_riders.py)."
+  },
+  "EARTH_BASE_SPENDING_A_BURDEN_MARK": {
+   "block": "lane9_earth",
+   "kind": "burden",
+   "keeps_compiling": false,
+   "why": "The Earth Responses at their triggers, once per round (combat/ext/earth_responses.py)."
+  },
+  "TAL_EARTH_SINKING_FOOT_REBUKE": {
+   "block": "lane9_earth",
+   "kind": "sinking_foot",
+   "keeps_compiling": false,
+   "why": "An extra effect after Anchor Step or Drag Down (combat/ext/earth_responses.py)."
+  },
+  "TAL_EARTH_LANDSLIDE_ARGUMENT": {
+   "block": "lane9_earth",
+   "kind": "landslide",
+   "keeps_compiling": false,
+   "why": "A marked creature crossing your Foundation slides (combat/ext/earth_responses.py)."
+  },
+  "TAL_EARTH_THE_GRAVE_REFUSES_THE_STEP": {
+   "block": "lane9_earth",
+   "kind": "grave",
+   "keeps_compiling": false,
+   "why": "Reaction, 2 CP: a teleport out of your Foundation meets a Charisma save (combat/ext/earth_responses.py)."
+  }
+ }
+}
