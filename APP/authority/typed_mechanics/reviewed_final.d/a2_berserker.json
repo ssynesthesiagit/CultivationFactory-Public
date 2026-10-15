@@ -1,0 +1,34 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_BERSERKER_BEAT_DOWN": {
+      "text_sha256": "6489bb9d4aa23cdead53e0b4299a5815bc3a246264278385d5150a1b7b0952b4",
+      "reviewed_by": "A2BERSERKE 2026-10-10: existing owned berserker beat_down row; service Battered and Exertion expiry verification",
+      "effects": [],
+      "riders": [],
+      "notes": "Both printed duration clauses execute through the existing owned beat_down feature block and source-turn hooks. No standalone activated effect."
+    },
+    "TAL_BERSERKER_BERSERK": {
+      "text_sha256": "a0cb2997d3a6d7fa27a5c0e60ca5b63df8a1b02dffe914c7bca0c3dd3844c7c2",
+      "reviewed_by": "A2BERSERKE 2026-10-10: existing owned defense and Adrenaline marker; service ordering and inactive controls",
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "reduce all damage you take by: Proficiency Bonus",
+          "origin": "model"
+        }
+      ],
+      "riders": [],
+      "notes": "The owning defense block reduces damage by PB before Resistance, only while Berserk Adrenaline is active."
+    }
+  }
+}
