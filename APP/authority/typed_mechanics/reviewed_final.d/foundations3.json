@@ -1,0 +1,321 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "foundation.red_lotus_ash_returning_v0_2B.refined_ash_mercy_boundary": {
+      "text_sha256": "2117e47619ae362d189324187c8b17347902118a5c33a29de4f4a849b3652a9f",
+      "activation": {"economy": "no_action", "trigger": "When you spend Funeral Ash and choose not to reduce a helpless or defeated creature to 0 HP solely for power.", "source": "printed_action_type"},
+      "range": {"kind": "feet", "feet": 30},
+      "target": {"text": "Self or one creature within 30 feet"},
+      "cost": [],
+      "effects": [],
+      "riders": [],
+      "modifier": null,
+      "automation_coverage": "CORE_WITH_RIDERS",
+      "notes": ["After a paid Funeral Ash use genuinely preserves or spares a helpless or defeated creature, choose yourself or one creature within 30 feet to gain temporary Hit Points equal to your Proficiency Bonus, with no additional action or resource. The table asks you to confirm genuine restraint; unknown scenes grant nothing. Separate cautery and clean endings still require a GM ruling and manual resolution."],
+      "reviewed_by": "Codex MGR-T14 Ash Mercy parent 2026-10-14"
+    },
+    "foundation.moon_mirror_still_water_v0_2B.still_lake_breath": {
+      "text_sha256": "fb368ff896382f722016c2f494e384384986ff31cd9b1baaaa98067115d9ef3a",
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": "On your turn while you have Mirror Stillness.",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "target": {
+        "text": "Self or one ally"
+      },
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "1 Mirror Stillness"
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "foundations3_boon",
+          "kind": "mirror",
+          "scope": [
+            "frightened",
+            "charmed",
+            "illusion",
+            "dream",
+            "curse",
+            "forced_spiritual_movement"
+          ],
+          "applies_to": "target_or_self",
+          "evidence": "#### Still Lake Breath\n\n**Type:** Bonus Action\n**Trigger:** On your turn while you have Mirror Stillness.\n**Cost:** 1 Mirror Stillness\n**Range:** Self or one ally within 30 feet\n**Target:** Self or one ally\n**Effect:** Spend 1 Mirror Stillness as a Bonus Action. The target gains temporary Hit Points equal to your Proficiency Bonus + your Path key ability modifier. Before the start of your next turn, the target has Advantage on the next saving throw against fear, charm, illusion, dream, curse, or forced spiritual movement.\n**Limit:** One target; temporary HP does not stack with itself; no same-event spending.\n**Counterplay and Boundaries:** Pressure multiple creatures, use mundane damage, or wait out the short window."
+        }
+      ],
+      "riders": [],
+      "coverage": "FULL",
+      "modifier": null,
+      "reviewed_by": "A2GFOU3 2026-10-11"
+    },
+    "foundation.mud_lotus_dantian_v0_2A.lotus_root_recovery": {
+      "text_sha256": "ee37feb61dff1033bdc2ba7eecab8dfe38d45a0d9d3a78b267789d29db3cbfc0",
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": "You spend Lotus Dew to support a willing creature through living-water, medicine, or humble recovery.",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "target": {
+        "text": "Self or one willing creature"
+      },
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "1 Lotus Dew"
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "foundations3_boon",
+          "kind": "lotus",
+          "scope": [
+            "poisoned",
+            "poison",
+            "disease",
+            "rot",
+            "polluted_water",
+            "sickness_exhaustion",
+            "failed_medicine_backlash",
+            "terrain_contamination"
+          ],
+          "applies_to": "target_or_self",
+          "evidence": "#### Lotus-Root Recovery\n\n**Type:** Bonus Action\n**Trigger:** You spend Lotus Dew to support a willing creature through living-water, medicine, or humble recovery.\n**Cost:** 1 Lotus Dew\n**Range:** 30 feet\n**Target:** Self or one willing creature\n**Effect:** As a Bonus Action, spend 1 Lotus Dew and choose yourself or one willing creature within 30 feet. The target gains temporary Hit Points equal to your Proficiency Bonus + your Path key ability modifier. Until the start of your next turn, the target has Advantage on the next saving throw it makes against poison, disease, rot, polluted water, sickness-exhaustion, failed medicine backlash, or terrain contamination. This is not full healing and cannot be used to preserve corruption as if it were health.\n**Limit:** Costs 1 Lotus Dew; temp HP does not stack with itself under ordinary temp HP rules.\n**Counterplay and Boundaries:** Attack through direct damage, dispel treatment support, or force a save outside the listed scope."
+        }
+      ],
+      "riders": [],
+      "coverage": "FULL",
+      "modifier": null,
+      "reviewed_by": "A2GFOU3 2026-10-11"
+    },
+    "foundation.nine_bitter_heartfire_v0_2B.heartfire_surge": {
+      "text_sha256": "ce2e2ecce58feae676d7e756b0ef6c238e10865c1659103033e7b057d9606adc",
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": "On your turn while you have Bitter Heartfire.",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "target": {
+        "text": "Self"
+      },
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "1 Bitter Heartfire"
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "foundations3_boon",
+          "kind": "bitter",
+          "scope": [],
+          "applies_to": "self",
+          "evidence": "#### Heartfire Surge\n\n**Type:** Bonus Action\n**Trigger:** On your turn while you have Bitter Heartfire.\n**Cost:** 1 Bitter Heartfire\n**Range:** Self\n**Target:** Self\n**Effect:** Spend 1 Bitter Heartfire as a Bonus Action. You gain temporary Hit Points equal to twice your Proficiency Bonus + your Path key ability modifier. Before the end of this turn, the next attack roll you make against a hostile creature or the next eligible saving throw/check you make against hostile pressure has Advantage.\n**Limit:** Self only; temporary HP does not stack with itself; one Advantage window.\n**Counterplay and Boundaries:** Force the surge early, deny targets, or impose conditions that block attacks/actions."
+        }
+      ],
+      "riders": [],
+      "coverage": "FULL",
+      "modifier": null,
+      "reviewed_by": "A2GFOU3 2026-10-11"
+    },
+    "foundation.red_lotus_ash_returning_v0_2B.ash_veil_mercy": {
+      "text_sha256": "215c50700d202388da2307f75f5309417c12806aa5929880a38b9cc39f5bde22",
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": "On your turn while you have Funeral Ash.",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "target": {
+        "text": "Self"
+      },
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "1 Funeral Ash"
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "foundations3_boon",
+          "kind": "ash",
+          "scope": [
+            "frightened",
+            "poison",
+            "poisoned",
+            "disease",
+            "fire",
+            "necrotic",
+            "blood_loss",
+            "despair",
+            "corpse_contamination",
+            "battlefield_contamination"
+          ],
+          "applies_to": "self",
+          "evidence": "#### Ash-Veil Mercy\n\n**Type:** Bonus Action\n**Trigger:** On your turn while you have Funeral Ash.\n**Cost:** 1 Funeral Ash\n**Range:** Self\n**Target:** Self\n**Effect:** Spend 1 Funeral Ash as a Bonus Action. You gain temporary Hit Points equal to your Proficiency Bonus + your Path key ability modifier. Before the start of your next turn, you have Advantage on the next saving throw you make against fear, poison, disease, fire, necrotic, blood-loss, despair pressure, or corpse/battlefield contamination.\n**Limit:** Bonus Action spend; one next-save Advantage only; temp HP follows ordinary replacement rules.\n**Counterplay and Boundaries:** Attack after the save is spent, use unrelated control, deny Bonus Action timing, or strip temp HP with ordinary damage."
+        }
+      ],
+      "riders": [],
+      "coverage": "FULL",
+      "modifier": null,
+      "reviewed_by": "A2GFOU3 2026-10-11"
+    },
+    "foundation.moon_mirror_still_water_v0_2B.generate_mirror_stillness": {
+      "text_sha256": "cb3f3028176dbdc3be0790ad081a673569452824982c1c660feba7e629f48e5f",
+      "effects": [],
+      "riders": [
+        "Identifying the true hostile source behind a decoy, illusion, dream, or curse remains a scene judgment."
+      ],
+      "coverage": "CORE_WITH_RIDERS",
+      "reviewed_by": "A2GFOU3 2026-10-11"
+    },
+    "foundation.nine_bitter_heartfire_v0_2B.generate_bitter_heartfire": {
+      "text_sha256": "4e84aca64ba49f7165aeb190b16cca125c2197e17a28d0e8993dd0f895d99c3e",
+      "effects": [],
+      "riders": [
+        "Foundation-aligned techniques resisted by an enemy, and failed ability checks, are not yet automated. Deliberate failure, staged threats, and self-sabotage never qualify."
+      ],
+      "coverage": "CORE_WITH_RIDERS",
+      "reviewed_by": "A2GFOU3 2026-10-11"
+    },
+    "foundation.origin_spirit_body_v0_2B.generate_spirit_source_dew": {
+      "text_sha256": "b4f287378684ea1700d5dadb9ceb7dd18a93e07963c5f037015a9c9e603ed5b4",
+      "effects": [],
+      "riders": [
+        "Positive outward damage reduction from a paid direct ally-damage reaction is automated. Other damage-reduction sources, maintained Concentration or technique rhythm, diagnosis, drain/backlash protection and resisted hostile support-pressure triggers still need explicit source facts and are not yet automated."
+      ],
+      "coverage": "CORE_WITH_RIDERS",
+      "reviewed_by": "A2GFOU3 2026-10-11"
+    },
+    "foundation.origin_spirit_body_v0_2B.returning_source_guard": {
+      "text_sha256": "157b1128bf5a655c821d976f63e8177d86840930d34cc82fd5d4a19cea5cc02d",
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "formula": "pb+key",
+          "evidence": "Reduce the triggering hostile damage, hostile drain damage, or hostile backlash damage by your Proficiency Bonus + your Path key ability modifier."
+        }
+      ],
+      "riders": [
+        "An ally other than you also has Advantage on the next Constitution saving throw, cultivation check, or other check made before the start of your next turn to maintain Concentration, maintain a technique rhythm, or resist the same source of backlash or drain; not yet automated.",
+        "This does not restore CP and does not erase hidden injuries, deviations, major curses, or major diseases."
+      ],
+      "coverage": "CORE_WITH_RIDERS",
+      "reviewed_by": "A2GFOU3 2026-10-14"
+    },
+    "foundation.nine_bitter_heartfire_v0_2B.refined_pain_becomes_method": {
+      "text_sha256": "a95e815ad68c223529ac2c6cf1c9afff9deac68b95f1990fccfb7b8dc4079baf",
+      "effects": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Heartfire Surge"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "resistance",
+            "applies_to": "self",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "fire",
+              "psychic"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "until_start_of_next_turn",
+            "evidence": "you also gain Resistance to fire damage and psychic damage until the start of your next turn",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "riders": [],
+      "coverage": "FULL",
+      "reviewed_by": "A2GFOU3 2026-10-11"
+    },
+    "foundation.mud_lotus_dantian_v0_2A.generate_lotus_dew": {
+      "text_sha256": "a32a86321e66c3d0b448e846a42bff8baa2f208cc15913969d00c6bfb94fa4a6",
+      "reviewed_by": "A2GFOU3 2026-10-11",
+      "effects": [],
+      "riders": [
+        "Treatment, Foundation-aligned recovery and Fixed Scope CP-spend triggers remain scene-qualified and are not yet automated."
+      ],
+      "coverage": "CORE_WITH_RIDERS"
+    },
+    "foundation.red_lotus_ash_returning_v0_2B.generate_funeral_ash": {
+      "text_sha256": "c8686e6c1daad2db317a1c9381b87ff1c4d424b874324b186506a6cd4635d62b",
+      "reviewed_by": "A2GFOU3 2026-10-11",
+      "effects": [],
+      "riders": [
+        "Foundation-aligned attacks, meaningful defeat, mercy and cautery generation are not yet automated."
+      ],
+      "coverage": "CORE_WITH_RIDERS"
+    },
+    "foundation.moon_mirror_still_water_v0_2B.moon_mirror_soul_vessel": {
+      "text_sha256": "ca3f03c3f1ae5196844526270e7b02aed1fb38e30ce9d7b9ccfb91ccca3aa8ae",
+      "reviewed_by": "A2GFOU3 2026-10-11",
+      "effects": [],
+      "riders": [
+        "Wisdom checks against the listed hostile pressures are not yet automated. The maximum Hit Point increase is already included when the character is created."
+      ],
+      "coverage": "CORE_WITH_RIDERS"
+    },
+    "foundation.mud_lotus_dantian_v0_2A.mud_lotus_reserve": {
+      "text_sha256": "b6b3d971550768cc132876ff9bce8993841a93a50b6bfd3f6f127856c2213fff",
+      "reviewed_by": "A2GFOU3 2026-10-11",
+      "effects": [],
+      "riders": [
+        "The maximum cultivation-resource increase is already included when the character is created."
+      ],
+      "coverage": "CORE_WITH_RIDERS"
+    },
+    "foundation.nine_bitter_heartfire_v0_2B.bitter_heartfire_vessel": {
+      "text_sha256": "199d52414003e730f743aa620bfad375b265c7a340645cd9e0b62e16bd22e604",
+      "reviewed_by": "A2GFOU3 2026-10-11",
+      "effects": [],
+      "riders": [
+        "The maximum Hit Point increase is already included when the character is created."
+      ],
+      "coverage": "CORE_WITH_RIDERS"
+    }
+  }
+}
