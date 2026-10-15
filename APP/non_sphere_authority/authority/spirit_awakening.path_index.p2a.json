@@ -1,0 +1,1000 @@
+{
+  "schema_version": "HF05ZVK-R1F.PathIndex.P2A.v1",
+  "index_release": "Phase 2A — Machine-Readable Path Indexes",
+  "canonical_id": "tianxia.path.spirit_awakening",
+  "display_name": "Spirit Awakening",
+  "publication_revision": "R7",
+  "publication_status": "current_canonical_player_path",
+  "source": {
+    "factory_path": "09_RULES/Source_Text/Paths/Spirit/Tianxia_Spirit_Awakening_Player_Path_Chapter_R7.md",
+    "corpus_path": "Canonical/Paths/Spirit/Tianxia_Spirit_Awakening_Player_Path_Chapter_R7.md",
+    "sha256": "2653393b9260eba31f6f685b46e48035671322f6f1f1a14e60c470de96537a81",
+    "bytes": 62223,
+    "line_count": 1020
+  },
+  "path_profile": {
+    "key_ability": {
+      "options": [
+        "Wisdom"
+      ],
+      "selection_timing": "fixed",
+      "modifier_label": "Wisdom modifier"
+    },
+    "hit_die": "d8",
+    "cultivation_points": "Resonance",
+    "primary_roles": "Spiritual perception, soul authority, mental and emotional pressure, exorcism, restoration, control, ritual work, spirit relations, martial conceptual practice, and Domain authority",
+    "saving_throw_proficiencies": "None",
+    "armor_training": "None",
+    "weapon_training": "Simple weapons",
+    "skills": "Choose two: Deception, Insight, Investigation, Medicine, Perception, Persuasion, Religion"
+  },
+  "cultivation_math": {
+    "save_dc": "8 + Proficiency Bonus + Wisdom modifier",
+    "attack_modifier": "Proficiency Bonus + Wisdom modifier",
+    "cultivation_check": "d20 + Proficiency Bonus + Wisdom modifier",
+    "source_section": {
+      "source_heading": "Cultivation Math",
+      "source_line_start": 81,
+      "source_line_end": 91,
+      "source_markdown": "## Cultivation Math\n\n**Cultivation Save DC**  \n`8 + Proficiency Bonus + Wisdom modifier`\n\n**Cultivation Attack Modifier**  \n`Proficiency Bonus + Wisdom modifier`\n\n**Cultivation Check**  \n`d20 + Proficiency Bonus + Wisdom modifier`\n",
+      "summary": "Cultivation Save DC 8 + Proficiency Bonus + Wisdom modifier"
+    }
+  },
+  "resource_rules": {
+    "canonical_id": "tianxia.resource.resonance",
+    "name": "Resonance",
+    "maximum_formula": "Spirit Awakening CL × Wisdom modifier",
+    "minimum_formula": "2 × Spirit Awakening CL",
+    "short_rest": {
+      "amount": "Resonance equal to Spirit Awakening CL",
+      "limit": "once per long rest"
+    },
+    "long_rest": {
+      "amount": "half maximum Resonance, rounded down",
+      "limit": "none beyond completing the rest"
+    },
+    "full_cultivation_session": {
+      "amount": "all missing Resonance",
+      "duration": "2 uninterrupted hours",
+      "limit": "once per long rest"
+    },
+    "zero_consequence": "When current Resonance is reduced from above 0 to exactly 0, gain 1 level of Exhaustion.",
+    "source_section": {
+      "source_heading": "Resonance",
+      "source_line_start": 110,
+      "source_line_end": 145,
+      "source_markdown": "# Resonance\n\nResonance is the cultivated force of an awakened soul: clarity, pressure, identity, memory weight, dream depth, emotional coherence, ancestral continuity, spiritual authority, and the capacity to remain oneself while touching another spirit.\n\n## Maximum Resonance\n\n`Spirit Awakening CL × Wisdom modifier`\n\nYour maximum Resonance cannot be lower than:\n\n`2 × Spirit Awakening CL`\n\nOnly a Method or another explicit Source Rule can alter this maximum.\n\n## Recovering Resonance\n\n| Recovery Method | Resonance Recovered | Limit |\n|---|---:|---|\n| **Short Rest** | Resonance equal to your Spirit Awakening CL | Once per long rest |\n| **Long Rest** | Half your maximum Resonance | No additional limit |\n| **Full Cultivation Session** | All missing Resonance | Once per long rest |\n\nRound fractions down.\n\nA Full Cultivation Session requires 2 uninterrupted hours, a reasonably safe spiritual environment, and a practice capable of restoring coherence. Examples include meditation, dream-trance, prayer, ancestor-listening, confession, emotional integration, shrine attendance, ritual music, spirit communion, soul inspection, or another practice suitable to the cultivator’s Method and Soul Anchor. It may occur during an eligible meditative long rest.\n\nA hostile spirit, damaged Anchor, violated Taboo, Bond Crisis, active possession, or spiritual prison can prevent a particular recovery practice only when its Source Rule says how. The GM does not reduce recovery merely because the cultivator’s emotions are narratively unsettled.\n\n## Reaching 0 Resonance\n\nWhen you are reduced from more than 0 Resonance to exactly 0 Resonance, gain 1 level of Exhaustion.\n\nRepeatedly reaching 0 Resonance can add further Exhaustion under the universal Cultivation Point rules. A feature that temporarily reduces maximum Resonance does not itself count as reaching 0 unless current Resonance is actually reduced to 0.\n\n---\n",
+      "summary": "Resonance is the cultivated force of an awakened soul: clarity, pressure, identity, memory weight, dream depth, emotional coherence, ancestral continuity, spiritual authority, and the capacity to remain oneself while touching another spirit."
+    }
+  },
+  "source_cl_rules": {
+    "normal_effective_cl": "Spirit Awakening CL",
+    "default_source_cl": "effective Spirit Awakening CL",
+    "key_rule": "Source CL determines spiritual authority; it does not replace printed attacks, saves, checks, Anchors, costs, repeat saves, recovery, or reconstruction.",
+    "source_section": {
+      "source_heading": "Effective CL and Source CL",
+      "source_line_start": 102,
+      "source_line_end": 109,
+      "source_markdown": "## Effective CL and Source CL\n\nYour normal effective CL is your Spirit Awakening CL. Realm Suppression or another explicit rule can lower the effective CL used by a feature.\n\n**Source CL** determines the authority of a spiritual effect. It does not replace a printed attack roll, saving throw, Cultivation Check, Anchor, cost, repeated save, recovery procedure, or reconstruction requirement.\n\n---\n",
+      "summary": "Your normal effective CL is your Spirit Awakening CL. Realm Suppression or another explicit rule can lower the effective CL used by a feature."
+    }
+  },
+  "realm_suppression": {
+    "heading": "Realm Suppression — Spirit Awakening Summary",
+    "suppresses": [
+      "features gained above suppressed CL",
+      "higher-CL scaling",
+      "Domain Manifestation below effective CL15",
+      "Soul Splitting below effective CL17",
+      "Astral Projection below effective CL7",
+      "higher-CL Soul Vessel expressions"
+    ],
+    "preserves": [
+      "Hit Points",
+      "Hit Dice",
+      "maximum Resonance",
+      "Soul Anchor existence",
+      "ordinary memory and identity",
+      "ancestry and relationships",
+      "independent spirit statistics unless directly scaled",
+      "existing Bonds, debts, injuries, possessions, custody, and consequences"
+    ],
+    "special": [
+      "Suppression does not itself exorcise, sever, expel, destroy, free, or transfer a spirit.",
+      "Suppression cannot refund Resonance, erase setup, avoid a Bond crisis, or lower the authority of an existing consequence."
+    ],
+    "source_section": {
+      "source_heading": "Realm Suppression — Spirit Awakening Summary",
+      "source_line_start": 947,
+      "source_line_end": 975,
+      "source_markdown": "# Realm Suppression — Spirit Awakening Summary\n\nWhen a Spirit Awakener suppresses to a lower effective CL:\n\n- use the suppressed Proficiency Bonus where the universal Realm Suppression rule requires it;\n- reduce dependent Path, Subpath, Domain, possession, and spirit-effect Source CL to the suppressed effective CL;\n- do not activate or benefit from Path or Subpath features whose minimum CL exceeds the suppressed CL;\n- use lower-CL scaling where a lower version exists;\n- Domain Manifestation ends if effective CL falls below 15;\n- a core Soul Fragment returns safely if effective CL falls below 17, unless another effect violently severed it;\n- Astral Projection ends if effective CL falls below 7;\n- the cultivated structure of a Soul Vessel remains, but Vessel Ward and other expressions above the suppressed CL become dormant.\n\nRealm Suppression does not reduce or erase:\n\n- Hit Points or Hit Dice;\n- maximum Resonance;\n- the existence of the Soul Anchor;\n- ordinary memories, personality, identity, ancestry, relationships, oaths, or consent;\n- passive Foundation quality;\n- an independent spirit’s statistics unless its Source Rule scales directly from the suppressed cultivator;\n- a Bond, Offering, Taboo, debt, injury, Spirit Scar, possession, custody, or consequence already created.\n\nSuppression does not itself exorcise, sever, expel, destroy, free, or transfer a spirit. An active effect you can no longer maintain ends or becomes dormant as its Source Rule states. If the rule does not state where a Hosted or possessing spirit goes when suppressed, use the Spirit Awakening Rules Reference rather than inventing a destination.\n\nRealm Suppression cannot refund Resonance, erase setup requirements, avoid a Bond crisis, or make an existing consequence count as lower authority after the fact.\n\n---\n",
+      "summary": "When a Spirit Awakener suppresses to a lower effective CL:"
+    }
+  },
+  "realm_integration": [
+    {
+      "realm": "Mortal, CL1–4",
+      "expression": "Soul Anchor, mental defense, spiritual perception, Resonance Marks, direct Mind Spike, diagnosis"
+    },
+    {
+      "realm": "Foundation, CL5–9",
+      "expression": "Spiritual Pressure, astral projection, stable sympathetic Soul Vessel, first Subpath mastery"
+    },
+    {
+      "realm": "Core Formation, CL10–14",
+      "expression": "Hardened soul defense, universal Spiritual Exorcism, advanced tradition authority"
+    },
+    {
+      "realm": "Nascent Soul, CL15–19",
+      "expression": "Personal Domain, cultivated Soul Fragment, remote origins, perfected spiritual perception"
+    },
+    {
+      "realm": "Immortal, CL20",
+      "expression": "Sovereign identity, body-independent continuity, self-reconstruction, restoration of reachable souls"
+    }
+  ],
+  "progression": [
+    {
+      "cl": 1,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_anchor",
+          "display_name": "Soul Anchor"
+        },
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soulward_response",
+          "display_name": "Soulward Response"
+        },
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.spiritual_sense",
+          "display_name": "Spiritual Sense"
+        },
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.mind_spike",
+          "display_name": "Mind Spike"
+        }
+      ]
+    },
+    {
+      "cl": 2,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_gaze",
+          "display_name": "Soul Gaze"
+        }
+      ]
+    },
+    {
+      "cl": 3,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.spirit_awakening_subpath",
+          "display_name": "Spirit Awakening Subpath"
+        }
+      ]
+    },
+    {
+      "cl": 4,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 5,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.domain_pressure",
+          "display_name": "Domain Pressure"
+        }
+      ]
+    },
+    {
+      "cl": 6,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.subpath_feature",
+          "display_name": "Subpath Feature"
+        }
+      ]
+    },
+    {
+      "cl": 7,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.astral_projection",
+          "display_name": "Astral Projection"
+        }
+      ]
+    },
+    {
+      "cl": 8,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 9,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_vessel",
+          "display_name": "Soul Vessel"
+        }
+      ]
+    },
+    {
+      "cl": 10,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.subpath_feature",
+          "display_name": "Subpath Feature"
+        }
+      ]
+    },
+    {
+      "cl": 11,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_armor",
+          "display_name": "Soul Armor"
+        }
+      ]
+    },
+    {
+      "cl": 12,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 13,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.spiritual_exorcism",
+          "display_name": "Spiritual Exorcism"
+        }
+      ]
+    },
+    {
+      "cl": 14,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.subpath_feature",
+          "display_name": "Subpath Feature"
+        }
+      ]
+    },
+    {
+      "cl": 15,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.domain_manifestation",
+          "display_name": "Domain Manifestation"
+        }
+      ]
+    },
+    {
+      "cl": 16,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 17,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_splitting",
+          "display_name": "Soul Splitting"
+        }
+      ]
+    },
+    {
+      "cl": 18,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.subpath_feature",
+          "display_name": "Subpath Feature"
+        }
+      ]
+    },
+    {
+      "cl": 19,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.ability_score_improvement_or_cultivation_insight",
+          "display_name": "Ability Score Improvement or Cultivation Insight"
+        }
+      ]
+    },
+    {
+      "cl": 20,
+      "features": [
+        {
+          "canonical_id": "tianxia.path.spirit_awakening.feature.immortal_spirit",
+          "display_name": "Immortal Spirit"
+        }
+      ]
+    }
+  ],
+  "features": [
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.soul_anchor",
+      "display_name": "Soul Anchor",
+      "aliases": [],
+      "feature_kind": "anchor_feature",
+      "minimum_cl": 1,
+      "granted_at_cl": [
+        1
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "Soul Anchors",
+          "source_line_start": 146,
+          "source_line_end": 171,
+          "source_markdown": "# Soul Anchors\n\nEvery Spirit Awakener has a **Soul Anchor** under the universal Soul Anchor rules. It describes what keeps the awakened self coherent: a true name, vow, ancestor, grief, dream, mask, mirror, companion spirit, shrine, debt, lost home, forbidden memory, heart demon, unfinished death, or another defining spiritual root.\n\nAt CL1, record:\n\n- the Anchor’s name or description;\n- whether it is primarily internal, relational, locational, embodied, object-linked, or vow-linked;\n- one way the cultivator normally communes with it during a Full Cultivation Session;\n- any separate physical vessel, relationship, or location that represents it.\n\nThese entries describe the Anchor. They do not create a destructible object, Companion, Cultivation Asset, immunity, weakness, or additional ability unless another Source Rule says so.\n\nPath interactions:\n\n- Your Soul Anchor is a legal focus for Spirit Awakening techniques when a Source Rule permits a spiritual focus.\n- A Soul Anchor is not automatically a physical object and cannot be attacked unless a Source Rule gives it an external manifestation or Anchor profile.\n- A Strained Soul Anchor does not erase your Path features, but it can prevent an expressly printed Anchor Invocation and can affect techniques that explicitly depend on it.\n- Ordinary damage cannot destroy a Soul Anchor.\n- Severing, rewriting, consuming, or permanently replacing a Soul Anchor requires an explicit high-authority Source Rule and an explicit recovery or reconstruction procedure.\n- Realm Suppression does not remove the existence of a Soul Anchor, though it can suppress higher-CL expressions that depend on it.\n\nA Spirit Companion, ancestor, shrine, object, relationship, or vow used as a Soul Anchor is not automatically a full Companion, Cultivation Asset, or destructible Spiritual Anchor. Those statuses require separate rules.\n\n---\n",
+          "summary": "Every Spirit Awakener has a Soul Anchor under the universal Soul Anchor rules. It describes what keeps the awakened self coherent: a true name, vow, ancestor, grief, dream, mask, mirror, companion spirit, shrine, debt, lost home, forbidden memory, heart demon, unfinished death, or another defining spiritual root."
+        }
+      ],
+      "source_rules_text": "# Soul Anchors\n\nEvery Spirit Awakener has a **Soul Anchor** under the universal Soul Anchor rules. It describes what keeps the awakened self coherent: a true name, vow, ancestor, grief, dream, mask, mirror, companion spirit, shrine, debt, lost home, forbidden memory, heart demon, unfinished death, or another defining spiritual root.\n\nAt CL1, record:\n\n- the Anchor’s name or description;\n- whether it is primarily internal, relational, locational, embodied, object-linked, or vow-linked;\n- one way the cultivator normally communes with it during a Full Cultivation Session;\n- any separate physical vessel, relationship, or location that represents it.\n\nThese entries describe the Anchor. They do not create a destructible object, Companion, Cultivation Asset, immunity, weakness, or additional ability unless another Source Rule says so.\n\nPath interactions:\n\n- Your Soul Anchor is a legal focus for Spirit Awakening techniques when a Source Rule permits a spiritual focus.\n- A Soul Anchor is not automatically a physical object and cannot be attacked unless a Source Rule gives it an external manifestation or Anchor profile.\n- A Strained Soul Anchor does not erase your Path features, but it can prevent an expressly printed Anchor Invocation and can affect techniques that explicitly depend on it.\n- Ordinary damage cannot destroy a Soul Anchor.\n- Severing, rewriting, consuming, or permanently replacing a Soul Anchor requires an explicit high-authority Source Rule and an explicit recovery or reconstruction procedure.\n- Realm Suppression does not remove the existence of a Soul Anchor, though it can suppress higher-CL expressions that depend on it.\n\nA Spirit Companion, ancestor, shrine, object, relationship, or vow used as a Soul Anchor is not automatically a full Companion, Cultivation Asset, or destructible Spiritual Anchor. Those statuses require separate rules.\n\n---\n",
+      "effective_rules_text": "# Soul Anchors\n\nEvery Spirit Awakener has a **Soul Anchor** under the universal Soul Anchor rules. It describes what keeps the awakened self coherent: a true name, vow, ancestor, grief, dream, mask, mirror, companion spirit, shrine, debt, lost home, forbidden memory, heart demon, unfinished death, or another defining spiritual root.\n\nAt CL1, record:\n\n- the Anchor’s name or description;\n- whether it is primarily internal, relational, locational, embodied, object-linked, or vow-linked;\n- one way the cultivator normally communes with it during a Full Cultivation Session;\n- any separate physical vessel, relationship, or location that represents it.\n\nThese entries describe the Anchor. They do not create a destructible object, Companion, Cultivation Asset, immunity, weakness, or additional ability unless another Source Rule says so.\n\nPath interactions:\n\n- Your Soul Anchor is a legal focus for Spirit Awakening techniques when a Source Rule permits a spiritual focus.\n- A Soul Anchor is not automatically a physical object and cannot be attacked unless a Source Rule gives it an external manifestation or Anchor profile.\n- A Strained Soul Anchor does not erase your Path features, but it can prevent an expressly printed Anchor Invocation and can affect techniques that explicitly depend on it.\n- Ordinary damage cannot destroy a Soul Anchor.\n- Severing, rewriting, consuming, or permanently replacing a Soul Anchor requires an explicit high-authority Source Rule and an explicit recovery or reconstruction procedure.\n- Realm Suppression does not remove the existence of a Soul Anchor, though it can suppress higher-CL expressions that depend on it.\n\nA Spirit Companion, ancestor, shrine, object, relationship, or vow used as a Soul Anchor is not automatically a full Companion, Cultivation Asset, or destructible Spiritual Anchor. Those statuses require separate rules.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.soulward_response",
+      "display_name": "Soulward Response",
+      "aliases": [],
+      "feature_kind": "defensive_discipline",
+      "minimum_cl": 1,
+      "granted_at_cl": [
+        1
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL1 — Soulward Response",
+          "source_line_start": 278,
+          "source_line_end": 300,
+          "source_markdown": "# CL1 — Soulward Response\n\n**Action Type:** Reaction  \n**Trigger:** You fail an Intelligence, Wisdom, or Charisma saving throw.  \n**Cost:** 1 Resonance  \n**Limit:** Once per round\n\nAdd your Proficiency Bonus to the saving throw, potentially turning failure into success.\n\nSoulward Response:\n\n- is not saving throw proficiency;\n- is used after you learn that the roll failed;\n- cannot modify a death saving throw;\n- cannot modify a breakthrough, training, forging, or ordinary ability check;\n- cannot modify the same saving throw more than once;\n- cannot stack with another feature that adds Proficiency Bonus to the same saving throw;\n- does not automatically end an ongoing effect unless the successful-save result says it does.\n\nAt CL11, Soul Armor improves this response.\n\n---\n",
+          "summary": "Action Type: Reaction Trigger: You fail an Intelligence, Wisdom, or Charisma saving throw. Cost: 1 Resonance Limit: Once per round"
+        }
+      ],
+      "source_rules_text": "# CL1 — Soulward Response\n\n**Action Type:** Reaction  \n**Trigger:** You fail an Intelligence, Wisdom, or Charisma saving throw.  \n**Cost:** 1 Resonance  \n**Limit:** Once per round\n\nAdd your Proficiency Bonus to the saving throw, potentially turning failure into success.\n\nSoulward Response:\n\n- is not saving throw proficiency;\n- is used after you learn that the roll failed;\n- cannot modify a death saving throw;\n- cannot modify a breakthrough, training, forging, or ordinary ability check;\n- cannot modify the same saving throw more than once;\n- cannot stack with another feature that adds Proficiency Bonus to the same saving throw;\n- does not automatically end an ongoing effect unless the successful-save result says it does.\n\nAt CL11, Soul Armor improves this response.\n\n---\n",
+      "effective_rules_text": "# CL1 — Soulward Response\n\n**Action Type:** Reaction  \n**Trigger:** You fail an Intelligence, Wisdom, or Charisma saving throw.  \n**Cost:** 1 Resonance  \n**Limit:** Once per round\n\nAdd your Proficiency Bonus to the saving throw, potentially turning failure into success.\n\nSoulward Response:\n\n- is not saving throw proficiency;\n- is used after you learn that the roll failed;\n- cannot modify a death saving throw;\n- cannot modify a breakthrough, training, forging, or ordinary ability check;\n- cannot modify the same saving throw more than once;\n- cannot stack with another feature that adds Proficiency Bonus to the same saving throw;\n- does not automatically end an ongoing effect unless the successful-save result says it does.\n\nAt CL11, Soul Armor improves this response.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.spiritual_sense",
+      "display_name": "Spiritual Sense",
+      "aliases": [],
+      "feature_kind": "sense_feature",
+      "minimum_cl": 1,
+      "granted_at_cl": [
+        1
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL1 — Spiritual Sense",
+          "source_line_start": 301,
+          "source_line_end": 349,
+          "source_markdown": "# CL1 — Spiritual Sense\n\nSpiritual Sense is always active unless suppressed.\n\n## Range\n\n| CL | Range |\n|---:|---:|\n| 1–10 | 10 feet |\n| 11–16 | 30 feet |\n| 17–20 | 60 feet |\n\nWithin range, you perceive active souls, spirits, possessing entities, projected souls, spiritually animated corpses, and creatures with ordinary living consciousness even when normal sight cannot perceive them.\n\nAgainst an ordinary living creature, Complete Soul, or spirit within range, Spiritual Sense functions as Blindsight. It does not automatically perceive:\n\n- soulless traps or objects;\n- mundane writing, color, or visual detail;\n- a construct with no mind, spirit, or animating soul;\n- a corpse with no active spirit or necromantic animation;\n- a creature behind total cover;\n- a successfully concealed soul, Secret concealment, divine veil, artifact-level masking, sealed spirit, or stronger spiritual absence.\n\nSpiritual Sense also tells you whether a perceived entity is broadly:\n\n- Embodied, Manifested, Hosted, possessing, projected, Unbodied, Anchored, or Contained;\n- Resonance Marked by you;\n- under an obvious ordinary possession, coercive Hosting, or spirit-manifestation effect.\n\nIt does not reveal exact statistics, thoughts, memories, Soul Anchor, Spirit Nature, Subpath, full Bond terms, or hidden Source Rules.\n\n## Read the Spirit\n\n**Action Type:** Action  \n**Range:** Your Spiritual Sense range\n\nChoose one soul, spirit, possession link, spiritual residue, Soul Fragment, or spiritual effect you perceive. Learn:\n\n- its broad category;\n- whether its Source CL is lower than, equal to, or higher than yours;\n- whether it is stable, strained, damaged, concealed, Hosted, bound, possessing, Anchored, or suppressed;\n- whether it is a Complete Soul, Soul Fragment, Spiritual Imprint, or uncertain mixture.\n\nFor a concealed or protected effect, make a Cultivation Check against its save DC. If it has no save DC, use `8 + source Proficiency Bonus + source key ability modifier`.\n\nOn failure, you know that spiritual concealment or interference is present, but not its exact nature. You cannot retry until the effect changes, you obtain a new Source Rule or evidence, or a new scene begins.\n\n---\n",
+          "summary": "Spiritual Sense is always active unless suppressed."
+        }
+      ],
+      "source_rules_text": "# CL1 — Spiritual Sense\n\nSpiritual Sense is always active unless suppressed.\n\n## Range\n\n| CL | Range |\n|---:|---:|\n| 1–10 | 10 feet |\n| 11–16 | 30 feet |\n| 17–20 | 60 feet |\n\nWithin range, you perceive active souls, spirits, possessing entities, projected souls, spiritually animated corpses, and creatures with ordinary living consciousness even when normal sight cannot perceive them.\n\nAgainst an ordinary living creature, Complete Soul, or spirit within range, Spiritual Sense functions as Blindsight. It does not automatically perceive:\n\n- soulless traps or objects;\n- mundane writing, color, or visual detail;\n- a construct with no mind, spirit, or animating soul;\n- a corpse with no active spirit or necromantic animation;\n- a creature behind total cover;\n- a successfully concealed soul, Secret concealment, divine veil, artifact-level masking, sealed spirit, or stronger spiritual absence.\n\nSpiritual Sense also tells you whether a perceived entity is broadly:\n\n- Embodied, Manifested, Hosted, possessing, projected, Unbodied, Anchored, or Contained;\n- Resonance Marked by you;\n- under an obvious ordinary possession, coercive Hosting, or spirit-manifestation effect.\n\nIt does not reveal exact statistics, thoughts, memories, Soul Anchor, Spirit Nature, Subpath, full Bond terms, or hidden Source Rules.\n\n## Read the Spirit\n\n**Action Type:** Action  \n**Range:** Your Spiritual Sense range\n\nChoose one soul, spirit, possession link, spiritual residue, Soul Fragment, or spiritual effect you perceive. Learn:\n\n- its broad category;\n- whether its Source CL is lower than, equal to, or higher than yours;\n- whether it is stable, strained, damaged, concealed, Hosted, bound, possessing, Anchored, or suppressed;\n- whether it is a Complete Soul, Soul Fragment, Spiritual Imprint, or uncertain mixture.\n\nFor a concealed or protected effect, make a Cultivation Check against its save DC. If it has no save DC, use `8 + source Proficiency Bonus + source key ability modifier`.\n\nOn failure, you know that spiritual concealment or interference is present, but not its exact nature. You cannot retry until the effect changes, you obtain a new Source Rule or evidence, or a new scene begins.\n\n---\n",
+      "effective_rules_text": "# CL1 — Spiritual Sense\n\nSpiritual Sense is always active unless suppressed.\n\n## Range\n\n| CL | Range |\n|---:|---:|\n| 1–10 | 10 feet |\n| 11–16 | 30 feet |\n| 17–20 | 60 feet |\n\nWithin range, you perceive active souls, spirits, possessing entities, projected souls, spiritually animated corpses, and creatures with ordinary living consciousness even when normal sight cannot perceive them.\n\nAgainst an ordinary living creature, Complete Soul, or spirit within range, Spiritual Sense functions as Blindsight. It does not automatically perceive:\n\n- soulless traps or objects;\n- mundane writing, color, or visual detail;\n- a construct with no mind, spirit, or animating soul;\n- a corpse with no active spirit or necromantic animation;\n- a creature behind total cover;\n- a successfully concealed soul, Secret concealment, divine veil, artifact-level masking, sealed spirit, or stronger spiritual absence.\n\nSpiritual Sense also tells you whether a perceived entity is broadly:\n\n- Embodied, Manifested, Hosted, possessing, projected, Unbodied, Anchored, or Contained;\n- Resonance Marked by you;\n- under an obvious ordinary possession, coercive Hosting, or spirit-manifestation effect.\n\nIt does not reveal exact statistics, thoughts, memories, Soul Anchor, Spirit Nature, Subpath, full Bond terms, or hidden Source Rules.\n\n## Read the Spirit\n\n**Action Type:** Action  \n**Range:** Your Spiritual Sense range\n\nChoose one soul, spirit, possession link, spiritual residue, Soul Fragment, or spiritual effect you perceive. Learn:\n\n- its broad category;\n- whether its Source CL is lower than, equal to, or higher than yours;\n- whether it is stable, strained, damaged, concealed, Hosted, bound, possessing, Anchored, or suppressed;\n- whether it is a Complete Soul, Soul Fragment, Spiritual Imprint, or uncertain mixture.\n\nFor a concealed or protected effect, make a Cultivation Check against its save DC. If it has no save DC, use `8 + source Proficiency Bonus + source key ability modifier`.\n\nOn failure, you know that spiritual concealment or interference is present, but not its exact nature. You cannot retry until the effect changes, you obtain a new Source Rule or evidence, or a new scene begins.\n\n---\n",
+      "components": [
+        {
+          "title": "Range",
+          "slug": "range",
+          "heading_level": 2,
+          "source_line": 305,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.spiritual_sense.component.range"
+        },
+        {
+          "title": "Read the Spirit",
+          "slug": "read_the_spirit",
+          "heading_level": 2,
+          "source_line": 332,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.spiritual_sense.component.read_the_spirit"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.mind_spike",
+      "display_name": "Mind Spike",
+      "aliases": [],
+      "feature_kind": "attack_chassis",
+      "minimum_cl": 1,
+      "granted_at_cl": [
+        1
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL1 — Mind Spike",
+          "source_line_start": 350,
+          "source_line_end": 381,
+          "source_markdown": "# CL1 — Mind Spike\n\n**Action Type:** Action  \n**Range:** 60 feet  \n**Target:** One creature with a mind, soul, animating spirit, or equivalent spiritual identity\n\nThe target makes a Wisdom saving throw against your Cultivation Save DC.\n\n**Failed Save:** The target takes Psychic damage equal to the listed dice plus your Wisdom modifier and becomes Resonance Marked by you.  \n**Successful Save:** The target takes half damage and is not marked.\n\n| CL | Psychic Damage |\n|---:|---:|\n| 1–4 | `1d8 + Wisdom modifier` |\n| 5–10 | `2d8 + Wisdom modifier` |\n| 11–16 | `3d8 + Wisdom modifier` |\n| 17–20 | `4d8 + Wisdom modifier` |\n\nMind Spike is a Spirit Awakening technique and one activation regardless of how another feature later echoes, redirects, or originates it.\n\nMind Spike can affect a creature without a biological brain if it has a mind, soul, animating spirit, or equivalent identity. It normally cannot affect an ordinary object, mindless construct, spiritually empty corpse, or Spiritual Imprint that has no independent ability to suffer damage.\n\nAt CL5, when a creature already Resonance Marked by you fails against Mind Spike, you may also impose one ordinary Spiritual Pressure effect on it.\n\n## Martial and Weapon Interface\n\nMind Spike is not an ordinary weapon attack, unarmed strike, spell, or Attack action. A weapon, unarmed strike, natural weapon, martial Subpath, Recorded Art, or Forged Technique can deliver or modify Mind Spike only when its Source Rule expressly says so.\n\nA martial description does not grant Extra Attack, martial weapon proficiency, weapon delivery, physical damage, or permission to substitute an attack roll for Mind Spike’s Wisdom saving throw.\n\n---\n",
+          "summary": "Action Type: Action Range: 60 feet Target: One creature with a mind, soul, animating spirit, or equivalent spiritual identity"
+        }
+      ],
+      "source_rules_text": "# CL1 — Mind Spike\n\n**Action Type:** Action  \n**Range:** 60 feet  \n**Target:** One creature with a mind, soul, animating spirit, or equivalent spiritual identity\n\nThe target makes a Wisdom saving throw against your Cultivation Save DC.\n\n**Failed Save:** The target takes Psychic damage equal to the listed dice plus your Wisdom modifier and becomes Resonance Marked by you.  \n**Successful Save:** The target takes half damage and is not marked.\n\n| CL | Psychic Damage |\n|---:|---:|\n| 1–4 | `1d8 + Wisdom modifier` |\n| 5–10 | `2d8 + Wisdom modifier` |\n| 11–16 | `3d8 + Wisdom modifier` |\n| 17–20 | `4d8 + Wisdom modifier` |\n\nMind Spike is a Spirit Awakening technique and one activation regardless of how another feature later echoes, redirects, or originates it.\n\nMind Spike can affect a creature without a biological brain if it has a mind, soul, animating spirit, or equivalent identity. It normally cannot affect an ordinary object, mindless construct, spiritually empty corpse, or Spiritual Imprint that has no independent ability to suffer damage.\n\nAt CL5, when a creature already Resonance Marked by you fails against Mind Spike, you may also impose one ordinary Spiritual Pressure effect on it.\n\n## Martial and Weapon Interface\n\nMind Spike is not an ordinary weapon attack, unarmed strike, spell, or Attack action. A weapon, unarmed strike, natural weapon, martial Subpath, Recorded Art, or Forged Technique can deliver or modify Mind Spike only when its Source Rule expressly says so.\n\nA martial description does not grant Extra Attack, martial weapon proficiency, weapon delivery, physical damage, or permission to substitute an attack roll for Mind Spike’s Wisdom saving throw.\n\n---\n",
+      "effective_rules_text": "# CL1 — Mind Spike\n\n**Action Type:** Action  \n**Range:** 60 feet  \n**Target:** One creature with a mind, soul, animating spirit, or equivalent spiritual identity\n\nThe target makes a Wisdom saving throw against your Cultivation Save DC.\n\n**Failed Save:** The target takes Psychic damage equal to the listed dice plus your Wisdom modifier and becomes Resonance Marked by you.  \n**Successful Save:** The target takes half damage and is not marked.\n\n| CL | Psychic Damage |\n|---:|---:|\n| 1–4 | `1d8 + Wisdom modifier` |\n| 5–10 | `2d8 + Wisdom modifier` |\n| 11–16 | `3d8 + Wisdom modifier` |\n| 17–20 | `4d8 + Wisdom modifier` |\n\nMind Spike is a Spirit Awakening technique and one activation regardless of how another feature later echoes, redirects, or originates it.\n\nMind Spike can affect a creature without a biological brain if it has a mind, soul, animating spirit, or equivalent identity. It normally cannot affect an ordinary object, mindless construct, spiritually empty corpse, or Spiritual Imprint that has no independent ability to suffer damage.\n\nAt CL5, when a creature already Resonance Marked by you fails against Mind Spike, you may also impose one ordinary Spiritual Pressure effect on it.\n\n## Martial and Weapon Interface\n\nMind Spike is not an ordinary weapon attack, unarmed strike, spell, or Attack action. A weapon, unarmed strike, natural weapon, martial Subpath, Recorded Art, or Forged Technique can deliver or modify Mind Spike only when its Source Rule expressly says so.\n\nA martial description does not grant Extra Attack, martial weapon proficiency, weapon delivery, physical damage, or permission to substitute an attack roll for Mind Spike’s Wisdom saving throw.\n\n---\n",
+      "components": [
+        {
+          "title": "Martial and Weapon Interface",
+          "slug": "martial_and_weapon_interface",
+          "heading_level": 2,
+          "source_line": 374,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.mind_spike.component.martial_and_weapon_interface"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.soul_gaze",
+      "display_name": "Soul Gaze",
+      "aliases": [],
+      "feature_kind": "sense_feature",
+      "minimum_cl": 2,
+      "granted_at_cl": [
+        2
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL2 — Soul Gaze",
+          "source_line_start": 382,
+          "source_line_end": 414,
+          "source_markdown": "# CL2 — Soul Gaze\n\n**Action Type:** Action  \n**Range:** 60 feet  \n**Cost:** 1 Resonance\n\nChoose one creature you can see. You may instead choose a creature Resonance Marked by you within range even if you cannot see it, provided it is not behind total spiritual concealment.\n\nLearn:\n\n- its current and maximum Hit Points;\n- its broad creature nature and cultivation Path, if any;\n- whether its effective CL or relevant Source CL is lower than, equal to, or higher than yours;\n- its damage resistances, immunities, and vulnerabilities;\n- its surface emotional state;\n- whether it is affected by an ordinary curse, possession, coercive Hosting, Heart Demon, dream intrusion, memory interference, spiritual contamination, Spirit Scar, or obvious soul injury;\n- the broad category of one Spirit Bond, possession link, or Spiritual Anchor currently sustaining an obvious effect upon it.\n\nSoul Gaze does not automatically reveal:\n\n- a protected Soul Anchor;\n- a spirit’s complete Nature or Bond contract;\n- Secret or divine identity;\n- hidden phases or unrevealed transformations;\n- exact unspent Cultivation Points;\n- protected memories;\n- the complete text of an unknown feature;\n- a concealed effect whose Source Rule defeats ordinary spiritual diagnosis.\n\nWhen protected information is contested, make a Cultivation Check against the protecting effect. On failure, identify which category of information was concealed, but not its contents. You cannot retry against the same concealment until it changes, you gain new evidence, or a new scene begins.\n\n---\n",
+          "summary": "Action Type: Action Range: 60 feet Cost: 1 Resonance"
+        }
+      ],
+      "source_rules_text": "# CL2 — Soul Gaze\n\n**Action Type:** Action  \n**Range:** 60 feet  \n**Cost:** 1 Resonance\n\nChoose one creature you can see. You may instead choose a creature Resonance Marked by you within range even if you cannot see it, provided it is not behind total spiritual concealment.\n\nLearn:\n\n- its current and maximum Hit Points;\n- its broad creature nature and cultivation Path, if any;\n- whether its effective CL or relevant Source CL is lower than, equal to, or higher than yours;\n- its damage resistances, immunities, and vulnerabilities;\n- its surface emotional state;\n- whether it is affected by an ordinary curse, possession, coercive Hosting, Heart Demon, dream intrusion, memory interference, spiritual contamination, Spirit Scar, or obvious soul injury;\n- the broad category of one Spirit Bond, possession link, or Spiritual Anchor currently sustaining an obvious effect upon it.\n\nSoul Gaze does not automatically reveal:\n\n- a protected Soul Anchor;\n- a spirit’s complete Nature or Bond contract;\n- Secret or divine identity;\n- hidden phases or unrevealed transformations;\n- exact unspent Cultivation Points;\n- protected memories;\n- the complete text of an unknown feature;\n- a concealed effect whose Source Rule defeats ordinary spiritual diagnosis.\n\nWhen protected information is contested, make a Cultivation Check against the protecting effect. On failure, identify which category of information was concealed, but not its contents. You cannot retry against the same concealment until it changes, you gain new evidence, or a new scene begins.\n\n---\n",
+      "effective_rules_text": "# CL2 — Soul Gaze\n\n**Action Type:** Action  \n**Range:** 60 feet  \n**Cost:** 1 Resonance\n\nChoose one creature you can see. You may instead choose a creature Resonance Marked by you within range even if you cannot see it, provided it is not behind total spiritual concealment.\n\nLearn:\n\n- its current and maximum Hit Points;\n- its broad creature nature and cultivation Path, if any;\n- whether its effective CL or relevant Source CL is lower than, equal to, or higher than yours;\n- its damage resistances, immunities, and vulnerabilities;\n- its surface emotional state;\n- whether it is affected by an ordinary curse, possession, coercive Hosting, Heart Demon, dream intrusion, memory interference, spiritual contamination, Spirit Scar, or obvious soul injury;\n- the broad category of one Spirit Bond, possession link, or Spiritual Anchor currently sustaining an obvious effect upon it.\n\nSoul Gaze does not automatically reveal:\n\n- a protected Soul Anchor;\n- a spirit’s complete Nature or Bond contract;\n- Secret or divine identity;\n- hidden phases or unrevealed transformations;\n- exact unspent Cultivation Points;\n- protected memories;\n- the complete text of an unknown feature;\n- a concealed effect whose Source Rule defeats ordinary spiritual diagnosis.\n\nWhen protected information is contested, make a Cultivation Check against the protecting effect. On failure, identify which category of information was concealed, but not its contents. You cannot retry against the same concealment until it changes, you gain new evidence, or a new scene begins.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.spirit_awakening_subpath",
+      "display_name": "Spirit Awakening Subpath",
+      "aliases": [],
+      "feature_kind": "subpath_selection",
+      "minimum_cl": 3,
+      "granted_at_cl": [
+        3
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "Spirit Awakening Subpaths",
+          "source_line_start": 259,
+          "source_line_end": 277,
+          "source_markdown": "# Spirit Awakening Subpaths\n\nAt CL3, choose one Spirit Awakening Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Classification | Meaning |\n|---|---|\n| **Open Tradition** | Teachable through a recognized school, shrine, profession, community, military office, or public scripture. Open access does not imply low power or common practitioners. |\n| **Restricted Lineage or Scripture** | Requires a hidden teacher, guarded manual, shrine, sect, spirit pact, haunted location, initiation, profession, or controlled institution. |\n| **Rare Inheritance** | Comes from bloodline, reincarnated memory, spirit ancestry, relic fusion, mutation, possession survived and integrated, divine scar, or singular transmission. |\n| **Forbidden Method or Variant** | Uses condemned, coercive, predatory, destabilizing, politically prohibited, or spiritually hazardous practices. Forbidden is not automatically Daemonic. |\n| **Secret Law** | Direct law-level authority requiring explicit discovery and its printed initiation price. |\n| **Daemonic** | A mechanical tag only when a Source Rule interacts with Corruption, daemonic energy, purification, or anti-daemonic rules. Social accusation does not create this tag. |\n\nA character normally has one Subpath progression. A future parent or Variant lineage uses its printed replacement procedure rather than granting a second simultaneous progression.\n\nA Subpath does not grant general access to a thematically similar Sphere. A Dreamweaver does not automatically learn Dreams; a Mirror Speaker does not automatically learn Illusion or Space; an Ancestral Channeler does not automatically learn Spirit Companions or Death. Only an explicit Source Rule grants a Sphere or talent.\n\n---\n",
+          "summary": "At CL3, choose one Spirit Awakening Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18."
+        }
+      ],
+      "source_rules_text": "# Spirit Awakening Subpaths\n\nAt CL3, choose one Spirit Awakening Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Classification | Meaning |\n|---|---|\n| **Open Tradition** | Teachable through a recognized school, shrine, profession, community, military office, or public scripture. Open access does not imply low power or common practitioners. |\n| **Restricted Lineage or Scripture** | Requires a hidden teacher, guarded manual, shrine, sect, spirit pact, haunted location, initiation, profession, or controlled institution. |\n| **Rare Inheritance** | Comes from bloodline, reincarnated memory, spirit ancestry, relic fusion, mutation, possession survived and integrated, divine scar, or singular transmission. |\n| **Forbidden Method or Variant** | Uses condemned, coercive, predatory, destabilizing, politically prohibited, or spiritually hazardous practices. Forbidden is not automatically Daemonic. |\n| **Secret Law** | Direct law-level authority requiring explicit discovery and its printed initiation price. |\n| **Daemonic** | A mechanical tag only when a Source Rule interacts with Corruption, daemonic energy, purification, or anti-daemonic rules. Social accusation does not create this tag. |\n\nA character normally has one Subpath progression. A future parent or Variant lineage uses its printed replacement procedure rather than granting a second simultaneous progression.\n\nA Subpath does not grant general access to a thematically similar Sphere. A Dreamweaver does not automatically learn Dreams; a Mirror Speaker does not automatically learn Illusion or Space; an Ancestral Channeler does not automatically learn Spirit Companions or Death. Only an explicit Source Rule grants a Sphere or talent.\n\n---\n",
+      "effective_rules_text": "# Spirit Awakening Subpaths\n\nAt CL3, choose one Spirit Awakening Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Classification | Meaning |\n|---|---|\n| **Open Tradition** | Teachable through a recognized school, shrine, profession, community, military office, or public scripture. Open access does not imply low power or common practitioners. |\n| **Restricted Lineage or Scripture** | Requires a hidden teacher, guarded manual, shrine, sect, spirit pact, haunted location, initiation, profession, or controlled institution. |\n| **Rare Inheritance** | Comes from bloodline, reincarnated memory, spirit ancestry, relic fusion, mutation, possession survived and integrated, divine scar, or singular transmission. |\n| **Forbidden Method or Variant** | Uses condemned, coercive, predatory, destabilizing, politically prohibited, or spiritually hazardous practices. Forbidden is not automatically Daemonic. |\n| **Secret Law** | Direct law-level authority requiring explicit discovery and its printed initiation price. |\n| **Daemonic** | A mechanical tag only when a Source Rule interacts with Corruption, daemonic energy, purification, or anti-daemonic rules. Social accusation does not create this tag. |\n\nA character normally has one Subpath progression. A future parent or Variant lineage uses its printed replacement procedure rather than granting a second simultaneous progression.\n\nA Subpath does not grant general access to a thematically similar Sphere. A Dreamweaver does not automatically learn Dreams; a Mirror Speaker does not automatically learn Illusion or Space; an Ancestral Channeler does not automatically learn Spirit Companions or Death. Only an explicit Source Rule grants a Sphere or talent.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.ability_score_improvement_or_cultivation_insight",
+      "display_name": "Ability Score Improvement or Cultivation Insight",
+      "aliases": [],
+      "feature_kind": "advancement_choice",
+      "minimum_cl": 4,
+      "granted_at_cl": [
+        4,
+        8,
+        12,
+        16,
+        19
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "Ability Score Improvement or Cultivation Insight",
+          "source_line_start": 242,
+          "source_line_end": 258,
+          "source_markdown": "## Ability Score Improvement or Cultivation Insight\n\nAt CL4, CL8, CL12, CL16, and CL19, choose one:\n\n- **Normal Ability Score Improvement:** Increase one ability score by 2, or increase two different ability scores by 1 each. No score can exceed the maximum allowed by your current Realm.\n- **Cultivation Insight:** Choose one Cultivation Insight from the central Tianxia catalogue for which you meet every prerequisite. Gain its cultivation benefit and increase one ability score listed in that Insight’s **Ability Increase (Level Selection)** entry by 1, to the maximum allowed by your current Realm.\n\nAn Insight gained through a manual, tribulation, relic, shrine, spirit pact, bloodline awakening, reincarnated memory, office, story reward, or another non-level source does not grant its ability increase unless that source explicitly says otherwise.\n\nBackground ability increases and Origin Insights are separate benefits.\n\nIf an Insight grants a new Sphere, it also grants the normal free first talent received whenever a character learns a new Sphere.\n\nUse the **Central Cultivation Insights** player catalogue and AI reference. An inherited entry flagged for cadence, determinism, or authority repair is not automatically publication-final merely because it appears in the central ledger.\n\n---\n",
+          "summary": "At CL4, CL8, CL12, CL16, and CL19, choose one:"
+        }
+      ],
+      "source_rules_text": "## Ability Score Improvement or Cultivation Insight\n\nAt CL4, CL8, CL12, CL16, and CL19, choose one:\n\n- **Normal Ability Score Improvement:** Increase one ability score by 2, or increase two different ability scores by 1 each. No score can exceed the maximum allowed by your current Realm.\n- **Cultivation Insight:** Choose one Cultivation Insight from the central Tianxia catalogue for which you meet every prerequisite. Gain its cultivation benefit and increase one ability score listed in that Insight’s **Ability Increase (Level Selection)** entry by 1, to the maximum allowed by your current Realm.\n\nAn Insight gained through a manual, tribulation, relic, shrine, spirit pact, bloodline awakening, reincarnated memory, office, story reward, or another non-level source does not grant its ability increase unless that source explicitly says otherwise.\n\nBackground ability increases and Origin Insights are separate benefits.\n\nIf an Insight grants a new Sphere, it also grants the normal free first talent received whenever a character learns a new Sphere.\n\nUse the **Central Cultivation Insights** player catalogue and AI reference. An inherited entry flagged for cadence, determinism, or authority repair is not automatically publication-final merely because it appears in the central ledger.\n\n---\n",
+      "effective_rules_text": "At CL4, CL8, CL12, CL16, and CL19, choose one of the following:\n\n- **Normal Ability Score Improvement:** Increase one ability score by 2, or increase two different ability scores by 1 each. No score can exceed the maximum allowed by your current Realm.\n- **Cultivation Insight:** Choose one Cultivation Insight from the Central Cultivation Insights catalogue for which you meet every prerequisite. Gain its printed benefit and increase one ability score listed in that Insight's **Ability Increase (Level Selection)** entry by 1, to the maximum allowed by your current Realm.\n\nAn Insight gained through a non-level source does not grant its ability increase unless that source explicitly says otherwise. Background ability increases and Origin Insights are separate benefits. If an Insight grants a new Sphere, it also grants the normal free first talent received whenever a character learns a new Sphere.\n",
+      "components": [],
+      "shared_rule_id": "tianxia.shared.advancement.ability_score_improvement_or_cultivation_insight",
+      "authority_resolution": {
+        "status": "authority_overlay_applied",
+        "reason": "The Central Cultivation Insights R4 catalogue is the sole current Insight authority.",
+        "controlling_sources": [
+          "Canonical/PHB/Tianxia_PHB_Chapter_03_Paths_and_Shared_Path_Rules_R2.md",
+          "Canonical/Insights/Tianxia_Cultivation_Insights_Compendium_R1.md",
+          "Canonical/Insights/Tianxia_Central_Cultivation_Insights_AI_Reference_R4.json"
+        ],
+        "effective_rules_text": "At CL4, CL8, CL12, CL16, and CL19, choose one of the following:\n\n- **Normal Ability Score Improvement:** Increase one ability score by 2, or increase two different ability scores by 1 each. No score can exceed the maximum allowed by your current Realm.\n- **Cultivation Insight:** Choose one Cultivation Insight from the Central Cultivation Insights catalogue for which you meet every prerequisite. Gain its printed benefit and increase one ability score listed in that Insight's **Ability Increase (Level Selection)** entry by 1, to the maximum allowed by your current Realm.\n\nAn Insight gained through a non-level source does not grant its ability increase unless that source explicitly says otherwise. Background ability increases and Origin Insights are separate benefits. If an Insight grants a new Sphere, it also grants the normal free first talent received whenever a character learns a new Sphere."
+      },
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.domain_pressure",
+      "display_name": "Domain Pressure",
+      "aliases": [],
+      "feature_kind": "area_feature",
+      "minimum_cl": 5,
+      "granted_at_cl": [
+        5
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL5 — Domain Pressure",
+          "source_line_start": 415,
+          "source_line_end": 437,
+          "source_markdown": "# CL5 — Domain Pressure\n\n**Action Type:** Action  \n**Area:** Cone originating from you  \n**Cost:** 2 Resonance\n\n| CL | Cone Length |\n|---:|---:|\n| 5–10 | 15 feet |\n| 11–16 | 30 feet |\n| 17–20 | 60 feet |\n\nRelease a wave of spiritual authority. Each creature of your choice in the area makes a Wisdom saving throw.\n\n**Failed Save:** The creature is Frightened of you until the end of your next turn and becomes Resonance Marked by you.  \n**Successful Save:** The creature suffers one ordinary Spiritual Pressure effect of your choice until the start of your next turn.\n\nIf a creature that fails is immune to Frightened, it is not Frightened. Instead, choose two different ordinary Spiritual Pressure effects for it. These two effects are one exceptional pressure package created by this feature and may coexist until the start of your next turn.\n\nDomain Pressure is not a full spiritual Domain, does not establish ownership over the area, and does not create an Anchor, prison, anti-teleport effect, or companion-command zone.\n\n---\n",
+          "summary": "Action Type: Action Area: Cone originating from you Cost: 2 Resonance"
+        }
+      ],
+      "source_rules_text": "# CL5 — Domain Pressure\n\n**Action Type:** Action  \n**Area:** Cone originating from you  \n**Cost:** 2 Resonance\n\n| CL | Cone Length |\n|---:|---:|\n| 5–10 | 15 feet |\n| 11–16 | 30 feet |\n| 17–20 | 60 feet |\n\nRelease a wave of spiritual authority. Each creature of your choice in the area makes a Wisdom saving throw.\n\n**Failed Save:** The creature is Frightened of you until the end of your next turn and becomes Resonance Marked by you.  \n**Successful Save:** The creature suffers one ordinary Spiritual Pressure effect of your choice until the start of your next turn.\n\nIf a creature that fails is immune to Frightened, it is not Frightened. Instead, choose two different ordinary Spiritual Pressure effects for it. These two effects are one exceptional pressure package created by this feature and may coexist until the start of your next turn.\n\nDomain Pressure is not a full spiritual Domain, does not establish ownership over the area, and does not create an Anchor, prison, anti-teleport effect, or companion-command zone.\n\n---\n",
+      "effective_rules_text": "# CL5 — Domain Pressure\n\n**Action Type:** Action  \n**Area:** Cone originating from you  \n**Cost:** 2 Resonance\n\n| CL | Cone Length |\n|---:|---:|\n| 5–10 | 15 feet |\n| 11–16 | 30 feet |\n| 17–20 | 60 feet |\n\nRelease a wave of spiritual authority. Each creature of your choice in the area makes a Wisdom saving throw.\n\n**Failed Save:** The creature is Frightened of you until the end of your next turn and becomes Resonance Marked by you.  \n**Successful Save:** The creature suffers one ordinary Spiritual Pressure effect of your choice until the start of your next turn.\n\nIf a creature that fails is immune to Frightened, it is not Frightened. Instead, choose two different ordinary Spiritual Pressure effects for it. These two effects are one exceptional pressure package created by this feature and may coexist until the start of your next turn.\n\nDomain Pressure is not a full spiritual Domain, does not establish ownership over the area, and does not create an Anchor, prison, anti-teleport effect, or companion-command zone.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.subpath_feature",
+      "display_name": "Subpath Feature",
+      "aliases": [],
+      "feature_kind": "subpath_feature_slot",
+      "minimum_cl": 6,
+      "granted_at_cl": [
+        6,
+        10,
+        14,
+        18
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "Spirit Awakening Subpaths",
+          "source_line_start": 259,
+          "source_line_end": 277,
+          "source_markdown": "# Spirit Awakening Subpaths\n\nAt CL3, choose one Spirit Awakening Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Classification | Meaning |\n|---|---|\n| **Open Tradition** | Teachable through a recognized school, shrine, profession, community, military office, or public scripture. Open access does not imply low power or common practitioners. |\n| **Restricted Lineage or Scripture** | Requires a hidden teacher, guarded manual, shrine, sect, spirit pact, haunted location, initiation, profession, or controlled institution. |\n| **Rare Inheritance** | Comes from bloodline, reincarnated memory, spirit ancestry, relic fusion, mutation, possession survived and integrated, divine scar, or singular transmission. |\n| **Forbidden Method or Variant** | Uses condemned, coercive, predatory, destabilizing, politically prohibited, or spiritually hazardous practices. Forbidden is not automatically Daemonic. |\n| **Secret Law** | Direct law-level authority requiring explicit discovery and its printed initiation price. |\n| **Daemonic** | A mechanical tag only when a Source Rule interacts with Corruption, daemonic energy, purification, or anti-daemonic rules. Social accusation does not create this tag. |\n\nA character normally has one Subpath progression. A future parent or Variant lineage uses its printed replacement procedure rather than granting a second simultaneous progression.\n\nA Subpath does not grant general access to a thematically similar Sphere. A Dreamweaver does not automatically learn Dreams; a Mirror Speaker does not automatically learn Illusion or Space; an Ancestral Channeler does not automatically learn Spirit Companions or Death. Only an explicit Source Rule grants a Sphere or talent.\n\n---\n",
+          "summary": "At CL3, choose one Spirit Awakening Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18."
+        }
+      ],
+      "source_rules_text": "# Spirit Awakening Subpaths\n\nAt CL3, choose one Spirit Awakening Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Classification | Meaning |\n|---|---|\n| **Open Tradition** | Teachable through a recognized school, shrine, profession, community, military office, or public scripture. Open access does not imply low power or common practitioners. |\n| **Restricted Lineage or Scripture** | Requires a hidden teacher, guarded manual, shrine, sect, spirit pact, haunted location, initiation, profession, or controlled institution. |\n| **Rare Inheritance** | Comes from bloodline, reincarnated memory, spirit ancestry, relic fusion, mutation, possession survived and integrated, divine scar, or singular transmission. |\n| **Forbidden Method or Variant** | Uses condemned, coercive, predatory, destabilizing, politically prohibited, or spiritually hazardous practices. Forbidden is not automatically Daemonic. |\n| **Secret Law** | Direct law-level authority requiring explicit discovery and its printed initiation price. |\n| **Daemonic** | A mechanical tag only when a Source Rule interacts with Corruption, daemonic energy, purification, or anti-daemonic rules. Social accusation does not create this tag. |\n\nA character normally has one Subpath progression. A future parent or Variant lineage uses its printed replacement procedure rather than granting a second simultaneous progression.\n\nA Subpath does not grant general access to a thematically similar Sphere. A Dreamweaver does not automatically learn Dreams; a Mirror Speaker does not automatically learn Illusion or Space; an Ancestral Channeler does not automatically learn Spirit Companions or Death. Only an explicit Source Rule grants a Sphere or talent.\n\n---\n",
+      "effective_rules_text": "# Spirit Awakening Subpaths\n\nAt CL3, choose one Spirit Awakening Subpath for which you have legal access. You gain its features at CL3, CL6, CL10, CL14, and CL18.\n\n| Classification | Meaning |\n|---|---|\n| **Open Tradition** | Teachable through a recognized school, shrine, profession, community, military office, or public scripture. Open access does not imply low power or common practitioners. |\n| **Restricted Lineage or Scripture** | Requires a hidden teacher, guarded manual, shrine, sect, spirit pact, haunted location, initiation, profession, or controlled institution. |\n| **Rare Inheritance** | Comes from bloodline, reincarnated memory, spirit ancestry, relic fusion, mutation, possession survived and integrated, divine scar, or singular transmission. |\n| **Forbidden Method or Variant** | Uses condemned, coercive, predatory, destabilizing, politically prohibited, or spiritually hazardous practices. Forbidden is not automatically Daemonic. |\n| **Secret Law** | Direct law-level authority requiring explicit discovery and its printed initiation price. |\n| **Daemonic** | A mechanical tag only when a Source Rule interacts with Corruption, daemonic energy, purification, or anti-daemonic rules. Social accusation does not create this tag. |\n\nA character normally has one Subpath progression. A future parent or Variant lineage uses its printed replacement procedure rather than granting a second simultaneous progression.\n\nA Subpath does not grant general access to a thematically similar Sphere. A Dreamweaver does not automatically learn Dreams; a Mirror Speaker does not automatically learn Illusion or Space; an Ancestral Channeler does not automatically learn Spirit Companions or Death. Only an explicit Source Rule grants a Sphere or talent.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.astral_projection",
+      "display_name": "Astral Projection",
+      "aliases": [],
+      "feature_kind": "projection_feature",
+      "minimum_cl": 7,
+      "granted_at_cl": [
+        7
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL7 — Astral Projection",
+          "source_line_start": 438,
+          "source_line_end": 492,
+          "source_markdown": "# CL7 — Astral Projection\n\n**Action Type:** Action  \n**Cost:** 4 Resonance  \n**Duration:** Up to 10 minutes  \n**Concentration:** No\n\nProject your spirit from your body.\n\n## Body and Range\n\nYour body becomes Unconscious and remains a living creature in its space. It can be moved, damaged, healed, restrained, protected, or killed normally. Your projected spirit can travel up to 300 feet from your body. At CL15, this range becomes 1 mile.\n\nThe projection ends if:\n\n- you return to your body;\n- you dismiss it without an action;\n- the duration expires;\n- your body takes damage;\n- your projected spirit takes damage;\n- your body dies;\n- you become unable to maintain a coherent soul connection;\n- body and projection are separated by a barrier that explicitly blocks or severs soul connection.\n\nWhen the projection ends normally, it returns by the shortest legal spiritual route. If no legal route exists because a barrier traps it, the projection remains adjacent to that barrier and you are Incapacitated until the barrier is opened, overcome, or the connection is otherwise resolved.\n\n## One Creature, Two Positions\n\nYour body and projection are two positions of the same creature, not two creatures.\n\n- You have one Hit Point total, one condition set, one turn, one action economy, and one Concentration limit.\n- An activation cannot affect both positions as though they were separate targets.\n- Damage to either position is damage to you and ends Astral Projection after that damage resolves.\n- Healing either position heals you once.\n- An effect attached to you remains attached unless its own rules require a body or a projected spirit.\n\n## Projected Spirit\n\nWhile projected:\n\n- You retain your senses, Spiritual Sense, Read the Spirit, and Soul Gaze.\n- You can communicate telepathically with a willing creature within 30 feet.\n- You have a Fly Speed equal to your Speed and can hover.\n- During a move, you can pass through creatures and up to 5 feet of nonmagical material, but cannot end inside a creature or object.\n- Wards, Seals, Formations, consecrated boundaries, spirit prisons, Domains, and Source Rules that block astral travel can stop you.\n- You are invisible to ordinary sight but visible to spiritual perception and spirit-revealing effects.\n- You cannot manipulate ordinary physical objects.\n- You cannot make attacks, activate hostile techniques, manifest a Domain, command a full Companion, use an item, or affect the physical world unless another Source Rule expressly permits it.\n\nAn effect that can target spirits can target your projection. Use your normal AC, Hit Points, saving throws, and defenses.\n\nAstral Projection does not create a Soul Fragment, Companion, independent manifestation, second origin for a technique, or separately acting copy of you.\n\n---\n",
+          "summary": "Action Type: Action Cost: 4 Resonance Duration: Up to 10 minutes Concentration: No"
+        }
+      ],
+      "source_rules_text": "# CL7 — Astral Projection\n\n**Action Type:** Action  \n**Cost:** 4 Resonance  \n**Duration:** Up to 10 minutes  \n**Concentration:** No\n\nProject your spirit from your body.\n\n## Body and Range\n\nYour body becomes Unconscious and remains a living creature in its space. It can be moved, damaged, healed, restrained, protected, or killed normally. Your projected spirit can travel up to 300 feet from your body. At CL15, this range becomes 1 mile.\n\nThe projection ends if:\n\n- you return to your body;\n- you dismiss it without an action;\n- the duration expires;\n- your body takes damage;\n- your projected spirit takes damage;\n- your body dies;\n- you become unable to maintain a coherent soul connection;\n- body and projection are separated by a barrier that explicitly blocks or severs soul connection.\n\nWhen the projection ends normally, it returns by the shortest legal spiritual route. If no legal route exists because a barrier traps it, the projection remains adjacent to that barrier and you are Incapacitated until the barrier is opened, overcome, or the connection is otherwise resolved.\n\n## One Creature, Two Positions\n\nYour body and projection are two positions of the same creature, not two creatures.\n\n- You have one Hit Point total, one condition set, one turn, one action economy, and one Concentration limit.\n- An activation cannot affect both positions as though they were separate targets.\n- Damage to either position is damage to you and ends Astral Projection after that damage resolves.\n- Healing either position heals you once.\n- An effect attached to you remains attached unless its own rules require a body or a projected spirit.\n\n## Projected Spirit\n\nWhile projected:\n\n- You retain your senses, Spiritual Sense, Read the Spirit, and Soul Gaze.\n- You can communicate telepathically with a willing creature within 30 feet.\n- You have a Fly Speed equal to your Speed and can hover.\n- During a move, you can pass through creatures and up to 5 feet of nonmagical material, but cannot end inside a creature or object.\n- Wards, Seals, Formations, consecrated boundaries, spirit prisons, Domains, and Source Rules that block astral travel can stop you.\n- You are invisible to ordinary sight but visible to spiritual perception and spirit-revealing effects.\n- You cannot manipulate ordinary physical objects.\n- You cannot make attacks, activate hostile techniques, manifest a Domain, command a full Companion, use an item, or affect the physical world unless another Source Rule expressly permits it.\n\nAn effect that can target spirits can target your projection. Use your normal AC, Hit Points, saving throws, and defenses.\n\nAstral Projection does not create a Soul Fragment, Companion, independent manifestation, second origin for a technique, or separately acting copy of you.\n\n---\n",
+      "effective_rules_text": "# CL7 — Astral Projection\n\n**Action Type:** Action  \n**Cost:** 4 Resonance  \n**Duration:** Up to 10 minutes  \n**Concentration:** No\n\nProject your spirit from your body.\n\n## Body and Range\n\nYour body becomes Unconscious and remains a living creature in its space. It can be moved, damaged, healed, restrained, protected, or killed normally. Your projected spirit can travel up to 300 feet from your body. At CL15, this range becomes 1 mile.\n\nThe projection ends if:\n\n- you return to your body;\n- you dismiss it without an action;\n- the duration expires;\n- your body takes damage;\n- your projected spirit takes damage;\n- your body dies;\n- you become unable to maintain a coherent soul connection;\n- body and projection are separated by a barrier that explicitly blocks or severs soul connection.\n\nWhen the projection ends normally, it returns by the shortest legal spiritual route. If no legal route exists because a barrier traps it, the projection remains adjacent to that barrier and you are Incapacitated until the barrier is opened, overcome, or the connection is otherwise resolved.\n\n## One Creature, Two Positions\n\nYour body and projection are two positions of the same creature, not two creatures.\n\n- You have one Hit Point total, one condition set, one turn, one action economy, and one Concentration limit.\n- An activation cannot affect both positions as though they were separate targets.\n- Damage to either position is damage to you and ends Astral Projection after that damage resolves.\n- Healing either position heals you once.\n- An effect attached to you remains attached unless its own rules require a body or a projected spirit.\n\n## Projected Spirit\n\nWhile projected:\n\n- You retain your senses, Spiritual Sense, Read the Spirit, and Soul Gaze.\n- You can communicate telepathically with a willing creature within 30 feet.\n- You have a Fly Speed equal to your Speed and can hover.\n- During a move, you can pass through creatures and up to 5 feet of nonmagical material, but cannot end inside a creature or object.\n- Wards, Seals, Formations, consecrated boundaries, spirit prisons, Domains, and Source Rules that block astral travel can stop you.\n- You are invisible to ordinary sight but visible to spiritual perception and spirit-revealing effects.\n- You cannot manipulate ordinary physical objects.\n- You cannot make attacks, activate hostile techniques, manifest a Domain, command a full Companion, use an item, or affect the physical world unless another Source Rule expressly permits it.\n\nAn effect that can target spirits can target your projection. Use your normal AC, Hit Points, saving throws, and defenses.\n\nAstral Projection does not create a Soul Fragment, Companion, independent manifestation, second origin for a technique, or separately acting copy of you.\n\n---\n",
+      "components": [
+        {
+          "title": "Body and Range",
+          "slug": "body_and_range",
+          "heading_level": 2,
+          "source_line": 447,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.astral_projection.component.body_and_range"
+        },
+        {
+          "title": "One Creature, Two Positions",
+          "slug": "one_creature_two_positions",
+          "heading_level": 2,
+          "source_line": 464,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.astral_projection.component.one_creature_two_positions"
+        },
+        {
+          "title": "Projected Spirit",
+          "slug": "projected_spirit",
+          "heading_level": 2,
+          "source_line": 474,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.astral_projection.component.projected_spirit"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.soul_vessel",
+      "display_name": "Soul Vessel",
+      "aliases": [],
+      "feature_kind": "asset_feature",
+      "minimum_cl": 9,
+      "granted_at_cl": [
+        9
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL9 — Soul Vessel",
+          "source_line_start": 493,
+          "source_line_end": 564,
+          "source_markdown": "# CL9 — Soul Vessel\n\nYou can create a stable sympathetic vessel for one spiritual relationship.\n\n## Create or Replace the Vessel\n\n**Time:** 10 minutes  \n**Cost:** 2 Resonance  \n**Target:** One Tiny nonliving object you touch\n\nThe object becomes your **Soul Vessel**, a Spirit Cultivation Asset. It may be a doll, name tablet, folded paper figure, mirror shard, prayer strip, bead, thread knot, mask, bell, carved seal, weapon tassel, reliquary, or another object capable of carrying your spiritual imprint.\n\nYou can have only one Soul Vessel. Creating another causes the previous vessel to become an ordinary object and ends its Vessel Imprint.\n\nWhen separate and legally targetable, the vessel has:\n\n- **AC:** Your Cultivation Save DC.\n- **Hit Points:** `4 × Proficiency Bonus`.\n- **Immunities:** Psychic and Poison damage; Charmed, Frightened, Poisoned, Prone, and ordinary bodily conditions.\n- **Source CL:** Your effective Spirit Awakening CL.\n\nWhile worn or carried, use the normal rules for targeting a worn or carried object. Reducing the vessel to 0 Hit Points destroys its cultivated structure, ends its imprint, and leaves an ordinary broken object. This does not damage your soul or the imprinted target.\n\n## Create a Vessel Imprint\n\n**Action Type:** Action  \n**Range:** 60 feet  \n**Cost:** 3 Resonance  \n**Target:** One willing creature, or one creature Resonance Marked by you\n\nAn unwilling target makes a Charisma saving throw.\n\n**Successful Save:** No Vessel Imprint is created. The target knows you attempted the link and suffers one ordinary Spiritual Pressure effect until the start of your next turn.  \n**Failed Save or Willing Target:** The Soul Vessel records a sympathetic imprint of the target.\n\nA Vessel Imprint is not a Soul Fragment, copied soul, possession link, ownership claim, memory copy, or Spirit Bond.\n\n### Duration\n\n- A willing target’s imprint persists until you dismiss it, replace it, the target withdraws consent as an Action, the vessel is destroyed, or a Source Rule severs it.\n- An unwilling target’s imprint lasts until the end of the scene. The target can also use an Action to repeat the Charisma saving throw, ending the imprint on a success.\n\nThe vessel can hold only one imprint.\n\n### Imprint Benefits\n\nWhile the imprint persists:\n\n- The target bears your Resonance Mark, and that mark does not expire from its ordinary duration.\n- While target and vessel are on the same plane and within 1 mile, you know the direction from the vessel to the target, but not exact distance or a route through spiritual concealment.\n- You can use Soul Gaze on the target from the vessel at a range of 1 mile without ordinary line of sight. Total spiritual concealment, a ward that severs sympathetic links, or a higher-authority boundary still blocks it.\n- The imprint supplies identity and direction only. It does not let another feature ignore its own range, cover, target, consent, or Source CL requirements.\n\n### Vessel Ward\n\n**Action Type:** Reaction  \n**Trigger:** A willing imprinted target within 60 feet of the vessel fails an Intelligence, Wisdom, or Charisma saving throw against a spiritual, mental, emotional, dream, memory, possession, or identity effect.  \n**Cost:** 2 Resonance  \n**Limit:** Once per round\n\nAdd your Proficiency Bonus to the saving throw, potentially turning failure into success.\n\nVessel Ward cannot modify a death saving throw, cannot add Proficiency Bonus twice, and cannot combine with Soulward Response on the same saving throw.\n\n### Sympathetic Rite at CL13\n\nAfter you gain Spiritual Exorcism, a willing imprinted target within 1 mile can be the target of your Deep Exorcism Rite without being touched. Increase the rite’s Resonance cost by 2. A barrier that blocks the Vessel Imprint also blocks the rite.\n\nThis remote rite cannot target an unwilling Host or Intruder, cannot establish a new possession target, and cannot exceed the normal authority of Spiritual Exorcism.\n\n---\n",
+          "summary": "You can create a stable sympathetic vessel for one spiritual relationship."
+        }
+      ],
+      "source_rules_text": "# CL9 — Soul Vessel\n\nYou can create a stable sympathetic vessel for one spiritual relationship.\n\n## Create or Replace the Vessel\n\n**Time:** 10 minutes  \n**Cost:** 2 Resonance  \n**Target:** One Tiny nonliving object you touch\n\nThe object becomes your **Soul Vessel**, a Spirit Cultivation Asset. It may be a doll, name tablet, folded paper figure, mirror shard, prayer strip, bead, thread knot, mask, bell, carved seal, weapon tassel, reliquary, or another object capable of carrying your spiritual imprint.\n\nYou can have only one Soul Vessel. Creating another causes the previous vessel to become an ordinary object and ends its Vessel Imprint.\n\nWhen separate and legally targetable, the vessel has:\n\n- **AC:** Your Cultivation Save DC.\n- **Hit Points:** `4 × Proficiency Bonus`.\n- **Immunities:** Psychic and Poison damage; Charmed, Frightened, Poisoned, Prone, and ordinary bodily conditions.\n- **Source CL:** Your effective Spirit Awakening CL.\n\nWhile worn or carried, use the normal rules for targeting a worn or carried object. Reducing the vessel to 0 Hit Points destroys its cultivated structure, ends its imprint, and leaves an ordinary broken object. This does not damage your soul or the imprinted target.\n\n## Create a Vessel Imprint\n\n**Action Type:** Action  \n**Range:** 60 feet  \n**Cost:** 3 Resonance  \n**Target:** One willing creature, or one creature Resonance Marked by you\n\nAn unwilling target makes a Charisma saving throw.\n\n**Successful Save:** No Vessel Imprint is created. The target knows you attempted the link and suffers one ordinary Spiritual Pressure effect until the start of your next turn.  \n**Failed Save or Willing Target:** The Soul Vessel records a sympathetic imprint of the target.\n\nA Vessel Imprint is not a Soul Fragment, copied soul, possession link, ownership claim, memory copy, or Spirit Bond.\n\n### Duration\n\n- A willing target’s imprint persists until you dismiss it, replace it, the target withdraws consent as an Action, the vessel is destroyed, or a Source Rule severs it.\n- An unwilling target’s imprint lasts until the end of the scene. The target can also use an Action to repeat the Charisma saving throw, ending the imprint on a success.\n\nThe vessel can hold only one imprint.\n\n### Imprint Benefits\n\nWhile the imprint persists:\n\n- The target bears your Resonance Mark, and that mark does not expire from its ordinary duration.\n- While target and vessel are on the same plane and within 1 mile, you know the direction from the vessel to the target, but not exact distance or a route through spiritual concealment.\n- You can use Soul Gaze on the target from the vessel at a range of 1 mile without ordinary line of sight. Total spiritual concealment, a ward that severs sympathetic links, or a higher-authority boundary still blocks it.\n- The imprint supplies identity and direction only. It does not let another feature ignore its own range, cover, target, consent, or Source CL requirements.\n\n### Vessel Ward\n\n**Action Type:** Reaction  \n**Trigger:** A willing imprinted target within 60 feet of the vessel fails an Intelligence, Wisdom, or Charisma saving throw against a spiritual, mental, emotional, dream, memory, possession, or identity effect.  \n**Cost:** 2 Resonance  \n**Limit:** Once per round\n\nAdd your Proficiency Bonus to the saving throw, potentially turning failure into success.\n\nVessel Ward cannot modify a death saving throw, cannot add Proficiency Bonus twice, and cannot combine with Soulward Response on the same saving throw.\n\n### Sympathetic Rite at CL13\n\nAfter you gain Spiritual Exorcism, a willing imprinted target within 1 mile can be the target of your Deep Exorcism Rite without being touched. Increase the rite’s Resonance cost by 2. A barrier that blocks the Vessel Imprint also blocks the rite.\n\nThis remote rite cannot target an unwilling Host or Intruder, cannot establish a new possession target, and cannot exceed the normal authority of Spiritual Exorcism.\n\n---\n",
+      "effective_rules_text": "# CL9 — Soul Vessel\n\nYou can create a stable sympathetic vessel for one spiritual relationship.\n\n## Create or Replace the Vessel\n\n**Time:** 10 minutes  \n**Cost:** 2 Resonance  \n**Target:** One Tiny nonliving object you touch\n\nThe object becomes your **Soul Vessel**, a Spirit Cultivation Asset. It may be a doll, name tablet, folded paper figure, mirror shard, prayer strip, bead, thread knot, mask, bell, carved seal, weapon tassel, reliquary, or another object capable of carrying your spiritual imprint.\n\nYou can have only one Soul Vessel. Creating another causes the previous vessel to become an ordinary object and ends its Vessel Imprint.\n\nWhen separate and legally targetable, the vessel has:\n\n- **AC:** Your Cultivation Save DC.\n- **Hit Points:** `4 × Proficiency Bonus`.\n- **Immunities:** Psychic and Poison damage; Charmed, Frightened, Poisoned, Prone, and ordinary bodily conditions.\n- **Source CL:** Your effective Spirit Awakening CL.\n\nWhile worn or carried, use the normal rules for targeting a worn or carried object. Reducing the vessel to 0 Hit Points destroys its cultivated structure, ends its imprint, and leaves an ordinary broken object. This does not damage your soul or the imprinted target.\n\n## Create a Vessel Imprint\n\n**Action Type:** Action  \n**Range:** 60 feet  \n**Cost:** 3 Resonance  \n**Target:** One willing creature, or one creature Resonance Marked by you\n\nAn unwilling target makes a Charisma saving throw.\n\n**Successful Save:** No Vessel Imprint is created. The target knows you attempted the link and suffers one ordinary Spiritual Pressure effect until the start of your next turn.  \n**Failed Save or Willing Target:** The Soul Vessel records a sympathetic imprint of the target.\n\nA Vessel Imprint is not a Soul Fragment, copied soul, possession link, ownership claim, memory copy, or Spirit Bond.\n\n### Duration\n\n- A willing target’s imprint persists until you dismiss it, replace it, the target withdraws consent as an Action, the vessel is destroyed, or a Source Rule severs it.\n- An unwilling target’s imprint lasts until the end of the scene. The target can also use an Action to repeat the Charisma saving throw, ending the imprint on a success.\n\nThe vessel can hold only one imprint.\n\n### Imprint Benefits\n\nWhile the imprint persists:\n\n- The target bears your Resonance Mark, and that mark does not expire from its ordinary duration.\n- While target and vessel are on the same plane and within 1 mile, you know the direction from the vessel to the target, but not exact distance or a route through spiritual concealment.\n- You can use Soul Gaze on the target from the vessel at a range of 1 mile without ordinary line of sight. Total spiritual concealment, a ward that severs sympathetic links, or a higher-authority boundary still blocks it.\n- The imprint supplies identity and direction only. It does not let another feature ignore its own range, cover, target, consent, or Source CL requirements.\n\n### Vessel Ward\n\n**Action Type:** Reaction  \n**Trigger:** A willing imprinted target within 60 feet of the vessel fails an Intelligence, Wisdom, or Charisma saving throw against a spiritual, mental, emotional, dream, memory, possession, or identity effect.  \n**Cost:** 2 Resonance  \n**Limit:** Once per round\n\nAdd your Proficiency Bonus to the saving throw, potentially turning failure into success.\n\nVessel Ward cannot modify a death saving throw, cannot add Proficiency Bonus twice, and cannot combine with Soulward Response on the same saving throw.\n\n### Sympathetic Rite at CL13\n\nAfter you gain Spiritual Exorcism, a willing imprinted target within 1 mile can be the target of your Deep Exorcism Rite without being touched. Increase the rite’s Resonance cost by 2. A barrier that blocks the Vessel Imprint also blocks the rite.\n\nThis remote rite cannot target an unwilling Host or Intruder, cannot establish a new possession target, and cannot exceed the normal authority of Spiritual Exorcism.\n\n---\n",
+      "components": [
+        {
+          "title": "Create or Replace the Vessel",
+          "slug": "create_or_replace_the_vessel",
+          "heading_level": 2,
+          "source_line": 497,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_vessel.component.create_or_replace_the_vessel"
+        },
+        {
+          "title": "Create a Vessel Imprint",
+          "slug": "create_a_vessel_imprint",
+          "heading_level": 2,
+          "source_line": 516,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_vessel.component.create_a_vessel_imprint"
+        },
+        {
+          "title": "Duration",
+          "slug": "duration",
+          "heading_level": 3,
+          "source_line": 530,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_vessel.component.duration"
+        },
+        {
+          "title": "Imprint Benefits",
+          "slug": "imprint_benefits",
+          "heading_level": 3,
+          "source_line": 537,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_vessel.component.imprint_benefits"
+        },
+        {
+          "title": "Vessel Ward",
+          "slug": "vessel_ward",
+          "heading_level": 3,
+          "source_line": 546,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_vessel.component.vessel_ward"
+        },
+        {
+          "title": "Sympathetic Rite at CL13",
+          "slug": "sympathetic_rite_at",
+          "heading_level": 3,
+          "source_line": 557,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_vessel.component.sympathetic_rite_at"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.soul_armor",
+      "display_name": "Soul Armor",
+      "aliases": [],
+      "feature_kind": "defensive_feature",
+      "minimum_cl": 11,
+      "granted_at_cl": [
+        11
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL11 — Soul Armor",
+          "source_line_start": 565,
+          "source_line_end": 582,
+          "source_markdown": "# CL11 — Soul Armor\n\nYour cultivated identity hardens into spiritual armor.\n\nYou gain Resistance to Psychic damage.\n\nSoulward Response gains these benefits:\n\n- When it turns a failed saving throw into a success, you may end one ordinary Resonance Mark or ordinary Spiritual Pressure effect on yourself.\n- If that successful saving throw would normally deal half Psychic damage, you instead take no Psychic damage.\n- If the effect would Charm, Frighten, possess, displace, or rewrite your soul on a failed save and do nothing on a successful save, a successful Soulward Response prevents it normally.\n\nIn addition, when an effect attempts to read, alter, erase, copy, consume, imprison, or replace your memory, identity, Soul Anchor, or soul without granting a saving throw, you may use Soulward Response and make a Wisdom saving throw against the effect’s save DC. If it has no save DC, use `8 + source Proficiency Bonus + source key ability modifier`.\n\nOn success, prevent an ordinary effect. Against an equal- or higher-authority effect, use its printed success result. If it has none, success suppresses the attempted alteration until the end of your next turn and exposes its broad Source CL and sustaining Anchor to Spiritual Sense; it does not automatically destroy the source.\n\n---\n",
+          "summary": "Your cultivated identity hardens into spiritual armor."
+        }
+      ],
+      "source_rules_text": "# CL11 — Soul Armor\n\nYour cultivated identity hardens into spiritual armor.\n\nYou gain Resistance to Psychic damage.\n\nSoulward Response gains these benefits:\n\n- When it turns a failed saving throw into a success, you may end one ordinary Resonance Mark or ordinary Spiritual Pressure effect on yourself.\n- If that successful saving throw would normally deal half Psychic damage, you instead take no Psychic damage.\n- If the effect would Charm, Frighten, possess, displace, or rewrite your soul on a failed save and do nothing on a successful save, a successful Soulward Response prevents it normally.\n\nIn addition, when an effect attempts to read, alter, erase, copy, consume, imprison, or replace your memory, identity, Soul Anchor, or soul without granting a saving throw, you may use Soulward Response and make a Wisdom saving throw against the effect’s save DC. If it has no save DC, use `8 + source Proficiency Bonus + source key ability modifier`.\n\nOn success, prevent an ordinary effect. Against an equal- or higher-authority effect, use its printed success result. If it has none, success suppresses the attempted alteration until the end of your next turn and exposes its broad Source CL and sustaining Anchor to Spiritual Sense; it does not automatically destroy the source.\n\n---\n",
+      "effective_rules_text": "# CL11 — Soul Armor\n\nYour cultivated identity hardens into spiritual armor.\n\nYou gain Resistance to Psychic damage.\n\nSoulward Response gains these benefits:\n\n- When it turns a failed saving throw into a success, you may end one ordinary Resonance Mark or ordinary Spiritual Pressure effect on yourself.\n- If that successful saving throw would normally deal half Psychic damage, you instead take no Psychic damage.\n- If the effect would Charm, Frighten, possess, displace, or rewrite your soul on a failed save and do nothing on a successful save, a successful Soulward Response prevents it normally.\n\nIn addition, when an effect attempts to read, alter, erase, copy, consume, imprison, or replace your memory, identity, Soul Anchor, or soul without granting a saving throw, you may use Soulward Response and make a Wisdom saving throw against the effect’s save DC. If it has no save DC, use `8 + source Proficiency Bonus + source key ability modifier`.\n\nOn success, prevent an ordinary effect. Against an equal- or higher-authority effect, use its printed success result. If it has none, success suppresses the attempted alteration until the end of your next turn and exposes its broad Source CL and sustaining Anchor to Spiritual Sense; it does not automatically destroy the source.\n\n---\n",
+      "components": [],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.spiritual_exorcism",
+      "display_name": "Spiritual Exorcism",
+      "aliases": [],
+      "feature_kind": "procedure_feature",
+      "minimum_cl": 13,
+      "granted_at_cl": [
+        13
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL13 — Spiritual Exorcism",
+          "source_line_start": 583,
+          "source_line_end": 672,
+          "source_markdown": "# CL13 — Spiritual Exorcism\n\nYou can diagnose, suppress, separate, expel, cleanse, and release invasive spiritual effects. Spiritual Exorcism uses the terms and authority hierarchy in the Spirit Awakening Rules Reference.\n\nAn **Intrusion** for this feature can be:\n\n- unwilling possession or coercive Hosting;\n- dream intrusion;\n- spiritual contamination;\n- imposed emotional corruption;\n- memory interference;\n- hostile spirit presence;\n- a Heart Demon expression that its Source Rule permits another creature to confront;\n- a curse with a spiritual, dream, memory, emotion, identity, or soul component;\n- a Charmed, Frightened, or madness effect created by a supernatural mental or spiritual source.\n\nSpiritual Exorcism cannot treat integrated spirit ancestry, a legal Path or Subpath, a Foundation, Method, Origin Insight, ordinary memory, willing stable Bond, chosen oath, or accepted presence as an Intrusion unless its own Source Rule expressly permits separation.\n\n## Exorcism DC\n\nMake a Spirit Awakening Cultivation Check against the Intrusion’s save DC. If it has no printed DC, use the creator’s or sustaining spirit’s Cultivation Save DC. If neither is available, use:\n\n| Source Realm | Authority DC |\n|---|---:|\n| Mortal | 12 |\n| Foundation | 14 |\n| Core Formation | 16 |\n| Nascent Soul | 18 |\n| Immortal | 20 |\n\n## Battlefield Exorcism\n\n**Action Type:** Action  \n**Range:** 60 feet  \n**Cost:** 4 Resonance  \n**Target:** One perceived Intrusion attached to a creature, object, location, manifestation, vessel, or Spiritual Anchor\n\nMake the Cultivation Check. A specific Intrusion can be targeted by your Battlefield Exorcism only once per round.\n\n**Failed Check:** The Intrusion remains. If it permits a repeat saving throw, the affected creature immediately repeats that save with Advantage. You learn the Intrusion’s broad category, Source CL band relative to you, and whether it is sustained by a creature, Bond, vessel, location, or other Spiritual Anchor.\n\n**Successful Check:** Compare the Intrusion’s Source CL with this feature’s Source CL.\n\n| Intrusion Authority | Result |\n|---|---|\n| **6 or more Source CL lower** | End one ordinary temporary Intrusion. An ordinary possession is separated and locally expelled to its legal manifestation, vessel, or nearest legal space until the end of the scene. If it has no legal external state, it becomes a visible spiritual outline occupying the Host’s space without controlling the Host. A persistent, permanent, Secret, artifact, divine, or expressly Anchored Intrusion is instead suppressed until the end of the scene and reveals one printed release or reconstruction requirement. |\n| **3–5 Source CL lower** | Suppress the Intrusion until the end of the scene without Concentration. The affected creature immediately repeats one save allowed by the Intrusion with Advantage; on a success, an ordinary temporary Intrusion ends. A possessing Intruder is exposed and cannot control the Host during suppression. |\n| **Within 2 Source CL** | Suppress the Intrusion until the end of the affected creature’s next turn. It immediately repeats one save allowed by the Intrusion with Advantage. If it has no repeat save, suppression is the complete battlefield result. |\n| **3 or more Source CL higher** | Do not suppress the Intrusion. The affected creature immediately repeats one save allowed by it with Advantage. Its manifestation, broad origin, and direction of its sustaining Anchor are exposed to Spiritual Sense until the end of your next turn. |\n\nA willing Host may waive resistance made on its behalf. A willing Intruder does not resist separation. When Host and Intruder both oppose separation, use the higher relevant DC.\n\n## Deep Exorcism Rite\n\n**Time:** 10 minutes  \n**Range:** Touch, or a willing Soul Vessel imprint as described by Soul Vessel  \n**Cost:** 6 Resonance, plus 2 for a remote Soul Vessel rite  \n**Target:** One perceived Intrusion or Spiritual Affliction\n\nMake the Cultivation Check.\n\n**Failed Check:** Do not remove or suppress the effect. Learn its broad category, exact Source CL band relative to you, sustaining Anchor category, and one printed condition required to meaningfully change it. You cannot repeat the rite against that effect until the effect changes, the revealed condition is met, or your effective Spirit Awakening CL increases.\n\n**Successful Check:** Compare Source CL.\n\n| Intrusion Authority | Result |\n|---|---|\n| **6 or more Source CL lower** | End one ordinary temporary or persistent Spiritual Affliction. Separate an ordinary possessing Intruder into its legal manifestation, vessel, or nearest legal space; it cannot re-enter the same Host until the Host completes a Full Cultivation Session. A permanent, Secret, artifact, divine, Immortal, or world-law effect is removed only when its Source Rule permits; otherwise reduce its severity by one stage and reveal its exact remaining recovery procedure. |\n| **3–5 Source CL lower** | End one ordinary temporary Intrusion. Reduce one persistent Spiritual Affliction by one stage, then suppress any remainder until the target completes a Full Cultivation Session. A possession is separated for the same duration into its legal manifestation, vessel, nearest legal space, or—if none exists—a visible spiritual outline occupying the Host’s space without controlling the Host. |\n| **Within 2 Source CL** | Choose one: reduce the effect by one printed severity stage; or suppress it until the target completes a Full Cultivation Session. Reveal its sustaining Anchor and exact printed recovery, release, confrontation, restitution, or reconstruction requirement. |\n| **3 or more Source CL higher** | You cannot remove or reduce it. Stabilize the target so the effect cannot increase in severity until the target completes a Full Cultivation Session, and reveal its sustaining Anchor category and exact printed requirement for the next meaningful intervention. |\n\nIf an effect has no severity stages, “reduce by one stage” means remove one separately printed escalation, rider, or consequence. If none exists, use the suppression result instead.\n\nSpiritual Exorcism cannot:\n\n- destroy a Complete Soul without an explicit Source Rule;\n- transfer ownership of a spirit;\n- convert an unwilling spirit into your Companion;\n- erase integrated spirit ancestry;\n- remove a legal character option;\n- end completed death, reincarnation, permanent soul destruction, or divine custody without explicit authority;\n- invent a release condition, quest, sacrifice, price, or reconstruction procedure where the Source Rule provides none.\n\nWhen complete removal is impossible, the feature must still provide the printed lesser result and diagnostic information.\n\nThe central Cultivation Insight **Exorcist’s Calling** grants a limited earlier version and improves when you gain this feature.\n\n---\n",
+          "summary": "You can diagnose, suppress, separate, expel, cleanse, and release invasive spiritual effects. Spiritual Exorcism uses the terms and authority hierarchy in the Spirit Awakening Rules Reference."
+        }
+      ],
+      "source_rules_text": "# CL13 — Spiritual Exorcism\n\nYou can diagnose, suppress, separate, expel, cleanse, and release invasive spiritual effects. Spiritual Exorcism uses the terms and authority hierarchy in the Spirit Awakening Rules Reference.\n\nAn **Intrusion** for this feature can be:\n\n- unwilling possession or coercive Hosting;\n- dream intrusion;\n- spiritual contamination;\n- imposed emotional corruption;\n- memory interference;\n- hostile spirit presence;\n- a Heart Demon expression that its Source Rule permits another creature to confront;\n- a curse with a spiritual, dream, memory, emotion, identity, or soul component;\n- a Charmed, Frightened, or madness effect created by a supernatural mental or spiritual source.\n\nSpiritual Exorcism cannot treat integrated spirit ancestry, a legal Path or Subpath, a Foundation, Method, Origin Insight, ordinary memory, willing stable Bond, chosen oath, or accepted presence as an Intrusion unless its own Source Rule expressly permits separation.\n\n## Exorcism DC\n\nMake a Spirit Awakening Cultivation Check against the Intrusion’s save DC. If it has no printed DC, use the creator’s or sustaining spirit’s Cultivation Save DC. If neither is available, use:\n\n| Source Realm | Authority DC |\n|---|---:|\n| Mortal | 12 |\n| Foundation | 14 |\n| Core Formation | 16 |\n| Nascent Soul | 18 |\n| Immortal | 20 |\n\n## Battlefield Exorcism\n\n**Action Type:** Action  \n**Range:** 60 feet  \n**Cost:** 4 Resonance  \n**Target:** One perceived Intrusion attached to a creature, object, location, manifestation, vessel, or Spiritual Anchor\n\nMake the Cultivation Check. A specific Intrusion can be targeted by your Battlefield Exorcism only once per round.\n\n**Failed Check:** The Intrusion remains. If it permits a repeat saving throw, the affected creature immediately repeats that save with Advantage. You learn the Intrusion’s broad category, Source CL band relative to you, and whether it is sustained by a creature, Bond, vessel, location, or other Spiritual Anchor.\n\n**Successful Check:** Compare the Intrusion’s Source CL with this feature’s Source CL.\n\n| Intrusion Authority | Result |\n|---|---|\n| **6 or more Source CL lower** | End one ordinary temporary Intrusion. An ordinary possession is separated and locally expelled to its legal manifestation, vessel, or nearest legal space until the end of the scene. If it has no legal external state, it becomes a visible spiritual outline occupying the Host’s space without controlling the Host. A persistent, permanent, Secret, artifact, divine, or expressly Anchored Intrusion is instead suppressed until the end of the scene and reveals one printed release or reconstruction requirement. |\n| **3–5 Source CL lower** | Suppress the Intrusion until the end of the scene without Concentration. The affected creature immediately repeats one save allowed by the Intrusion with Advantage; on a success, an ordinary temporary Intrusion ends. A possessing Intruder is exposed and cannot control the Host during suppression. |\n| **Within 2 Source CL** | Suppress the Intrusion until the end of the affected creature’s next turn. It immediately repeats one save allowed by the Intrusion with Advantage. If it has no repeat save, suppression is the complete battlefield result. |\n| **3 or more Source CL higher** | Do not suppress the Intrusion. The affected creature immediately repeats one save allowed by it with Advantage. Its manifestation, broad origin, and direction of its sustaining Anchor are exposed to Spiritual Sense until the end of your next turn. |\n\nA willing Host may waive resistance made on its behalf. A willing Intruder does not resist separation. When Host and Intruder both oppose separation, use the higher relevant DC.\n\n## Deep Exorcism Rite\n\n**Time:** 10 minutes  \n**Range:** Touch, or a willing Soul Vessel imprint as described by Soul Vessel  \n**Cost:** 6 Resonance, plus 2 for a remote Soul Vessel rite  \n**Target:** One perceived Intrusion or Spiritual Affliction\n\nMake the Cultivation Check.\n\n**Failed Check:** Do not remove or suppress the effect. Learn its broad category, exact Source CL band relative to you, sustaining Anchor category, and one printed condition required to meaningfully change it. You cannot repeat the rite against that effect until the effect changes, the revealed condition is met, or your effective Spirit Awakening CL increases.\n\n**Successful Check:** Compare Source CL.\n\n| Intrusion Authority | Result |\n|---|---|\n| **6 or more Source CL lower** | End one ordinary temporary or persistent Spiritual Affliction. Separate an ordinary possessing Intruder into its legal manifestation, vessel, or nearest legal space; it cannot re-enter the same Host until the Host completes a Full Cultivation Session. A permanent, Secret, artifact, divine, Immortal, or world-law effect is removed only when its Source Rule permits; otherwise reduce its severity by one stage and reveal its exact remaining recovery procedure. |\n| **3–5 Source CL lower** | End one ordinary temporary Intrusion. Reduce one persistent Spiritual Affliction by one stage, then suppress any remainder until the target completes a Full Cultivation Session. A possession is separated for the same duration into its legal manifestation, vessel, nearest legal space, or—if none exists—a visible spiritual outline occupying the Host’s space without controlling the Host. |\n| **Within 2 Source CL** | Choose one: reduce the effect by one printed severity stage; or suppress it until the target completes a Full Cultivation Session. Reveal its sustaining Anchor and exact printed recovery, release, confrontation, restitution, or reconstruction requirement. |\n| **3 or more Source CL higher** | You cannot remove or reduce it. Stabilize the target so the effect cannot increase in severity until the target completes a Full Cultivation Session, and reveal its sustaining Anchor category and exact printed requirement for the next meaningful intervention. |\n\nIf an effect has no severity stages, “reduce by one stage” means remove one separately printed escalation, rider, or consequence. If none exists, use the suppression result instead.\n\nSpiritual Exorcism cannot:\n\n- destroy a Complete Soul without an explicit Source Rule;\n- transfer ownership of a spirit;\n- convert an unwilling spirit into your Companion;\n- erase integrated spirit ancestry;\n- remove a legal character option;\n- end completed death, reincarnation, permanent soul destruction, or divine custody without explicit authority;\n- invent a release condition, quest, sacrifice, price, or reconstruction procedure where the Source Rule provides none.\n\nWhen complete removal is impossible, the feature must still provide the printed lesser result and diagnostic information.\n\nThe central Cultivation Insight **Exorcist’s Calling** grants a limited earlier version and improves when you gain this feature.\n\n---\n",
+      "effective_rules_text": "# CL13 — Spiritual Exorcism\n\nYou can diagnose, suppress, separate, expel, cleanse, and release invasive spiritual effects. Spiritual Exorcism uses the terms and authority hierarchy in the Spirit Awakening Rules Reference.\n\nAn **Intrusion** for this feature can be:\n\n- unwilling possession or coercive Hosting;\n- dream intrusion;\n- spiritual contamination;\n- imposed emotional corruption;\n- memory interference;\n- hostile spirit presence;\n- a Heart Demon expression that its Source Rule permits another creature to confront;\n- a curse with a spiritual, dream, memory, emotion, identity, or soul component;\n- a Charmed, Frightened, or madness effect created by a supernatural mental or spiritual source.\n\nSpiritual Exorcism cannot treat integrated spirit ancestry, a legal Path or Subpath, a Foundation, Method, Origin Insight, ordinary memory, willing stable Bond, chosen oath, or accepted presence as an Intrusion unless its own Source Rule expressly permits separation.\n\n## Exorcism DC\n\nMake a Spirit Awakening Cultivation Check against the Intrusion’s save DC. If it has no printed DC, use the creator’s or sustaining spirit’s Cultivation Save DC. If neither is available, use:\n\n| Source Realm | Authority DC |\n|---|---:|\n| Mortal | 12 |\n| Foundation | 14 |\n| Core Formation | 16 |\n| Nascent Soul | 18 |\n| Immortal | 20 |\n\n## Battlefield Exorcism\n\n**Action Type:** Action  \n**Range:** 60 feet  \n**Cost:** 4 Resonance  \n**Target:** One perceived Intrusion attached to a creature, object, location, manifestation, vessel, or Spiritual Anchor\n\nMake the Cultivation Check. A specific Intrusion can be targeted by your Battlefield Exorcism only once per round.\n\n**Failed Check:** The Intrusion remains. If it permits a repeat saving throw, the affected creature immediately repeats that save with Advantage. You learn the Intrusion’s broad category, Source CL band relative to you, and whether it is sustained by a creature, Bond, vessel, location, or other Spiritual Anchor.\n\n**Successful Check:** Compare the Intrusion’s Source CL with this feature’s Source CL.\n\n| Intrusion Authority | Result |\n|---|---|\n| **6 or more Source CL lower** | End one ordinary temporary Intrusion. An ordinary possession is separated and locally expelled to its legal manifestation, vessel, or nearest legal space until the end of the scene. If it has no legal external state, it becomes a visible spiritual outline occupying the Host’s space without controlling the Host. A persistent, permanent, Secret, artifact, divine, or expressly Anchored Intrusion is instead suppressed until the end of the scene and reveals one printed release or reconstruction requirement. |\n| **3–5 Source CL lower** | Suppress the Intrusion until the end of the scene without Concentration. The affected creature immediately repeats one save allowed by the Intrusion with Advantage; on a success, an ordinary temporary Intrusion ends. A possessing Intruder is exposed and cannot control the Host during suppression. |\n| **Within 2 Source CL** | Suppress the Intrusion until the end of the affected creature’s next turn. It immediately repeats one save allowed by the Intrusion with Advantage. If it has no repeat save, suppression is the complete battlefield result. |\n| **3 or more Source CL higher** | Do not suppress the Intrusion. The affected creature immediately repeats one save allowed by it with Advantage. Its manifestation, broad origin, and direction of its sustaining Anchor are exposed to Spiritual Sense until the end of your next turn. |\n\nA willing Host may waive resistance made on its behalf. A willing Intruder does not resist separation. When Host and Intruder both oppose separation, use the higher relevant DC.\n\n## Deep Exorcism Rite\n\n**Time:** 10 minutes  \n**Range:** Touch, or a willing Soul Vessel imprint as described by Soul Vessel  \n**Cost:** 6 Resonance, plus 2 for a remote Soul Vessel rite  \n**Target:** One perceived Intrusion or Spiritual Affliction\n\nMake the Cultivation Check.\n\n**Failed Check:** Do not remove or suppress the effect. Learn its broad category, exact Source CL band relative to you, sustaining Anchor category, and one printed condition required to meaningfully change it. You cannot repeat the rite against that effect until the effect changes, the revealed condition is met, or your effective Spirit Awakening CL increases.\n\n**Successful Check:** Compare Source CL.\n\n| Intrusion Authority | Result |\n|---|---|\n| **6 or more Source CL lower** | End one ordinary temporary or persistent Spiritual Affliction. Separate an ordinary possessing Intruder into its legal manifestation, vessel, or nearest legal space; it cannot re-enter the same Host until the Host completes a Full Cultivation Session. A permanent, Secret, artifact, divine, Immortal, or world-law effect is removed only when its Source Rule permits; otherwise reduce its severity by one stage and reveal its exact remaining recovery procedure. |\n| **3–5 Source CL lower** | End one ordinary temporary Intrusion. Reduce one persistent Spiritual Affliction by one stage, then suppress any remainder until the target completes a Full Cultivation Session. A possession is separated for the same duration into its legal manifestation, vessel, nearest legal space, or—if none exists—a visible spiritual outline occupying the Host’s space without controlling the Host. |\n| **Within 2 Source CL** | Choose one: reduce the effect by one printed severity stage; or suppress it until the target completes a Full Cultivation Session. Reveal its sustaining Anchor and exact printed recovery, release, confrontation, restitution, or reconstruction requirement. |\n| **3 or more Source CL higher** | You cannot remove or reduce it. Stabilize the target so the effect cannot increase in severity until the target completes a Full Cultivation Session, and reveal its sustaining Anchor category and exact printed requirement for the next meaningful intervention. |\n\nIf an effect has no severity stages, “reduce by one stage” means remove one separately printed escalation, rider, or consequence. If none exists, use the suppression result instead.\n\nSpiritual Exorcism cannot:\n\n- destroy a Complete Soul without an explicit Source Rule;\n- transfer ownership of a spirit;\n- convert an unwilling spirit into your Companion;\n- erase integrated spirit ancestry;\n- remove a legal character option;\n- end completed death, reincarnation, permanent soul destruction, or divine custody without explicit authority;\n- invent a release condition, quest, sacrifice, price, or reconstruction procedure where the Source Rule provides none.\n\nWhen complete removal is impossible, the feature must still provide the printed lesser result and diagnostic information.\n\nThe central Cultivation Insight **Exorcist’s Calling** grants a limited earlier version and improves when you gain this feature.\n\n---\n",
+      "components": [
+        {
+          "title": "Exorcism DC",
+          "slug": "exorcism_dc",
+          "heading_level": 2,
+          "source_line": 601,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.spiritual_exorcism.component.exorcism_dc"
+        },
+        {
+          "title": "Battlefield Exorcism",
+          "slug": "battlefield_exorcism",
+          "heading_level": 2,
+          "source_line": 613,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.spiritual_exorcism.component.battlefield_exorcism"
+        },
+        {
+          "title": "Deep Exorcism Rite",
+          "slug": "deep_exorcism_rite",
+          "heading_level": 2,
+          "source_line": 635,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.spiritual_exorcism.component.deep_exorcism_rite"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.domain_manifestation",
+      "display_name": "Domain Manifestation",
+      "aliases": [],
+      "feature_kind": "domain_feature",
+      "minimum_cl": 15,
+      "granted_at_cl": [
+        15
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL15 — Domain Manifestation",
+          "source_line_start": 673,
+          "source_line_end": 728,
+          "source_markdown": "# CL15 — Domain Manifestation\n\n**Action Type:** Bonus Action  \n**Cost:** 6 Resonance  \n**Area:** 30-foot aura centered on you  \n**Duration:** The scene  \n**Concentration:** No  \n**Domain Type:** Personal Domain\n\nManifest the spiritual truth seeded by your Soul Anchor and refined through your Subpath. Record its sensory expression when you gain this feature. That description grants no additional effect.\n\nThe Domain moves with you and ends when you are Incapacitated, willingly end it, leave the scene, become unable to manifest Path features, or a Source Rule suppresses or breaks it.\n\nA creature is affected while inside the aura. Entering the aura does not itself trigger a saving throw unless a Source Rule says so.\n\n## Anchored Allies\n\nAllies of your choice in the Domain have Advantage on Intelligence, Wisdom, and Charisma saving throws against:\n\n- Charmed and Frightened;\n- possession and coercive Hosting;\n- dream intrusion;\n- memory alteration;\n- emotional domination;\n- soul displacement.\n\nYou may revise which willing creatures count as allies at the start of your turn without an action. You cannot designate an unwilling hostile creature as an ally merely to bypass its protection or Bond terms.\n\n## Unfading Marks\n\nYour Resonance Marks on creatures in the Domain do not expire from duration. A mark ends normally when the creature leaves the Domain, the Domain ends, or another effect removes it.\n\n## Domain Pressure\n\nOnce on each of your turns, when a creature in the Domain fails a saving throw against one of your Spirit Awakening Path or Subpath features, impose one ordinary Spiritual Pressure effect on it without additional cost.\n\nThis can occur only once during the turn, regardless of the number of failed saves, targets, echoes, or origins created by the activation.\n\n## Revealed Spirits\n\nWithin the Domain, Spiritual Sense detects ordinary invisible spirits, possession links, Hosted entities, projected souls, Soul Fragments, and lower-Source-CL spiritual disguises without a check. Equal- or higher-authority concealment remains contested.\n\n## Subpath Domain Expression\n\nA Subpath may grant an additional Domain expression. That expression modifies this one Domain; it does not create a second Domain, second aura, second turn, or additional Concentration slot unless it explicitly says otherwise.\n\n## Domain Collision\n\nCompatible Domains coexist. When two Domain expressions impose contradictory laws upon the same target, space, Bond, route, or effect, compare Source CL. Equal Source CL uses a Cultivation Check contest. Losing suppresses only the contradictory expression, not the entire Domain, unless a Source Rule expressly says the whole Domain collapses.\n\nA Domain is not automatically a Spiritual Anchor, prison, anti-teleport field, sanctuary, spirit court, Companion command zone, or law over every soul inside it.\n\nAt CL20, the Domain’s radius becomes 60 feet and its activation cost becomes 4 Resonance.\n\n---\n",
+          "summary": "Action Type: Bonus Action Cost: 6 Resonance Area: 30-foot aura centered on you Duration: The scene Concentration: No Domain Type: Personal Domain"
+        }
+      ],
+      "source_rules_text": "# CL15 — Domain Manifestation\n\n**Action Type:** Bonus Action  \n**Cost:** 6 Resonance  \n**Area:** 30-foot aura centered on you  \n**Duration:** The scene  \n**Concentration:** No  \n**Domain Type:** Personal Domain\n\nManifest the spiritual truth seeded by your Soul Anchor and refined through your Subpath. Record its sensory expression when you gain this feature. That description grants no additional effect.\n\nThe Domain moves with you and ends when you are Incapacitated, willingly end it, leave the scene, become unable to manifest Path features, or a Source Rule suppresses or breaks it.\n\nA creature is affected while inside the aura. Entering the aura does not itself trigger a saving throw unless a Source Rule says so.\n\n## Anchored Allies\n\nAllies of your choice in the Domain have Advantage on Intelligence, Wisdom, and Charisma saving throws against:\n\n- Charmed and Frightened;\n- possession and coercive Hosting;\n- dream intrusion;\n- memory alteration;\n- emotional domination;\n- soul displacement.\n\nYou may revise which willing creatures count as allies at the start of your turn without an action. You cannot designate an unwilling hostile creature as an ally merely to bypass its protection or Bond terms.\n\n## Unfading Marks\n\nYour Resonance Marks on creatures in the Domain do not expire from duration. A mark ends normally when the creature leaves the Domain, the Domain ends, or another effect removes it.\n\n## Domain Pressure\n\nOnce on each of your turns, when a creature in the Domain fails a saving throw against one of your Spirit Awakening Path or Subpath features, impose one ordinary Spiritual Pressure effect on it without additional cost.\n\nThis can occur only once during the turn, regardless of the number of failed saves, targets, echoes, or origins created by the activation.\n\n## Revealed Spirits\n\nWithin the Domain, Spiritual Sense detects ordinary invisible spirits, possession links, Hosted entities, projected souls, Soul Fragments, and lower-Source-CL spiritual disguises without a check. Equal- or higher-authority concealment remains contested.\n\n## Subpath Domain Expression\n\nA Subpath may grant an additional Domain expression. That expression modifies this one Domain; it does not create a second Domain, second aura, second turn, or additional Concentration slot unless it explicitly says otherwise.\n\n## Domain Collision\n\nCompatible Domains coexist. When two Domain expressions impose contradictory laws upon the same target, space, Bond, route, or effect, compare Source CL. Equal Source CL uses a Cultivation Check contest. Losing suppresses only the contradictory expression, not the entire Domain, unless a Source Rule expressly says the whole Domain collapses.\n\nA Domain is not automatically a Spiritual Anchor, prison, anti-teleport field, sanctuary, spirit court, Companion command zone, or law over every soul inside it.\n\nAt CL20, the Domain’s radius becomes 60 feet and its activation cost becomes 4 Resonance.\n\n---\n",
+      "effective_rules_text": "# CL15 — Domain Manifestation\n\n**Action Type:** Bonus Action  \n**Cost:** 6 Resonance  \n**Area:** 30-foot aura centered on you  \n**Duration:** The scene  \n**Concentration:** No  \n**Domain Type:** Personal Domain\n\nManifest the spiritual truth seeded by your Soul Anchor and refined through your Subpath. Record its sensory expression when you gain this feature. That description grants no additional effect.\n\nThe Domain moves with you and ends when you are Incapacitated, willingly end it, leave the scene, become unable to manifest Path features, or a Source Rule suppresses or breaks it.\n\nA creature is affected while inside the aura. Entering the aura does not itself trigger a saving throw unless a Source Rule says so.\n\n## Anchored Allies\n\nAllies of your choice in the Domain have Advantage on Intelligence, Wisdom, and Charisma saving throws against:\n\n- Charmed and Frightened;\n- possession and coercive Hosting;\n- dream intrusion;\n- memory alteration;\n- emotional domination;\n- soul displacement.\n\nYou may revise which willing creatures count as allies at the start of your turn without an action. You cannot designate an unwilling hostile creature as an ally merely to bypass its protection or Bond terms.\n\n## Unfading Marks\n\nYour Resonance Marks on creatures in the Domain do not expire from duration. A mark ends normally when the creature leaves the Domain, the Domain ends, or another effect removes it.\n\n## Domain Pressure\n\nOnce on each of your turns, when a creature in the Domain fails a saving throw against one of your Spirit Awakening Path or Subpath features, impose one ordinary Spiritual Pressure effect on it without additional cost.\n\nThis can occur only once during the turn, regardless of the number of failed saves, targets, echoes, or origins created by the activation.\n\n## Revealed Spirits\n\nWithin the Domain, Spiritual Sense detects ordinary invisible spirits, possession links, Hosted entities, projected souls, Soul Fragments, and lower-Source-CL spiritual disguises without a check. Equal- or higher-authority concealment remains contested.\n\n## Subpath Domain Expression\n\nA Subpath may grant an additional Domain expression. That expression modifies this one Domain; it does not create a second Domain, second aura, second turn, or additional Concentration slot unless it explicitly says otherwise.\n\n## Domain Collision\n\nCompatible Domains coexist. When two Domain expressions impose contradictory laws upon the same target, space, Bond, route, or effect, compare Source CL. Equal Source CL uses a Cultivation Check contest. Losing suppresses only the contradictory expression, not the entire Domain, unless a Source Rule expressly says the whole Domain collapses.\n\nA Domain is not automatically a Spiritual Anchor, prison, anti-teleport field, sanctuary, spirit court, Companion command zone, or law over every soul inside it.\n\nAt CL20, the Domain’s radius becomes 60 feet and its activation cost becomes 4 Resonance.\n\n---\n",
+      "components": [
+        {
+          "title": "Anchored Allies",
+          "slug": "anchored_allies",
+          "heading_level": 2,
+          "source_line": 688,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.domain_manifestation.component.anchored_allies"
+        },
+        {
+          "title": "Unfading Marks",
+          "slug": "unfading_marks",
+          "heading_level": 2,
+          "source_line": 701,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.domain_manifestation.component.unfading_marks"
+        },
+        {
+          "title": "Domain Pressure",
+          "slug": "domain_pressure",
+          "heading_level": 2,
+          "source_line": 705,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.domain_manifestation.component.domain_pressure"
+        },
+        {
+          "title": "Revealed Spirits",
+          "slug": "revealed_spirits",
+          "heading_level": 2,
+          "source_line": 711,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.domain_manifestation.component.revealed_spirits"
+        },
+        {
+          "title": "Subpath Domain Expression",
+          "slug": "subpath_domain_expression",
+          "heading_level": 2,
+          "source_line": 715,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.domain_manifestation.component.subpath_domain_expression"
+        },
+        {
+          "title": "Domain Collision",
+          "slug": "domain_collision",
+          "heading_level": 2,
+          "source_line": 719,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.domain_manifestation.component.domain_collision"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.soul_splitting",
+      "display_name": "Soul Splitting",
+      "aliases": [],
+      "feature_kind": "fragment_feature",
+      "minimum_cl": 17,
+      "granted_at_cl": [
+        17
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL17 — Soul Splitting",
+          "source_line_start": 729,
+          "source_line_end": 790,
+          "source_markdown": "# CL17 — Soul Splitting\n\n**Action Type:** Action  \n**Cost:** 8 Resonance  \n**Duration:** The scene  \n**Concentration:** No\n\nSplit off one cultivated fragment of your Complete Soul in an unoccupied legal space within 30 feet. The fragment is a Spirit Cultivation Asset, not a duplicate character.\n\n## Soul Fragment Profile\n\n- **Size:** Tiny or Small, chosen when created.\n- **AC:** Your Cultivation Save DC.\n- **Hit Points:** `5 × Proficiency Bonus`.\n- **Speed:** Fly 40 feet; hover.\n- **Saving Throws:** Uses your Intelligence, Wisdom, and Charisma saving throw bonuses.\n- **Resistance:** Psychic damage.\n- **Immunities:** Poison damage, Disease, Poisoned, Prone, Grappled, Restrained, and ordinary bodily effects.\n- **Physical Interaction:** Ordinary noncultivated attacks cannot damage it unless their Source Rule can affect spirits. Cultivated, magical, spiritual, artifact, divine, or expressly spirit-affecting attacks can.\n- **Source CL:** Your effective Spirit Awakening CL.\n\nThe fragment has no independent turn, Action, Bonus Action, Reaction, Concentration, inventory, attunement, Cultivation Point pool, Path, Subpath, Sphere list, or Companion command authority.\n\nAt the end of each of your turns, it can move up to its Speed. This movement is part of Soul Splitting and is not your movement.\n\n## Second Origin\n\nWhen you activate one Spirit Awakening Path or Subpath feature, choose yourself or the fragment as its point of origin if the feature can legally originate from a spirit. You still activate the feature once, pay one cost, use one action, and obey every once-per-activation, once-per-turn, and once-per-target limit.\n\nMeasure range, area, cover, and line of effect from the chosen origin. You must still perceive the target by a method the feature permits. The fragment does not let a feature pass through total spiritual concealment or an illegal destination.\n\nThe fragment must remain within 300 feet of you. If forced beyond that range, it returns immediately to the nearest legal space within range by the shortest legal spiritual route. If no route exists, Soul Splitting ends safely unless the separating Source Rule expressly severs the fragment.\n\n## Fragment Expression\n\nOnce on each of your turns, after you spend Resonance on a Spirit Awakening Path or Subpath feature or use Mind Spike, choose one expression. This requires no additional action and is part of the triggering turn.\n\n- **Echo Spike:** One creature Resonance Marked by you within 60 feet of the fragment takes Psychic damage equal to your Wisdom modifier + Proficiency Bonus.\n- **Maintain Pressure:** One creature Resonance Marked by you within 60 feet of the fragment suffers one ordinary Spiritual Pressure effect until the start of your next turn.\n- **Guard Soul:** One ally within 30 feet of the fragment gains Temporary Hit Points equal to `2 × Proficiency Bonus` and Advantage on the next Intelligence, Wisdom, or Charisma saving throw it makes before the start of your next turn.\n- **Subpath Expression:** Use one Soul Splitting expression expressly granted by your Subpath.\n\nYou can use only one Fragment Expression per turn. An expression cannot trigger itself, generate another Fragment Expression, or turn the fragment into a second attacker unless its Source Rule expressly creates an attack and pays for it.\n\n## Ending, Severance, and Destruction\n\nYou may end Soul Splitting without an action, causing the fragment to return safely.\n\nIf the fragment is reduced to 0 Hit Points or destroyed by a legal spirit-affecting effect:\n\n- you take `4d10` Psychic damage that ignores Resistance;\n- Soul Splitting ends;\n- you cannot use Soul Splitting again until you complete a Full Cultivation Session.\n\nDestroying the fragment does not destroy your Complete Soul or Soul Anchor unless an explicit higher-authority Source Rule says so and prints the resulting injury and reconstruction procedure.\n\nYou may have only one core Soul Fragment at a time. It cannot activate Sphere talents, items, Recorded Arts, Forged Techniques, Immortal Arts, Companions, other summons, or another Soul Splitting.\n\nA Subpath may expressly sacrifice or destroy the fragment and waive some normal backlash. Such an exception applies only to that printed sacrifice.\n\n---\n",
+          "summary": "Action Type: Action Cost: 8 Resonance Duration: The scene Concentration: No"
+        }
+      ],
+      "source_rules_text": "# CL17 — Soul Splitting\n\n**Action Type:** Action  \n**Cost:** 8 Resonance  \n**Duration:** The scene  \n**Concentration:** No\n\nSplit off one cultivated fragment of your Complete Soul in an unoccupied legal space within 30 feet. The fragment is a Spirit Cultivation Asset, not a duplicate character.\n\n## Soul Fragment Profile\n\n- **Size:** Tiny or Small, chosen when created.\n- **AC:** Your Cultivation Save DC.\n- **Hit Points:** `5 × Proficiency Bonus`.\n- **Speed:** Fly 40 feet; hover.\n- **Saving Throws:** Uses your Intelligence, Wisdom, and Charisma saving throw bonuses.\n- **Resistance:** Psychic damage.\n- **Immunities:** Poison damage, Disease, Poisoned, Prone, Grappled, Restrained, and ordinary bodily effects.\n- **Physical Interaction:** Ordinary noncultivated attacks cannot damage it unless their Source Rule can affect spirits. Cultivated, magical, spiritual, artifact, divine, or expressly spirit-affecting attacks can.\n- **Source CL:** Your effective Spirit Awakening CL.\n\nThe fragment has no independent turn, Action, Bonus Action, Reaction, Concentration, inventory, attunement, Cultivation Point pool, Path, Subpath, Sphere list, or Companion command authority.\n\nAt the end of each of your turns, it can move up to its Speed. This movement is part of Soul Splitting and is not your movement.\n\n## Second Origin\n\nWhen you activate one Spirit Awakening Path or Subpath feature, choose yourself or the fragment as its point of origin if the feature can legally originate from a spirit. You still activate the feature once, pay one cost, use one action, and obey every once-per-activation, once-per-turn, and once-per-target limit.\n\nMeasure range, area, cover, and line of effect from the chosen origin. You must still perceive the target by a method the feature permits. The fragment does not let a feature pass through total spiritual concealment or an illegal destination.\n\nThe fragment must remain within 300 feet of you. If forced beyond that range, it returns immediately to the nearest legal space within range by the shortest legal spiritual route. If no route exists, Soul Splitting ends safely unless the separating Source Rule expressly severs the fragment.\n\n## Fragment Expression\n\nOnce on each of your turns, after you spend Resonance on a Spirit Awakening Path or Subpath feature or use Mind Spike, choose one expression. This requires no additional action and is part of the triggering turn.\n\n- **Echo Spike:** One creature Resonance Marked by you within 60 feet of the fragment takes Psychic damage equal to your Wisdom modifier + Proficiency Bonus.\n- **Maintain Pressure:** One creature Resonance Marked by you within 60 feet of the fragment suffers one ordinary Spiritual Pressure effect until the start of your next turn.\n- **Guard Soul:** One ally within 30 feet of the fragment gains Temporary Hit Points equal to `2 × Proficiency Bonus` and Advantage on the next Intelligence, Wisdom, or Charisma saving throw it makes before the start of your next turn.\n- **Subpath Expression:** Use one Soul Splitting expression expressly granted by your Subpath.\n\nYou can use only one Fragment Expression per turn. An expression cannot trigger itself, generate another Fragment Expression, or turn the fragment into a second attacker unless its Source Rule expressly creates an attack and pays for it.\n\n## Ending, Severance, and Destruction\n\nYou may end Soul Splitting without an action, causing the fragment to return safely.\n\nIf the fragment is reduced to 0 Hit Points or destroyed by a legal spirit-affecting effect:\n\n- you take `4d10` Psychic damage that ignores Resistance;\n- Soul Splitting ends;\n- you cannot use Soul Splitting again until you complete a Full Cultivation Session.\n\nDestroying the fragment does not destroy your Complete Soul or Soul Anchor unless an explicit higher-authority Source Rule says so and prints the resulting injury and reconstruction procedure.\n\nYou may have only one core Soul Fragment at a time. It cannot activate Sphere talents, items, Recorded Arts, Forged Techniques, Immortal Arts, Companions, other summons, or another Soul Splitting.\n\nA Subpath may expressly sacrifice or destroy the fragment and waive some normal backlash. Such an exception applies only to that printed sacrifice.\n\n---\n",
+      "effective_rules_text": "# CL17 — Soul Splitting\n\n**Action Type:** Action  \n**Cost:** 8 Resonance  \n**Duration:** The scene  \n**Concentration:** No\n\nSplit off one cultivated fragment of your Complete Soul in an unoccupied legal space within 30 feet. The fragment is a Spirit Cultivation Asset, not a duplicate character.\n\n## Soul Fragment Profile\n\n- **Size:** Tiny or Small, chosen when created.\n- **AC:** Your Cultivation Save DC.\n- **Hit Points:** `5 × Proficiency Bonus`.\n- **Speed:** Fly 40 feet; hover.\n- **Saving Throws:** Uses your Intelligence, Wisdom, and Charisma saving throw bonuses.\n- **Resistance:** Psychic damage.\n- **Immunities:** Poison damage, Disease, Poisoned, Prone, Grappled, Restrained, and ordinary bodily effects.\n- **Physical Interaction:** Ordinary noncultivated attacks cannot damage it unless their Source Rule can affect spirits. Cultivated, magical, spiritual, artifact, divine, or expressly spirit-affecting attacks can.\n- **Source CL:** Your effective Spirit Awakening CL.\n\nThe fragment has no independent turn, Action, Bonus Action, Reaction, Concentration, inventory, attunement, Cultivation Point pool, Path, Subpath, Sphere list, or Companion command authority.\n\nAt the end of each of your turns, it can move up to its Speed. This movement is part of Soul Splitting and is not your movement.\n\n## Second Origin\n\nWhen you activate one Spirit Awakening Path or Subpath feature, choose yourself or the fragment as its point of origin if the feature can legally originate from a spirit. You still activate the feature once, pay one cost, use one action, and obey every once-per-activation, once-per-turn, and once-per-target limit.\n\nMeasure range, area, cover, and line of effect from the chosen origin. You must still perceive the target by a method the feature permits. The fragment does not let a feature pass through total spiritual concealment or an illegal destination.\n\nThe fragment must remain within 300 feet of you. If forced beyond that range, it returns immediately to the nearest legal space within range by the shortest legal spiritual route. If no route exists, Soul Splitting ends safely unless the separating Source Rule expressly severs the fragment.\n\n## Fragment Expression\n\nOnce on each of your turns, after you spend Resonance on a Spirit Awakening Path or Subpath feature or use Mind Spike, choose one expression. This requires no additional action and is part of the triggering turn.\n\n- **Echo Spike:** One creature Resonance Marked by you within 60 feet of the fragment takes Psychic damage equal to your Wisdom modifier + Proficiency Bonus.\n- **Maintain Pressure:** One creature Resonance Marked by you within 60 feet of the fragment suffers one ordinary Spiritual Pressure effect until the start of your next turn.\n- **Guard Soul:** One ally within 30 feet of the fragment gains Temporary Hit Points equal to `2 × Proficiency Bonus` and Advantage on the next Intelligence, Wisdom, or Charisma saving throw it makes before the start of your next turn.\n- **Subpath Expression:** Use one Soul Splitting expression expressly granted by your Subpath.\n\nYou can use only one Fragment Expression per turn. An expression cannot trigger itself, generate another Fragment Expression, or turn the fragment into a second attacker unless its Source Rule expressly creates an attack and pays for it.\n\n## Ending, Severance, and Destruction\n\nYou may end Soul Splitting without an action, causing the fragment to return safely.\n\nIf the fragment is reduced to 0 Hit Points or destroyed by a legal spirit-affecting effect:\n\n- you take `4d10` Psychic damage that ignores Resistance;\n- Soul Splitting ends;\n- you cannot use Soul Splitting again until you complete a Full Cultivation Session.\n\nDestroying the fragment does not destroy your Complete Soul or Soul Anchor unless an explicit higher-authority Source Rule says so and prints the resulting injury and reconstruction procedure.\n\nYou may have only one core Soul Fragment at a time. It cannot activate Sphere talents, items, Recorded Arts, Forged Techniques, Immortal Arts, Companions, other summons, or another Soul Splitting.\n\nA Subpath may expressly sacrifice or destroy the fragment and waive some normal backlash. Such an exception applies only to that printed sacrifice.\n\n---\n",
+      "components": [
+        {
+          "title": "Soul Fragment Profile",
+          "slug": "soul_fragment_profile",
+          "heading_level": 2,
+          "source_line": 738,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_splitting.component.soul_fragment_profile"
+        },
+        {
+          "title": "Second Origin",
+          "slug": "second_origin",
+          "heading_level": 2,
+          "source_line": 754,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_splitting.component.second_origin"
+        },
+        {
+          "title": "Fragment Expression",
+          "slug": "fragment_expression",
+          "heading_level": 2,
+          "source_line": 762,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_splitting.component.fragment_expression"
+        },
+        {
+          "title": "Ending, Severance, and Destruction",
+          "slug": "ending_severance_and_destruction",
+          "heading_level": 2,
+          "source_line": 773,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.soul_splitting.component.ending_severance_and_destruction"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    },
+    {
+      "canonical_id": "tianxia.path.spirit_awakening.feature.immortal_spirit",
+      "display_name": "Immortal Spirit",
+      "aliases": [],
+      "feature_kind": "capstone",
+      "minimum_cl": 20,
+      "granted_at_cl": [
+        20
+      ],
+      "source_cl_basis": "effective_path_cl_unless_explicit_source_rule_states_otherwise",
+      "source_sections": [
+        {
+          "source_heading": "CL20 — Immortal Spirit",
+          "source_line_start": 791,
+          "source_line_end": 881,
+          "source_markdown": "# CL20 — Immortal Spirit\n\nYour awakened soul becomes an immortal spiritual structure rather than a mortal consciousness dependent upon one body.\n\n## Ageless Soul\n\nYou cease aging unless you choose otherwise. Ordinary aging cannot reduce your abilities or kill you.\n\nYou do not require food, drink, air, or sleep to keep your soul alive, though your current body may still require them unless a separate feature changes its physiology. You still require rests and Cultivation Sessions to recover features whose rules require them.\n\n## Sovereign Identity\n\nAn ordinary effect and any effect with lower Source CL cannot, against your will:\n\n- Charm or Frighten you;\n- possess or coercively Host within you;\n- permanently alter or erase your memory;\n- replace your identity;\n- consume, destroy, imprison, redirect, or prevent the passage of your Complete Soul;\n- permanently sever you from your Soul Anchor.\n\nEqual- or higher-authority effects use their printed procedure. If no procedure is printed, make a Wisdom saving throw against the effect’s save DC; if it has none, use a Cultivation Check contest. Success prevents the attempted permanent result but does not destroy the source.\n\nThis protection does not make you immune to persuasion, grief, voluntary bargains, chosen Hosting, chosen memory alteration, lawful consequences, self-created Heart Demons, or the ordinary consequences of your own decisions.\n\n## Continue Without the Body\n\nIf your body dies while your Complete Soul remains free, you persist as a coherent Unbodied spirit for up to 30 days.\n\nDuring this state:\n\n- You can perceive and communicate.\n- You can use Spiritual Sense, Read the Spirit, and Soul Gaze.\n- You cannot make hostile attacks, spend Resonance, manifest a Domain, command a full Companion, manipulate ordinary objects, or activate techniques unless a Source Rule specifically permits bodyless action.\n- You can travel as Astral Projection with no distance limit on the same plane, but wards, Domains, spiritual boundaries, and routes still apply.\n- You remain one Complete Soul and are not a Companion, Cultivation Asset, or Soul Fragment.\n\nIf you are imprisoned, claimed, reincarnated, destroyed, or prevented from reaching an Anchor by an equal- or higher-authority Source Rule, resolve that rule before Return to the Anchor.\n\n## Immortal Restoration Capacity\n\n**Limit:** Once per 28 days\n\nReturn to the Anchor and Call Back the Departed use the same capacity. Using either prevents use of the other until 28 days have passed.\n\n## Return to the Anchor\n\nWhile bodyless, spend 7 uninterrupted days at your Soul Anchor, a compatible prepared spirit vessel, or a location explicitly accepted by your Soul Anchor.\n\nIf your death and any effect blocking return have lower Source CL, you return automatically in a recreated body with:\n\n- 1 Hit Point;\n- 0 Resonance;\n- 3 levels of Exhaustion;\n- your Path, Subpath, known Spheres, talents, Method, Foundation, Soul Anchor, Insights, and learned techniques intact unless the effect that killed you expressly damaged one of them.\n\nIf the death effect or return barrier is within 2 Source CL and has no printed return procedure, make one Cultivation Check against its save DC at the end of the 7 days. If it has no DC, use the Authority DC for its Realm from Spiritual Exorcism.\n\n- **Success:** You return as above.\n- **Failure:** You do not expend the 28-day capacity. Learn the exact Anchor, authority, or printed condition preventing return. You cannot retry until that condition changes.\n\nIf the death effect or return barrier is 3 or more Source CL higher, you cannot return unless its printed recovery condition has already been met. The 7-day attempt reveals that condition but does not expend the 28-day capacity.\n\nA destroyed Complete Soul, completed reincarnation, or voluntary refusal to return cannot be bypassed by this feature.\n\n## Call Back the Departed\n\n**Time:** 8 hours  \n**Cost:** 10 Resonance, paid when the rite begins  \n**Target:** One willing dead creature whose Complete Soul remains reachable\n\nYou require at least one:\n\n- the body or meaningful remnant;\n- the creature’s true or chosen name;\n- its Soul Anchor or equivalent identity Anchor;\n- a relic, oath, descendant, bonded spirit, or location with a profound recorded connection to it.\n\nIf the soul is free and the death effect has lower Source CL than this feature, restore the creature in a whole body with 1 Hit Point and 3 levels of Exhaustion.\n\nIf the death effect or custody is within 2 Source CL, make a Cultivation Check against its save DC. If it has no DC, use the Authority DC for its Realm.\n\n- **Success:** Restore the creature as above.\n- **Failure:** The rite does not expend the 28-day capacity or its Resonance cost. Learn the exact barrier or printed recovery condition. You cannot retry until it changes.\n\nIf the death effect or custody is 3 or more Source CL higher, the rite cannot restore the creature unless its printed recovery condition has already been met. The rite reveals that condition but does not invent a quest, payment, sacrifice, or exception.\n\nCall Back the Departed cannot restore a creature that refuses, has completed reincarnation, whose Complete Soul has been permanently destroyed, or whose Source Rule declares the death final against this authority.\n\n---\n",
+          "summary": "Your awakened soul becomes an immortal spiritual structure rather than a mortal consciousness dependent upon one body."
+        }
+      ],
+      "source_rules_text": "# CL20 — Immortal Spirit\n\nYour awakened soul becomes an immortal spiritual structure rather than a mortal consciousness dependent upon one body.\n\n## Ageless Soul\n\nYou cease aging unless you choose otherwise. Ordinary aging cannot reduce your abilities or kill you.\n\nYou do not require food, drink, air, or sleep to keep your soul alive, though your current body may still require them unless a separate feature changes its physiology. You still require rests and Cultivation Sessions to recover features whose rules require them.\n\n## Sovereign Identity\n\nAn ordinary effect and any effect with lower Source CL cannot, against your will:\n\n- Charm or Frighten you;\n- possess or coercively Host within you;\n- permanently alter or erase your memory;\n- replace your identity;\n- consume, destroy, imprison, redirect, or prevent the passage of your Complete Soul;\n- permanently sever you from your Soul Anchor.\n\nEqual- or higher-authority effects use their printed procedure. If no procedure is printed, make a Wisdom saving throw against the effect’s save DC; if it has none, use a Cultivation Check contest. Success prevents the attempted permanent result but does not destroy the source.\n\nThis protection does not make you immune to persuasion, grief, voluntary bargains, chosen Hosting, chosen memory alteration, lawful consequences, self-created Heart Demons, or the ordinary consequences of your own decisions.\n\n## Continue Without the Body\n\nIf your body dies while your Complete Soul remains free, you persist as a coherent Unbodied spirit for up to 30 days.\n\nDuring this state:\n\n- You can perceive and communicate.\n- You can use Spiritual Sense, Read the Spirit, and Soul Gaze.\n- You cannot make hostile attacks, spend Resonance, manifest a Domain, command a full Companion, manipulate ordinary objects, or activate techniques unless a Source Rule specifically permits bodyless action.\n- You can travel as Astral Projection with no distance limit on the same plane, but wards, Domains, spiritual boundaries, and routes still apply.\n- You remain one Complete Soul and are not a Companion, Cultivation Asset, or Soul Fragment.\n\nIf you are imprisoned, claimed, reincarnated, destroyed, or prevented from reaching an Anchor by an equal- or higher-authority Source Rule, resolve that rule before Return to the Anchor.\n\n## Immortal Restoration Capacity\n\n**Limit:** Once per 28 days\n\nReturn to the Anchor and Call Back the Departed use the same capacity. Using either prevents use of the other until 28 days have passed.\n\n## Return to the Anchor\n\nWhile bodyless, spend 7 uninterrupted days at your Soul Anchor, a compatible prepared spirit vessel, or a location explicitly accepted by your Soul Anchor.\n\nIf your death and any effect blocking return have lower Source CL, you return automatically in a recreated body with:\n\n- 1 Hit Point;\n- 0 Resonance;\n- 3 levels of Exhaustion;\n- your Path, Subpath, known Spheres, talents, Method, Foundation, Soul Anchor, Insights, and learned techniques intact unless the effect that killed you expressly damaged one of them.\n\nIf the death effect or return barrier is within 2 Source CL and has no printed return procedure, make one Cultivation Check against its save DC at the end of the 7 days. If it has no DC, use the Authority DC for its Realm from Spiritual Exorcism.\n\n- **Success:** You return as above.\n- **Failure:** You do not expend the 28-day capacity. Learn the exact Anchor, authority, or printed condition preventing return. You cannot retry until that condition changes.\n\nIf the death effect or return barrier is 3 or more Source CL higher, you cannot return unless its printed recovery condition has already been met. The 7-day attempt reveals that condition but does not expend the 28-day capacity.\n\nA destroyed Complete Soul, completed reincarnation, or voluntary refusal to return cannot be bypassed by this feature.\n\n## Call Back the Departed\n\n**Time:** 8 hours  \n**Cost:** 10 Resonance, paid when the rite begins  \n**Target:** One willing dead creature whose Complete Soul remains reachable\n\nYou require at least one:\n\n- the body or meaningful remnant;\n- the creature’s true or chosen name;\n- its Soul Anchor or equivalent identity Anchor;\n- a relic, oath, descendant, bonded spirit, or location with a profound recorded connection to it.\n\nIf the soul is free and the death effect has lower Source CL than this feature, restore the creature in a whole body with 1 Hit Point and 3 levels of Exhaustion.\n\nIf the death effect or custody is within 2 Source CL, make a Cultivation Check against its save DC. If it has no DC, use the Authority DC for its Realm.\n\n- **Success:** Restore the creature as above.\n- **Failure:** The rite does not expend the 28-day capacity or its Resonance cost. Learn the exact barrier or printed recovery condition. You cannot retry until it changes.\n\nIf the death effect or custody is 3 or more Source CL higher, the rite cannot restore the creature unless its printed recovery condition has already been met. The rite reveals that condition but does not invent a quest, payment, sacrifice, or exception.\n\nCall Back the Departed cannot restore a creature that refuses, has completed reincarnation, whose Complete Soul has been permanently destroyed, or whose Source Rule declares the death final against this authority.\n\n---\n",
+      "effective_rules_text": "# CL20 — Immortal Spirit\n\nYour awakened soul becomes an immortal spiritual structure rather than a mortal consciousness dependent upon one body.\n\n## Ageless Soul\n\nYou cease aging unless you choose otherwise. Ordinary aging cannot reduce your abilities or kill you.\n\nYou do not require food, drink, air, or sleep to keep your soul alive, though your current body may still require them unless a separate feature changes its physiology. You still require rests and Cultivation Sessions to recover features whose rules require them.\n\n## Sovereign Identity\n\nAn ordinary effect and any effect with lower Source CL cannot, against your will:\n\n- Charm or Frighten you;\n- possess or coercively Host within you;\n- permanently alter or erase your memory;\n- replace your identity;\n- consume, destroy, imprison, redirect, or prevent the passage of your Complete Soul;\n- permanently sever you from your Soul Anchor.\n\nEqual- or higher-authority effects use their printed procedure. If no procedure is printed, make a Wisdom saving throw against the effect’s save DC; if it has none, use a Cultivation Check contest. Success prevents the attempted permanent result but does not destroy the source.\n\nThis protection does not make you immune to persuasion, grief, voluntary bargains, chosen Hosting, chosen memory alteration, lawful consequences, self-created Heart Demons, or the ordinary consequences of your own decisions.\n\n## Continue Without the Body\n\nIf your body dies while your Complete Soul remains free, you persist as a coherent Unbodied spirit for up to 30 days.\n\nDuring this state:\n\n- You can perceive and communicate.\n- You can use Spiritual Sense, Read the Spirit, and Soul Gaze.\n- You cannot make hostile attacks, spend Resonance, manifest a Domain, command a full Companion, manipulate ordinary objects, or activate techniques unless a Source Rule specifically permits bodyless action.\n- You can travel as Astral Projection with no distance limit on the same plane, but wards, Domains, spiritual boundaries, and routes still apply.\n- You remain one Complete Soul and are not a Companion, Cultivation Asset, or Soul Fragment.\n\nIf you are imprisoned, claimed, reincarnated, destroyed, or prevented from reaching an Anchor by an equal- or higher-authority Source Rule, resolve that rule before Return to the Anchor.\n\n## Immortal Restoration Capacity\n\n**Limit:** Once per 28 days\n\nReturn to the Anchor and Call Back the Departed use the same capacity. Using either prevents use of the other until 28 days have passed.\n\n## Return to the Anchor\n\nWhile bodyless, spend 7 uninterrupted days at your Soul Anchor, a compatible prepared spirit vessel, or a location explicitly accepted by your Soul Anchor.\n\nIf your death and any effect blocking return have lower Source CL, you return automatically in a recreated body with:\n\n- 1 Hit Point;\n- 0 Resonance;\n- 3 levels of Exhaustion;\n- your Path, Subpath, known Spheres, talents, Method, Foundation, Soul Anchor, Insights, and learned techniques intact unless the effect that killed you expressly damaged one of them.\n\nIf the death effect or return barrier is within 2 Source CL and has no printed return procedure, make one Cultivation Check against its save DC at the end of the 7 days. If it has no DC, use the Authority DC for its Realm from Spiritual Exorcism.\n\n- **Success:** You return as above.\n- **Failure:** You do not expend the 28-day capacity. Learn the exact Anchor, authority, or printed condition preventing return. You cannot retry until that condition changes.\n\nIf the death effect or return barrier is 3 or more Source CL higher, you cannot return unless its printed recovery condition has already been met. The 7-day attempt reveals that condition but does not expend the 28-day capacity.\n\nA destroyed Complete Soul, completed reincarnation, or voluntary refusal to return cannot be bypassed by this feature.\n\n## Call Back the Departed\n\n**Time:** 8 hours  \n**Cost:** 10 Resonance, paid when the rite begins  \n**Target:** One willing dead creature whose Complete Soul remains reachable\n\nYou require at least one:\n\n- the body or meaningful remnant;\n- the creature’s true or chosen name;\n- its Soul Anchor or equivalent identity Anchor;\n- a relic, oath, descendant, bonded spirit, or location with a profound recorded connection to it.\n\nIf the soul is free and the death effect has lower Source CL than this feature, restore the creature in a whole body with 1 Hit Point and 3 levels of Exhaustion.\n\nIf the death effect or custody is within 2 Source CL, make a Cultivation Check against its save DC. If it has no DC, use the Authority DC for its Realm.\n\n- **Success:** Restore the creature as above.\n- **Failure:** The rite does not expend the 28-day capacity or its Resonance cost. Learn the exact barrier or printed recovery condition. You cannot retry until it changes.\n\nIf the death effect or custody is 3 or more Source CL higher, the rite cannot restore the creature unless its printed recovery condition has already been met. The rite reveals that condition but does not invent a quest, payment, sacrifice, or exception.\n\nCall Back the Departed cannot restore a creature that refuses, has completed reincarnation, whose Complete Soul has been permanently destroyed, or whose Source Rule declares the death final against this authority.\n\n---\n",
+      "components": [
+        {
+          "title": "Ageless Soul",
+          "slug": "ageless_soul",
+          "heading_level": 2,
+          "source_line": 795,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.immortal_spirit.component.ageless_soul"
+        },
+        {
+          "title": "Sovereign Identity",
+          "slug": "sovereign_identity",
+          "heading_level": 2,
+          "source_line": 801,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.immortal_spirit.component.sovereign_identity"
+        },
+        {
+          "title": "Continue Without the Body",
+          "slug": "continue_without_the_body",
+          "heading_level": 2,
+          "source_line": 816,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.immortal_spirit.component.continue_without_the_body"
+        },
+        {
+          "title": "Immortal Restoration Capacity",
+          "slug": "immortal_restoration_capacity",
+          "heading_level": 2,
+          "source_line": 830,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.immortal_spirit.component.immortal_restoration_capacity"
+        },
+        {
+          "title": "Return to the Anchor",
+          "slug": "return_to_the_anchor",
+          "heading_level": 2,
+          "source_line": 836,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.immortal_spirit.component.return_to_the_anchor"
+        },
+        {
+          "title": "Call Back the Departed",
+          "slug": "call_back_the_departed",
+          "heading_level": 2,
+          "source_line": 856,
+          "canonical_id": "tianxia.path.spirit_awakening.feature.immortal_spirit.component.call_back_the_departed"
+        }
+      ],
+      "shared_rule_id": null,
+      "authority_resolution": null,
+      "notes": []
+    }
+  ],
+  "counts": {
+    "progression_levels": 20,
+    "unique_feature_records": 16,
+    "feature_components": 31
+  },
+  "authority_notes": [
+    "The player Path chapter is the controlling source for the Path chassis and features.",
+    "The shared PHB Path chapter controls universal Path mathematics and multi-Path rules where applicable.",
+    "Indexes locate and structure rules but do not independently grant abilities or override source text.",
+    "The effective_rules_text field applies recorded authority overlays; source_rules_text preserves the source section verbatim."
+  ]
+}
