@@ -1,0 +1,338 @@
+"""Cloud Walker native table regression; no model/network transports."""
+from combat.flight import horizontal_jump_feet, profile
+from combat.gate2_runtime_models import Position
+from tests.worker2_support import fixture, reload, candidate, settle, turn, OWNER, ALLY, FOE
+from combat.ext.qi_subpaths_five import CLOUD
+
+
+def verify(combat, mid):
+    session = combat._load_session(mid)
+    assert session.verify()['status'] == session.mechanical.replay()['status'] == 'PASS'
+
+
+def test_feather_long_jump_uses_tripled_distance(tmp_path):
+    c,t,mid=fixture(tmp_path,[],cl=3,owner_features=[CLOUD+'light_as_a_feather'],ask=False)
+    e=reload(tmp_path,mid);actor=e.state.actors[OWNER]
+    assert horizontal_jump_feet(e,actor)==actor.strength_score//2*3
+    assert horizontal_jump_feet(e,e.state.actors[ALLY])==e.state.actors[ALLY].strength_score//2
+    jumps=[x for x in e.legal_candidates() if x.kind.value=='MOVE'
+           and x.metadata.get('movement_mode')=='jump' and x.destination.z==0
+           and e.grid.distance_ft(actor.position,x.destination)>=15]
+    assert jumps
+    settle(t,mid,jumps[0].candidate_id)
+    assert reload(tmp_path,mid).state.actors[OWNER].position==jumps[0].destination
+    verify(c,mid)
+
+
+def test_leap_alone_does_not_pay_companion_qi(tmp_path):
+    c,t,mid=fixture(tmp_path,[],cl=14,owner_features=[CLOUD+'heavenly_leap'],ask=True)
+    before=reload(tmp_path,mid).state.actors[OWNER].resources['resource:core.qi']
+    settle(t,mid,candidate(c,mid,'Heavenly Leap').candidate_id,
+           choices={'choice:needle.cloud_leap_destination':'first'})
+    e=reload(tmp_path,mid)
+    assert e.state.actors[OWNER].resources['resource:core.qi']==before-3
+    assert not e.state.actors[OWNER].bonus_action_available
+    assert not any(ev.event_type=='TELEPORT_COMMITTED' for ev in e.events)
+    verify(c,mid)
+
+
+def test_cloud_step_stationary_end_descends_and_lands_standing(tmp_path):
+    c,t,mid=fixture(tmp_path,[],cl=6,owner_features=[CLOUD+'cloud_step'],ask=True)
+    settle(t,mid,candidate(c,mid,'Cloud Step').candidate_id)
+    e=reload(tmp_path,mid)
+    move=next(x for x in e.legal_candidates() if x.kind.value=='MOVE' and x.destination==Position(x=3,y=6,z=3))
+    settle(t,mid,move.candidate_id)
+    turn(t,mid,ALLY);turn(t,mid,OWNER)
+    settle(t,mid,t.state(mid)['menu']['end_turn'])
+    e=reload(tmp_path,mid)
+    assert e.state.actors[OWNER].position.z==0
+    assert not any(x.condition_id.endswith('prone') for x in e.state.actors[OWNER].conditions.values())
+    verify(c,mid)
+
+
+def test_immortal_free_leap_still_costs_bonus_action(tmp_path):
+    c,t,mid=fixture(tmp_path,[],cl=18,owner_features=[CLOUD+'cloud_immortal',CLOUD+'heavenly_leap'],ask=True)
+    settle(t,mid,candidate(c,mid,'Cloud Immortal').candidate_id)
+    turn(t,mid,ALLY);turn(t,mid,OWNER)
+    before=reload(tmp_path,mid).state.actors[OWNER].resources['resource:core.qi']
+    settle(t,mid,candidate(c,mid,'Heavenly Leap').candidate_id,
+           choices={'choice:needle.cloud_leap_destination':'first'})
+    e=reload(tmp_path,mid)
+    assert e.state.actors[OWNER].resources['resource:core.qi']==before
+    assert profile(e,e.state.actors[OWNER]).hover
+    assert not e.state.actors[OWNER].bonus_action_available
+    verify(c,mid)
+
+
+def journey_game(tmp_path, owner_mode='MANUAL', companion_mode='MANUAL'):
+    import json,zipfile
+    from combat.gate5_service import CombatService
+    from tests.h1_support import ROOT,sheet
+    for pid,features in [('walker',[CLOUD+'wind_walk']),('companion',[])]:
+        doc=sheet([],cl=10 if pid=='walker' else 1,name=pid)
+        doc.setdefault('path_and_subpath',{})['path_feature_record_ids']=features
+        folder=tmp_path/'portable_characters'/pid;folder.mkdir(parents=True)
+        with zipfile.ZipFile(folder/'current.zip','w') as z:
+            z.writestr('Tianxia_Owner_Character_Sheet_v1.json',json.dumps(doc))
+    aid,bid='actor:factory.walker','actor:factory.companion'
+    def cold():return CombatService(ROOT,tmp_path)
+    c=cold();c.tabletop_maps.save({'display_name':'Wind Walk ritual','width_squares':12,'height_squares':14,
+                                  'walls':[],'starts':{'team1':[[3,6]],'team2':[[4,6]]}})
+    state=c.create_journey(project_ids=['walker','companion'],arena_id='battlefield:map.wind-walk-ritual',
+            positions={aid:{'x':3,'y':6},bid:{'x':4,'y':6}},base_paces={aid:18000,bid:18000},
+            control_modes={aid:owner_mode,bid:companion_mode})
+    jid=state['journey_id']
+    def act(kind,payload=None,actor=aid):
+        c=cold();state=c.journey_state(jid)
+        return c.journey_act(jid,state['revision'],actor,kind,payload or {})
+    return cold,jid,act,aid,bid
+
+
+def test_wind_ritual_recipient_consent_and_native_combat_continuation(tmp_path):
+    from combat.tabletop_service import TabletopService
+    FORM='condition:typed.cloud_walker_form'
+    cold,jid,act,aid,bid=journey_game(tmp_path)
+    before=cold().journey_state(jid)['actors'][aid]['resources']['resource:core.qi']
+    act('cloud_wind_begin')
+    import pytest
+    with pytest.raises(ValueError):act('cloud_wind_finish')
+    act('wait',{'seconds':600})
+    act('cloud_wind_invite',{'target_id':bid})
+    assert not cold().journey_state(jid)['actors'][bid]['travel_effects']
+    with pytest.raises(ValueError):act('cloud_wind_finish')
+    act('cloud_wind_reply',{'caster_id':aid,'accept':True},bid)
+    state=act('cloud_wind_finish')
+    assert state['seconds']==600 and state['actors'][aid]['resources']['resource:core.qi']==before-5
+    assert CLOUD+'wind_walk' in state['actors'][bid]['travel_effects']
+    act('move',{'path':[{'x':3,'y':6,'z':1}]})
+    state=cold().journey_state(jid)
+    result=cold().journey_start_combat(jid,state['revision'],{aid:'team:a',bid:'team:b'},
+                positions={aid:{'x':3,'y':6},bid:{'x':4,'y':6}})
+    c=cold();mid=result['match_id'];t=TabletopService(c,tmp_path)
+    turn(t,mid,bid)
+    e=c._load_session(mid).engine
+    assert profile(e,e.state.actors[bid]).speed_ft==40 and profile(e,e.state.actors[bid]).hover
+    assert any(x.condition_id==FORM for x in e.state.actors[bid].conditions.values())
+    assert not any('Attack'==x.display_name for x in e.legal_candidates())
+    end=next(x for x in e.legal_candidates() if x.display_name=='End Wind Walk (Bonus Action)')
+    settle(t,mid,end.candidate_id)
+    e=cold()._load_session(mid).engine
+    assert not any(x.condition_id==FORM for x in e.state.actors[bid].conditions.values())
+    assert not e.state.actors[bid].bonus_action_available
+    assert profile(e,e.state.actors[aid]).speed_ft==40
+    verify(cold(),mid)
+
+
+def test_occupied_cloud_end_displaces_and_deals_force_through_table(tmp_path):
+    c,t,mid=fixture(tmp_path,[],cl=18,owner_features=[CLOUD+'cloud_immortal'],ask=True)
+    settle(t,mid,candidate(c,mid,'Cloud Immortal').candidate_id)
+    e=reload(tmp_path,mid)
+    move=next(x for x in e.legal_candidates() if x.kind.value=='MOVE' and x.destination==e.state.actors[FOE].position)
+    settle(t,mid,move.candidate_id)
+    e=reload(tmp_path,mid)
+    assert e.state.actors[OWNER].position==e.state.actors[FOE].position
+    before=e.state.actors[OWNER].current_hp
+    settle(t,mid,t.state(mid)['menu']['end_turn'])
+    e=reload(tmp_path,mid)
+    assert e.state.actors[OWNER].position!=e.state.actors[FOE].position
+    roll=next(r for r in e.rolls if r.reason=='CLOUD_IMMORTAL_OCCUPIED_FORCE')
+    assert roll.expression=='4d10'
+    assert e.state.actors[OWNER].current_hp==before-roll.total
+    assert not any(ev.event_type=='TELEPORT_COMMITTED' for ev in e.events)
+    verify(c,mid)
+
+
+def test_unowned_creature_cannot_end_in_another_creature(tmp_path):
+    c,t,mid=fixture(tmp_path,[],cl=18,ask=False)
+    e=reload(tmp_path,mid)
+    assert not any(x.kind.value=='MOVE' and x.destination==e.state.actors[FOE].position for x in e.legal_candidates())
+    assert not any(x.source_definition_id==CLOUD+'wind_walk'+'#end' for x in e.legal_candidates())
+    verify(c,mid)
+
+
+import pytest
+
+
+@pytest.mark.parametrize('accept',[True,False])
+def test_leap_companion_consent_cost_and_committed_physical_route(tmp_path,accept):
+    c,t,mid=fixture(tmp_path,[],cl=14,owner_features=[CLOUD+'heavenly_leap'],ask=True,named=True)
+    settle(t,mid,candidate(c,mid,'Heavenly Leap').candidate_id,choices={
+        'choice:needle.cloud_leap_destination':['cell:3,3'],
+        'choice:needle.cloud_leap_companion':[ALLY],
+        'choice:willing.consent':['accept' if accept else 'refuse'],
+        'choice:needle.cloud_leap_landing':['cell:4,3']})
+    e=reload(tmp_path,mid)
+    assert e.state.actors[OWNER].resources['resource:core.qi']==100-(5 if accept else 3)
+    assert e.state.actors[OWNER].position==Position(x=3,y=3)
+    assert e.state.actors[ALLY].position==(Position(x=4,y=3) if accept else Position(x=4,y=6))
+    if accept:
+        moves=[ev for ev in e.events if ev.event_type=='MOVEMENT_COMMITTED' and ev.actor_id==ALLY]
+        assert len(moves)>=3
+    assert not any(ev.event_type=='TELEPORT_COMMITTED' for ev in e.events)
+    assert not any(x.condition_id in ('condition:typed.cloud_walker_carry','condition:typed.cloud_walker_leap')
+                   for actor in e.state.actors.values() for x in actor.conditions.values())
+    verify(c,mid)
+
+
+def test_ai_ritual_waits_for_manual_recipient(tmp_path):
+    cold,jid,act,aid,bid=journey_game(tmp_path,owner_mode='LOCAL_AUTO')
+    act('cloud_wind_begin');act('wait',{'seconds':600})
+    state=act('cloud_wind_invite',{'target_id':bid})
+    assert cold().journey_auto_step(jid,state['revision'],aid)==state
+    assert cold().journey_state(jid)==state
+    act('cloud_wind_reply',{'caster_id':aid,'accept':False},bid)
+    state=act('cloud_wind_finish')
+    assert CLOUD+'wind_walk' not in state['actors'][bid]['travel_effects']
+
+
+def test_ai_recipient_answers_own_ritual_offer_before_moving(tmp_path):
+    cold,jid,act,aid,bid=journey_game(tmp_path,companion_mode='LOCAL_AUTO')
+    act('cloud_wind_begin');act('wait',{'seconds':600})
+    state=act('cloud_wind_invite',{'target_id':bid})
+    after=cold().journey_auto_step(jid,state['revision'],bid)
+    assert after['actors'][bid]['position']==state['actors'][bid]['position']
+    assert after['actors'][aid]['cloud_ritual']['invitations'][bid]=='accept'
+    state=act('cloud_wind_finish')
+    assert CLOUD+'wind_walk' in state['actors'][bid]['travel_effects']
+
+
+@pytest.fixture(scope='module',autouse=True)
+def record_tested_sources(request):
+    """Compact provenance for the actual source snapshot that a queued job ran."""
+    from pathlib import Path
+    import hashlib,json
+    app=Path(__file__).resolve().parents[1]
+    paths=['combat/ext/cloud_walker_environment.py','combat/tabletop.py','combat/falling.py','combat/voluntary_movement.py','combat/ext/movement_clock.py','combat/ext/cloud_walker.py','combat/ext/qi_subpaths_five.py',
+           'combat/creature_passage.py','combat/flight.py','combat/granted_movement.py',
+           'combat/gate2_engine.py','combat/gate5_service.py','combat/journey.py',
+           'combat/armour.py','combat/weapon_delivery.py','combat/ext/shield_wielding.py',
+           'combat/ext/hand_occupancy.py','combat/roof_movement.py',
+           'authority/Tianxia_Typed_Mechanics_Authority_R1.json']
+    receipt={path:hashlib.sha256((app/path).read_bytes()).hexdigest() if (app/path).is_file() else None
+             for path in paths}
+    evidence=Path('/var/tmp/auto-audit/fix/MGR-T14-ling-reserve-cloud-walker-light-as-a-feather-1-evidence')
+    evidence.mkdir(parents=True,exist_ok=True)
+    name=Path(request.config.getoption('basetemp')).name
+    (evidence/(name+'-source.json')).write_text(json.dumps(receipt,indent=2)+'\n')
+
+
+def test_invalid_jump_multiplier_rejected_by_native_menu(tmp_path,monkeypatch):
+    from tests.test_lock_choices import install
+    c,t,mid=fixture(tmp_path,[],cl=3,owner_features=[CLOUD+'light_as_a_feather'],ask=False)
+    e=reload(tmp_path,mid)
+    install(monkeypatch,'jump_distance_multiplier',lambda *args:'three')
+    with pytest.raises(ValueError,match='positive integer'):
+        e.legal_candidates()
+
+
+def test_cloud_immortal_force_penalty_ignores_feather_and_zero_hp_ends_all_benefits(tmp_path):
+    from combat.creature_passage import permission
+    features=[CLOUD+'light_as_a_feather',CLOUD+'cloud_immortal']
+    c,t,mid=fixture(tmp_path,[],cl=18,owner_features=features,ask=True,seed='CLOUD-IMMORTAL-ENDING')
+    settle(t,mid,candidate(c,mid,'Cloud Immortal').candidate_id)
+    for _ in range(9):
+        e=reload(tmp_path,mid)
+        move=next(x for x in e.legal_candidates() if x.kind.value=='MOVE' and x.destination==e.state.actors[FOE].position)
+        settle(t,mid,move.candidate_id)
+        before=reload(tmp_path,mid).state.actors[OWNER].current_hp
+        settle(t,mid,t.state(mid)['menu']['end_turn'])
+        e=reload(tmp_path,mid)
+        force=next(r for r in reversed(e.rolls) if r.reason=='CLOUD_IMMORTAL_OCCUPIED_FORCE')
+        assert e.state.actors[OWNER].current_hp==max(0,before-force.total)
+        if e.state.actors[OWNER].current_hp==0:
+            break
+        turn(t,mid,OWNER)
+    actor=e.state.actors[OWNER]
+    assert actor.current_hp==0
+    assert not profile(e,actor).speed_ft and not profile(e,actor).hover
+    assert permission(e,actor,e.state.actors[FOE]) is None
+    assert not any(x.condition_id=='condition:typed.cloud_walker_form' for x in actor.conditions.values())
+    verify(c,mid)
+
+
+def test_paid_wind_survives_finished_journey_and_two_encounters(tmp_path):
+    from combat.tabletop_service import TabletopService
+    cold,jid,act,aid,bid=journey_game(tmp_path)
+    act('cloud_wind_begin');act('wait',{'seconds':600});state=act('cloud_wind_finish')
+    initial=state['actors'][aid]['resources']['resource:core.qi']
+    for _ in range(2):
+        state=cold().journey_state(jid)
+        match=cold().journey_start_combat(jid,state['revision'],{aid:'team:a',bid:'team:b'},maximum_rounds=1)
+        mid=match['match_id']
+        for _ in range(6):
+            c=cold()
+            if c._load_session(mid).engine.state.terminal_result is not None:
+                break
+            t=TabletopService(c,tmp_path)
+            settle(t,mid,t.state(mid)['menu']['end_turn'])
+        verify(cold(),mid)
+        state=cold().journey_state(jid)
+        state=cold().journey_resume(jid,state['revision'])
+        assert CLOUD+'wind_walk' in state['actors'][aid]['travel_effects']
+        assert state['actors'][aid]['resources']['resource:core.qi']==initial
+    state=act('finish')
+    new=cold().create_journey(project_ids=['walker','companion'],arena_id='battlefield:map.wind-walk-ritual',
+        positions={aid:{'x':3,'y':6},bid:{'x':4,'y':6}},base_paces={aid:18000,bid:18000})
+    jid2=new['journey_id']
+    assert CLOUD+'wind_walk' in new['actors'][aid]['travel_effects']
+    assert new['actors'][aid]['resources']['resource:core.qi']==initial
+    new=cold().journey_act(jid2,new['revision'],aid,'cloud_wind_end',{})
+    new=cold().journey_act(jid2,new['revision'],aid,'finish',{})
+    third=cold().create_journey(project_ids=['walker','companion'],arena_id='battlefield:map.wind-walk-ritual',
+        positions={aid:{'x':3,'y':6},bid:{'x':4,'y':6}},base_paces={aid:18000,bid:18000})
+    assert CLOUD+'wind_walk' not in third['actors'][aid]['travel_effects']
+
+
+def authored_environment(tmp_path, *, surfaces=(), barriers=()):
+    """Real owner-map collection, normalization, persistence and sealing path."""
+    from combat.gate5_service import CombatService
+    from tests.h1_support import ROOT
+    from combat.tabletop import to_battlefield
+    source='tianxia.subpath.qi.cloud_walker'
+    c=CombatService(ROOT,tmp_path)
+    c.tabletop_maps.save({'display_name':'Declared Cloud Walker scene','width_squares':12,'height_squares':14,
+        'walls':[],'starts':{'team1':[[3,6]],'team2':[[6,6]]},'source_data':{source:{
+            'source':source,'authority':'map_owner','declared_by':'Scene GM','expires':'scene',
+            'bodies':{OWNER:{'body_weight_lb':160,'width_inches':18}},
+            'surfaces':list(surfaces),'barriers':list(barriers)}}})
+    saved=CombatService(ROOT,tmp_path).tabletop_maps.get('declared-cloud-walker-scene')
+    return to_battlefield(saved)
+
+
+@pytest.mark.parametrize('trigger',['weight','qi_pressure'])
+def test_authored_fragile_footing_and_actual_end_weight(tmp_path,trigger):
+    surface={'id':'hanging-cloth','kind':'hanging_cloth','z':1,'capacity_lb':1,
+        'cells':[[x,y] for x in range(12) for y in range(14)],'fragile':True,'trigger':trigger}
+    arena=authored_environment(tmp_path,surfaces=[surface])
+    c,t,mid=fixture(tmp_path,[],cl=3,owner_features=[CLOUD+'light_as_a_feather'],ask=False,battlefield=arena)
+    e=reload(tmp_path,mid)
+    jump=next(x for x in e.legal_candidates() if x.kind.value=='MOVE' and x.metadata.get('movement_mode')=='jump'
+              and x.destination==Position(x=3,y=5,z=1))
+    settle(t,mid,jump.candidate_id)
+    e=reload(tmp_path,mid)
+    failures=[ev for ev in e.events if ev.event_type=='CLOUD_SURFACE_FAILED']
+    if trigger=='qi_pressure':
+        assert failures and e.state.actors[OWNER].position.z==0
+    else:
+        assert not failures and e.state.actors[OWNER].position.z==1
+        settle(t,mid,t.state(mid)['menu']['end_turn'])
+        assert reload(tmp_path,mid).state.actors[OWNER].position.z==0
+    verify(c,mid)
+
+
+@pytest.mark.parametrize('opening',[0,1])
+def test_native_mist_narrow_opening_and_airtight_boundary(tmp_path,opening):
+    barrier={'axis':'x','plane':4,'low':[0,0],'high':[13,200],
+             'opening_inches':opening,'total_cover':False,'sealed_formation':False}
+    arena=authored_environment(tmp_path,barriers=[barrier])
+    c,t,mid=fixture(tmp_path,[],cl=18,owner_features=[CLOUD+'cloud_immortal'],ask=False,battlefield=arena)
+    e=reload(tmp_path,mid)
+    assert not any(x.kind.value=='MOVE' and x.destination.x>=4 for x in e.legal_candidates())
+    settle(t,mid,candidate(c,mid,'Cloud Immortal').candidate_id)
+    e=reload(tmp_path,mid)
+    rows=[x for x in e.legal_candidates() if x.kind.value=='MOVE' and x.destination==Position(x=4,y=5)]
+    assert bool(rows)==bool(opening)
+    if rows:
+        settle(t,mid,rows[0].candidate_id)
+        assert reload(tmp_path,mid).state.actors[OWNER].position==Position(x=4,y=5)
+    verify(c,mid)
