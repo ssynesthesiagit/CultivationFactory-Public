@@ -1,0 +1,1274 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_VERDANT_GROWTH_BRAMBLE_REFUSAL": {
+      "text_sha256": "f30571a9eba5ea506705c0cfc7a7831f5cac4d67c4c490878dc40b98d1c08dec",
+      "reviewed_by": "sw-verdant_growth 2026-09-28; rider lane C16 2026-09-30 (runs in combat/ext/verdant_chassis.py: the Growth Mark it spends, no Reaction)",
+      "effects": [],
+      "riders": []
+    },
+    "TAL_VERDANT_GROWTH_ROOT_SNARE_STEP": {
+     "text_sha256": "ce78b78886d03e31bed2bc0e74f173c076d8ac31c754fefaa9d59c75cbbedc5f",
+     "reviewed_by": "AUTO36: newly compiled rows stop at the current five-foot step; success has a current-turn Speed penalty; physical distance includes separate moves.",
+     "effects": [],
+     "riders": []
+    },
+    "TAL_VERDANT_GROWTH_THOUSAND_ROOT_PRISON": {
+      "text_sha256": "a525e09e03289ce8bb2e87a5cf13ae2a9c681476d878a10a76465c21cc52dc35",
+      "reviewed_by": "sw-verdant_growth 2026-09-28; Claude riders/c2 2026-09-30",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "restrained",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "one_minute",
+              "evidence": "The target is Restrained for 1 minute by roots, vines, bark hoops, reeds, or living grafts.",
+              "repeat_save": {
+                "ability": "STR",
+                "when": "end"
+              }
+            }
+          ],
+          "on_success": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "grappled",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "special",
+              "evidence": "The target is Grappled until the end of your next turn."
+            }
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "TAL_VERDANT_GROWTH_THE_SEED_THAT_REMEMBERS_THE_FOREST": {
+      "text_sha256": "07126b4df1511c6fa63d464acb09f989f151c8c8ec8640d4e17707e12db8cfbe",
+      "reviewed_by": "sw-verdant_growth 2026-09-28",
+      "effects": [
+        {
+          "type": "mark",
+          "mark": "Growth Mark",
+          "applies_to": "creatures_in_area",
+          "evidence": "every creature of your choice that starts its turn in the area gains 1 Growth Mark",
+          "was": "gain_resource",
+          "duration": {
+            "kind": "until_end_of_your_next_turn"
+          }
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "cl",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "allies of your choice in the area gain Temporary HP equal to your CL at the start of their turns"
+        }
+      ]
+    },
+    "tianxia.talent.verdant_growth.verdant_incarnation_body_becomes_the_ancient_tree": {
+      "text_sha256": "0f1db4305771687e2a4e7e8652f40f3ae49147b47aef055b16b3af9861ce0b67",
+      "reviewed_by": "sw-verdant_growth 2026-09-28",
+      "effects": [
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "poison"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "you gain Resistance to Poison damage"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "saving throws against Poisoned",
+          "duration": "one_minute",
+          "evidence": "Advantage on saving throws against Poisoned"
+        },
+        {
+          "type": "state",
+          "name": "verdant_incarnation",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "label": "Verdant Incarnation (1 minute): a free Living Claim on your body at the start of each turn; a creature hitting you in melee gains a Growth Mark; Bind costs one Growth Mark; you count as a Living Medium.",
+          "evidence": "you count as a Living Medium for all your Verdant Growth talents; you may create one Living Claim on your body at the start of each of your turns without spending an action; when a creature hits you with a melee attack, place 1 Growth Mark on it; when you spend Growth Marks on Root, Bind, Shelter, Bloom, or Thorn, treat the number of marks spent as one higher (rider lane C16: combat/ext/verdant_chassis.py)"
+        }
+      ],
+      "riders": [
+        "your reach with non-Projected Verdant Growth talents increases by 10 feet"
+      ]
+    },
+    "TAL_VERDANT_GROWTH_SPRING_AFTER_CALAMITY": {
+      "text_sha256": "175ed15434b77b95104957d2713b0748d817efa1572dea821b28311688513caa",
+      "reviewed_by": "sw-verdant_growth 2026-09-28",
+      "options": [
+        {
+          "label": "End Poisoned",
+          "effects": [
+            {
+              "type": "remove_condition",
+              "applies_to": "ally",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "poisoned",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "end the Poisoned condition",
+              "was": "condition"
+            }
+          ]
+        },
+        {
+          "label": "Temporary HP",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "ally",
+              "flat": 0,
+              "formula": "text:2 x your CL",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "gain Temporary HP equal to 2 x your CL"
+            }
+          ]
+        }
+      ]
+    },
+    "TAL_VERDANT_GROWTH_ORCHARD_OF_BITTER_MEDICINE": {
+      "text_sha256": "649be2711f154f7802263f42c69b672878cee6c6c4308a885ff3aa482bd749ab",
+      "reviewed_by": "sw-verdant_growth 2026-09-28",
+      "effects": [
+        {
+          "type": "remove_condition",
+          "applies_to": "target",
+          "condition": "poisoned",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "end the Poisoned condition on the target",
+          "was": "condition"
+        },
+        {
+          "type": "damage_modifier",
+          "applies_to": "target",
+          "dice": {
+            "count": 2,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [
+            "poison"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "until_start_of_next_turn",
+          "evidence": "reduce ongoing poison damage the target takes before the start of your next turn by 2d8 + your key ability modifier"
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "double_pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "grant Temporary HP equal to twice your Proficiency Bonus"
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Graft the Wound Shut"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [],
+        "options": [
+          {
+            "label": "End Poisoned",
+            "effects": [
+              {
+                "type": "remove_condition",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "poisoned",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "instant",
+                "evidence": "end the Poisoned condition on the target",
+                "was": "condition"
+              }
+            ]
+          },
+          {
+            "label": "Reduce Poison Damage",
+            "effects": [
+              {
+                "type": "damage_modifier",
+                "applies_to": "target",
+                "dice": {
+                  "count": 2,
+                  "count_formula": null,
+                  "sides": 8,
+                  "bonus": null,
+                  "bonus_formula": null
+                },
+                "flat": 0,
+                "formula": "key_ability_modifier",
+                "damage_types": [
+                  "poison"
+                ],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "until_start_of_next_turn",
+                "evidence": "reduce ongoing poison damage the target takes before the start of your next turn by 2d8 + your key ability modifier"
+              }
+            ]
+          },
+          {
+            "label": "Remove Growth Mark",
+            "effects": [
+              {
+                "type": "temp_hp",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "double_pb",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "instant",
+                "evidence": "remove one Growth Mark from the target and grant Temporary HP equal to twice your Proficiency Bonus"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "TAL_VERDANT_GROWTH_SEED_THORN_STRIKE": {
+      "text_sha256": "db3c06e6bd09a8b2e3b42e21eb37994319a53ce0a97aaa37da946c84d37c9f40",
+      "reviewed_by": "sw-verdant_growth 2026-09-28; Codex owner edit 2026-09-30",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "piercing"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "1d6 + your Path key ability modifier Piercing damage",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  6
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  6
+                ]
+              ]
+            },
+            {
+              "type": "mark",
+              "mark": "Growth Mark",
+              "applies_to": "target",
+              "evidence": "place 1 Growth Mark on the target",
+              "was": "gain_resource",
+              "duration": {
+                "kind": "until_end_of_your_next_turn"
+              }
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "If you use Seed-Thorn Strike through a wooden weapon, natural weapon, unarmed strike, thorn graft, or held plant medium, use the weapon's normal reach or range. This version is not Projected.",
+        "If you use Seed-Thorn Strike at range without a thrown/shot object or existing Living Medium, it is Projected."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "after": null,
+      "min_cp_cost": null
+    },
+    "tianxia.talent.warleader.ironclad_line": {
+     "text_sha256": "ac58fa3b71cd76bfa02a9dce3592e6f1a32a33fe53a98b82aba2817a887da0de",
+     "reviewed_by": "sys-resources-states 2026-09-29",
+     "activation": {
+      "economy": "bonus_action",
+      "trigger": null,
+      "requirement": null,
+      "source": "reviewed",
+      "modifies": null
+     },
+     "effects": [
+      {
+       "type": "warleader_standard",
+       "standard": "ironclad_line",
+       "applies_to": "self",
+       "evidence": "Set the Standard: Ironclad Line."
+      }
+     ],
+     "riders": []
+    },
+    "tianxia.talent.warleader.coordinated_reflexes": {
+     "text_sha256": "73bcd2b11cdac4b5493f20f09fdb7ab0f90553f1e196baf781f4cf19e8d622dc",
+     "reviewed_by": "sys-resources-states 2026-09-29",
+     "activation": {
+      "economy": "bonus_action",
+      "trigger": null,
+      "requirement": null,
+      "source": "reviewed",
+      "modifies": null
+     },
+     "effects": [
+      {
+       "type": "warleader_standard",
+       "standard": "coordinated_reflexes",
+       "applies_to": "self",
+       "evidence": "Set the Standard: Coordinated Reflexes."
+      }
+     ],
+     "riders": []
+    },
+    "tianxia.talent.warleader.militant_will": {
+     "text_sha256": "d98ca4b086ab295536e3e5a77811eb659ab1384cbbf4214841b7447eacb787f6",
+     "reviewed_by": "sys-resources-states 2026-09-29",
+     "activation": {
+      "economy": "bonus_action",
+      "trigger": null,
+      "requirement": null,
+      "source": "reviewed",
+      "modifies": null
+     },
+     "effects": [
+      {
+       "type": "warleader_standard",
+       "standard": "militant_will",
+       "applies_to": "self",
+       "evidence": "Set the Standard: Militant Will."
+      }
+     ],
+     "riders": []
+    },
+    "TAL_VOID_HOLLOW_TOUCH": {
+      "text_sha256": "6063d160b11cb10043078433fec7c85b774f2df6f92fcc212c1e85ba289a84d7",
+      "reviewed_by": "sw-verdant_growth 2026-09-28",
+      "effects": [
+        {
+          "type": "save", "applies_to": "creatures_in_area", "recipient_text": "The creature makes a Constitution saving throw.",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "condition": "hollowed",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Failed Save: The target becomes Hollowed until the start of your next turn."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "deny_temp_hp",
+              "applies_to": "target",
+              "evidence": "Successful Save: The target cannot gain Temporary HP until the start of your next turn."
+            }
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "TAL_VOID_HEAVEN_EMPTYING_LANCE": {
+      "text_sha256": "8513a7994303f16f01e4b9e9247b0d27d5c9a894ef7073ce706553bc3ab1f8d1",
+      "reviewed_by": "sw-verdant_growth 2026-09-28",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 10,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "force",
+                "necrotic",
+                "psychic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Deal 10d10 Force, Necrotic, or Psychic damage."
+            },
+            {
+              "type": "save",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "con",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "it makes a Constitution saving throw",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "condition": "hollowed",
+                  "duration": "one_minute",
+                  "repeat_save": {
+                    "ability": "CON",
+                    "when": "end"
+                  },
+                  "evidence": "Failed Save: It is Hollowed for 1 minute."
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "condition": "hollowed",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "Successful Save: It is Hollowed until the start of your next turn."
+                }
+              ]
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "riders": [
+        "Against objects and Barriers, Heaven-Emptying Lance ignores ordinary object Damage Thresholds and deals double damage to temporary supernatural Barriers.",
+        "It does not ignore Total Cover, artifacts, Formation cores, Domains, Secret Inheritances, or Realm-defining protections."
+      ]
+    },
+    "TAL_VOID_VOID_MERIDIAN_SEAL": {
+      "text_sha256": "f01c532ffb70b84f9f8977177635f279160aff4d8bf1efe4d6360a30105af090",
+      "reviewed_by": "sw-verdant_growth 2026-09-28",
+      "effects": [
+        {
+          "type": "save", "applies_to": "creatures_in_area", "recipient_text": "The creature makes a Constitution saving throw.",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "hollowed",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "special",
+              "evidence": "Failed Save: The target is Hollowed while this talent lasts.",
+              "repeat_save": {
+                "ability": "CON",
+                "when": "end"
+              }
+            }
+          ],
+          "on_success": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "condition": "hollowed",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Successful Save: The target is Hollowed until the start of your next turn."
+            }
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "TAL_VOID_VOID_PRISON": {
+      "text_sha256": "cda0e282dd00c1c5cac89994d32b5841c1edc991de3e77d16c010a152bda1d31",
+      "reviewed_by": "sw-verdant_growth 2026-09-28; AUTO91 cloud worker 1",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "condition": "void_prison",
+              "duration": "concentration",
+              "evidence": "Failed Save: The target is enclosed in a visible cage of absence ... the target cannot willingly leave the prison; the target's teleportation fails unless it first succeeds on a Cultivation Check against your Cultivation Save DC"
+            },
+            {
+              "type": "bound_object",
+              "kind": "prison",
+              "name": "Void Prison",
+              "material": "void",
+              "ac": "15",
+              "hp": "10*pb",
+              "resist": [
+                "FORCE",
+                "NECROTIC"
+              ],
+              "guards": [
+                "void_prison"
+              ],
+              "evidence": "The Void Prison is an object with: AC 15; HP 10 x your Proficiency Bonus; Resistance Force and Necrotic; Immunity Poison and Psychic. Destroying the prison ends the effect."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "hollowed",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Successful Save: The target is Hollowed until the start of your next turn instead."
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "The GM confirms the cage occupies the creature’s whole space and that only willing movement is prevented. The table currently sets Speed to 0, which also affects movement that does not willingly leave the cage."
+      ]
+    },
+    "TAL_VOID_UNMAKE_BARRIER": {
+      "text_sha256": "8f1a53511c85005e304b7ab0cda663b2bf4c19078e806738aff4024682ba1c3b",
+      "reviewed_by": "sw-verdant_growth 2026-09-28",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 5,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "force",
+                "necrotic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Deal Force or Necrotic damage.",
+              "dice_by_cl": [
+                [
+                  5,
+                  10,
+                  5,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  7,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  9,
+                  8
+                ]
+              ]
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "riders": [
+        "This damage ignores ordinary object Damage Thresholds and deals double damage to temporary supernatural Barriers.",
+        "Unmake Barrier does not ignore AC, HP, Immunity, artifact protections, Formation-core protections, Domains, Secret Inheritances, or Realm-defining protections."
+      ]
+    },
+    "TAL_VOID_VOID_FIELD": {
+      "text_sha256": "1757aedb297cb92db45580aaf2ee13caf7ecc5026fbbb0f7576ac03b1e0d081c",
+      "reviewed_by": "sw-verdant_growth 2026-09-28; AUTO91 cloud worker 1",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 15,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "A creature takes the field's damage when it enters the area for the first time on a turn or starts its turn there.",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "applies_to": "creatures_in_area",
+                  "recipient_text": "The creature makes a Constitution saving throw.",
+                  "ability": "con",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 3,
+                        "count_formula": null,
+                        "sides": 6,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "force",
+                        "necrotic",
+                        "psychic"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take Force, Necrotic, or Psychic damage",
+                      "dice_by_cl": [
+                        [
+                          5,
+                          10,
+                          3,
+                          6
+                        ],
+                        [
+                          11,
+                          16,
+                          5,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          7,
+                          6
+                        ]
+                      ]
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "hollowed",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "become Hollowed until the start of its next turn",
+                      "expires_on": "START_OF_TARGET_NEXT_TURN"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take half damage"
+                    },
+                    {
+                      "type": "deny_temp_hp",
+                      "applies_to": "target",
+                      "evidence": "Successful Save: Take half damage and cannot gain Temporary HP until the start of its next turn.",
+                      "expires_on": "START_OF_TARGET_NEXT_TURN"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "difficult": null
+        }
+      ],
+      "riders": []
+    },
+    "TAL_VOID_VOID_WARD": {
+      "text_sha256": "8e7d60f8d45cc14147f62c5840a8a9051e7f5086001de34461083931c388178b",
+      "reviewed_by": "sw-verdant_growth 2026-09-28; AUTO91 cloud worker 1",
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "triggering damage",
+          "duration": "instant",
+          "evidence": "Damage Reduction: 1d8 + key ability modifier",
+          "dice_by_cl": [
+            [
+              1,
+              10,
+              1,
+              8
+            ],
+            [
+              11,
+              16,
+              2,
+              8
+            ],
+            [
+              17,
+              20,
+              3,
+              8
+            ]
+          ]
+        },
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "triggering damage reduction",
+          "duration": "instant",
+          "evidence": "add your Proficiency Bonus to the reduction"
+        }
+      ],
+      "riders": [
+        "The GM confirms Barrier collisions and supernatural area talents before adding Proficiency Bonus to the reduction."
+      ]
+    },
+    "TAL_VOID_TEN_THOUSAND_EMPTY_NEEDLES": {
+      "text_sha256": "aa94745866304a906a5ddb52495acee94a2431a42bc9a4317d66e72401aa3c65",
+      "reviewed_by": "sw-verdant_growth 2026-09-28",
+      "effects": [
+        {
+          "type": "rider_targets",
+          "count": "pb",
+          "range_ft": 120,
+          "hostile_only": true,
+          "applies_to": "target",
+          "harmful": true,
+          "evidence": "Choose a number of creatures ... within range up to your Proficiency Bonus. Make a separate ranged Cultivation Attack against each target.",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 2,
+                    "sides": 8
+                  },
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      8
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      8
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      8
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      8
+                    ]
+                  ],
+                  "damage_types": [
+                    "force"
+                  ],
+                  "evidence": "Each hit deals Void Needle damage and applies one Void Pressure."
+                },
+                {
+                  "type": "void_pressure",
+                  "applies_to": "target",
+                  "once_per_turn": false,
+                  "evidence": "applies one Void Pressure"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "GM: objects and temporary Barriers can also be chosen (creatures are automated)."
+      ]
+    },
+    "TAL_VOID_VOID_SOVEREIGN_INCARNATION": {
+      "text_sha256": "e07e1becf4268ce58d1f8fbc8a5f5d2fe8c6abc8d74b0fcccaae499889044d54",
+      "reviewed_by": "A2VOID 2026-10-10 printed combat review",
+      "effects": [
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "force",
+            "necrotic",
+            "psychic"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "gain Resistance to Force, Necrotic, and Psychic damage"
+        },
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "instant",
+          "evidence": "when a Hollowed creature misses you with an attack roll, use Empty Step up to 10 feet without spending a Reaction.",
+          "deferred": true
+        },
+        {
+          "type": "state",
+          "name": "void_sovereign_incarnation",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "free_use": [
+            {
+              "of": [
+                "Empty Step"
+              ],
+              "once": "turn",
+              "costless": true,
+              "keep_economy": true
+            }
+          ],
+          "label": "Void-Sovereign Incarnation: Void Needle hits Hollow; a Hollowed attacker's miss lets it Empty Step 10 feet; one Empty Step a turn costs nothing",
+          "evidence": "use Empty Step once per turn without spending CP or Stamina; creatures hit by your Void Needle become Hollowed until the start of your next turn; when a Hollowed creature misses you with an attack roll, use Empty Step up to 10 feet without spending a Reaction"
+        },
+        {
+          "type": "condition",
+          "condition": "void_sovereign_flight",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "condition_data": {
+            "void_sovereign_flight": 1,
+            "label": "Void-Sovereign Incarnation: fly at your walking Speed and hover for 1 minute",
+            "void_sovereign_outcomes": 1
+          },
+          "evidence": "gain a Fly Speed equal to your Speed and Hover"
+        }
+      ],
+      "riders": [],
+      "notes": [
+        "Incarnation offers a two-creature Void Needle and a player-selected Empty Step on a confirmed Hollowed miss. One Empty Step per actual turn is free, including a missed-attack step; further such steps pay the normal 1 CP or Stamina, without a Reaction. The native long-rest use counter is combat-local; carrying an exhausted use into a new fight remains character preparation."
+      ]
+    },
+    "TAL_VOID_HOLLOW_PATH_STEP": {
+      "text_sha256": "cb0fb29dd95e22f685abd583a67eb44ccbf2bbaf470611482e9ff5e0a4eb8106",
+      "reviewed_by": "sw-verdant_growth 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "void_path_step",
+          "evidence": "When a creature misses you with an attack roll, you may spend 2 CP or 2 Stamina to use Empty Step as a Reaction. If the attacker was Hollowed, this teleportation costs 1 CP or 1 Stamina instead."
+        }
+      ],
+      "riders": [],
+      "modifier": null
+    },
+    "TAL_VOID_BARRIER_EMPTYING_NEEDLE": {
+      "text_sha256": "19ec53d67fdf48152ce6ebd596fc8b41d1762e2e7b8a6f077686b74a8d1b2efa",
+      "reviewed_by": "sw-verdant_growth 2026-09-28",
+      "effects": [],
+      "modifier": null,
+      "riders": [
+        "When Void Needle damages a temporary Barrier, add one extra Void Needle damage die.",
+        "If this destroys the Barrier, choose one creature adjacent to the Barrier. That creature takes Force or Necrotic damage equal to your Proficiency Bonus."
+      ]
+    },
+    "TAL_VOID_BARRIER_GNAW": {
+      "text_sha256": "a9120a7642b142a6eb4499849e654767df6629193ec564d74594a2db011b2034",
+      "reviewed_by": "sw-verdant_growth 2026-09-28",
+      "effects": [],
+      "modifier": null,
+      "riders": [
+        "When Void Needle damages a temporary Barrier, object, summoned object, Force object, or Formation Anchor, add your Proficiency Bonus to the damage.",
+        "If you also choose Fray Barrier, apply both benefits."
+      ]
+    },
+    "TAL_VOID_ERODE_TECHNIQUE": {
+      "text_sha256": "c04a756c1f4f1e52f9db4ba0e32f8900ed81bd1a023ec61bae82de59efe14a7c",
+      "reviewed_by": "sw-verdant_growth 2026-09-28",
+      "options": [
+        {
+          "label": "Reduce Temporary HP",
+          "effects": [
+            {
+              "type": "healing_reduction",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "pb",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "reduce Temporary HP gained by your Proficiency Bonus",
+              "was": "temp_hp"
+            }
+          ]
+        },
+        {
+          "label": "Reduce Damage Reduction",
+          "effects": [
+            {
+              "type": "damage_modifier",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "pb",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "reduce one damage reduction by your Proficiency Bonus until the start of your next turn"
+            }
+          ]
+        },
+        {
+          "label": "Reduce AC Bonus",
+          "effects": [
+            {
+              "type": "ac_bonus",
+              "applies_to": "target",
+              "flat": -1,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "reduce one AC bonus by 1 until the start of your next turn"
+            }
+          ]
+        },
+        {
+          "label": "Reduce Speed Bonus",
+          "effects": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "reduce one Speed bonus by 10 feet until the start of your next turn"
+            }
+          ]
+        },
+        {
+          "label": "Prevent Invisible",
+          "effects": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "no_invisible",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "prevent Invisible from that effect until the start of your next turn"
+            }
+          ]
+        }
+      ]
+    },
+    "TAL_VOID_VOID_SHELL": {
+      "text_sha256": "f03b96fc4da8e0b2091c8ad28713b3382bf0ab03f4f705cdef23cd3a84b3d389",
+      "reviewed_by": "A2VOID 2026-10-10 printed combat review",
+      "effects": [
+        {
+          "type": "ac_bonus",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "gain +1 AC"
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "force",
+            "necrotic"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "gain Resistance to Force and Necrotic damage"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "saving throws against teleportation, banishment, and forced transformation",
+          "duration": "concentration",
+          "evidence": "gain Advantage on saving throws against teleportation, banishment, and forced transformation"
+        },
+        {
+          "type": "state",
+          "name": "void_shell",
+          "applies_to": "self",
+          "duration": "concentration",
+          "label": "Void Shell: once per turn a creature that hits it with a melee Cultivation Attack takes Force damage",
+          "evidence": "once per turn, when a creature hits you with a melee Cultivation Attack, it takes Force damage equal to your Proficiency Bonus"
+        },
+        {
+          "type": "condition",
+          "condition": "void_shell_hits",
+          "applies_to": "self",
+          "duration": "concentration",
+          "condition_data": {
+            "void_shell_hits": 1,
+            "label": "Void Shell: confirmed melee Cultivation hits retaliate, even when they deal no damage"
+          },
+          "evidence": "once per turn, when a creature hits you with a melee Cultivation Attack, it takes Force damage equal to your Proficiency Bonus."
+        }
+      ],
+      "riders": [
+        "The GM applies saving throw Advantage only against teleportation, banishment or forced transformation."
+      ]
+    }
+  }
+}
