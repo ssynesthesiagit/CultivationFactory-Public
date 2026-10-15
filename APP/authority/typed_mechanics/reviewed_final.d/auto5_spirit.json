@@ -1,0 +1,506 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinal.v1",
+  "note": "AUTO5 (round 24 live 42e43e14, branch auto/spirit-companions): the Spirit Companions sphere's combat surface. Binding Seal, its Punishing/Ward/Host consequences, and the two printed Cultivation Checks that were never rolled. Companion plug-in: APP/combat/ext/spirit_seals.py. Non-combat text (downtime, crafting, social, story) stays a rider by design.",
+  "mechanics": {
+    "TAL_SPIRIT_COMPANIONS_BINDING_SEAL": {
+      "text_sha256": "215f75d555ed4d36e949020be7133d30dd6bc4a432ab14e6864f535af5ddda77",
+      "reviewed_by": "auto5 2026-10-04: the sphere's core seal becomes a real Action. It was typed 'passive', so no character ever got the button and the printed Wisdom saving throw against your Cultivation Save DC never happened. A failure leaves the spirit Restrained under a Binding Seal mark; combat/ext/spirit_seals.py carries the printed clauses that hold while the seal does (it cannot move beyond the bond, it cannot attack its binder, a coercive command costs 1 Bond Strain). The Bind the Violent Ghost disadvantage reads the binder's own named mark (disadvantage_if_marked), so only a binder who owns that talent and marked this spirit gets it.",
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type",
+        "modifies": null
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "applies_to": "target",
+          "harmful": true,
+          "on_fail": [
+            {
+              "type": "mark",
+              "mark": "Binding Seal",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_removed"
+              },
+              "evidence": "On a failure, the Binding Seal takes hold",
+              "origin": "reviewed"
+            }
+          ],
+          "on_success": [],
+          "evidence": "The spirit makes a Wisdom saving throw against your Cultivation Save DC. On a failure, the Binding Seal takes hold.",
+          "origin": "reviewed",
+          "disadvantage_if_marked": "Violent Ghost"
+        }
+      ],
+      "target": {
+        "any_side": true,
+        "evidence": "the printed rule names no side: 'A Binding Seal restrains or compels a spirit', 'target one spirit, vessel, host, or seal', 'target one creature, object, or location hosting a spirit' (combat/ext/spirit_seals.py widen_any_side)"
+      },
+      "riders": [
+        "An unwilling spirit must be defeated, restrained, trapped in a vessel, inside a prepared circle, shrine, formation, body or object, reduced to 0 Hit Points, willingly accepting punishment, or unable to flee because of another legal effect.",
+        "The spirit may seek loopholes, sabotage, malicious compliance, or escape."
+      ]
+    },
+    "tianxia.talent.spirit_companions.bind_the_violent_ghost": {
+      "text_sha256": "3de3f48458ebf31cf700ce0bd0c805a914922050a511e8939adf70251e5cfbdb",
+      "reviewed_by": "auto5 2026-10-04: the typed modifier now reaches the real Binding Seal button (it modifies a passive record before, so nothing answered it). Its choice between 'Advantage on the Binding check' and 'Disadvantage on its saving throw' is the two printed words of one sentence and runs as the table's Binding Seal saving throw: combat/ext/spirit_seals.py marks every spirit that actually attacked this binder or one of their allies this scene (an attack is an attack whether it hit, and before any seal exists), and TAL_SPIRIT_COMPANIONS_BINDING_SEAL's save row reads that mark by name (disadvantage_if_marked), so the disadvantage belongs to the binder who owns this talent and to no one else.",
+      "activation": {
+        "economy": "passive",
+        "trigger": "When placing a Binding Seal on a spirit that has attacked you or your allies during the current scene",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Binding Seal"
+      },
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "the Binding check",
+          "duration": "instant",
+          "evidence": "you have Advantage on the Binding check",
+          "origin": "reviewed"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "the Binding Seal's Wisdom saving throw",
+          "duration": "instant",
+          "evidence": "the spirit has Disadvantage on its saving throw",
+          "origin": "reviewed"
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Binding Seal"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "a spirit that has attacked you or your allies during the current scene",
+        "effects": [
+          {
+            "type": "disadvantage",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "the Binding Seal's Wisdom saving throw",
+            "duration": "instant",
+            "evidence": "the spirit has Disadvantage on its saving throw",
+            "origin": "reviewed"
+          }
+        ]
+      },
+      "riders": [
+        "This advantage does not apply if you provoked the spirit through betrayal, taboo violation, or unjustified aggression."
+      ]
+    },
+    "tianxia.talent.spirit_companions.name_binding": {
+      "text_sha256": "c713c0b437a945e05bd69018816a80684b1daecb419b04cc56bd12a2044aac94",
+      "reviewed_by": "auto5 2026-10-04: Binding Seal became a real Action, so Name-Binding's modifier now reaches its save. Its 'Every time the standing command forces unwilling service, increase Bond Strain by 1' is the same printed disobedience the seal family already asks about after Command Bonded Spirit, so combat/ext/spirit_seals.py charges it there (block spirit_seal kind 'name'). 'Disadvantage on its first attempt to break the seal' needs an event the engine cannot report -- nothing says a spirit tried to break its seal -- so that one sentence stays this talent's rider and its modifier carries no effect until the event exists.",
+      "activation": {
+        "economy": "passive",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Binding Seal"
+      },
+      "effects": [
+        {
+          "type": "seal_strain",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "a standing command that forces the spirit into unwilling service",
+          "duration": "instant",
+          "evidence": "Every time the standing command forces unwilling service, increase Bond Strain by 1",
+          "origin": "reviewed"
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Binding Seal"
+        ],
+        "scope": "named",
+        "when": "success",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "a spirit whose true or partial Name you know",
+        "effects": []
+      },
+      "riders": [
+        "When you successfully apply a Binding Seal to a spirit whose true or partial Name you know, the spirit has Disadvantage on its first attempt to break the seal."
+      ]
+    },
+    "tianxia.talent.spirit_companions.painful_binding_seal": {
+      "text_sha256": "0c2fcd6cba70ab98b8b5f8cb3b34f13b734a11cc9b3b292e15133167161486ee",
+      "reviewed_by": "auto5 2026-10-04: the immediate 1 Bond Strain is the seal taking hold (combat/ext/spirit_seals.py, mark_applied) and the coercive-command strain is the same module's disobedience ask after Command Bonded Spirit; the printed 'gain Bond Strain 1' row now names the owner's own counter.",
+      "effects": [
+        {
+          "type": "seal_strain",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "A spirit bound this way gains Bond Strain 1 immediately",
+          "origin": "reviewed"
+        }
+      ],
+      "riders": [
+        "A spirit held by Painful Binding Seal may attempt to weaken the bond whenever Bond Strain reaches 3, when you are reduced to 0 Hit Points, when you violate the terms of the seal, or when an appropriate exorcist, shrine, or hostile spirit interferes."
+      ]
+    },
+    "tianxia.talent.spirit_companions.punishing_seal": {
+      "text_sha256": "7a74fb89c469a58dbd0fc31c0ee4068ec614b71f1a3fb95a7a767c0fd185dbdb",
+      "reviewed_by": "auto5 2026-10-04: the trigger reads as 'a bound spirit disobeys a command', which no engine event can see, so combat/ext/spirit_seals.py asks the owner after Command Bonded Spirit whether the spirit carried out the order and spends the Reaction there. 'One roll of your sphere die' is not defined anywhere in the owner's printed rules; read here as the Cultivation percentile die, 1d10, and said so in the log.",
+      "effects": [
+        {
+          "type": "damage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [
+            "psychic",
+            "force"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "dice": {
+            "count": 1,
+            "sides": 10
+          },
+          "evidence": "The spirit takes Psychic or Force damage equal to one roll of your sphere die plus your key ability modifier",
+          "origin": "reviewed"
+        }
+      ],
+      "riders": [
+        "or it loses access to one Nature Expression until the end of its next turn."
+      ]
+    },
+    "tianxia.talent.spirit_companions.break_the_cruel_seal": {
+      "text_sha256": "6a2ddc9c2dca51448d0c009a41dcde9018cc8372121076b6c35fdf9a5990978a",
+      "reviewed_by": "auto5 2026-10-04: the printed Cultivation Check against the binder's Cultivation Save DC was a rider, so the ability rolled no die. It is now one contest per printed choice, measured against the DC combat/ext/spirit_seals.py's seal_binder provider reads off the target's own seal (combat/typed_executor.resolve_opposed_check's documented 'dc' check: a printed DC is met by matching it). Each outcome is nested under that check's on_success, so a FAILED check does nothing; each option repeats the shared Cultivation Check because a 'choose one' ability compiles one action per option and the shared part is not run on its own; the suppress option ends at the end of the Binder's NEXT turn, as printed (an 'until_end_of_turn' row on your own bonded spirit would have ended this turn).",
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "range": {
+        "kind": "feet",
+        "feet": 30,
+        "evidence": "target one spirit, vessel, host, or seal within 30 feet that you can perceive"
+      },
+      "target": {
+        "any_side": true,
+        "evidence": "the printed rule names no side: 'A Binding Seal restrains or compels a spirit', 'target one spirit, vessel, host, or seal', 'target one creature, object, or location hosting a spirit' (combat/ext/spirit_seals.py widen_any_side)"
+      },
+      "effects": [
+        {
+          "type": "contest_against",
+          "harmful": true,
+          "applies_to": "target",
+          "actor_check": {
+            "kind": "cultivation",
+            "label": "Cultivation Check"
+          },
+          "target_check": {
+            "kind": "dc",
+            "of": "seal_binder",
+            "label": "the binder's Cultivation Save DC"
+          },
+          "on_success": [],
+          "on_fail": [],
+          "evidence": "Make a Cultivation Check against the binder's Cultivation Save DC.",
+          "origin": "reviewed"
+        }
+      ],
+      "options": [
+        {
+          "label": "Weaken the seal for 1 minute",
+          "effects": [
+            {
+              "type": "contest_against",
+              "harmful": true,
+              "applies_to": "target",
+              "actor_check": {
+                "kind": "cultivation",
+                "label": "Cultivation Check"
+              },
+              "target_check": {
+                "kind": "dc",
+                "of": "seal_binder",
+                "label": "the binder's Cultivation Save DC"
+              },
+              "on_success": [
+                {
+                  "type": "advantage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "saving throws to resist commands, possession, forced manifestation, or punishment through the seal",
+                  "duration": "one_minute",
+                  "evidence": "reduce the target Binding Seal's control for 1 minute. During that time, the bound spirit has Advantage on saving throws to resist commands, possession, forced manifestation, or punishment through the seal.",
+                  "origin": "reviewed"
+                }
+              ],
+              "on_fail": [],
+              "evidence": "Make a Cultivation Check against the binder's Cultivation Save DC.",
+              "origin": "reviewed"
+            }
+          ],
+          "riders": []
+        },
+        {
+          "label": "Suppress the seal until the end of your next turn",
+          "effects": [
+            {
+              "type": "contest_against",
+              "harmful": true,
+              "applies_to": "target",
+              "actor_check": {
+                "kind": "cultivation",
+                "label": "Cultivation Check"
+              },
+              "target_check": {
+                "kind": "dc",
+                "of": "seal_binder",
+                "label": "the binder's Cultivation Save DC"
+              },
+              "on_success": [
+                {
+                  "type": "seal_suppress",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_end_of_your_next_turn",
+                  "evidence": "you may instead suppress the Binding Seal until the end of your next turn",
+                  "origin": "reviewed"
+                }
+              ],
+              "on_fail": [],
+              "evidence": "Make a Cultivation Check against the binder's Cultivation Save DC.",
+              "origin": "reviewed"
+            }
+          ],
+          "riders": [
+            "Only when the bound spirit is willing to be freed and the original seal is not stronger than your Realm."
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.talent.spirit_companions.exorcist_s_mercy": {
+      "text_sha256": "cb87c65223dbdb2619c1d152a29731115e3cfb8b56efa41426a92026f20cdccd",
+      "reviewed_by": "auto5 2026-10-04: the printed Cultivation Check against the spirit's Cultivation Save DC or the binder's was a rider, so the ability rolled no die. It is now one contest per printed outcome, measured against the DC the target's own seal answers for (combat/ext/spirit_seals.py's seal_binder provider reads the binder's Cultivation Save DC from the seal condition; a creature wearing no seal falls back to its own DC). Each outcome is nested under that check's on_success, so a FAILED check changes nothing, and each option repeats the shared Cultivation Check because a 'choose one' ability compiles one action per option and the shared part is not run on its own. 'force the spirit to manifest adjacent to the host' is a rider: the table has no hosting relationship to read, so it must not move the exorcist's own companion. AUTO5r2f1 2026-10-05: the release option's button said 'The Binding Seal on this creature ends', which promises a complete release while the printed rule removes one layer and another binder's layer can still hold; it now says one layer ends and names that a second layer survives. The label is the only change; the check and its outcome are untouched.",
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "range": {
+        "kind": "feet",
+        "feet": 30,
+        "evidence": "target one creature, object, or location hosting a spirit within 30 feet"
+      },
+      "target": {
+        "any_side": true,
+        "evidence": "the printed rule names no side: 'A Binding Seal restrains or compels a spirit', 'target one spirit, vessel, host, or seal', 'target one creature, object, or location hosting a spirit' (combat/ext/spirit_seals.py widen_any_side)"
+      },
+      "effects": [
+        {
+          "type": "contest_against",
+          "harmful": true,
+          "applies_to": "target",
+          "actor_check": {
+            "kind": "cultivation",
+            "label": "Cultivation Check"
+          },
+          "target_check": {
+            "kind": "dc",
+            "of": "seal_binder",
+            "label": "the spirit's Cultivation Save DC or its binder's"
+          },
+          "on_success": [],
+          "on_fail": [],
+          "evidence": "Make a Cultivation Check against the spirit's Cultivation Save DC or the binder's DC.",
+          "origin": "reviewed"
+        }
+      ],
+      "options": [
+        {
+          "label": "The host has Advantage on its next saving throw against possession",
+          "effects": [
+            {
+              "type": "contest_against",
+              "harmful": true,
+              "applies_to": "target",
+              "actor_check": {
+                "kind": "cultivation",
+                "label": "Cultivation Check"
+              },
+              "target_check": {
+                "kind": "dc",
+                "of": "seal_binder",
+                "label": "the spirit's Cultivation Save DC or its binder's"
+              },
+              "on_success": [
+                {
+                  "type": "advantage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "its next saving throw against possession",
+                  "duration": "special",
+                  "evidence": "give the host Advantage on its next saving throw against possession",
+                  "origin": "reviewed"
+                }
+              ],
+              "on_fail": [],
+              "evidence": "Make a Cultivation Check against the binder's Cultivation Save DC.",
+              "origin": "reviewed"
+            }
+          ],
+          "riders": []
+        },
+        {
+          "label": "One layer of the Binding Seal on this creature ends (another binder's layer, if any, still holds)",
+          "effects": [
+            {
+              "type": "contest_against",
+              "harmful": true,
+              "applies_to": "target",
+              "actor_check": {
+                "kind": "cultivation",
+                "label": "Cultivation Check"
+              },
+              "target_check": {
+                "kind": "dc",
+                "of": "seal_binder",
+                "label": "the spirit's Cultivation Save DC or its binder's"
+              },
+              "on_success": [
+                {
+                  "type": "seal_release",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "remove one layer of a Binding Seal if the spirit wants to leave",
+                  "origin": "reviewed"
+                }
+              ],
+              "on_fail": [],
+              "evidence": "Make a Cultivation Check against the binder's Cultivation Save DC.",
+              "origin": "reviewed"
+            }
+          ],
+          "riders": []
+        },
+        {
+          "label": "The spirit cannot be commanded for 1 minute",
+          "effects": [
+            {
+              "type": "contest_against",
+              "harmful": true,
+              "applies_to": "target",
+              "actor_check": {
+                "kind": "cultivation",
+                "label": "Cultivation Check"
+              },
+              "target_check": {
+                "kind": "dc",
+                "of": "seal_binder",
+                "label": "the spirit's Cultivation Save DC or its binder's"
+              },
+              "on_success": [
+                {
+                  "type": "seal_suppress",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "one_minute",
+                  "evidence": "suppress the Hosting Bond for 1 minute",
+                  "origin": "reviewed"
+                }
+              ],
+              "on_fail": [],
+              "evidence": "Make a Cultivation Check against the binder's Cultivation Save DC.",
+              "origin": "reviewed"
+            }
+          ],
+          "riders": []
+        }
+      ],
+      "riders": [
+        "This talent does not work on a willing stable Covenant Bond unless the host also wants separation.",
+        "force the spirit to manifest adjacent to the host. The table cannot see which spirit is hosted inside which creature, so the GM names the spirit and it is moved beside the host."
+      ]
+    }
+  }
+}
