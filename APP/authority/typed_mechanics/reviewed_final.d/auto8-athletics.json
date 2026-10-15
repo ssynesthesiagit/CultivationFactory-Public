@@ -1,0 +1,473 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "note": "Athletics sphere, lane AUTO8 (round 24). Every rider removed below is a line the engine now applies itself: combat/ext/athletics.py (the passive rows and the printed triggers) and combat/rules/feature_blocks.d/auto8-athletics.json. Effects carry the printed fragment they came from, so a reviewer can check each against rules_text.json. Nothing here invents a number: the Flying, Hover, Cover, Speed, Focus and save clauses are the engine's own.",
+  "mechanics": {
+    "ATHLETICS_BASE_COORDINATED_MOVEMENT": {
+      "text_sha256": "8636fbd9f448bed151c2d25833c8874c309574959599e98407d80f0ece69cf90",
+      "reviewed_by": "lane AUTO8 2026-10-04: every printed line is the engine's (combat/rules/feature_blocks.json motion row)",
+      "effects": [
+        {
+          "type": "regain_focus",
+          "applies_to": "self",
+          "resource": "martial_focus",
+          "on": "Dash or Disengage taken as your Action",
+          "evidence": "Whenever you take the Dash or Disengage Action as your Action, regain Martial Focus."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_AFTERIMAGE": {
+      "text_sha256": "0e59e691f24bfa0f41428d0bf102feb44569d9778e725a453ee9b180af9c4eb6",
+      "reviewed_by": "lane AUTO8 2026-10-04: the afterimage, the d2 and its destruction are all the engine's (combat/motion.py)",
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you move more than 20 feet during your turn",
+        "source": "printed"
+      },
+      "effects": [
+        {
+          "type": "afterimage",
+          "applies_to": "self",
+          "distance_ft": 20,
+          "expires_on": "START_OF_SELF_NEXT_TURN",
+          "evidence": "When you move more than 20 feet during your turn, leave one visible afterimage until the start of your next turn."
+        },
+        {
+          "type": "retarget_attack",
+          "applies_to": "attacker",
+          "die": "d2",
+          "on": "1",
+          "evidence": "When a creature that can see the afterimage attacks you or targets you with a visible targeted supernatural effect, roll a d2. 1: The creature targets the afterimage instead."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_UNIMPEDED_POSITIONING": {
+      "text_sha256": "34acbbbe64f8747b4e6f19f4f963abf5c9037ac2b45eb182e6ac292143de5380",
+      "reviewed_by": "lane AUTO8 2026-10-04: while holding Martial Focus the engine already prices difficult terrain at nothing (combat/motion.py)",
+      "effects": [
+        {
+          "type": "ignore_difficult",
+          "applies_to": "self",
+          "while": "martial_focus",
+          "evidence": "While holding Martial Focus, ignore nonmagical difficult terrain."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_RAPID_MOTION": {
+      "text_sha256": "503224dade535ca9e16b39b6e6e25e794c9216bcbae93bd69fa6505b23b285db",
+      "reviewed_by": "lane AUTO8 2026-10-04: the granted Bonus Action move (combat/rules/feature_blocks.json granted_action row)",
+      "activation": {
+        "economy": "bonus_action",
+        "source": "printed"
+      },
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "distance_ft": "speed",
+          "evidence": "Dash as a Bonus Action."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_COURT_OF_TEN_THOUSAND_STEPS": {
+      "text_sha256": "dcb3092418a92774ec5d6934e3b5bf6dac3913f8b5d5a035f1647baa25246f6c",
+      "reviewed_by": "lane AUTO8 2026-10-04: the stance and every clause the maps can run (combat/ext/athletics.py)",
+      "effects": [
+        {
+          "type": "stance",
+          "name": "Court of Ten Thousand Steps",
+          "rounds": 10,
+          "hit_riders": [],
+          "evidence": "For the duration: increase all movement Speeds by 20 feet; ignore nonmagical difficult terrain; stand from Prone without spending movement; move through allied spaces normally; climb ordinary surfaces without a check; once per turn after moving at least 20 feet, regain Martial Focus; once per turn when a hostile creature misses you, move 5 feet without provoking Opportunity Attacks. Ends early if you become Incapacitated."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_MOVING_TARGET": {
+      "text_sha256": "53a13197f1ba7dd0017addd74ffba37001bb6fa7246c41663acdd596d5145247",
+      "reviewed_by": "lane AUTO8 2026-10-04: the Cover, the Focus upgrade and the second purchase (combat/ext/athletics.py)",
+      "effects": [
+        {
+          "type": "cover",
+          "applies_to": "self",
+          "bonus": 2,
+          "distance_ft": 20,
+          "against": "ranged attacks and ranged supernatural effects",
+          "expires_on": "START_OF_SELF_NEXT_TURN",
+          "evidence": "When you move more than 20 feet during your turn, gain Half Cover against ranged attacks and ranged supernatural effects until the start of your next turn."
+        },
+        {
+          "type": "cover",
+          "applies_to": "self",
+          "bonus": 5,
+          "distance_ft": 40,
+          "cost": "martial_focus",
+          "against": "ranged attacks and ranged supernatural effects",
+          "expires_on": "START_OF_SELF_NEXT_TURN",
+          "evidence": "If you move at least 40 feet, expend Martial Focus to gain Three-Quarters Cover instead."
+        },
+        {
+          "type": "cover",
+          "applies_to": "self",
+          "bonus": 2,
+          "against": "melee attacks as well",
+          "on_second_purchase": true,
+          "expires_on": "START_OF_SELF_NEXT_TURN",
+          "evidence": "Second Purchase: Take Moving Target a second time. Its cover applies against melee attacks as well."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_HEAVEN_TREADING_BODY": {
+      "text_sha256": "4e2b9380acedf5858ee030a375600806b2bf3bef9843c81a2c30dd0a095b724f",
+      "reviewed_by": "lane AUTO8 2026-10-04: Fly Speed, Hover, difficult terrain and falling damage (combat/ext/athletics.py)",
+      "effects": [
+        {
+          "type": "speed_kind",
+          "applies_to": "self",
+          "kind": "fly",
+          "formula": "key_ability_modifier",
+          "evidence": "Gain: Fly Speed equal to land Speed;"
+        },
+        {
+          "type": "flight",
+          "applies_to": "self",
+          "flight_hover": 1,
+          "evidence": "Hover;"
+        },
+        {
+          "type": "ignore_difficult",
+          "applies_to": "self",
+          "evidence": "ignore nonmagical difficult terrain;"
+        },
+        {
+          "type": "fall_damage_immune",
+          "applies_to": "self",
+          "flat": 0,
+          "evidence": "reduce falling damage to 0."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_ROPE_SWING_ADEPT": {
+      "text_sha256": "1e8be4b7811ea26f50f173f2de054fba6bbd8500a23196b1f1667fccff22faa8",
+      "reviewed_by": "lane A2R23 2026-10-13: the attach (Bonus Action, asking for the anchor through the bounded choice transport), the free detach and the quick climb to the anchor are the engine's (combat/ext/athletics.py rope_swing); ending movement in the air while swinging is the flight seam (suspended)",
+      "cost": [],
+      "riders": [
+        "The anchor is any square above the fighter that it can see and land on: the printed text names no range, so sight is the bound.",
+        "\"as though you possessed a temporary Fly Speed\" gives no Fly Speed value, so none is invented: the engine's suspended capability is the printed clause (the fighter does not fall when it ends its move in the air), and no air travel the printed text does not grant.",
+        "The quick climb is movement: it charges the shared allowance the climb's distance, and the native landing gates still decide whether the anchor is a legal, unoccupied landing."
+      ],
+      "effects": [
+        {
+          "type": "rope_swing_attach",
+          "applies_to": "self",
+          "evidence": "Attach an appropriate Rope Swing item as a Bonus Action."
+        }
+      ]
+    },
+    "TAL_ATHLETICS_SPARROW_S_PATH": {
+      "text_sha256": "a60ae72c271289292c02c04d389d059c8d54e6dc32896fb22045f6fa6bc92157",
+      "reviewed_by": "lane AUTO8 2026-10-04: the Fly Speed the engine's own flight profile reads (combat/ext/athletics.py)",
+      "effects": [
+        {
+          "type": "speed_kind",
+          "applies_to": "self",
+          "kind": "fly",
+          "formula": "half_base_land_speed",
+          "evidence": "Gain Fly Speed equal to half your base land Speed."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_POWERFUL_WINGS": {
+      "text_sha256": "c524d1c80f8d4500b3264d62046d806531e0fe3e2b246f03d65830e34a7ff5e3",
+      "reviewed_by": "lane AUTO8 2026-10-04: Hover while the fighter's own wings give it flight (combat/ext/athletics.py)",
+      "effects": [
+        {
+          "type": "flight",
+          "applies_to": "self",
+          "flight_hover": 1,
+          "while": "own_fly_speed",
+          "evidence": "If you possess a Fly Speed through physical wings, you may Hover."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_HELICOPTER_DESCENT": {
+      "text_sha256": "5ae5f0d4fe32341d7c061bf89be4d3923da15fbb6b2c5d6fb540d43060e109b8",
+      "reviewed_by": "lane AUTO8 2026-10-04: the capped descent, the immunity and the upright landing are recorded falling data (combat/ext/athletics.py)",
+      "effects": [
+        {
+          "type": "fall_protection",
+          "applies_to": "self",
+          "fall_speed_ft": 60,
+          "fall_damage_immune": 1,
+          "fall_lands_upright": 1,
+          "rounds": "pb",
+          "on": "you end your turn in the air while wielding an appropriate polearm, rope, chain, whip or tether item",
+          "evidence": "For rounds equal to your Proficiency Bonus: fall no faster than 60 feet per round; take no falling damage if you land before the effect ends; land on your feet."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_FLASH_STEP": {
+      "text_sha256": "f6a7458525a793cdce421e36b7a3dd90f982e4ea4912c6b368831111770a37db",
+      "reviewed_by": "lane A2R23 2026-10-13: the visible, legal, unoccupied destination and the sealed-boundary refusals are the engine's shared self-teleport (combat/ext/teleport_steps.py, height-aware); the Dash-bound reach is the general dash_reach query (combat/flight.py), and spending the Action on it is spending the Dash Action (the action_dash_receipt seam, combat/typed_reactions.py)",
+      "effects": [
+       {
+        "type": "teleport",
+        "applies_to": "self",
+        "distance_ft": "dash_reach",
+        "on": "Dash",
+        "cost": "martial_focus",
+        "evidence": "When you take the Dash Action, expend Martial Focus. Teleport into your final destination without passing through intervening spaces."
+       }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_SPEED_BOOST": {
+      "text_sha256": "93dcaecdedbb18c36b1de764c1a091da59d36c11d5b28a3ccffcc5668e268b93",
+      "reviewed_by": "lane AUTO8 2026-10-04: the Dash extension, the Focus boost for Constitution-modifier rounds and its Exhaustion (combat/ext/athletics.py)",
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "distance_ft": 10,
+          "on": "Dash or Disengage taken as your Action",
+          "evidence": "When taking Dash or Disengage as an Action, move an additional 10 feet."
+        },
+        {
+          "type": "speed",
+          "applies_to": "self",
+          "flat": 50,
+          "cost": "martial_focus",
+          "duration": "rounds equal to your Constitution modifier, minimum 1",
+          "evidence": "You may also expend Martial Focus to increase all movement Speeds by 50 feet for rounds equal to your Constitution modifier, minimum 1 round."
+        },
+        {
+          "type": "exhaustion",
+          "applies_to": "self",
+          "flat": 1,
+          "on": "the boost ends",
+          "evidence": "When the duration ends, gain one level of Exhaustion until completing a short or long rest. This Exhaustion applies even if you are normally immune."
+        },
+        {
+          "type": "activation_limit",
+          "applies_to": "self",
+          "condition": "exhaustion above 2",
+          "evidence": "You cannot activate this boost while your Exhaustion exceeds 2."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_DIZZYING_TUMBLE": {
+      "text_sha256": "3125ebb7da1cd2a1af32aeeda53831da75404ea13501fe1d0ab8a6c9647c4c67",
+      "reviewed_by": "lane AUTO8 2026-10-04: leaving a hostile's space now costs 10 feet and rolls the printed Wisdom save (combat/ext/athletics.py); the rest-cleared immunity lasts until it is cleared, since a fight has no rest clock",
+      "effects": [
+        {
+          "type": "save",
+          "applies_to": "target",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on": "you exit a space adjacent to that creature",
+          "cost": "10 feet of movement",
+          "evidence": "When you exit a space adjacent to a hostile creature, spend 10 feet of movement to force that creature to make a Wisdom saving throw."
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "target",
+          "on": "attack rolls",
+          "expires_on": "END_OF_HOLDER_NEXT_TURN",
+          "evidence": "Failed Save: The creature has Disadvantage on attack rolls until the end of your next turn."
+        },
+        {
+          "type": "condition_immune",
+          "applies_to": "target",
+          "condition": "condition:typed.dizzying_tumble_immune",
+          "on": "Successful Save",
+          "expires_on": "UNTIL_REMOVED",
+          "evidence": "Successful Save: It becomes immune to your Dizzying Tumble until you complete a short or long rest."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_MERIDIAN_THREADING_DASH": {
+      "text_sha256": "f1afd1eafe92d98067fb9df4708f8de1e4a36481c5d3161cdf6489d5369e491e",
+      "reviewed_by": "lane AUTO8 2026-10-04: Coordinated Movement's own Focus grant now opens the printed choice of one benefit (combat/ext/athletics.py meridian_threading); the free step uses the shared movement grant, standing uses combat.posture.stand_up with an explicit zero cost, the check Advantage is the shared ability_check_mode seam",
+      "modifier": null,
+      "activation": {
+        "economy": "passive",
+        "trigger": "When Coordinated Movement restores Martial Focus",
+        "source": "printed"
+      },
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "distance_ft": 10,
+          "on": "Coordinated Movement restores Martial Focus",
+          "free_of_opportunity_attacks": true,
+          "evidence": "move 10 feet without provoking Opportunity Attacks"
+        },
+        {
+          "type": "condition",
+          "applies_to": "self",
+          "condition": "prone",
+          "cost": 0,
+          "on": "Coordinated Movement restores Martial Focus",
+          "evidence": "stand from Prone without spending movement"
+        },
+        {
+          "type": "remove_condition",
+          "applies_to": "self",
+          "condition": "condition:typed.grappled",
+          "on": "Coordinated Movement restores Martial Focus",
+          "evidence": "end one ordinary Grappled effect affecting you"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "on": "your next Strength (Athletics) or Dexterity (Acrobatics) check",
+          "expires_on": "END_OF_HOLDER_NEXT_TURN",
+          "evidence": "gain Advantage on your next Strength (Athletics) or Dexterity (Acrobatics) check before the end of your next turn"
+        }
+      ],
+      "riders": []
+    },
+    "TAL_ATHLETICS_FLOWING_PURSUIT": {
+      "text_sha256": "0742aca933d81ad56c97eff321884126a0f07e19a458bb10613813ffce77f682",
+      "reviewed_by": "lane AUTO8 2026-10-04: the closing-distance trigger, the printed choice of one benefit and three of its four options are the engine's (combat/ext/athletics.py flowing_pursuit); the Opportunity Attack answer uses the shared opportunity_allowed seam, the +2 AC against one named creature the shared condition:typed.ac_against shape, and the jump the documented jump_bonus_ft seam",
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you move at least 20 feet toward one creature during your turn",
+        "source": "printed"
+      },
+      "effects": [
+        {
+          "type": "cover",
+          "applies_to": "self",
+          "against": "Opportunity Attacks from that creature",
+          "expires_on": "END_OF_HOLDER_NEXT_TURN",
+          "evidence": "ignore Opportunity Attacks from that creature"
+        },
+        {
+          "type": "ac_bonus",
+          "applies_to": "self",
+          "flat": 2,
+          "against": "that one creature",
+          "expires_on": "START_OF_SELF_NEXT_TURN",
+          "evidence": "gain +2 AC against that creature until the start of your next turn"
+        },
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 5,
+          "on": "one jump",
+          "evidence": "add 5 feet to one jump during the movement"
+        }
+      ],
+      "riders": [
+        "The table asks which benefit when the movement that closed the 20 feet resolves, because that is the first point after a move at which a player may be asked: the Opportunity Attack answer then covers any further movement that turn, and the jump bonus covers a jump taken after the choice rather than a jump inside the movement already finished. \"Move through one allied creature's space without treating it as difficult terrain\" needs nothing: only hostile spaces are difficult on this table (combat/gate2_engine._hostile_difficult_cells), so it is not offered as a fourth button."
+      ]
+    },
+    "TAL_ATHLETICS_POLEARM_VAULTER": {
+      "text_sha256": "da1bf19d822ee819cfef852b60705737c7e5611b809e5dfd385feb2416d280f4",
+      "reviewed_by": "lane AUTO8 2026-10-04: the Bonus Action purchase and the +5 feet of jump height are the engine's (combat/ext/athletics.py polearm_vaulter through the documented jump_bonus_ft seam in combat/flight.py)",
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "distance_ft": 10,
+          "on": "horizontal jump distance",
+          "cost": "martial_focus",
+          "economy": "bonus_action",
+          "evidence": "horizontal jump distance by 10 feet"
+        },
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "distance_ft": 5,
+          "on": "jump height",
+          "cost": "martial_focus",
+          "economy": "bonus_action",
+          "evidence": "jump height by 5 feet"
+        }
+      ],
+      "riders": [
+        "Pole vaulting requires a held pole or polearm and a supported takeoff. Choose the horizontal or height purchase, then a native jump route; the paid increase supplies its own movement allowance and is consumed by that vault or the end of the turn."
+      ]
+    },
+    "TAL_ATHLETICS_MIGHTY_CONDITIONING": {
+      "text_sha256": "6407df388799caa56d4e13c8311527607fde8ecca0798b74e4d291c937429536",
+      "reviewed_by": "lane AUTO8 2026-10-04: jump height now reads the better of Strength and Dexterity (combat/ext/athletics.py mighty_conditioning through the documented jump_ability seam in combat/flight.py)",
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "on": "jump distance or height",
+          "ability": "DEX",
+          "evidence": "You may use Dexterity instead of Strength when determining jump distance or height."
+        }
+      ],
+      "riders": [
+        "The Strength (Athletics) / Dexterity (Acrobatics) check line needs nothing new and is not asked per check: every such check this table resolves already takes the better of the two abilities (combat/ability_checks.escape_bonus, combat/ext/escape_checks.py), which is what choosing Strength or Dexterity for it produces. Horizontal jump distance is read as part of the height line above and is the same GM-read Polearm Vaulter names."
+      ]
+    },
+    "TAL_ATHLETICS_ONE_BREATH_TEN_THOUSAND_STEPS": {
+      "text_sha256": "f84f43c9f1531f30d1f9f4b01c8087b94233d4a8769028c0f59c71c7c9835c9a",
+      "reviewed_by": "lane A2R23 2026-10-13: the printed Martial Focus return every 20 feet of movement (including a willing teleport) is the engine's (combat/ext/athletics.py one_breath); Opportunity Attack immunity is the opportunity_allowed seam, hostile spaces as difficult terrain the pass_through seam, walls/water/air/fragile surfaces the climbing and support_surface seams, the one attack the deferred strike buttons (combat/ext/athletics.py), and the once-per-activation Motion receipt the per-activation registry",
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "riders": [
+        "The one weapon attack or unarmed strike lands at the point of movement the fighter chooses: the activation's own attack row is compiled but deferred, and a free strike button is provided for each native weapon delivery the fighter can use (including a thrown delivery when available), plus the printed Unarmed Strike. Every button shares the one attack granted by this activation.",
+        "\"Once per long rest\" is not separately enforced: the table's use counter is per fight, not per rest (the owner-approved combat convention; the non-combat rest clock is map infrastructure this engine does not have).",
+        "\"Apply any number of known Motion talents during the turn, but apply each Motion talent only once\": the engine's Motion passives already apply on their own triggers, and the per-activation receipt (combat/ext/athletics.py motion_applied_once / record_motion_application) bounds each to once per activation, keyed by the exact Motion talent's owner id."
+      ],
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "distance_ft": "speed",
+          "evidence": "take Dash as part of this Bonus Action"
+        },
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "distance_ft": "speed",
+          "evidence": "take Dash again without spending an Action"
+        },
+        {
+          "type": "attack",
+          "attack_kind": "weapon",
+          "count": 1,
+          "deferred": true,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true
+            }
+          ],
+          "on_miss": [],
+          "evidence": "make one weapon attack or unarmed strike at any point during the movement"
+        },
+        {
+          "type": "regain_focus",
+          "applies_to": "self",
+          "resource": "martial_focus",
+          "on": "each time you move at least 20 feet while this lasts",
+          "evidence": "each time you move at least 20 feet, regain Martial Focus"
+        }
+      ]
+    }
+  }
+}
