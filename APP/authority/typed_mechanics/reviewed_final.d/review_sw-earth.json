@@ -1,0 +1,2705 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_EARTH_DOORSTONE_SEAL": {
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Touch a door, gate, hatch, window, tunnel mouth, coffin, jar, chest, or similar opening set into a solid frame.",
+        "if the opening is forced, broken, or magically bypassed, you know the seal was broken if you are within 1 mile and on the same plane",
+        "Doorstone Seal does not prevent teleportation, planar travel, gaseous movement, incorporeal passage, or a creature already inside from breaking the object unless a feature says otherwise",
+        "### Doorstone Seal - Foundation, Settlement\nPrerequisite: CL 7+\nAction Type: Action\nRange: Touch\nDuration: 1 hour\nCost: 1 CP\nTouch a door, gate, hatch, window, tunnel mouth, coffin, jar, chest, or similar opening set into a solid frame.\nEarth pressure settles around it.\nFor the duration:\nthe opening cannot be opened by ordinary Strength checks unless the creature succeeds on a Strength check against your Earth Save DC;\ncreatures have Disadvantage on Dexterity checks made to pick or manipulate mundane locks on it;\nif the opening is forced, broken, or magically bypassed, you know the seal was broken if you are within 1 mile and on the same plane.\nDoorstone Seal does not prevent teleportation, planar travel, gaseous movement, incorporeal passage, or a creature already inside from breaking the object unless a feature says otherwise."
+      ],
+      "range": {
+        "kind": "touch",
+        "feet": 5
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "hours",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "8655569d66c4f5db1e556068212354c27a4afbef11f7c2253810468f56d7895e",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_EARTH_EARTH_CARRIES_THE_FALLEN": {
+      "effects": [
+        {
+          "type": "hold_at_1hp",
+          "keep": 1,
+          "applies_to": "ally",
+          "evidence": "The creature drops to 1 Hit Point instead"
+        },
+        {
+          "type": "movement",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "instant",
+          "evidence": "is immediately moved up to 10 feet along the surface without provoking Opportunity Attacks",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "When a creature within 30 feet of you would drop to 0 Hit Points while touching a solid surface",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "use your Reaction and expend 5 CP",
+        "Use Earth Carries the Fallen once per long rest.",
+        "If the triggering damage was from a critical hit or a Secret Inheritance, the creature must also succeed on a Constitution saving throw against the attacker's save DC or your Earth Save DC, whichever is higher. On a failure, it drops to 0 Hit Points as normal.",
+        "### Earth Carries the Fallen\nPrerequisite: CL 15+\nWhen a creature within 30 feet of you would drop to 0 Hit Points while touching a solid surface, use your Reaction and expend 5 CP.\nThe creature drops to 1 Hit Point instead and is immediately moved up to 10 feet along the surface without provoking Opportunity Attacks.\nThe place where it would have fallen becomes a Foundation Space until the end of your next turn.\nUse Earth Carries the Fallen once per long rest.\nIf the triggering damage was from a critical hit or a Secret Inheritance, the creature must also succeed on a Constitution saving throw against the attacker\u2019s save DC or your Earth Save DC, whichever is higher. On a failure, it drops to 0 Hit Points as normal."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "4eb4384e57c26a4b2f747848b692eaf1969aba3222c56d88c2c2002c7f3d9098",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_EARTH_OX_BEARING_FOUNDATION": {
+      "effects": [
+        {
+          "type": "rider",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "being moved or knocked Prone",
+          "duration": "special",
+          "evidence": "Ox-Bearing Foundation: until your Deep Root Stance ends, the chosen willing ally gains Advantage on ability checks and saving throws to resist being moved or knocked Prone, just as you do. Choose that ally within 5 feet when you enter the stance. This costs no extra resource; the GM applies the ally's Advantage.",
+          "origin": "model"
+        },
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "Ox-Bearing Foundation: until your Deep Root Stance ends, you reduce damage taken by the chosen willing ally by your Proficiency Bonus, while you and the chosen ally touch the same surface. Choose that ally within 5 feet when you enter the stance. This costs no extra resource; the GM applies the reduction.",
+          "origin": "model"
+        },
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 5,
+          "on": "",
+          "duration": "instant",
+          "evidence": "you may move 5 feet with it without provoking Opportunity Attacks",
+          "origin": "model",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Deep Root Stance"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "rider",
+            "applies_to": "ally",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 5,
+            "on": "being moved or knocked Prone",
+            "duration": "special",
+            "evidence": "Ox-Bearing Foundation: until your Deep Root Stance ends, the chosen willing ally gains Advantage on ability checks and saving throws to resist being moved or knocked Prone, just as you do. Choose that ally within 5 feet when you enter the stance. This costs no extra resource; the GM applies the ally's Advantage.",
+            "origin": "model_v2"
+          },
+          {
+            "type": "damage_modifier",
+            "applies_to": "ally",
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "special",
+            "evidence": "Ox-Bearing Foundation: until your Deep Root Stance ends, you reduce damage taken by the chosen willing ally by your Proficiency Bonus, while you and the chosen ally touch the same surface. Choose that ally within 5 feet when you enter the stance. This costs no extra resource; the GM applies the reduction.",
+            "origin": "model_v2"
+          },
+          {
+            "type": "movement",
+            "applies_to": "self",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 5,
+            "on": "",
+            "duration": "special",
+            "evidence": "if the chosen creature is moved against its will, you may move 5 feet with it without provoking Opportunity Attacks",
+            "origin": "model_v2",
+            "deferred": true
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Deep Root Stance"
+      },
+      "riders": [
+        "provided you end adjacent to it and on a legal surface",
+        "### Ox-Bearing Foundation - Body, Foundation\nPrerequisite: CL 5+\nWhen you use Deep Root Stance, choose one willing creature within 5 feet of you.\nUntil the stance ends:\nthe chosen creature gains the same Advantage against being moved or knocked Prone;\nwhen the chosen creature takes damage, reduce the damage by your Proficiency Bonus if both of you are touching the same surface;\nif the chosen creature is moved against its will, you may move 5 feet with it without provoking Opportunity Attacks, provided you end adjacent to it and on a legal surface."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "34535f9a09f119b91ad1aad88ceee98e3b29e43984ddb43f00f23cd0e24bf754",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_EARTH_RAISE_THE_LOAD_BEARING_WALL": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 60,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Create up to six connected 5-foot wall sections. Each section is up to 10 feet high, 5 feet wide, and 1 foot thick",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Each section has AC 15, Hit Points equal to 20 + twice your Cultivation Level, and immunity to Poison and Psychic damage.",
+        "A wall section provides Total Cover through its space and blocks movement through that space.",
+        "If created under a creature\u2019s space, that creature chooses which side of the wall to occupy. This talent cannot trap a creature inside a wall.",
+        "### Raise the Load-Bearing Wall - Foundation, Settlement\nPrerequisite: Humble Wall, CL 10+\nAction Type: Action\nRange: Touch, or 60 feet if Projected Earth is legal for you\nDuration: 1 minute\nCost: 3 CP\nRaise a wall of packed earth, stone, clay, terrace-brick, or root-threaded ground.\nCreate up to six connected 5-foot wall sections. Each section is up to 10 feet high, 5 feet wide, and 1 foot thick.\nEach section has AC 15, Hit Points equal to 20 + twice your Cultivation Level, and immunity to Poison and Psychic damage.\nA wall section provides Total Cover through its space and blocks movement through that space. It does not automatically block teleportation, planar travel, incorporeal movement, burrowing beneath it, or effects that do not physically cross the wall.\nIf created under a creature\u2019s space, that creature chooses which side of the wall to occupy. This talent cannot trap a creature inside a wall."
+      ],
+      "range": {
+        "kind": "touch",
+        "feet": 5,
+        "text": "Touch, or 60 feet if Projected Earth is legal for you",
+        "gm_note": "The table currently offers touch only. The GM may resolve the longer range after checking the printed condition."
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "17daac51800b41e6bdc3e6bfc7620ef87d72d5964a18e84fe5cbae343fe58df5",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_EARTH_SEAL_THE_FAULT_BELOW": {
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "burrowing through the sealed passage requires a Strength check against your Earth Save DC for every 5 feet of progress",
+        "teleportation into or out of the sealed passage requires the user to succeed on a Charisma saving throw against your Earth Save DC",
+        "creatures attempting to damage the seal deal half damage to it unless they use Siege equipment, a relevant sphere talent, or a feature that damages objects or structures",
+        "The seal has AC 17, Hit Points equal to 50 + five times your Cultivation Level, and immunity to Poison and Psychic damage.",
+        "Seal the Fault Below does not permanently imprison creatures unless the story, terrain, and available resources support that consequence.",
+        "### Seal the Fault Below\nPrerequisite: Doorstone Seal, CL 15+\nAction Type: Action\nRange: Touch\nDuration: 24 hours\nCost: 8 CP\nUse Limit: Once per long rest\nSeal one tunnel, fissure, gate, tomb door, cave mouth, mine shaft, burrow route, sewer passage, planar fissure anchored in terrain, or similar passage no larger than a 20-foot cube.\nFor the duration:\nordinary movement cannot pass through the sealed passage;\nburrowing through the sealed passage requires a Strength check against your Earth Save DC for every 5 feet of progress;\nteleportation into or out of the sealed passage requires the user to succeed on a Charisma saving throw against your Earth Save DC;\ncreatures attempting to damage the seal deal half damage to it unless they use Siege equipment, a relevant sphere talent, or a feature that damages objects or structures.\nThe seal has AC 17, Hit Points equal to 50 + five times your Cultivation Level, and immunity to Poison and Psychic damage.\nSeal the Fault Below does not permanently imprison creatures unless the story, terrain, and available resources support that consequence."
+      ],
+      "range": {
+        "kind": "touch",
+        "feet": 5
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "hours",
+        "amount": 24,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "14cf56573971a5ff538330b2bbdc36141f397fb977f5e8cd33ce1c45a4406a5a",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_EARTH_SINK_THE_WHEEL_RUT": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "A hostile creature that enters the area for the first time on a turn or starts its turn there makes a Strength saving throw.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "str",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -10,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "Its Speed is reduced by 10 feet until the start of its next turn",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "mark",
+                      "mark": "Burden Mark",
+                      "applies_to": "target",
+                      "duration": {
+                        "kind": "until_removed"
+                      },
+                      "evidence": "Burden Mark"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "earth_rut_watch",
+                      "evidence": "Successful Save: It gains one Burden Mark only if it moves at least 10 feet inside the area before the end of the turn."
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "square",
+        "size_ft": 15,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "2d84a1ba40d59ae825956cab8b35b7f86facbc100429d0bac04ce9c5ecfe5aae",
+      "reviewed_by": "Astra printed-text review sw-earth; Codex AUTO39 complete-rule audit 2026-10-05"
+    },
+    "TAL_EARTH_TERRACED_ASCENT": {
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Terraced Ascent cannot create a freestanding bridge across empty air unless you also have a feature that permits raised Earth structures.",
+        "### Terraced Ascent - Foundation, Settlement\nPrerequisite: CL 5+\nAction Type: Action\nRange: Touch, or 60 feet if Projected Earth is legal for you\nDuration: 10 minutes\nCost: 1 CP\nCreate stairs, ramps, terraces, footholds, or a compacted slope across a solid surface.\nThe structure covers up to eight 5-foot spaces. It may ascend or descend up to 30 feet total, provided there is a solid surface or terrain mass to shape.\nTerraced Ascent cannot create a freestanding bridge across empty air unless you also have a feature that permits raised Earth structures."
+      ],
+      "range": {
+        "kind": "touch",
+        "feet": 5,
+        "text": "Touch, or 60 feet if Projected Earth is legal for you",
+        "gm_note": "The table currently offers touch only. The GM may resolve the longer range after checking the printed condition."
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 10,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "fa694578aeaba89ed893701a5794c2088bbe00cb87a090a7080f5d2164c43122",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_EARTH_THE_BURDEN_OF_TEN_THOUSAND_STEPS": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "prone",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "it falls Prone if touching a surface",
+              "origin": "model_v2"
+            },
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "becomes": 0,
+              "duration": "until_end_of_next_turn",
+              "evidence": "Its Speed becomes 0 until the end of its next turn"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "halved": true,
+              "duration": "until_end_of_next_turn",
+              "evidence": "Its Speed is halved until the end of its next turn"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A creature you can perceive within 120 feet moves at least 30 feet in one turn, teleports, Dashes, or crosses three or more of your Foundation Spaces",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "A creature can suffer temporary Exhaustion from this talent only once per long rest.",
+        "### The Burden of Ten Thousand Steps\nPrerequisite: Buried Foundation Remembers, CL 15+\nAction Type: Reaction\nTrigger: A creature you can perceive within 120 feet moves at least 30 feet in one turn, teleports, Dashes, or crosses three or more of your Foundation Spaces\nCost: 5 CP\nThe creature makes a Constitution saving throw.\nFailed Save: Its Speed becomes 0 until the end of its next turn, it gains one level of Exhaustion that lasts until the end of the encounter, and it falls Prone if touching a surface.\nSuccessful Save: Its Speed is halved until the end of its next turn.\nA creature can suffer temporary Exhaustion from this talent only once per long rest.\nThis Exhaustion represents crushing burden, not starvation, sleep deprivation, or disease."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "05711457ad234ebc62f48d894daac53d2104052163331b11fb50300f0d5d5e72",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_EARTH_THE_WORLD_RESTS_ON_MY_PALM": {
+      "effects": [],
+      "options": [
+        {
+          "label": "Nothing Unmoored May Rule",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "enemies_in_area",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "cha",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "special",
+              "evidence": "unless they succeed on a Charisma saving throw against your Earth Save DC",
+              "on_success": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 6,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "force"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "takes 6d10 Force damage as the world makes it pay the weight of departure"
+                },
+                {
+                  "type": "mark",
+                  "mark": "Burden Mark",
+                  "applies_to": "target",
+                  "evidence": "the creature gains one Burden Mark",
+                  "origin": null,
+                  "was": "gain_resource"
+                }
+              ],
+              "origin": "model_options",
+              "deferred": true
+            }
+          ]
+        },
+        {
+          "label": "The Ground Bears the Innocent",
+          "effects": [
+            {
+              "type": "advantage",
+              "applies_to": "ally",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "death saving throws",
+              "duration": "special",
+              "evidence": "it has Advantage on death saving throws",
+              "origin": "model_options"
+            },
+            {
+              "type": "teleport",
+              "applies_to": "ally",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 60,
+              "on": "",
+              "duration": "instant",
+              "evidence": "move it to the nearest safe ground you choose within 60 feet",
+              "origin": "model_options",
+              "deferred": true
+            }
+          ]
+        },
+        {
+          "label": "The Burden Returns to the Violent",
+          "effects": [
+            {
+              "type": "mark",
+              "mark": "Burden Mark",
+              "applies_to": "enemies_in_area",
+              "evidence": "it gains one Burden Mark",
+              "origin": "model_options",
+              "was": "gain_resource",
+              "deferred": true
+            },
+            {
+              "type": "extra_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 5,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "bludgeoning",
+                "force"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "add 5d10 Bludgeoning damage or 5d10 Force damage to the Earth Response",
+              "origin": "model_options",
+              "deferred": true
+            },
+            {
+              "type": "save",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "str",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "special",
+              "evidence": "it instead makes a Strength saving throw",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "prone",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "It falls Prone"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "It cannot take Reactions until the start of its next turn"
+                }
+              ],
+              "origin": "model_options",
+              "deferred": true
+            }
+          ]
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Earth Response"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "extra_damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 5,
+              "count_formula": null,
+              "sides": 10,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "bludgeoning",
+              "force"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "add 5d10 Bludgeoning damage or 5d10 Force damage to the Earth Response",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Creatures hostile to you cannot teleport into, teleport out of, burrow through, phase through, or use planar movement through the area unless they succeed on a Charisma saving throw against your Earth Save DC.",
+        "it cannot be moved against its will by ordinary forced movement",
+        "Failed Save: It falls Prone, its Speed becomes 0 until the end of its next turn, and it cannot teleport until the end of its next turn.",
+        "Successful Save: It cannot take Reactions until the start of its next turn.",
+        "This does not block deity-scale movement, artifact-scale movement, or GM-declared story-scale passage.",
+        "The World Rests on My Palm does not create permanent political ownership, legal title, or divine authority over the region.",
+        "### The World Rests on My Palm\n\u201cThe immortal lowered one hand. The army did not fall. It simply discovered what it had always been standing on.\u201d\nPrerequisite: CL 17+, Court of Bearing Ground, hidden earth-root scripture\nAction Type: Action\nArea: 1-mile-radius region centered on a point on the ground you can perceive or have ritually marked\nDuration: 1 hour\nCost: 15 CP\nUse Limit: Once per month or once per major story arc, as determined by the GM\nYou claim the burden of a battlefield, valley, mountain pass, city gate, sect courtyard, mine, tomb complex, or other grounded region.\nChoose one principle when you activate this inheritance.\n#### Nothing Unmoored May Rule\nCreatures hostile to you cannot teleport into, teleport out of, burrow through, phase through, or use planar movement through the area unless they succeed on a Charisma saving throw against your Earth Save DC.\nOn a success, the movement works, but the creature gains one Burden Mark and takes 6d10 Force damage as the world makes it pay the weight of departure.\nThis does not block deity-scale movement, artifact-scale movement, or GM-declared story-scale passage.\n#### The Ground Bears the Innocent\nChoose any number of creatures you can name, see, or ritually identify as protected.\nWhile a protected creature touches ground in the area:\nit has Advantage on death saving throws;\nit cannot be moved against its will by ordinary forced movement;\nthe first time each minute it would take damage, reduce that damage by 10d10;\nif it would be buried, trapped, crushed, or fall into a fissure caused by terrain, move it to the nearest safe ground you choose within 60 feet.\n#### The Burden Returns to the Violent\nThe first time each round that a hostile creature in the area deals damage, forces movement, destroys terrain, collapses a structure, or kills a creature, it gains one Burden Mark.\nWhen you spend that mark, add 5d10 Bludgeoning damage or 5d10 Force damage to the Earth Response.\nIf the creature is already marked, it instead makes a Strength saving throw.\nFailed Save: It falls Prone, its Speed becomes 0 until the end of its next turn, and it cannot teleport until the end of its next turn.\nSuccessful Save: It cannot take Reactions until the start of its next turn.\nThe World Rests on My Palm does not create permanent political ownership, legal title, or divine authority over the region.\nIt makes the region briefly answer your Dao of foundation and burden."
+      ],
+      "range": null,
+      "area": {
+        "shape": "special",
+        "size_ft": null,
+        "text": "1-mile-radius region centered on a point on the ground you can perceive or have ritually marked"
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 15,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "text:once per month or once per major story arc, as determined by the gm",
+      "duration": {
+        "kind": "hours",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "2e6d3990f043e7307765ead0f33a381297c27c87c7173226d527c483c4fe4ee1",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_EARTH_TREMOR_COURT_HEARING": {
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action"
+      },
+      "riders": [
+        "While touching a solid or earthen surface, use an Action to listen through a number of connected Foundation Spaces you created.",
+        "Until the start of your next turn, you know the location of creatures touching those spaces, and you can tell whether each creature is: moving quickly; standing still; Prone; carrying a heavy load; burrowing; flying but within 5 feet of the surface; concentrating on a spell, sphere talent, or supernatural technique that produces physical vibration.",
+        "This does not reveal private thoughts, exact identity, or illusions that do not interact with weight or contact.",
+        "### Tremor Court Hearing - Burden, Realm Evolution\nPrerequisite: Tremor-Listening Palm, CL 10+\nWhile touching a solid or earthen surface, use an Action to listen through a number of connected Foundation Spaces you created.\nUntil the start of your next turn, you know the location of creatures touching those spaces, and you can tell whether each creature is:\nmoving quickly;\nstanding still;\nProne;\ncarrying a heavy load;\nburrowing;\nflying but within 5 feet of the surface;\nconcentrating on a spell, sphere talent, or supernatural technique that produces physical vibration.\nThis does not reveal private thoughts, exact identity, or illusions that do not interact with weight or contact."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "fe07b8da6267268e17eb8804f72dd8c3db4da18c76d8b78034fd1ec13217388a",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_EARTH_TREMOR_LISTENING_PALM": {
+      "effects": [
+        {
+          "type": "earth_listen",
+          "evidence": "Surface contact within 30 feet; 60 feet at CL 10. Locate, without granting sight."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "until_start_of_next_turn"
+      },
+      "target": {
+        "text": "Self"
+      },
+      "text_sha256": "02c44e2ae937ec4b36279d46e468fb2950680e3b81d52725c2d58d4cbcb9b1b5",
+      "reviewed_by": "Codex A2EARTHSEC 2026-10-10"
+    },
+    "tianxia.talent.equipment.brigandine_robe_scripture": {
+      "effects": [
+        {
+          "type": "ac_bonus",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "pb",
+          "evidence": "Increase your AC against that attack by your Proficiency Bonus.",
+          "origin": "reviewed"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "While your armor is concealed by Hidden Plates",
+        "effects": []
+      },
+      "activation": {
+        "economy": "reaction",
+        "trigger": "when you are hit by an attack",
+        "requirement": null,
+        "source": "reviewed"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": "once_per_short_rest",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "b5bd302e9ff5aab31a7137518d1fb454e2b3d395e9a05acb160bc31f25bc93c9",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "tianxia.talent.equipment.iron_rain_readiness": {
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "dice": {
+            "count": 2,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Roll 2d8 + your Proficiency Bonus. Reduce the triggering damage by the result.",
+          "origin": "model"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "When you are hit by a ranged attack, or when you fail a Dexterity saving throw against an area effect",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "aff38d2b8f40c701a64c82240fd4d789c9db05187bb0b04704f4e4bbbb8c8c1b",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "tianxia.talent.equipment.lamellar_flow": {
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [
+            "bludgeoning",
+            "piercing",
+            "slashing"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "reduce the damage by 1d8 + your Proficiency Bonus",
+          "origin": "model",
+          "dice_by_cl": [
+            [
+              1,
+              9,
+              1,
+              8
+            ],
+            [
+              10,
+              14,
+              2,
+              8
+            ],
+            [
+              15,
+              20,
+              3,
+              8
+            ]
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "When you take bludgeoning, piercing, or slashing damage while wearing your Fitted Armor",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "ae05f88a4988b76782f3994ec295aad21e1cb75ad51452f93a9914121504d93d",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "tianxia.talent.equipment.mirror_bright_armor": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "disadvantage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "the next attack roll it makes against a creature other than you",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Disadvantage on the next attack roll it makes against a creature other than you before the start of your next turn",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "1ad996c8d25be51edf25744c5842fe5fe8103aa76067bcbd4481b36872bf36ba",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "tianxia.talent.equipment.walking_fortress_scripture": {
+      "effects": [
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "bludgeoning",
+            "piercing",
+            "slashing"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "you have Resistance to nonmagical bludgeoning, piercing, and slashing damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "speed",
+          "applies_to": "self",
+          "flat": -10,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "your Speed is reduced by 10 feet",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "6cbadfd47b5c8f11b9b964563e0350e7d156dbdfba0b0bad307b075196740b88",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "tianxia.talent.equipment.circuit_armor": {
+      "effects": [
+        {
+          "type": "equipment_circuit",
+          "evidence": "spend 2 CP to awaken its circuit for 1 minute. While the circuit is active, once per round when you take damage, reduce the damage by your Equipment key ability modifier, minimum 1."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "53221153aa8134f824cfcd9b06b5cc0dbdca17ebc3f51321154722e1bf74532e",
+      "reviewed_by": "Astra printed-text review sw-earth; AUTO68 2026-10-05 retired the rider: the worn armour is fixed when the fighter is compiled, so it is never removed or destroyed mid-fight and the printed end conditions cannot occur"
+    },
+    "tianxia.talent.equipment.armor_answers_the_soul": {
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "d1fc5bde85e28a3bd1a53d1f85ba8d81fde26cbdea2ae465c1fec77e7735d8a0",
+      "reviewed_by": "Astra printed-text review sw-earth; AUTO68 2026-10-05 retired both lines: calling the worn armor to you needs it to be an object on the map (combat/rules/feature_status.json), which this table does not model."
+    },
+    "TAL_FATE_CHAIN_OF_MISFORTUNE": {
+      "effects": [
+        {
+          "type": "save",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "cha",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "The target makes a Charisma saving throw.",
+          "on_success": [
+            {
+              "type": "fate_chain",
+              "warning": true,
+              "applies_to": "target",
+              "evidence": "The next time before the start of your next turn that the target misses an attack or fails a saving throw, it cannot take Reactions until the start of its following turn"
+            }
+          ],
+          "on_fail": [
+            {
+              "type": "fate_chain",
+              "applies_to": "target",
+              "duration": "concentration",
+              "evidence": "The first time each round the target misses an attack, fails a saving throw, fails an ability check, falls Prone, or takes damage from a hazard, choose one",
+              "failed_check": true
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Taking damage from a hazard also triggers Chain of Misfortune; hazard damage has no explicit source classification at the table."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 6,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": {
+        "text": "One creature"
+      },
+      "text_sha256": "9f2d804c5977f9ef4e793694a93d9789fca921032de9da784646f0ab1f44a310",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_FATE_CONSEQUENCE_EDICT": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "10-foot-radius aura centered on you",
+          "origin": "model_v2",
+          "immunity_choice": true
+        },
+        {
+          "type": "damage",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [
+            "psychic"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "the damaging creature takes Psychic damage equal to your Proficiency Bonus",
+          "origin": "model_v2",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 10,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "0b64c53108cdfb986d4e21f592d9bc7de26ef56939646397d4cb0b8647ba2295",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_FATE_COURT_OF_THE_HEAVENLY_LEDGER": {
+      "effects": [
+        {
+          "type": "ac_bonus",
+          "applies_to": "ally",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Gain +1 AC",
+          "origin": "model_v2"
+        },
+        {
+          "type": "attack_modifier",
+          "applies_to": "ally",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 6,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "attack roll, ability check, or saving throw",
+          "duration": "concentration",
+          "evidence": "you may roll 1d6 and add it to the roll before the outcome is known",
+          "origin": "model_v2"
+        },
+        {
+          "type": "gain_resource",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Using this Domain gains 1 Heaven\u2019s Notice",
+          "origin": "model_v2"
+        },
+        {
+          "type": "ac_bonus",
+          "amount": 1,
+          "evidence": "Gain +1 AC",
+          "origin": "parser"
+        },
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When an enemy starts its turn inside the Domain, it makes a Charisma saving throw.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "cha",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "it cannot take Reactions until the start of its next turn",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "attack_modifier",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 1,
+                        "count_formula": null,
+                        "sides": 4,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "its next attack roll",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "it subtracts 1d4 from its next attack roll before the start of its next turn",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -10,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "its Speed is reduced by 10 feet until the start of its next turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -5,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "Its Speed is reduced by 5 feet until the start of its next turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ],
+          "follows_owner": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "You and allies cannot be Surprised while conscious (blocked: surprise is not modeled)."
+      ],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 30,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "5249a3dd92f92123855d281ef82846ca212fe5b42903d4bf88902fa29f59229b",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_FATE_EXORCISING_NAME": {
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "The controlled target immediately makes one new saving throw or check against the controlling effect. (blocked: controlling effects are not modeled.)",
+        "If it succeeds, the control ends. A possessing creature is ejected into the nearest unoccupied space if it has no legal body or vessel.",
+        "If the source of possession or domination is a creature, you may increase the cost by 2 CP. If you do, the source makes a Charisma saving throw.",
+        "The damage increases to 4d6 at CL 11 and 5d6 at CL 17."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature or object affected by possession, domination, body theft, or a comparable controlling effect"
+      },
+      "text_sha256": "a1e14dc9f93f9be7b8bb30cd552db2d8d3b3a87be8366f3ddc950c328f686059",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_FATE_FATE_SOVEREIGN_INCARNATION": {
+      "effects": [
+        {
+          "type": "ac_bonus",
+          "applies_to": "self",
+          "flat": 3,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "+3 AC."
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "saving throws",
+          "duration": "one_minute",
+          "evidence": "Advantage on saving throws."
+        },
+        {
+          "type": "ac_bonus",
+          "applies_to": "ally",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "until_start_of_next_turn",
+          "evidence": "+1 AC",
+          "deferred": true
+        },
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "its next attack roll or ability check",
+          "duration": "until_start_of_next_turn",
+          "evidence": "Advantage on its next attack roll or ability check",
+          "deferred": true
+        },
+        {
+          "type": "gain_resource",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Using this talent gains 1 Heaven's Notice."
+        },
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "applies_to": "enemies_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "cha",
+                  "condition": "none",
+                  "distance_ft": 20,
+                  "on": "",
+                  "duration": "one_minute",
+                  "evidence": "At the start of each enemy's turn within 20 feet of you, that enemy makes a Charisma saving throw.",
+                  "on_success": [
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -5,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 5,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "Its Speed is reduced by 5 feet until the start of its next turn",
+                      "expires_on": "START_OF_TARGET_NEXT_TURN"
+                    }
+                  ],
+                  "on_fail": []
+                }
+              ]
+            }
+          ],
+          "follows_owner": true
+        },
+        {
+          "type": "state",
+          "name": "fate_sovereign_incarnation",
+          "duration": "one_minute",
+          "evidence": "Once per round, you may use Twist of Fate without spending CP (rider lane C15: the timed state combat/ext/reaction_economy.py reads)"
+        }
+      ],
+      "options": [
+        {
+          "label": "Attack Penalty",
+          "effects": [
+            {
+              "type": "ac_bonus",
+              "applies_to": "self",
+              "flat": 3,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "one_minute",
+              "evidence": "+3 AC."
+            },
+            {
+              "type": "advantage",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "saving throws",
+              "duration": "one_minute",
+              "evidence": "Advantage on saving throws."
+            },
+            {
+              "type": "ac_bonus",
+              "applies_to": "ally",
+              "flat": 1,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "+1 AC",
+              "deferred": true
+            },
+            {
+              "type": "advantage",
+              "applies_to": "ally",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "its next attack roll or ability check",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Advantage on its next attack roll or ability check",
+              "deferred": true
+            },
+            {
+              "type": "gain_resource",
+              "applies_to": "self",
+              "flat": 1,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Using this talent gains 1 Heaven's Notice."
+            },
+            {
+              "type": "zone",
+              "triggers": [
+                {
+                  "on": [
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "applies_to": "enemies_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "cha",
+                      "condition": "none",
+                      "distance_ft": 20,
+                      "on": "",
+                      "duration": "one_minute",
+                      "evidence": "At the start of each enemy's turn within 20 feet of you, that enemy makes a Charisma saving throw.",
+                      "on_success": [
+                        {
+                          "type": "speed",
+                          "applies_to": "target",
+                          "flat": -5,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 5,
+                          "on": "",
+                          "duration": "until_start_of_next_turn",
+                          "evidence": "Its Speed is reduced by 5 feet until the start of its next turn",
+                          "expires_on": "START_OF_TARGET_NEXT_TURN"
+                        }
+                      ],
+                      "on_fail": [
+                        {
+                          "type": "attack_modifier",
+                          "applies_to": "target",
+                          "dice": {
+                            "count": 1,
+                            "count_formula": null,
+                            "sides": 6,
+                            "bonus": null,
+                            "bonus_formula": null
+                          },
+                          "flat": 0,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 0,
+                          "on": "its next attack roll",
+                          "duration": "until_start_of_next_turn",
+                          "evidence": "subtract 1d6 from its next attack roll before the start of its next turn",
+                          "origin": "model_options",
+                          "expires_on": "START_OF_TARGET_NEXT_TURN"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "follows_owner": true
+            },
+            {
+              "type": "state",
+              "name": "fate_sovereign_incarnation",
+              "duration": "one_minute",
+              "evidence": "Once per round, you may use Twist of Fate without spending CP (rider lane C15: the timed state combat/ext/reaction_economy.py reads)"
+            }
+          ]
+        },
+        {
+          "label": "No Reactions",
+          "effects": [
+            {
+              "type": "ac_bonus",
+              "applies_to": "self",
+              "flat": 3,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "one_minute",
+              "evidence": "+3 AC."
+            },
+            {
+              "type": "advantage",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "saving throws",
+              "duration": "one_minute",
+              "evidence": "Advantage on saving throws."
+            },
+            {
+              "type": "ac_bonus",
+              "applies_to": "ally",
+              "flat": 1,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "+1 AC",
+              "deferred": true
+            },
+            {
+              "type": "advantage",
+              "applies_to": "ally",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "its next attack roll or ability check",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Advantage on its next attack roll or ability check",
+              "deferred": true
+            },
+            {
+              "type": "gain_resource",
+              "applies_to": "self",
+              "flat": 1,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Using this talent gains 1 Heaven's Notice."
+            },
+            {
+              "type": "zone",
+              "triggers": [
+                {
+                  "on": [
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "applies_to": "enemies_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "cha",
+                      "condition": "none",
+                      "distance_ft": 20,
+                      "on": "",
+                      "duration": "one_minute",
+                      "evidence": "At the start of each enemy's turn within 20 feet of you, that enemy makes a Charisma saving throw.",
+                      "on_success": [
+                        {
+                          "type": "speed",
+                          "applies_to": "target",
+                          "flat": -5,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 5,
+                          "on": "",
+                          "duration": "until_start_of_next_turn",
+                          "evidence": "Its Speed is reduced by 5 feet until the start of its next turn",
+                          "expires_on": "START_OF_TARGET_NEXT_TURN"
+                        }
+                      ],
+                      "on_fail": [
+                        {
+                          "type": "reaction_denied",
+                          "applies_to": "target",
+                          "flat": 0,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 0,
+                          "on": "",
+                          "duration": "until_start_of_next_turn",
+                          "evidence": "it cannot take Reactions until the start of its next turn",
+                          "origin": "model_options",
+                          "expires_on": "START_OF_TARGET_NEXT_TURN"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "follows_owner": true
+            },
+            {
+              "type": "state",
+              "name": "fate_sovereign_incarnation",
+              "duration": "one_minute",
+              "evidence": "Once per round, you may use Twist of Fate without spending CP (rider lane C15: the timed state combat/ext/reaction_economy.py reads)"
+            }
+          ]
+        },
+        {
+          "label": "Reduce Speed",
+          "effects": [
+            {
+              "type": "ac_bonus",
+              "applies_to": "self",
+              "flat": 3,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "one_minute",
+              "evidence": "+3 AC."
+            },
+            {
+              "type": "advantage",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "saving throws",
+              "duration": "one_minute",
+              "evidence": "Advantage on saving throws."
+            },
+            {
+              "type": "ac_bonus",
+              "applies_to": "ally",
+              "flat": 1,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "+1 AC",
+              "deferred": true
+            },
+            {
+              "type": "advantage",
+              "applies_to": "ally",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "its next attack roll or ability check",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Advantage on its next attack roll or ability check",
+              "deferred": true
+            },
+            {
+              "type": "gain_resource",
+              "applies_to": "self",
+              "flat": 1,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Using this talent gains 1 Heaven's Notice."
+            },
+            {
+              "type": "zone",
+              "triggers": [
+                {
+                  "on": [
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "applies_to": "enemies_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "cha",
+                      "condition": "none",
+                      "distance_ft": 20,
+                      "on": "",
+                      "duration": "one_minute",
+                      "evidence": "At the start of each enemy's turn within 20 feet of you, that enemy makes a Charisma saving throw.",
+                      "on_success": [
+                        {
+                          "type": "speed",
+                          "applies_to": "target",
+                          "flat": -5,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 5,
+                          "on": "",
+                          "duration": "until_start_of_next_turn",
+                          "evidence": "Its Speed is reduced by 5 feet until the start of its next turn",
+                          "expires_on": "START_OF_TARGET_NEXT_TURN"
+                        }
+                      ],
+                      "on_fail": [
+                        {
+                          "type": "speed",
+                          "applies_to": "target",
+                          "flat": -10,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 10,
+                          "on": "",
+                          "duration": "until_start_of_next_turn",
+                          "evidence": "its Speed is reduced by 10 feet until the start of its next turn",
+                          "origin": "model_options",
+                          "expires_on": "START_OF_TARGET_NEXT_TURN"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "follows_owner": true
+            },
+            {
+              "type": "state",
+              "name": "fate_sovereign_incarnation",
+              "duration": "one_minute",
+              "evidence": "Once per round, you may use Twist of Fate without spending CP (rider lane C15: the timed state combat/ext/reaction_economy.py reads)"
+            }
+          ]
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Twist of Fate"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "once_per_round",
+        "group": "",
+        "precondition": "",
+        "effects": []
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "You cannot be Surprised while conscious (blocked: surprise is not modeled)."
+      ],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 20,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 15,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "5c933ecba9e76f7063661dfcd20a21bbae682aa16fae5171084cf86602eaa66a",
+      "reviewed_by": "Astra printed-text review sw-earth; AUTO31 Codex"
+    },
+    "TAL_FATE_HALLOW_MANDATE_EDICT": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 15,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "15-foot-radius aura centered on you",
+          "origin": "model_v2",
+          "kind_choice": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "The printed list -- aberrations, celestials, elementals, fey, fiends, undead, demons and ghosts -- is always offered when you create the aura, and you may also pick one of the kinds of creature already in this fight.",
+        "The printed \"another supernatural category appropriate to the campaign\" is not offered: a category no creature in this fight carries stays the table's call until one does."
+      ],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 15,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "22246c9c8762470f35536731e8613e75f2f8a68037d9adcadf3ee859edd8cc2f",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_FATE_MARKED_BY_THE_LEDGER": {
+      "effects": [
+        {
+          "type": "save",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "cha",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "The target makes a Charisma saving throw.",
+          "on_fail": [
+            {
+              "type": "extra_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "psychic",
+                "necrotic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "the target takes an additional 1d6 Psychic or Necrotic damage",
+              "deferred": true
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "label": "Disadvantage on Checks",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "cha",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "The target makes a Charisma saving throw.",
+              "on_fail": [
+                {
+                  "type": "extra_damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 6,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "psychic",
+                    "necrotic"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "concentration",
+                  "evidence": "Once per turn when you hit it with an attack or a sphere talent deals damage to it, the target takes an additional 1d6 Psychic or Necrotic damage.",
+                  "deferred": true
+                },
+                {
+                  "type": "fate_ledger_ability",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "ability checks using one ability score of your choice",
+                  "duration": "concentration",
+                  "evidence": "ability checks using one ability score of your choice have Disadvantage",
+                  "origin": "model_options"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Tracking Advantage",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "cha",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "The target makes a Charisma saving throw.",
+              "on_fail": [
+                {
+                  "type": "extra_damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 6,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "psychic",
+                    "necrotic"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "concentration",
+                  "evidence": "Once per turn when you hit it with an attack or a sphere talent deals damage to it, the target takes an additional 1d6 Psychic or Necrotic damage.",
+                  "deferred": true
+                },
+                {
+                  "type": "fate_ledger_tracking",
+                  "applies_to": "self",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "Wisdom (Perception) and Wisdom (Survival) checks made to find or track the target",
+                  "duration": "concentration",
+                  "evidence": "you have Advantage on Wisdom (Perception) and Wisdom (Survival) checks made to find or track the target",
+                  "origin": "model_options"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": {
+        "text": "One creature"
+      },
+      "text_sha256": "89973e27c794f7fda68aebbcf25f20a61deb95914b9aee14421592f4d3899bb1",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_FATE_MISFORTUNE_EDICT": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "The first time a hostile creature enters the aura or starts its turn there, it makes a Charisma saving throw.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "cha",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "attack_modifier",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 1,
+                        "count_formula": null,
+                        "sides": 4,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "the first attack roll or saving throw it makes inside the aura",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "the first attack roll or saving throw it makes inside the aura subtracts 1d4",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ],
+          "follows_owner": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 10,
+        "centered_on_self": true,
+        "size_ft_by_cl": [
+          [
+            1,
+            4,
+            10
+          ],
+          [
+            5,
+            10,
+            15
+          ],
+          [
+            11,
+            16,
+            20
+          ],
+          [
+            17,
+            20,
+            25
+          ]
+        ]
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "d085bebf40890e4b0cd09d3c4f29e063d148a87c7e0ba4bb42abf0547a7ba6ec",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_FATE_SERENDIPITY_EDICT": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "10-foot-radius aura centered on you",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 10,
+        "centered_on_self": true,
+        "size_ft_by_cl": [
+          [
+            1,
+            4,
+            10
+          ],
+          [
+            5,
+            10,
+            15
+          ],
+          [
+            11,
+            16,
+            20
+          ],
+          [
+            17,
+            20,
+            25
+          ]
+        ]
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "c457698fddfb2596da68569790b506d9d3ad00f601216e72beb1d412cfbe1793",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_FATE_RED_THREAD_AUSPICE": {
+      "effects": [
+        {
+          "type": "fate_auspice",
+          "auspice": "red_thread",
+          "applies_to": "ally",
+          "duration": "concentration",
+          "evidence": "The target gains a bonus to saving throws equal to the number of conscious allies within 5 feet of it, maximum your Proficiency Bonus."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "Release: The target spends one Hit Die and grants Temporary HP equal to the result plus your Fate key ability modifier to one ally within 30 feet. (blocked: Hit Dice are not tracked in a fight.)"
+      ],
+      "range": {
+        "kind": "touch",
+        "feet": 5
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "hours",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": {
+        "text": "One willing creature"
+      },
+      "text_sha256": "b019dd3a3ed809946c0c37c0233d53ab3a5bde8675156bc484651f1174c4b59a",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    },
+    "TAL_FATE_UNDO_HARM_EDICT": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "10-foot-radius aura centered on you",
+          "origin": "model_v2"
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "it gains Temporary HP equal to your Proficiency Bonus",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "temp_hp",
+          "dice": null,
+          "formula": "text:your proficiency bonus before damage is applied",
+          "evidence": "gains Temporary HP equal to your Proficiency Bonus before damage is applied",
+          "origin": "parser",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 10,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "57ab6b0198a065f4742f2c8b6354cdc4e6243b571dc5228779dea434d706d328",
+      "reviewed_by": "Astra printed-text review sw-earth"
+    }
+  }
+}
