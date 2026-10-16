@@ -1,0 +1,162 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "tianxia.subpath.qi.hearthfire_cultivator.feature.kindled_hearth": {
+      "text_sha256": "d95cdca1c2e8ee975bab2f5d569c7154f2698043f7cb2e6665275606efc05cc4",
+      "reviewed_by": "A2GQISUB7 2026-10-11 printed combat review",
+      "effects": [
+        {
+          "type": "qi_hearth_asset",
+          "applies_to": "self"
+        }
+      ],
+      "riders": [
+        "The Hearth sheds Bright Light 15 feet and Dim Light another 15 feet. Resolve ordinary fuel ignition and weather discomfort outside combat."
+      ],
+      "modifier": null,
+      "description": [
+        "Create one destructible cultivated flame in an unoccupied space within 30 feet. Choose which allies receive its benefits. For 8 hours, chosen allies within 15 feet have Advantage on saving throws against being Frightened, environmental cold, and Exhaustion caused by exposure. Creating another Hearth replaces it."
+      ],
+      "min_cl": 3
+    },
+    "tianxia.subpath.qi.hearthfire_cultivator.feature.homefire_recovery": {
+      "text_sha256": "90a93c624ae254d1ffeec0c0ed5ef233bdd8b495385f975738965436ce443c8b",
+      "reviewed_by": "A2GQISUB7 2026-10-11 printed combat review",
+      "effects": [],
+      "riders": [
+        "After a short rest in the Hearth aura, choose one benefit: regain Hit Points equal to twice your Proficiency Bonus; gain Temporary Hit Points equal to twice your Proficiency Bonus; end one level of Exhaustion caused by travel, hunger, thirst, exposure, ordinary smoke, or environmental hardship; gain Advantage on your next save against being Frightened before the end of the next scene; or end one ordinary environmental penalty caused by cold, rain, smoke, altitude, poor shelter, or damp conditions. A creature may receive this benefit once per long rest."
+      ],
+      "modifier": null,
+      "description": [
+        "Shield the Flame: when an ally in your Hearth aura takes damage, spend your Reaction and 1 Qi to reduce it by 1d8 + your key ability modifier (2d8 at CL14; 3d8 at CL18), once per round. The reduction applies after Resistance and before Temporary Hit Points or Hit Points are lost."
+      ],
+      "min_cl": 6
+    },
+    "tianxia.subpath.qi.hearthfire_cultivator.feature.carry_the_hearth": {
+      "text_sha256": "a8e2a7f873d0302f311a7ea36e1c1a26bd5a3579e611fc0461af1fdff9e68757",
+      "reviewed_by": "A2GQISUB7 2026-10-11 printed combat review",
+      "effects": [
+        {
+          "type": "qi_carry_hearth",
+          "applies_to": "self"
+        }
+      ],
+      "riders": [
+        "Carry the Hearth can also center on your Domain Armament. Hearthward Pavilion’s supernatural benefits move with it, though civic shelter does not."
+      ],
+      "modifier": null,
+      "description": [
+        "Your active Hearth follows you or a willing ally carrying the real flame for 1 minute. Its aura expands to 20 feet. Allies gain Temporary Hit Points equal to your Proficiency Bonus at the start of their turns; enemies entering or starting in the aura make a Dexterity save against 2d8 Fire or Radiant damage, taking half damage on a success. Shield the Flame reduces damage by 2d8 + your key ability modifier while you carry the Hearth."
+      ],
+      "min_cl": 14
+    },
+    "tianxia.subpath.qi.paper_cultivator.feature.paper_heaven": {
+      "text_sha256": "0700046cc1cf4dacca78d75211141a9ec42241c294a3f4ed633f306ccabb1ccc",
+      "reviewed_by": "A2GQISUB7 2026-10-11 printed timing and recipients",
+      "area": {
+        "shape": "cylinder",
+        "size_ft": 60,
+        "height_ft": 60,
+        "centered_on_self": false
+      },
+      "modifier": null,
+      "options": [],
+      "effects": [
+        {
+          "type": "zone",
+          "difficult": "hostile",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "applies_to": "target",
+                  "ability": "dex",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 5,
+                        "sides": 8
+                      },
+                      "damage_types": [
+                        "slashing",
+                        "force"
+                      ]
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "target",
+                      "condition": "blinded",
+                      "expires_on": "START_OF_TARGET_NEXT_TURN"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Folded Arsenal does not require separate activation or Qi. All four Folded Arsenal Modes function simultaneously.",
+        "Paper assets inside the field lose Vulnerability to Fire. Paper Dragon costs 2 Qi instead of 5 and does not require Concentration while entirely inside the field. Paper Clone costs 2 Qi instead of 5.",
+        "Folded Aid: Once during each of your turns, choose one ally inside the field and grant one effect: Half Cover until the start of your next turn; Move it up to 10 feet without provoking Opportunity Attacks; Grant Temporary Hit Points equal to twice your Proficiency Bonus; Grant Advantage on its next Dexterity saving throw; Create a paper bridge, stair, or platform up to 20 feet long; Move your Domain Armament up to 20 feet. A creature can receive one Folded Aid per turn.",
+        "Thousand-Fold Exchange: Paper Exchange costs 0 Qi once per round during Paper Heaven. After Paper Exchange destroys a Clone: Create a replacement Clone in your former space at the end of the current turn; This replacement has the normal 1 Hit Point; You can create one replacement per round.",
+        "Dragon of the Written Sky: Once during the activation, create a Paper Dragon without using an Action or paying Qi. It disappears when Paper Heaven ends."
+      ],
+      "description": [
+        "Create a 60-foot-radius, 60-foot-high Paper Heaven for 1 minute with Concentration. Hostiles treat it as difficult terrain. A hostile entering for the first time during a turn or starting inside makes a Dexterity save: 5d8 Slashing or Force damage and Blinded until its next turn starts on failure, half damage on success."
+      ]
+    },
+    "tianxia.subpath.qi.hearthfire_cultivator.feature.hearthward_pavilion": {
+      "text_sha256": "39dd5c2ec17a94fc7b993106d86f50c4bc24172df8e6a8c40fc64450e4a25b3f",
+      "reviewed_by": "MGR-T14 Hearthfire whole-family native implementation",
+      "effects": [],
+      "modifier": null,
+      "options": [],
+      "riders": [],
+      "description": [
+        "Complete a ten-minute ritual using your active Hearth and 4 Qi. Create a fixed 20-foot-radius, 20-foot-high Hearthward Pavilion for 8 hours. Invited guests gain +1 AC, protection against Charmed, Frightened and ordinary environmental hardship. Weatherward, Private Hearth and Civic Shelter use the camp procedures."
+      ],
+      "min_cl": 10
+    },
+    "tianxia.subpath.qi.hearthfire_cultivator.feature.flame_that_welcomes_all": {
+      "text_sha256": "39b7f82283487784f76277785fc096cb53b9210f99a79205c9256ecd357953e1",
+      "reviewed_by": "MGR-T14 Hearthfire whole-family native implementation",
+      "effects": [
+        {
+          "type": "qi_welcome",
+          "applies_to": "self"
+        }
+      ],
+      "modifier": null,
+      "options": [],
+      "riders": [],
+      "description": [
+        "Spend an Action and 8 Qi, once per scene, to create a 40-foot-radius, 40-foot-high sanctuary centered on yourself or your active Hearth for 1 minute with Concentration. Choose allies to receive protection and one Homefire Recovery benefit. The first damage each round is reduced by Proficiency Bonus. Each of your turns, heal one ally for 2d8 + your key modifier. Hostile qualifying spirits make Charisma saves at turn start. Each chosen ally reduced to 0 Hit Points without outright death becomes Stable, gains twice Proficiency Bonus Temporary Hit Points, and may move 5 feet without provoking, once per activation."
+      ],
+      "area": null,
+      "target": {
+        "kind": "self"
+      },
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "min_cl": 18,
+      "use_limit": "once_per_scene"
+    }
+  }
+}

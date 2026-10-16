@@ -1,0 +1,84 @@
+{
+  "features": {
+    "TAL_SAND_SAND_STEP": {
+      "block": "sand_step",
+      "why": "Sand Step: 'You ignore Difficult Terrain created by sand, dust, gravel, or dry loose earth' -- combat/ext/gu_sand.py difficult_exempt reads this compiled row (its Opportunity Attack Disadvantage on your own Sand Terrain is gu_sand's attack_mode). Rider lane C4, 2026-09-30."
+    },
+    "TAL_SAND_ABRADING_WARD": {
+      "block": "sand_ward",
+      "keeps_compiling": true,
+      "why": "Abrading Ward's ownership, and the Proficiency Bonus its damage equals, read from this fight's own row by combat/ext/gu_sand.py (turn_start). Recorded here so a fight knows what its owner owns without a process-global cache; keeps_compiling leaves the talent's own typing exactly as it was."
+    },
+    "TAL_SAND_GLASS_EDGE_SCRIPTURE": {
+      "block": "glass_edge",
+      "why": "Glass Edge Scripture: glassy grains on a Buried creature your Scour talent damages cut it the first time it moves 5 feet or more before your next turn (combat/ext/sand_riders.py). Rider lane C4, 2026-09-30."
+    },
+    "TAL_SAND_ERODE_THE_PATH_OF_RETURN": {
+      "block": "sand_erode",
+      "why": "Erode the Path of Return: the Reaction answers a hostile creature's own teleport within 120 feet (combat/ext/sand_riders.py teleport_gate); its printed trigger is not one the generic reaction rows observe. Rider lane C4, 2026-09-30."
+    },
+    "TAL_VOID_COST_DENYING_NEEDLE": {
+      "block": "void_cost_deny",
+      "why": "Cost-Denying Needle: a Void Needle Cost Lock hit also stops CP/Stamina regain until your next turn (combat/ext/void_riders.py). Rider lane C4, 2026-09-30."
+    },
+    "TAL_VOID_NO_PURCHASE_BODY": {
+      "block": "void_no_purchase",
+      "covers": [
+        "While Void Shell is active the game applies Opportunity Attack Disadvantage and reduces forced movement against you by 10 feet automatically."
+      ],
+      "why": "No-Purchase Body: active Shell gates standing defenses; sealed hit_policy=1 selects optional Pressure on confirmed melee hits with an independent actual-turn allowance. Historical rows retain damage-event timing.",
+      "hit_policy": 1
+    },
+    "TAL_VOID_VOID_WALKING_GUARD": {
+      "block": "void_walking_guard",
+      "why": "Void-Walking Guard: after your Void Ward resolves, teleport 10 feet at no extra cost (combat/ext/void_riders.py). Rider lane C4, 2026-09-30."
+    },
+    "TAL_VOID_RETURN_TO_ZERO": {
+      "block": "void_return_to_zero",
+      "why": "Return to Zero: the Reaction answers a hostile creature's technique that gave a benefit (combat/ext/void_riders.py technique_used); its printed trigger is not one the generic reaction rows observe. Rider lane C4, 2026-09-30."
+    },
+    "TAL_VOID_CAUSE_EMPTYING_REVERSAL": {
+      "block": "void_cause_emptying",
+      "why": "Cause-Emptying Reversal: the Reaction answers a hostile creature's technique that gave a benefit (combat/ext/void_riders.py technique_used). Rider lane C4, 2026-09-30."
+    },
+    "TAL_BRUTE_HAMMER": {
+      "block": "brute_hammer_owned",
+      "why": "Hammer's ownership, read by Crushing Collision and Sovereign Weight Incarnation's collision riders; Hammer's own Impact Collision stays combat/ext/gu_brute.py's (combat/ext/brute_riders.py). Rider lane C4, 2026-09-30."
+    },
+    "TAL_BRUTE_BREAK_DEFENSES": {
+      "block": "brute_break_defenses",
+      "keeps_compiling": true,
+      "why": "Break Defenses' ownership, read from this fight's own row by combat/ext/gu_brute.py (after_hit). The talent compiles no action of its own, so the row is its only per-fight record; keeps_compiling leaves the talent's own typing exactly as it was."
+    },
+    "TAL_BRUTE_CRUSHING_COLLISION": {
+      "block": "brute_crushing",
+      "why": "Crushing Collision: a choice on each Hammer Impact Collision (Dazed, Prone, +PB damage) (combat/ext/brute_riders.py). Rider lane C4, 2026-09-30."
+    },
+    "TAL_BRUTE_DOMINOES": {
+      "block": "brute_dominoes",
+      "why": "Dominoes: a free Prone-only shove against the creature a shove drives the target into (combat/ext/brute_riders.py). Rider lane C4, 2026-09-30."
+    },
+    "TAL_BRUTE_BATTLEFIELD_BOWLING": {
+      "block": "brute_bowling",
+      "why": "Battlefield Bowling: Dominoes' free shove continues down a contiguous line until one fails (combat/ext/brute_riders.py). Rider lane C4, 2026-09-30.",
+      "perceived_chain": true
+    },
+    "TAL_BRUTE_ROOTED_STANCE": {
+      "block": "brute_rooted",
+      "why": "Rooted Stance: forced movement against you is 5 feet shorter while you hold Martial Focus (combat/ext/brute_riders.py). Rider lane C4, 2026-09-30."
+    },
+    "tianxia.talent.protection.luck": {
+      "block": "d20_rewrite",
+      "kind": "protection_luck",
+      "why": "Luck (Succor): Reaction, a creature within 300 feet bearing your Persistent Aegis makes a saving throw; sacrifice that Aegis and it rerolls, using the new result (combat/ext/protection.py). Rider lane C4, 2026-09-30."
+    },
+    "tianxia.talent.protection.community": {
+      "block": "protection_community",
+      "why": "Community: move up to half the damage a creature bearing your Aegis takes to another willing creature bearing your Aegis, no action (combat/ext/protection.py). Rider lane C4, 2026-09-30."
+    },
+    "tianxia.talent.protection.status": {
+      "block": "protection_status",
+      "why": "Status: the direction, distance and condition of every creature bearing one of your Aegises (combat/ext/protection.py). AUTO69, 2026-10-05."
+    }
+  }
+}
