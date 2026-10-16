@@ -1,0 +1,616 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "mechanics": {
+  "TAL_QIWEAVING_THROTTLE_CURRENT": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_QIWEAVING_THROTTLE_CURRENT",
+   "kind": "talent",
+   "name": "Throttle Current",
+   "sphere_id": "tianxia.sphere.qiweaving",
+   "source": {
+    "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+    "line": 66012,
+    "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+    "text_sha256": "da7097f566667f1f1b185427836917717012c5e97a04f772523cf01ce9ff03a0"
+   },
+   "activation": {
+    "economy": "passive",
+    "trigger": "When you apply this Bond talent to a bonded creature",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "header_economy": false,
+   "cost": [],
+   "use_limit": null,
+   "range": null,
+   "area": null,
+   "target": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "type": "save",
+     "ability": "con",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "spend_resource",
+       "applies_to": "target",
+       "flat": 1,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "until_start_of_next_turn",
+       "evidence": "costs 1 additional CP",
+       "origin": "model_v2"
+      }
+     ],
+     "on_success": [],
+     "origin": "model_v2"
+    }
+   ],
+   "riders": [],
+   "description": [],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "typing_status": "model_v2_unchecked",
+   "structure_source": "model_v2",
+   "reviewed_by": "auto12 2026-10-04",
+   "text_sha256": "da7097f566667f1f1b185427836917717012c5e97a04f772523cf01ce9ff03a0"
+  },
+  "TAL_QIWEAVING_CIRCUIT_LOCK": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_QIWEAVING_CIRCUIT_LOCK",
+   "kind": "talent",
+   "name": "Circuit Lock",
+   "sphere_id": "tianxia.sphere.qiweaving",
+   "source": {
+    "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+    "line": 66330,
+    "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+    "text_sha256": "7301f7387a34fe947bed67005d23131ae3eade0c58785163a71bbfb8b56de5c9"
+   },
+   "activation": {
+    "economy": "passive",
+    "trigger": "When you apply Throttle Current",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": "Throttle Current"
+   },
+   "header_economy": false,
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 2,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "range": null,
+   "area": null,
+   "target": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "type": "save",
+     "ability": "con",
+     "dc": "technique_save_dc",
+     "on_fail": [],
+     "on_success": [],
+     "evidence": "makes a Constitution saving throw",
+     "origin": "parser"
+    },
+    {
+     "type": "save",
+     "ability": "con",
+     "dc": "technique_save_dc",
+     "on_fail": [],
+     "on_success": [],
+     "evidence": "makes a Constitution saving throw",
+     "origin": "parser"
+    }
+   ],
+   "riders": [],
+   "description": [],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "typing_status": "model_v2_unchecked",
+   "structure_source": "model_v2",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "model_v2",
+    "targets": [
+     "Throttle Current"
+    ],
+    "scope": "named",
+    "when": "use",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "",
+    "extra_cp": 2,
+    "effects": [
+     {
+      "type": "save",
+      "applies_to": "target",
+      "flat": 0,
+      "formula": "none",
+      "damage_types": [],
+      "ability": "con",
+      "condition": "none",
+      "distance_ft": 0,
+      "on": "",
+      "duration": "instant",
+      "evidence": "The bonded target makes a Constitution saving throw",
+      "origin": "model_v2",
+      "on_fail": [],
+      "on_success": []
+     }
+    ]
+   },
+   "reviewed_by": "auto12 2026-10-04",
+   "text_sha256": "7301f7387a34fe947bed67005d23131ae3eade0c58785163a71bbfb8b56de5c9"
+  },
+  "TAL_QIWEAVING_SHARED_RESERVOIR": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_QIWEAVING_SHARED_RESERVOIR",
+   "kind": "talent",
+   "name": "Shared Reservoir",
+   "sphere_id": "tianxia.sphere.qiweaving",
+   "source": {
+    "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+    "line": 66318,
+    "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+    "text_sha256": "7aa43c27526afb791064222711e5edc9cf35a04fd2a17d179ccb8460cb4482f0"
+   },
+   "activation": {
+    "economy": "passive",
+    "trigger": null,
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "header_economy": false,
+   "cost": [],
+   "use_limit": null,
+   "range": null,
+   "area": null,
+   "target": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [],
+   "riders": [],
+   "description": [],
+   "coverage": "RIDERS_ONLY",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "typing_status": "model_v2_unchecked",
+   "structure_source": "model_v2",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "model_v2",
+    "targets": [
+     "Qi Bond"
+    ],
+    "scope": "named",
+    "when": "use",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "When you maintain Qi Bond on a willing creature",
+    "effects": []
+   },
+   "reviewed_by": "auto12 2026-10-04",
+   "text_sha256": "7aa43c27526afb791064222711e5edc9cf35a04fd2a17d179ccb8460cb4482f0"
+  },
+  "TAL_QIWEAVING_VICIOUS_UNWEAVE": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_QIWEAVING_VICIOUS_UNWEAVE",
+   "kind": "talent",
+   "name": "Vicious Unweave",
+   "sphere_id": "tianxia.sphere.qiweaving",
+   "source": {
+    "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+    "line": 65926,
+    "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+    "text_sha256": "6f821a68238ca423f9a0cb9260723d65fd5a427c7f0ed24ad755fb0c2c0b4119"
+   },
+   "activation": {
+    "economy": "passive",
+    "trigger": "When you successfully end or counter an Active Qi Pattern with Unweave Pattern",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": "Unweave Pattern"
+   },
+   "header_economy": false,
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "+1 CP"
+     }
+    ]
+   ],
+   "use_limit": null,
+   "range": null,
+   "area": null,
+   "target": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "type": "damage",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "cl",
+     "damage_types": [
+      "force"
+     ],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "That creature takes Force damage.",
+     "origin": "model"
+    }
+   ],
+   "riders": [],
+   "description": [],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "typing_status": "model_v2_unchecked",
+   "structure_source": "model_v2",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "model_v2",
+    "targets": [
+     "Unweave Pattern"
+    ],
+    "scope": "named",
+    "when": "success",
+    "optional": false,
+    "limit": "once_per_turn",
+    "group": "Unweaving",
+    "precondition": "",
+    "extra_cp": 1,
+    "effects": [
+     {
+      "type": "damage",
+      "applies_to": "target",
+      "dice": {
+       "count": 1,
+       "count_formula": null,
+       "sides": 10,
+       "bonus": null,
+       "bonus_formula": null
+      },
+      "flat": 0,
+      "formula": "none",
+      "damage_types": [
+       "force"
+      ],
+      "ability": "none",
+      "condition": "none",
+      "distance_ft": 0,
+      "on": "",
+      "duration": "instant",
+      "evidence": "That creature takes Force damage",
+      "origin": "model_v2"
+     }
+    ]
+   },
+   "reviewed_by": "auto12 2026-10-04",
+   "text_sha256": "6f821a68238ca423f9a0cb9260723d65fd5a427c7f0ed24ad755fb0c2c0b4119"
+  },
+  "TAL_QIWEAVING_DAZING_UNWEAVE": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_QIWEAVING_DAZING_UNWEAVE",
+   "kind": "talent",
+   "name": "Dazing Unweave",
+   "sphere_id": "tianxia.sphere.qiweaving",
+   "source": {
+    "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+    "line": 65902,
+    "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+    "text_sha256": "a1e30485164f81866be90627d4b0ef6d18d4b2961f03d2e568a62b19b139e26d"
+   },
+   "activation": {
+    "economy": "passive",
+    "trigger": "When you successfully counter a technique with Unweave Pattern",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": "Unweave Pattern"
+   },
+   "header_economy": false,
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "+1 CP"
+     }
+    ]
+   ],
+   "use_limit": null,
+   "range": null,
+   "area": null,
+   "target": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "type": "disadvantage",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "attack rolls made as part of magical or cultivation techniques",
+     "duration": "until_end_of_turn",
+     "evidence": "the creature has Disadvantage on attack rolls made as part of magical or cultivation techniques",
+     "origin": "model_v2"
+    },
+    {
+     "type": "advantage",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "saving throws against its magical or cultivation techniques",
+     "duration": "until_end_of_turn",
+     "evidence": "creatures have Advantage on saving throws against its magical or cultivation techniques",
+     "origin": "model_v2"
+    }
+   ],
+   "riders": [
+    "Table decision: this fires when you successfully counter another creature's technique, which only a Reaction can do here. Counter the technique, then ask the creature whose technique you countered to make an Intelligence saving throw. On a failure, until the end of its next turn it has Disadvantage on attack rolls it makes as part of a magical or cultivation technique, and creatures have Advantage on saving throws against its magical or cultivation techniques."
+   ],
+   "description": [],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "typing_status": "model_v2_unchecked",
+   "structure_source": "model_v2",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "model_v2",
+    "targets": [
+     "Unweave Pattern"
+    ],
+    "scope": "named",
+    "when": "success",
+    "optional": false,
+    "limit": "none",
+    "group": "",
+    "precondition": "",
+    "extra_cp": 1,
+    "effects": [
+     {
+      "type": "save",
+      "applies_to": "target",
+      "flat": 0,
+      "formula": "none",
+      "damage_types": [],
+      "ability": "int",
+      "condition": "none",
+      "distance_ft": 0,
+      "on": "",
+      "duration": "instant",
+      "evidence": "makes an Intelligence saving throw",
+      "origin": "model_v2",
+      "on_fail": [],
+      "on_success": []
+     }
+    ]
+   },
+   "reviewed_by": "auto12 2026-10-04",
+   "text_sha256": "a1e30485164f81866be90627d4b0ef6d18d4b2961f03d2e568a62b19b139e26d"
+  },
+  "TAL_QIWEAVING_FALSE_COMPLETION": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_QIWEAVING_FALSE_COMPLETION",
+   "kind": "talent",
+   "name": "False Completion",
+   "sphere_id": "tianxia.sphere.qiweaving",
+   "source": {
+    "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+    "line": 65914,
+    "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+    "text_sha256": "53cb1c4a56d0c0216c1039ee8476e5bb77d540f51cd38792843022d19e3350d4"
+   },
+   "activation": {
+    "economy": "passive",
+    "trigger": "When you successfully counter a technique with Unweave Pattern",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": "Unweave Pattern"
+   },
+   "header_economy": false,
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "+1 CP"
+     }
+    ]
+   ],
+   "use_limit": null,
+   "range": null,
+   "area": null,
+   "target": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "type": "save",
+     "ability": "int",
+     "dc": "technique_save_dc",
+     "on_fail": [],
+     "on_success": [],
+     "evidence": "makes an Intelligence saving throw",
+     "origin": "parser"
+    },
+    {
+     "type": "save",
+     "ability": "int",
+     "dc": "technique_save_dc",
+     "on_fail": [],
+     "on_success": [],
+     "evidence": "makes an Intelligence saving throw",
+     "origin": "parser"
+    }
+   ],
+   "riders": [
+    "Table decision: this fires when you successfully counter another creature's technique, which only a Reaction can do here. Counter the technique, then ask the creature whose technique you countered to make an Intelligence saving throw. On a failure, that creature believes its technique had its intended outward effect until the end of its next turn or until obvious evidence shows otherwise."
+   ],
+   "description": [],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "typing_status": "model_v2_unchecked",
+   "structure_source": "model_v2",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "model_v2",
+    "targets": [
+     "Unweave Pattern"
+    ],
+    "scope": "named",
+    "when": "success",
+    "optional": false,
+    "limit": "none",
+    "group": "",
+    "precondition": "",
+    "extra_cp": 1,
+    "effects": [
+     {
+      "type": "save",
+      "applies_to": "target",
+      "flat": 0,
+      "formula": "none",
+      "damage_types": [],
+      "ability": "int",
+      "condition": "none",
+      "distance_ft": 0,
+      "on": "",
+      "duration": "instant",
+      "evidence": "makes an Intelligence saving throw",
+      "origin": "model_v2",
+      "on_fail": [],
+      "on_success": []
+     }
+    ]
+   },
+   "reviewed_by": "auto12 2026-10-04",
+   "text_sha256": "53cb1c4a56d0c0216c1039ee8476e5bb77d540f51cd38792843022d19e3350d4"
+  },
+  "TAL_QIWEAVING_WORLD_CIRCUIT_SEVERANCE": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_QIWEAVING_WORLD_CIRCUIT_SEVERANCE",
+   "kind": "talent",
+   "name": "World-Circuit Severance",
+   "sphere_id": "tianxia.sphere.qiweaving",
+   "source": {
+    "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+    "line": 66420,
+    "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+    "text_sha256": "e3b9b662e48982b33a951ceca716751aefa9334e43fe87b82b099d5575e720f3"
+   },
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "header_economy": true,
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 5,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": "once_per_long_rest",
+   "range": {
+    "kind": "feet",
+    "feet": 120
+   },
+   "area": null,
+   "target": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "type": "advantage",
+     "applies_to": "self",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "Qiweaving Check",
+     "duration": "instant",
+     "evidence": "Make one Qiweaving Check with Advantage",
+     "origin": "model_v2"
+    }
+   ],
+   "riders": [],
+   "description": [
+    "Success Against a Pattern: The pattern ends."
+   ],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "typing_status": "model_v2_unchecked",
+   "structure_source": "model_v2",
+   "reviewed_by": "auto12 2026-10-04",
+   "text_sha256": "e3b9b662e48982b33a951ceca716751aefa9334e43fe87b82b099d5575e720f3"
+  }
+ }
+}
