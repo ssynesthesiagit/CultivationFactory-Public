@@ -1,0 +1,351 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "mechanics": {
+  "TAL_GRAVITY_FLIGHT_SUPPRESSION": {
+   "text_sha256": "a101171ba849f0eb96873a63f10f2e4daa861735415f21e24de28e935ee96958",
+   "reviewed_by": "AUTO67 2026-10-05: the area's own start-of-turn save for a flying creature, its two outcomes, and the 5-point cost",
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 5
+     }
+    ],
+    [
+     {
+      "resource": "stamina",
+      "amount": 5
+     }
+    ]
+   ],
+   "effects": [
+    {
+     "type": "save",
+     "ability": "str",
+     "dc": "technique_save_dc",
+     "applies_to": "creatures_in_area",
+     "deferred": true,
+     "recipient_text": "A creature flying inside the area makes a Strength saving throw at the start of each of its turns.",
+     "evidence": "A creature flying inside the area makes a Strength saving throw at the start of each of its turns.",
+     "on_fail": [
+      {
+       "type": "gravity_no_flight",
+       "applies_to": "target",
+       "duration": "until_start_of_next_turn",
+       "label": "Flight Suppression: its Fly Speed is 0 until the start of its next turn, so a creature that cannot Hover falls.",
+       "evidence": "Failed Save: Its Fly Speed becomes 0 until the start of its next turn."
+      }
+     ],
+     "on_success": [
+      {
+       "type": "gravity_half_flight",
+       "applies_to": "target",
+       "duration": "until_start_of_next_turn",
+       "label": "Flight Suppression: its Fly Speed is halved until the start of its next turn.",
+       "evidence": "Successful Save: Its Fly Speed is halved until the start of its next turn."
+      }
+     ],
+     "origin": "reviewed"
+    },
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 30,
+     "on": "",
+     "duration": "concentration",
+     "evidence": "Creatures inside the area cannot fly easily.",
+     "origin": "reviewed"
+    }
+   ],
+   "riders": []
+  },
+  "TAL_GRAVITY_FALLING_HAMMER": {
+   "effects": [
+    {
+     "type": "extra_damage",
+     "applies_to": "target",
+     "dice": {
+      "count": 1,
+      "count_formula": null,
+      "sides": 6,
+      "bonus": null,
+      "bonus_formula": null
+     },
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [
+      "force"
+     ],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "add an extra 1d6 Force damage",
+     "origin": "model"
+    }
+   ],
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "model_v2",
+    "targets": [
+     "Weighted Strike"
+    ],
+    "scope": "named",
+    "when": "hit",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "you fall or descend at least 10 feet before hitting a creature with a melee attack on the same turn",
+    "effects": [
+     {
+      "type": "extra_damage",
+      "applies_to": "target",
+      "dice": {
+       "count": 1,
+       "count_formula": null,
+       "sides": 6,
+       "bonus": null,
+       "bonus_formula": null
+      },
+      "flat": 0,
+      "formula": "none",
+      "damage_types": [
+       "force"
+      ],
+      "ability": "none",
+      "condition": "none",
+      "distance_ft": 0,
+      "on": "",
+      "duration": "instant",
+      "evidence": "add an extra 1d6 Force damage in addition to the normal Weighted Strike damage",
+      "origin": "model_v2"
+     }
+    ]
+   },
+   "activation": {
+    "economy": "passive",
+    "trigger": "When you fall or descend at least 10 feet before hitting a creature with a melee attack on the same turn",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": "Weighted Strike"
+   },
+   "cost": [],
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "text_sha256": "08cf00d1be6c620391f23bd8541af3b637ddfca047518c6dcc28a24280b27c9b",
+   "reviewed_by": "A2GRAVITY printed first-30-feet descent protection, 2026-10-10",
+   "riders": []
+  },
+  "tianxia.talent.gravity.reverse_gravity_step": {
+   "text_sha256": "3ebc5afe3fcf9cf1f869f610f7e81136251342a48c146a692e7d3515035c6085",
+   "reviewed_by": "AUTO67 2026-10-05: the Bonus Action's turn state and its 2-point cost (combat/ext/gravity.py)",
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 2
+     }
+    ],
+    [
+     {
+      "resource": "stamina",
+      "amount": 2
+     }
+    ]
+   ],
+   "effects": [
+    {
+     "type": "gravity_reverse_step",
+     "applies_to": "self",
+     "duration": "until_end_of_turn",
+     "evidence": "Until the end of your turn, gravity treats that direction as down for you only ... At the end of the turn, normal gravity returns."
+    }
+   ],
+   "riders": [
+    "Running along walls or ceilings, leaping upward as though falling sideways, moving across gaps and dropping sideways need a surface the table does not track; treat them as a ruling while the character moves."
+   ]
+  },
+  "tianxia.talent.gravity.weight_borrowing_throw": {
+   "text_sha256": "52170f85cfbe0278e9876f567108486e1c996647a45169672b99fb625ec99014",
+   "reviewed_by": "AUTO67 2026-10-05: the paid move runs on a successful Shove or Grapple (combat/ext/gravity.py)",
+   "effects": [
+    {
+     "type": "forced_movement",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 5,
+     "on": "",
+     "duration": "instant",
+     "evidence": "you may spend 1 CP or Stamina to move the target 5 feet in any horizontal direction or knock it Prone",
+     "origin": "model"
+    },
+    {
+     "type": "condition",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "prone",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "or knock it Prone.",
+     "origin": "model"
+    },
+    {
+     "type": "forced_movement",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 10,
+     "on": "",
+     "duration": "instant",
+     "evidence": "If the target is already Grappled by you, increase the movement to 10 feet.",
+     "origin": "model"
+    }
+   ],
+   "riders": []
+  },
+  "tianxia.talent.gravity.local_down": {
+   "text_sha256": "1d483cd43df08356173e055e4cd091ca2282d574e68f5f14230571fc8f17eeaa",
+   "reviewed_by": "AUTO67 2026-10-05: the successful save's difficult terrain and the 6-point cost",
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 6
+     }
+    ],
+    [
+     {
+      "resource": "stamina",
+      "amount": 6
+     }
+    ]
+   ],
+   "effects": [
+    {"type": "rider_choose_area_recipients", "evidence": "Creatures of your choice inside the area make Strength saving throws when the effect appears.", "origin": "reviewed"},
+    {
+     "type": "save",
+     "ability": "str",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "forced_movement",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 60,
+       "on": "",
+       "duration": "instant",
+       "evidence": "The creature falls in the chosen direction until it strikes a surface, exits the area, or falls 60 feet.",
+       "origin": "model_v2"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "gravity_difficult_terrain",
+       "applies_to": "target",
+       "duration": "until_start_of_next_turn",
+       "label": "Local Down: while it stands in this area, the ground is difficult terrain, so each step of walking costs double.",
+       "evidence": "Successful Save: The creature holds position but treats the area as difficult terrain until the start of its next turn."
+      }
+     ],
+     "origin": "model_v2"
+    },
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 20,
+     "on": "",
+     "duration": "concentration",
+     "evidence": "Area: 20-foot-radius sphere.",
+     "origin": "model_v2"
+    }
+   ],
+   "riders": [
+    "Only the creatures you chose when the area appears are affected; a creature that walks in later does not make the save.",
+    "A creature that can fly may use its Fly Speed to resist the fall if it succeeds on the saving throw."
+   ]
+  },
+  "tianxia.talent.gravity.falling_star_calamity": {
+   "text_sha256": "5feaf225d43817b85d2cfa2fdfd44799e542064aac427b2c83e446f61d377d80",
+   "reviewed_by": "AUTO67 2026-10-05: the 15-point cost (Time, Range and Use Limit are already typed fields)",
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 15
+     }
+    ],
+    [
+     {
+      "resource": "stamina",
+      "amount": 15
+     }
+    ]
+   ],
+   "riders": [
+    "The impact leaves a crater of difficult terrain, smoke, fire, collapsed structures and a spiritual disturbance the table can feel; how the ground looks afterwards is a ruling.",
+    "This technique is not subtle: it is a siege art, a sect war art or a catastrophe technique, not a duel technique."
+   ]
+  },
+  "tianxia.talent.gravity.gravity_sense": {
+   "text_sha256": "90e6837aa04ab1735cff9cc1247fadb35e2c6daacbaf32689e5b623d8a294b7a",
+   "reviewed_by": "AUTO67 2026-10-05: the +2 on a check made to resist a Gravity effect runs (combat/ext/gravity.py)",
+   "riders": [
+    "You sense major gravitational distortions within 120 feet.",
+    "You know when a creature or object within that range changes weight supernaturally, falls through supernatural force, enters a Gravity Domain, uses levitation or flight, becomes anchored by supernatural weight, or creates a gravity well, local down, orbit or pressure field.",
+    "The +2 applies to a Cultivation Check made to get out of a Gravity effect, such as the one to teleport out of an Event Horizon Prison. There is no check on this table for spotting an effect, and on any other Cultivation Check this is a ruling."
+   ]
+  },
+  "tianxia.talent.gravity.meteoric_descent": {
+   "text_sha256": "3ebd131eb0abdfecc06fbdcd3299d260595874c739a2d42f32a6151a6b86c239",
+   "reviewed_by": "AUTO67 2026-10-05: the 5-point cost; the descent trigger itself is left printed",
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 5
+     }
+    ],
+    [
+     {
+      "resource": "stamina",
+      "amount": 5
+     }
+    ]
+   ],
+   "riders": [
+    "Descending onto the point and everything that lands with it needs a ruling: the table has no trigger for a descent that ends in an attack.",
+    "You take no falling damage from the descent.",
+    "For each additional 20 feet descended before impact, add 1d8 Force damage, to a maximum number of additional dice equal to your Proficiency Bonus."
+   ]
+  }
+ }
+}
