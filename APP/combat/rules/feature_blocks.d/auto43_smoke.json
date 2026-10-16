@@ -1,0 +1,15 @@
+{
+  "note": "Smoke sphere block rows (AUTO43 automation lane, 2026-10-05). One JSON file per worker or topic, merged with the main file (owner 2026-09-28, the parallel automation push). Same shape as the main file; a key must not appear in two files.",
+  "features": {
+    "TAL_SMOKE_BLACKEN_THE_FLAME": {
+      "block": "smoke_fire_soot",
+      "kind": "soot_fire_damage",
+      "why": "Blacken the Flame: \"Trigger: Fire damage is dealt inside your Smoke Veil or through your Smoke Veil. Spend one Smoke Trace on the source, target, or affected space. Reduce the Fire damage dealt to one creature or object by: 1d6 + your key ability modifier. The reduction increases to 2d6 at CL 5, 3d6 at CL 11, and 4d6 at CL 17.\" Its trigger is damage dealt anywhere inside an area rather than an attack roll against the reactor, and combat/reaction_triggers.py has no runnable kind for that (it classifies the printed trigger as unsupported), so the reduction is resolved in combat/ext/smoke_veil.py through the engine's own final_damage seam: the owner is asked there, an AI answers for itself, and the Smoke Trace is spent through the engine's own condition removal. Row only, so combat/ext/fight_ownership.py owns_block can prove this fighter owns it in this fight.",
+      "response_group": "smoke"
+    },
+    "TAL_SMOKE_SMOKE_MIRROR_TRAIL": {
+      "block": "smoke_mirror_trail",
+      "why": "Smoke Mirror Trail: \"When one creature inside your Smoke Veil becomes Invisible, successfully Hides, teleports, or leaves the veil without using normal movement, you may place a Smoke Trace on it without using your once-per-round Smoke Trace. Until that trace ends, you know the direction to the target while it remains within 120 feet.\" Its printed trigger is an event inside another creature's turn (a condition, a committed Hide check, a teleport or a forced move out of the veil), which compiles to no action or reaction row of its own; the trigger is resolved in combat/ext/smoke_sound_residual.py through the engine's own event seam, which asks combat/ext/fight_ownership.py owns_feature. Row only, so that lookup can prove this fighter owns it in this fight."
+    }
+  }
+}
