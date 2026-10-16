@@ -1,0 +1,159 @@
+"""Clinical Source CL producer guards; these do not certify whole Physician rows.
+
+Externally authored ailments use the trusted GM boundary, a committed journey,
+encounter import, cold load and mechanical replay. No fabricated diagnosis or
+successful procedure is supplied. Unknown source authority remains unknown.
+"""
+import pytest
+
+# Runtime catalog lookup assembles this filename from constants. Declare the
+# real source dependency for the public export's static closure; never replace
+# the authority service or supply a fake acquisition gate to avoid exporting it.
+NATIVE_TEST_RESOURCES = (
+    'authority/Tianxia_Sphere_Path_Access_R1.json',
+    'authority/Tianxia_Forged_Technique_Authority_R1.json',
+    'authority/Tianxia_Immortal_Art_Authority_R1.json',
+)
+
+from tests.test_mgr_t14_clinical_native import (
+    A, B, game, start, engine, clinical, anatomy, use, next_round,
+)
+
+
+def ailment(source_cl=None):
+    result = {'label': 'Cultivated toxin', 'category': 'poison',
+              'conditions': ['poisoned'], 'ongoing': 0, 'excluded': [], 'dc': 15}
+    if source_cl is not None:
+        result['source_cl'] = source_cl
+    return result
+
+
+@pytest.mark.parametrize('source_cl', [3, 18, 21, None])
+def test_external_source_cl_survives_commit_encounter_and_cold_replay(tmp_path, monkeypatch, source_cl):
+    cold, table, jid, command, world = game(tmp_path, monkeypatch, spheres=('life',))
+    declared = world('clinical_source', ailment(source_cl), scope='Cultivated toxin')
+    receipt = declared['fact_consent_admission'][-1]['receipt_id']
+    mid = start(cold, jid)
+    loaded = engine(cold, mid)
+    records = clinical(loaded.state.actors[B], 'poison')
+    assert len(records) == 1
+    facts = records[0].data['clinical']
+    assert facts['source_instance'] == receipt
+    assert 'clinical_source_cl' not in records[0].data, 'External input is not a native execution receipt'
+    assert facts.get('source_cl') == source_cl
+    assert ('source_cl' in facts) == (source_cl is not None)
+    assert facts['readers'] == [A]
+    assert facts['dc'] == 15
+    assert cold()._load_session(mid).mechanical.replay()['status'] == 'PASS'
+
+
+@pytest.mark.parametrize('source_cl', [0, -1, True, '18', 1.5])
+def test_gm_source_cl_rejects_untyped_or_nonpositive_input_atomically(tmp_path, monkeypatch, source_cl):
+    cold, table, jid, command, world = game(tmp_path, monkeypatch, spheres=('life',))
+    before = cold().journey_state(jid)
+    with pytest.raises(ValueError):
+        world('clinical_source', ailment(source_cl))
+    assert cold().journey_state(jid) == before
+
+
+def test_annotation_cannot_replace_known_source_cl(tmp_path, monkeypatch):
+    cold, table, jid, command, world = game(tmp_path, monkeypatch, spheres=('life',))
+    world('clinical_source', ailment(18))
+    mid = start(cold, jid)
+    loaded = engine(cold, mid)
+    condition = clinical(loaded.state.actors[B], 'poison')[0]
+    before = loaded.state.model_dump(mode='json')
+    with pytest.raises(ValueError, match='known native Source CL'):
+        cold().world_fact(mid, loaded.state.state_version, {
+            'source': 'clinical_source', 'subject': B, 'kind': 'clinical_annotation',
+            'scope': 'misclassified source', 'value': {
+                'condition_instances': [condition.instance_id], 'label': 'Cultivated toxin',
+                'category': 'poison', 'ongoing': 0, 'excluded': [], 'dc': 15, 'source_cl': 3,
+            }, 'expires_at': 100000, 'readers': [A],
+        })
+    assert engine(cold, mid).state.model_dump(mode='json') == before
+
+
+def test_unknown_existing_source_accepts_validated_source_cl_without_new_ailment(tmp_path, monkeypatch):
+    cold, table, jid, command, world = game(tmp_path, monkeypatch, spheres=('life',))
+    world('clinical_source', ailment())
+    mid = start(cold, jid)
+    loaded = engine(cold, mid)
+    condition = clinical(loaded.state.actors[B], 'poison')[0]
+    before_hp = loaded.state.actors[B].current_hp
+    before_resources = dict(loaded.state.actors[B].resources)
+    cold().world_fact(mid, loaded.state.state_version, {
+        'source': 'clinical_source', 'subject': B, 'kind': 'clinical_annotation',
+        'scope': 'identified authority', 'value': {
+            'condition_instances': [condition.instance_id], 'label': 'Cultivated toxin',
+            'category': 'poison', 'ongoing': 0, 'excluded': [], 'dc': 15, 'source_cl': 18,
+        }, 'expires_at': 100000, 'readers': [A],
+    })
+    after = engine(cold, mid)
+    records = clinical(after.state.actors[B], 'poison')
+    assert len(records) == 1
+    assert records[0].instance_id == condition.instance_id
+    assert records[0].data['clinical']['source_cl'] == 18
+    assert after.state.actors[B].current_hp == before_hp
+    assert after.state.actors[B].resources == before_resources
+    assert cold()._load_session(mid).mechanical.replay()['status'] == 'PASS'
+
+
+def test_actual_paid_native_toxin_retains_its_exact_source_cl_after_reload(tmp_path, monkeypatch):
+    from combat.clinical_sources import metadata
+    from combat.ext.stacking_marks import count
+    cold, table, jid, command, world = game(tmp_path, monkeypatch, spheres=('poison',), cl=10)
+    anatomy(world)
+    mid = start(cold, jid)
+    for _ in range(10):
+        loaded = engine(cold, mid)
+        if count(loaded, loaded.state.actors[A], loaded.state.actors[B], 'Dose Mark') >= 2:
+            break
+        use(cold, table, mid, 'Deliver the Dose')
+        next_round(cold, table, mid)
+    use(cold, table, mid, 'Ingrain the Toxin: Numb Channels',
+        choose=lambda p, ids: ['Numb Channels'] if 'Numb Channels' in ids else ids[:1])
+    loaded = engine(cold, mid)
+    toxins = [c for c in loaded.state.actors[B].conditions.values()
+              if (c.data.get('clinical') or {}).get('rule') == 'POISON_BASE_INGRAIN_THE_TOXIN']
+    assert toxins
+    assert toxins[0].data.get('clinical_source_cl') == 10
+    facts = metadata(loaded, loaded.state.actors[B], toxins[0])
+    assert facts['owner'] == A
+    assert facts['source_cl'] == 10
+    from combat.observer_information import readings
+    patient_view = readings(loaded, loaded.state.actors[B])
+    assert not any('source_cl' in row.get('details', {}) for row in patient_view)
+    # Guard the shared metadata seam, not whole-feature acceptance: a real
+    # owned action still cannot supply historical authority outside execution.
+    from types import SimpleNamespace
+    from combat.clinical_sources import native_metadata
+    action = loaded.action_catalog[facts['source']]
+    typed = action.parameters.get('typed') or {}
+    context = SimpleNamespace(engine=loaded, actor=loaded.state.actors[A], action=action,
+        source=facts['source'], typed=typed, numbers={**typed.get('numbers', {}), 'cl': 99},
+        intent=None, damage_cache={})
+    state_before = loaded.state.model_dump(mode='json')
+    unscoped = native_metadata(context, loaded.state.actors[B], {})
+    assert unscoped and unscoped['source'] == facts['source']
+    assert 'source_cl' not in unscoped
+    assert loaded.state.model_dump(mode='json') == state_before
+    assert cold()._load_session(mid).mechanical.replay()['status'] == 'PASS'
+
+
+def test_admitted_native_protocol_keeps_its_catalog_after_cold_reload(tmp_path, monkeypatch):
+    cold, table, jid, command, world = game(tmp_path, monkeypatch, spheres=())
+    declared = world('clinical_source', ailment(18))
+    group = declared['fact_consent_admission'][-1]['receipt_id']
+    protocol = world('clinical_protocol', {
+        'method': 'Medicine', 'ability': 'WIS', 'skill': 'medicine', 'seconds': 60,
+        'costs': {'resource:core.qi': 1}, 'operation': 'treat', 'source_instance': group,
+    })['fact_consent_admission'][-1]['receipt_id']
+    mid = start(cold, jid)
+    loaded = engine(cold, mid)
+    failures = [v.payload.get('rider') for v in loaded.events if v.event_type == 'GM_RIDER'
+                and 'clinical_procedures' in str(v.payload)]
+    assert not failures, failures
+    expected = {'action:clinical.' + protocol + '.' + stage for stage in ('begin', 'continue', 'stop')}
+    assert expected <= set(loaded.action_catalog), sorted(expected - set(loaded.action_catalog))
+    assert cold()._load_session(mid).mechanical.replay()['status'] == 'PASS'
