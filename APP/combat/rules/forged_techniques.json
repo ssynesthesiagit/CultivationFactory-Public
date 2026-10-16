@@ -1,0 +1,52 @@
+{
+ "schema": "TianxiaFoundry.ForgedTechniqueCombatRules.v1",
+ "note": "How a Forged Technique plays in combat (PHB ch. 18; owner 2026-09-27: 'we should allow composite techniques to be created and added'). The technique carries its Primary Sphere Effect -- the typed effect of a talent the character knows, with that talent's own dice and save -- in its Base Form; each Secondary Sphere Effect adds its conditions, and its damage types become choices of the technique's damage. The PHB leaves these numbers to the GM; they are the owner's to change. Hostile conditions an Augment adds always allow a save against the Cultivation Save DC (save_for picks the ability).",
+ "forms": {
+  "strike": {"delivery": "weapon", "text": "Make a weapon attack. On a hit, the Primary Sphere Effect."},
+  "projection": {"delivery": "attack", "range_ft": 60, "text": "A ranged technique attack; on a hit, the Primary Sphere Effect."},
+  "burst": {"delivery": "area", "shape": "sphere", "size_ft": 15, "range_ft": 60, "text": "Enemies in a 15-foot radius make a saving throw."},
+  "cone": {"delivery": "area", "shape": "cone", "size_ft": 15, "self": true, "text": "Enemies in a 15-foot cone make a saving throw."},
+  "line": {"delivery": "area", "shape": "line", "size_ft": 30, "self": true, "text": "Enemies in a 30-foot line make a saving throw."},
+  "ward": {"delivery": "ward", "range_ft": 30, "temp_hp_formula": "pb", "text": "You or an ally within 30 feet gains temporary hit points and Resistance to the technique's damage types until the start of your next turn."},
+  "aura": {"delivery": "zone", "shape": "sphere", "size_ft": 10, "self": true, "follows": true,
+           "duration": {"kind": "minutes", "amount": 1, "concentration": true},
+           "text": "A 10-foot aura around you for 1 minute (Concentration). It moves with you. A hostile creature that enters the area for the first time on a turn or starts its turn there makes a saving throw."},
+  "zone": {"delivery": "zone", "shape": "sphere", "size_ft": 20, "range_ft": 60,
+           "duration": {"kind": "minutes", "amount": 1, "concentration": true},
+           "text": "A 20-foot-radius zone for 1 minute (Concentration). A hostile creature that enters the area for the first time on a turn or starts its turn there makes a saving throw."},
+  "movement": {"delivery": "movement", "distance_ft": 30, "text": "Move up to 30 feet without provoking Opportunity Attacks; the Primary Sphere Effect is the GM's to place along the way."},
+  "counter": {"delivery": "reaction", "text": "Reaction; the GM resolves the trigger."}
+ },
+ "default_save": "DEX",
+ "augments": {
+  "increased_damage": {"extra_dice": 1, "default_sides": 8, "text": "+1 damage die"},
+  "extended_range": {"multiplier": 2, "text": "double range"},
+  "expanded_area": {"add_ft": 10, "text": "+10 feet of area"},
+  "additional_target": {"text": "one more target (GM)"},
+  "forced_movement": {"distance_ft": 10, "save": "STR", "text": "push 10 feet on a failed Strength save"},
+  "minor_hindrance": {"default": "slowed", "choices": {
+    "slowed": {"type": "speed", "flat": -10, "duration": "until_start_of_next_turn", "save": "CON"},
+    "reaction_denied": {"type": "condition", "condition": "reaction_denied", "expires_on": "START_OF_SOURCE_NEXT_TURN", "save": "CON"},
+    "prone": {"type": "condition", "condition": "prone", "save": "STR"}}, "text": "a minor hindrance until the start of your next turn"},
+  "lingering_effect": {"text": "the effect lingers one more round (GM)"},
+  "mobility_rider": {"distance_ft": 10, "text": "you move 10 feet without provoking Opportunity Attacks"},
+  "major_condition": {"default": "restrained", "choices": ["restrained", "frightened", "blinded", "poisoned", "grappled", "deafened"], "repeat_save": true,
+                      "text": "a major condition, repeating the save at the end of each of its turns"},
+  "severe_hindrance": {"default": "stunned", "choices": ["stunned", "paralyzed", "incapacitated"], "repeat_save": true, "duration": "until_end_of_next_turn",
+                       "text": "a severe condition until the end of its next turn, repeating the save at the end of each of its turns"},
+  "persistent_zone": {"duration": {"kind": "minutes", "amount": 1, "concentration": true},
+                      "text": "The area remains for 1 minute (Concentration). A hostile creature that enters the area for the first time on a turn or starts its turn there makes the saving throw again."},
+  "ignore_resistance": {"text": "the damage ignores Resistance"},
+  "reaction_activation": {"text": "Reaction"},
+  "bonus_action_activation": {"text": "Bonus Action"},
+  "domain_effect": {"text": "Domain Effect (GM)"},
+  "conceptual_effect": {"text": "Conceptual Effect (GM)"}
+ },
+ "save_for": {"prone": "STR", "grappled": "STR", "restrained": "STR", "pinned": "STR", "frightened": "WIS", "charmed": "WIS",
+              "incapacitated": "WIS", "stunned": "CON", "paralyzed": "CON", "poisoned": "CON", "blinded": "CON", "deafened": "CON",
+              "reaction_denied": "CON", "burning": "DEX"},
+ "drawbacks": {
+  "self_damage": {"formula": "pb", "damage_type": "force", "text": "you take Force damage equal to your Proficiency Bonus"},
+  "concentration": {"text": "requires Concentration"}
+ }
+}
