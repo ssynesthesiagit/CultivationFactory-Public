@@ -1,0 +1,5286 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_LIGHTNING_CONDUCTIVE_FIELD": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "The area is Conductive. The first time a hostile creature enters the area on a turn or starts its turn there, it makes a Dexterity saving throw.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 1,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "key_ability_modifier",
+                      "damage_types": [
+                        "lightning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "The creature takes lightning damage equal to 1d8 + your Lightning key ability modifier",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "mark",
+                      "mark": "Charged",
+                      "applies_to": "target",
+                      "duration": {
+                        "kind": "until_start_of_your_next_turn"
+                      }
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "lightning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "The creature takes half damage",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "46a332276fc8b489030d186ca5c67a1f2b53c2bc460bed2c5ddafd306c64d231",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    },
+    "TAL_LIGHTNING_ELECTRIC_FIST_METHOD": {
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "Electric Fist Method uses a chosen melee-hit save and limited uses."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hit a creature with an unarmed strike or melee attack within your reach",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "Creatures without nerves, meridians, muscles or comparable channels ignore the Speed penalty. Creatures immune to lightning or bodily shock may also ignore the reaction denial."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "93c58a3013c6287b7ef6e2f416229949e16b07fd4d6fafdb5dec03fc3cb9958b",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    },
+    "TAL_LIGHTNING_FIVEFOLD_THUNDER_CIRCUIT": {
+      "effects": [
+        {
+          "type": "arc_begin",
+          "evidence": "Choose up to five creatures or objects you can see. The first target must be within range.",
+          "origin": "riders-lane1"
+        },
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "arc_tally",
+              "evidence": "If at least three targets fail their saves",
+              "origin": "riders-lane1"
+            },
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 4,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "lightning"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "A target takes 4d8 lightning damage and becomes Charged.",
+              "origin": "model_v2"
+            },
+            {
+              "type": "mark",
+              "mark": "Charged",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              }
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "lightning"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "A target takes half damage and is not Charged.",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "arc",
+          "talent": "fivefold_thunder_circuit",
+          "range_ft": 20,
+          "count": 4,
+          "from_any": true,
+          "needs_mark": [
+            "Charged",
+            "Conductive"
+          ],
+          "effects": [
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "arc_tally",
+                  "evidence": "If at least three targets fail their saves",
+                  "origin": "riders-lane1"
+                },
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 4,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "lightning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "A target takes 4d8 lightning damage and becomes Charged.",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "mark",
+                  "mark": "Charged",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_start_of_your_next_turn"
+                  }
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "lightning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "A target takes half damage and is not Charged.",
+                  "origin": "model_v2"
+                }
+              ],
+              "origin": "model_v2"
+            }
+          ],
+          "evidence": "Each later target must be within 20 feet of a previous target and must be Conductive, Charged, metallic, wet, or part of the same formation, ward, or battlefield circuit.",
+          "origin": "riders-lane1"
+        },
+        {
+          "type": "arc_burst",
+          "min_failed": 3,
+          "radius_ft": 10,
+          "effects": [
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn"
+            }
+          ],
+          "evidence": "If at least three targets fail their saves, choose one target that failed. Thunder cracks around that target; creatures of your choice within 10 feet of it cannot take Reactions until the start of their next turn.",
+          "origin": "riders-lane1"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Later targets that are only metallic, wet, or part of the same formation, ward, or battlefield circuit (not tracked on this table), and objects as targets: the GM adds them. The table picks Conductive or Charged creatures."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "88a2366ab3f6fc2a15a67e7188765b13003aa81564b2a0bd98ca79d20e8fcf4c",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_LIGHTNING_FLASH_STEP": {
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 30,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "instant",
+          "evidence": "You move up to 30 feet in a straight line to an unoccupied space you can see.",
+          "origin": "model_v2",
+          "no_opportunity_attacks": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Straight line, one turn when you start or end adjacent to a Charged creature or Conductive object, and at CL 11 through a Charged creature's space: GM-run (blocked: movement candidates are ordinary shortest paths, and no rule lets a path cross a creature's space)."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "52d7f253d9754f6f3084102216f1689c3b63eadccf64342c0f93ee4ac6e974b4",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    },
+    "TAL_LIGHTNING_FORMATION_EXTINGUISHING_EDICT": {
+      "effects": [
+        {
+          "type": "damage",
+          "applies_to": "creatures_in_area",
+          "dice": {
+            "count": 4,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [
+            "lightning"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 60,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Each takes lightning damage equal to 4d8 + your Lightning key ability modifier.",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "disadvantage",
+          "on": "the next check made to maintain, command, or repair it before the end of your next turn",
+          "evidence": "Disadvantage on the next check made to maintain, command, or repair it before the end of your next turn",
+          "origin": "parser",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Make a Lightning Check against the effect's DC, the creator's Cultivation Save DC, or a GM-set DC.",
+        "Success: Suppress the target until the end of your next turn if it is non-Secret and your Realm or lower. If it is stronger, reduce one major numerical benefit by your Cultivation Level",
+        "Success by 5 or More: Arcs lash through the connected structure.",
+        "Failure: The structure resists. You still learn one hidden rule of the structure's conductivity, grounding, or node hierarchy.",
+        "This talent cannot casually erase ancient city arrays, immortal formations, sect grand protections, or world-scale wards.",
+        "Cost: 3 CP",
+        "GM: resolve the Lightning Check and its margin before applying the printed suppression, damage, or maintenance penalty.",
+        "GM: resolve the Lightning Check and its margin before applying the printed suppression, damage, or maintenance penalty."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 300
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One visible formation node, domain anchor, ward engine, talisman array, qi construct, or summoned asset anchor"
+      },
+      "text_sha256": "dad0da9275cbf903f49a25b27f2d947554d21a134d2a4f57ba5cc6b6ef90bd2d",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_LIGHTNING_LIGHTNING_CHAINS": {
+      "effects": [],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Lightning Lash"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Circuit",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "if_marked",
+            "mark": "Charged",
+            "at": "hit",
+            "effects": [
+              {
+                "type": "arc",
+                "talent": "lightning_chains",
+                "allow_allies": true,
+                "range_ft": 15,
+                "effects": [
+                  {
+                    "type": "save",
+                    "ability": "dex",
+                    "dc": "technique_save_dc",
+                    "on_fail": [
+                      {
+                        "type": "damage",
+                        "applies_to": "target",
+                        "dice": {
+                          "count": 1,
+                          "sides": 8
+                        },
+                        "formula": "key_ability_modifier",
+                        "damage_types": [
+                          "lightning"
+                        ],
+                        "duration": "instant",
+                        "evidence": "Failed Save: It takes lightning damage equal to 1d8 + your Lightning key ability modifier",
+                        "origin": "riders-lane1"
+                      },
+                      {
+                        "type": "lightning_link",
+                        "evidence": "and both targets are linked until the start of your next turn",
+                        "origin": "riders-lane1"
+                      }
+                    ],
+                    "on_success": [
+                      {
+                        "type": "half_damage",
+                        "applies_to": "target",
+                        "damage_types": [
+                          "lightning"
+                        ],
+                        "evidence": "Successful Save: It takes half damage and no link forms.",
+                        "origin": "riders-lane1"
+                      }
+                    ],
+                    "evidence": "The second target makes a Dexterity saving throw.",
+                    "origin": "riders-lane1"
+                  }
+                ],
+                "evidence": "create a short-lived lightning link between it and one creature or object within 15 feet",
+                "origin": "riders-lane1"
+              }
+            ],
+            "evidence": "When you hit a Charged creature with Lightning Lash",
+            "origin": "riders-lane1"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hit a Charged creature with Lightning Lash",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Lightning Lash"
+      },
+      "riders": [
+        "The second target may be an object (objects are not tracked as arc targets); the link is only ever between creatures."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "8c8a4674fb329c7d05902b2e96670050d55d396a82cdb67ad7405b81122bb463",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    },
+    "TAL_LIGHTNING_SPIRIT_CIRCUIT_SHOCK": {
+      "effects": [
+        {
+          "type": "spend_resource",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "When you hit a spirit, ghost, possessed creature, spiritual projection, dream-body, or summoned spirit asset with Lightning Lash, you may spend 1 CP to force a Wisdom saving throw.",
+          "origin": "model"
+        },
+        {
+          "type": "save",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "wis",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "When you hit a spirit, ghost, possessed creature, spiritual projection, dream-body, or summoned spirit asset with Lightning Lash, you may spend 1 CP to force a Wisdom saving throw.",
+          "origin": "model",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "invisible",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_end_of_next_turn",
+              "evidence": "Failed Save: The target cannot benefit from being Invisible, spiritually hidden, or possession-masked against you until the end of your next turn. If it is possessing another body, the host may immediately repeat one save or contest allowed by the possession effect.",
+              "origin": "model"
+            }
+          ],
+          "on_success": []
+        },
+        {
+          "type": "save",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "wis",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "When you hit a spirit, ghost, possessed creature, spiritual projection, dream-body, or summoned spirit asset with Lightning Lash, you may spend 1 CP to force a Wisdom saving throw.",
+          "origin": "model",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "invisible",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_end_of_next_turn",
+              "evidence": "Failed Save: The target cannot benefit from being Invisible, spiritually hidden, or possession-masked against you until the end of your next turn. If it is possessing another body, the host may immediately repeat one save or contest allowed by the possession effect.",
+              "origin": "model"
+            }
+          ],
+          "on_success": []
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Lightning Lash"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "save",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "wis",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "you may spend 1 CP to force a Wisdom saving throw",
+            "origin": "model_v2",
+            "on_fail": [],
+            "on_success": [
+              {
+                "type": "mark",
+                "mark": "Charged",
+                "applies_to": "target",
+                "duration": {
+                  "kind": "until_start_of_your_next_turn"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hit a spirit, ghost, possessed creature, spiritual projection, dream-body, or summoned spirit asset with Lightning Lash",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Lightning Lash"
+      },
+      "riders": [
+        "When you hit a spirit, ghost, possessed creature, spiritual projection, dream-body, or summoned spirit asset with Lightning Lash",
+        "Failed Save: The target cannot benefit from being Invisible, spiritually hidden, or possession-masked against you until the end of your next turn.",
+        "If it is possessing another body, the host may immediately repeat one save or contest allowed by the possession effect.",
+        "Successful Save: The target becomes Charged until the start of your next turn.",
+        "This talent does not exorcise by itself unless a separate feature says so."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "3384b9d90ec20989e8aea0850b9269d98c13983c43619922e8f5d17c16a4d343",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_LIGHTNING_THUNDERCLAP_PALM": {
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Creatures in the cone make a Constitution saving throw.",
+          "applies_to": "creatures_in_area",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "thunder"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "thunder damage equal to 1d8 + your Lightning key ability modifier",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "forced_movement",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 5,
+              "on": "",
+              "duration": "instant",
+              "evidence": "is pushed 5 feet away from you",
+              "origin": "model_v2"
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "deafened",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "At Foundation Realm, a creature that fails the save is also Deafened until the start of your next turn",
+              "origin": "model",
+              "min_cl": 5
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "takes half damage and is not pushed",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": {
+        "shape": "cone",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "04f28dae1bad798f915f295566982347f028e26b69f3d7859dce637b2b1b1245",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    },
+    "TAL_LIGHTNING_TRUE_LIGHTNING_GOD_MANTLE": {
+      "effects": [
+        {
+          "type": "speed",
+          "amount": 20,
+          "evidence": "Speed increases by 20 feet",
+          "origin": "parser"
+        },
+        {
+          "type": "resistance",
+          "damage_types": [
+            "lightning"
+          ],
+          "evidence": "Resistance to lightning damage",
+          "origin": "parser"
+        },
+        {
+          "type": "spend_resource",
+          "applies_to": "self",
+          "flat": -2,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "you may spend 2 CP instead of 1 CP",
+          "origin": "model"
+        },
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "special",
+          "evidence": "Once per round when you are hit by a melee attack, you may move 10 feet without provoking Opportunity Attacks after the attack resolves",
+          "origin": "model"
+        },
+        {
+          "type": "extra_damage",
+          "applies_to": "target",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "lightning"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "Your first Electric Fist Method or Conductive Strike hit each turn deals additional lightning damage equal to 1d8",
+          "origin": "model",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Lightning-God Body"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "resistance",
+            "applies_to": "self",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "lightning"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "special",
+            "evidence": "You gain Resistance to lightning damage.",
+            "origin": "model_v2"
+          },
+          {
+            "type": "movement",
+            "applies_to": "self",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 10,
+            "on": "",
+            "duration": "instant",
+            "evidence": "Once per round when you are hit by a melee attack, you may move 10 feet without provoking Opportunity Attacks after the attack resolves",
+            "origin": "model_v2",
+            "deferred": true
+          },
+          {
+            "type": "extra_damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 1,
+              "count_formula": null,
+              "sides": 8,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "lightning"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "special",
+            "evidence": "Your first Electric Fist Method or Conductive Strike hit each turn deals additional lightning damage equal to 1d8",
+            "origin": "model_v2",
+            "deferred": true
+          },
+          {
+            "type": "speed",
+            "applies_to": "self",
+            "flat": 10,
+            "duration": "one_minute",
+            "evidence": "Your Speed increases by 20 feet instead of 10 feet."
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you activate Lightning-God Body",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Lightning-God Body"
+      },
+      "riders": [
+        "When you reduce a creature to 0 HP or cause a creature to fail a save against Meridian-Stopping Spark, you may place a Charge on another creature you can see within 20 feet.",
+        "When the mantle ends, you cannot use Lightning-God Body again until you finish a short or long rest unless you succeed on a Constitution saving throw against your own Cultivation Save DC. On a failure, you take lightning damage equal to your Cultivation Level and do not activate the state.",
+        "GM: once per round, the 10-foot movement without Opportunity Attacks follows a melee attack hitting you, not activation."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "16f556fbf1490279046d9d7120d17d4e10d034d9508a18d855a2c0f890bb0645",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    },
+    "TAL_MAGMA_BLACKGLASS_RIVER": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When a creature enters for the first time on a turn or starts its turn inside, it makes a Dexterity saving throw.",
+                  "applies_to": "creatures_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 6,
+                        "count_formula": null,
+                        "sides": 6,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 6d6 Fire damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 2,
+                        "count_formula": null,
+                        "sides": 6,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "slashing"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "2d6 Slashing damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -15,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "Speed is reduced by 15 feet until the start of its next turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Successful Save: Take half damage.",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "area": {
+        "shape": "line",
+        "size_ft": 60,
+        "centered_on_self": false,
+        "width_ft": 15,
+        "surface_bound": true,
+        "surface_translation": {
+          "max_ft": 10,
+          "min_ft": 10,
+          "ai_preference": "hostiles"
+        }
+      },
+      "text_sha256": "80d0e471aa91064ef94c9d6aff597266beaa32e655ca89a46202517e787f5537",
+      "reviewed_by": "Codex A2MAGMA 2026-10-10",
+      "riders": [
+        "The outer 5 feet along each side is also Obsidian Terrain; the distinct edge strip is still resolved by the table."
+      ]
+    },
+    "TAL_MAGMA_COURT_OF_THE_LIVING_VOLCANO": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When an enemy starts its turn inside the Domain, it makes a Dexterity saving throw.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 3,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire",
+                        "bludgeoning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "take 3d8 Fire or Bludgeoning damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "prone",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "fall Prone",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "ongoing",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "ability": "none",
+                      "condition": "burning",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_end_of_next_turn",
+                      "evidence": "become Burning for 1d8 Fire damage until the end of its next turn",
+                      "origin": "model_v2",
+                      "turn_start_effects": [
+                        {
+                          "type": "damage",
+                          "applies_to": "target",
+                          "dice": {
+                            "count": 1,
+                            "sides": 8
+                          },
+                          "damage_types": [
+                            "fire"
+                          ],
+                          "duration": "instant"
+                        }
+                      ]
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "if you choose damage, the damage is halved",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "resistance",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "gain Resistance to Fire damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "saving throws against Prone and forced movement",
+          "duration": "concentration",
+          "evidence": "gain Advantage on saving throws against Prone and forced movement",
+          "origin": "model_v2"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "enemies_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "checks made to maintain footing",
+          "duration": "concentration",
+          "evidence": "have Disadvantage on checks made to maintain footing",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Choose two",
+        "Speed is reduced by 10 feet until the start of its next turn",
+        "cannot take Reactions until the start of its next turn",
+        "ignore damage from your Molten Terrain",
+        "gain Resistance to Fire damage",
+        "ignore difficult terrain caused by ash, rubble, magma, and obsidian",
+        "treat the area as difficult terrain",
+        "cannot Dash while touching your Molten Terrain",
+        "suffer Heat Pressure when they start their turn inside unless they succeed on a Dexterity saving throw",
+        "A creature is affected only once per turn.",
+        "Choose one from the list"
+      ],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 30,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "2c5fb956ba98c066236e070ac7eb393fc4bfef500ac8d0f4d2283ce0bea0f81a",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_LAVA_FLOW": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When a creature enters for the first time on a turn or starts its turn inside, it makes a Dexterity saving throw.",
+                  "applies_to": "creatures_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 4,
+                        "sides": 6
+                      },
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "duration": "instant",
+                      "dice_by_cl": [
+                        [
+                          5,
+                          10,
+                          4,
+                          6
+                        ],
+                        [
+                          11,
+                          16,
+                          6,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          8,
+                          6
+                        ]
+                      ]
+                    },
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -10,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "reduce Speed by 10 feet until the start of its next turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take half damage.",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "area": {
+        "shape": "line",
+        "size_ft": 40,
+        "centered_on_self": false,
+        "width_ft": 10,
+        "surface_bound": true,
+        "surface_translation": {
+          "max_ft": 10,
+          "min_ft": 0,
+          "ai_preference": "hostiles"
+        }
+      },
+      "text_sha256": "7fa6b52e56e35eef54211ebb9a6f4badfb5ebb26c09cdcd6ad37341fdca115b3",
+      "reviewed_by": "Codex A2MAGMA 2026-10-10",
+      "riders": []
+    },
+    "TAL_MAGMA_LAVA_WALL": {
+      "effects": [
+        {
+          "type": "zone",
+          "mundane": false,
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When a creature enters for the first time on a turn or starts its turn inside, it makes a Dexterity saving throw.",
+                  "applies_to": "creatures_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 4,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 4d8 Fire and 2d8 Bludgeoning damage.",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 2,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "bludgeoning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 4d8 Fire and 2d8 Bludgeoning damage.",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Successful Save: Take half damage.",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "ac_bonus",
+          "applies_to": "target",
+          "flat": 15,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "AC 15",
+          "origin": "model",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "When a creature enters the wall for the first time on a turn or starts its turn inside, it makes a Dexterity saving throw.",
+        "The wall blocks ordinary movement and provides Total Cover through its space.",
+        "The wall has: AC 15; HP equal to 10 x your CL; Resistance to nonmagical damage; Immunity to Fire, Poison, and Psychic damage.",
+        "When the wall ends, choose whether its space becomes Molten Terrain until the start of your next turn or Obsidian Terrain for 1 minute.",
+        "The wall has AC 15; it does not add 15 to a creature's AC."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "e33756f71ad3759b5054e5d92adcdaae8112ed8efb96ebe3466c57efab1ba8ca",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_MOLTEN_GROUND": {
+      "effects": [
+        {
+          "triggers": [
+            {
+              "effects": [
+                {
+                  "ability": "dex",
+                  "applies_to": "creatures_in_area",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "ability": "none",
+                      "applies_to": "target",
+                      "condition": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "dice": {
+                        "bonus": null,
+                        "bonus_formula": null,
+                        "count": 2,
+                        "count_formula": null,
+                        "sides": 6
+                      },
+                      "dice_by_cl": [
+                        [
+                          1,
+                          4,
+                          2,
+                          6
+                        ],
+                        [
+                          5,
+                          10,
+                          3,
+                          6
+                        ],
+                        [
+                          11,
+                          16,
+                          5,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          7,
+                          6
+                        ]
+                      ],
+                      "distance_ft": 0,
+                      "duration": "instant",
+                      "evidence": "Failed Save: Fire damage.",
+                      "flat": 0,
+                      "formula": "none",
+                      "on": "",
+                      "origin": "model_v2",
+                      "type": "damage"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "ability": "none",
+                      "applies_to": "target",
+                      "condition": "none",
+                      "damage_types": [],
+                      "distance_ft": 0,
+                      "duration": "instant",
+                      "evidence": "Successful Save: Half damage.",
+                      "flat": 0,
+                      "formula": "none",
+                      "on": "",
+                      "origin": "model_v2",
+                      "type": "half_damage"
+                    }
+                  ],
+                  "origin": "model_v2",
+                  "recipient_text": "When a creature enters for the first time on a turn or starts its turn inside, it makes a Dexterity saving throw.",
+                  "type": "save"
+                }
+              ],
+              "on": [
+                "enter",
+                "start"
+              ],
+              "per_round": false,
+              "who": "any"
+            }
+          ],
+          "type": "zone"
+        }
+      ],
+      "area": {
+        "shape": "sphere",
+        "size_ft": 15,
+        "centered_on_self": false,
+        "surface_bound": true
+      },
+      "text_sha256": "a734ff9ee241bb7fc4f143fa3bc8e34fa749d33faabafd8df6b1c3bab3cbf86d",
+      "reviewed_by": "Codex A2MAGMA 2026-10-10",
+      "riders": []
+    },
+    "TAL_MAGMA_VOLCANIC_ERUPTION": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When a creature enters for the first time on a turn or starts its turn inside, it makes a Dexterity saving throw.",
+                  "applies_to": "creatures_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 6,
+                        "count_formula": null,
+                        "sides": 6,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 6d6 Fire and 3d6 Bludgeoning damage",
+                      "origin": "model_v2",
+                      "dice_by_cl": [
+                        [
+                          10,
+                          16,
+                          6,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          8,
+                          6
+                        ]
+                      ]
+                    },
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 3,
+                        "count_formula": null,
+                        "sides": 6,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "bludgeoning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 6d6 Fire and 3d6 Bludgeoning damage",
+                      "origin": "model_v2",
+                      "dice_by_cl": [
+                        [
+                          10,
+                          16,
+                          3,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          4,
+                          6
+                        ]
+                      ]
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "prone",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "fall Prone",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "cannot take Reactions until the start of its next turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take half damage.",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "At CL 17, the damage becomes 8d6 Fire and 4d6 Bludgeoning.",
+        "Ordinary structures in the area may begin to crack, burn, or fail."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 20,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "346ddadb91712fbafedfdc1d694adfd0ff5595c34dc64af9898fdd63acf5a22e",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_WORLD_BREAKING_ERUPTION": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "applies_to": "creatures_in_area",
+                  "recipient_text": "When a creature enters for the first time on a turn or starts its turn inside, it makes a Dexterity saving throw.",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 8,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 8d8 Fire and 5d8 Bludgeoning damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 5,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "bludgeoning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 8d8 Fire and 5d8 Bludgeoning damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "prone",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "fall Prone",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "cannot take Reactions until the start of its next turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take half damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "speed",
+                      "applies_to": "creatures_in_area",
+                      "flat": -10,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "Speed is reduced by 10 feet until the start of its next turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "ordinary structures begin to fail",
+        "ordinary flames intensify",
+        "visibility beyond 30 feet is obscured by ash",
+        "ordinary water flashes into steam",
+        "fragile terrain collapses",
+        "unattended ordinary objects may ignite, melt, or shatter",
+        "A creature takes damage only once per turn."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 150
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 60,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 12,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "bdd9e22d66f29367b045b2ef57ac4480890c17ebb8ccabcd235b891189b9e7be",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "tianxia.talent.magma.sea_of_molten_heaven": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "applies_to": "creatures_in_area",
+                  "recipient_text": "When a creature enters for the first time on a turn or starts its turn inside, it makes a Dexterity saving throw.",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 8,
+                        "count_formula": null,
+                        "sides": 10,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "takes 8d10 Fire and 8d10 Bludgeoning damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 8,
+                        "count_formula": null,
+                        "sides": 10,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "bludgeoning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "takes 8d10 Fire and 8d10 Bludgeoning damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "prone",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "falls Prone",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "ongoing",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "ability": "none",
+                      "condition": "burning",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_end_of_next_turn",
+                      "evidence": "becomes Burning for 3d10 Fire damage until the end of its next turn",
+                      "origin": "model_v2",
+                      "turn_start_effects": [
+                        {
+                          "type": "damage",
+                          "applies_to": "target",
+                          "dice": {
+                            "count": 3,
+                            "sides": 10
+                          },
+                          "damage_types": [
+                            "fire"
+                          ],
+                          "duration": "instant"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "cannot take Reactions until the start of its next turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "The creature takes half damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "cannot take Reactions until the start of its next turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "suffers Heat Pressure until the start of its next turn",
+        "A creature takes damage from Sea of Molten Heaven only once per turn.",
+        "Melting Pressure: Structures, objects, vehicles, Barriers, and exposed Formation Anchors inside take triple damage from your Magma talents. Your Magma talents ignore ordinary Fire Resistance, ordinary material hardness, and mundane heat shielding inside the area.",
+        "Volcanic Aftermath: After the talent ends, the area becomes visibly altered and filled with difficult terrain, unstable volcanic debris, cooled lava, and Obsidian Terrain.",
+        "Sea of Molten Heaven does not automatically destroy: entire cities; divine structures; Secret Formations; world-scale terrain; legendary artifacts; Realm-defining geography. It can, however, make those things bleed."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 150
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 60,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 15,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "text:once per week",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "320466be19e496b90482d8e485994554afc4846df1f35e1c8b12ff723454016d",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_LAVA_BEAST": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "fire",
+                "bludgeoning"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Damage: 2d10 + your key ability modifier Fire or Bludgeoning damage",
+              "origin": "model"
+            }
+          ],
+          "on_miss": [],
+          "evidence": "Cultivation Attack",
+          "origin": "structure",
+          "deferred": true
+        },
+        {
+          "type": "ac_bonus",
+          "applies_to": "target",
+          "flat": 14,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "AC: 14 + your Proficiency Bonus",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "speed",
+          "applies_to": "target",
+          "flat": 30,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Speed: 30 feet",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "immunity",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire",
+            "poison",
+            "psychic"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Immunity: Fire, Poison, Psychic",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "resistance",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "bludgeoning",
+            "piercing",
+            "slashing"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Resistance: nonmagical Bludgeoning, Piercing, and Slashing",
+          "origin": "model",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Only one Lava Beast created by you may exist at a time.",
+        "AC: 14 + your Proficiency Bonus",
+        "HP: 7 x your CL",
+        "Speed: 30 feet",
+        "Size: Large",
+        "Immunity: Fire, Poison, Psychic",
+        "Resistance: nonmagical Bludgeoning, Piercing, and Slashing",
+        "Molten Slam: Attack: your Magma Cultivation Attack Modifier; Reach: 10 feet; Damage: 2d10 + your key ability modifier Fire or Bludgeoning damage",
+        "Furnace Hide: A creature that starts its turn Grappling the Lava Beast takes Fire damage equal to your Proficiency Bonus.",
+        "The beast acts immediately after your turn.",
+        "As a Bonus Action, command it to Attack, Dash, Dodge, Grapple, Help, or Shove.",
+        "Without a command, it Dodges.",
+        "GM: create and command the printed summon. Its attack, AC, movement, resistances and immunities belong to it; summoning neither attacks a selected combatant nor grants that combatant these statistics."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "3bd4d3405f6eab3e06700bb6e4e6ed05008a3c63331a1ad0242f165a54f70c8b",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_MANTLE_DRAGON_EMERGES": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 4,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "fire",
+                "bludgeoning"
+              ],
+              "type_choice": true,
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "• Damage: 4d10 + your key ability modifier Fire or Bludgeoning damage.",
+              "origin": "model"
+            }
+          ],
+          "on_miss": [],
+          "evidence": "Cultivation Attack",
+          "origin": "structure",
+          "deferred": true
+        },
+        {
+          "type": "ac_bonus",
+          "applies_to": "ally",
+          "amount": 16,
+          "formula": "pb",
+          "flat": 16,
+          "formula2": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "• AC: 16 + your Proficiency Bonus;",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "immunity",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire",
+            "poison",
+            "psychic"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "• Immunity: Fire, Poison, Psychic;",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "resistance",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "bludgeoning",
+            "piercing",
+            "slashing",
+            "cold",
+            "thunder"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "• Resistance: Bludgeoning, Piercing, Slashing, Cold, and Thunder.",
+          "origin": "model",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "A dragon-shaped mass of magma rises from the ground, a volcano, a lava flow, or your own furnace aura.",
+        "This replaces Lava Beast while active.",
+        "Mantle Dragon statistics: AC 16 + your Proficiency Bonus; HP 10 x your CL; Speed 40 feet, Burrow 20 feet through earth or stone; Size Huge; Immunity Fire, Poison, Psychic; Resistance Bludgeoning, Piercing, Slashing, Cold, and Thunder.",
+        "Molten Bite: Attack your Magma Cultivation Attack Modifier; Reach 15 feet; Damage 4d10 + your key ability modifier Fire or Bludgeoning damage.",
+        "Eruption Breath: Action when commanded. 30-foot cone. Creatures make Dexterity saving throws. Failed Save: 8d8 Fire and Bludgeoning damage and fall Prone. Successful Save: Half damage. The cone becomes Molten Terrain until the start of your next turn.",
+        "The Mantle Dragon acts immediately after your turn and follows the same command rules as Lava Beast.",
+        "Use Limit: Once per long rest",
+        "GM: create and command the printed summon. Its attack, AC, movement, resistances and immunities belong to it; summoning neither attacks a selected combatant nor grants that combatant these statistics."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 12,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "2ed1004e3b9108d5d3d52267cc27d96adae6e9a6dd9a0896f6f042c76d82a59d",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_LAVA_BURST": {
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Creatures inside make Dexterity saving throws.",
+          "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 6,
+                "sides": 6
+              },
+              "damage_types": [
+                "fire",
+                "bludgeoning"
+              ],
+              "duration": "instant",
+              "dice_by_cl": [
+                [
+                  5,
+                  10,
+                  6,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  8,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  10,
+                  6
+                ]
+              ]
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "prone",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "fall Prone",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take half damage and do not fall Prone.",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 15,
+          "on": "",
+          "duration": "until_start_of_next_turn",
+          "evidence": "The area becomes Molten Terrain until the start of your next turn",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 15,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "6b6a2010e64bd52d4d410fedbafc510900f6ea87a0b6b072d6d7c24f5d90c7ed",
+      "reviewed_by": "Astra sw-lightning 2026-09-29; Codex AUTO46 2026-10-05"
+    },
+    "TAL_MAGMA_LAVA_SPIT": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "sides": 8
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "fire",
+                "bludgeoning"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The target becomes Burning for 1d6 Fire damage until the end of its next turn",
+              "origin": "model",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  2,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  3,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  5,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  7,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "save",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "dex",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The target makes a Dexterity saving throw.",
+              "origin": "model_v2",
+              "on_fail": [
+                {
+                  "type": "ongoing",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "ability": "none",
+                  "condition": "burning",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_end_of_next_turn",
+                  "evidence": "The target becomes Burning for 1d6 Fire damage until the end of its next turn.",
+                  "origin": "model_v2",
+                  "turn_start_effects": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 1,
+                        "sides": 6
+                      },
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "duration": "instant",
+                      "dice_by_cl": [
+                        [
+                          1,
+                          10,
+                          1,
+                          6
+                        ],
+                        [
+                          11,
+                          16,
+                          2,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          3,
+                          6
+                        ]
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "on_success": []
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "You may aim Lava Spit at an object instead of a creature: the Game Master names the object you strike and decides that object's defenses (its armor and hit points) before the spit damage is applied."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "bf916bc06e40a046895db471cd539ad52d214a9b4fd32ed14551144b39c38ee9",
+      "reviewed_by": "Astra sw-lightning 2026-09-29; Codex AUTO46 2026-10-05"
+    },
+    "TAL_MAGMA_MAGMA_ARMOR": {
+      "effects": [
+        {
+          "type": "ac_bonus",
+          "applies_to": "self",
+          "flat": 2,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "+2 AC",
+          "origin": "model_v2"
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Resistance to Fire damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "bludgeoning",
+            "piercing",
+            "slashing"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Resistance to nonmagical Bludgeoning, Piercing, and Slashing damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "checks and saving throws against forced movement and Prone",
+          "duration": "concentration",
+          "evidence": "Advantage on checks and saving throws against forced movement and Prone.",
+          "origin": "model_v2"
+        },
+        {
+          "type": "rider_damage_state",
+          "name": "Magma Armor",
+          "applies_to": "self",
+          "duration": "concentration",
+          "once_per_turn": true,
+          "dealt_melee_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "A creature Grappling you or hit by your unarmed strike or melee weapon attack takes 2d6 Fire damage, once per turn.",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  5,
+                  10,
+                  2,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  6
+                ]
+              ]
+            }
+          ],
+          "grappler_turn_start": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "A creature Grappling you or hit by your unarmed strike or melee weapon attack takes 2d6 Fire damage, once per turn.",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  5,
+                  10,
+                  2,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  6
+                ]
+              ]
+            }
+          ],
+          "dealt_kinds": [
+            "unarmed",
+            "weapon"
+          ]
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "unarmed strike",
+          "melee weapon attack"
+        ],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 2,
+              "count_formula": null,
+              "sides": 6,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "fire"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "A creature Grappling you or hit by your unarmed strike or melee weapon attack takes 2d6 Fire damage, once per turn",
+            "origin": "model_v2",
+            "deferred": true
+          }
+        ]
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Immunity to damage from your own Molten Terrain remains GM-run; hit damage executes. Grappler turn-start damage and downstream damage riders are GM-run until locked nested-event delivery is available."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "bcc1fdb955ae9d431603238ef2db283dd6e76d95a83ad76ba9c8c6af2e00434c",
+      "reviewed_by": "riders-lane1 Codex 2026-09-29"
+    },
+    "TAL_MAGMA_MAGMA_GLOB": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "origin": "model_v2",
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "fire",
+                "bludgeoning"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The target takes Fire or Bludgeoning damage equal to the listed dice + your Path key ability modifier, chosen when you attack.",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  10
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  10
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  10
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  10
+                ]
+              ]
+            },
+            {
+              "type": "magma_glob_expression",
+              "options": [
+                {
+                  "label": "Molten Terrain Patch",
+                  "effects": [
+                    {
+                      "type": "magma_patch",
+                      "terrain": "molten",
+                      "evidence": "create one 5-foot patch of Molten Terrain adjacent to the target until the start of your next turn"
+                    }
+                  ]
+                },
+                {
+                  "label": "Heat Pressure",
+                  "effects": [
+                    {
+                      "type": "magma_heat_pressure",
+                      "evidence": "apply Heat Pressure until the start of your next turn"
+                    }
+                  ]
+                },
+                {
+                  "label": "Push 5 Feet",
+                  "effects": [
+                    {
+                      "type": "forced_movement",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 5,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "push the target 5 feet if it is Large or smaller",
+                      "origin": "model_options",
+                      "direction": "away"
+                    }
+                  ]
+                },
+                {
+                  "label": "Obsidian Terrain Patch",
+                  "effects": [
+                    {
+                      "type": "magma_patch",
+                      "terrain": "obsidian",
+                      "evidence": "create one 5-foot patch of Obsidian Terrain adjacent to the target for 1 minute"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "options": [
+        {
+          "label": "Molten Terrain Patch",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "fire",
+                    "bludgeoning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "The target takes Fire or Bludgeoning damage equal to the listed dice + your Path key ability modifier, chosen when you attack.",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      10
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      10
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      10
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      10
+                    ]
+                  ]
+                },
+                {
+                  "type": "magma_glob_expression",
+                  "options": [
+                    {
+                      "label": "Molten Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "molten",
+                          "evidence": "create one 5-foot patch of Molten Terrain adjacent to the target until the start of your next turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Heat Pressure",
+                      "effects": [
+                        {
+                          "type": "magma_heat_pressure",
+                          "evidence": "apply Heat Pressure until the start of your next turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Push 5 Feet",
+                      "effects": [
+                        {
+                          "type": "forced_movement",
+                          "applies_to": "target",
+                          "flat": 0,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 5,
+                          "on": "",
+                          "duration": "instant",
+                          "evidence": "push the target 5 feet if it is Large or smaller",
+                          "origin": "model_options",
+                          "direction": "away"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Obsidian Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "obsidian",
+                          "evidence": "create one 5-foot patch of Obsidian Terrain adjacent to the target for 1 minute"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferred": "Molten Terrain Patch"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Heat Pressure",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "fire",
+                    "bludgeoning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "The target takes Fire or Bludgeoning damage, chosen when you attack.",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      10
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      10
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      10
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      10
+                    ]
+                  ]
+                },
+                {
+                  "type": "magma_glob_expression",
+                  "options": [
+                    {
+                      "label": "Molten Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "molten",
+                          "evidence": "create one 5-foot patch of Molten Terrain adjacent to the target until the start of your next turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Heat Pressure",
+                      "effects": [
+                        {
+                          "type": "magma_heat_pressure",
+                          "evidence": "apply Heat Pressure until the start of your next turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Push 5 Feet",
+                      "effects": [
+                        {
+                          "type": "forced_movement",
+                          "applies_to": "target",
+                          "flat": 0,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 5,
+                          "on": "",
+                          "duration": "instant",
+                          "evidence": "push the target 5 feet if it is Large or smaller",
+                          "origin": "model_options",
+                          "direction": "away"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Obsidian Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "obsidian",
+                          "evidence": "create one 5-foot patch of Obsidian Terrain adjacent to the target for 1 minute"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferred": "Heat Pressure"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Push 5 Feet",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "fire",
+                    "bludgeoning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "The target takes Fire or Bludgeoning damage equal to the listed dice + your Path key ability modifier, chosen when you attack.",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      10
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      10
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      10
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      10
+                    ]
+                  ]
+                },
+                {
+                  "type": "magma_glob_expression",
+                  "options": [
+                    {
+                      "label": "Molten Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "molten",
+                          "evidence": "create one 5-foot patch of Molten Terrain adjacent to the target until the start of your next turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Heat Pressure",
+                      "effects": [
+                        {
+                          "type": "magma_heat_pressure",
+                          "evidence": "apply Heat Pressure until the start of your next turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Push 5 Feet",
+                      "effects": [
+                        {
+                          "type": "forced_movement",
+                          "applies_to": "target",
+                          "flat": 0,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 5,
+                          "on": "",
+                          "duration": "instant",
+                          "evidence": "push the target 5 feet if it is Large or smaller",
+                          "origin": "model_options",
+                          "direction": "away"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Obsidian Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "obsidian",
+                          "evidence": "create one 5-foot patch of Obsidian Terrain adjacent to the target for 1 minute"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferred": "Push 5 Feet"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Obsidian Terrain Patch",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "fire",
+                    "bludgeoning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "The target takes Fire or Bludgeoning damage equal to the listed dice + your Path key ability modifier, chosen when you attack.",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      10
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      10
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      10
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      10
+                    ]
+                  ]
+                },
+                {
+                  "type": "magma_glob_expression",
+                  "options": [
+                    {
+                      "label": "Molten Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "molten",
+                          "evidence": "create one 5-foot patch of Molten Terrain adjacent to the target until the start of your next turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Heat Pressure",
+                      "effects": [
+                        {
+                          "type": "magma_heat_pressure",
+                          "evidence": "apply Heat Pressure until the start of your next turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Push 5 Feet",
+                      "effects": [
+                        {
+                          "type": "forced_movement",
+                          "applies_to": "target",
+                          "flat": 0,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 5,
+                          "on": "",
+                          "duration": "instant",
+                          "evidence": "push the target 5 feet if it is Large or smaller",
+                          "origin": "model_options",
+                          "direction": "away"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Obsidian Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "obsidian",
+                          "evidence": "create one 5-foot patch of Obsidian Terrain adjacent to the target for 1 minute"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferred": "Obsidian Terrain Patch"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Heat Pressure's fourth effect is decided at the table: on its next turn the affected creature must either move willingly or take an Action, and the Game Master asks it to choose between them. The other three Heat Pressure effects are worked out for you.",
+        "Object targets need the actual object and its defenses selected. Magma Glob is not a siege attack."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "d6ce9bd0ce630c98d766067e1bc416d6465dc3da4620d5b33fccb3e50327c790",
+      "reviewed_by": "Astra sw-lightning 2026-09-29; Codex owner edit 2026-09-30; Codex AUTO46 2026-10-05",
+      "after": null,
+      "min_cp_cost": null
+    },
+    "TAL_MAGMA_MAGMA_PRISON": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "ongoing",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "ability": "none",
+              "condition": "restrained",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "Molten stone forms a prison around the target. The target is Restrained.",
+              "origin": "model_v2",
+              "repeat_save": {
+                "ability": "DEX",
+                "when": "end"
+              },
+              "turn_start_effects": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 2,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "fire"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "At the start of each of its turns while Restrained, it takes 2d8 Fire and 2d8 Bludgeoning damage.",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 2,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "bludgeoning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "At the start of each of its turns while Restrained, it takes 2d8 Fire and 2d8 Bludgeoning damage.",
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The target takes 2d8 Fire damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "has Speed reduced by 10 feet until the start of its next turn",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Choose one creature touching the ground or standing on a structure.",
+        "At the end of each of its turns, it repeats the save, ending the Restrained condition on a success.",
+        "Successful Save: suffers Heat Pressure.",
+        "The prison has: AC 16; HP equal to 8 x your CL; Resistance to nonmagical damage; Immunity to Fire, Poison, and Psychic damage.",
+        "A creature that escapes leaves behind a 10-foot patch of Obsidian Terrain."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "addef8865f1a43a4fd3782da3830bc210501ca020c37379c5de437dcd8540bbe",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_OBSIDIAN_CAGE": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "ongoing",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "ability": "none",
+              "condition": "restrained",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "Jagged obsidian encloses the target. The target is Restrained.",
+              "origin": "model_v2",
+              "repeat_save": {
+                "ability": "DEX",
+                "when": "end"
+              },
+              "turn_start_effects": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "slashing"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "At the start of each of its turns while Restrained, it takes 1d8 Slashing damage.",
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "The target's Speed is reduced by 10 feet until the start of its next turn.",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Choose one creature touching the ground.",
+        "At the end of each of its turns, it repeats the save, ending the effect on a success.",
+        "The cage has: AC 15; HP equal to 5 x your CL; Vulnerability to Thunder damage; Immunity to Poison and Psychic damage."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "c23c3c0dc3c8cff7645dbaf9af9e90784abca347f98ed27c8d421ff14ccc0edc",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_OBSIDIAN_RAIN": {
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Creatures inside make Dexterity saving throws.",
+          "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 8,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "slashing",
+                "piercing"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take Slashing or Piercing damage",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  10,
+                  16,
+                  8,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  10,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "cannot take Reactions until the start of your next turn",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Successful Save: Take half damage.",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 20,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "The area becomes Obsidian Terrain for 1 minute",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 20,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "e5bfaac6f139c1083eac7da947cfc4c98f69b68e321537031af0de750098efad",
+      "reviewed_by": "Astra sw-lightning 2026-09-29; Codex AUTO46 2026-10-05"
+    },
+    "TAL_MAGMA_SLAG_GRASP": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str_or_dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "restrained",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_end_of_next_turn",
+              "evidence": "The target is Restrained until the end of its next turn",
+              "origin": "model_v2"
+            },
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "takes Fire damage equal to 1d8 + your key ability modifier",
+              "origin": "model_v2"
+            },
+            {
+              "type": "escape_option",
+              "guards": [
+                "restrained"
+              ],
+              "kind": "check",
+              "abilities": [
+                "STR"
+              ],
+              "name": "Slag Grasp",
+              "evidence": "A Restrained target may use its Action to make a Strength check against your Magma Save DC, ending the effect on a success."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Speed is reduced by 10 feet until the start of your next turn",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2",
+          "target_choice": true,
+          "surface_bound": true,
+          "name": "Slag Grasp",
+          "choice_text": "On failure you are Restrained until the end of your next turn and take 1d8 + the caster’s key ability modifier Fire damage. On success your Speed is reduced by 10 feet until the start of the caster’s next turn."
+        }
+      ],
+      "text_sha256": "971c4905696ead981e456abc860a4f23aebe13daa9d24f23269c4defe311c31a",
+      "reviewed_by": "Codex A2MAGMA 2026-10-10",
+      "riders": []
+    },
+    "TAL_METAL_BELL_METAL_COUNTER": {
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "dice": {
+            "count": 2,
+            "sides": 8
+          },
+          "formula": "key_ability_modifier",
+          "on": "reduce the triggering damage"
+        },
+        {
+          "type": "reaction_denied",
+          "applies_to": "attacker",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "until_start_of_next_turn",
+          "evidence": "If the damage is reduced to 0, the attacker cannot use Reactions until the start of its next turn.",
+          "origin": "model_v2",
+          "only_if_zero": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A creature you can see within 30 feet hits you or an ally with a metal weapon, metal projectile, natural metal attack, armored body strike, or Metal talent",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Bell-Metal Counter: Spend 2 points from the resource pool powering this ability (such as Qi or Stamina) to reduce the damage of a hit against you or an ally. The attacker must be visible within 30 feet, and the hit must use a metal weapon, metal projectile, natural metal attack, armored body strike or Metal talent. Ordinary weapon attacks are not automatically checked for metal; ask the GM to confirm the attack qualifies before using this reaction."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "cea5c426bf05394de1407e986d033d6fbd8f8c7425549d5052651bfe7e8e0b6c",
+      "reviewed_by": "Astra sw-lightning 2026-09-29; Codex AUTO45 2026-10-05"
+    },
+    "TAL_METAL_IRON_SKIN_MOMENT": {
+      "text_sha256": "50823f8bff0413537c6129f79589dfc3ea9e971e9e2c04eeb6f624bd4ba59c9f",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29",
+      "effects": [
+        {
+          "type": "spend_resource",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Spend 1 CP",
+          "origin": "model"
+        },
+        {
+          "type": "damage_modifier",
+          "dice": {
+            "count": 1,
+            "sides": 8
+          },
+          "formula": "pb",
+          "on": "reduce the triggering damage",
+          "dice_by_cl": [
+            [
+              1,
+              9,
+              1,
+              8
+            ],
+            [
+              10,
+              20,
+              2,
+              8
+            ]
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "when you take Bludgeoning, Piercing, or Slashing damage while wearing metal, holding metal, touching metal, or using your own iron-body expression",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "At Foundation Realm, if you are a Body Refiner using an Iron Marrow expression, you may spend Stamina instead of CP"
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_METAL_IRON_BONE_INTERNAL_METHOD": {
+      "text_sha256": "3bbcfe83410784a510baa31128f0d547e3a2b09aa6856fca49f69e032db46a5f",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29",
+      "effects": [],
+      "options": [
+        {
+          "label": "Temporary HP",
+          "effects": [
+            {
+              "type": "singleton_benefit",
+              "applies_to": "self",
+              "mechanic_id": "TAL_METAL_IRON_BONE_INTERNAL_METHOD",
+              "duration": "one_minute",
+              "effects": [
+                {
+                  "type": "temp_hp",
+                  "applies_to": "self",
+                  "flat": 0,
+                  "formula": "double_pb",
+                  "dice": {
+                    "count": 0,
+                    "sides": 0,
+                    "bonus_formula": "key_ability_modifier"
+                  },
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "one_minute",
+                  "evidence": "gain Temporary HP equal to twice your Proficiency Bonus + your Metal key ability modifier",
+                  "origin": "model_options"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Resistance to Next Instance",
+          "effects": [
+            {
+              "type": "singleton_benefit",
+              "applies_to": "self",
+              "mechanic_id": "TAL_METAL_IRON_BONE_INTERNAL_METHOD",
+              "duration": "one_minute",
+              "effects": [
+                {
+                  "type": "resistance_next",
+                  "applies_to": "self",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "bludgeoning",
+                    "piercing",
+                    "slashing"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "gain Resistance to the next Bludgeoning, Piercing, or Slashing damage instance before the start of your next turn",
+                  "origin": "model_options"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Advantage on Checks",
+          "effects": [
+            {
+              "type": "singleton_benefit",
+              "applies_to": "self",
+              "mechanic_id": "TAL_METAL_IRON_BONE_INTERNAL_METHOD",
+              "duration": "one_minute",
+              "effects": [
+                {
+                  "type": "check_against",
+                  "applies_to": "self",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "Strength and Constitution checks against forced movement, Grappled, Restrained, and Prone",
+                  "abilities": [
+                    "STR",
+                    "CON"
+                  ],
+                  "against": [
+                    "forced_movement",
+                    "grappled",
+                    "restrained",
+                    "prone"
+                  ],
+                  "mode": "ADVANTAGE",
+                  "duration": "one_minute",
+                  "evidence": "Advantage on Strength and Constitution checks against forced movement, Grappled, Restrained, and Prone for the duration",
+                  "origin": "model_options"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "GM: Strength/Constitution checks against forced movement or Prone outside the supported escape actions need a named check checkpoint; saving throws do not receive this benefit."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_METAL_IRON_FILINGS_CLOUD": {
+      "text_sha256": "56ff488ca11fda20597bb5d0aff83a475f2e599fcfdfe70eef5f72615aa81b44",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29; Codex AUTO45 2026-10-05",
+      "effects": [
+        {
+          "type": "rider_choose_area_recipients",
+          "summary": "You scatter filings, iron sand, or mineral needles. Creatures of your choice in the area make a Dexterity saving throw. Failure: take **2d8 Piercing damage** and the area becomes difficult terrain until the start of your next turn. Success: take half damage and the area is not difficult terrain for that creature this turn. At Core Formation Realm, damage becomes 3d8 and the area lasts until the end of your next turn. Cost: 2 CP"
+        },
+        {
+          "type": "metal_filings_cloud",
+          "effects": [
+            {
+              "type": "save",
+              "recipient_text": "Creatures of your choice in the area make a Dexterity saving throw.",
+              "applies_to": "creatures_in_area",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "dice": {
+                    "count": 2,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "damage_types": [
+                    "piercing"
+                  ],
+                  "type_choice": false,
+                  "evidence": "take 2d8 Piercing damage",
+                  "origin": "parser",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      9,
+                      2,
+                      8
+                    ],
+                    [
+                      10,
+                      20,
+                      3,
+                      8
+                    ]
+                  ]
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "origin": "model_v2"
+                }
+              ],
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_METAL_NEEDLE_FLICK": {
+      "text_sha256": "eb14d8c409f359b27870818c3e983aef93644588fc63d2880ccf176eabce8622",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29; Codex AUTO45 2026-10-05",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "damage_types": [
+                "piercing"
+              ],
+              "type_choice": false,
+              "evidence": "takes 1d8 + your Metal key ability modifier Piercing damage",
+              "origin": "parser",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  14,
+                  2,
+                  8
+                ],
+                [
+                  15,
+                  20,
+                  4,
+                  8
+                ]
+              ],
+              "formula": "key_ability_modifier"
+            },
+            {
+              "type": "metal_needle_interference",
+              "effects": [
+                {
+                  "type": "disadvantage",
+                  "applies_to": "target",
+                  "on": "the next Concentration saving throw",
+                  "expires_on": "START_OF_SOURCE_NEXT_TURN"
+                }
+              ]
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "A real Tiny metal projectile and object target are not yet selected or consumed automatically.",
+        "Maintaining a non-Concentration technique, holding a delicate object or drawing a talisman needs the specific activity and its next check identified."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "1 CP, or 0 CP if you use an actual needle, coin, nail, dart, or comparable Tiny metal object as the medium"
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature or object"
+      }
+    },
+    "TAL_METAL_WHITE_TIGER_SEVERANCE": {
+      "text_sha256": "f6f1cac1520bb93e235837689ea913172a2da77954a2227fbb49ed90433473c1",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "dice": {
+                "count": 6,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "damage_types": [
+                "slashing"
+              ],
+              "type_choice": false,
+              "evidence": "takes 6d8 Slashing damage",
+              "origin": "parser",
+              "dice_by_cl": [
+                [
+                  1,
+                  14,
+                  6,
+                  8
+                ],
+                [
+                  15,
+                  20,
+                  8,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "metal_severance",
+              "evidence": "If the target is Bloodied or has already taken Slashing or Piercing damage this round, it cannot regain HP until the start of your next turn."
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature"
+      }
+    },
+    "tianxia.talent.metal.heavenly_needle_sutra": {
+      "text_sha256": "eb1926daaf9d4f0c72e7b9116c35448268d429624c504f62e9678e677c4884ce",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29; Codex AUTO45 2026-10-05",
+      "effects": [
+        {
+          "type": "metal_needle_targets",
+          "range_ft": 90,
+          "count": "pb",
+          "requires_visibility": true,
+          "effects": [
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 3,
+                    "sides": 8
+                  },
+                  "damage_types": [
+                    "piercing"
+                  ],
+                  "duration": "instant",
+                  "formula": "key_ability_modifier",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      9,
+                      3,
+                      8
+                    ],
+                    [
+                      10,
+                      20,
+                      4,
+                      8
+                    ]
+                  ]
+                },
+                {
+                  "type": "metal_needle_seal",
+                  "name": "Heavenly Needle Sutra",
+                  "extra_at_cl": 15,
+                  "options": [
+                    {
+                      "label": "Cannot take Reactions",
+                      "effects": [
+                        {
+                          "type": "reaction_denied",
+                          "applies_to": "target",
+                          "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                          "evidence": "needle seal: Cannot take Reactions"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Speed reduced by 15 feet",
+                      "effects": [
+                        {
+                          "type": "speed",
+                          "applies_to": "target",
+                          "flat": -15,
+                          "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                          "evidence": "needle seal: Speed reduced by 15 feet"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Cannot regain CP",
+                      "effects": [
+                        {
+                          "type": "condition",
+                          "applies_to": "target",
+                          "condition": "no_cp_regain",
+                          "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                          "evidence": "needle seal: Cannot regain CP"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Disadvantage on maintaining a technique",
+                      "effects": [
+                        {
+                          "type": "disadvantage",
+                          "applies_to": "target",
+                          "on": "the next Concentration saving throw to maintain a technique",
+                          "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                          "evidence": "needle seal: Disadvantage on maintaining a technique"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Drops a held metal object",
+                      "effects": [
+                        {
+                          "type": "gm",
+                          "evidence": "drops one held non-artifact metal object if physically capable of dropping it (GM: equipment eligibility and object selection)"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "The target takes half damage and suffers no needle seal.",
+                  "origin": "model_v2"
+                }
+              ],
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Exposed technique-nodes and dropping a specifically eligible held metal object need object and material information.",
+        "Metal armor, visible metal weapons, ore-rich ground and Metal Appraisal still need verified target information for their save penalty.",
+        "Uses across short or long rests are not tracked between fights."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_short_rest",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "Up to a number of creatures or exposed technique-nodes you can see equal to your Proficiency Bonus"
+      }
+    },
+    "TAL_METAL_WHITE_TIGER_GLANCE": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "it cannot take Reactions until the start of its next turn",
+              "origin": "model_v2"
+            },
+            {
+              "type": "if_bloodied",
+              "effects": [
+                {
+                  "type": "disadvantage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "next attack roll it makes before the start of your next turn",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "If the target is Bloodied, it also has Disadvantage on the next attack roll it makes before the start of your next turn",
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "it cannot take Opportunity Attacks against you until the start of its next turn",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature you can see that you damaged this turn with a Metal attack or technique"
+      },
+      "text_sha256": "3a2977410ac40690069d66314f3cd0b3791064342c76ea96b0bb4efccf6d47ee",
+      "reviewed_by": "Astra sw-lightning 2026-09-29; Codex AUTO45 2026-10-05"
+    },
+    "TAL_METAL_WHITE_TIGER_KILLING_STAR": {
+      "text_sha256": "6744c9c2f694984f8fbeb005a68226d8a486e03428418a409bbc87792ec06aef",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "dice": {
+                "count": 10,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "damage_types": [
+                "slashing"
+              ],
+              "type_choice": false,
+              "evidence": "takes 10d8 Slashing damage",
+              "origin": "parser"
+            },
+            {
+              "type": "if_bloodied",
+              "effects": [
+                {
+                  "type": "save",
+                  "ability": "wis",
+                  "on_fail": [
+                    {
+                      "type": "condition",
+                      "condition": "frightened",
+                      "applies_to": "target",
+                      "duration": "until_end_of_your_next_turn"
+                    },
+                    {
+                      "type": "healing_reduction",
+                      "applies_to": "target",
+                      "evidence": "cannot regain HP until the start of your next turn",
+                      "duration": "until_start_of_your_next_turn"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "healing_reduction",
+                      "applies_to": "target",
+                      "evidence": "cannot regain HP until the start of your next turn",
+                      "duration": "until_start_of_your_next_turn"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "If this attack reduces the target to 0 HP, you may immediately use Metal Appraisal on one metal object, armor piece, weapon, or formation node within 60 feet without spending an action."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature you can see"
+      }
+    },
+    "TAL_METAL_DOMAIN_OF_TEN_THOUSAND_BLADES": {
+      "effects": [
+        {
+          "type": "replace_owned_zones",
+          "mechanic_ids": [
+            "TAL_METAL_DOMAIN_OF_TEN_THOUSAND_BLADES"
+          ],
+          "domain_expression": true,
+          "domain_expression_evidence": "Once on each of your turns while the domain lasts, when you damage a creature inside the aura with a Metal talent, you may use Weight or Sharpen without consuming that turn's normal use of the chosen base expression.",
+          "evidence": "You can have only one Metal domain active at a time"
+        },
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "who": "hostile",
+              "on": [
+                "enter",
+                "start"
+              ],
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When a hostile creature enters the aura for the first time on a turn or starts its turn there, it makes a Dexterity saving throw.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "dice": {
+                        "count": 4,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "damage_types": [
+                        "piercing",
+                        "slashing"
+                      ],
+                      "type_choice": true,
+                      "evidence": "take 4d8 Piercing or Slashing damage",
+                      "origin": "parser"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Weight",
+          "Sharpen"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "when you damage a creature inside the aura with a Metal talent",
+        "effects": []
+      },
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Domain bonus Weight/Sharpen on no-intent zone or turn-boundary damage needs a resumable expiry/zone choice checkpoint."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": {
+        "shape": "emanation",
+        "size_ft": 30,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "9ca81d4eb59225b8f833d41088751234dfddfe97b28bac687b729ea42c22b534",
+      "reviewed_by": "Astra sw-lightning; riders-lane4 Codex singleton follow-up 2026-09-29"
+    },
+    "TAL_LIGHTNING_LIGHTNING_SOVEREIGN_INCARNATION": {
+      "effects": [
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "lightning"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "You have Resistance to lightning and thunder damage.",
+          "origin": "model_v2"
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "thunder"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "You have Resistance to lightning and thunder damage.",
+          "origin": "model_v2"
+        },
+        {
+          "type": "state",
+          "name": "lightning_sovereign_incarnation",
+          "ends_if_incapacitated": true,
+          "range_for": {
+            "TAL_LIGHTNING_LIGHTNING_LASH": 300
+          },
+          "duration": "one_minute",
+          "evidence": "Your Charge limit doubles. The first time each round you deal lightning damage to a creature, that creature cannot take Reactions until the start of its next turn.",
+          "origin": "riders-lane1",
+          "free_use": [
+            {
+              "of": [
+                "Lightning Lash",
+                "Gather Charge"
+              ],
+              "once": "turn"
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Lightning Lash",
+          "Gather Charge",
+          "Static Guard"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": []
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Treat visible non-Secret formation nodes, talisman circuits, qi constructs and summoned asset anchors within 120 feet as Conductive."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "42f4d57b6ec77fa99c4e1b325d65ba0f337a1e319f49742727f74ff87876f243",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    }
+  }
+}
