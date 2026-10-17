@@ -1,0 +1,62 @@
+"""Sol review r1 regressions: late turn-end harm must not strand Invisible; custom hostile saves reveal the Vanishing owner."""
+from combat import ext as plugins
+from combat import typed_executor as te
+from combat import unmaking
+from combat.ext import tabik_ninpo, weather_shroud
+from tests.test_mgr_t15_vanishing_native import setup, activate, held
+from tests.hunt12_support import hit_dice
+from tests.worker2_support import OWNER, FOE, settle, reload
+
+
+def _with_late_turn_end_harm(monkeypatch, engine_box):
+    """Install a default-priority turn_end provider ahead of the restore hook, like Shroud/Unmaking upkeep.
+
+    On the owner's first turn end it pays 1 self-damage (the Unmaking self_damage pattern: source and actor are the owner).
+    The native harm observer then stamps reveal_turn at the ending boundary after the ordinary turn-end providers ran."""
+    fired = []
+
+    def late_harm(engine, actor):
+        if actor.entity_id == OWNER and not fired:
+            fired.append(True)
+            # Let a failure surface: ext.invoke swallows hook exceptions, which would hide a broken probe.
+            unmaking.self_damage(engine, engine.state.actors[OWNER], 1, "TEST_LATE_TURN_END_HARM")
+
+    late_harm.__name__ = "late_turn_end_harm_probe"
+    hooks = [h for h in plugins._HOOKS["turn_end"] if h is not tabik_ninpo.vanishing_restore]
+    hooks.append(late_harm)
+    hooks.append(tabik_ninpo.vanishing_restore)
+    monkeypatch.setitem(plugins._HOOKS, "turn_end", hooks)
+    return fired
+
+
+def test_late_turn_end_harm_still_restores_invisible(tmp_path, monkeypatch):
+    combat, table, mid = setup(tmp_path)
+    activate(combat, table, mid)
+    fired = _with_late_turn_end_harm(monkeypatch, None)
+    mark = len(reload(tmp_path, mid).events)
+    settle(table, mid, table.state(mid)["menu"]["end_turn"])
+    after = reload(tmp_path, mid)
+    owner = after.state.actors[OWNER]
+    tail = [(e.event_type, e.actor_id, tuple(e.target_ids)) for e in after.events[mark:]]
+    states = [(c.condition_id, dict(c.data)) for c in owner.conditions.values()]
+    assert fired, f"late turn-end harm never ran; events={tail}"
+    assert any(t == "DAMAGE_COMMITTED" and a == OWNER and OWNER in tgt for t, a, tgt in tail), f"no owner self-damage: {tail}"
+    # Restoration settles after the late harm, at the same boundary.
+    assert held(owner, "invisible"), f"Invisible stranded after late harm: events={tail} states={states}"
+    assert not any(c.data.get("reveal_turn") for c in held(owner, "vanishing_state")), f"reveal_turn left: states={states}"
+
+
+def test_custom_hostile_successful_save_reveals_owner(tmp_path):
+    combat, table, mid = setup(tmp_path)
+    activate(combat, table, mid)
+    engine = reload(tmp_path, mid)
+    assert held(engine.state.actors[OWNER], "invisible")
+    owner, foe = engine.state.actors[OWNER], engine.state.actors[FOE]
+    # weather_shroud.throw's own path: a typed context, with no exact block_save packet, through settle_typed_save.
+    ctx = weather_shroud._context(engine, owner, next(iter(engine.action_catalog)), foe, "")
+    # The save's adverse consequence is damage, and the save succeeds: the printed trigger is forcing the save.
+    named = set()
+    plug_in_named = {"damaging_save", "damage:fire"}
+    te.settle_typed_save(ctx, foe, "CON", None, False, named, plug_in_named, 0)
+    assert not held(engine.state.actors[OWNER], "invisible")
+    assert held(engine.state.actors[OWNER], "vanishing_state")
