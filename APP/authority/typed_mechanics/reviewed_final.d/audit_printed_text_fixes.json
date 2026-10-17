@@ -1,0 +1,154 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "note": "AUDIT3 (printed-text data fixes) confirmed rows 5, 6, 7, 8, 9, 15, 17, 18: header fields the model pass dropped or misread, plus rows 10, 11 and 14 in their own files. Header fields the deterministic parser reads (cost, range, area) are restored to the printed text; the refinement CP of the two pills is carried as cost text because the print charges it 'across the refinement', not on activation. Rows 1 (Song of the Forgotten Name's GM-chosen save), 4 (Brace the Heavens' two separate 1 Qi sub-costs) and 12 (Twin Sword Refinement's per-hit scaling) are deliberately NOT in this file: each needs engine support to represent, and forcing them into data charged or rolled the wrong thing. See MMX5.report.md.",
+ "mechanics": {
+  "tianxia.subpath.qi.star_piercing_greatbow_cultivator.feature.celestial_firing_platform": {
+   "text_sha256": "51c496f4ee1bc1736c7957d5cfc74030716a3a73967061ed8f1541a8a2dadc8e",
+   "reviewed_by": "audit3-mmx5 2026-10-02 (cost); Codex SOL107: Counter-Battery Shot is once per round",
+   "use_limit": "once_per_round",
+   "cost": [
+    [
+     {
+      "resource": "qi",
+      "amount": 3,
+      "amount_formula": null
+     }
+    ]
+   ]
+  },
+  "tianxia.subpath.qi.venomous_poison_cultivator.feature.myriad_venom_sovereign": {
+   "text_sha256": "0eb61cf615351ad54d9a27f49c7462703f32f6e803e5808f91436dc6aa0c708c",
+   "reviewed_by": "audit3-mmx5 2026-10-02 (cost, range, area); effects pinned verbatim from 65cf60c9 (promotion re-admits dropped parser rows)",
+   "duration": {"kind": "minutes", "amount": 1, "concentration": true},
+   "use_limit": "once_per_scene",
+   "cost": [
+    [
+     {
+      "resource": "qi",
+      "amount": 10,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 120
+   },
+   "area": {
+    "shape": "cylinder",
+    "size_ft": 40,
+    "evidence": "40-foot-radius, 40-foot-high cylinder",
+    "source": "text"
+   },
+   "effects": [
+    {
+     "type": "save",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "con",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "makes a Constitution saving throw with Advantage if its Source CL is higher than yours and Disadvantage if at least 6 CL lower",
+     "dc": "technique_save_dc",
+     "on_fail": [],
+     "on_success": [],
+     "origin": "model"
+    },
+    {
+     "type": "save",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "con",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "makes a Constitution saving throw with Advantage if its Source CL is higher than yours and Disadvantage if at least 6 CL lower",
+     "dc": "technique_save_dc",
+     "on_fail": [],
+     "on_success": [],
+     "origin": "model"
+    }
+   ]
+  },
+  "tianxia.subpath.qi.storm_soul_cultivator.feature.lightning_reflexes": {
+   "text_sha256": "d8f558af4799e17398446fe5f91009f39dbbe6463ed86ddf75f153a081e37ad4",
+   "reviewed_by": "audit3-mmx5 2026-10-02 (cost)",
+   "cost": []
+  },
+  "tianxia.subpath.qi.yin_yang_cultivator.feature.balanced_flow": {
+   "text_sha256": "93bd7debe72f06eb1c798761006e0c3bd565d8d398d4bc82ba1566598f0bd781",
+   "reviewed_by": "A2GQISUB6 printed combat review 2026-10-11",
+   "notes": "Combat effects resolved through retained owned feature-block plug-in.",
+   "activation": {
+    "economy": "passive",
+    "trigger": null,
+    "requirement": null,
+    "source": "reviewed_final",
+    "modifies": null
+   },
+   "cost": [],
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [],
+   "riders": [],
+   "description": [
+    "Range: Touch",
+    "Restorative Palm is Yin-aligned."
+   ],
+   "modifier": null,
+   "options": null
+  },
+  "tianxia.subpath.qi.venomous_poison_cultivator.feature.venomous_incarnation": {
+   "text_sha256": "50eca8a9fb2aecaa2cdb678885f4b1a355746b4217de8067402b950024b6f5f4",
+   "reviewed_by": "audit3-mmx5 2026-10-02 (range)",
+   "range": {
+    "kind": "feet",
+    "feet": 30
+   }
+  },
+  "tianxia.talent.alchemy.heaven_defying_pill": {
+   "text_sha256": "ac351d7c8800fc39a4cadf106f094dd9a900c1dcc97974ec22b6383f25daded5",
+   "reviewed_by": "audit3-mmx5 2026-10-02 (refinement CP the cost dropped)",
+   "use_limit": "text:One successful Heaven-Defying Pill per year per alchemist unless a Secret Inheritance says otherwise.",
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "10,000 gp and one Heavenly Material."
+     },
+     {
+      "resource": "text",
+      "text": "Refinement Cost: 20 CP paid across the refinement."
+     }
+    ]
+   ]
+  },
+  "tianxia.talent.alchemy.resurrection_pill": {
+   "text_sha256": "d5dcdf58b3296014c1c22a68d138de2fb5124cc3709c7bd3c712c390f81b10b8",
+   "reviewed_by": "audit3-mmx5 2026-10-02 (refinement CP the cost dropped)",
+   "use_limit": "text:One successful Resurrection Pill per alchemist lifetime unless the campaign is intentionally mythic.",
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "25,000 gp, a Phoenix Feather or equivalent rebirth material, the heart or core of a CR 20+ creature or equivalent spirit beast, and preserved blood or soul-resonant remains."
+     },
+     {
+      "resource": "text",
+      "text": "Refinement Cost: 25 CP paid across the refinement."
+     }
+    ]
+   ]
+  }
+ }
+}
