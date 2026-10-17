@@ -1,0 +1,127 @@
+{
+ "authority_classification": "AUTHENTICATED_CANONICAL_SOURCE",
+ "pack_id": "tianxia.path_feature_statistics.r1",
+ "rules": [
+  {
+   "applicability": "While not wearing armor; a shield is permitted. One base AC calculation applies; alternates replace rather than stack.",
+   "display_name": "Unarmored Defense",
+   "feature_id": "tianxia.path.body_refining.feature.unarmored_defense",
+   "formula": {
+    "formula_id": "tianxia.path.body_refining.unarmored_defense.ac.r8",
+    "root": {
+     "op": "add",
+     "terms": [
+      {
+       "op": "constant",
+       "value": 10
+      },
+      {
+       "ability": "CON",
+       "op": "ability_modifier"
+      },
+      {
+       "op": "pb"
+      }
+     ]
+    },
+    "schema_version": "TianxiaFoundry.SafeFormula.v1"
+   },
+   "kind": "base_ac_calculation",
+   "rule_id": "tianxia.path.body_refining.feature.unarmored_defense.ac_calculation.r8",
+   "source": {
+    "heading": "CL1 - Unarmored Defense",
+    "line": 237,
+    "path": "09_RULES/Source_Text/Paths/Body/Tianxia_Body_Refining_Player_Path_Chapter_R8.md",
+    "source_sha256": "774213817c938f9eb00a58e432b85feb32872a12b723b60ea1a77cefedc12186"
+   }
+  },
+  {
+   "applicability": "While the chosen AC calculation is Unarmored Defense. Does not stack with itself.",
+   "bonus": 1,
+   "display_name": "Tempered Flesh",
+   "feature_id": "tianxia.subpath.body.iron_shirt.feature.tempered_flesh",
+   "kind": "ac_bonus",
+   "requires_base_calculation_feature_id": "tianxia.path.body_refining.feature.unarmored_defense",
+   "rule_id": "tianxia.subpath.body.iron_shirt.feature.tempered_flesh.ac_bonus.r8",
+   "source": {
+    "heading": "CL6 - Tempered Flesh",
+    "line": 266,
+    "path": "09_RULES/Source_Text/Paths/Body/Tianxia_Body_Refining_Subpath_Compendium_R8.md",
+    "source_sha256": "74dff956598e6e78d87a5fbbc0e532223e0581e3ec1df8c4a0eb313e562a5cb6"
+   }
+  },
+  {
+   "applicability": "While benefiting from Unarmored Defense.",
+   "bonus": 1,
+   "display_name": "Dragon Scales",
+   "feature_id": "tianxia.subpath.body.ryujin.feature.dragon_scales",
+   "kind": "ac_bonus",
+   "requires_base_calculation_feature_id": "tianxia.path.body_refining.feature.unarmored_defense",
+   "rule_id": "tianxia.subpath.body.ryujin.feature.dragon_scales.ac_bonus.r8",
+   "source": {
+    "heading": "CL3 - Dragon Scales",
+    "line": 2299,
+    "path": "09_RULES/Source_Text/Paths/Body/Tianxia_Body_Refining_Subpath_Compendium_R8.md",
+    "source_sha256": "74dff956598e6e78d87a5fbbc0e532223e0581e3ec1df8c4a0eb313e562a5cb6"
+   }
+  },
+  {
+   "applicability": "While the chosen AC calculation is Unarmored Defense. Does not combine multiple instances.",
+   "bonus": 1,
+   "display_name": "Stone Skin",
+   "feature_id": "tianxia.subpath.body.yamabushi.feature.stone_skin",
+   "kind": "ac_bonus",
+   "requires_base_calculation_feature_id": "tianxia.path.body_refining.feature.unarmored_defense",
+   "rule_id": "tianxia.subpath.body.yamabushi.feature.stone_skin.ac_bonus.r8",
+   "source": {
+    "heading": "CL3 - Stone Skin",
+    "line": 1446,
+    "path": "09_RULES/Source_Text/Paths/Body/Tianxia_Body_Refining_Subpath_Compendium_R8.md",
+    "source_sha256": "74dff956598e6e78d87a5fbbc0e532223e0581e3ec1df8c4a0eb313e562a5cb6"
+   }
+  },
+  {
+   "bonus": 1,
+   "condition": "While wielding a Staff weapon.",
+   "display_name": "Staff of One",
+   "feature_id": "tianxia.subpath.body.bojutsu.feature.staff_of_one",
+   "kind": "conditional_ac_bonus",
+   "rule_id": "tianxia.subpath.body.bojutsu.feature.staff_of_one.ac_conditional.r8",
+   "source": {
+    "heading": "CL14 - Staff of One",
+    "line": 1186,
+    "path": "09_RULES/Source_Text/Paths/Body/Tianxia_Body_Refining_Subpath_Compendium_R8.md",
+    "source_sha256": "74dff956598e6e78d87a5fbbc0e532223e0581e3ec1df8c4a0eb313e562a5cb6"
+   }
+  },
+  {
+   "bonus": 1,
+   "condition": "For one minute after the Bonus Action activation (4 Stamina).",
+   "display_name": "Flowing Blade Stance",
+   "feature_id": "tianxia.subpath.body.kensei.feature.flowing_blade_stance",
+   "kind": "conditional_ac_bonus",
+   "rule_id": "tianxia.subpath.body.kensei.feature.flowing_blade_stance.ac_conditional.r8",
+   "source": {
+    "heading": "CL10 - Flowing Blade Stance",
+    "line": 1834,
+    "path": "09_RULES/Source_Text/Paths/Body/Tianxia_Body_Refining_Subpath_Compendium_R8.md",
+    "source_sha256": "74dff956598e6e78d87a5fbbc0e532223e0581e3ec1df8c4a0eb313e562a5cb6"
+   }
+  },
+  {
+   "condition": "Conditional bonus; does not replace the base calculation (owner amendment R1).",
+   "display_name": "Qi Armor",
+   "feature_id": "tianxia.path.qi_cultivation.feature.qi_armor",
+   "kind": "conditional_ac_bonus",
+   "rule_id": "tianxia.path.qi_cultivation.feature.qi_armor.ac_conditional.baseline",
+   "source": {
+    "amendment_id": "Tianxia_Core_Character_Baseline_Owner_Amendment_R1",
+    "anchor": "/rules/0"
+   }
+  }
+ ],
+ "schema_version": "TianxiaFoundry.PathFeatureStatisticFormulas.v1",
+ "scope": "Passive statistics granted by acquired Path and Subpath features: base Armor Class calculations and always-on AC bonuses. Conditional, stance, wielded-item and triggered bonuses are listed only so the ledger can name them as pending execution.",
+ "seal_sha256": "5aa86b720d93e068853cc4fce8c849c2d47000f94c92fe92a1015eca55a08685",
+ "version": "1.0.0"
+}
