@@ -1,0 +1,93 @@
+{
+  "schema": "Tianxia.OwnerSubpaths.v1",
+  "pack_id": "tianxia.owner.subpaths.cai_clan",
+  "pack_version": "1.0.0",
+  "authority_note": "Original Tianxia rules authored for the owner's SOL118 request, 2026-10-04. Forge of Destiny inspires themes only. Open-school adaptation; no claim to an in-setting clan inheritance.",
+  "entries": [
+    {
+      "canonical_id": "tianxia.subpath.qi.cai_clan_empyreal_administrator",
+      "display_name": "Cai Clan — Empyreal Administrator",
+      "aliases": [
+        "Empyreal Administrator",
+        "Cai Clan"
+      ],
+      "option_type": "subpath",
+      "owning_path_id": "tianxia.path.qi_cultivation",
+      "owning_path_name": "Qi Cultivation",
+      "catalog_order": 81,
+      "access": {
+        "canonical_category": "Open School",
+        "printed_category": "Open School",
+        "tier": "open",
+        "access_source_record_required": false,
+        "explicit_requirements": []
+      },
+      "identity": {
+        "role_family": "Luminous retainer commander",
+        "primary_role": "Protect chosen allies with colorless light and open an enemy to their next attack.",
+        "primary_loop": "Invest allies; strike to Censure; an ally claims the radiant opening.",
+        "primary_identity": "Fixed retainer protection coupled to personal saber judgment; no banner asset or compelled order.",
+        "sphere_synergies": [
+          "Radiance",
+          "Protection",
+          "Warleader",
+          "Sword"
+        ]
+      },
+      "prerequisites": {
+        "path": "Qi Cultivation",
+        "minimum_cl": 3,
+        "selection_level": 3,
+        "realm_band": "Mortal",
+        "explicit": []
+      },
+      "feature_progression": [
+        {
+          "canonical_id": "tianxia.subpath.qi.cai_clan_empyreal_administrator.feature.empyreal_investiture",
+          "display_name": "Empyreal Investiture",
+          "granted_at_cl": 3,
+          "minimum_realm_band": "Mortal",
+          "source_cl_basis": "current_effective_owning_path_cl_unless_feature_prints_otherwise",
+          "components": [],
+          "source_markdown": "### CL3 — Empyreal Investiture\n\nYou cultivate light as responsibility: the hand that judges must also shelter. These features use your Qi Cultivation key ability, Cultivation Attack Modifier, Cultivation Save DC, and Qi pool. Charisma is recommended; this Subpath does not change your chosen key ability. It grants no Sphere, office, companion, item, physical weapon proficiency, or control over another creature's decisions.\n\n#### Empyreal Layer\n**Action Type:** Bonus Action\n**Cost:** 2 Qi\n**Range:** 30 feet\n**Target:** One willing ally you can see, including yourself\n**Duration:** Concentration, up to 1 minute\nInvest the target with a visible layer of colorless light. It gains +1 AC. The first time in each round that the target would take damage, reduce that damage by your Proficiency Bonus, after Resistance. This benefit requires you to be conscious and able to act. The layer stays on the chosen creature if it moves away; it is not an aura.\nYou may maintain one activation of Empyreal Layer or Court Beneath the Colorless Star. Activating either again ends your previous activation and all its layers. Layers from different Administrators do not stack: use the highest AC bonus and the highest available damage reduction. Each creature can receive this damage reduction only once per round, regardless of how many Administrators protect it. Damage reduced to 0 still uses the reduction.\nLosing Concentration ends the layer; its maximum duration is ten rounds. This does not limit your Concentration on unrelated techniques. On your turn, you may end all your layers without an action or Qi cost; unrelated Concentration continues.\n\n#### Judgment Saber\n**Action Type:** Action\n**Cost:** 1 Qi\n**Range:** 5 feet\n**Target:** One hostile creature you can see\n**Duration:** Instantaneous\nForm a fleeting saber of condensed radiance and make one melee Cultivation Attack. On a hit, deal 2d8 + your Qi Cultivation key ability modifier Radiant damage. The damage becomes 3d8 at Qi CL6, 4d8 at Qi CL10, 5d8 at Qi CL14, and 6d8 at Qi CL18.\nThe saber is a technique, not an item or physical weapon. This is not the Attack action, does not gain Extra Attack, and does not copy a held weapon's properties. On a miss, the Qi remains spent."
+        },
+        {
+          "canonical_id": "tianxia.subpath.qi.cai_clan_empyreal_administrator.feature.edict_of_shared_purpose",
+          "display_name": "Edict of Shared Purpose",
+          "granted_at_cl": 6,
+          "minimum_realm_band": "Foundation",
+          "source_cl_basis": "current_effective_owning_path_cl_unless_feature_prints_otherwise",
+          "components": [],
+          "source_markdown": "### CL6 — Edict of Shared Purpose\n\n**Action Type:** None; automatic on a Judgment Saber hit\n**Cost:** None beyond Judgment Saber's 1 Qi\n**Range:** The creature hit by your Judgment Saber\n**Duration:** Until the start of your next turn\n**Limit:** One creature marked by you at a time\nA Judgment Saber hit places your Censure on that enemy. Censure is a visible mark: it gives another ally one opening, not an order or a compulsion. Applying Censure removes your previous Censure.\nThe next time a different ally hits that creature with an attack before the mark ends, the hit deals an additional 2d8 Radiant damage, then consumes the mark. The ally must deal positive damage to Hit Points or Temporary Hit Points with that hit to claim the opening. Saving-throw-only effects, ongoing damage, your own attacks, and attacks by enemies or neutral creatures cannot claim it. The extra dice are doubled on a Critical Hit.\nOne hit can claim only one Censure, even if several Administrators have marked the enemy. Use the strongest available mark; ties use the mark applied first. The additional damage cannot claim another mark or place Censure."
+        },
+        {
+          "canonical_id": "tianxia.subpath.qi.cai_clan_empyreal_administrator.feature.court_of_duty",
+          "display_name": "Court of Duty",
+          "granted_at_cl": 10,
+          "minimum_realm_band": "Foundation",
+          "source_cl_basis": "current_effective_owning_path_cl_unless_feature_prints_otherwise",
+          "components": [],
+          "source_markdown": "### CL10 — Court of Duty\n\n**Action Type:** None; improves Empyreal Layer\n**Additional Cost:** None\n**Range:** Empyreal Layer's 30 feet at activation\n**Duration:** The same Concentration, up to 1 minute\n**Limit:** One activation; up to two different willing allies, including yourself\nWhen you activate Empyreal Layer for 2 Qi, choose up to two willing allies you can see within 30 feet. Each gains +2 AC instead of +1 AC, +2 on Wisdom saving throws, and Temporary Hit Points equal to your Proficiency Bonus + your Qi Cultivation key ability modifier (minimum 1). Its damage reduction remains your Proficiency Bonus once per round.\nBoth layers share one Concentration and end together. Temporary Hit Points do not stack; use the ordinary rule for keeping the larger total, and they remain after a layer ends until spent or your next Long Rest. This feature does not grant another Concentration slot or change unrelated save bonuses."
+        },
+        {
+          "canonical_id": "tianxia.subpath.qi.cai_clan_empyreal_administrator.feature.white_sun_judgment",
+          "display_name": "White Sun Judgment",
+          "granted_at_cl": 14,
+          "minimum_realm_band": "Core Formation",
+          "source_cl_basis": "current_effective_owning_path_cl_unless_feature_prints_otherwise",
+          "components": [],
+          "source_markdown": "### CL14 — White Sun Judgment\n\n**Action Type:** Action\n**Cost:** 4 Qi\n**Range:** 60 feet\n**Area:** 15-foot-radius sphere centered on a point you can see\n**Target:** Every hostile creature in the area; invested allies in the area receive the benefit below\n**Duration:** Instantaneous; the failed-save restriction ends at the end of the affected creature's next turn\nRelease a heatless flare through the battlefield, leaving your allies unharmed. Each hostile creature in the area makes a Dexterity saving throw against your Qi Cultivation Save DC.\n**Failed Save:** 6d8 Radiant damage and cannot take Reactions until the end of its next turn.\n**Successful Save:** Half damage and no Reaction restriction.\nAfter resolving the flare, each willing ally in the area who currently bears an Empyreal Layer from you gains 2d8 + your Qi Cultivation key ability modifier Temporary Hit Points (minimum 1). Roll once and use that total for each qualifying ally. This does not place Censure, create a persistent area, damage neutral creatures, extend a layer, or restore spent Qi."
+        },
+        {
+          "canonical_id": "tianxia.subpath.qi.cai_clan_empyreal_administrator.feature.court_beneath_the_colorless_star",
+          "display_name": "Court Beneath the Colorless Star",
+          "granted_at_cl": 18,
+          "minimum_realm_band": "Nascent Soul",
+          "source_cl_basis": "current_effective_owning_path_cl_unless_feature_prints_otherwise",
+          "components": [],
+          "source_markdown": "### CL18 — Court Beneath the Colorless Star\n\n**Action Type:** Bonus Action\n**Cost:** 8 Qi\n**Range:** 30 feet\n**Target:** Up to your Proficiency Bonus in different willing allies you can see, including yourself\n**Duration:** Concentration, up to 1 minute\n**Limit:** Once per combat\nFor a brief, decisive interval, make your command visible as a court of protective light. End your previous Empyreal Layer or Court activation, then invest the chosen allies. Each gains +2 AC, +2 on Wisdom saving throws, and 2d8 + your Qi Cultivation key ability modifier Temporary Hit Points (minimum 1; roll once for all recipients).\nThe first time in each round that each invested creature would take damage, reduce it by your Proficiency Bonus + your Qi Cultivation key ability modifier (minimum 1), after Resistance. The normal once-per-round and non-stacking rules for layers still apply.\nWhile you maintain this Court and are conscious and able to act, Judgment Saber has a range of 30 feet and uses a ranged Cultivation Attack beyond 5 feet. Censure placed during the Court grants 3d8 Radiant damage instead of 2d8; its dice are fixed when placed, even if the Court ends before the opening is claimed.\nThis is a fixed group of invested creatures, not a moving area. Their layers remain when they leave the initial range. All share your one Concentration and end together when it is lost or ten rounds pass. You cannot activate ordinary Empyreal Layer while your Court persists; you may end the Court without an action or Qi cost on your turn. It grants no extra turns, attacks, immunity, authority over allies, or free Sphere access."
+        }
+      ]
+    }
+  ]
+}
