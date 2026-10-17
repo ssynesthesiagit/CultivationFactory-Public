@@ -1,0 +1,455 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_SPEAR_ONE_SPEAR_PIERCES_THE_ARMY": {
+      "text_sha256": "d56856f8170664b993e89af9305efaaa77283374e373784c549a9b08dfd26c76",
+      "reviewed_by": "Codex SOL107: each affected creature chooses Strength or Dexterity using the existing target-owned save seam; AUTO56 2026-10-05: 'Cost: 12 Spear Resource' was never reviewed, so the whole charge ran free (RESOURCES has no 'Spear Resource', and unlike a line whose prose runs on from 'Cost:' this one was left as free text); 'Creatures damaged gain your Spear Intent' is now a mark on both save outcomes of every option, and 'You do not provoke opportunity attacks during this movement' is now on the printed movement row. What stays is printed and still not run: 'Move into one legal unoccupied space at the far end of the line' is a leap to the far square, not 120 feet of granted movement, and 'Successful Save: ... move 5 feet away from the line' has no row.",
+      "options": [
+        {
+          "label": "Push Away",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str_or_dex",
+              "dc": "technique_save_dc",
+              "origin": "model_v2",
+              "on_fail": [
+                {
+                  "type": "mark",
+                  "mark": "Spear Intent",
+                  "applies_to": "creatures_in_area",
+                  "duration": {
+                    "kind": "until_start_of_your_next_turn"
+                  },
+                  "evidence": "Creatures damaged gain your Spear Intent"
+                },
+                {
+                  "type": "damage",
+                  "applies_to": "creatures_in_area",
+                  "dice": {
+                    "count": 10,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "piercing",
+                    "force"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Take: 10d10 Piercing or Force damage",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "movement",
+                  "applies_to": "self",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 120,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Move into one legal unoccupied space at the far end of the line",
+                  "no_opportunity_attacks": true
+                },
+                {
+                  "type": "forced_movement",
+                  "applies_to": "creatures_in_area",
+                  "flat": 20,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 20,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "push 20 feet away from the line",
+                  "origin": "model_options"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "mark",
+                  "mark": "Spear Intent",
+                  "applies_to": "creatures_in_area",
+                  "duration": {
+                    "kind": "until_start_of_your_next_turn"
+                  },
+                  "evidence": "Creatures damaged gain your Spear Intent"
+                },
+                {
+                  "type": "half_damage",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Take half damage",
+                  "origin": "model_v2"
+                }
+              ],
+              "target_choice": true,
+              "choice_text": "On failure, you take 10d10 Piercing or Force damage, and you are pushed 20 feet away from the line. On success, you take half damage and move 5 feet away from the line.",
+              "name": "One Spear Pierces the Army"
+            }
+          ],
+          "area": {
+            "shape": "line",
+            "size_ft": 120,
+            "evidence": "120-foot line, 10 feet wide",
+            "width_ft": 10,
+            "source": "text"
+          }
+        },
+        {
+          "label": "Fall Prone",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str_or_dex",
+              "dc": "technique_save_dc",
+              "origin": "model_v2",
+              "on_fail": [
+                {
+                  "type": "mark",
+                  "mark": "Spear Intent",
+                  "applies_to": "creatures_in_area",
+                  "duration": {
+                    "kind": "until_start_of_your_next_turn"
+                  },
+                  "evidence": "Creatures damaged gain your Spear Intent"
+                },
+                {
+                  "type": "damage",
+                  "applies_to": "creatures_in_area",
+                  "dice": {
+                    "count": 10,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "piercing",
+                    "force"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Take: 10d10 Piercing or Force damage",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "movement",
+                  "applies_to": "self",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 120,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Move into one legal unoccupied space at the far end of the line",
+                  "no_opportunity_attacks": true
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "prone",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "fall Prone",
+                  "origin": "model_options"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "mark",
+                  "mark": "Spear Intent",
+                  "applies_to": "creatures_in_area",
+                  "duration": {
+                    "kind": "until_start_of_your_next_turn"
+                  },
+                  "evidence": "Creatures damaged gain your Spear Intent"
+                },
+                {
+                  "type": "half_damage",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Take half damage",
+                  "origin": "model_v2"
+                }
+              ],
+              "target_choice": true,
+              "choice_text": "On failure, you take 10d10 Piercing or Force damage, and you fall prone (lying down until you stand up). On success, you take half damage and move 5 feet away from the line.",
+              "name": "One Spear Pierces the Army"
+            }
+          ],
+          "area": {
+            "shape": "line",
+            "size_ft": 120,
+            "evidence": "120-foot line, 10 feet wide",
+            "width_ft": 10,
+            "source": "text"
+          }
+        },
+        {
+          "label": "Deny Reactions",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str_or_dex",
+              "dc": "technique_save_dc",
+              "origin": "model_v2",
+              "on_fail": [
+                {
+                  "type": "mark",
+                  "mark": "Spear Intent",
+                  "applies_to": "creatures_in_area",
+                  "duration": {
+                    "kind": "until_start_of_your_next_turn"
+                  },
+                  "evidence": "Creatures damaged gain your Spear Intent"
+                },
+                {
+                  "type": "damage",
+                  "applies_to": "creatures_in_area",
+                  "dice": {
+                    "count": 10,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "piercing",
+                    "force"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Take: 10d10 Piercing or Force damage",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "movement",
+                  "applies_to": "self",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 120,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Move into one legal unoccupied space at the far end of the line",
+                  "no_opportunity_attacks": true
+                },
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "cannot take Reactions until the start of your next turn",
+                  "origin": "model_options"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "mark",
+                  "mark": "Spear Intent",
+                  "applies_to": "creatures_in_area",
+                  "duration": {
+                    "kind": "until_start_of_your_next_turn"
+                  },
+                  "evidence": "Creatures damaged gain your Spear Intent"
+                },
+                {
+                  "type": "half_damage",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Take half damage",
+                  "origin": "model_v2"
+                }
+              ],
+              "target_choice": true,
+              "choice_text": "On failure, you take 10d10 Piercing or Force damage, and you cannot take reactions until the start of the spear user's next turn. On success, you take half damage and move 5 feet away from the line.",
+              "name": "One Spear Pierces the Army"
+            }
+          ],
+          "area": {
+            "shape": "line",
+            "size_ft": 120,
+            "evidence": "120-foot line, 10 feet wide",
+            "width_ft": 10,
+            "source": "text"
+          }
+        }
+      ],
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str_or_dex",
+          "target_choice": true,
+          "name": "One Spear Pierces the Army",
+          "dc": "technique_save_dc",
+          "origin": "model_v2",
+          "on_fail": [
+            {
+              "type": "mark",
+              "mark": "Spear Intent",
+              "applies_to": "creatures_in_area",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "Creatures damaged gain your Spear Intent"
+            },
+            {
+              "type": "damage",
+              "applies_to": "creatures_in_area",
+              "dice": {
+                "count": 10,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "piercing",
+                "force"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take: 10d10 Piercing or Force damage",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "mark",
+              "mark": "Spear Intent",
+              "applies_to": "creatures_in_area",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "Creatures damaged gain your Spear Intent"
+            },
+            {
+              "type": "half_damage",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take half damage",
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ],
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 12,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "riders": [
+        "Move into one legal unoccupied space at the far end of the line",
+        "Creatures damaged move 5 feet away from the line after a successful save."
+      ]
+    },
+    "tianxia.subpath.qi.incense_cultivator.feature.foundational_incenses": {
+      "effects": [
+  {
+    "type": "zone",
+    "profile": {
+      "incense_formula": 1
+    },
+    "obscured": "light",
+    "spreads": true,
+    "evidence": "Create a cloud centered on one legal point or burner. Hostile creatures save only at the Formula’s printed triggers."
+  }
+],
+      "text_sha256": "0a461ebea67192f718180ffe9c1ee58919e1bb1af1e16a42a73aeffcb533b325",
+      "reviewed_by": "Codex SOL107: Burn Incense requires concentration, unlike learning formulas",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      }
+    },
+    "tianxia.subpath.qi.mirror_cultivator.feature.true_reflection": {
+      "text_sha256": "07a74dc7cc13c5c642345e3de60fe0929a23c64f377040a52f16c5df93f9028b",
+      "reviewed_by": "Codex SOL107: the True Doppelganger reaction requires concentration",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      }
+    },
+    "tianxia.talent.alchemy.realm_ascension_pill": {
+      "text_sha256": "a3dfe40cdadc212c208faa462018b9b4fad76cbeff501d8e610dcdec2776ba98",
+      "reviewed_by": "Codex SOL107: lifetime limit belongs to the recipe, not a fight-wide charge",
+      "use_limit": "text:Once per lifetime per alchemist and once per lifetime per consumer."
+    }
+  }
+}
