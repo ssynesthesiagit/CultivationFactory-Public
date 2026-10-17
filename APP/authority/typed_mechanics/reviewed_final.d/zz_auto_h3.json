@@ -1,0 +1,529 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "mechanics": {
+ "TAL_SHIELD_SOVEREIGN_SHIELD_SOUL_INCARNATION": {
+  "text_sha256": "ea457edab2830e35a4c48262d6f20cd58249c5346ff09a01413a843a3dbf1889",
+  "reviewed_by": "auto-H3 2026-09-29; the remaining printed benefits resolved by AUTO55 2026-10-05",
+  "effects": [
+   {
+    "type": "sovereign_shield_soul",
+    "applies_to": "self",
+    "duration": "one_minute",
+    "evidence": "increase Projected Shield Face dimensions by 20 feet in width and 10 feet in height;",
+    "origin": "reviewed"
+   },
+   {
+    "type": "state",
+    "name": "sovereign_shield_soul_incarnation",
+    "label": "Sovereign Shield-Soul Incarnation: you can fly 40 ft. and hover, Cover Ally reaches 60 ft., you may use Active Defense once a round without spending a Reaction and take one extra Shield Reaction a round",
+    "duration": "one_minute",
+    "range_for": {
+     "TAL_SHIELD_COVER_ALLY": 60
+    },
+    "evidence": "increase Cover Ally range to 60 feet when a clear legal route exists"
+   }
+  ],
+  "riders": [],
+  "description": [
+   "Shield Faces created by your talents count as Barriers against physical crossing unless you choose otherwise when creating them.",
+   "The incarnation does not automatically block teleportation, possession, gaze effects, or spiritual techniques that do not physically cross a Shield Face."
+  ]
+ },
+ "TAL_SHIELD_SHIELD_SOUL_NEVER_FALLS": {
+  "text_sha256": "c56cac2be0b93c9aec3a978bf4aa0a66af762db11e3f2acd12e3ba780d3a1478",
+  "reviewed_by": "auto-H3 2026-09-29",
+  "activation": {
+   "economy": "no_action",
+   "trigger": "You would drop to 0 HP",
+   "requirement": null,
+   "source": "reviewed",
+   "modifies": null
+  },
+  "use_limit": "once_per_long_rest",
+  "effects": [
+   {
+    "type": "hold_at_1hp",
+    "applies_to": "self",
+    "keep": 1,
+    "evidence": "drop to 1 HP instead of 0 HP;",
+    "origin": "reviewed"
+   }
+  ],
+  "riders": [
+   "When you would lose Concentration on a Shield talent, you may use Shield Soul Never Falls to maintain it until the end of your next turn. Resolve this choice with the GM."
+  ]
+ },
+  "TAL_SHIELD_FLEXIBLE_COVER": {
+   "text_sha256": "622a6f98f5668d074b26d882eb585bba086811f826d906a2191c237359f8f07c",
+   "reviewed_by": "auto-H3 2026-09-30",
+   "effects": [
+    {
+     "type": "shield_face",
+     "applies_to": "self",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "until_start_of_next_turn",
+     "evidence": "Choose one edge of your space and establish a physical Shield Face",
+     "origin": "reviewed"
+    }
+   ],
+   "riders": []
+  },
+  "TAL_SHIELD_SEAL_THE_BREACH": {
+   "text_sha256": "18e6dceba8093c7f9a28c6f13920ff90ffc1a0e8b3154f800739a963f45526f9",
+   "reviewed_by": "auto-H3 2026-09-30",
+   "effects": [
+    {
+     "type": "shield_barrier",
+     "applies_to": "self",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "concentration",
+     "evidence": "Manifest one 15-foot-wide, 15-foot-high Shield-Qi Face centered on one edge of your space",
+     "origin": "reviewed"
+    }
+   ],
+   "riders": [
+    "The Barrier does not automatically block: teleportation; planar travel; Ethereal travel; possession; gaze attacks; effects originating behind the face; spiritual effects that do not physically cross its boundary."
+   ]
+  },
+  "LIFE_BASE_BORROWED_BREATH": {
+    "text_sha256": "c30de964bc12b43f841d99b52af8e22150a34423d089be84df515e17f0778d9c",
+    "reviewed_by": "auto-H3 2026-09-30 + Astra printed-text review sw-jester (fields merged)",
+    "effects": [
+      {
+        "type": "stabilize",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "none",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "instant",
+        "evidence": "If the target has 0 Hit Points and is living, the target becomes stable before receiving these Temporary HP.",
+        "origin": "reviewed",
+        "effect_slot": "life_delayed_vitality"
+      },
+      {
+        "type": "temp_hp",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "pb",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "special",
+        "evidence": "The target gains Temporary HP equal to your Proficiency Bonus.",
+        "origin": "model_v2",
+        "cap_at_missing_hp": true,
+        "effect_slot": "life_delayed_vitality"
+      }
+    ],
+    "options": null,
+    "modifier": null,
+    "activation": {
+      "economy": "action",
+      "trigger": null,
+      "requirement": null,
+      "source": "printed_action_type"
+    },
+    "riders": [],
+    "range": {
+      "kind": "touch",
+      "feet": 5
+    },
+    "area": null,
+    "cost": [],
+    "use_limit": null,
+    "duration": {
+      "kind": "hours",
+      "amount": 1,
+      "concentration": false
+    },
+    "target": {
+      "text": "One living creature"
+    }
+  },
+  "BLOOD_BASE_COAGULATE": {
+    "text_sha256": "736c3a45e34fccf35d2ede00bdd85e741dc7205c85147108b2987e6128af0104",
+    "reviewed_by": "auto-H3 2026-09-30 + self-ally targets 2026-09-28 (fields merged)",
+    "effects": [
+      {
+        "type": "stabilize",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "none",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "instant",
+        "evidence": "immediately stabilize the target if it is at 0 HP",
+        "origin": "reviewed"
+      },
+      {
+        "type": "temp_hp",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "pb",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "instant",
+        "evidence": "grant Temporary HP equal to Proficiency Bonus + Path key ability modifier",
+        "origin": "model_v2"
+      },
+      {
+        "type": "temp_hp",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "key_ability_modifier",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "instant",
+        "evidence": "Path key ability modifier",
+        "origin": "model_v2"
+      },
+      {
+        "type": "temp_hp",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "none",
+        "dice": null,
+        "dice_by_cl": [
+          [
+            1,
+            10,
+            0,
+            8
+          ],
+          [
+            11,
+            16,
+            1,
+            8
+          ],
+          [
+            17,
+            20,
+            2,
+            8
+          ]
+        ],
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "instant",
+        "evidence": "At CL 11, add +1d8 Temporary HP. At CL 17, add +2d8 Temporary HP.",
+        "origin": "reviewed_final"
+      }
+    ],
+   "effects": [
+    {
+     "type": "requires_thread",
+     "evidence": "One creature bearing your Blood Thread"
+    },
+    {
+     "type": "temp_hp",
+     "applies_to": "target",
+     "parts": [
+      {
+       "formula": "pb"
+      },
+      {
+       "formula": "key_ability_modifier"
+      },
+      {
+       "dice_by_cl": [
+        [
+         1,
+         10,
+         0,
+         8
+        ],
+        [
+         11,
+         16,
+         1,
+         8
+        ],
+        [
+         17,
+         20,
+         2,
+         8
+        ]
+       ]
+      }
+     ],
+     "evidence": "grant Temporary HP equal to Proficiency Bonus + Path key ability modifier. At CL 11, add +1d8 Temporary HP. At CL 17, add +2d8 Temporary HP."
+    }
+   ],
+   "options": [
+    {
+     "label": "Temporary HP",
+     "effects": [
+      {
+       "type": "requires_thread",
+       "evidence": "One creature bearing your Blood Thread"
+      },
+      {
+       "type": "temp_hp",
+       "applies_to": "target",
+       "parts": [
+        {
+         "formula": "pb"
+        },
+        {
+         "formula": "key_ability_modifier"
+        },
+        {
+         "dice_by_cl": [
+          [
+           1,
+           10,
+           0,
+           8
+          ],
+          [
+           11,
+           16,
+           1,
+           8
+          ],
+          [
+           17,
+           20,
+           2,
+           8
+          ]
+         ]
+        }
+       ],
+       "evidence": "grant Temporary HP equal to Proficiency Bonus + Path key ability modifier. At CL 11, add +1d8 Temporary HP. At CL 17, add +2d8 Temporary HP."
+      }
+     ]
+    },
+    {
+     "label": "Stabilize",
+     "effects": [
+      {
+       "type": "requires_thread",
+       "evidence": "One creature bearing your Blood Thread"
+      },
+      {
+       "type": "stabilize",
+       "applies_to": "target",
+       "evidence": "immediately stabilize the target if it is at 0 HP"
+      }
+     ]
+    },
+    {
+     "label": "End Bleeding",
+     "effects": [
+      {
+       "type": "requires_thread",
+       "evidence": "One creature bearing your Blood Thread"
+      },
+      {
+       "type": "remove_condition",
+       "condition": "bleeding",
+       "applies_to": "target",
+       "evidence": "end one ordinary bleeding effect"
+      }
+     ]
+    }
+   ],
+   "riders": []
+  },
+  "tianxia.talent.life.yellow_spring_refusal_seal": {
+   "text_sha256": "da5425955d0485717460b8dfa4a9f1531d9cb897fa330ab833f9c6ffc5b6538a",
+   "reviewed_by": "auto-H3 2026-09-30",
+   "effects": [
+    {
+     "type": "soul_seal",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "until_long_rest",
+     "evidence": "The first time during the duration that the target would die and leave a mostly intact body, the seal triggers. The target remains dead, but its soul does not fully depart for 1 minute.",
+     "origin": "reviewed"
+    }
+   ],
+   "target": {
+    "text": "One willing living creature bearing your Pulse Seal",
+    "requires_mark": "Pulse Seal"
+   },
+   "riders": [
+    "This seal cannot hold a soul destroyed, consumed, imprisoned, reincarnated beyond reach, claimed by stronger underworld authority, or forbidden from returning by the campaign's cosmology."
+   ]
+  },
+  "tianxia.talent.life.one_breath_resuscitation": {
+   "text_sha256": "f6d049b85e9782752dc9f28f57bf59f6868eca54a06465d9bc9339aeffbe8711",
+   "reviewed_by": "auto-H3 2026-09-30",
+   "effects": [
+    {
+     "type": "soul_return",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "The target returns to life with 1 Hit Point. The target gains 1 level of Exhaustion, to a maximum of 5.",
+     "origin": "reviewed",
+     "hp": 1,
+     "exhaustion": 1,
+     "within_rounds": 1
+    }
+   ],
+   "riders": [
+    "The body must still be mostly intact. This cannot return a creature that died of old age, cannot restore missing body parts, and cannot return a soul that is unwilling or not at liberty to return.",
+    "One-Breath Resuscitation cannot return undead to life."
+   ]
+  },
+  "tianxia.talent.pressure_points.return_the_broken_pulse": {
+   "text_sha256": "2f1a101d6954a8facfe0565df61cebe3e27386368620c86424fdd6f2643d3338",
+   "reviewed_by": "auto-H3 2026-09-30",
+   "effects": [
+    {
+     "type": "soul_return",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "If the creature’s soul is free and willing, it returns to life with 1 HP.",
+     "origin": "reviewed",
+     "hp": 1,
+     "exhaustion": 0,
+     "within_rounds": 1,
+     "minute_gate": false
+    }
+   ]
+  },
+  "TAL_DEATH_QUIET_BURIAL": {
+   "text_sha256": "bcf7421694e386de0cbadeb578a4fc0ce565ec19743ac4f00a8c2aaa0704bf21",
+   "reviewed_by": "auto-H3 2026-09-30",
+   "effects": [
+    {
+     "type": "death_save_now",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "let one dying creature within reach immediately make a death saving throw with Advantage",
+     "origin": "reviewed"
+    }
+   ],
+   "options": [],
+   "target": {
+    "text": "One dying creature within reach"
+   },
+   "riders": [
+    "The other choices (ending a haunting, keeping a corpse from being animated, quieting undead remains, tracking through death residue) are outside a fight."
+   ]
+  },
+  "tianxia.talent.warleader.recall_spirit": {
+   "text_sha256": "89aab8c7fbfd7682da8e4443d31bcd2318c3781dca86fbae75d881ebb74abf23",
+   "reviewed_by": "auto-H3 2026-09-30",
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "reviewed",
+    "modifies": null
+   },
+   "area": {
+    "shape": "emanation",
+    "size_ft": 15,
+    "centered_on_self": true
+   },
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "cost": [
+    [
+     {
+      "resource": "martial_focus",
+      "amount": 1
+     }
+    ]
+   ],
+   "target": {
+    "text": "One creature within your Shout area that died since the end of your last turn"
+   },
+   "effects": [
+    {
+     "type": "soul_return",
+     "applies_to": "ally",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "The creature returns to life with Hit Points equal to: your CL + Warleader key ability modifier. The creature’s Exhaustion level increases by 2, to a maximum of 5.",
+     "origin": "reviewed",
+     "shout": true,
+     "area_ft": 15,
+     "hp_formula": "cl_key",
+     "hp_unending_formula": "two_cl_key",
+     "exhaustion": 2,
+     "exhaustion_cap": 5,
+     "since_last_turn": true,
+     "minute_gate": false,
+     "unending": true,
+     "within_rounds": 1
+    }
+   ],
+   "riders": [
+    "Recall Spirit cannot restore a creature that died of old age or whose soul is unwilling or unable to return.",
+    "Unending Loyalty: after 1 hour the creature dies again unless truly returned (out of a fight)."
+   ]
+  }
+ }
+}
