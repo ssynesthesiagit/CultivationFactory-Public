@@ -1,0 +1,196 @@
+{
+ "schema": "TianxiaFoundry.ReactionTriggerPhrases.v1",
+ "note": "Owner-editable (2026-09-25, extended 2026-09-26): how combat/reaction_triggers.py classifies a reaction's printed trigger text into one runnable kind. Trigger text is lowercased, a leading 'When' is dropped, then 'you can see/perceive/hear'/'you are aware of' clauses and a 'within N feet' clause are stripped out and recorded as filters (requires_sight, range_ft) before the remaining text is matched against the patterns below, in kind_order, first match wins. melee_only/ranged_only are set from the literal words 'melee'/'ranged' still present in the remaining text. Every attacked/hit/missed/damaged/save/drop_to_zero/bloodied/condition_gained pattern requires the literal word 'you' so a trigger about some other creature (an ally, a companion, a summon) never matches a self kind; ally_hit/ally_attacked/ally_missed/ally_damaged catch the 'an ally ... is hit/targeted/missed/damaged' phrasing instead (combat/typed_reactions.py offers these to other active Factory fighters on the target's own team). critical_hit/natural_1 match the clean 'a(n) (hostile) creature ... rolls a natural 1/20 on an attack roll' phrasing regardless of 'you', but the engine hook only ever runs them for an attack roll made against the reactor (owner 2026-09-26: on_attack_hit/on_attack_missed already have that context; a natural 1/20 rolled elsewhere -- an ability check, a saving throw, another creature's fight -- is not tracked, so those triggers still classify here for the owner's report but simply never find a matching attack to react to). technique_targets/technique_used are the 'a creature uses a technique that targets/within N feet of you' phrasing (combat/typed_executor.py's resolve_typed, non-weapon actions only). moved is classified for the report but stays non-runnable: no hook exists for a bystander reacting to someone else's movement. Anything left over (marks, terrain, stance, equipment, most multi-clause 'X, Y, or Z' triggers combining several of the events above, and other conditions the engine has no state for) is 'unsupported' and stays a GM call. 2026-09-26 step 8: moved is a willing move by another creature (hook after movement); forced_moved is kept apart (no hook yet); healed, any_drop_to_zero, creature_save_failed and creature_save_succeeded fire for any creature in range -- a harmful reaction only against a hostile creature, a helpful one only for you or an ally.",
+ "kind_order": [
+  "hit",
+  "missed",
+  "attacked",
+  "damaged",
+  "save",
+  "ally_hit",
+  "ally_attacked",
+  "ally_missed",
+  "ally_damaged",
+  "drop_to_zero",
+  "bloodied",
+  "condition_gained",
+  "critical_hit",
+  "natural_1",
+  "technique_targets",
+  "technique_used",
+  "own_hit",
+  "own_kill",
+  "own_save_failed",
+  "moved",
+  "forced_moved",
+  "healed",
+  "any_drop_to_zero",
+  "creature_save_failed",
+  "creature_save_succeeded",
+  "own_turn_start"
+ ],
+ "kinds": {
+  "hit": [
+   "\\bhits? you\\b",
+   "\\byou (?:are|were) hit\\b",
+   "\\ban attack(?: roll)? hits? you\\b",
+   "\\bhits? (?:a|an) .*attack roll against you\\b"
+  ],
+  "missed": [
+   "\\bmisses? you\\b",
+   "\\ban attack(?: roll)? misses? you\\b",
+   "\\bmisses? (?:a|an) .*attack roll against you\\b"
+  ],
+  "attacked": [
+   "\\bmakes? (?:a|an) .*attack roll against you\\b",
+   "\\btargets? you with (?:a|an) .*attack\\b",
+   "\\ban attack roll(?: is made)? against you\\b",
+   "\\ban attack roll targets you\\b",
+   "\\byou are targeted by (?:a|an) attack\\b",
+   "\\bmakes? (?:a|an) melee attack against you\\b"
+  ],
+  "damaged": [
+   "^you take .*damage",
+   "\\byou would take damage\\b",
+   "\\ban attack deals damage to you\\b",
+   "\\bdamage is first applied to you\\b",
+   "\\byou are damaged\\b",
+   "\\byou take a valid\\b"
+  ],
+  "save": [
+   "\\byou fail (?:a|an|the) .*saving throw\\b",
+   "\\byou make a saving throw\\b"
+  ],
+  "ally_hit": [
+   "\\ban ally\\b.*\\bis hit by\\b.*attack",
+   "\\b(?:a|one) creature\\b.*\\bhits?\\b.*\\ban ally\\b.*attack"
+  ],
+  "ally_attacked": [
+   "\\ban ally\\b.*\\bis targeted by\\b.*attack",
+   "\\b(?:a|one) creature\\b.*\\bmakes? (?:a|an) .*attack roll against\\b.*\\ban ally\\b",
+   "\\b(?:a|one) creature\\b.*\\btargets?\\b.*\\ban ally\\b.*attack"
+  ],
+  "ally_missed": [
+   "\\ban ally\\b.*\\bis missed by\\b.*attack",
+   "\\b(?:a|one) creature\\b.*\\bmisses?\\b.*\\ban ally\\b.*attack"
+  ],
+  "ally_damaged": [
+   "\\ban ally\\b.*\\bwould take damage\\b",
+   "\\ban ally\\b.*\\btakes? .*damage\\b"
+  ],
+  "drop_to_zero": [
+   "\\byou would be reduced to 0\\b",
+   "\\byou would drop to 0\\b",
+   "\\breduce you to 0 (?:hp|hit points)\\b"
+  ],
+  "bloodied": [
+   "\\byou (?:are|become) bloodied\\b",
+   "\\byou would (?:drop|fall) below half\\b"
+  ],
+  "condition_gained": [
+   "\\byou (?:would )?(?:become|gain) (?:a |the )?(?:condition|frightened|poisoned|charmed|restrained|grappled|stunned|prone|unconscious|blinded|deafened|paralyzed|incapacitated|exhausted)\\b"
+  ],
+  "critical_hit": [
+   "\\brolls? a natural 20 on an attack roll\\b",
+   "\\bstruck by a critical hit\\b",
+   "\\btakes? damage from a critical hit\\b",
+   "\\bsuffers? a critical hit\\b"
+  ],
+  "natural_1": [
+   "\\brolls? a natural 1 on an attack roll\\b"
+  ],
+  "technique_targets": [
+   "\\buses? a technique that targets you\\b",
+   "\\btargets? you with a technique\\b"
+  ],
+  "technique_used": [
+   "\\bwithin \\d+ feet of you uses (?:a|an) technique\\b",
+   "\\buses (?:a|an) technique within \\d+ feet\\b"
+  ],
+  "moved": [
+   "\\bmoves? willingly\\b",
+   "\\bteleports?\\b",
+   "\\bmoves? (?:at least \\d+ feet|\\d+ feet or more)\\b"
+  ],
+  "own_hit": [
+   "(?:^|\\b(?:after|when|whenever|each time|the first time) )you hit\\b",
+   "(?:^|\\b(?:after|when|whenever) )your (?:attack|strike|technique|weapon)[\\w -]* hits\\b",
+   "(?:^|\\b(?:after|when|whenever) )you deal damage to (?:a|an|the|one) (?:hostile )?creature\\b"
+  ],
+  "own_kill": [
+   "\\byou reduce (?:a|an|the|one|that) (?:hostile )?(?:creature|target|enemy)[\\w -]* to 0\\b",
+   "(?:^|\\b(?:when|after|whenever|if) )(?:it|the target|that creature|a creature you damaged|the marked creature) (?:drops|is reduced|falls) to 0\\b",
+   "\\b(?:a|the|each) (?:hostile )?creature reduced to 0 (?:hp|hit points) by (?:this|your)\\b"
+  ],
+  "own_save_failed": [
+   "\\b(?:a|an|the|one|that) (?:hostile )?(?:creature|target|enemy)[\\w -]* fails (?:a|its|the) saving throw against (?:your|you)\\b",
+   "\\b(?:a|an|the) (?:hostile )?creature fails (?:a|its) [\\w ]*saving throw against (?:one of )?your\\b"
+  ],
+  "forced_moved": [
+   "\\bis forcibly moved\\b",
+   "\\b(?:pushed|pulled|moved) against (?:its|your|their) will\\b"
+  ],
+  "healed": [
+   "\\bregains? (?:hit points|hp)\\b",
+   "\\bis healed\\b",
+   "\\bgains? temporary (?:hit points|hp)\\b"
+  ],
+  "any_drop_to_zero": [
+   "\\b(?:a|another|one|any) (?:hostile )?creature\\b[^.]*\\b(?:drops? to 0|is reduced to 0|dies)\\b"
+  ],
+  "creature_save_failed": [
+   "\\b(?:a|another|one) (?:hostile )?creature\\b[^.]*\\bfails? (?:a|its|the) saving throw\\b"
+  ],
+  "creature_save_succeeded": [
+   "\\b(?:a|another|one) (?:hostile )?creature\\b[^.]*\\bsucceeds? on (?:a|its|the) saving throw\\b"
+  ],
+  "own_turn_start": [
+   "^(?:at|on) the (?:start|beginning) of (?:each of |every )?(?:your|the reactor's) turns?$",
+   "^(?:when|whenever|as) you (?:begin|start) your turn$",
+   "^your turn (?:begins|starts)$",
+   "^at your turn start$"
+  ]
+ },
+ "limits": {
+  "note": "Owner-editable (2026-09-26, 'make sure the mechanics aren't damaged'): checkable limits parsed out of a reaction's printed trigger alongside its kind, in combat/reaction_triggers.py. save_abilities matches a named ability immediately before 'saving throw' (a bare 'saving throw' or 'the selected saving throw' names none, so the row is unrestricted). damage_types matches any of these words anywhere in the trigger; used only by damaged/ally_damaged/drop_to_zero/bloodied rows -- the incoming damage type is unknown to a hit/attacked/missed row (no damage has been rolled yet), so it is never enforced there. conditions must stay the same set of words as the condition_gained pattern above (block_condition passes the lowercased condition name).",
+  "save_abilities": {
+   "strength": "STR",
+   "dexterity": "DEX",
+   "constitution": "CON",
+   "intelligence": "INT",
+   "wisdom": "WIS",
+   "charisma": "CHA"
+  },
+  "damage_types": [
+   "acid",
+   "cold",
+   "fire",
+   "force",
+   "lightning",
+   "necrotic",
+   "poison",
+   "psychic",
+   "radiant",
+   "thunder",
+   "bludgeoning",
+   "piercing",
+   "slashing"
+  ],
+  "conditions": [
+   "frightened",
+   "poisoned",
+   "charmed",
+   "restrained",
+   "grappled",
+   "stunned",
+   "prone",
+   "unconscious",
+   "blinded",
+   "deafened",
+   "paralyzed",
+   "incapacitated",
+   "exhausted"
+  ]
+ },
+ "note_own": "Owner 2026-09-26 ('we need the different resources to be generated'): own_hit / own_kill / own_save_failed are the character's own acts -- mostly a Sphere's or Foundation's resource generation -- run from typed_executor (block_attack, _deal, block_save) through typed_reactions.on_own_event. own_turn_start (auto/paths-b 2026-10-04, 'Immortal of Qi: at the start of each of your turns, regain 5 Qi' never fired) is the same seam for a printed trigger that is ONLY the reactor's own turn beginning: combat/typed_reactions.py's on_turn_start runs it, and a free (free: true) row costs no Reaction, which is how a printed resource generator ('regain', 'recover') on your own turn start runs. Its patterns are anchored at both ends on purpose: a turn-start moment that also names something the table cannot check (mounting, wielding an approved weapon, a prepared Counterstrike expiring, being Prone) still stays 'unsupported' and is the GM's, instead of firing every single turn."
+}
