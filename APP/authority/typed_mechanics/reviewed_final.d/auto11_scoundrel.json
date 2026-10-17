@@ -1,0 +1,93 @@
+{
+ "schema": "TianxiaFoundry.TypedMechanicReview.v1",
+ "mechanics": {
+  "TAL_SCOUNDREL_BOB_AND_WEAVE": {
+   "text_sha256": "225d8795436aaf17e96662e2991b35aac72a99e8f068a1a7154cf63cfabf1d75",
+   "effects": [
+    {
+     "type": "cover_anchor",
+     "applies_to": "self",
+     "evidence": "Choose one qualifying ally or object as your cover anchor. You gain Half Cover while you remain adjacent to that anchor and it remains capable of plausibly covering at least half your body.",
+     "origin": "reviewed"
+    }
+   ],
+   "riders": [
+    "As a Bonus Action with no resource cost, choose one willing adjacent ally or adjacent object that can cover at least half your body. You gain Half Cover (+2 AC and +2 to Dexterity saving throws) until the start of your next turn. The chosen ally spends no action and gains no benefit.",
+    "Your Half Cover ends early when you are no longer adjacent to the anchor, it is destroyed or removed, or it can no longer cover half your body. Returning beside it does not restore the cover; use Bob and Weave again to choose an anchor. An object used as an anchor needs the Game Master's confirmation."
+   ],
+   "why": "Almost the whole printed talent runs in combat/ext/scoundrel_riders.py. Its three printed steps are asked through combat/ext/needle.py rather than assumed: which adjacent ally is the anchor (\"one qualifying ally\"), whether that ally agrees (\"one willing adjacent ally\"; an AI ally agrees to an ally and refuses an enemy), and whether it can really cover half the user's body (\"must plausibly cover at least half your body\"). The shared directional_cover provider then gives Half Cover to every attack that crosses a sight line while that anchor is still beside the bearer, still present, and still able to stand in it -- walking away, being destroyed or removed, or being Incapacitated ends it, and using the talent again is the only way to change the anchor. The chosen ally spends no Action and gains nothing by construction. What is left for the GM is the one alternative the printed Requirement also allows and this table has no representation for: an adjacent object as the anchor.",
+   "reviewed_by": "opencode AUTO11 2026-10-04"
+  },
+  "TAL_SCOUNDREL_QUICK_THIEVERY": {
+   "text_sha256": "292a97e98cbbf6d0a568331986f65f97cc894e440e04222528b34e40ce99a729",
+   "effects": [],
+   "riders": [],
+   "why": "Both printed lines run at the table. combat/ext/scoundrel_riders.py publishes one Bonus Action per named ability (Dirty Trick and Steal) at that ability's own range and target kind, charges 1 Martial Focus, and offers it at most once per turn. The twin then runs that ability ITSELF rather than an empty imitation of it (combat/ext/scoundrel_riders.py rerun_ability_option): Dirty Trick's own printed result menu is asked and one result is run; Steal, which is a single Scoundrel Check with no options, runs its own typed row whole, object menu and all. Either way the effects run under the ability's own typed source, so its printed results, saves, riders and Difficult-Object branch stay its own, while the triggering action keeps its cost, economy and chosen target. The modifier block keeps its printed shape (targets, when, limit, martial_focus) and stays empty because the action, not an effect row, is what the talent adds.",
+   "reviewed_by": "opencode AUTO11 2026-10-04"
+  },
+  "TAL_SCOUNDREL_STEAL_MOMENTUM": {
+   "text_sha256": "ef0147e616c89bec07bd6f119487a37fb8fb6a6002076cc6bd15817b1d2234e6",
+   "effects": [],
+   "riders": [],
+   "why": "The whole printed talent already runs in combat/ext/steal_momentum.py: as a creature it perceives within 60 feet has travelled its first 5 feet it is asked whether to spend its Reaction and 1 Martial Focus (once per round), the Scoundrel Check is made against that creature's Cultivation Save DC (the shared Scoundrel check, combat/ext/tabik_scoundrel.py check_against_dc, which also honours Exploited Opening and the printed check modes), and a success ends the triggering movement there while the thief takes over the distance the target lost without provoking Opportunity Attacks; a failure lets the target move on and gives the thief 10 feet the same way. Teleports and supernatural movement stay on their own riders. Nothing is left for the GM. Its ownership row is combat/rules/feature_blocks.d/lock8_movement.json (\"block\": \"steal_momentum\").",
+   "reviewed_by": "opencode AUTO11 2026-10-04"
+  },
+  "TAL_SCOUNDREL_SCOUNDREL_TRAINING": {
+   "text_sha256": "87322e3c082b22fa5c7c66a7a09216b71d0f74f1cc39bf1af455baf6590189fb",
+   "effects": [],
+   "riders": [],
+   "why": "The combat half already runs: every Scoundrel rolls its Scoundrel Checks with proficiency in Dexterity (Sleight of Hand), whether or not the sheet happens to list the skill (combat/ext/tabik_scoundrel.py scoundrel_check takes the better of the sheet's skill and its own Dexterity modifier plus Proficiency Bonus). The other two lines -- choosing a bonus Mortal Realm Scoundrel talent and a bonus Mortal Realm Trick talent when it is already proficient -- are character building rather than a fight mechanic, so they belong to the sheet and stay text; they produce no rule line in a fight. Nothing is left for the GM at the table.",
+   "reviewed_by": "opencode AUTO11 2026-10-04"
+  },
+  "TAL_SCOUNDREL_STEAL_EQUIPMENT": {
+   "text_sha256": "d70f33e343e0cd3e7d3726cc861218219581515f8aa4d08ed2003f56d04ca28d",
+   "effects": [],
+   "riders": [
+    "A fused object, soul-bound item, artifact, spiritually protected treasure, or scene-defining object may resist with an opposed Cultivation Check or another appropriate defense.",
+    "At Core Formation, stealing a complete suit of armor is intentionally possible. The technique is audacious, supernatural, and highly visible."
+   ],
+   "why": "The talent used to compile to nothing at all: its only typed row was a disadvantage carrying the free text \"on the Steal check\", which no reader consults, so a character who took it got no button, no Disadvantage and no cost. It is now its own Action (combat/ext/scoundrel_riders.py steal_equipment_actions): 1 Martial Focus as printed, and the shared Scoundrel Check with the printed Disadvantage as one more source of that roll -- so it cancels an Advantage the way any other source does, while \"Master Thief does not remove this Disadvantage\" holds because nothing asks Master Thief to waive it. The worn thing is chosen before the check (steal_object_choice, the same seam plain Steal uses, limited to what the target is actually wearing), and only a successful check moves it: into a free hand, which then really is occupied by it, or into a legal unoccupied square the table is asked to choose. The printed allowance is enforced, not merely described: \"attempt to remove one worn item\" is one worn item, so this talent never takes two even with Cleaned Out's second slot, and it removes rather than plants, so one of the thief's own objects is never on its menu. The two riders below are the higher-authority contest (\"may resist with an opposed Cultivation Check or another appropriate defense\", which this table has no soul-bound objects, artifacts or fused objects to resist with) and a statement of intent about Core Formation, not a rule the table resolves.",
+   "reviewed_by": "opencode AUTO11 2026-10-04"
+  },
+  "TAL_SCOUNDREL_CLEANED_OUT": {
+   "text_sha256": "8c2b4cf82f3170f3c0d3163718288a9a697f36a7f5ee27fe9ac0b1b1259b8186",
+   "effects": [],
+   "riders": [],
+   "why": "\"When you succeed on Steal, take or reposition up to two accessible objects instead of one. Resolve both objects through the same successful check. You still need free hands or legal spaces for the objects.\" The talent's own ownership row (combat/rules/feature_blocks.d/auto11_scoundrel.json, \"kind\": \"cleaned_out\") widens the one object the printed Steal menu already asks for to two slots (Steal Equipment's own \"one worn item\" is not widened: that talent removes a single worn thing and prints a single place for it to appear), and both are resolved by that same single successful Scoundrel Check, exactly as printed. \"You still need free hands or legal spaces\" is enforced per object: a pick that has no free hand is put into a legal unoccupied square the table is asked to choose (the printed alternative), and if no square is chosen that object stays where it was and the log line says so. The reposition half of \"take or reposition\" is the rider below. A2SCOUNDRE: the new Steal menu resolves repositioning for each chosen object; duplicate identities in two result choices move once. Each object has its own destination question and persists across cold service reload.",
+   "reviewed_by": "opencode AUTO11 2026-10-04"
+  },
+  "TAL_SCOUNDREL_SWITCHEROO": {
+   "text_sha256": "61cf499fc112f293b5cca77978818af12c532433dccb2735ea9229152e7c10d8",
+   "effects": [],
+   "riders": [
+    "Place the replacement in an empty hand, pocket, pouch, sleeve, or another accessible location on the target: a planted object goes into the target's hands, so a pocket, pouch, sleeve or any other location on that creature is the GM's ruling.",
+    "one different Tiny object you hold or plausibly carry: only the ordinary things the thief really has on it are on offer and only if the fighter answers that it is Tiny, so something it only plausibly carries (in a pack set down nearby, or in a chest) is the GM's ruling."
+   ],
+   "why": "\"When you succeed on Steal, replace the stolen object with one different Tiny object you hold or plausibly carry. Place the replacement in an empty hand, pocket, pouch, sleeve, or another accessible location on the target.\" The plant half of the printed Steal object menu (combat/ext/scoundrel_riders.py steal_object_choice, through the scoundrel_object_choice seam) offers exactly the ordinary, non-weapon things the thief has on it right now and never a weapon, and asks the printed size question (\"plant one Tiny object\", which this table cannot read off an item: the compiled bundle carries a key, a name, a weight and whether the item is worn or a weapon, and nothing else), so an object the fighter does not call Tiny is not planted at all. The chosen one is handed over as this table's own record of gear naming the target, so the object is in the target's hands. \"Switcheroo does not create the replacement object\" holds because the object is one the thief carried in, and a volatile, alchemical, poisoned or talismanic item keeps its own preparation, trigger, activation and consumption rules because the table applies only the handover. The two printed limits this table cannot resolve are the riders below.",
+   "reviewed_by": "opencode AUTO11 2026-10-04"
+  },
+  "TAL_SCOUNDREL_FANCY_FOOTWORK": {
+   "text_sha256": "7f308ce85274759fd3515a5d8d7f0c45c08e22d79d673ca468f474141fa2ff21",
+   "effects": [],
+   "riders": [],
+   "why": "The forced movement is the modifier's own typed row (combat/ext/tabik_scoundrel.py's scoundrel_check success branch runs it; \"against a creature no more than one size larger than you\" is the modifier's printed precondition), and \"This forced movement does not provoke Opportunity Attacks\" is already how the table resolves every push and pull: forced movement moves the target itself (combat/typed_executor.py _push), which never reaches gate2_engine._resolve_leave_reach, the one place an Opportunity Attack is offered. Nothing is left for the GM.",
+   "reviewed_by": "opencode AUTO11 2026-10-04"
+  },
+  "TAL_SCOUNDREL_IMPOSSIBLE_FASTENING": {
+   "text_sha256": "fb1e5e489b7b392f787cd8d49d6329e8c1d484a8a0a6fc49dd8bea0a7c51e6b6",
+   "effects": [],
+   "riders": [],
+   "why": "Both printed lines run at the table. The core goes through the general condition_state expiry seam (combat/ext/scoundrel_riders.py impossible_fastening): a Dirty Trick hindrance that would end at the start of your next turn is extended to 1 minute for 1 Martial Focus, never for Prone or Exploited Opening, exactly as printed. The record of what was extended is bound to that one condition and consumed when it lands, so a later, unextended condition on the same creature in the same turn never earns the undo. \"The target or an adjacent creature can take the Utilize action to end the hindrance early\" reuses the table's own Utilize action (combat/ext/utilize_end.py, registered through its public register_ending): the extended hindrances are tagged with one marker naming exactly those instances, so the Action is offered against that creature from either side and undoes the fastening by hand without ending any unrelated blindness or deafness.",
+   "reviewed_by": "opencode AUTO11 2026-10-04"
+  },
+  "TAL_SCOUNDREL_MASTER_THIEF": {
+   "text_sha256": "0e1132bc973ea51ee2058e23fb5145af9f0231668e2c7de2a455d9f787fd8802",
+   "effects": [],
+   "riders": [
+    "Master Thief does not make a soul-bound object, artifact, body part, or complete suit of worn armor ordinarily accessible. The worn-suit half is enforced by the Steal object menu (combat/ext/scoundrel_riders.py _unreachable), for a thief who owns this talent exactly as for one who does not; a soul-bound object, an artifact and a body part have no representation in this table, so those remain the GM's ruling."
+   ],
+   "why": "The printed Disadvantage waiver runs through the steal_check_waiver seam the Scoundrel Check consults before it rolls (combat/ext/scoundrel_riders.py waive_steal_disadvantage): asked, 1 Martial Focus, spent only when it is waived, and only when the object actually chosen is one the printed words name (an object that is worn, or a two-handed weapon), because the check passes that answer in its effect row as \"object_difficult\". Catching a disarmed object instead of dropping it is what the table's own disarm rule already does (combat/ext/tabik_scoundrel.py steal_weapon puts the weapon into the thief's free hand). The talent's last printed line limits what Steal can reach, and the table now reads it rather than leaving it to the GM: a complete suit of worn armor is not on the printed object's menu for anybody who has only Steal, Master Thief included, because the line says in as many words that this talent does not make one ordinarily accessible. Only Steal Equipment's own printed list names \"suit of armor\", so only that talent offers one.",
+   "reviewed_by": "opencode AUTO11 2026-10-04"
+  }
+ }
+}
