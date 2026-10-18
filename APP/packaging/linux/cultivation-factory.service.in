@@ -1,0 +1,20 @@
+[Unit]
+Description=Tianxia CultivationFactory (local owner service)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=@REPO_ROOT@
+ExecStart=@REPO_ROOT@/APP/packaging/linux/run-factory.sh
+Restart=on-failure
+RestartSec=3
+UMask=0077
+NoNewPrivileges=true
+# PrivateTmp is deliberately off. On a user manager it creates a private user
+# namespace, and from there the kernel refuses to resolve another process's
+# socket descriptors, so the Local AI identity proof (socket ownership of the
+# llama.cpp listener) can never succeed and the guided controller route is
+# refused. Scratch stays off tmpfs through TMPDIR in run-factory.sh instead.
+
+[Install]
+WantedBy=default.target
