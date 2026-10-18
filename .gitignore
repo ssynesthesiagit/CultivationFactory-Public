@@ -1,0 +1,118 @@
+# Large sealed artifacts and archives
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+*.tgz
+*.iso
+*.exe
+!APP/vendor/lemonade/lemond.exe
+!APP/vendor/lemonade/lemonade.exe
+APP/vendor/lemonade-embeddable-*/
+*.msi
+*.artifact
+
+# Tianxia owner and runtime data
+UserData/
+OwnerTestData/
+*.tianxia-project.zip
+*.tianxia-character.zip
+*.sqlite
+*.sqlite3
+*.db
+*.db-wal
+*.db-shm
+
+# Secrets and credentials
+.gh-cli-auth/
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+*secret*
+*credential*
+*api_key*
+*token*
+*oauth*
+*cookies*
+*storage-state*
+*auth-state*
+*.jks
+*.keystore
+*.kubeconfig
+
+# ...but the tabletop's "token" files are the round pictures drawn for creatures, not credentials, so the
+# secrets rule above (which matches any path containing "token") would silently drop them. Name them back
+# in. These are game art and their regression test; none of them holds a secret.
+!APP/static/tabletop/summon_tokens/
+!APP/static/tabletop/summon_tokens/**
+!APP/tests/test_summon_token_images.py
+
+# Python / test / build caches
+.venv/
+runtime_data/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+/.test-gate-work/
+/artifacts/test-gates/
+build/
+dist/
+*.egg-info/
+
+# Node / browser / native build artifacts
+node_modules/
+playwright-report/
+test-results/
+browser-profile/
+browser_profiles/
+chromium-profile/
+downloads/
+screenshots/
+WindowsBuildOutput/
+*.log
+
+# The fixed bundled Lemonade runtime is source-controlled.  Its mutable
+# runtime cache/backends/models/logs stay local and must not be checkpointed.
+!APP/vendor/lemonade/LICENSE
+!APP/vendor/lemonade/resources/
+!APP/vendor/lemonade/resources/**
+APP/vendor/lemonade/config.json
+APP/vendor/lemonade/bin/
+APP/vendor/lemonade/models/
+APP/vendor/lemonade/logs/
+
+# Local editor and OS state
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary workspaces
+Temp/
+tmp/
+work/
+workspace/
+CHECKPOINTS_LOCAL/
+retained_match/
+private_evidence/
+evidence_local/
+exports_local/
+.pytest-tmp/
+.pytest_cache/
+GITLEAKS_REPORT.json
+
+# Private local coordination, retained acceptance evidence, and runtime captures
+# These must remain available to the owner but are not publication-safe inputs.
+APP/retained_evidence/
+.gm-screen-build*/
+docs/handoffs/private/
+
+# Owner-supplied Tianxia rules sources gathered for local work; copyright-controlled, never committed
+LocalSources/
