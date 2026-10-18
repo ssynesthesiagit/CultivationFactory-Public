@@ -1,0 +1,116 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "mechanics": {
+
+
+  "ASH_TAL_CINDER_BURST": {
+   "text_sha256": "b9798ef07a0a7e61a9ab96624990a4cff1f7f8252e76825c2af41060fb637f11",
+   "reviewed_by": "AUTO75 2026-10-05",
+   "riders": []
+  },
+
+
+
+  "tianxia.talent.ash.heaven_cremating_ashstorm": {
+   "text_sha256": "b064b3a52df8f1b17fa467187054440eef0151af5004671cbeffe47d0e577f12",
+   "reviewed_by": "AUTO75 2026-10-05",
+   "effects": [
+    {
+     "type": "save",
+     "ability": "con",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 12,
+        "count_formula": null,
+        "sides": 10,
+        "bonus": null,
+        "bonus_formula": null
+       },
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [
+        "fire",
+        "necrotic",
+        "psychic"
+       ],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "Take 12d10 Fire, Necrotic, or Psychic damage",
+       "origin": "model_v2"
+      },
+      {
+       "type": "condition",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "smothered",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "until_end_of_your_next_turn",
+       "evidence": "and become Smothered until the end of your next turn",
+       "origin": "AUTO75"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "Successful Save: Take half damage",
+       "origin": "model_v2"
+      },
+      {
+       "type": "reaction_denied",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "until_start_of_next_turn",
+       "evidence": "cannot take Reactions until the start of your next turn.",
+       "origin": "model_v2"
+      }
+     ],
+     "origin": "model_v2"
+    },
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 120,
+     "on": "",
+     "duration": "one_minute",
+     "evidence": "The area becomes Ash Terrain for 1 minute.",
+     "origin": "model_v2"
+    }
+   ],
+   "riders": []
+  }
+
+
+
+ }
+}
