@@ -1,0 +1,54 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "mechanics": {
+  "tianxia.path.body_refining.feature.iron_fist": {
+   "text_sha256": "fe06f0dff468a0c537662ac1fa46cef012c542dae4229c012550a207a379e32d",
+   "reviewed_by": "Codex owner edit 2026-09-30",
+   "effects": [
+    {
+     "type": "damage", "applies_to": "target",
+     "dice": {"count": 1, "count_formula": null, "sides": 8, "bonus": null, "bonus_formula": null},
+     "flat": 0, "formula": "key_ability_modifier",
+     "damage_types": ["bludgeoning", "piercing", "slashing"],
+     "ability": "none", "condition": "none", "distance_ft": 0, "on": "", "duration": "instant",
+     "evidence": "1d8 + Strength, Dexterity or Constitution modifier", "origin": "model"
+    },
+    {
+     "type": "attack", "attack_kind": "cultivation_melee", "count": 1,
+     "on_hit": [{
+      "type": "damage", "applies_to": "target",
+      "dice": {"count": 1, "count_formula": null, "sides": 8, "bonus": null, "bonus_formula": null},
+      "flat": 0, "formula": "key_ability_modifier",
+      "damage_types": ["bludgeoning", "piercing", "slashing"],
+      "ability": "none", "condition": "none", "distance_ft": 0, "on": "", "duration": "instant",
+      "evidence": "1d8 + Strength, Dexterity or Constitution modifier", "origin": "model"
+     }],
+     "on_miss": [], "evidence": "make the attack", "origin": "structure"
+    }
+   ],
+   "options": null,
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1", "source": "model_v2",
+    "targets": ["unarmed strike"], "scope": "named", "when": "use", "optional": false,
+    "limit": "none", "group": "", "precondition": "",
+    "effects": [{
+     "type": "damage", "applies_to": "target",
+     "dice": {"count": 1, "count_formula": null, "sides": 8, "bonus": null, "bonus_formula": null},
+     "flat": 0, "formula": "key_ability_modifier",
+     "damage_types": ["bludgeoning", "piercing", "slashing"],
+     "ability": "none", "condition": "none", "distance_ft": 0, "on": "", "duration": "instant",
+     "evidence": "1d8 + Strength, Dexterity or Constitution modifier", "origin": "model_v2"
+    }]
+   },
+   "activation": {"economy": "passive", "trigger": null, "requirement": null, "source": "model_v2", "modifies": null},
+   "riders": [
+    "Choose Strength, Dexterity or Constitution separately for each attack. You may use the chosen ability for both the attack roll and damage roll.",
+    "Your unarmed strike may deal Bludgeoning, Piercing, or Slashing damage. Choose the damage type when you make the attack.",
+    "For Tianxia features, an Iron Fist attack is both an unarmed strike and a Body Refining melee attack. It does not become a held weapon or an unattended object."
+   ],
+   "range": null, "area": null, "cost": [], "use_limit": null,
+   "duration": {"kind": "instant", "amount": null, "concentration": false},
+   "target": null, "after": null, "min_cp_cost": null
+  }
+ }
+}
