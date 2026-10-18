@@ -1,0 +1,3477 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "mechanics": {
+  "POISON_BASE_DELIVER_THE_DOSE": {
+    "effects": [
+      {
+        "type": "attack",
+        "attack_kind": "cultivation_ranged",
+        "count": 1,
+        "on_hit": [
+          {
+            "type": "damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 1,
+              "count_formula": null,
+              "sides": 8,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "key_ability_modifier",
+            "damage_types": [
+              "poison",
+              "acid"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "the target takes Poison or Acid damage equal to the listed dice + your Path key ability modifier, chosen when you attack.",
+            "origin": "model_v2",
+            "dice_by_cl": [
+              [
+                1,
+                4,
+                1,
+                8
+              ],
+              [
+                5,
+                9,
+                2,
+                8
+              ],
+              [
+                10,
+                14,
+                3,
+                8
+              ],
+              [
+                15,
+                20,
+                4,
+                8
+              ]
+            ]
+          },
+          {
+            "type": "poison_delivery_save",
+            "effects": [
+              {
+                "type": "save",
+                "ability": "con",
+                "applies_to": "target",
+                "on_fail": [
+                  {
+                    "type": "mark",
+                    "mark": "Dose Mark",
+                    "applies_to": "target",
+                    "duration": {
+                      "kind": "minutes",
+                      "amount": 1
+                    }
+                  },
+                  {
+                    "type": "poison_next_check",
+                    "evidence": "Disadvantage on its next ability check before the start of your next turn."
+                  }
+                ],
+                "on_success": []
+              }
+            ]
+          }
+        ],
+        "on_miss": [],
+        "origin": "model_v2"
+      }
+    ],
+    "options": null,
+    "modifier": null,
+    "activation": {
+      "economy": "action",
+      "trigger": null,
+      "requirement": null,
+      "source": "printed_action_type"
+    },
+    "riders": [
+      "If you deliver the dose through a weapon attack, make the weapon attack normally instead",
+      "Deliver the Dose cannot place Dose Marks on creatures immune to the delivery method, damage type, or Poison sphere effect used",
+      "Delivery through objects or a specific coated weapon is not automated yet."
+    ],
+    "range": {
+      "kind": "feet",
+      "feet": 60
+    },
+    "area": null,
+    "cost": [],
+    "use_limit": null,
+    "duration": {
+      "kind": "instant",
+      "amount": null,
+      "concentration": false
+    },
+    "target": {
+      "text": "One creature or object"
+    },
+    "text_sha256": "1eedc967cd6e5d3e01c24f4d95716cbf644e534492bb1649a1c8942f3c08c421",
+    "reviewed_by": "Astra printed-text review sw-monkey_style; riders-lane10 2026-09-29 (riders); Codex owner edit 2026-09-30; Codex AUTO44 2026-10-05",
+    "after": null,
+    "min_cp_cost": null
+  },
+  "tianxia.talent.poison.venomous_strike": {
+    "effects": [
+      {
+        "type": "condition",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "none",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "poisoned",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "until_start_of_next_turn",
+        "evidence": "The target becomes Poisoned until the start of its next turn",
+        "origin": "model_v2"
+      },
+      {
+        "type": "extra_damage",
+        "applies_to": "target",
+        "dice": {
+          "count": 1,
+          "count_formula": null,
+          "sides": 6,
+          "bonus": null,
+          "bonus_formula": null
+        },
+        "flat": 0,
+        "formula": "none",
+        "damage_types": [
+          "acid",
+          "poison"
+        ],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "instant",
+        "evidence": "Mortal: +1d6",
+        "origin": "model",
+        "dice_by_cl": [
+          [
+            1,
+            10,
+            1,
+            6
+          ],
+          [
+            11,
+            16,
+            2,
+            6
+          ],
+          [
+            17,
+            20,
+            3,
+            6
+          ]
+        ]
+      }
+    ],
+    "options": null,
+    "modifier": {
+      "schema": "TianxiaFoundry.TypedModifier.v1",
+      "source": "model_v2",
+      "targets": [
+        "Deliver the Dose"
+      ],
+      "scope": "named",
+      "when": "hit",
+      "optional": true,
+      "limit": "once_per_turn",
+      "group": "",
+      "precondition": "",
+      "extra_cp": 1,
+      "effects": [
+        {
+          "type": "extra_damage",
+          "applies_to": "target",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 6,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "poison",
+            "acid"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "The attack deals additional Poison or Acid damage. Mortal: +1d6Core Formation: +2d6Nascent Soul: +3d6",
+          "origin": "model_v2",
+          "dice_by_cl": [
+            [
+              1,
+              10,
+              1,
+              6
+            ],
+            [
+              11,
+              16,
+              2,
+              6
+            ],
+            [
+              17,
+              20,
+              3,
+              6
+            ]
+          ]
+        },
+        {
+          "type": "save",
+          "ability": "con",
+          "applies_to": "target",
+          "on_fail": [
+            {
+              "type": "condition",
+              "condition": "poisoned",
+              "applies_to": "target",
+              "expires_on": "START_OF_SELF_NEXT_TURN"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "disadvantage",
+              "applies_to": "target",
+              "on": "ability checks",
+              "expires_on": "START_OF_SOURCE_NEXT_TURN",
+              "evidence": "Disadvantage on its next ability check before the start of your next turn"
+            }
+          ]
+        }
+      ]
+    },
+    "activation": {
+      "economy": "passive",
+      "trigger": "You hit with Deliver the Dose, a coated weapon, a natural weapon, or an unarmed strike carrying your Poison cultivation",
+      "requirement": null,
+      "source": "model_v2",
+      "modifies": null
+    },
+    "riders": [],
+    "range": null,
+    "area": null,
+    "cost": [
+      [
+        {
+          "resource": "cp",
+          "amount": 1,
+          "amount_formula": null
+        }
+      ]
+    ],
+    "use_limit": "once_per_turn",
+    "duration": {
+      "kind": "instant",
+      "amount": null,
+      "concentration": false
+    },
+    "target": null,
+    "text_sha256": "cc21073d3434df37fde298bc5113e269b878903efc15d4623f35482d4282ce00",
+    "reviewed_by": "Astra printed-text review sw-monkey_style; Codex AUTO44 2026-10-05; Codex A2POISON 2026-10-10 delivery completion"
+  },
+  "tianxia.talent.poison.toxic_cloud": {
+   "effects": [
+    {
+     "type": "zone",
+     "triggers": [
+      {
+       "on": [
+        "enter",
+        "start"
+       ],
+       "who": "any",
+       "effects": [
+        {
+         "type": "save",
+         "recipient_text": "When a creature enters the area for the first time on a turn or starts its turn there, it makes a Constitution saving throw.",
+         "applies_to": "creatures_in_area",
+         "ability": "con",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "damage",
+           "applies_to": "creatures_in_area",
+           "dice": {
+            "count": 3,
+            "count_formula": null,
+            "sides": 6,
+            "bonus": null,
+            "bonus_formula": null
+           },
+           "flat": 0,
+           "formula": "none",
+           "damage_types": [
+            "poison",
+            "acid"
+           ],
+           "ability": "none",
+           "condition": "none",
+           "distance_ft": 0,
+           "on": "",
+           "duration": "instant",
+           "evidence": "The creature takes Poison or Acid damage",
+           "origin": "model_v2",
+           "dice_by_cl": [
+            [
+             1,
+             10,
+             3,
+             6
+            ],
+            [
+             11,
+             16,
+             5,
+             6
+            ],
+            [
+             17,
+             20,
+             7,
+             6
+            ]
+           ]
+          },
+          {
+           "type": "condition",
+           "applies_to": "creatures_in_area",
+           "flat": 0,
+           "formula": "none",
+           "damage_types": [],
+           "ability": "none",
+           "condition": "poisoned",
+           "distance_ft": 0,
+           "on": "",
+           "duration": "until_start_of_next_turn",
+           "evidence": "becomes Poisoned until the start of its next turn",
+           "origin": "model_v2",
+           "expires_on": "START_OF_SELF_NEXT_TURN"
+          }
+         ],
+         "on_success": [
+          {
+           "type": "half_damage",
+           "applies_to": "creatures_in_area",
+           "dice": {
+            "count": 3,
+            "count_formula": null,
+            "sides": 6,
+            "bonus": null,
+            "bonus_formula": null
+           },
+           "flat": 0,
+           "formula": "none",
+           "damage_types": [
+            "poison",
+            "acid"
+           ],
+           "ability": "none",
+           "condition": "none",
+           "distance_ft": 0,
+           "on": "",
+           "duration": "instant",
+           "evidence": "The creature takes half damage and is not Poisoned",
+           "origin": "model_v2",
+           "dice_by_cl": [
+            [
+             1,
+             10,
+             3,
+             6
+            ],
+            [
+             11,
+             16,
+             5,
+             6
+            ],
+            [
+             17,
+             20,
+             7,
+             6
+            ]
+           ]
+          }
+         ],
+         "origin": "model_v2"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [
+    "Toxic Cloud is an alternate delivery method for Deliver the Dose. Talents that modify Deliver the Dose may modify Toxic Cloud if they make sense for an area effect and the GM approves."
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 60
+   },
+   "area": {
+    "shape": "sphere",
+    "size_ft": 15,
+    "centered_on_self": false
+   },
+   "cost": [
+    [
+     {
+      "resource": "cp",
+      "amount": 3,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   },
+   "target": null,
+   "text_sha256": "370f393ad6c23eed3de5041261deef0e1e49486a6101774c1cbf4c1e1bec5f16",
+   "reviewed_by": "Astra printed-text review sw-monkey_style; riders-lane10 2026-09-29 (riders)"
+  },
+  "tianxia.talent.poison.corrosive_dose": {
+   "effects": [
+    {
+     "type": "extra_damage",
+     "applies_to": "target",
+     "dice": {
+      "count": 2,
+      "count_formula": null,
+      "sides": 6,
+      "bonus": null,
+      "bonus_formula": null
+     },
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [
+      "acid"
+     ],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "Add Acid damage to the damage roll. Foundation: +2d6",
+     "origin": "model_v2",
+     "dice_by_cl": [
+      [
+       1,
+       10,
+       2,
+       6
+      ],
+      [
+       11,
+       16,
+       3,
+       6
+      ],
+      [
+       17,
+       20,
+       4,
+       6
+      ]
+     ]
+    },
+    {
+     "type": "save",
+     "ability": "con",
+     "applies_to": "target",
+     "on_fail": [
+      {
+       "type": "ac_bonus",
+       "applies_to": "target",
+       "flat": -1,
+       "expires_on": "START_OF_SOURCE_NEXT_TURN"
+      },
+      {
+       "type": "suppress_resistance",
+       "applies_to": "target",
+       "damage_types": [
+        "poison",
+        "acid"
+       ],
+       "deferred": true,
+       "evidence": "one ordinary Resistance to Poison or Acid damage is suppressed"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "next_attack_ac",
+       "applies_to": "target",
+       "amount": -1,
+       "expires_on": "START_OF_SOURCE_NEXT_TURN"
+      }
+     ]
+    }
+   ],
+   "options": null,
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "model_v2",
+    "targets": [
+     "Deliver the Dose"
+    ],
+    "scope": "named",
+    "when": "hit",
+    "optional": true,
+    "limit": "none",
+    "group": "Poison",
+    "precondition": "",
+    "extra_cp": 2,
+    "damage_type": "acid",
+    "effects": [
+     {
+      "type": "extra_damage",
+      "applies_to": "target",
+      "dice": {
+       "count": 2,
+       "count_formula": null,
+       "sides": 6,
+       "bonus": null,
+       "bonus_formula": null
+      },
+      "flat": 0,
+      "formula": "none",
+      "damage_types": [
+       "acid"
+      ],
+      "ability": "none",
+      "condition": "none",
+      "distance_ft": 0,
+      "on": "",
+      "duration": "instant",
+      "evidence": "Add Acid damage to the damage roll. Foundation: +2d6",
+      "origin": "model_v2",
+      "dice_by_cl": [
+       [
+        1,
+        10,
+        2,
+        6
+       ],
+       [
+        11,
+        16,
+        3,
+        6
+       ],
+       [
+        17,
+        20,
+        4,
+        6
+       ]
+      ]
+     },
+     {
+      "type": "save",
+      "ability": "con",
+      "applies_to": "target",
+      "on_fail": [
+       {
+        "type": "ac_bonus",
+        "applies_to": "target",
+        "flat": -1,
+        "expires_on": "START_OF_SOURCE_NEXT_TURN"
+       },
+       {
+        "type": "suppress_resistance",
+        "applies_to": "target",
+        "damage_types": [
+         "poison",
+         "acid"
+        ],
+        "deferred": true,
+        "evidence": "one ordinary Resistance to Poison or Acid damage is suppressed"
+       }
+      ],
+      "on_success": [
+       {
+        "type": "next_attack_ac",
+        "applies_to": "target",
+        "amount": -1,
+        "expires_on": "START_OF_SOURCE_NEXT_TURN"
+       }
+      ]
+     }
+    ]
+   },
+   "activation": {
+    "economy": "passive",
+    "trigger": "When you deal Poison or Acid damage with Deliver the Dose or a Poison talent",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "#### Corrosive Dose\nWhen you deal Poison or Acid damage with Deliver the Dose or a Poison talent, you may spend 2 CP to make the venom corrosive.\nAdd Acid damage to the damage roll.\nFoundation: +2d6Core Formation: +3d6Nascent Soul: +4d6\nThe target makes a Constitution saving throw.\nFailed Save: Until the start of your next turn, the target’s AC is reduced by 1, and one ordinary Resistance to Poison or Acid damage is suppressed.\nSuccessful Save: The target’s AC is reduced by 1 against the next attack targeting it before the start of your next turn.\nCorrosive Dose cannot suppress Immunity, Legendary defenses, Secret defenses, or an entire defensive Path."
+   ],
+   "range": null,
+   "area": null,
+   "cost": [],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "text_sha256": "d966b2c4f0e688a40fd8747b04dffef7e1cbf247543950dea68882f4464b4149",
+   "reviewed_by": "Astra printed-text review sw-monkey_style"
+  },
+  "tianxia.talent.poison.deepen_the_burden": {
+    "text_sha256": "d6ce982f9605693c953390575e489ec7259498b4db7600ca23a21625d16c7514",
+    "reviewed_by": "claude 2026-09-28; riders-lane10 2026-09-29 (riders); Codex AUTO44 2026-10-05",
+    "effects": [
+      {
+        "type": "spend_mark",
+        "mark": "Dose Mark",
+        "count": 2,
+        "applies_to": "target",
+        "evidence": "convert 2 Dose Marks into 1 Toxin Burden",
+        "origin": "claude"
+      },
+      {
+        "type": "spend_resource",
+        "applies_to": "self",
+        "flat": 1,
+        "formula": "none",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "instant",
+        "evidence": "you may spend 1 CP",
+        "origin": "model_v2"
+      },
+      {
+        "type": "save",
+        "ability": "con",
+        "dc": "technique_save_dc",
+        "on_fail": [
+          {
+            "type": "mark",
+            "mark": "Toxin Burden",
+            "applies_to": "target",
+            "duration": {
+              "kind": "until_removed"
+            },
+            "evidence": "The Toxin Burden remains until the target finishes a long rest or receives successful treatment",
+            "origin": "claude"
+          }
+        ],
+        "on_success": [
+          {
+            "type": "mark",
+            "mark": "Toxin Burden",
+            "applies_to": "target",
+            "duration": {
+              "kind": "until_end_of_scene"
+            },
+            "evidence": "the Toxin Burden fades at the end of the current scene",
+            "origin": "claude"
+          }
+        ],
+        "evidence": "The target makes a Constitution saving throw",
+        "origin": "model_v2"
+      }
+    ],
+    "riders": [
+      "On a failed save the Burden lasts until a long rest or treatment. On a successful save it ends with the scene. These endings are not tracked yet."
+    ]
+  },
+  "TAL_CHAINS_CHAIN_LASH_BASE": {
+   "text_sha256": "e129e67c61a6fe80c92b1eb393e0140374c9ee4039e5b42bb55d9988e837ca60",
+   "reviewed_by": "auto/methods 2026-10-04: rider lines the engine already resolves retired (see the lane report); every printed line is typed: range, target and cost are the record's own; the attack row carries the Realm damage bands; the five minor link effects are this record's five typed options (Pull / Push / Reduce Speed / Grapple Advantage / Attach a Link), so the closing line only describes the sphere; earlier review: claude 2026-09-28; Codex owner edit 2026-09-30",
+   "effects": [
+    {
+     "type": "attack",
+     "attack_kind": "cultivation_ranged",
+     "count": 1,
+     "origin": "model_v2",
+     "on_hit": [
+      {
+       "type": "damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 1,
+        "count_formula": null,
+        "sides": 8,
+        "bonus": null,
+        "bonus_formula": null
+       },
+       "flat": 0,
+       "formula": "key_ability_modifier",
+       "damage_types": [
+        "bludgeoning",
+        "slashing"
+       ],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "Bludgeoning or Slashing damage equal to the dice below for your Realm + your Path key ability modifier:",
+       "origin": "model_v2",
+       "dice_by_cl": [
+        [
+         1,
+         4,
+         1,
+         8
+        ],
+        [
+         5,
+         9,
+         2,
+         8
+        ],
+        [
+         10,
+         14,
+         3,
+         8
+        ],
+        [
+         15,
+         20,
+         4,
+         8
+        ]
+       ]
+      }
+     ],
+     "on_miss": []
+    }
+   ],
+   "options": [
+    {
+     "label": "Pull 5 Feet",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "origin": "model_v2",
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 1,
+          "count_formula": null,
+          "sides": 8,
+          "bonus": null,
+          "bonus_formula": null
+         },
+         "flat": 0,
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "bludgeoning",
+          "slashing"
+         ],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "Bludgeoning or Slashing damage equal to the dice below for your Realm + your Path key ability modifier:",
+         "origin": "model_v2",
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           8
+          ],
+          [
+           5,
+           9,
+           2,
+           8
+          ],
+          [
+           10,
+           14,
+           3,
+           8
+          ],
+          [
+           15,
+           20,
+           4,
+           8
+          ]
+         ]
+        },
+        {
+         "type": "chains_minor_link",
+         "effects": [
+          {
+           "type": "forced_movement",
+           "applies_to": "target",
+           "flat": 0,
+           "formula": "none",
+           "damage_types": [],
+           "ability": "none",
+           "condition": "none",
+           "distance_ft": 5,
+           "on": "",
+           "duration": "instant",
+           "evidence": "pull the target 5 feet toward you",
+           "origin": "model_options",
+           "direction": "toward"
+          }
+         ]
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Push 5 Feet",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "origin": "model_v2",
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 1,
+          "count_formula": null,
+          "sides": 8,
+          "bonus": null,
+          "bonus_formula": null
+         },
+         "flat": 0,
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "bludgeoning",
+          "slashing"
+         ],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "Bludgeoning or Slashing damage equal to the dice below for your Realm + your Path key ability modifier:",
+         "origin": "model_v2",
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           8
+          ],
+          [
+           5,
+           9,
+           2,
+           8
+          ],
+          [
+           10,
+           14,
+           3,
+           8
+          ],
+          [
+           15,
+           20,
+           4,
+           8
+          ]
+         ]
+        },
+        {
+         "type": "chains_minor_link",
+         "effects": [
+          {
+           "type": "forced_movement",
+           "applies_to": "target",
+           "flat": 0,
+           "formula": "none",
+           "damage_types": [],
+           "ability": "none",
+           "condition": "none",
+           "distance_ft": 5,
+           "on": "",
+           "duration": "instant",
+           "evidence": "push the target 5 feet away from you",
+           "origin": "model_options",
+           "direction": "away"
+          }
+         ]
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Reduce Speed",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "origin": "model_v2",
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 1,
+          "count_formula": null,
+          "sides": 8,
+          "bonus": null,
+          "bonus_formula": null
+         },
+         "flat": 0,
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "bludgeoning",
+          "slashing"
+         ],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "Bludgeoning or Slashing damage equal to the dice below for your Realm + your Path key ability modifier:",
+         "origin": "model_v2",
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           8
+          ],
+          [
+           5,
+           9,
+           2,
+           8
+          ],
+          [
+           10,
+           14,
+           3,
+           8
+          ],
+          [
+           15,
+           20,
+           4,
+           8
+          ]
+         ]
+        },
+        {
+         "type": "chains_minor_link",
+         "effects": [
+          {
+           "type": "speed",
+           "applies_to": "target",
+           "flat": -5,
+           "formula": "none",
+           "damage_types": [],
+           "ability": "none",
+           "condition": "none",
+           "distance_ft": 0,
+           "on": "",
+           "duration": "until_start_of_next_turn",
+           "evidence": "reduce the target's Speed by 5 feet until the start of your next turn",
+           "origin": "model_options"
+          }
+         ]
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Grapple Advantage",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "origin": "model_v2",
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 1,
+          "count_formula": null,
+          "sides": 8,
+          "bonus": null,
+          "bonus_formula": null
+         },
+         "flat": 0,
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "bludgeoning",
+          "slashing"
+         ],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "Bludgeoning or Slashing damage equal to the dice below for your Realm + your Path key ability modifier:",
+         "origin": "model_v2",
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           8
+          ],
+          [
+           5,
+           9,
+           2,
+           8
+          ],
+          [
+           10,
+           14,
+           3,
+           8
+          ],
+          [
+           15,
+           20,
+           4,
+           8
+          ]
+         ]
+        },
+        {
+         "type": "chains_minor_link",
+         "grapple_check": true
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Attach a Link",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "origin": "model_v2",
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 1,
+          "count_formula": null,
+          "sides": 8,
+          "bonus": null,
+          "bonus_formula": null
+         },
+         "flat": 0,
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "bludgeoning",
+          "slashing"
+         ],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "the target takes Bludgeoning or Slashing damage based on your Realm: Mortal: 1d8",
+         "origin": "model_v2",
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           8
+          ],
+          [
+           5,
+           9,
+           2,
+           8
+          ],
+          [
+           10,
+           14,
+           3,
+           8
+          ],
+          [
+           15,
+           20,
+           4,
+           8
+          ]
+         ]
+        },
+        {
+         "type": "chains_minor_link",
+         "effects": [
+          {
+           "type": "mark",
+           "mark": "Link",
+           "applies_to": "target",
+           "duration": {
+            "kind": "until_start_of_your_next_turn"
+           },
+           "evidence": "attach a harmless visible Link to the target until the start of your next turn"
+          }
+         ]
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    }
+   ],
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [],
+   "range": {
+    "kind": "feet",
+    "feet": 30
+   },
+   "area": null,
+   "cost": [],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": {
+    "text": "One creature or object"
+   },
+   "after": null,
+   "min_cp_cost": null
+  },
+  "tianxia.talent.chains.iron_link_guard": {
+   "text_sha256": "54e9c3a732d979410a94180feaa7c416fcbf572206304367657ce98a4233be7b",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [
+    {
+     "type": "damage_modifier",
+     "applies_to": "ally",
+     "dice": {
+      "count": 1,
+      "count_formula": null,
+      "sides": 8,
+      "bonus": null,
+      "bonus_formula": null
+     },
+     "flat": 0,
+     "formula": "key_ability_modifier",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "Reduce the damage by 1d8 + your key ability modifier",
+     "origin": "model_v2",
+     "dice_by_cl": [
+      [
+       1,
+       4,
+       1,
+       8
+      ],
+      [
+       5,
+       10,
+       2,
+       8
+      ],
+      [
+       11,
+       16,
+       3,
+       8
+      ],
+      [
+       17,
+       20,
+       4,
+       8
+      ]
+     ]
+    }
+   ]
+  },
+  "tianxia.talent.chains.chain_counter": {
+   "text_sha256": "79e074e9519bd6a76b072cb9f8a79ba717299172ae41cf538ccb2d02ab7c0953",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [],
+   "options": [
+    {
+     "label": "Reduce the Attack Roll",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "str",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "attack_modifier",
+         "applies_to": "attacker",
+         "flat": 0,
+         "formula": "pb",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "the triggering attack roll",
+         "duration": "instant",
+         "evidence": "reduce the triggering attack roll by your Proficiency Bonus",
+         "origin": "claude"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "chains_counter_success",
+         "applies_to": "target",
+         "evidence": "Pull the target 5 feet or reduce its remaining movement by 5 feet",
+         "origin": "claude"
+        }
+       ],
+       "evidence": "The target makes a Strength saving throw",
+       "origin": "model_v2"
+      }
+     ]
+    },
+    {
+     "label": "Pull 10 Feet",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "str",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "forced_movement",
+         "applies_to": "target",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 10,
+         "on": "",
+         "duration": "instant",
+         "evidence": "pull the target 10 feet",
+         "origin": "claude"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "chains_counter_success",
+         "applies_to": "target",
+         "evidence": "Pull the target 5 feet or reduce its remaining movement by 5 feet",
+         "origin": "claude"
+        }
+       ],
+       "evidence": "The target makes a Strength saving throw",
+       "origin": "model_v2"
+      }
+     ]
+    },
+    {
+     "label": "Knock Prone",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "str",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "condition",
+         "applies_to": "target",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "prone",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "knock the target Prone",
+         "origin": "claude"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "chains_counter_success",
+         "applies_to": "target",
+         "evidence": "Pull the target 5 feet or reduce its remaining movement by 5 feet",
+         "origin": "claude"
+        }
+       ],
+       "evidence": "The target makes a Strength saving throw",
+       "origin": "model_v2"
+      }
+     ]
+    },
+    {
+     "label": "Speed to 0",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "str",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "speed",
+         "applies_to": "target",
+         "flat": -999,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "until_end_of_turn",
+         "expires_on": "END_OF_CURRENT_TURN",
+         "evidence": "reduce its Speed to 0 for the remainder of the turn",
+         "origin": "claude"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "chains_counter_success",
+         "applies_to": "target",
+         "evidence": "Pull the target 5 feet or reduce its remaining movement by 5 feet",
+         "origin": "claude"
+        }
+       ],
+       "evidence": "The target makes a Strength saving throw",
+       "origin": "model_v2"
+      }
+     ]
+    },
+    {
+     "label": "Deny Reactions",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "str",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "reaction_denied",
+         "applies_to": "target",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "until_start_of_next_turn",
+         "evidence": "prevent it from taking Reactions until the start of its next turn",
+         "origin": "claude"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "chains_counter_success",
+         "applies_to": "target",
+         "evidence": "Pull the target 5 feet or reduce its remaining movement by 5 feet",
+         "origin": "claude"
+        }
+       ],
+       "evidence": "The target makes a Strength saving throw",
+       "origin": "model_v2"
+      }
+     ]
+    }
+   ],
+   "riders": [
+    "The target's successful save offers the printed choice: the table asks whether to pull it 5 feet toward you or to take 5 feet off the movement it has left this turn."
+   ]
+  },
+  "tianxia.talent.blood.blood_ward": {
+   "text_sha256": "dec190f6bba776cdd748babd58eb354fbd158808cca6d75c717622e6ccc7eaf5",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [
+    {
+     "type": "damage_modifier",
+     "applies_to": "ally",
+     "dice": {
+      "count": 1,
+      "count_formula": null,
+      "sides": 8,
+      "bonus": null,
+      "bonus_formula": null
+     },
+     "flat": 0,
+     "formula": "key_ability_modifier",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "Reduce the triggering damage by the amount shown on the Blood Ward Reduction table.",
+     "origin": "model_v2",
+     "dice_by_cl": [
+      [
+       1,
+       4,
+       1,
+       8
+      ],
+      [
+       5,
+       10,
+       2,
+       8
+      ],
+      [
+       11,
+       16,
+       3,
+       8
+      ],
+      [
+       17,
+       20,
+       4,
+       8
+      ]
+     ]
+    },
+    {
+     "type": "damage_modifier",
+     "applies_to": "ally",
+     "formula": "pb",
+     "protected_if": {
+      "bloodied": true,
+      "marks": [
+       "Blood Thread"
+      ]
+     },
+     "evidence": "If the protected creature is Bloodied or bears your Blood Thread, add your Proficiency Bonus to the reduction."
+    }
+   ],
+   "riders": []
+  },
+  "tianxia.talent.blood.blood_armor": {
+   "text_sha256": "b626088c2a7c61eb51bec8ba0ed9f5759ef56657fe24786e3e3975bed8a55e9c",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [
+    {
+     "type": "ac_bonus",
+     "applies_to": "self",
+     "flat": 2,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "one_minute",
+     "evidence": "+2 AC",
+     "origin": "model_v2"
+    },
+    {
+     "type": "resistance",
+     "applies_to": "self",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [
+      "slashing"
+     ],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "one_minute",
+     "evidence": "Resistance to Slashing damage",
+     "origin": "model_v2"
+    },
+    {
+     "type": "advantage",
+     "applies_to": "self",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "saving throws against bleeding effects",
+     "duration": "one_minute",
+     "evidence": "Advantage on saving throws against bleeding effects",
+     "origin": "model_v2"
+    },
+    {
+     "type": "advantage",
+     "applies_to": "self",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "saving throws against forced movement caused by physical impacts",
+     "duration": "one_minute",
+     "evidence": "Advantage on saving throws against forced movement caused by physical impacts",
+     "origin": "claude"
+    },
+    {
+     "type": "hp_cost",
+     "amount": 5,
+     "evidence": "Cost: 3 CP and 5 HP. The HP cost: cannot be reduced; cannot be transferred; cannot be paid with Temporary HP."
+    }
+   ],
+   "riders": []
+  },
+  "tianxia.talent.blood.blood_mending": {
+   "text_sha256": "c66a99bb1d615efe0344fbf453f30b42c03ace7143d67607beea981739769760",
+   "reviewed_by": "claude 2026-09-28",
+   "use_limit": "text:a creature cannot benefit from Blood Mending again until it completes a short rest (per target, not per use)",
+   "effects": [
+    {
+     "type": "healing",
+     "applies_to": "target",
+     "dice": {
+      "count": 3,
+      "count_formula": null,
+      "sides": 8,
+      "bonus": null,
+      "bonus_formula": null
+     },
+     "flat": 0,
+     "formula": "key_ability_modifier",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "3d8 + Path key ability modifier HP",
+     "origin": "model_v2"
+    },
+    {
+     "type": "remove_condition",
+     "condition": "bleeding",
+     "applies_to": "target",
+     "evidence": "You may also end one ordinary bleeding effect."
+    },
+    {
+     "type": "mark",
+     "mark": "Blood Mending",
+     "applies_to": "target",
+     "once_per_creature": true,
+     "evidence": "A creature benefiting from Blood Mending cannot benefit again until it completes a short rest."
+    }
+   ],
+   "riders": []
+  },
+  "BLOOD_BASE_BLOOD_THREAD": {
+   "text_sha256": "3f40378e1aa0ae999d5712845ea970532525ba2853a40d1b116d5a01001fdc14",
+   "reviewed_by": "claude 2026-09-28; Codex owner edit 2026-09-30",
+   "effects": [
+    {
+     "type": "attack",
+     "attack_kind": "cultivation_ranged",
+     "count": 1,
+     "on_hit": [
+      {
+       "type": "damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 1,
+        "count_formula": null,
+        "sides": 8,
+        "bonus": null,
+        "bonus_formula": null
+       },
+       "dice_by_cl": [
+        [
+         1,
+         4,
+         1,
+         8
+        ],
+        [
+         5,
+         10,
+         2,
+         8
+        ],
+        [
+         11,
+         16,
+         3,
+         8
+        ],
+        [
+         17,
+         20,
+         4,
+         8
+        ]
+       ],
+       "flat": 0,
+       "formula": "key_ability_modifier",
+       "damage_types": [
+        "piercing",
+        "necrotic"
+       ],
+       "type_choice": true,
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "Deal Piercing or Necrotic damage equal to the listed dice + your Path key ability modifier",
+       "origin": "sw-blacksmith-review"
+      },
+      {
+       "type": "if_bloodied",
+       "applies_to": "target",
+       "before_damage": true,
+       "evidence": "If the target is Bloodied, add your Proficiency Bonus to one damage roll",
+       "effects": [
+        {
+         "type": "extra_damage",
+         "applies_to": "target",
+         "flat": 0,
+         "formula": "pb",
+         "damage_types": [
+          "piercing",
+          "necrotic"
+         ],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "add your Proficiency Bonus to one damage roll",
+         "origin": "model_v2"
+        }
+       ]
+      },
+      {
+       "type": "mark",
+       "mark": "Blood Thread",
+       "applies_to": "target",
+       "duration": {
+        "kind": "until_start_of_your_next_turn"
+       },
+       "evidence": "apply Blood Thread until the start of your next turn",
+       "origin": "structure"
+      }
+     ],
+     "on_miss": [],
+     "origin": "model_v2"
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [],
+   "range": {
+    "kind": "feet",
+    "feet": 60
+   },
+   "area": null,
+   "cost": [],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null
+  },
+  "POISON_BASE_INGRAIN_THE_TOXIN": {
+    "text_sha256": "9c59f312f57ad19ebfadff00a693d5fc9d25195166c35ad21d81be8ffbb0271d",
+    "reviewed_by": "claude 2026-09-28; riders-lane10 2026-09-29 (riders); Codex AUTO44 2026-10-05",
+    "effects": [],
+    "options": [
+      {
+        "label": "Bitter Breath",
+        "effects": [
+          {
+            "type": "spend_mark",
+            "mark": "Dose Mark",
+            "applies_to": "target",
+            "evidence": "You spend 2 Dose Marks on the target",
+            "origin": "claude",
+            "count": 2
+          },
+          {
+            "type": "save",
+            "ability": "con",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "con",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "its next Constitution saving throw",
+                "duration": "special",
+                "evidence": "Disadvantage on its next Constitution saving throw before its next long rest",
+                "origin": "claude"
+              }
+            ],
+            "on_success": [],
+            "evidence": "The target makes a Constitution saving throw",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      {
+        "label": "Numb Channels",
+        "effects": [
+          {
+            "type": "spend_mark",
+            "mark": "Dose Mark",
+            "applies_to": "target",
+            "evidence": "You spend 2 Dose Marks on the target",
+            "origin": "claude",
+            "count": 2
+          },
+          {
+            "type": "save",
+            "ability": "con",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "speed",
+                "applies_to": "target",
+                "flat": -5,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "special",
+                "evidence": "Speed is reduced by 5 feet until its next long rest",
+                "origin": "claude"
+              }
+            ],
+            "on_success": [],
+            "evidence": "The target makes a Constitution saving throw",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      {
+        "label": "Sour Blood",
+        "effects": [
+          {
+            "type": "spend_mark",
+            "mark": "Dose Mark",
+            "applies_to": "target",
+            "evidence": "You spend 2 Dose Marks on the target",
+            "origin": "claude",
+            "count": 2
+          },
+          {
+            "type": "save",
+            "ability": "con",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "healing_reduction",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "pb",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "special",
+                "evidence": "The next healing the target receives before its next long rest is reduced by your Proficiency Bonus",
+                "origin": "claude"
+              }
+            ],
+            "on_success": [],
+            "evidence": "The target makes a Constitution saving throw",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      {
+        "label": "Clouded Senses",
+        "effects": [
+          {
+            "type": "spend_mark",
+            "mark": "Dose Mark",
+            "applies_to": "target",
+            "evidence": "You spend 2 Dose Marks on the target",
+            "origin": "claude",
+            "count": 2
+          },
+          {
+            "type": "save",
+            "ability": "con",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "wis",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "its next Wisdom (Perception) check",
+                "duration": "special",
+                "evidence": "Disadvantage on its next Wisdom (Perception) check before its next long rest",
+                "origin": "claude"
+              }
+            ],
+            "on_success": [],
+            "evidence": "The target makes a Constitution saving throw",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      {
+        "label": "Heavy Pulse",
+        "effects": [
+          {
+            "type": "spend_mark",
+            "mark": "Dose Mark",
+            "applies_to": "target",
+            "evidence": "You spend 2 Dose Marks on the target",
+            "origin": "claude",
+            "count": 2
+          },
+          {
+            "type": "save",
+            "ability": "con",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "dex",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "its next Dexterity saving throw",
+                "duration": "special",
+                "evidence": "Disadvantage on its next Dexterity saving throw before its next long rest",
+                "origin": "claude"
+              },
+              {
+                "type": "condition",
+                "applies_to": "target",
+                "condition": "no_dash",
+                "evidence": "The target cannot benefit from the Dash action on its next turn."
+              }
+            ],
+            "on_success": [],
+            "evidence": "The target makes a Constitution saving throw",
+            "origin": "model_v2"
+          }
+        ]
+      }
+    ],
+    "riders": [
+      "Ending the toxin at a long rest or after treatment is not tracked yet. Its next-check and next-healing penalties are not all consumed automatically."
+    ]
+  },
+  "TAL_ALCHEMY_POISON_PILL": {
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": "Release a prepared, known poison pill as a Field Formula",
+    "source": "owner_text"
+   },
+   "effects": [],
+   "riders": [
+    "Poison Pill: you may release only a formula you have learned and a pill you have already prepared. Choosing which formula to make, paying for it and refining it all happen outside the fight."
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 60
+   },
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "1 CP and one Reagent Stock"
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "options": [
+    {
+     "label": "Venom Pill",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "con",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 6,
+          "sides": 6
+         },
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [
+          "poison"
+         ],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "6d6 Poison damage",
+         "origin": "model_v2"
+        },
+        {
+         "type": "condition",
+         "applies_to": "target",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "poisoned",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "one_minute",
+         "evidence": "Poisoned for 1 minute",
+         "origin": "model_v2",
+         "repeat_save": {
+          "ability": "CON",
+          "when": "end"
+         }
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "origin": "model_v2"
+        },
+        {
+         "type": "condition",
+         "applies_to": "target",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "poisoned",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "until_start_of_next_turn",
+         "evidence": "Poisoned until the start of your next turn",
+         "origin": "claude"
+        }
+       ],
+       "evidence": "The target makes a Constitution saving throw",
+       "origin": "model_v2"
+      }
+     ]
+    },
+    {
+     "label": "Nerve Pill",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "con",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 6
+         },
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [
+          "poison"
+         ],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "3d6 Poison damage",
+         "origin": "model_v2"
+        },
+        {
+         "type": "reaction_denied",
+         "applies_to": "target",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "until_start_of_next_turn",
+         "evidence": "cannot take Reactions or Bonus Actions until the start of your next turn",
+         "origin": "claude"
+        },
+        {
+         "type": "bonus_action_denied",
+         "applies_to": "target",
+         "duration": "until_start_of_next_turn",
+         "evidence": "the target cannot take Reactions or Bonus Actions until the start of your next turn"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "origin": "model_v2"
+        },
+        {
+         "type": "reaction_denied",
+         "applies_to": "target",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "until_start_of_next_turn",
+         "evidence": "cannot take Reactions until the start of your next turn",
+         "origin": "claude"
+        }
+       ],
+       "evidence": "The target makes a Constitution saving throw",
+       "origin": "model_v2"
+      }
+     ]
+    },
+    {
+     "label": "Rotting Pill",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "con",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 6
+         },
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [
+          "necrotic",
+          "poison"
+         ],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "3d6 Necrotic or Poison damage",
+         "origin": "model_v2"
+        },
+        {
+         "type": "healing_reduction",
+         "applies_to": "target",
+         "duration": "until_start_of_next_turn",
+         "evidence": "the target cannot regain HP until the start of your next turn"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "origin": "model_v2"
+        }
+       ],
+       "evidence": "The target makes a Constitution saving throw",
+       "origin": "model_v2"
+      }
+     ]
+    }
+   ],
+   "text_sha256": "3922cd83658809a87b143ac6d40b1735a3389b52e287a949e850cceb42dea1d7",
+   "reviewed_by": "Codex rider lane3 continuation 2026-09-29"
+  },
+  "TAL_ALCHEMY_CHOKING_SMOKE_PELLET": {
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "effects": [
+    {"type": "rider_choose_area_recipients", "evidence": "Choose which creatures in the area are affected, as printed.", "origin": "reviewed"},
+    {
+     "type": "save",
+     "recipient_text": "A pellet bursts into acrid smoke, ash, and bitter medicinal vapor. Each hostile creature of your choice in the area makes a Constitution saving throw.",
+     "applies_to": "enemies_in_area",
+     "ability": "con",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "enemies_in_area",
+       "dice": {
+        "count": 2,
+        "count_formula": null,
+        "sides": 6,
+        "bonus": null,
+        "bonus_formula": null
+       },
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [
+        "poison"
+       ],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "The creature takes 2d6 Poison damage",
+       "origin": "model_v2",
+       "dice_by_cl": [
+        [
+         1,
+         10,
+         2,
+         6
+        ],
+        [
+         11,
+         16,
+         3,
+         6
+        ],
+        [
+         17,
+         20,
+         4,
+         6
+        ]
+       ]
+      },
+      {
+       "type": "condition",
+       "condition": "silenced",
+       "applies_to": "target",
+       "duration": "until_start_of_next_turn",
+       "evidence": "cannot speak above a hoarse whisper, and cannot supply Verbal components until the start of your next turn"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage",
+       "applies_to": "enemies_in_area",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "Half damage and no speech restriction",
+       "origin": "model_v2"
+      }
+     ],
+     "origin": "model_v2"
+    },
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 10,
+     "on": "",
+     "duration": "instant",
+     "evidence": "10-foot-radius Sphere",
+     "origin": "model_v2"
+    }
+   ],
+   "riders": [
+    "Choking Smoke Pellet: a creature that does not breathe makes this save with Advantage unless the GM decides the formula attacks its spiritual circulation instead; the table does not track what breathes."
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 60
+   },
+   "area": {
+    "shape": "sphere",
+    "size_ft": 10,
+    "centered_on_self": false
+   },
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "2 CP and one Reagent Stock."
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "text_sha256": "16c67c842daefe1b9f4a2120de6fc9dd0bdf83cdf21424b73afba133496f9f9e",
+   "reviewed_by": "Codex rider lane3 continuation 2026-09-29"
+  },
+  "TAL_ALCHEMY_FURNACE_VENT": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_ALCHEMY_FURNACE_VENT",
+   "kind": "talent",
+   "name": "Furnace Vent",
+   "sphere_id": "tianxia.sphere.alchemy",
+   "source": {
+    "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+    "line": 2152,
+    "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+    "text_sha256": "5e0b8156a369c681555d377c71b6584cc451bfe80a9bbbe22c253a399e2db921"
+   },
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "header_economy": true,
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "1 CP and one Reagent Stock."
+     }
+    ]
+   ],
+   "area": {
+    "shape": "cone",
+    "size_ft": 15,
+    "centered_on_self": false
+   },
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "type": "save",
+     "recipient_text": "You crack a sealed heat-packet, smoke tube, or small furnace vent, releasing scalding medicinal vapor and bitter fumes. Each creature in the area makes a Constitution saving throw.",
+     "applies_to": "creatures_in_area",
+     "ability": "con",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 1,
+        "count_formula": null,
+        "sides": 8,
+        "bonus": null,
+        "bonus_formula": null
+       },
+       "flat": 0,
+       "formula": "key_ability_modifier",
+       "damage_types": [
+        "poison",
+        "fire"
+       ],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "takes Poison or Fire damage equal to 1d8 + your Alchemy key ability modifier",
+       "origin": "model_v2",
+       "dice_by_cl": [
+        [
+         1,
+         4,
+         1,
+         8
+        ],
+        [
+         5,
+         10,
+         2,
+         8
+        ],
+        [
+         11,
+         16,
+         3,
+         8
+        ],
+        [
+         17,
+         20,
+         4,
+         8
+        ]
+       ]
+      },
+      {
+       "type": "disadvantage",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "con",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "the next Constitution saving throw it makes",
+       "duration": "until_start_of_next_turn",
+       "evidence": "has Disadvantage on the next Constitution saving throw it makes before the start of your next turn",
+       "origin": "model_v2"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage",
+       "origin": "model_v2"
+      }
+     ],
+     "origin": "model_v2"
+    },
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 15,
+     "on": "",
+     "duration": "instant",
+     "evidence": "Area: 15-foot cone.",
+     "origin": "model_v2"
+    }
+   ],
+   "riders": [],
+   "description": [
+    "You learn the Furnace Vent Field Formula."
+   ],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "typing_status": "reviewed_final",
+   "structure_source": "model_v2",
+   "text_sha256": "5e0b8156a369c681555d377c71b6584cc451bfe80a9bbbe22c253a399e2db921",
+   "reviewed_by": "claude 2026-09-28; Codex 2026-09-29 Alchemy scaling rider audit; auto-lane9 2026-10-04 removed the duplicate 1 CP spend (the printed Cost line already charges it)"
+  },
+  "TAL_ALCHEMY_NUMBING_POWDER": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_ALCHEMY_NUMBING_POWDER",
+   "kind": "talent",
+   "name": "Numbing Powder",
+   "sphere_id": "tianxia.sphere.alchemy",
+   "source": {
+    "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+    "line": 2180,
+    "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+    "text_sha256": "6eac85a0b71d89e0b7a8ca961daa3293bebf2ac7b6dae3eef073ca167ac237f6"
+   },
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "header_economy": true,
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "1 CP and one Reagent Stock."
+     }
+    ]
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 30
+   },
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "type": "save",
+     "ability": "con",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 1,
+        "count_formula": null,
+        "sides": 6,
+        "bonus": null,
+        "bonus_formula": null
+       },
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [
+        "poison"
+       ],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "The target takes 1d6 Poison damage",
+       "origin": "model_v2",
+       "dice_by_cl": [
+        [
+         1,
+         4,
+         1,
+         6
+        ],
+        [
+         5,
+         10,
+         2,
+         6
+        ],
+        [
+         11,
+         16,
+         3,
+         6
+        ],
+        [
+         17,
+         20,
+         4,
+         6
+        ]
+       ]
+      },
+      {
+       "type": "reaction_denied",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "until_start_of_next_turn",
+       "evidence": "cannot take Reactions until the start of your next turn",
+       "origin": "model_v2"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage",
+       "origin": "model_v2"
+      }
+     ],
+     "origin": "model_v2"
+    }
+   ],
+   "riders": [],
+   "description": [
+    "You learn the Numbing Powder Field Formula."
+   ],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "typing_status": "reviewed_final",
+   "structure_source": "model_v2",
+   "text_sha256": "6eac85a0b71d89e0b7a8ca961daa3293bebf2ac7b6dae3eef073ca167ac237f6",
+   "reviewed_by": "claude 2026-09-28; Codex 2026-09-29 Alchemy scaling rider audit"
+  },
+  "TAL_ALCHEMY_EXPLOSIVE_PILL": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_ALCHEMY_EXPLOSIVE_PILL",
+   "kind": "talent",
+   "name": "Explosive Pill",
+   "sphere_id": "tianxia.sphere.alchemy",
+   "source": {
+    "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+    "line": 2390,
+    "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+    "text_sha256": "d1cc9aba1bb527a9d3df27bc961eebd0330cec7d7156fa0a861217bbc04976ce"
+   },
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "header_economy": true,
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "150 gp."
+     }
+    ]
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 60
+   },
+   "area": {
+    "shape": "sphere",
+    "size_ft": 10,
+    "centered_on_self": false
+   },
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "type": "save",
+     "recipient_text": "Throw or launch one prepared Explosive Pill. Each creature in the area makes a Dexterity saving throw.",
+     "applies_to": "creatures_in_area",
+     "ability": "dex",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "creatures_in_area",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [
+        "acid",
+        "cold",
+        "fire",
+        "lightning",
+        "poison"
+       ],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "The creature takes damage based on your CL",
+       "origin": "model",
+       "dice": {
+        "count": 4,
+        "sides": 6
+       },
+       "dice_by_cl": [
+        [
+         5,
+         10,
+         4,
+         6
+        ],
+        [
+         11,
+         16,
+         6,
+         6
+        ],
+        [
+         17,
+         20,
+         8,
+         6
+        ]
+       ]
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage",
+       "origin": "model_v2"
+      }
+     ],
+     "origin": "model_v2"
+    },
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 10,
+     "on": "",
+     "duration": "instant",
+     "evidence": "Area: 10-foot-radius Sphere.",
+     "origin": "model_v2"
+    }
+   ],
+   "riders": [
+    "Explosive Pill: choose Acid, Cold, Fire, Lightning or Poison when you refine the pill. In a fight, whichever of those five damages the creatures the pill hits most is the damage dealt; if you own Seven-Flavor Furnace, the damage types you prepared are offered there as well."
+   ],
+   "description": [
+    "You learn the Explosive Pill recipe.",
+    "Ingredient",
+    "Refinement"
+   ],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "typing_status": "reviewed_final",
+   "structure_source": "model_v2",
+   "text_sha256": "d1cc9aba1bb527a9d3df27bc961eebd0330cec7d7156fa0a861217bbc04976ce",
+   "reviewed_by": "claude 2026-09-28; Codex 2026-09-29 Alchemy scaling rider audit; auto-lane9 2026-10-04 restored the refinement-time element declaration"
+  },
+  "TAL_ALCHEMY_MERIDIAN_SEALING_PILL": {
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "effects": [
+    {
+     "type": "save",
+     "ability": "con",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "condition",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "no_cp_regain",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "target_next_turn",
+       "evidence": "The target cannot recover CP until the end of its next turn",
+       "origin": "claude"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "condition",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "no_cp_regain",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "until_start_of_target_next_turn",
+       "evidence": "The target cannot recover CP until the start of its next turn",
+       "origin": "claude"
+      }
+     ],
+     "evidence": "The target makes a Constitution saving throw",
+     "origin": "model_v2"
+    }
+   ],
+   "riders": [],
+   "range": null,
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "150 gp."
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "text_sha256": "70b8310034b8839a7a98f7c9145080276ba73320127f6af1838b5dd2a8e6ca75",
+   "reviewed_by": "Codex rider lane3 continuation 2026-09-29"
+  },
+  "TAL_ALCHEMY_PILL_OF_RESTORATION": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "TAL_ALCHEMY_PILL_OF_RESTORATION",
+   "kind": "talent",
+   "name": "Pill of Restoration",
+   "sphere_id": "tianxia.sphere.alchemy",
+   "source": {
+    "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+    "line": 2292,
+    "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+    "text_sha256": "a27ce681294f4914a08c0513d256335107f1538b2a26f92ea3723ad5f800bb65"
+   },
+   "activation": {
+    "economy": "action",
+    "trigger": "Consumption: Action",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": "none"
+   },
+   "header_economy": false,
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "150 gp."
+     }
+    ]
+   ],
+   "use_limit": null,
+   "range": null,
+   "area": null,
+   "target": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [],
+   "riders": [
+    "Pill of Restoration: the table ends the Poisoned condition when the poison came from one of your own Alchemy formulas. When it came from anything else, end it yourself.",
+    "Pill of Restoration: reducing Exhaustion by one level only counts when the Exhaustion came from poison, disease, suffocation, starvation, thirst or alchemical backlash. The table keeps one Exhaustion total and cannot tell which of those caused it, so check that yourself.",
+    "Pill of Restoration: ending a disease or a minor alchemical side effect is the GM's; the table does not keep a list of a creature's ailments. Preparing and paying for the pill happens outside the fight."
+   ],
+   "description": [
+    "You learn the Pill of Restoration recipe.",
+    "Ingredient",
+    "Refinement",
+    "Choose one effect:",
+    "remove one disease;",
+    "end one minor alchemical side effect;"
+   ],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "typing_status": "reviewed_final",
+   "structure_source": "model_v2",
+   "options": [
+    {
+     "label": "End Poisoned",
+     "effects": [
+      {
+       "type": "alchemy_restore_poison",
+       "applies_to": "self",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "poisoned",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "end the Poisoned condition if caused by a poison or alchemical effect",
+       "origin": "model_options",
+       "was": "condition"
+      }
+     ]
+    },
+    {
+     "label": "Saving Throw Advantage",
+     "effects": [
+      {
+       "type": "advantage",
+       "applies_to": "self",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "the next saving throw against a curse or Heart Demon effect",
+       "duration": "special",
+       "evidence": "grant Advantage on the next saving throw against a curse or Heart Demon effect before the consumer finishes a Long Rest",
+       "origin": "model_options"
+      }
+     ]
+    }
+   ],
+   "text_sha256": "a27ce681294f4914a08c0513d256335107f1538b2a26f92ea3723ad5f800bb65",
+   "reviewed_by": "Codex rider lane3 continuation run 4 2026-09-29"
+  },
+  "tianxia.talent.alchemy.court_of_the_three_legged_cauldron": {
+   "text_sha256": "456305191ffc1edb63fa65c7f892a5491b1394ac1cacfe80cb17f962652860d1",
+   "reviewed_by": "claude 2026-09-28 + Codex round17 integration 2026-09-29; auto-lane9 2026-10-04 CP discount automated",
+   "effects": [
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 30,
+     "on": "",
+     "duration": "one_minute",
+     "evidence": "Area: 30-foot-radius Emanation. Duration: 1 minute.",
+     "origin": "model_v2",
+     "triggers": [
+      {
+       "on": [
+        "start"
+       ],
+       "who": "ally",
+       "effects": [
+        {
+         "type": "alchemy_furnace_target",
+         "effects": [
+          {
+           "type": "temp_hp",
+           "applies_to": "target",
+           "flat": 0,
+           "formula": "pb",
+           "duration": "one_minute",
+           "evidence": "allies of your choice who start their turns in the Domain gain Temporary HP equal to your Proficiency Bonus"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "attack_modifier",
+     "applies_to": "self",
+     "flat": 2,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "Alchemy Checks",
+     "duration": "one_minute",
+     "evidence": "your Alchemy Checks gain +2",
+     "origin": "model_v2"
+    },
+    {
+     "type": "spend_resource",
+     "applies_to": "self",
+     "flat": -1,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "one_minute",
+     "evidence": "once per turn when you use Field Formula, reduce its CP cost by 1, minimum 0",
+     "origin": "model_v2",
+     "deferred": true
+    },
+    {
+     "type": "court_cauldron_damage",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "key_ability_modifier",
+     "damage_types": [
+      "acid",
+      "fire",
+      "poison",
+      "force"
+     ],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "one_minute",
+     "evidence": "the first time each turn a hostile creature fails a saving throw against one of your Alchemy techniques in the Domain, it takes extra Acid, Fire, Poison, or Force damage equal to your Alchemy key ability modifier",
+     "origin": "reviewed_final"
+    }
+   ],
+   "riders": [
+    "Court of the Three-Legged Cauldron: the 1 CP discount is given back when your Field Formula resolves, so a formula whose full printed CP cost you cannot pay is still unavailable to you.",
+    "The extra damage after a failed save is added against your own Alchemy techniques; a creature that makes a save against a monster's own special ability, which the table resolves outside your techniques, does not take it."
+   ]
+  },
+  "tianxia.talent.alchemy.pill_devouring": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "tianxia.talent.alchemy.pill_devouring",
+   "kind": "talent",
+   "name": "Pill Devouring",
+   "sphere_id": "tianxia.sphere.alchemy",
+   "source": {
+    "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+    "line": 2602,
+    "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+    "text_sha256": "70d41a23a51410639686c28ed78de5487bddd7ffd5063d8f7d501abc387f93b3"
+   },
+   "activation": {
+    "economy": "bonus_action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "header_economy": true,
+   "cost": [],
+   "use_limit": "once_per_short_rest",
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "type": "temp_hp",
+     "applies_to": "self",
+     "dice": {
+      "count": 5,
+      "count_formula": null,
+      "sides": 8,
+      "bonus": null,
+      "bonus_formula": null
+     },
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "one_minute",
+     "evidence": "5d8 Temporary HP"
+    },
+    {
+     "type": "speed",
+     "applies_to": "self",
+     "flat": 10,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "one_minute",
+     "evidence": "+10 feet Speed"
+    },
+    {
+     "type": "field_formula_dc",
+     "applies_to": "self",
+     "duration": "one_minute",
+     "evidence": "+2 to saving throw DCs for Field Formulae you use"
+    },
+    {
+     "type": "pill_devouring_cost",
+     "applies_to": "self",
+     "duration": "one_minute",
+     "evidence": "When the effect ends, choose one: gain 1 Pill Impurity; take 2d6 Poison damage and have the Poisoned condition until the end of your next turn."
+    }
+   ],
+   "riders": [
+    "Pill Devouring: before you use this, declare what you are eating: one ingredient worth at least 100 gp, or one pill you created. The table does not keep track of what you carry, so it cannot check that value for you.",
+    "Pill Devouring: taking 1 Corruption instead of the printed cost needs the GM's agreement, and only if you actually practise Demonic Cultivation or an equally corrupt method."
+   ],
+   "description": [
+    "For 1 minute, gain:",
+    "When the effect ends, choose one:"
+   ],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "typing_status": "reviewed_final",
+   "structure_source": "model_v2",
+   "options": [],
+   "text_sha256": "70d41a23a51410639686c28ed78de5487bddd7ffd5063d8f7d501abc387f93b3",
+   "mode": "FULL",
+   "reviewed_by": "Codex rider lane3 continuation run5 2026-09-29"
+  },
+  "TAL_FLOWERS_PETAL_WARD": {
+   "text_sha256": "9dd496a525673f418cf91eff59259e261141c22f4dfc77b2982f3580b984e234",
+   "reviewed_by": "A2FLOWERS 2026-10-09: owner printed text; service/cold-reload regressions",
+   "effects": [
+    {
+     "type": "damage_recipient_effects",
+     "effects": [
+      {
+       "type": "advantage",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "next saving throw against Poison",
+       "duration": "until_start_of_next_turn",
+       "evidence": "The protected creature gains Advantage on its next saving throw against Poison before the start of your next turn.",
+       "origin": "model_v2",
+       "expires_on": "START_OF_SOURCE_NEXT_TURN"
+      }
+     ]
+    },
+    {
+     "type": "damage_modifier",
+     "applies_to": "target",
+     "dice": {
+      "count": 1,
+      "count_formula": null,
+      "sides": 8,
+      "bonus": null,
+      "bonus_formula": null
+     },
+     "flat": 0,
+     "formula": "key_ability_modifier",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "instant",
+     "evidence": "Reduce the triggering damage",
+     "origin": "model_v2",
+     "dice_by_cl": [
+      [
+       1,
+       10,
+       1,
+       8
+      ],
+      [
+       11,
+       16,
+       2,
+       8
+      ],
+      [
+       17,
+       20,
+       3,
+       8
+      ]
+     ]
+    }
+   ],
+   "riders": [],
+   "notes": [
+    "Costs, ranges and CL dice tables remain in typed data. Thorned Bloom already binds Concentration and Traveling Garden in the placed Blossom implementation; no additional manual rule."
+   ]
+  },
+  "tianxia.talent.karma.burden_of_deeds": {
+   "text_sha256": "9928f588811402dc97c07fe8be6d112d57430e232f2041dba6db61f4cbc38391",
+   "reviewed_by": "Codex hunt31 printed-rule correction",
+   "target": {
+    "requires_mark": "Debt Imprint"
+   },
+   "effects": [
+    {
+     "type": "save",
+     "ability": "cha",
+     "dc": "technique_save_dc",
+     "applies_to": "target",
+     "on_fail": [
+      {
+       "type": "karma_burdens",
+       "applies_to": "target"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "reaction_denied",
+       "applies_to": "target",
+       "evidence": "The target cannot take Reactions until the start of its next turn."
+      }
+     ],
+     "evidence": "The target makes a Charisma saving throw."
+    }
+   ],
+   "options": [],
+   "riders": []
+  },
+  "tianxia.talent.karma.court_of_cause_and_effect": {
+   "text_sha256": "6cbc3694a9e4b5fd17d588a1a5cd4460681cb4c6e6b2ade05f6f19eabf2fd979",
+   "reviewed_by": "sys-resources-states 2026-09-29",
+   "effects": [
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "distance_ft": 30,
+     "duration": "concentration",
+     "evidence": "30-foot-radius aura centered on you",
+     "origin": "reviewed"
+    },
+    {
+     "type": "karma_court",
+     "applies_to": "self",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "concentration",
+     "evidence": "You establish a karmic court where every deed becomes easier to record. Inside the Court: your Record the Deed range increases to 120 feet; you may use Record the Deed twice per round instead of once; when a creature with one of your Debt Imprints damages another creature, it takes Psychic damage equal to your Proficiency Bonus; when a creature with one of your Grace Imprints restores HP, prevents damage, or willingly accepts harm for another, it gains Temporary HP equal to your Proficiency Bonus; a creature can trigger each Debt or Grace effect only once per turn."
+    }
+   ],
+   "riders": [
+    "combat/ext/karma_imprints.py. While the Court stands: Record the Deed reaches 120 feet and may be used twice per round; a creature within 30 feet of you with one of your Debt Imprints takes Psychic damage equal to your Proficiency Bonus when it damages another creature, and one with your Grace Imprint gains Temporary HP equal to your Proficiency Bonus when it restores another creature's HP or takes damage for another; each creature triggers each clause once per turn (the log names each).",
+    "Not automated: 'prevents damage' (no event carries it; the GM gives the Temporary HP), and Imprints that 'last until your next long rest' (a fight has no long rest)."
+   ]
+  },
+  "TAL_FLOWERS_FRAGRANT_MIRAGE": {
+   "text_sha256": "fa2c5aeb659989e2fa39069b357a0bcf29f5fe901b108b2b071f558f05dead1a",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [
+    {
+     "type": "advantage",
+     "applies_to": "self",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "Dexterity (Stealth) checks while Lightly Obscured",
+     "duration": "concentration",
+     "evidence": "gain Advantage on Dexterity (Stealth) checks while Lightly Obscured",
+     "origin": "model_v2"
+    },
+    {
+     "type": "disadvantage",
+     "applies_to": "attacker",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "opportunity attacks against you",
+     "duration": "concentration",
+     "evidence": "opportunity attacks against you have Disadvantage",
+     "origin": "model_v2"
+    }
+   ],
+   "modifier": null,
+   "riders": []
+  },
+  "tianxia.talent.poison.five_venom_formula": {
+   "text_sha256": "2c81fc63a5400243aaa6f4d69b4a970e592a795d54e6a8e977baed3e6fae163c",
+   "reviewed_by": "claude 2026-09-28; menu by sys-menus-forms 2026-09-29; riders-lane10 2026-09-29 (riders)",
+   "effects": [
+    {
+     "type": "menu",
+     "id": "five_venom_formula",
+     "name": "Five-Venom Formula",
+     "label": "Choose two Venom Effects (Failed Save) or one (Successful Save)",
+     "count": 2,
+     "cast_only": true,
+     "options": [
+      "Serpent",
+      "Scorpion",
+      "Spider",
+      "Toad",
+      "Centipede",
+      "Wasp",
+      "Moth",
+      "Corrosive Slime"
+     ],
+     "default": [
+      "Serpent",
+      "Scorpion"
+     ]
+    },
+    {
+     "type": "save",
+     "ability": "con",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "affliction",
+       "applies_to": "target",
+       "menu": "five_venom_formula",
+       "name": "Five-Venom Formula",
+       "duration": "concentration",
+       "parts": {
+        "Serpent": {
+         "periodic": {
+          "dice": {
+           "count": 2,
+           "sides": 8
+          },
+          "types": [
+           "poison"
+          ]
+         }
+        },
+        "Scorpion": {
+         "rule": {
+          "no_reactions": true
+         }
+        },
+        "Spider": {
+         "speed": -20
+        },
+        "Toad": {
+         "rule": {
+          "save_mode": {
+           "CON": "DISADVANTAGE"
+          }
+         }
+        },
+        "Centipede": {
+         "healing_minus": "pb"
+        },
+        "Wasp": {
+         "rule": {
+          "attacks_have": "DISADVANTAGE"
+         }
+        },
+        "Moth": {
+         "rule": {
+          "save_mode": {
+           "WIS": "DISADVANTAGE"
+          }
+         }
+        },
+        "Corrosive Slime": {
+         "ac": -1
+        }
+       },
+       "evidence": "Failed Save: Choose two Venom Effects. At the end of each of its turns, the target repeats the saving throw, ending all Venom Effects from this talent on a success.",
+       "repeat_save": {
+        "ability": "con",
+        "ends": "all"
+       }
+      }
+     ],
+     "on_success": [
+      {
+       "type": "affliction",
+       "applies_to": "target",
+       "menu": "five_venom_formula",
+       "name": "Five-Venom Formula",
+       "duration": "until_start_of_your_next_turn",
+       "parts": {
+        "Serpent": {
+         "periodic": {
+          "dice": {
+           "count": 2,
+           "sides": 8
+          },
+          "types": [
+           "poison"
+          ]
+         }
+        },
+        "Scorpion": {
+         "rule": {
+          "no_reactions": true
+         }
+        },
+        "Spider": {
+         "speed": -20
+        },
+        "Toad": {
+         "rule": {
+          "save_mode": {
+           "CON": "DISADVANTAGE"
+          }
+         }
+        },
+        "Centipede": {
+         "healing_minus": "pb"
+        },
+        "Wasp": {
+         "rule": {
+          "attacks_have": "DISADVANTAGE"
+         }
+        },
+        "Moth": {
+         "rule": {
+          "save_mode": {
+           "WIS": "DISADVANTAGE"
+          }
+         }
+        },
+        "Corrosive Slime": {
+         "ac": -1
+        }
+       },
+       "evidence": "Successful Save: Choose one Venom Effect. It lasts until the start of your next turn.",
+       "menu_success": true
+      }
+     ],
+     "evidence": "The target makes a Constitution saving throw"
+    }
+   ],
+   "riders": []
+  },
+  "tianxia.talent.poison.lingering_meridian_venom": {
+    "text_sha256": "d5cd40d34ee2c81721be0b450fa8aec83022dc7ad040fc8d914e91c91c51286b",
+    "reviewed_by": "claude 2026-09-28; Codex AUTO44 2026-10-05",
+    "effects": [
+      {
+        "type": "save",
+        "ability": "con",
+        "dc": "technique_save_dc",
+        "on_fail": [],
+        "on_success": [],
+        "origin": "model_v2"
+      },
+      {
+        "type": "spend_resource",
+        "applies_to": "self",
+        "flat": 4,
+        "formula": "none",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "instant",
+        "evidence": "Cost: 4 CP",
+        "origin": "model_v2"
+      },
+      {
+        "type": "healing_reduction",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "pb",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "special",
+        "evidence": "the healing is reduced by your Proficiency Bonus",
+        "origin": "model",
+        "was": "healing"
+      },
+      {
+        "type": "save",
+        "ability": "con",
+        "dc": "technique_save_dc",
+        "on_fail": [
+          {
+            "type": "healing_reduction",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "special",
+            "evidence": "Sour Recovery: healing the target receives from a spending-limited feature is reduced by your Proficiency Bonus",
+            "origin": "claude"
+          }
+        ],
+        "on_success": [],
+        "evidence": "The target makes a Constitution saving throw",
+        "origin": "model_v2"
+      }
+    ],
+    "riders": [
+      "Selecting all five seven-day effects, rest-based saves and treatment against the original poison save DC is not implemented yet."
+    ]
+  }
+ }
+}
