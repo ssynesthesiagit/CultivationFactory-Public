@@ -1,0 +1,97 @@
+{
+  "schema": "TianxiaFoundry.FeatureStatus.v1",
+  "features": {
+    "tianxia.path.body_refining.feature.body_refining_subpath": {
+      "status": "build",
+      "why": "\"Choose one Body Refining Subpath for which you have legal access\" -- a character-build choice (which Subpath, gained at CL3/6/10/14/18) with no effect of its own; the Subpath's own features are separate records another worker owns."
+    },
+    "tianxia.path.body_refining.feature.subpath_feature": {
+      "status": "build",
+      "why": "The same Body Refining Subpath choice as tianxia.path.body_refining.feature.body_refining_subpath, filed under a second mechanic id (identical text_sha256) -- a build choice, not a fight mechanic."
+    },
+    "tianxia.path.body_refining.feature.ability_score_improvement_or_cultivation_insight": {
+      "status": "build",
+      "why": "A character-creation/level-up choice (raise ability scores, or take a Cultivation Insight) with no fight effect of its own; any Insight actually taken is its own separate record."
+    },
+    "tianxia.path.body_refining.feature.extra_attack_improvement": {
+      "status": "applied",
+      "why": "Already covered: combat/rules/feature_blocks.json's own 'extra_attack' block for tianxia.path.body_refining.feature.extra_attack carries the full attacks-by-CL curve (CL1: 2, CL11: 3, CL17: 4) in one place. This CL11/CL17 record's own text restates the later steps of that same curve; it has nothing left to add."
+    },
+    "tianxia.path.body_refining.feature.indomitable_body": {
+      "status": "table",
+      "why": "Two parts. (1) 'Spend 3 Stamina to reroll a failed saving throw' needs a reroll-the-same-d20 primitive; this table's only saving-throw hook (typed_reactions.on_save, block 'save_rescue') adds a flat bonus to the existing roll, the same gap already documented for Berserker's Executioner ('no reroll primitive exists on this table'). (2) 'Choose a second Defensive Discipline' would need a second save_rescue row for a different ability than Tempered Response's own (STR/DEX/CON) choice, but Tempered Response's own block picks its ability by an in-fight heuristic (the character's currently-worst save), not a build-time record of which ability the player actually chose for each of the two Disciplines -- there is nothing on the sheet this feature can read to know which second ability to add without guessing. GM-adjudicated."
+    },
+    "TAL_BERSERKER_ATAVISM": {
+      "status": "applied",
+      "why": "combat/ext/body_berserker.py's Adrenaline toggle covers activation (one Adrenaline talent active at a time, -2 AC while any is). Atavism's own benefit (count as your normal creature type or Beast for supernatural effects, whichever is more favorable) has no fight effect to gate: creature-type interactions are not tracked by this table either way, so there is nothing for a 'while active' gate to turn on or off. GM-adjudicated when it matters."
+    },
+    "TAL_BERSERKER_EXECUTIONER": {
+      "status": "applied",
+      "why": "combat/ext/body_berserker.py's Adrenaline toggle covers activation and spends the choice correctly (one Adrenaline talent at a time). The reroll itself ('expend Martial Focus to reroll one missed weapon attack') needs a reroll-the-same-d20 primitive this table does not have; a GM-only rider fires whenever Executioner is the active Adrenaline choice."
+    },
+    "TAL_BERSERKER_JUGGERNAUT": {
+      "status": "applied",
+      "why": "combat/ext/body_berserker.py's Adrenaline toggle covers activation. Juggernaut's benefits are a motion block (combat/rules/feature_blocks.d/auto_lane5.json) that holds while Juggernaut is the active Adrenaline choice: ignore difficult terrain (the map's and any area's: motion.ignores_area_difficult) and a Speed floor (motion.floors_speed, read in typed_executor _modifier, so a typed Speed penalty or halving does not land on it; Speed-0 effects such as Grappled and Restrained still work)."
+    },
+    "TAL_BERSERKER_DEATHLESS": {
+      "status": "applied",
+      "why": "Not an Adrenaline talent (always on, no activation gate needed). Advantage on death saving throws and the faster (1d4 minutes instead of hours) natural stabilization are narrative/downtime-facing outcomes this table's typed fight layer does not separately track (no death-save or long-term-recovery simulation exists to attach an Advantage/timing effect to); the triple-max-HP massive-damage rule is likewise a GM ruling at the table, not a typed check. Left with no compiled effect rather than a guessed one; GM-adjudicated."
+    },
+    "TAL_BERSERKER_EXTENDED_EXERTION": {
+      "status": "table",
+      "why": "'Apply two Exertion talents to one Batter attack' would need a second choice value alongside gu_berserker.py's own single Exertion toggle (that module's EXERTION_CHOICE condition holds exactly one chosen talent at a time) and a combined-effect after_hit path; gu_berserker.py is Gu Xiangze's own file (out of scope to edit here per this task's file-ownership rule), and duplicating its toggle in a second, parallel system risks double-applying an Exertion talent on the same hit. Left un-automated; the character can still apply any one Exertion talent per Batter via the existing toggle."
+    },
+    "TAL_BERSERKER_ALTER_TERRAIN": {
+      "status": "table",
+      "why": "Modifies Shatter Earth (an Earth-sphere ability, outside this worker's sphere list) to carve a 5-foot-deep hole or raise ground 5 feet in the affected squares. This table has no elevation/terrain-sculpting model (flat grid, no z-height) to represent either change, and Shatter Earth itself is not an ability this file owns to extend. GM-adjudicated terrain description."
+    },
+    "tianxia.talent.equipment.hidden_plates": {
+      "status": "outside",
+      "why": "Disguising armor as ordinary clothing and an Investigation check to notice it through a physical search are narrative/social mechanics resolved outside a fight's typed effects; the fight-relevant payoff it enables (Brigandine Robe Scripture's Reaction AC bonus) is separately automated and already status 'checked'."
+    },
+    "tianxia.talent.equipment.field_maintenance": {
+      "status": "outside",
+      "why": "Advantage on out-of-combat maintenance checks (cleaning, oiling, patching armor) -- a downtime/crafting-adjacent check, not a fight mechanic."
+    },
+    "EQUIPMENT_BASE_EQUIPMENT_TRAINING": {
+      "status": "build",
+      "why": "\"Choose one Equipment talent and gain it for free\" plus the ability to designate Fitted Armor -- a character-build grant; the free talent chosen is its own separate record, and Fitted Armor designation is covered next."
+    },
+    "EQUIPMENT_BASE_FITTED_ARMOR_DESIGNATION": {
+      "status": "build",
+      "why": "Naming which owned armor suit is your Fitted Armor (a 10-minute or long-rest procedure) -- a build/downtime designation with no fight effect of its own; the talents that key off wearing Fitted Armor read the sheet's own designation."
+    },
+    "EQUIPMENT_BASE_ONE_FREE_EQUIPMENT_TALENT": {
+      "status": "build",
+      "why": "The same free first Equipment talent as EQUIPMENT_BASE_EQUIPMENT_TRAINING, filed under a second base-sphere id -- a build grant, not a fight mechanic."
+    },
+    "tianxia.talent.equipment.armor_training": {
+      "status": "build",
+      "why": "Grants armor-category proficiency (light, then medium, then heavy on repeat takes) -- a build-time proficiency grant with no fight effect of its own."
+    },
+    "tianxia.talent.equipment.shield_training": {
+      "status": "build",
+      "why": "Grants shield proficiency only (explicitly not shield attacks, active defense, or deflection) -- a build-time proficiency grant, no fight effect."
+    },
+    "BLACKSMITH_BASE_BLACKSMITH_TRAINING": {
+      "status": "build",
+      "why": "Tool proficiency plus \"choose one Mortal Realm Blacksmith talent for which you meet the prerequisites\" -- a character-build grant; Read the Flaw/Set the Workpiece/Hammer the Mark it also grants are separately automated base abilities, and the chosen free talent is its own record."
+    },
+    "TAL_SAND_HIDDEN_CACHE_OF_GRAINS": {
+      "status": "build",
+      "why": "Carrying a small sand-cache counts as always having a Sand Source for Mortal Realm Sand talents -- a resource-bookkeeping/build precondition (do you have a Sand Source), not itself a fight effect; the Sand talents that need a Sand Source read that precondition, not this record."
+    },
+    "TAL_WRESTLING_EARTH_SHATTERING_SLAM": {
+      "status": "table",
+      "why": "Modifies Living Weapon (a Wrestling base ability that is not automated anywhere in this codebase -- no compile_block, ext module, or feature_status entry for it exists), so the save-and-condition effects this record's own modifier would attach to have no compiled Living Weapon action to attach to; it targets an ability outside this table's current coverage rather than something this worker's sphere list can fix in isolation. Its own printed 'the grapple ends' clause on both outcomes is also not separately modeled (no compiled grapple to end). GM-adjudicated."
+    },
+    "TAL_BERSERKER_WAR_GOD_INCARNATION": {
+      "status": "table",
+      "why": "No character in the current roster owns this capstone (named in this task's brief, but not present in sphere_groups.json's Berserker character list), so nothing compiles it in any live fight tonight. Left un-built rather than guessed at under time pressure for zero current impact, but noted for whoever takes it later: its raw typing currently double-counts the same +2d10 Batter bonus (once as an 'extra_damage applies_to: self' -- the wrong side, since Batter's extra damage lands on the target -- and again as a correctly-sided but separate 'damage_modifier applies_to: target'), and its real activated-stance shape (two Adrenaline talents at once, ignore one's AC penalty, +5 reach, Batter counts its target as already-Battered for Exertion, movement after taking damage) needs the same kind of dedicated build Court of the Unbroken Warpath got, not the generic modifier pipeline."
+    },
+    "TAL_BERSERKER_BEAT_DOWN": {
+      "status": "table",
+      "why": "'Battered lasts until the end of your second turn' and 'Exertion effects that normally last until the start of your next turn instead last until the start of your second turn' would need Batter's own Battered-condition grant (combat/ext/gu_berserker.py, docket_maneuvers.py's 'batter' effect) and each Exertion talent's own expiry (gu_berserker.py's after_hit handling of Bone-Breaker/Bell-Ringer) to read Beat Down ownership and pick a longer expiry token. Those effect handlers live in Gu Xiangze's own file (out of scope to edit here per this task's file-ownership rule); duplicating them in a parallel system risks the two handlers fighting over the same condition. Left at the shorter, already-correct-for-everyone-else duration; a character with Beat Down gets less mileage from Battered/Exertion than printed."
+    }
+  }
+}
