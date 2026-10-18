@@ -1,0 +1,26 @@
+{
+  "schema": "TianxiaFoundry.FeatureBlocks.v1",
+  "note": "AUTO5 (round 24 live 42e43e14, branch auto/spirit-companions): the Spirit Companions seal talents whose trigger combat/ext/spirit_seals.py runs. Absent a block a character owns none of them, and every row is inert without its feature.",
+  "features": {
+    "tianxia.talent.spirit_companions.bind_the_violent_ghost": {
+      "block": "spirit_seal",
+      "kind": "violent",
+      "why": "Bind the Violent Ghost: 'a spirit that has attacked you or your allies during the current scene' is a printed fact about the target, not a check. The plug-in marks that spirit with condition:typed.violent_ghost and TAL_SPIRIT_COMPANIONS_BINDING_SEAL's save row reads it through typed_executor._save_each's disadvantage_if_condition (the shared Dragon-Felling Chop shape), so the disadvantage is data."
+    },
+    "tianxia.talent.spirit_companions.painful_binding_seal": {
+      "block": "spirit_seal",
+      "kind": "painful",
+      "why": "Painful Binding Seal: 'A spirit bound this way gains Bond Strain 1 immediately' runs when the seal takes hold, and 'When you command the spirit to act against its desire, increase Bond Strain by 1' runs at the printed disobedience question after Command Bonded Spirit. Bond Strain itself is combat/ext/spirit_bond_state.py's shared 0-3 counter."
+    },
+    "tianxia.talent.spirit_companions.punishing_seal": {
+      "block": "spirit_seal",
+      "kind": "punish",
+      "why": "Punishing Seal: the printed trigger is a bound spirit disobeying, which no engine event reports, so the talent had no button at all. The plug-in asks the owner, right after the command, whether the spirit carried out the order and spends the Reaction there; trigger_owner claims the feature so the compiler omits the unreachable generic reaction row. The punishment is the talent's own typed damage row (1d10 + key ability modifier, Psychic or Force)."
+    },
+    "tianxia.talent.spirit_companions.name_binding": {
+      "block": "spirit_seal",
+      "kind": "name",
+      "why": "Name-Binding: 'Every time the standing command forces unwilling service, increase Bond Strain by 1' is the same printed disobedience the seal family already asks about after Command Bonded Spirit, so the same question charges it. A character who owns both Name-Binding and Painful Binding Seal pays both, as printed. Its other printed sentence (Disadvantage on the spirit's first attempt to break the seal) needs an event the engine cannot report and stays the talent's rider."
+    }
+  }
+}
