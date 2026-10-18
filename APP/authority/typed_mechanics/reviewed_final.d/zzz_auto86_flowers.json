@@ -1,0 +1,56 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "mechanics": {
+  "TAL_FLOWERS_SOPORIFIC_POLLEN": {
+   "text_sha256": "afb58499f9e3cd166ae65bbab09946b265d09495df190877d1f0b95dbf4a0c9b",
+   "reviewed_by": "auto86 Flowers 2026-10-05; AUTO86f1 2026-10-05 (Flowers' own While Drowsy list, on the target's turn)",
+   "effects": [
+    {
+     "type": "save",
+     "ability": "con",
+     "dc": "technique_save_dc",
+     "applies_to": "target",
+     "duration": "instant",
+     "evidence": "A creature that enters the Fragrance for the first time on a turn or starts its turn inside makes a Constitution saving throw.",
+     "on_fail": [
+      {
+       "type": "drowsy",
+       "expires_on": "START_OF_TARGET_NEXT_TURN",
+       "speed_delta": -10,
+       "rule": {
+        "no_reactions": true,
+        "check_mode": {"Perception": "DISADVANTAGE"},
+        "_rule": "While Drowsy (Soporific Pollen): Speed is reduced by 10 feet; cannot take Reactions; has Disadvantage on Wisdom (Perception) checks."
+       },
+       "label": "Drowsy: Speed -10 feet, no Reactions, Disadvantage on Wisdom (Perception) checks",
+       "while_drowsy": [],
+       "evidence": "Failed Save: Become Drowsy until the start of its next turn. While Drowsy: Speed is reduced by 10 feet; cannot take Reactions; has Disadvantage on Wisdom (Perception) checks.",
+       "origin": "reviewed"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "reaction_denied",
+       "applies_to": "target",
+       "expires_on": "START_OF_TARGET_NEXT_TURN",
+       "evidence": "Successful Save: Cannot take Reactions until the start of its next turn.",
+       "origin": "reviewed"
+      }
+     ],
+     "origin": "reviewed"
+    }
+   ],
+   "riders": []
+  },
+  "FLOWERS_BASE_FRAGRANCE": {
+   "text_sha256": "68429a6cd688ceab4b0788db2d362e246edb3ceb571f008e05130cc833f92551",
+   "reviewed_by": "auto86 Flowers 2026-10-05; AUTO86f1 2026-10-05 (the 2 CP augment runs before and after the Fragrance exists)",
+   "riders": []
+  },
+  "TAL_FLOWERS_LINGERING_FRAGRANCE": {
+   "text_sha256": "edda7fb0b78e0214739a6843376a69516135165f2fffbbe2fbc4347411905aa9",
+   "reviewed_by": "auto86 Flowers 2026-10-05; AUTO86f1 2026-10-05 (the after-creation 2 CP augment is a free button, combat/ext/persist_augment.py)",
+   "riders": []
+  }
+ }
+}
