@@ -1,0 +1,2274 @@
+{
+  "schema": "TianxiaTypedCharacterBundle.v1",
+  "actor_id": "actor:factory.luna38-a",
+  "typed_authority_sha256": "65dbbeb1be02fe79a8f1d21c8d5dfee8d88501f4eadbbec916b2db410c6a24b2",
+  "actor_template": {
+    "entity_id": "actor:factory.luna38-a",
+    "display_name": "First Grappler",
+    "team_id": "team:factory",
+    "primary_combatant": true,
+    "owner_id": null,
+    "projection_sha256": null,
+    "armor_class": 14,
+    "maximum_hp": 1000,
+    "speed_ft": 30,
+    "initiative_bonus": 10,
+    "dexterity_score": 30,
+    "proficiency_bonus": 4,
+    "saving_throws": {
+      "STR": 10,
+      "DEX": 10,
+      "CON": 10,
+      "INT": 10,
+      "WIS": 10,
+      "CHA": 10
+    },
+    "resources": [
+      {
+        "resource_id": "resource:core.stamina",
+        "initial": 30,
+        "maximum": 30
+      },
+      {
+        "resource_id": "resource:core.martial_focus",
+        "initial": 1,
+        "maximum": 1
+      }
+    ],
+    "action_ids": [
+      "action:typed.602994e085.blossom.remove",
+      "action:typed.602994e085.disarm_trap",
+      "action:typed.602994e085.escape_binding",
+      "action:typed.602994e085.escape_grapple",
+      "action:typed.602994e085.escape_net",
+      "action:typed.602994e085.extinguish",
+      "action:typed.602994e085.hide",
+      "action:typed.602994e085.improvised.attack",
+      "action:typed.602994e085.improvised.grab",
+      "action:typed.602994e085.improvised.thrown",
+      "action:typed.602994e085.item_drop.4685392e08",
+      "action:typed.602994e085.item_drop.7fd2216aa4",
+      "action:typed.602994e085.item_drop.a20b9c707a",
+      "action:typed.602994e085.let_go_bound",
+      "action:typed.602994e085.object_attack.weapon",
+      "action:typed.602994e085.release_grapple",
+      "action:typed.602994e085.remove_projectile",
+      "action:typed.602994e085.search",
+      "action:typed.602994e085.take_weapon",
+      "action:typed.602994e085.unarmed.grapple",
+      "action:typed.602994e085.unarmed.shove_prone",
+      "action:typed.602994e085.unarmed.shove_push",
+      "action:typed.602994e085.utilize.bleed_air",
+      "action:typed.602994e085.utilize.face_strike",
+      "action:typed.602994e085.wall_attack",
+      "action:typed.602994e085.wall_collapse",
+      "action:typed.602994e085.wall_opening",
+      "action:typed.602994e085.weapon.gun",
+      "action:typed.602994e085.weapon.gun.pickup",
+      "action:typed.602994e085.weapon.jian",
+      "action:typed.602994e085.weapon.jian.pickup",
+      "action:typed.602994e085.weapon.qiang",
+      "action:typed.602994e085.weapon.qiang#pin",
+      "action:typed.602994e085.weapon.qiang#trip",
+      "action:typed.602994e085.weapon.qiang.pickup"
+    ],
+    "reaction_ids": []
+  },
+  "action_catalog": [
+    {
+      "source_definition_id": "action:typed.602994e085.blossom.remove",
+      "display_name": "Remove Blossom",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "blossom_remove"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": [],
+          "source": "tianxia.sphere.flowers"
+        },
+        "expected_damage": 1,
+        "player_only": true,
+        "blossom_remove": true,
+        "requires_condition": "condition:typed.blossom_carried"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.disarm_trap",
+      "display_name": "Disarm Trap",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "CELL",
+      "range_ft": 5,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "trap_disarm",
+              "bonus": 10
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "player_only": true,
+        "any_cell": true,
+        "disarm_trap": true
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.escape_binding",
+      "display_name": "Escape the binding",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "escape_binding",
+              "bonus": 10
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 1,
+        "requires_condition": "condition:typed.bound_limb"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.escape_grapple",
+      "display_name": "Escape grapple",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "escape_grapple"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18,
+            "escape_bonus": 10
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 1,
+        "requires_condition": "condition:typed.grappled"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.escape_net",
+      "display_name": "Escape the net",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "trap_escape",
+              "bonus": 10
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 1,
+        "requires_condition": "condition:typed.netted"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.extinguish",
+      "display_name": "Extinguish flames",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "ALLY_OR_SELF",
+      "range_ft": 5,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "remove_condition",
+              "condition": "burning",
+              "applies_to": "target_or_self"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "target_requires_condition": "condition:typed.burning"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.hide",
+      "display_name": "Hide",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "hide",
+              "bonus": 10
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "player_only": true,
+        "stealth": "hide",
+        "basic": true
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.improvised.attack",
+      "display_name": "Improvised weapon attack",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "HOSTILE_ENTITY",
+      "range_ft": 5,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "weapon",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true
+                }
+              ]
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 4,
+              "modifier": 10
+            },
+            "damage_type": "BLUDGEONING",
+            "damage_types": [
+              "BLUDGEONING"
+            ]
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": [],
+          "source": "improvised_weapon",
+          "proficient": false,
+          "mundane": true,
+          "range_ft": null
+        },
+        "expected_damage": 12,
+        "requires_condition": "condition:typed.improvised"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.improvised.grab",
+      "display_name": "Grab an improvised weapon",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "NONE",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "grab_improvised"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 4,
+              "modifier": 10
+            },
+            "damage_type": "BLUDGEONING",
+            "damage_types": [
+              "BLUDGEONING"
+            ]
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": [],
+          "source": "improvised_weapon",
+          "proficient": false,
+          "mundane": true
+        },
+        "expected_damage": 0,
+        "requires_absent_condition": "condition:typed.improvised",
+        "blocked_by_turn_flag": "object_interaction"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.improvised.thrown",
+      "display_name": "Improvised weapon thrown",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "HOSTILE_ENTITY",
+      "range_ft": 60,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "weapon",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true
+                }
+              ]
+            },
+            {
+              "type": "remove_condition",
+              "condition": "improvised",
+              "applies_to": "self"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 4,
+              "modifier": 10
+            },
+            "damage_type": "BLUDGEONING",
+            "damage_types": [
+              "BLUDGEONING"
+            ]
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": [],
+          "source": "improvised_weapon",
+          "proficient": false,
+          "mundane": true,
+          "range_ft": 20,
+          "long_range_ft": 60
+        },
+        "expected_damage": 12,
+        "requires_condition": "condition:typed.improvised"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.item_drop.4685392e08",
+      "display_name": "Drop Qiang (Spear)",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "NONE",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "drop_item",
+              "item": "tianxia.mortal.weapon.qiang"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "item_action": "drop",
+        "item_key": "tianxia.mortal.weapon.qiang"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.item_drop.7fd2216aa4",
+      "display_name": "Drop Gun (Staff)",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "NONE",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "drop_item",
+              "item": "tianxia.mortal.weapon.gun"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "item_action": "drop",
+        "item_key": "tianxia.mortal.weapon.gun"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.item_drop.a20b9c707a",
+      "display_name": "Drop Jian (Straight Sword)",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "NONE",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "drop_item",
+              "item": "tianxia.mortal.weapon.jian"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "item_action": "drop",
+        "item_key": "tianxia.mortal.weapon.jian"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.let_go_bound",
+      "display_name": "Let go of the bound weapon",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "NONE",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "needle_release_bound"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "player_only": true,
+        "requires_condition": "condition:typed.needle_bound",
+        "needle_release": true,
+        "description": "Bind Weapon: let go of the weapon bound to the enemy's blade (no Action); the bind and its grapple end, and the weapon falls at the binder's feet."
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.object_attack.weapon",
+      "display_name": "Attack an object",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "OBJECT",
+      "range_ft": 5,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "object_attack",
+              "count": 1
+            }
+          ],
+          "object_weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 10,
+              "modifier": 10
+            },
+            "damage_type": "PIERCING",
+            "damage_types": [
+              "PIERCING",
+              "SLASHING"
+            ],
+            "ability": "STR",
+            "ability_modifier": 10,
+            "properties": "Finesse, Versatile 1d10, Balanced Edge Method",
+            "omits_ability_damage": false
+          },
+          "object_weapon_group": "weapon",
+          "object_melee": true,
+          "mundane": true,
+          "numbers": {
+            "pb": 4,
+            "save_dc": 22,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": [],
+          "source": "object_attack"
+        },
+        "expected_damage": 0,
+        "player_only": true,
+        "object_attack": true,
+        "description": "Use your Action to make Jian (Straight Sword) attacks against a reachable object or structure, applying its defenses and damage rules."
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.release_grapple",
+      "display_name": "Release grapple",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "NONE",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "release_grapple"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "requires_grappling": true
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.remove_projectile",
+      "display_name": "Remove the projectile",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "remove_lodged"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 1,
+        "requires_condition": "condition:typed.hindered"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.search",
+      "display_name": "Search",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "search",
+              "bonus": 10
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "player_only": true,
+        "stealth": "search",
+        "basic": true
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.take_weapon",
+      "display_name": "Take a dropped weapon",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "BONUS_ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "take_weapon"
+            }
+          ],
+          "numbers": {},
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "requires_dropped_nearby": true
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.unarmed.grapple",
+      "display_name": "Grapple",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "HOSTILE_ENTITY",
+      "range_ft": 5,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "save",
+              "ability": "STR_OR_DEX",
+              "max_size_larger": 1,
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "condition": "grappled",
+                  "applies_to": "target",
+                  "until_escape": true
+                }
+              ]
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 22,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 10,
+              "modifier": 10
+            },
+            "damage_type": "PIERCING",
+            "damage_types": [
+              "PIERCING",
+              "SLASHING"
+            ],
+            "ability": "STR",
+            "ability_modifier": 10,
+            "properties": "Finesse, Versatile 1d10, Balanced Edge Method",
+            "omits_ability_damage": false
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "range_ft": null,
+          "long_range_ft": null,
+          "riders": [],
+          "source": "tianxia.mortal.weapon.jian",
+          "proficient": false,
+          "mastery": null,
+          "magic_bonus": 0,
+          "mundane": true,
+          "attack_action": true,
+          "unarmed_option": "grapple"
+        },
+        "expected_damage": 0
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.unarmed.shove_prone",
+      "display_name": "Shove: Prone",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "HOSTILE_ENTITY",
+      "range_ft": 5,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "save",
+              "ability": "STR_OR_DEX",
+              "max_size_larger": 1,
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "condition": "prone",
+                  "applies_to": "target"
+                }
+              ]
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 22,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 10,
+              "modifier": 10
+            },
+            "damage_type": "PIERCING",
+            "damage_types": [
+              "PIERCING",
+              "SLASHING"
+            ],
+            "ability": "STR",
+            "ability_modifier": 10,
+            "properties": "Finesse, Versatile 1d10, Balanced Edge Method",
+            "omits_ability_damage": false
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "range_ft": null,
+          "long_range_ft": null,
+          "riders": [],
+          "source": "tianxia.mortal.weapon.jian",
+          "proficient": false,
+          "mastery": null,
+          "magic_bonus": 0,
+          "mundane": true,
+          "attack_action": true,
+          "unarmed_option": "shove_prone"
+        },
+        "expected_damage": 0
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.unarmed.shove_push",
+      "display_name": "Shove: Push 5 ft",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "HOSTILE_ENTITY",
+      "range_ft": 5,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "save",
+              "ability": "STR_OR_DEX",
+              "max_size_larger": 1,
+              "on_fail": [
+                {
+                  "type": "forced_movement",
+                  "distance_ft": 5,
+                  "direction": "away",
+                  "applies_to": "target"
+                }
+              ]
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 22,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 10,
+              "modifier": 10
+            },
+            "damage_type": "PIERCING",
+            "damage_types": [
+              "PIERCING",
+              "SLASHING"
+            ],
+            "ability": "STR",
+            "ability_modifier": 10,
+            "properties": "Finesse, Versatile 1d10, Balanced Edge Method",
+            "omits_ability_damage": false
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "range_ft": null,
+          "long_range_ft": null,
+          "riders": [],
+          "source": "tianxia.mortal.weapon.jian",
+          "proficient": false,
+          "mastery": null,
+          "magic_bonus": 0,
+          "mundane": true,
+          "attack_action": true,
+          "unarmed_option": "shove_push"
+        },
+        "expected_damage": 0
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.utilize.bleed_air",
+      "display_name": "Treat the choking (Bleed Air)",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "ALLY_OR_SELF",
+      "range_ft": 5,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "utilize_end",
+              "key": "bleed_air",
+              "bonus": 10
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "target_requires_condition": "condition:typed.needle_bleed_air",
+        "utilize_end": "bleed_air",
+        "description": "Utilize: a Wisdom (Medicine) check against the fencer's Cultivation Save DC ends a choking creature's Bleed Air."
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.utilize.face_strike",
+      "display_name": "Wipe away the obstruction (Face Strike)",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "ALLY_OR_SELF",
+      "range_ft": 5,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "utilize_end",
+              "key": "face_strike",
+              "bonus": 0
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "target_requires_condition": "condition:typed.needle_face_strike",
+        "utilize_end": "face_strike",
+        "description": "Utilize: wipe away the blood or dust of a Face Strike from yourself or a creature within 5 feet; its Blinded ends."
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.wall_attack",
+      "display_name": "Attack a wall section",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "CELL",
+      "range_ft": 5,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "wall_attack",
+              "count": 1,
+              "evidence": "Attack one 5-foot section of a solid wall with Jian (Straight Sword) (its AC and hit points are its text's)."
+            }
+          ],
+          "wall_weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 10,
+              "modifier": 10
+            },
+            "damage_type": "PIERCING",
+            "damage_types": [
+              "PIERCING",
+              "SLASHING"
+            ],
+            "ability": "STR",
+            "ability_modifier": 10,
+            "properties": "Finesse, Versatile 1d10, Balanced Edge Method",
+            "omits_ability_damage": false
+          },
+          "mundane": true,
+          "numbers": {
+            "pb": 4,
+            "save_dc": 22,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": [],
+          "source": "wall_attack"
+        },
+        "expected_damage": 0,
+        "player_only": true,
+        "any_cell": true,
+        "wall_attack": true
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.wall_collapse",
+      "display_name": "Force through the wall",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "wall_breach",
+              "result": "collapse"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18,
+            "check_bonus": 10
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "requires_wall": "collapse"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.wall_opening",
+      "display_name": "Work the Puzzle Wall",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "wall_breach",
+              "result": "opening"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18,
+            "check_bonus": 10
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": []
+        },
+        "expected_damage": 0,
+        "requires_wall": "opening"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.weapon.gun",
+      "display_name": "Gun (Staff) attack",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "HOSTILE_ENTITY",
+      "range_ft": 10,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "weapon",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true
+                }
+              ]
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 22,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 8,
+              "modifier": 10
+            },
+            "damage_type": "BLUDGEONING",
+            "damage_types": [
+              "BLUDGEONING"
+            ],
+            "ability": "STR",
+            "ability_modifier": 10,
+            "properties": "Two-Handed, Reach, Nonlethal Method",
+            "omits_ability_damage": false
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "range_ft": null,
+          "long_range_ft": null,
+          "riders": [],
+          "source": "tianxia.mortal.weapon.gun",
+          "proficient": false,
+          "mastery": null,
+          "magic_bonus": 0,
+          "mundane": true
+        },
+        "expected_damage": 14
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.weapon.gun.pickup",
+      "display_name": "Pick up Gun (Staff)",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "BONUS_ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "recover_weapon",
+              "weapon": "action:typed.602994e085.weapon.gun"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": [],
+          "source": "tianxia.mortal.weapon.gun"
+        },
+        "expected_damage": 14,
+        "requires_disabled_action": "action:typed.602994e085.weapon.gun"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.weapon.jian",
+      "display_name": "Jian (Straight Sword) attack",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "HOSTILE_ENTITY",
+      "range_ft": 5,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "weapon",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true
+                }
+              ]
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 22,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 10,
+              "modifier": 10
+            },
+            "damage_type": "PIERCING",
+            "damage_types": [
+              "PIERCING",
+              "SLASHING"
+            ],
+            "ability": "STR",
+            "ability_modifier": 10,
+            "properties": "Finesse, Versatile 1d10, Balanced Edge Method",
+            "omits_ability_damage": false
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "range_ft": null,
+          "long_range_ft": null,
+          "riders": [],
+          "source": "tianxia.mortal.weapon.jian",
+          "proficient": false,
+          "mastery": null,
+          "magic_bonus": 0,
+          "mundane": true
+        },
+        "expected_damage": 15
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.weapon.jian.pickup",
+      "display_name": "Pick up Jian (Straight Sword)",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "BONUS_ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "recover_weapon",
+              "weapon": "action:typed.602994e085.weapon.jian"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": [],
+          "source": "tianxia.mortal.weapon.jian"
+        },
+        "expected_damage": 15,
+        "requires_disabled_action": "action:typed.602994e085.weapon.jian"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.weapon.qiang",
+      "display_name": "Qiang (Spear) attack",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "HOSTILE_ENTITY",
+      "range_ft": 10,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "weapon",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true
+                }
+              ]
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 22,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 8,
+              "modifier": 10
+            },
+            "damage_type": "PIERCING",
+            "damage_types": [
+              "PIERCING"
+            ],
+            "ability": "STR",
+            "ability_modifier": 10,
+            "properties": "Reach, Two-Handed, Tassel Method",
+            "omits_ability_damage": false
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "range_ft": null,
+          "long_range_ft": null,
+          "riders": [],
+          "source": "tianxia.mortal.weapon.qiang",
+          "proficient": false,
+          "mastery": null,
+          "magic_bonus": 0,
+          "mundane": true
+        },
+        "expected_damage": 14
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.weapon.qiang#pin",
+      "display_name": "Qiang (Spear) attack: Pin",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "HOSTILE_ENTITY",
+      "range_ft": 10,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "weapon",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true
+                },
+                {
+                  "type": "save",
+                  "ability": "STR_OR_DEX",
+                  "on_fail": [
+                    {
+                      "type": "condition",
+                      "condition": "grappled",
+                      "applies_to": "target",
+                      "until_escape": true
+                    },
+                    {
+                      "type": "condition",
+                      "condition": "pinned",
+                      "applies_to": "target",
+                      "until_escape": true
+                    }
+                  ],
+                  "first_hit_only": true,
+                  "max_size_larger": 1
+                }
+              ]
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 22,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 8,
+              "modifier": 10
+            },
+            "damage_type": "PIERCING",
+            "damage_types": [
+              "PIERCING"
+            ],
+            "ability": "STR",
+            "ability_modifier": 10,
+            "properties": "Reach, Two-Handed, Tassel Method",
+            "omits_ability_damage": false
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "range_ft": null,
+          "long_range_ft": null,
+          "riders": [],
+          "source": "tianxia.mortal.weapon.qiang",
+          "option_of": "action:typed.602994e085.weapon.qiang",
+          "option_label": "Pin",
+          "proficient": false,
+          "mastery": null,
+          "magic_bonus": 0,
+          "mundane": true
+        },
+        "expected_damage": 14
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.weapon.qiang#trip",
+      "display_name": "Qiang (Spear) attack: Trip",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "HOSTILE_ENTITY",
+      "range_ft": 10,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "weapon",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true
+                },
+                {
+                  "type": "save",
+                  "ability": "STR_OR_DEX",
+                  "on_fail": [
+                    {
+                      "type": "condition",
+                      "condition": "prone",
+                      "applies_to": "target"
+                    }
+                  ],
+                  "first_hit_only": true,
+                  "max_size_larger": 1
+                }
+              ]
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 22,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 8,
+              "modifier": 10
+            },
+            "damage_type": "PIERCING",
+            "damage_types": [
+              "PIERCING"
+            ],
+            "ability": "STR",
+            "ability_modifier": 10,
+            "properties": "Reach, Two-Handed, Tassel Method",
+            "omits_ability_damage": false
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "range_ft": null,
+          "long_range_ft": null,
+          "riders": [],
+          "source": "tianxia.mortal.weapon.qiang",
+          "option_of": "action:typed.602994e085.weapon.qiang",
+          "option_label": "Trip",
+          "proficient": false,
+          "mastery": null,
+          "magic_bonus": 0,
+          "mundane": true
+        },
+        "expected_damage": 14
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.weapon.qiang.pickup",
+      "display_name": "Pick up Qiang (Spear)",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "BONUS_ACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "SELF",
+      "range_ft": null,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "recover_weapon",
+              "weapon": "action:typed.602994e085.weapon.qiang"
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 30,
+            "attack_bonus": 8,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "riders": [],
+          "source": "tianxia.mortal.weapon.qiang"
+        },
+        "expected_damage": 14,
+        "requires_disabled_action": "action:typed.602994e085.weapon.qiang"
+      }
+    },
+    {
+      "source_definition_id": "action:typed.602994e085.opportunity_attack",
+      "display_name": "Opportunity Attack",
+      "owner_id": "actor:factory.luna38-a",
+      "economy": "REACTION",
+      "resolution_kind": "TYPED",
+      "target_kind": "HOSTILE_ENTITY",
+      "range_ft": 5,
+      "reach_ft": null,
+      "attack_bonus": null,
+      "attack_count": 1,
+      "damage": null,
+      "damage_type": null,
+      "save": null,
+      "costs": [],
+      "concentration": false,
+      "radius_ft": null,
+      "parameters": {
+        "typed": {
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "weapon",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true
+                }
+              ]
+            }
+          ],
+          "numbers": {
+            "pb": 4,
+            "save_dc": 22,
+            "attack_bonus": 10,
+            "key_mod": 10,
+            "con_mod": 10,
+            "cl": 18
+          },
+          "weapon": {
+            "damage": {
+              "count": 1,
+              "sides": 10,
+              "modifier": 10
+            },
+            "damage_type": "PIERCING",
+            "damage_types": [
+              "PIERCING",
+              "SLASHING"
+            ],
+            "ability": "STR",
+            "ability_modifier": 10,
+            "properties": "Finesse, Versatile 1d10, Balanced Edge Method",
+            "omits_ability_damage": false
+          },
+          "duration": {
+            "kind": "instant"
+          },
+          "range_ft": null,
+          "long_range_ft": null,
+          "riders": [],
+          "source": "tianxia.mortal.weapon.jian",
+          "proficient": false,
+          "mastery": null,
+          "magic_bonus": 0,
+          "mundane": true,
+          "opportunity_of": "action:typed.602994e085.weapon.jian"
+        },
+        "expected_damage": 15
+      }
+    }
+  ],
+  "diagnostics": {
+    "skipped": {
+      "reaction": [],
+      "passive": [],
+      "not_typed": [],
+      "not_in_authority": [],
+      "build": [],
+      "outside": [],
+      "definition": [],
+      "table": []
+    },
+    "notes": []
+  },
+  "carrying": {
+    "weight_lb": "10",
+    "capacity_lb": 450,
+    "over": false,
+    "unweighed": [],
+    "items": [
+      {
+        "key": "tianxia.mortal.weapon.qiang",
+        "item_id": "tianxia.mortal.weapon.qiang",
+        "name": "Qiang (Spear)",
+        "quantity": 1,
+        "weight_lb": "3",
+        "kind": "item",
+        "worn": false,
+        "weapon_action": "action:typed.602994e085.weapon.qiang"
+      },
+      {
+        "key": "tianxia.mortal.weapon.gun",
+        "item_id": "tianxia.mortal.weapon.gun",
+        "name": "Gun (Staff)",
+        "quantity": 1,
+        "weight_lb": "4",
+        "kind": "item",
+        "worn": false,
+        "weapon_action": "action:typed.602994e085.weapon.gun"
+      },
+      {
+        "key": "tianxia.mortal.weapon.jian",
+        "item_id": "tianxia.mortal.weapon.jian",
+        "name": "Jian (Straight Sword)",
+        "quantity": 1,
+        "weight_lb": "3",
+        "kind": "item",
+        "worn": false,
+        "weapon_action": "action:typed.602994e085.weapon.jian"
+      }
+    ],
+    "attunement": {
+      "used": 0,
+      "max": 4,
+      "attuned": []
+    },
+    "speed_ft": 30,
+    "template_speed_ft": 30
+  },
+  "modifiers": [],
+  "typed_reactions": [
+    {
+      "feature_id": "opportunity_attack",
+      "name": "Opportunity Attack",
+      "block": "opportunity",
+      "resource_id": "",
+      "action_id": "action:typed.602994e085.opportunity_attack",
+      "reach_ft": 5,
+      "ask": true
+    }
+  ],
+  "reaction_plan": {
+    "mode": "ask",
+    "order": [
+      "opportunity_attack"
+    ],
+    "off": [],
+    "choices": [
+      {
+        "id": "opportunity_attack",
+        "name": "Opportunity Attack",
+        "when": "when an enemy leaves your reach"
+      }
+    ],
+    "options": {}
+  },
+  "summons": [],
+  "summon_options": {
+    "groups": [],
+    "tamer": false,
+    "beast_limit": 4,
+    "beasts": [
+      {
+        "key": "wolf",
+        "name": "Wolf",
+        "cr": "1/4"
+      },
+      {
+        "key": "mastiff",
+        "name": "Mastiff",
+        "cr": "1/8"
+      },
+      {
+        "key": "panther",
+        "name": "Panther",
+        "cr": "1/4"
+      },
+      {
+        "key": "warhorse",
+        "name": "Warhorse",
+        "cr": "1/2"
+      },
+      {
+        "key": "dire_wolf",
+        "name": "Dire Wolf",
+        "cr": "1"
+      },
+      {
+        "key": "tiger",
+        "name": "Tiger",
+        "cr": "1"
+      },
+      {
+        "key": "brown_bear",
+        "name": "Brown Bear",
+        "cr": "1"
+      },
+      {
+        "key": "hawk",
+        "name": "Hawk",
+        "cr": "0"
+      }
+    ],
+    "mounts": [
+      {
+        "key": "warhorse",
+        "name": "Warhorse"
+      },
+      {
+        "key": "dire_wolf",
+        "name": "Dire Wolf"
+      },
+      {
+        "key": "tiger",
+        "name": "Tiger"
+      },
+      {
+        "key": "brown_bear",
+        "name": "Brown Bear"
+      }
+    ]
+  },
+  "typed_passives": [
+    {
+      "feature_id": "mark_caps",
+      "block": "mark_caps",
+      "caps": {
+        "final riddle": 4,
+        "glaze": 2,
+        "go stone": 4,
+        "kindled mark": 4,
+        "living character": 1,
+        "overkindled mark": 4,
+        "rising mark": 4,
+        "rivalry mark": 1,
+        "shroud": 1,
+        "tempering form": 2,
+        "tribulation scar": 1,
+        "vein anchor": 4,
+        "vow mark": 4,
+        "waning mark": 4
+      }
+    }
+  ],
+  "weapons": [
+    {
+      "owner_action": "action:typed.602994e085.weapon.qiang",
+      "row": {
+        "item_id": "tianxia.mortal.weapon.qiang",
+        "name": "Qiang (Spear)",
+        "damage": "1d8 Piercing",
+        "properties": "Reach, Two-Handed, Tassel Method",
+        "refinement": 0,
+        "treasure": false,
+        "key": "",
+        "enchantments": [],
+        "inventory_key": "tianxia.mortal.weapon.qiang"
+      }
+    },
+    {
+      "owner_action": "action:typed.602994e085.weapon.gun",
+      "row": {
+        "item_id": "tianxia.mortal.weapon.gun",
+        "name": "Gun (Staff)",
+        "damage": "1d8 Bludgeoning",
+        "properties": "Two-Handed, Reach, Nonlethal Method",
+        "refinement": 0,
+        "treasure": false,
+        "key": "",
+        "enchantments": [],
+        "inventory_key": "tianxia.mortal.weapon.gun"
+      }
+    },
+    {
+      "owner_action": "action:typed.602994e085.weapon.jian",
+      "row": {
+        "item_id": "tianxia.mortal.weapon.jian",
+        "name": "Jian (Straight Sword)",
+        "damage": "1d8 Piercing or Slashing",
+        "properties": "Finesse, Versatile 1d10, Balanced Edge Method",
+        "refinement": 0,
+        "treasure": false,
+        "key": "",
+        "enchantments": [],
+        "inventory_key": "tianxia.mortal.weapon.jian"
+      }
+    }
+  ],
+  "powering": {
+    "pools": [
+      "Stamina"
+    ],
+    "choices": {}
+  },
+  "prefight": {
+    "options": [],
+    "picks": [],
+    "chosen": false
+  },
+  "cl": 18,
+  "concentration_rules": {
+    "capacity": "unlimited",
+    "limits_by_cl": [
+      [
+        1,
+        1
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        10,
+        3
+      ],
+      [
+        15,
+        4
+      ],
+      [
+        20,
+        5
+      ]
+    ]
+  },
+  "bundle_sha256": "6617fb96e13542a03cae34d2d24fa0611cd4bc170b1b25034b270519ccbf9c0f"
+}
