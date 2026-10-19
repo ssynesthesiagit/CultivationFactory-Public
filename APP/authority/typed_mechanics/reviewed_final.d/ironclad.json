@@ -1,0 +1,898 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "BLACKSMITH_BASE_QUENCH_THE_MARK": {
+      "text_sha256": "86533227937bdeff51a0131623d7800de0e672db0a8aa2919e303d0a305b811c",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "riders": [
+        "Spend Forge Marks to activate a Blacksmith response, talent, or improvement.",
+        "A quench may be literal water, oil, snow, blood, spirit breath, cold iron, furnace wind, silence, or the moment when the hammer stops."
+      ]
+    },
+    "BLACKSMITH_BASE_READ_THE_FLAW": {
+      "text_sha256": "3f6557ef3e83e9ecf423b1cb6b302124c844d8c7811a8395d05659f7c5bcfd61",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [],
+      "riders": [
+        "Make an Intelligence check using Smith’s Tools against a DC set by the GM.",
+        "If the workpiece is part of a creature’s equipment, the DC is normally the creature’s Armor Class or your Blacksmith Save DC, whichever is higher.",
+        "On a success, learn two of the following: whether the object is damaged; whether the object is nonmagical, magical, or artifact-level; whether the object is poorly made, ordinary, fine, masterwork, spiritual, or anomalous; one material used in the object; whether the object has a hidden flaw; whether the object has been repaired before; whether the object is under an active magical or sphere effect; whether the object is suitable for a Blacksmith talent you know; what kind of tool, furnace, or material would help improve it; whether the object is resisting your work.",
+        "If you spend 1 minute instead of an Action, also place 1 Forge Mark on the workpiece on a successful check.",
+        "You may use Read the Flaw without a check on a nonmagical object you own, made, or have worked on for at least 10 minutes."
+      ]
+    },
+
+    "TAL_IRON_FIST_BELL_RINGING_BODY_SHOT": {
+      "text_sha256": "6ee0a79ac15fcc75f818352aa2b2ae5e1446eb7aa0678994978cc03b3ac57066",
+      "reviewed_by": "ironclad 2026-09-28; riders lane 2 edit 2026-09-29",
+      "modifier": {
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "if_marked",
+            "mark": "Opened",
+            "effects": [
+              {
+                "type": "menu",
+                "id": "bell_ringing_body_shot",
+                "name": "Bell-Ringing Body Shot",
+                "count": 1,
+                "label": "Choose one",
+                "options": [
+                  "Blind spot",
+                  "No Dash",
+                  "Softened blows"
+                ],
+                "default": [
+                  "Softened blows"
+                ],
+                "cast_only": false
+              },
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "on": "Wisdom (Perception) checks until the start of your next turn",
+                "duration": "until_start_of_next_turn",
+                "menu": "bell_ringing_body_shot",
+                "option": "Blind spot"
+              },
+              {
+                "type": "condition",
+                "applies_to": "target",
+                "condition": "no_dash",
+                "duration": "until_end_of_next_turn",
+                "menu": "bell_ringing_body_shot",
+                "option": "No Dash"
+              },
+              {
+                "type": "next_attack_damage",
+                "applies_to": "target",
+                "amount": "twice_pb",
+                "duration": "until_end_of_next_turn",
+                "menu": "bell_ringing_body_shot",
+                "option": "Softened blows"
+              }
+            ]
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_IRON_FIST_DRIVING_HEEL": {
+      "text_sha256": "98e3a70fea9513e64f66d0c339043225a89f8f15562ce98e8a0e59bae57b27d1",
+      "reviewed_by": "ironclad 2026-09-28",
+      "modifier": {
+        "targets": ["Unarmed Strike"], "scope": "named", "when": "failed_save", "optional": true, "limit": "none", "group": "", "precondition": "",
+        "effects": [
+          {"type": "forced_movement", "applies_to": "target", "distance_ft": 5, "duration": "instant",
+           "evidence": "increase the push distance by 5 feet"},
+          {"type": "if_marked", "mark": "Opened", "effects": [
+            {"type": "forced_movement", "applies_to": "target", "distance_ft": 5, "duration": "instant",
+             "evidence": "increase the push distance by 10 feet instead (5 base + 5 more here; owner 2026-09-28: was missing entirely)"},
+            {"type": "movement", "applies_to": "self", "distance_ft": 5, "duration": "instant",
+             "evidence": "you may move 5 feet toward the creature without provoking Opportunity Attacks from it"},
+            {"type": "reaction_denied", "applies_to": "self", "duration": "instant",
+             "evidence": "without provoking Opportunity Attacks from it"}
+          ], "evidence": "If the creature was already Opened, increase the push distance by 10 feet instead, and you may move 5 feet toward the creature without provoking Opportunity Attacks from it."}
+        ]
+      }
+    },
+    "TAL_IRON_FIST_RISING_KNEE": {
+      "text_sha256": "4fa97a671cc2f01975961842d40b57835f1084b92d42755f4aa0ae6e9b50b071",
+      "reviewed_by": "ironclad 2026-09-28; riders lane 2 edit 2026-09-29",
+      "modifier": {
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "the creature is Grappling you or you are Grappling it",
+        "effects": [
+          {
+            "type": "extra_damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 1,
+              "sides": 6
+            },
+            "damage_types": [
+              "bludgeoning"
+            ],
+            "duration": "instant",
+            "evidence": "deal additional Bludgeoning damage equal to 1d6"
+          },
+          {
+            "type": "if_marked",
+            "mark": "Opened",
+            "effects": [
+              {
+                "type": "speed",
+                "applies_to": "target",
+                "amount": -10,
+                "duration": "until_start_of_next_turn",
+                "evidence": "also reduce its Speed by 10 feet until the start of your next turn (owner 2026-09-28: was missing entirely)"
+              }
+            ],
+            "evidence": "If the target was already Opened, also reduce its Speed by 10 feet until the start of your next turn."
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_IRON_FIST_WRIST_TRAPPING_HAND": {
+     "schema": "TianxiaFoundry.TypedMechanic.v1",
+     "mechanic_id": "TAL_IRON_FIST_WRIST_TRAPPING_HAND",
+     "kind": "talent",
+     "name": "Wrist-Trapping Hand",
+     "sphere_id": "tianxia.sphere.iron_fist",
+     "source": {
+      "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+      "line": 46998,
+      "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+      "text_sha256": "ef60c9fb8d6b1b86bb8606c97b5c8539552628914243825289ef2366f7afce85"
+     },
+     "activation": {
+      "economy": "passive",
+      "trigger": "When a creature fails the saving throw against your Unarmed Strike’s Grapple option, choose one object it is holding.",
+      "requirement": null,
+      "source": "model_v2",
+      "modifies": "Unarmed Strike"
+     },
+     "header_economy": false,
+     "cost": [],
+     "use_limit": null,
+     "range": null,
+     "area": null,
+     "target": null,
+     "duration": {
+      "kind": "instant",
+      "amount": null,
+      "concentration": false
+     },
+     "effects": [
+      {
+       "type": "disadvantage",
+       "on": "attack rolls made with that object against creatures other than you",
+       "evidence": "Disadvantage on attack rolls made with that object against creatures other than you",
+       "origin": "parser"
+      }
+     ],
+     "riders": [
+      "Held objects other than a compiled weapon, and taken weapons whose holder changed, require a general held-object inventory (GM)."
+     ],
+     "description": [],
+     "coverage": "CORE_WITH_RIDERS",
+     "provenance": {
+      "method": "typed-mechanics-parser.v1"
+     },
+     "typing_status": "reviewed_final",
+     "structure_source": "model_v2",
+     "modifier": {
+      "targets": [
+       "Unarmed Strike"
+      ],
+      "scope": "named",
+      "when": "failed_save",
+      "optional": false,
+      "limit": "none",
+      "group": "",
+      "precondition": "",
+      "effects": [
+       {
+        "type": "iron_wrist",
+        "evidence": "Choose one held object; attacks with it against creatures other than you have Disadvantage; if already Opened, no Opportunity Attacks with it."
+       }
+      ]
+     },
+     "text_sha256": "ef60c9fb8d6b1b86bb8606c97b5c8539552628914243825289ef2366f7afce85",
+     "reviewed_by": "Codex riders lane 2 continuation 2026-09-29"
+    },
+    "TAL_IRON_FIST_IRON_FOREARM_GUARD": {
+      "text_sha256": "273242793baf41f9c8b11da80663e2a1c4d517ebb28a7e82c49622bf4251e013",
+      "reviewed_by": "ironclad 2026-09-28; riders lane 2 edit 2026-09-29",
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A creature you can see hits you with a melee attack (Reaction, as printed)",
+        "requirement": null,
+        "source": "ironclad_reclassified"
+      },
+      "riders": [],
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "formula": "pb",
+          "duration": "instant",
+          "evidence": "Reduce the damage by your Proficiency Bonus"
+        },
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "formula": "key_ability_modifier",
+          "duration": "instant",
+          "evidence": "+ your Iron Fist ability modifier"
+        },
+        {
+          "type": "mark",
+          "mark": "Opened",
+          "applies_to": "target",
+          "only_if_zero": true,
+          "duration": {
+            "kind": "until_end_of_your_next_turn"
+          },
+          "evidence": "If this reduces the damage to 0, the attacker becomes Opened by you until the end of your next turn (owner 2026-09-28: needed combat/typed_reactions.py's new only_if_zero support -- was entirely missing before)."
+        }
+      ]
+    },
+    "TAL_IRON_FIST_EMPTY_PALM_STOPS_THE_BLADE": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_IRON_FIST_EMPTY_PALM_STOPS_THE_BLADE",
+      "kind": "talent",
+      "name": "Empty Palm Stops the Blade",
+      "sphere_id": "tianxia.sphere.iron_fist",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 47288,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "5db347e3d4f04b811b898bad1119f1a4dc723a2431e4b4439dd6cbb0faf4fadb"
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When Iron Forearm Guard reduces damage from a melee weapon attack",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Iron Forearm Guard"
+      },
+      "header_economy": false,
+      "cost": [],
+      "use_limit": null,
+      "range": null,
+      "area": null,
+      "target": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "iron_empty_palm",
+          "evidence": "When Iron Forearm Guard reduces damage from a melee weapon attack, you may expend Martial Focus. Make an Unarmed Strike attack roll against the attacker’s AC. Hit: Choose one: disarm the triggering weapon into a legal adjacent space; reduce the triggering damage by an additional 2d8; make the attacker Opened by you until the end of your next turn."
+        }
+      ],
+      "riders": [],
+      "description": [],
+      "coverage": "FULL",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "modifier": {
+        "targets": [
+          "Iron Forearm Guard"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "martial_focus": false,
+        "effects": [
+          {
+            "type": "iron_empty_palm",
+            "evidence": "When Iron Forearm Guard reduces damage from a melee weapon attack, you may expend Martial Focus. Make an Unarmed Strike attack roll against the attacker’s AC. Hit: Choose one: disarm the triggering weapon into a legal adjacent space; reduce the triggering damage by an additional 2d8; make the attacker Opened by you until the end of your next turn."
+          }
+        ]
+      },
+      "text_sha256": "5db347e3d4f04b811b898bad1119f1a4dc723a2431e4b4439dd6cbb0faf4fadb",
+      "reviewed_by": "riders lane 2 Codex 2026-09-29"
+    },
+    "TAL_IRON_FIST_FISTS_RING_LIKE_BELLS": {
+      "text_sha256": "d21d47ef1fbf295d6acfa061f2b7c407726e56d23f359fdf3223a3fb6a64ff8f",
+      "reviewed_by": "ironclad 2026-09-28",
+      "effects": [
+        {"type": "zone", "applies_to": "creatures_in_area", "distance_ft": 15, "duration": "instant", "evidence": "15-foot cone"},
+        {"type": "save", "applies_to": "creatures_in_area", "ability": "con", "dc": "technique_save_dc", "disadvantage_if_marked": "Opened",
+         "on_fail": [
+           {"type": "damage", "applies_to": "target", "dice": {"count": 4, "sides": 8}, "damage_types": ["thunder", "force"], "duration": "instant",
+            "evidence": "Take 4d8 Thunder or Force damage"},
+           {"type": "reaction_denied", "applies_to": "target", "duration": "until_start_of_next_turn",
+            "evidence": "cannot take Reactions until the start of your next turn"}
+         ],
+         "on_success": [
+           {"type": "half_damage", "applies_to": "target", "dice": {"count": 4, "sides": 8}, "damage_types": ["thunder", "force"], "duration": "instant",
+            "evidence": "Take half damage and suffer no additional effect"}
+         ],
+         "evidence": "Creatures in the area make Constitution saving throws. Creatures already Opened by you have Disadvantage on the saving throw (owner 2026-09-28: now mechanically enforced via typed_executor.py's new disadvantage_if_marked, not just a GM rider)."}
+      ]
+    },
+    "TAL_IRON_FIST_MERIDIAN_SEALING_PALM": {
+     "schema": "TianxiaFoundry.TypedMechanic.v1",
+     "mechanic_id": "TAL_IRON_FIST_MERIDIAN_SEALING_PALM",
+     "kind": "talent",
+     "name": "Meridian-Sealing Palm",
+     "sphere_id": "tianxia.sphere.iron_fist",
+     "source": {
+      "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+      "line": 47190,
+      "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+      "text_sha256": "18b5b5c31af555879ca1465c15d121d537191941b4d214be028a443cd40f0e05"
+     },
+     "activation": {
+      "economy": "passive",
+      "trigger": "When you hit an Opened creature with an Unarmed Strike that deals damage",
+      "requirement": null,
+      "source": "model_v2",
+      "modifies": null
+     },
+     "header_economy": false,
+     "cost": [],
+     "use_limit": null,
+     "range": null,
+     "area": null,
+     "target": null,
+     "duration": {
+      "kind": "instant",
+      "amount": null,
+      "concentration": false
+     },
+     "effects": [
+      {
+       "type": "save",
+       "ability": "con",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "disadvantage",
+         "on": "the next attack roll it makes with one arm or comparable limb",
+         "evidence": "Disadvantage on the next attack roll it makes with one arm or comparable limb"
+        },
+        {
+         "type": "speed",
+         "amount": -15,
+         "halved": false,
+         "evidence": "Speed is reduced by 15 feet"
+        },
+        {
+         "type": "condition",
+         "condition": "reaction_denied",
+         "evidence": "cannot take Reactions"
+        }
+       ],
+       "on_success": [],
+       "evidence": "makes a Constitution saving throw",
+       "origin": "parser"
+      },
+      {
+       "type": "reaction_denied",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "until_start_of_next_turn",
+       "evidence": "Successful Save: The target cannot take Opportunity Attacks until the start of your next turn.",
+       "origin": "model"
+      },
+      {
+       "type": "save",
+       "ability": "con",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "disadvantage",
+         "on": "the next attack roll it makes with one arm or comparable limb",
+         "evidence": "Disadvantage on the next attack roll it makes with one arm or comparable limb"
+        },
+        {
+         "type": "speed",
+         "amount": -15,
+         "halved": false,
+         "evidence": "Speed is reduced by 15 feet"
+        },
+        {
+         "type": "condition",
+         "condition": "reaction_denied",
+         "evidence": "cannot take Reactions"
+        }
+       ],
+       "on_success": [],
+       "evidence": "makes a Constitution saving throw",
+       "origin": "parser"
+      },
+      {
+       "type": "iron_fist_rider",
+       "kind": "meridian_palm",
+       "evidence": "Printed Meridian-Sealing Palm rider choices"
+      }
+     ],
+     "riders": [
+      "Arm Seal requires the next attack using a specific arm or comparable limb; limb identity is not tracked.",
+      "A creature without recognizable anatomy may still be affected if it has comparable movement, attack, breath, voice, or spiritual channels."
+     ],
+     "description": [],
+     "coverage": "CORE_WITH_RIDERS",
+     "provenance": {
+      "method": "typed-mechanics-parser.v1"
+     },
+     "typing_status": "reviewed_final",
+     "structure_source": "model_v2",
+     "modifier": {
+      "targets": [
+       "Unarmed Strike"
+      ],
+      "scope": "named",
+      "when": "hit",
+      "optional": true,
+      "limit": "none",
+      "group": "",
+      "precondition": "",
+      "martial_focus": true,
+      "effects": [
+       {
+        "type": "if_marked",
+        "mark": "Opened",
+        "effects": [
+         {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+           {
+            "type": "iron_seals",
+            "evidence": "Failed Save: Choose one seal until the end of its next turn."
+           }
+          ],
+          "on_success": [
+           {
+            "type": "condition",
+            "condition": "no_opportunity_attacks",
+            "duration": "until_start_of_next_turn"
+           }
+          ],
+          "evidence": "The target makes a Constitution saving throw."
+         }
+        ],
+        "evidence": "When you hit an Opened creature with an Unarmed Strike that deals damage, expend Martial Focus and force this save."
+       }
+      ]
+     },
+     "text_sha256": "18b5b5c31af555879ca1465c15d121d537191941b4d214be028a443cd40f0e05",
+     "reviewed_by": "Codex riders lane 2 continuation 2026-09-29"
+    },
+    "TAL_IRON_FIST_MERIDIAN_LOCK": {
+     "schema": "TianxiaFoundry.TypedMechanic.v1",
+     "mechanic_id": "TAL_IRON_FIST_MERIDIAN_LOCK",
+     "kind": "talent",
+     "name": "Meridian Lock",
+     "sphere_id": "tianxia.sphere.iron_fist",
+     "source": {
+      "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+      "line": 47402,
+      "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+      "text_sha256": "702e1e849549ced88359027672af7d27aa617779d1aa869c3fb35e0485bab7ff"
+     },
+     "activation": {
+      "economy": "passive",
+      "trigger": "When a creature fails its saving throw against Meridian-Sealing Palm",
+      "requirement": null,
+      "source": "model_v2",
+      "modifies": "Meridian-Sealing Palm"
+     },
+     "header_economy": false,
+     "cost": [],
+     "use_limit": null,
+     "range": null,
+     "area": null,
+     "target": null,
+     "duration": {
+      "kind": "instant",
+      "amount": null,
+      "concentration": false
+     },
+     "effects": [
+      {
+       "type": "disadvantage",
+       "on": "Dexterity saving throws",
+       "evidence": "Disadvantage on Dexterity saving throws",
+       "origin": "parser"
+      },
+      {
+       "type": "iron_fist_rider",
+       "kind": "meridian_lock",
+       "evidence": "Printed Meridian Lock rider choices",
+       "menu": {
+        "id": "riders_iron_meridian_lock",
+        "name": "Meridian Lock",
+        "count": 1,
+        "options": [
+         "Two seals",
+         "Body-Locked"
+        ],
+        "default": [
+         "Two seals"
+        ]
+       }
+      }
+     ],
+     "riders": [
+      "Arm Seal requires the next attack using a specific arm or comparable limb; limb identity is not tracked."
+     ],
+     "description": [],
+     "coverage": "CORE_WITH_RIDERS",
+     "provenance": {
+      "method": "typed-mechanics-parser.v1"
+     },
+     "typing_status": "reviewed_final",
+     "structure_source": "model_v2",
+     "modifier": {
+      "schema": "TianxiaFoundry.TypedModifier.v1",
+      "source": "model_v2",
+      "targets": [
+       "Meridian-Sealing Palm"
+      ],
+      "scope": "named",
+      "when": "failed_save",
+      "optional": true,
+      "limit": "none",
+      "group": "",
+      "precondition": "",
+      "effects": [
+       {
+        "type": "disadvantage",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "none",
+        "damage_types": [],
+        "ability": "dex",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "Dexterity saving throws",
+        "duration": "until_start_of_next_turn",
+        "evidence": "it has Disadvantage on Dexterity saving throws",
+        "origin": "model_v2"
+       }
+      ]
+     },
+     "text_sha256": "702e1e849549ced88359027672af7d27aa617779d1aa869c3fb35e0485bab7ff",
+     "reviewed_by": "Codex riders lane 2 continuation 2026-09-29"
+    },
+    "TAL_IRON_FIST_IRON_FIST_FLURRY": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_IRON_FIST_IRON_FIST_FLURRY",
+      "kind": "talent", "name": "Iron Fist Flurry", "sphere_id": "tianxia.sphere.iron_fist",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md", "line": 47220,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "217239d5137c4f0d6eaf1275cc332ee7cae3362a285a143d9016f53ca326f938"
+      },
+      "activation": {
+        "economy": "passive", "trigger": "When you take the Attack action and make at least one Unarmed Strike",
+        "requirement": null, "source": "model_v2", "modifies": null
+      },
+      "header_economy": false, "cost": [], "use_limit": null, "range": null, "area": null, "target": null,
+      "duration": {"kind": "instant", "amount": null, "concentration": false},
+      "effects": [{"type": "iron_flurry", "evidence": "When you take the Attack action and make at least one Unarmed Strike, expend Martial Focus to make one additional Unarmed Strike as a Bonus Action."}],
+      "description": [], "coverage": "CORE_WITH_RIDERS",
+      "provenance": {"method": "typed-mechanics-parser.v1"},
+      "typing_status": "reviewed_final", "structure_source": "model_v2",
+      "text_sha256": "217239d5137c4f0d6eaf1275cc332ee7cae3362a285a143d9016f53ca326f938",
+      "reviewed_by": "Codex riders lane 2 continuation run 7 2026-09-29",
+      "modifier": {
+        "targets": ["Unarmed Strike"], "scope": "named", "when": "use", "optional": true, "limit": "none", "group": "", "precondition": "",
+        "martial_focus": true, "economy": "bonus_action",
+        "effects": [{"type": "rider", "evidence": "Iron Fist Flurry: one additional Unarmed Strike as a Bonus Action (Martial Focus expended)."}]
+      },
+      "riders": ["If another feature already allows a Bonus Action Unarmed Strike, instead add your Iron Fist ability modifier to one hit before turn end. Deferred: the printed independent sources (Capoeira Spin, Mixed Barrage and Slip and Strike's voluntary-release branch) lack accurate compiled granted-action provenance/eligibility. Do not infer this from a label or substitute Advancing Carnage's melee-weapon trigger."]
+    },
+    "TAL_IRON_FIST_FLOWING_COMBINATION": {
+     "schema": "TianxiaFoundry.TypedMechanic.v1",
+     "mechanic_id": "TAL_IRON_FIST_FLOWING_COMBINATION",
+     "kind": "talent",
+     "name": "Flowing Combination",
+     "sphere_id": "tianxia.sphere.iron_fist",
+     "source": {
+      "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+      "line": 47212,
+      "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+      "text_sha256": "36a084dcd37c3cf83db69974fe08a6a542856c20c59b9492bbb721c48a4cda8e"
+     },
+     "activation": {
+      "economy": "passive",
+      "trigger": "Once per turn after you hit a creature with an Unarmed Strike",
+      "requirement": null,
+      "source": "model_v2",
+      "modifies": null
+     },
+     "header_economy": false,
+     "cost": [],
+     "duration": {
+      "kind": "instant",
+      "amount": null,
+      "concentration": false
+     },
+     "effects": [
+      {
+       "type": "disadvantage",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "the saving throw against this Grapple or Shove",
+       "duration": "instant",
+       "evidence": "it makes the saving throw against this Grapple or Shove with Disadvantage",
+       "origin": "model"
+      },
+      {
+       "type": "iron_fist_rider",
+       "kind": "flowing",
+       "evidence": "Printed Flowing Combination rider choices"
+      }
+     ],
+     "riders": [],
+     "description": [],
+     "coverage": "FULL",
+     "provenance": {
+      "method": "typed-mechanics-parser.v1"
+     },
+     "typing_status": "reviewed_final",
+     "structure_source": "model_v2",
+     "text_sha256": "36a084dcd37c3cf83db69974fe08a6a542856c20c59b9492bbb721c48a4cda8e",
+     "reviewed_by": "Codex riders lane 2 continuation 2026-09-29"
+    },
+    "TAL_IRON_FIST_HAMMER_AND_ANVIL_RHYTHM": {
+     "schema": "TianxiaFoundry.TypedMechanic.v1",
+     "mechanic_id": "TAL_IRON_FIST_HAMMER_AND_ANVIL_RHYTHM",
+     "kind": "talent",
+     "name": "Hammer-and-Anvil Rhythm",
+     "sphere_id": "tianxia.sphere.iron_fist",
+     "source": {
+      "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+      "line": 47028,
+      "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+      "text_sha256": "047c32a41f89e09f60fed167e88cf03163769edcfa6026645acd0f278841d881"
+     },
+     "activation": {
+      "economy": "passive",
+      "trigger": "Once per turn, when you hit the same creature with two or more Unarmed Strikes during your turn",
+      "requirement": null,
+      "source": "model_v2",
+      "modifies": null
+     },
+     "header_economy": false,
+     "cost": [],
+     "use_limit": null,
+     "range": null,
+     "area": null,
+     "target": null,
+     "duration": {
+      "kind": "instant",
+      "amount": null,
+      "concentration": false
+     },
+     "effects": [
+      {
+       "type": "iron_fist_rider",
+       "kind": "rhythm",
+       "evidence": "Printed Hammer-and-Anvil Rhythm rider choices",
+       "menu": {
+        "id": "riders_iron_rhythm",
+        "name": "Hammer-and-Anvil Rhythm",
+        "count": 1,
+        "options": [
+         "Reapply Open the Gate",
+         "Extend Opening",
+         "Regain Martial Focus"
+        ],
+        "default": [
+         "Regain Martial Focus"
+        ]
+       }
+      }
+     ],
+     "riders": [],
+     "description": [],
+     "coverage": "FULL",
+     "provenance": {
+      "method": "typed-mechanics-parser.v1"
+     },
+     "typing_status": "reviewed_final",
+     "structure_source": "model_v2",
+     "modifier": {
+      "schema": "TianxiaFoundry.TypedModifier.v1",
+      "source": "model_v2",
+      "targets": [
+       "Unarmed Strike"
+      ],
+      "scope": "named",
+      "when": "hit",
+      "optional": true,
+      "limit": "once_per_turn",
+      "group": "",
+      "precondition": "when you hit the same creature with two or more Unarmed Strikes during your turn",
+      "effects": []
+     },
+     "text_sha256": "047c32a41f89e09f60fed167e88cf03163769edcfa6026645acd0f278841d881",
+     "reviewed_by": "Codex riders lane 2 continuation 2026-09-29"
+    },
+    "TAL_IRON_FIST_CRANE_STEP_COMBINATION": {
+      "text_sha256": "2c69cb145b6f38d80349fb788430b89a0af1cab4c8467b9238f5237d8cf4158b",
+      "reviewed_by": "ironclad 2026-09-28; riders lane 2 edit 2026-09-29",
+      "modifier": {
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "movement",
+            "applies_to": "self",
+            "distance_ft": 10,
+            "duration": "instant",
+            "evidence": "move up to 10 feet without provoking Opportunity Attacks from the target"
+          },
+          {
+            "type": "reaction_denied",
+            "applies_to": "self",
+            "duration": "instant",
+            "evidence": "without provoking Opportunity Attacks from the target"
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_IRON_FIST_IRON_FIST_BREAKS_THE_WEAPON": {
+      "text_sha256": "d386013af1006185e804a2b9a69c034517ee7efe27c32d695dbca6a514e59950",
+      "reviewed_by": "ironclad 2026-09-28",
+      "activation": {"economy": "reaction", "trigger": "A creature misses you with a melee weapon attack",
+                     "requirement": null, "source": "ironclad_inferred_reaction"},
+      "cost": [[{"resource": "martial_focus", "amount": 1}]],
+      "effects": [
+        {"type": "attack", "attack_kind": "unarmed", "count": 1, "strike_with": "unarmed",
+         "evidence": "Make an Unarmed Strike against the attacker or the weapon used for the triggering attack.",
+         "on_hit": [{"type": "damage", "weapon_damage": true, "evidence": "Make one Unarmed Strike"}], "on_miss": []}
+      ],
+      "riders": [
+        "If you target the attacker and hit, apply one Form talent you know (the GM applies it, as Counter Palm does).",
+        "If you target the weapon and hit, the weapon takes the attack's damage and may break if nonmagical and the damage meets its Damage Threshold; a magical/artifact/soul-bound weapon may resist with a Cultivation Check. No object-durability/breaking mechanic is modeled on this table -- GM adjudicates the weapon-targeting branch entirely.",
+        "Ambiguity flagged for an owner ruling: the printed text never states an explicit Action Type (unlike Iron Forearm Guard and Counter Palm, which both say 'Action Type: Reaction'). It can only sensibly run off another creature's turn, so this entry infers Reaction econ and an Expend-Martial-Focus cost from context, matching its sibling Guard/Meridian reactions."
+      ]
+    },
+    "TAL_IRON_FIST_IRON_MERIDIAN_BODY": {
+      "text_sha256": "5d56a7798d25a2ebfa836d60c692ec000e830510be96fc2e5140345cc4811a34",
+      "reviewed_by": "ironclad 2026-09-28; riders lane 2 edit 2026-09-29",
+      "modifier": {
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": []
+      },
+      "riders": [
+        "You may strike incorporeal creatures normally with Unarmed Strikes: not modeled -- no incorporeal/phasing interaction exists on this table's attack resolution."
+      ]
+    },
+    "TAL_IRON_FIST_DRAGON_STEP_CLINCH": {
+      "text_sha256": "53d0ec2dc088767c11e4d41213ec29c75edb6be2a88faa41a571da4e15b8b1c6",
+      "reviewed_by": "ironclad 2026-09-28; body 2026-09-29; riders lane 2 edit 2026-09-29",
+      "modifier": null,
+      "riders": []
+    },
+    "SMOKE_BASE_SMOKE_RESPONSES": {
+      "text_sha256": "5633d3d07f743ca542e71230377ce0f5419c4ad5b8c6fe74827f8dd093231a50",
+      "reviewed_by": "ironclad 2026-09-28; A2SMOKE 2026-10-10: shared round allowance",
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A creature with your Smoke Trace makes an attack roll against you and the attack's line of sight passes through your Smoke Veil",
+        "requirement": null,
+        "source": "ironclad_split"
+      },
+      "cost": [],
+      "effects": [
+        {
+          "type": "response_use",
+          "group": "smoke",
+          "name": "Smoke Response"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "attacker",
+          "on": "the triggering attack roll",
+          "duration": "instant",
+          "evidence": "Blind the Line: the triggering attack has Disadvantage if the attacker relies on sight."
+        },
+        {
+          "type": "spend_mark",
+          "mark": "Smoke Trace",
+          "applies_to": "target",
+          "evidence": "Spend the Smoke Trace."
+        }
+      ],
+      "riders": [
+        "Spend one Smoke Trace on the affected creature, object, or space to use a Smoke Response, at most once per round unless another talent says otherwise. Blind the Line is a Reaction; Follow the Soot and Slip the Chimney Path are separate Bonus Actions.",
+        "Blind the Line gives the triggering attack Disadvantage. It should not affect an attacker that does not rely on sight or can see clearly through smoke; the GM checks this exception because the table applies Disadvantage to every triggering attack.",
+        "The table offers Blind the Line only for attacks against you that pass through your Smoke Veil. The GM handles its use when an attack against an ally passes through your veil."
+      ]
+    },
+    "tianxia.talent.blacksmith.hammer_rebuke": {
+      "text_sha256": "65d0b65b8cf91abd773fc88fe01c5e05eb35718f51631c604d3a7c74007d516a",
+      "reviewed_by": "reach-fix 2026-09-29",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str",
+          "dc": "technique_save_dc",
+          "applies_to": "target",
+          "evidence": "The attacker makes a Strength saving throw.",
+          "on_fail": [
+            {
+              "type": "hammer_rebuke_choice",
+              "evidence": "Failed Save: choose one: no opportunity attacks, Speed -10 feet, or Disadvantage on its next attack roll, until the start of its next turn."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "hammer_rebuke_no_oa",
+              "against_you": true,
+              "evidence": "Successful Save: It cannot make opportunity attacks against you until the start of its next turn."
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Cost: spend 1 Forge Mark on your held tool, weapon, armor, or shield (not tracked on items yet: the GM checks one is there).",
+        "The failed-save pick is a free toggle kept until changed (\"Hammer Rebuke: <choice>\", combat/ext/blacksmith_rebuke.py); the built-in AI takes Disadvantage on its next attack.",
+        "Hammer Rebuke does not damage a magic item unless another feature allows it."
+      ]
+    }
+  }
+}
