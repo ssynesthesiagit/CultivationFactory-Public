@@ -1,0 +1,1310 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "mechanics": {
+  "TAL_UNMAKING_BLACK_TRACE": {
+   "text_sha256": "00a45f673bc281eb03867033639abeacf2be7d5074bee435f18f8e403f7417fe",
+   "reviewed_by": "w4-roster 2026-09-28",
+   "effects": [],
+   "options": [
+    {
+     "label": "Fray",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 10
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           10
+          ],
+          [
+           5,
+           9,
+           2,
+           10
+          ],
+          [
+           10,
+           14,
+           3,
+           10
+          ],
+          [
+           15,
+           20,
+           4,
+           10
+          ]
+         ],
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "On hit, the target takes Ruin damage based on your Realm."
+        },
+        {
+         "type": "healing_reduction",
+         "applies_to": "target",
+         "evidence": "The target cannot regain HP until the start of your next turn."
+        }
+       ],
+       "on_miss": [],
+       "evidence": "Make a ranged Cultivation Attack."
+      }
+     ]
+    },
+    {
+     "label": "Sting",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 10
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           10
+          ],
+          [
+           5,
+           9,
+           2,
+           10
+          ],
+          [
+           10,
+           14,
+           3,
+           10
+          ],
+          [
+           15,
+           20,
+           4,
+           10
+          ]
+         ],
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "On hit, the target takes Ruin damage based on your Realm."
+        },
+        {
+         "type": "deny_reactions_against",
+         "applies_to": "target",
+         "evidence": "The target cannot take Reactions against you until the start of your next turn."
+        }
+       ],
+       "on_miss": [],
+       "evidence": "Make a ranged Cultivation Attack."
+      }
+     ]
+    },
+    {
+     "label": "Mark",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 10
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           10
+          ],
+          [
+           5,
+           9,
+           2,
+           10
+          ],
+          [
+           10,
+           14,
+           3,
+           10
+          ],
+          [
+           15,
+           20,
+           4,
+           10
+          ]
+         ],
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "On hit, the target takes Ruin damage based on your Realm."
+        },
+        {
+         "type": "mark",
+         "mark": "Black Trace Mark",
+         "applies_to": "target",
+         "duration": {
+          "kind": "until_end_of_your_next_turn"
+         },
+         "evidence": "The next Unmaking talent that damages the target before the end of your next turn deals additional Ruin damage equal to your Proficiency Bonus."
+        }
+       ],
+       "on_miss": [],
+       "evidence": "Make a ranged Cultivation Attack."
+      }
+     ]
+    },
+    {
+     "label": "Fray, Unbound Trace",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 6,
+          "sides": 10
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           2,
+           10
+          ],
+          [
+           5,
+           9,
+           4,
+           10
+          ],
+          [
+           10,
+           14,
+           6,
+           10
+          ],
+          [
+           15,
+           20,
+           8,
+           10
+          ]
+         ],
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "On hit, the damage becomes the Unbound Trace value instead."
+        },
+        {
+         "type": "healing_reduction",
+         "applies_to": "target",
+         "evidence": "The target cannot regain HP until the start of your next turn."
+        }
+       ],
+       "on_miss": [],
+       "evidence": "Make a ranged Cultivation Attack."
+      },
+      {
+       "type": "unmaking_cost",
+       "name": "Unbound Trace",
+       "options": [
+        {
+         "strain": 1
+        },
+        {
+         "self": {
+          "count": 1,
+          "sides": 6,
+          "bonus": "pb"
+         }
+        },
+        {
+         "crack": 1
+        }
+       ],
+       "evidence": "Choose one price: gain 1 Black Vein Strain; take Ruin self-damage equal to 1d6 + your Proficiency Bonus; one External Channel gains 1 Crack (the owner's choice; combat/ext/unmaking_channels.py)."
+      }
+     ]
+    },
+    {
+     "label": "Sting, Unbound Trace",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 6,
+          "sides": 10
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           2,
+           10
+          ],
+          [
+           5,
+           9,
+           4,
+           10
+          ],
+          [
+           10,
+           14,
+           6,
+           10
+          ],
+          [
+           15,
+           20,
+           8,
+           10
+          ]
+         ],
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "On hit, the damage becomes the Unbound Trace value instead."
+        },
+        {
+         "type": "deny_reactions_against",
+         "applies_to": "target",
+         "evidence": "The target cannot take Reactions against you until the start of your next turn."
+        }
+       ],
+       "on_miss": [],
+       "evidence": "Make a ranged Cultivation Attack."
+      },
+      {
+       "type": "unmaking_cost",
+       "name": "Unbound Trace",
+       "options": [
+        {
+         "strain": 1
+        },
+        {
+         "self": {
+          "count": 1,
+          "sides": 6,
+          "bonus": "pb"
+         }
+        },
+        {
+         "crack": 1
+        }
+       ],
+       "evidence": "Choose one price: gain 1 Black Vein Strain; take Ruin self-damage equal to 1d6 + your Proficiency Bonus; one External Channel gains 1 Crack (the owner's choice; combat/ext/unmaking_channels.py)."
+      }
+     ]
+    },
+    {
+     "label": "Mark, Unbound Trace",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 6,
+          "sides": 10
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           2,
+           10
+          ],
+          [
+           5,
+           9,
+           4,
+           10
+          ],
+          [
+           10,
+           14,
+           6,
+           10
+          ],
+          [
+           15,
+           20,
+           8,
+           10
+          ]
+         ],
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "On hit, the damage becomes the Unbound Trace value instead."
+        },
+        {
+         "type": "mark",
+         "mark": "Black Trace Mark",
+         "applies_to": "target",
+         "duration": {
+          "kind": "until_end_of_your_next_turn"
+         },
+         "evidence": "The next Unmaking talent that damages the target before the end of your next turn deals additional Ruin damage equal to your Proficiency Bonus."
+        }
+       ],
+       "on_miss": [],
+       "evidence": "Make a ranged Cultivation Attack."
+      },
+      {
+       "type": "unmaking_cost",
+       "name": "Unbound Trace",
+       "options": [
+        {
+         "strain": 1
+        },
+        {
+         "self": {
+          "count": 1,
+          "sides": 6,
+          "bonus": "pb"
+         }
+        },
+        {
+         "crack": 1
+        }
+       ],
+       "evidence": "Choose one price: gain 1 Black Vein Strain; take Ruin self-damage equal to 1d6 + your Proficiency Bonus; one External Channel gains 1 Crack (the owner's choice; combat/ext/unmaking_channels.py)."
+      }
+     ]
+    },
+    {
+     "label": "Crack",
+     "include_in_menu": true,
+     "effects": [{"type": "attack", "attack_kind": "cultivation_ranged", "count": 1,
+                  "on_hit": [{"type": "damage", "applies_to": "target",
+                              "dice": {"count": 1, "sides": 10},
+                              "dice_by_cl": [[1, 4, 1, 10], [5, 9, 2, 10], [10, 14, 3, 10], [15, 20, 4, 10]],
+                              "formula": "key_ability_modifier", "damage_types": ["force"],
+                              "bonus_if_kind": {"kinds": ["construct"], "formula": "pb"},
+                              "evidence": "Black Trace: on a hit, deal Realm-based Ruin damage; Crack adds your Proficiency Bonus against a Construct. No cost."}],
+                  "evidence": "Make a ranged Cultivation Attack."}]
+    }
+   ],
+   "riders": []
+  },
+  "TAL_DARK_MELD": {
+    "text_sha256": "7541ae6266166ddb15c5ead9e133cd11f298c37b36948955a3c3765c304eafd3",
+    "reviewed_by": "w4-roster 2026-09-28; owner 2026-09-29 struck the one-Meld line; Claude riders/c13 2026-09-30",
+    "riders": [
+      "Touch one creature to grant Darkvision, Clearsight, Blindfold or Feed on Darkness. An unwilling creature can resist with a Wisdom save. Dark Slaughter and Hide in Darkness can still be granted only to the caster; other Meld talents need the GM."
+    ],
+    "effects": [
+      {
+        "type": "save",
+        "ability": "wis",
+        "dc": "technique_save_dc",
+        "on_fail": [],
+        "on_success": [],
+        "evidence": "make a Wisdom saving throw",
+        "origin": "parser"
+      }
+    ],
+    "coverage": "CORE_WITH_RIDERS"
+  },
+  "tianxia.path.body_refining.feature.iron_voice": {
+   "text_sha256": "6875b80328deeb88c75e7c6e42d3267544534f717887a45ccfc0d67a7c1453b3",
+   "reviewed_by": "w4-roster 2026-09-28",
+   "riders": [
+    "On a successful save, it suffers no effect.",
+    "A creature immune to the Frightened condition automatically succeeds.",
+    "Iron Voice is blocked by total silence, an effect preventing the target from hearing, total cover that also prevents sound from passing, or a feature explicitly suppressing cultivation pressure or bodily sound.",
+    "Iron Voice does not require shared language."
+   ]
+  },
+  "TAL_DARK_SNAGGING_DARKNESS": {
+   "text_sha256": "7d720bfb4562328d73651dca68b2f4bcc3c4121f867c8ebf78018242a7b8dfb4",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": [
+    {
+     "type": "save",
+     "ability": "dex",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "condition",
+       "applies_to": "creatures_in_area",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "restrained",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "until_start_of_next_turn",
+       "evidence": "Failed Save: Restrained until the start of its next turn",
+       "origin": "model"
+      }
+     ],
+     "on_success": [],
+     "evidence": "makes a Dexterity saving throw",
+     "origin": "parser"
+    },
+    {
+     "type": "save",
+     "ability": "dex",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "condition",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "restrained",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "until_start_of_next_turn",
+       "evidence": "Restrained until the start of its next turn",
+       "origin": "model_v2"
+      }
+     ],
+     "on_success": [],
+     "origin": "model_v2"
+    }
+   ],
+   "riders": []
+  },
+  "TAL_DARK_CLINGING_DARKNESS": {
+    "text_sha256": "2e964161c96799085ad9efc8e0cd68c541b4f633509db63b3ca699849cae614b",
+    "reviewed_by": "claude 2026-09-28; AUTO108r1f1 rider text",
+    "activation": {
+      "economy": "passive",
+      "trigger": null,
+      "requirement": null,
+      "source": "model_v2",
+      "modifies": "Darkness"
+    },
+    "modifier": {
+      "schema": "TianxiaFoundry.TypedModifier.v1",
+      "source": "reviewed",
+      "targets": [
+        "Darkness"
+      ],
+      "scope": "named",
+      "when": "use",
+      "optional": true,
+      "limit": "none",
+      "group": "Augment",
+      "precondition": "the Darkness is centered on a creature",
+      "extra_cp": 0,
+      "effects": [
+        {
+          "type": "cling_zone",
+          "evidence": "Center an area of Darkness on one creature or object rather than a stationary point."
+        }
+      ]
+    },
+    "effects": [
+      {
+        "type": "save",
+        "ability": "wis",
+        "dc": "technique_save_dc",
+        "on_fail": [],
+        "on_success": [],
+        "evidence": "make a Wisdom saving throw",
+        "origin": "parser"
+      },
+      {
+        "type": "save",
+        "ability": "wis",
+        "dc": "technique_save_dc",
+        "on_fail": [],
+        "on_success": [],
+        "evidence": "make a Wisdom saving throw",
+        "origin": "parser"
+      }
+    ],
+    "riders": [
+      "Clinging Darkness can anchor to creatures. Anchoring to a selected object (a chest, a door, a hanging lamp), including worn or held objects, is not something the fight table can carry: it moves areas centred on creatures, not on objects."
+    ],
+    "coverage": "CORE_WITH_RIDERS"
+  },
+  "TAL_DARK_DIRECTIONAL_DARKNESS": {
+   "text_sha256": "4c128b4521a7812c7676256a166e37d9a6d3fca1e14093333fac2dce2a661652",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "reviewed",
+    "targets": [
+     "Darkness"
+    ],
+    "scope": "named",
+    "when": "use",
+    "optional": true,
+    "limit": "none",
+    "group": "Augment",
+    "precondition": "",
+    "extra_cp": 1,
+    "effects": [
+     {
+      "type": "zone_directional",
+      "evidence": "Creatures outside see inward clearly."
+     }
+    ]
+   },
+   "riders": [
+    "Directional Darkness: creatures outside see in clearly and those inside can't see out. (Creatures inside already see out of any Darkness on this table, so that choice is not offered.) A wall-shaped Darkness's obscured side is the GM's."
+   ]
+  },
+  "TAL_DARK_CREEPING_LETHARGY": {
+   "text_sha256": "42a998a95481ef0491aaac435fdea81bb8f89270c642efe9c5741dbcf2ae0278",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": [
+    {
+     "type": "save",
+     "ability": "wis",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "lethargy",
+       "evidence": "Until it starts a turn outside the Darkness, the creature may take an Action or a Bonus Action on its turn, not both. ... Failed Save: Fall Unconscious"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "lethargy_wake",
+       "evidence": "A sleeping creature repeats the saving throw at the start of each of its turns, waking on a success."
+      }
+     ],
+     "evidence": "A creature that enters the area for the first time on a turn or starts its turn inside makes a Wisdom saving throw."
+    }
+   ],
+   "riders": []
+  },
+  "TAL_DARK_FEARFUL_DARKNESS": {
+   "text_sha256": "37efdb0147b6abddf48b32df020bf57869baeb6951c51f9124d7610e1636a0a0",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [
+    {
+     "type": "save",
+     "ability": "cha",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "fearful_darkness",
+       "evidence": "Failed Save: Frightened until it ends its turn outside the Darkness."
+      }
+     ],
+     "on_success": [
+      {
+       "type": "fearful_calm",
+       "evidence": "may repeat the saving throw at the start of each subsequent turn, ending the Frightened condition on itself on a success"
+      }
+     ],
+     "evidence": "A creature that enters the area for the first time on a turn or starts its turn inside makes a Charisma saving throw."
+    }
+   ],
+   "riders": []
+  },
+  "TAL_DARK_ROLLING_BLACKOUT": {
+    "text_sha256": "6f07f40bee3591801e3744ca11684db30e59386910713e9adc80c903973ef45e",
+    "reviewed_by": "claude 2026-09-28",
+    "modifier": {
+      "targets": [
+        "Rolling Blackout"
+      ],
+      "scope": "named",
+      "when": "use",
+      "movement_economies": [
+        "BONUS_ACTION",
+        "ACTION"
+      ],
+      "choose_zone": true
+    },
+    "effects": [],
+    "riders": []
+  },
+  "TAL_DARK_DARK_SLAUGHTER": {
+   "text_sha256": "9011e0a0adcf6ed2b6095056de44f3df01f9ee996212db885e79fa9c7960be0b",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": [],
+   "riders": []
+  },
+  "TAL_SCOUNDREL_DIRTY_TRICK": {
+   "text_sha256": "1022fc11c9db4a2710b5c4370487bcb7e8cbc5aff5c457ab946dd25d6b3fcd1b",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [],
+   "options": [
+    {
+     "label": "Eyes Spoiled",
+     "effects": [
+      {
+       "type": "scoundrel_check",
+       "applies_to": "target",
+       "dirty_trick": true,
+       "on_success": [
+        {
+         "type": "condition",
+         "condition": "blinded",
+         "applies_to": "target",
+         "expires_on": "START_OF_SOURCE_NEXT_TURN",
+         "evidence": "Eyes Spoiled. The target has the Blinded condition until the start of your next turn."
+        }
+       ],
+       "evidence": "Make a Scoundrel Check against the target. Success: Choose one appropriate result",
+       "harmful": true
+      }
+     ]
+    },
+    {
+     "label": "Ears Ringing",
+     "effects": [
+      {
+       "type": "scoundrel_check",
+       "applies_to": "target",
+       "dirty_trick": true,
+       "on_success": [
+        {
+         "type": "condition",
+         "condition": "deafened",
+         "applies_to": "target",
+         "expires_on": "START_OF_SOURCE_NEXT_TURN",
+         "evidence": "Ears Ringing. The target has the Deafened condition until the start of your next turn."
+        }
+       ],
+       "evidence": "Make a Scoundrel Check against the target. Success: Choose one appropriate result",
+       "harmful": true
+      }
+     ]
+    },
+    {
+     "label": "Tangled Footwork",
+     "effects": [
+      {
+       "type": "scoundrel_check",
+       "applies_to": "target",
+       "dirty_trick": true,
+       "on_success": [
+        {
+         "type": "speed",
+         "halved": true,
+         "applies_to": "target",
+         "expires_on": "START_OF_SOURCE_NEXT_TURN",
+         "evidence": "Tangled Footwork. Halve the target's Speed until the start of your next turn."
+        }
+       ],
+       "evidence": "Make a Scoundrel Check against the target. Success: Choose one appropriate result",
+       "harmful": true
+      }
+     ]
+    },
+    {
+     "label": "Low Sweep",
+     "effects": [
+      {
+       "type": "scoundrel_check",
+       "applies_to": "target",
+       "dirty_trick": true,
+       "on_success": [
+        {
+         "type": "condition",
+         "condition": "prone",
+         "applies_to": "target",
+         "evidence": "Low Sweep. The target has the Prone condition."
+        }
+       ],
+       "evidence": "Make a Scoundrel Check against the target. Success: Choose one appropriate result",
+       "harmful": true
+      }
+     ]
+    },
+    {
+     "label": "Jammed Guard",
+     "effects": [
+      {
+       "type": "scoundrel_check",
+       "applies_to": "target",
+       "dirty_trick": true,
+       "on_success": [
+        {
+         "type": "condition",
+         "condition": "reaction_denied",
+         "applies_to": "target",
+         "expires_on": "START_OF_SOURCE_NEXT_TURN",
+         "evidence": "Jammed Guard. The target cannot take Reactions until the start of your next turn."
+        }
+       ],
+       "evidence": "Make a Scoundrel Check against the target. Success: Choose one appropriate result",
+       "harmful": true
+      }
+     ]
+    },
+    {
+     "label": "Open the Guard",
+     "effects": [
+      {
+       "type": "scoundrel_check",
+       "applies_to": "target",
+       "dirty_trick": true,
+       "on_success": [
+        {
+         "type": "exploited_opening",
+         "applies_to": "target",
+         "evidence": "Open the Guard. Apply Exploited Opening."
+        }
+       ],
+       "evidence": "Make a Scoundrel Check against the target. Success: Choose one appropriate result",
+       "harmful": true
+      }
+     ]
+    }
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 5,
+    "text": "Natural reach"
+   },
+   "riders": [
+    "A creature without the relevant anatomy or vulnerability is immune to an inappropriate effect (the GM rules on it).",
+    "The GM may approve a comparable effect when the description, anatomy, and surroundings support it."
+   ]
+  },
+  "TAL_SCOUNDREL_STEAL": {
+   "text_sha256": "f60a20a5e931ce1de79f7e78ae511cda6e661c0aacd0918b5ef5db285aa909da",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [
+    {
+     "type": "scoundrel_check",
+     "applies_to": "target",
+     "unaware_uses_passive": true,
+     "two_handed_disadvantage": true,
+     "on_success": [
+      {
+       "type": "steal_weapon",
+       "applies_to": "target",
+       "evidence": "You may use Steal to remove an object from a creature's hand as a local Scoundrel disarm rule."
+      }
+     ],
+     "evidence": "Aware Target: Make a Scoundrel Check against the creature. Unaware Target: Make a Dexterity (Sleight of Hand) check against the target's Passive Perception.",
+     "harmful": true,
+     "object_locations": true
+    }
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 5,
+    "text": "Natural reach"
+   },
+   "riders": [],
+   "why": "The printed lines run at the table. The check is combat/ext/tabik_scoundrel.py's scoundrel_check: an aware target is opposed in Athletics or Acrobatics (the better one, ties to the defender), an unaware one is beaten by Passive Perception, and the chosen object carries the printed Disadvantage when it is worn or held in two hands unless Master Thief waives it. \"Choose one accessible object\" comes FIRST, because the printed difficulty and the printed result are both about that object: combat/ext/scoundrel_riders.py steal_object_choice answers the scoundrel_object_choice seam before the check rolls, offering what the target actually has on it now (a complete suit of worn armor is not ordinarily accessible, as Master Thief prints) and the thief's own Tiny things to plant -- the printed size is asked, because this table keeps no object sizes -- and the rows it returns run only when the check succeeds, so a failed check hands over nothing. \"Take nothing\", and declining, are answers too: the check is still made, because it is what the action is, but no object moves and the row's own default disarm does not happen instead. Each pick is applied as this table's own record of gear, ONE record per object, filed on the creature whose bundle lists it and moved in place by _transfer_record on every later handover, so the object keeps its own name and weight, never has two homes at once, and a saved fight replays it: held_by naming the hand it went into, or combat/carry.py's own dropped-item record for \"cause the object to fall into an unoccupied space within your reach\", so both loads are reweighed. Only when nobody answers at all -- an engine with no choice transport, or a fight saved before the seam -- does the row keep its own default, the local Scoundrel disarm of the best weapon in hand (steal_weapon). \"Steal does not automatically activate, identify, attune to, or safely handle the object\" needs no rule: the table hands the object over and nothing else. A2SCOUNDRE: newly compiled object_locations=1 opts into a reposition result and hand/carried-location choice. One existing identity record follows each relocated object; same-owner relocation retains load and a stowed weapon loses its attack. Markerless saved rows keep their previous choices."
+  },
+  "TAL_SCOUNDREL_TWIST_THE_KNIFE": {
+   "text_sha256": "a8b26a3e5e4119902915421b05144fddc879bb28acb94a6c3855a5dd6320622c",
+   "reviewed_by": "claude 2026-09-28; riders re-read by opencode AUTO11 2026-10-04",
+   "modifier": null,
+   "effects": [],
+   "riders": [],
+   "why": "The printed line already runs in combat/ext/tabik_scoundrel.py: a success on Dirty Trick or Steal against a creature within reach publishes one extra attack taken from the thief's own compiled weapon attacks (its printed attack row, so it rolls and damages as that attack does), once per turn, and the same turn flag plus the resolver's own re-entry guard stop it from triggering Twist the Knife again or another additional attack. Nothing is left for the GM. The block row that carries the ownership is combat/rules/feature_blocks.d/tabik.json (\"kind\": \"twist\")."
+  },
+  "TAL_SCOUNDREL_FOCUSING_THIEVERY": {
+   "text_sha256": "c1b65191239dee951875feccce83d5d4b9ad4d34fda78fda3b42f0f521688900",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": []
+  },
+  "TAL_SCOUNDREL_FILTHY_DISTRACTION": {
+   "text_sha256": "5706359264b6c5f97b344eabbf19c5b5a28be82776c42babc89c9ba7455cb161",
+   "reviewed_by": "claude 2026-09-28; riders re-read by opencode AUTO11 2026-10-04",
+   "modifier": null,
+   "effects": [],
+   "riders": []
+  },
+  "TAL_SCOUNDREL_CUT_AND_RUN": {
+   "text_sha256": "058f295b0f3c019da0c06efecc90f91297b00084072c6ba9b1c0933ece4a2812",
+   "reviewed_by": "claude 2026-09-28; riders re-read by opencode AUTO11 2026-10-04",
+   "modifier": null,
+   "effects": [],
+   "riders": [],
+   "why": "The printed lines already run in combat/ext/tabik_scoundrel.py: a Dirty Trick or Steal made with its Action while it holds Martial Focus adds half its Speed to the movement it has left this turn (the Focus is only held, not spent, as printed), records the target of the maneuver, and the shared opportunity_allowed hook makes that one creature's Opportunity Attack against it impossible for the rest of the turn (\"This movement does not provoke Opportunity Attacks from the target of the maneuver\"). The block row is combat/rules/feature_blocks.d/tabik.json (\"kind\": \"cut_and_run\")."
+  },
+  "TAL_UNMAKING_BLACK_VEIN_PALM": {
+   "text_sha256": "80cdfefee5e97a84a9bbc8066c535c1b57d98559398dcdd66b066f5c4e4d384f",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": [],
+   "riders": []
+  },
+  "TAL_UNMAKING_DEVOURING_DREGS": {
+   "text_sha256": "69775ae403ac762a892581e1ed47027b9d1d577876caa04910893fdb2bbbda71",
+   "reviewed_by": "claude 2026-09-28 + AUTO84 2026-10-05 (combat/unmaking.py:525-548 already removes 1 Black Vein Strain or 1 Crack when the Overdraw that destroyed the target lands; the surviving line is story, not combat)",
+   "modifier": null,
+   "effects": [],
+   "riders": [],
+   "description": [
+    "If the destroyed target was a living creature, this creates a visible black-vein flare, and witnesses may treat it as taboo, forbidden or corruptive."
+   ]
+  },
+  "TAL_UNMAKING_SPLINTERING_TRACE": {
+   "text_sha256": "0545583b355a83c32b8e678e232016edb99186b0da3205baa94cdcea710d2406",
+   "reviewed_by": "claude 2026-09-28 + AUTO84 2026-10-05 (the extra d10 and its CL 11 step run from combat/ext/unmaking_forms.py splintering_trace; the damage type was already Ruin, so the typing note is gone)",
+   "modifier": null,
+   "effects": [],
+   "riders": [
+    "Splintering Trace -- this hit may Overdraw even if you already Overdrew this turn, and that second Overdraw costs 2 Black Vein Strain instead of 1. The game allows one Overdraw a turn, so the second one is worked out by hand."
+   ]
+  },
+  "TAL_UNMAKING_RUIN_NEEDLE": {
+   "text_sha256": "279a7b61bcba52e8a364a42edede94e4d8e81bb62533fbb389a7761c2eba0cbc",
+   "reviewed_by": "claude 2026-09-28 + AUTO84 2026-10-05 (combat/unmaking.py:275-295 already asks for the printed rider and gives the needle 1 Crack; a needle at 3 Crack breaks under combat/ext/unmaking_channels.py, which is the printed 'usually destroyed after the attack')",
+   "modifier": null,
+   "effects": [],
+   "riders": []
+  },
+  "TAL_UNMAKING_CRACK_THE_GUARD": {
+   "text_sha256": "3486cbfba4038bc5881526ed609a78699652bbdc3cfb5f81f9c53b7b72faeb30",
+   "reviewed_by": "claude 2026-09-28 + AUTO84 2026-10-05 + AUTO84f1 2026-10-05 (the printed Strength-or-Constitution saving throw, the target's own choice, now runs: combat/ext/unmaking_forms.py _crack_the_guard through combat/ext/save_choices.py; the two answers it gives are the GM's. AUTO84f1 asks the attacker to confirm the printed \"using a shield, armor, parrying weapon, warding bracer, or comparable defensive implement\" before the save, and choice_reactors enrolls defenders so a manual one is asked rather than decided for them)",
+   "modifier": null,
+   "effects": [],
+   "riders": [
+    "Crack the Guard: on either result the target's defensive implement gains 1 Crack unless it is an artifact -- the game tracks Crack on your own weapons, not on a shield or suit of armor -- and a failed save leaves that target unable to add its shield AC against your attacks until the start of your next turn."
+   ]
+  },
+  "TAL_UNMAKING_DISSOLVE_THE_SEAM": {
+   "text_sha256": "7ce47265535c2d5496e5873b2c6e3c0b553cf2c57cb0c1e381a031c542a6e951",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [
+    {
+     "type": "unmaking_object_check",
+     "dice": {
+      "count": 8,
+      "sides": 10
+     },
+     "overdraw_dice": {
+      "count": 6,
+      "sides": 10
+     },
+     "fail_cost": [
+      {
+       "crack": 1
+      },
+      {
+       "strain": 1
+      }
+     ],
+     "success_note": "Dissolve the Seam: if this breaks or disables it, the broken section leaves no clean salvage.",
+     "evidence": "Make an Unmaking Check against the object's DC (13 ordinary, 16 reinforced). Success: 8d10 Ruin damage. Failure: half damage, and your Channel gains 1 Crack or you gain 1 Black Vein Strain. Overdraw adds 6d10 instead of the normal Overdraw damage."
+    }
+   ],
+   "riders": [
+    "An ordinary object is DC 13. A reinforced object is DC 16, a cultivation-grade barrier DC 19, and major sect or formation work DC 22 or more -- that last DC is the GM's to set."
+   ]
+  },
+  "TAL_FLOWING_RIVER_FLOWING_RESPONSE": {
+   "text_sha256": "46e3f2e92fc97662e1ac33c3b0ad693abcc6fe0f2a0855e44d5b173dd9111bf7",
+   "reviewed_by": "Codex A2FLOWINGR 2026-10-10",
+   "options": [],
+   "effects": [
+    {
+     "type": "flowing_yield_attack",
+     "evidence": "Yield Against an Attack: Increase your AC against the triggering melee attack by your Proficiency Bonus. If the attack misses, the response succeeds.",
+     "second_pass": true
+    }
+   ],
+   "riders": [],
+   "why": "New sealed Yield marks opt into native attack completion using the existing after_hit/after_miss notifications; legacy pending markers keep their previous interpreter."
+  },
+  "TAL_FLOWING_RIVER_RIVER_TAKES_THE_SPEAR": {
+   "text_sha256": "bef6ba6392285b647c1a7869b47151a607ab0d030a73298f388c087d4810ec9e",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": []
+  },
+  "TAL_FLOWING_RIVER_EMPTY_STEP": {
+   "text_sha256": "2ed26a9587f463cb430c7efa72f27d60b3c7d174f5560b5bf753c3c5b938d5ab",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": []
+  },
+  "TAL_FLOWING_RIVER_BEND_THE_BLADE": {
+   "text_sha256": "5122142c4e93503cdf95bc194e9bd05b6e9dd255ebc9df05cece1eea2c340026",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": []
+  },
+  "TAL_FLOWING_RIVER_HAND_ON_THE_WRIST": {
+   "text_sha256": "1ee50dd529f745be7d77b70d0d04f3dd6a7f36b3a3f5e231f025cac9e91bce7c",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": []
+  },
+  "TAL_FLOWING_RIVER_EMPTY_BANK_EVASION": {
+   "text_sha256": "a09110c63871962b64c658425081a3534db33aa93ea586cbedcec8683e9398aa",
+   "reviewed_by": "Codex A2FLOWINGR 2026-10-10",
+   "modifier": null,
+   "effects": [
+    {
+     "type": "river_second_pass",
+     "kind": "empty_bank"
+    }
+   ],
+   "riders": [
+    "The table automates Empty Bank Evasion for ability saving throws. It does not yet offer this response for older built-in Dexterity-save actions; those still need manual resolution."
+   ],
+   "options": [],
+   "automation_coverage": "CORE_WITH_RIDERS",
+   "activation": {
+    "economy": "passive",
+    "trigger": null,
+    "requirement": null,
+    "source": "reviewed_final"
+   }
+  },
+  "TAL_FLOWING_RIVER_REED_IN_STORM": {
+   "text_sha256": "3f5dbf928cd1c8b62a7c4f4a65bc99647b79f743892d2a02efa2ebaf778f5478",
+   "reviewed_by": "Codex A2FLOWINGR 2026-10-10",
+   "modifier": null,
+   "effects": [
+    {
+     "type": "river_second_pass",
+     "kind": "reed_in_storm"
+    }
+   ],
+   "riders": [],
+   "automation_coverage": "FULL",
+   "activation": {
+    "economy": "passive",
+    "trigger": null,
+    "requirement": null,
+    "source": "reviewed_final"
+   }
+  },
+  "TAL_FLOWING_RIVER_BORROWED_MOMENTUM": {
+   "text_sha256": "0f5b84b596b779e5bd5e20a7855f5eaf5611c2572b8088bdabaa1048425a01d4",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": []
+  },
+  "TAL_FLOWING_RIVER_COURT_OF_RETURNING_WATER": {
+   "text_sha256": "5dd5d3f66d57850250f9d0c50cb3262c2557d67588b5f220d0faebc51096fa6b",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": [
+    {
+     "type": "court_of_returning_water",
+     "evidence": "You establish a 30-foot-radius Domain centered on yourself. It moves with you."
+    }
+   ],
+   "riders": [
+    "Court of Returning Water: moving 5 feet without provoking Opportunity Attacks when a hostile creature misses you or an ally with a melee attack, and moving a creature 10 feet within the Domain instead of knocking it Prone, are the GM's.",
+    "The Domain ends early if you become Incapacitated."
+   ]
+  },
+  "tianxia.path.qi_cultivation.feature.golden_core_form": {
+   "text_sha256": "6d7b3c83150c21b9dd5be8130b0ff7c6af1be5d59a2ff76e8b94f48f21ca23ad",
+   "reviewed_by": "claude 2026-09-28",
+   "activation": {
+    "economy": "passive",
+    "trigger": null,
+    "requirement": null,
+    "source": "reviewed"
+   },
+   "options": null,
+   "effects": [{"type": "golden_core_choices", "evidence": "Once per turn, after you spend Qi on a feature that resolves successfully, choose one. Perfected: Choose two different benefits."}],
+   "modifier": null
+  },
+  "tianxia.path.qi_cultivation.feature.domain_armament": {
+   "text_sha256": "b9ba9e8264163961911d26d00ae3316cb5c63a1a9286d249a116d54e5825a46f",
+   "reviewed_by": "claude 2026-09-28",
+   "activation": {
+    "economy": "passive",
+    "trigger": null,
+    "requirement": null,
+    "source": "reviewed"
+   },
+   "options": null,
+   "effects": [],
+   "modifier": null
+  },
+  "tianxia.path.qi_cultivation.feature.meridian_regulation": {
+   "text_sha256": "554e52cae16d610589759dc3b5b8f176b05cd24352081011db7516a30bdaab6c",
+   "reviewed_by": "claude 2026-09-28",
+   "min_cl": 2,
+   "target": {"kind": "any_creature"},
+   "options": null,
+   "effects": [
+    {
+     "type": "meridian_regulation",
+     "applies_to": "target",
+     "evidence": "The target immediately repeats the saving throw with Advantage. On success, apply the effect's normal successful-save result."
+    }
+   ],
+   "riders": [
+    "Meridian Regulation is resolved by the table, one question for both of its printed branches. Choose one of the target's poisons, diseases or physical impairments. If that effect makes the target repeat a saving throw, the target repeats that throw with Advantage, and a successful repeat applies the effect's own successful result. If the effect does not repeat its save, the target makes a Constitution saving throw with Advantage against that effect's printed DC (the number the throw has to beat), and on a success one of that effect's penalties -- Poisoned, a Speed reduction, Disadvantage on attack rolls, Disadvantage on ability checks, Disadvantage on saving throws, or an inability to take Reactions -- stops applying until the end of the target's next turn. Effects of either kind are all offered in the same question, so an effect that repeats its save never hides another effect from the printed choice. The fighter chooses which one.",
+    "The effect must be a poison, a disease, or a directly caused physical impairment before either branch is offered, and that is decided from the effect's own ability and its printed text, never from the penalty it happens to leave: a dream, an illusion or a sound that leaves one of the penalties below is still not one of those three. The fight keeps a reviewed list of the printed abilities that can leave such an effect, one entry for each ability with the sentence from the rules that decides it: an entry either places that ability in one of the three, or records that the ability stays the GM's to rule on. An ability that is on neither list is the GM's to rule on as well.",
+    "The two printed limits are checked before anything is offered: the effect must have a printed saving throw DC, and it must not carry the Curse, Tribulation, Foundation Injury, Hidden Injury, Possession, Permanent or Soul Damage tag. An effect with no printed DC, or one whose printed text the fight cannot identify, is the GM's to rule on. Source-owned Disadvantage on attack rolls is selectable alongside the other printed penalties; suppressing one penalty preserves the effect's other penalties and ongoing damage.",
+    "Meridian Regulation does not automatically remove the underlying effect, end its duration, cure the disease or poison, remove Exhaustion, restore Hit Points, stop ongoing damage, or remove a higher-authority effect."
+    ]
+  },
+  "tianxia.subpath.qi.ninpo_adept.feature.shadow_step": {
+   "text_sha256": "1ebb7f92ef14748879118775b847ce4002aa6955dd2bd10e922e64a02f8bce86",
+   "reviewed_by": "claude 2026-09-28; Codex MGR-T15 2026-10-15 (native landing, one-check Stealth and one real item)",
+   "effects": [
+    {
+     "type": "teleport",
+     "applies_to": "self",
+     "distance_ft": 15,
+     "where": "darkness",
+     "evidence": "Teleport from a space containing qualifying concealment to a visible unoccupied space within range also containing qualifying concealment."
+    },
+    {
+     "type": "shadow_step_after",
+     "evidence": "The first Opportunity Attack against you before your next turn has Disadvantage."
+    }
+   ],
+   "riders": [
+     "After the Shadow Step teleport lands, the next Stealth check before the end of this turn has Advantage. The Advantage is one-use and is its own condition, so Hidden Strike's separately earned allowance keeps its own attribution.",
+     "After the Shadow Step teleport lands, its user may draw or stow one weapon, tool, talisman, or implement through the shared gear model: one optional real object, no extra action or resource, the item is not used, and no proficiency is granted. Declining leaves gear as it is. Gear the user does not possess, worn gear and items with no printed item category are not offered."
+     ]
+  },
+  "tianxia.subpath.qi.ninpo_adept.feature.smoke_veil": {
+   "text_sha256": "ecf2a73c9e733b02b807b48be8396eb986532dc97aa36b5ee734aa3e54a59ad2",
+   "reviewed_by": "claude 2026-09-28; w4-roster 2026-09-28 (Veil Escape automated: combat/ext/tabik_ninpo.py veil_escape_move)",
+   "effects": [
+    {
+     "type": "zone_sight",
+     "team": true,
+     "evidence": "You see normally through your own Smoke Veil. Choose a number of creatures equal to PB when activated; they see it as Lightly rather than Heavily Obscured."
+    }
+   ],
+   "riders": [
+    "The smoke may originate from your Domain Armament; it passes through air openings, not airtight barriers."
+   ],
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   }
+  },
+  "tianxia.subpath.qi.ninpo_adept.feature.hidden_strike": {
+   "text_sha256": "0837a689a42b54f0f237cfd2d667d598783e3b516dd81536b6290c0929f7af4b",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": []
+  },
+  "tianxia.subpath.body.shinobi.feature.shadow_afterimage": {
+   "text_sha256": "f4771dbd916f755c3b22d20b272cc09225716d886e460ccc67cbca9188116677",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [
+    {
+     "type": "summon",
+     "group": "shadow_afterimage",
+     "evidence": "Create one Shadow Afterimage."
+    }
+   ],
+   "riders": [
+    "You may see and hear through the Afterimage while within 300 feet; it can Help or manipulate an unattended object up to 5 pounds (the GM applies them)."
+   ]
+  },
+  "tianxia.subpath.body.shinobi.feature.pressure_point_strike": {
+   "text_sha256": "ece2109284cb595c17840567d2807862f2af7f25fc314d06c324703f3bf8ef30",
+   "reviewed_by": "claude 2026-09-28; Claude riders/c7 2026-09-30 (the plug-in runs both lines)",
+   "modifier": null,
+   "effects": [],
+   "riders": []
+  },
+  "foundation.ancient_desolate_sacred_body_v0_2C.golden_sea_guard": {
+   "text_sha256": "0dd0344f14f91b2a95597ec8e246bd02c346988817d2fa4a62ad37a78d0cf079",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [
+    {
+     "type": "damage_modifier",
+     "applies_to": "self",
+     "formula": "2*pb+con",
+     "evidence": "Reduce the triggering hostile damage by twice your Proficiency Bonus + your Constitution modifier."
+    }
+   ],
+   "riders": [
+    "Golden Sea Guard: against body suppression, curse-, possession- or poison-pressure, demonic pressure, necrotic corruption or hostile forced-movement impact, the reduction is PB higher (the GM applies it)."
+   ]
+  },
+  "foundation.ancient_desolate_sacred_body_v0_2C.refuse_heaven_lock": {
+   "text_sha256": "59d5b776de094c2d31d1593ad1662c64dc75a71ed02a44a3f3c4532e0c40f41d",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [
+    {
+     "type": "attack_modifier",
+     "applies_to": "self",
+     "formula": "pb+con",
+     "on": "the failed Strength or Constitution saving throw against forced movement, being knocked Prone, being Grappled, being Restrained or a similar body-seizing effect",
+     "evidence": "Add your Proficiency Bonus + your Constitution modifier to the roll."
+    }
+   ],
+   "riders": [
+    "Refuse Heaven-Lock: when it turns the failure into a success, ending one minor body-seizing rider from the same source is the GM's."
+   ]
+  },
+  "foundation.ancient_desolate_sacred_body_v0_2C.saint_body_rebuke": {
+   "text_sha256": "6e5cd9ccaa365e7bf5f202a388d333d426f6c17cfbbe1e8868919cb428faa4d6",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": []
+  },
+  "tianxia.talent.disease.court_of_the_crawling_fever": {
+   "text_sha256": "d7d8b1c7c677af9db784a3728510797ebe2e313b44d403af973fee013bab442e",
+   "reviewed_by": "claude 2026-09-28; riders-lane10 2026-09-29 (riders); AUTO89 disease lane 2026-10-05: the damage_defenses hook in combat/ext/disease.py keys the printed Poison/Necrotic resistance to Disease-talent damage in the aura; AUTO89f1 2026-10-05: combat/ext/disease.py asks 'You and allies you choose' when the aura is raised and stores the answer on it, so the Disease-save Advantage, the resistance and the Contagion Token shed now reach only the chosen allies (the printed immunity to the maker's own Veil and Cloud damage is still a table call); AUTO89r1f1 2026-10-05: the setup runs once per aura rather than again on every enemy turn start, overlapping Courts each grant their own beneficiaries, and an aura saved before the answer existed keeps the allies it had",
+   "options": null,
+   "effects": [
+    {
+     "type": "crawling_fever",
+     "evidence": "When an enemy starts its turn in the aura, it makes a Constitution saving throw. Failed Save: Choose one"
+    }
+   ],
+   "riders": []
+  },
+  "TAL_VOID_VOID_TRAINING": {
+   "text_sha256": "df79714e62ce4d658e795d6ccf583d77b53e7fdbcb09c457b045e6a8be66fa76",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": []
+  },
+  "TAL_FENCING_COURT_OF_MEASURED_OPENINGS": {
+   "text_sha256": "1a92f0323898df5d554dcca998d4d7f6fc433637c8a78d35b6b0d67edba54f33",
+   "reviewed_by": "needle 2026-09-29; riders-lane10 2026-09-29 (riders)",
+   "effects": [
+    {
+     "type": "needle_domain",
+     "domain": "court",
+     "applies_to": "self",
+     "duration": {
+      "kind": "minutes",
+      "amount": 1
+     },
+     "evidence": "Court of Measured Openings lasts 1 minute; it ends if you are Incapacitated."
+    }
+   ],
+   "riders": []
+  },
+  "TAL_DARK_SHADOW_SLICK": {
+   "text_sha256": "1644ab65bd978b939dc4e16b52e97cdd57a214375c2f99afd3f167021f337beb",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": [
+    {
+     "type": "move_through",
+     "min_ft": "half_speed",
+     "who": "any",
+     "effects": [
+      {
+       "type": "skill_check",
+       "skill": "Acrobatics",
+       "ability": "DEX",
+       "applies_to": "target",
+       "on_fail": [
+        {
+         "type": "condition",
+         "condition": "prone",
+         "applies_to": "target",
+         "evidence": "Failed Check: Fall Prone."
+        }
+       ],
+       "evidence": "makes a Dexterity (Acrobatics) check against your Cultivation Save DC"
+      }
+     ],
+     "evidence": "A creature that attempts to move more than half its Speed through the area makes a Dexterity (Acrobatics) check against your Cultivation Save DC."
+    }
+   ],
+   "riders": []
+  },
+  "TAL_DARK_DISORIENTING_DARKNESS": {
+   "text_sha256": "8f6e5d10f60dca4f588fcd95f95ab13d2429858ad3ad67203efe6f9172746b9e",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": [
+    {
+     "type": "save",
+     "ability": "int",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "rider",
+       "evidence": "Disorienting Darkness: it moves off course -- roll 1d8 for its direction of travel (1 is the intended direction, 2-8 rotate clockwise); the GM moves it."
+      }
+     ],
+     "on_success": [],
+     "evidence": "The first time on a turn that a creature attempts to enter, leave, or move through the area, it makes an Intelligence saving throw."
+    }
+   ]
+  },
+  "DARK_BASE_DARKNESS": {
+   "text_sha256": "58d6b27416dafdf3ebdd32d1fa6b2fda4dc2390f767cc1d9d7445bd837b6c8b2",
+   "reviewed_by": "claude 2026-09-28",
+   "riders": [
+    "Nonmagical light cannot illuminate this Darkness (the table does not model light levels)."
+   ]
+  },
+  "tianxia.path.qi_cultivation.feature.domain_armament_link": {
+   "text_sha256": "40ac7786ccee2d2c1f940975bd219335a052719e8fb4add61480754e28c9a2b5",
+   "reviewed_by": "claude 2026-09-29",
+   "modifier": null,
+   "effects": [],
+   "riders": [
+    "Remote Technique Origin: spend 1 additional Qi to originate a non-Self technique from your Domain Armament (the GM measures range, sight and areas from it)."
+   ]
+  },
+  "tianxia.path.qi_cultivation.feature.golden_core_efficiency": {
+   "text_sha256": "36eac8e2a28c3647f9845219585bf13caf7c25a71892f085047aa447eaf0d8ea",
+   "reviewed_by": "claude 2026-09-29",
+   "modifier": null,
+   "effects": []
+  }
+ }
+}
