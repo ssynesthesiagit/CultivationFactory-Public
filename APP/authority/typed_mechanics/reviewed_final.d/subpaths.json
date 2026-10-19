@@ -1,0 +1,4131 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "mechanics": {
+  "tianxia.subpath.body.black_thorn_demon_body.feature.thorn_flesh_armory": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "tianxia.subpath.body.black_thorn_demon_body.feature.thorn_flesh_armory",
+   "kind": "subpath_feature",
+   "name": "Thorn-Flesh Armory",
+   "sphere_id": null,
+   "source": {
+    "path": "09_RULES/Source_Text/Paths/Body/Tianxia_Body_Refining_Subpath_Compendium_R8.md",
+    "line": 6796,
+    "file_sha256": "74dff956598e6e78d87a5fbbc0e532223e0581e3ec1df8c4a0eb313e562a5cb6",
+    "text_sha256": "27382e1d1a6522a0847bc7fb614739623e35c9eed82656eab31d4bcb0bfabc91"
+   },
+   "activation": {
+    "economy": "passive",
+    "trigger": "You hit with an unarmed strike",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "header_economy": false,
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "1 Demon Spine"
+     }
+    ]
+   ],
+   "use_limit": "once_per_turn",
+   "range": null,
+   "area": null,
+   "target": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "type": "path_passive",
+     "kind": "unarmed_types",
+     "damage_types": [
+      "bludgeoning",
+      "piercing",
+      "slashing"
+     ],
+     "evidence": "Your unarmed strikes can choose Bludgeoning, Piercing, or Slashing for each attack."
+    },
+    {
+     "type": "path_passive",
+     "kind": "thorn_bleeding",
+     "evidence": "The first time the target willingly moves a cumulative 10 feet or makes an attack while Bleeding, it takes damage equal to your Proficiency Bonus using the selected Piercing or Slashing type and Bleeding ends after the triggering action or movement commits."
+    }
+   ],
+   "riders": [
+    "Once per turn, when you hit with an unarmed strike, you may spend 1 Demon Spine to add 2d6 Piercing or Slashing damage to that hit. The target then makes a Constitution saving throw; on a failed save, it becomes Bleeding until the start of your next turn. This initial hit's extra damage and saving throw are worked out for you for an unarmed strike the game resolves itself. While already Bleeding, the target's first attack (even a miss) or first cumulative 10 feet of willing movement triggers delayed damage equal to your Proficiency Bonus, using the selected Piercing or Slashing type; Bleeding ends after that attack or movement commits. For movement or an attack the game does not resolve itself, only this delayed Proficiency Bonus damage is applied by hand. Movement does not add another 2d6 or apply fresh Bleeding. Forced movement and teleportation do not trigger this damage. When several casters trigger Bleeding at once the delayed damage does not stack: one reminder names each source's amount and damage type."
+   ],
+   "description": [
+    "Unarmed strikes may deal Piercing or Slashing."
+   ],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "subpath_id": "tianxia.subpath.body.black_thorn_demon_body",
+   "typing_status": "reviewed_final",
+   "structure_source": "model_v2",
+   "text_sha256": "27382e1d1a6522a0847bc7fb614739623e35c9eed82656eab31d4bcb0bfabc91",
+   "reviewed_by": "Codex riders/lane13 2026-09-29"
+  },
+  "tianxia.subpath.body.black_thorn_demon_body.feature.spines_answer_violence": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "tianxia.subpath.body.black_thorn_demon_body.feature.spines_answer_violence",
+   "kind": "subpath_feature",
+   "name": "Spines Answer Violence",
+   "sphere_id": null,
+   "source": {
+    "path": "09_RULES/Source_Text/Paths/Body/Tianxia_Body_Refining_Subpath_Compendium_R8.md",
+    "line": 6818,
+    "file_sha256": "74dff956598e6e78d87a5fbbc0e532223e0581e3ec1df8c4a0eb313e562a5cb6",
+    "text_sha256": "efda3c38e4cf23c170cbb582b80580ab3e011005cd0587ee8dead2d84f3ccaa9"
+   },
+   "activation": {
+    "economy": "reaction",
+    "trigger": "A creature within reach hits you with a melee attack, Grapples you, or begins its turn Grappling you.",
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "header_economy": true,
+   "cost": [
+    [
+     {
+      "resource": "text",
+      "text": "Spend 1 Demon Spine"
+     }
+    ]
+   ],
+   "use_limit": "once_per_round",
+   "range": null,
+   "area": null,
+   "target": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "type": "save",
+     "applies_to": "attacker",
+     "ability": "dex",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "attacker",
+       "dice": {
+        "count": 3,
+        "sides": 8
+       },
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [
+        "piercing"
+       ],
+       "evidence": "`3d8` Piercing"
+      },
+      {
+       "type": "condition",
+       "applies_to": "attacker",
+       "condition": "bleeding",
+       "duration": {
+        "kind": "until_start_of_next_turn"
+       },
+       "evidence": "Bleeding"
+      },
+      {
+       "type": "unless_grappling_user",
+       "effects": [
+        {
+         "type": "forced_movement",
+         "applies_to": "attacker",
+         "distance_ft": 5,
+         "evidence": "pushed 5 feet if not Grappling you",
+         "direction": "away"
+        }
+       ],
+       "evidence": "pushed 5 feet if not Grappling you"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage",
+       "applies_to": "attacker",
+       "damage_types": [
+        "piercing"
+       ],
+       "evidence": "Half damage and no Bleeding."
+      }
+     ],
+     "evidence": "The triggering creature makes one Dexterity save"
+    }
+   ],
+   "riders": [],
+   "description": [],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "subpath_id": "tianxia.subpath.body.black_thorn_demon_body",
+   "typing_status": "reviewed_final",
+   "structure_source": "model_v2",
+   "text_sha256": "efda3c38e4cf23c170cbb582b80580ab3e011005cd0587ee8dead2d84f3ccaa9",
+   "reviewed_by": "Codex riders/lane13 2026-09-29"
+  },
+  "tianxia.subpath.body.black_thorn_demon_body.feature.impaling_garden": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "tianxia.subpath.body.black_thorn_demon_body.feature.impaling_garden",
+   "kind": "subpath_feature",
+   "name": "Impaling Garden",
+   "sphere_id": null,
+   "source": {
+    "path": "09_RULES/Source_Text/Paths/Body/Tianxia_Body_Refining_Subpath_Compendium_R8.md",
+    "line": 6839,
+    "file_sha256": "74dff956598e6e78d87a5fbbc0e532223e0581e3ec1df8c4a0eb313e562a5cb6",
+    "text_sha256": "089c42e556cf1da51a7dd8b7276149bf1c764af171ef69fd2c63e313bfeeb809"
+   },
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "header_economy": true,
+   "cost": [
+    [
+     {
+      "resource": "stamina",
+      "amount": 3
+     },
+     {
+      "resource": "demon_spine",
+      "amount": 2
+     }
+    ]
+   ],
+   "use_limit": null,
+   "range": null,
+   "area": {
+    "shape": "sphere",
+    "size_ft": 15,
+    "centered_on_self": true
+   },
+   "target": null,
+   "duration": {
+    "kind": "until_start_of_next_turn",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "recipient_text": "Choose hostile creatures in the area or affect every hostile creature according to the campaign's area convention; record the selection consistently. Each target makes one Dexterity save once per activation.",
+     "type": "save",
+     "applies_to": "enemies_in_area",
+     "ability": "dex",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "enemies_in_area",
+       "dice": {
+        "count": 5,
+        "sides": 8
+       },
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [
+        "piercing"
+       ],
+       "evidence": "`5d8` Piercing"
+      },
+      {
+       "type": "action_restraint",
+       "applies_to": "enemies_in_area",
+       "condition": "restrained",
+       "duration": {
+        "kind": "until_start_of_next_turn"
+       },
+       "evidence": "Restrained until the start of your next turn",
+       "ability": "str"
+      },
+      {
+       "type": "condition",
+       "applies_to": "enemies_in_area",
+       "condition": "bleeding",
+       "duration": {
+        "kind": "until_start_of_next_turn"
+       },
+       "evidence": "Bleeding"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage",
+       "applies_to": "enemies_in_area",
+       "damage_types": [
+        "piercing"
+       ],
+       "evidence": "Half damage"
+      },
+      {
+       "type": "speed",
+       "applies_to": "enemies_in_area",
+       "flat": -10,
+       "duration": {
+        "kind": "until_start_of_next_turn"
+       },
+       "evidence": "Speed reduced by 10 feet until the start of your next turn"
+      }
+     ],
+     "evidence": "Each target makes one Dexterity save"
+    },
+    {
+     "type": "zone",
+     "applies_to": "enemies_in_area",
+     "distance_ft": 15,
+     "duration": {
+      "kind": "until_start_of_next_turn"
+     },
+     "evidence": "The area is difficult terrain for hostile creatures."
+    }
+   ],
+   "riders": [],
+   "description": [],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "subpath_id": "tianxia.subpath.body.black_thorn_demon_body",
+   "typing_status": "reviewed_final",
+   "structure_source": "model_v2",
+   "text_sha256": "089c42e556cf1da51a7dd8b7276149bf1c764af171ef69fd2c63e313bfeeb809",
+   "reviewed_by": "Codex riders/lane13 2026-09-29"
+  },
+  "tianxia.subpath.qi.saber_wind_cultivator.feature.saber_conduction": {
+   "text_sha256": "aaa1a6a88f35023733f9b73c85c86aecd64e6b7aa3cdd65886ee5c0736d3288e",
+   "reviewed_by": "subpaths 2026-09-28",
+   "modifier": null,
+   "riders": [
+    "Not automated as a modifier (scope_too_broad: any_sphere_technique with no home sphere reaches every technique, but the print requires a saber-family weapon attack delivering a single-target, short-range, instantaneous/direct-duration Qi technique; additional cost 1 Qi). GM/player: when a qualifying Qi technique is used, make the saber attack as part of it; on a miss the technique is not delivered but its cost remains spent; on a hit, deal weapon damage then apply the technique.",
+    "Wind-Following Cut (once per turn after gaining Gale Momentum, choose one): move 5 feet without provoking; move the Saber Domain Armament 10 feet; push the creature you hit 5 feet; gain Temporary Hit Points equal to Proficiency Bonus; draw/stow/call/release one saber-family weapon. Player choice, GM-adjudicated.",
+    "Spend Momentum (when you hit with a saber-family weapon or Domain Armament, spend 1 Gale Momentum, choose one): push 10 feet; pull 5 feet or move 5 feet toward the target; deny its Reactions until the start of its next turn; or add Proficiency Bonus Force or Slashing damage. Player choice, GM-adjudicated."
+   ]
+  },
+  "tianxia.subpath.qi.saber_wind_cultivator.feature.crescent_wind": {
+   "effects": [
+    {
+     "type": "save",
+     "ability": "dex",
+     "dc": "technique_save_dc",
+     "on_fail": [],
+     "on_success": [
+      {
+       "type": "half_damage",
+       "evidence": "Half damage"
+      }
+     ],
+     "evidence": "makes a Dexterity saving throw",
+     "origin": "parser",
+     "applies_to": "enemies_in_area",
+     "recipient_text": "Each hostile creature in the cone makes a Dexterity saving throw."
+    },
+    {
+     "type": "zone",
+     "applies_to": "enemies_in_area",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 15,
+     "on": "15-foot cone",
+     "duration": "instant",
+     "evidence": "Choose a 15-foot cone originating from you, the struck target, or your Saber Domain Armament",
+     "origin": "model"
+    },
+    {
+     "type": "forced_movement",
+     "applies_to": "target",
+     "flat": 5,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 5,
+     "on": "",
+     "duration": "instant",
+     "evidence": "Push it 5 feet",
+     "origin": "model",
+     "direction": "away"
+    },
+    {
+     "type": "gain_resource",
+     "applies_to": "self",
+     "flat": 1,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "Gale Momentum",
+     "duration": "instant",
+     "evidence": "regain 1 Gale Momentum after it resolves",
+     "origin": "model"
+    },
+    {
+     "type": "save",
+     "ability": "dex",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "forced_movement",
+       "applies_to": "creatures_in_area",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 5,
+       "on": "",
+       "duration": "instant",
+       "evidence": "Push it 5 feet",
+       "origin": "model_v2",
+       "direction": "away"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "damage",
+       "applies_to": "creatures_in_area",
+       "dice": {
+        "count": 3,
+        "count_formula": null,
+        "sides": 8,
+        "bonus": null,
+        "bonus_formula": null
+       },
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [
+        "slashing",
+        "force"
+       ],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "Half damage",
+       "origin": "model_v2"
+      },
+      {
+       "type": "half_damage",
+       "origin": "model_v2"
+      }
+     ],
+     "origin": "model_v2",
+     "applies_to": "enemies_in_area",
+     "recipient_text": "Each hostile creature in the cone makes a Dexterity saving throw."
+    }
+   ],
+   "text_sha256": "0a7380dec90a7906c66604e352f72bb4aaf89de7d41d619d73c010294eabcd1a",
+   "reviewed_by": "subpaths 2026-09-28",
+   "modifier": null,
+   "riders": [
+    "Not automated as a modifier (scope_too_broad: any_attack with no home sphere reaches every attack, but the trigger is a saber-family weapon/Domain Armament hit or saber-delivered technique; Cost: 2 Qi and 1 Gale Momentum, once per turn). GM/player: after a qualifying hit, spend the cost, choose a 15-foot cone from you, the target, or the Domain Armament (excluding the triggering target unless chosen in); each hostile creature in the cone makes a Dexterity save -- fail: 3d8 (4d8 at CL11, 5d8 at CL17) Slashing or Force damage and pushed 5 feet; success: half damage, no push.",
+    "Cutting Through the Crowd: if Crescent Release damages at least two hostile creatures, regain 1 Gale Momentum (max 1 per turn from this). GM-adjudicated alongside the rest of the trigger."
+   ]
+  },
+  "tianxia.subpath.qi.saber_wind_cultivator.feature.saber_gale_field": {
+   "effects": [
+    {"type": "zone", "triggers": [{"on": ["enter", "start"], "who": "hostile", "effects": [
+    {
+     "type": "save",
+     "ability": "dex",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "enemies_in_area",
+       "dice": {
+        "count": 3,
+        "count_formula": null,
+        "sides": 8,
+        "bonus": null,
+        "bonus_formula": null
+       },
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [
+        "slashing",
+        "force"
+       ],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "`3d8` Slashing or Force damage.",
+       "origin": "model_v2"
+      },
+      {
+       "type": "reaction_denied",
+       "applies_to": "enemies_in_area",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "until_start_of_next_turn",
+       "evidence": "It cannot take Reactions until the start of its next turn.",
+       "origin": "model_v2"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage",
+       "applies_to": "enemies_in_area",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "Half damage.",
+       "origin": "model_v2"
+      }
+     ],
+     "origin": "model_v2",
+     "applies_to": "enemies_in_area",
+     "recipient_text": "A hostile creature makes a Dexterity saving throw when it:"
+    }
+    ]}]},
+    {
+     "type": "speed",
+     "applies_to": "self",
+     "flat": 10,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "one_minute",
+     "evidence": "Your Speed increases by 10 feet.",
+     "origin": "model_v2"
+    },
+    {
+     "type": "gain_resource",
+     "applies_to": "self",
+     "flat": 1,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "",
+     "duration": "one_minute",
+     "evidence": "Gain 1 Gale Momentum at the start of your turn if you have none.",
+     "origin": "model_v2"
+    },
+    {
+     "type": "zone",
+     "applies_to": "self",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 15,
+     "on": "15-foot-radius aura",
+     "duration": "one_minute",
+     "evidence": "A revolving field of saber pressure follows its center",
+     "origin": "model"
+    },
+    {
+     "type": "spend_resource",
+     "applies_to": "self",
+     "flat": 2,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "none",
+     "condition": "none",
+     "distance_ft": 0,
+     "on": "Qi",
+     "duration": "instant",
+     "evidence": "spend 2 additional Qi and 1 Gale Momentum",
+     "origin": "model"
+    }
+   ],
+   "text_sha256": "1a3411a19764e3f309cbec9ccb30ba6a463d3504002bb3e023e5335bb4af6515",
+   "reviewed_by": "subpaths 2026-09-28",
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   },
+   "riders": [
+    "Sweeping Delivery's \"spend 2 additional Qi and 1 Gale Momentum\" to project a lesser copy of a single-target technique through the field, and the full second-target procedure (halved dice, no weapon damage, once per turn), is worked out by hand -- the game never sends the copy to a second target for you."
+   ]
+  },
+  "tianxia.subpath.qi.saber_wind_cultivator.feature.hundred_step_saber_procession": {
+   "text_sha256": "c87f88c00579d62bfbc71e9b7347173d090fd95d30f6120b9be8f0e299b8b292",
+   "reviewed_by": "subpaths 2026-09-28",
+   "options": [
+    {
+     "label": "Push",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "extra_damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 8
+         },
+         "damage_types": [
+          "slashing",
+          "force"
+         ],
+         "evidence": "The first hit during the Procession deals an additional 3d8 Slashing or Force damage."
+        },
+        {
+         "type": "forced_movement",
+         "applies_to": "target",
+         "distance_ft": 10,
+         "evidence": "push it 10 feet if no more than one size larger than you"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Prone",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_melee",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "extra_damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 8
+         },
+         "damage_types": [
+          "slashing",
+          "force"
+         ],
+         "evidence": "The first hit during the Procession deals an additional 3d8 Slashing or Force damage."
+        },
+        {
+         "type": "condition",
+         "applies_to": "target",
+         "condition": "prone",
+         "evidence": "knock it Prone if no more than one size larger than you"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "riders": [
+    "Choose Push or Prone as the Procession's closing effect on the creature you choose to apply it to (a free player choice); the other choice is the same button under a different label.",
+    "Move up to twice Speed, attack up to Proficiency Bonus different creatures along the path (repeat this action once per chosen target) and deliver one weapon-delivered technique through the first qualifying hit: GM/player-adjudicated multi-target sequencing, since the table resolves one typed attack per activation.",
+    "Each hit after the first deals 2d8 instead of the first hit's 3d8 -- apply 2d8 by hand for a later target in the same Procession; the typed bonus above is the first-hit amount.",
+    "Gain 1 Gale Momentum per different creature hit (to your maximum) after the Procession resolves: GM-adjudicated."
+   ]
+  },
+  "tianxia.tradition.spirit.choir_of_the_unopened_eye.feature.witness_note": {
+   "text_sha256": "814144aac88734e738a596b3bb7c228ea41dcf97c4fb45c8e569014c2610dd8b",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "spirit_tradition",
+     "runs": "combat/ext/choir_of_the_unopened_eye.py",
+     "evidence": "Chorus Recognition: once per turn when a hostile creature bearing your Witness Note becomes Resonance Marked by you, impose Revealed Disturbance"
+    }
+   ],
+   "options": null,
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "riders_c8",
+    "name": "Witness Note",
+    "targets": [
+     "Soul Gaze"
+    ],
+    "scope": "named",
+    "when": "use",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "",
+    "cost": [
+     [
+      {
+       "resource": "resonance",
+       "amount": 1,
+       "amount_formula": null
+      }
+     ]
+    ],
+    "effects": [
+     {
+      "type": "mark",
+      "mark": "Witness Note",
+      "applies_to": "target",
+      "duration": {
+       "kind": "until_removed"
+      },
+      "evidence": "you may spend 1 Resonance to place a Witness Note on one observed subject"
+     }
+    ]
+   },
+   "activation": {
+    "economy": "passive",
+    "trigger": "When you use Spiritual Sense, Soul Gaze, or another legal diagnostic procedure on a creature or effect",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "Spiritual Sense or another legal diagnostic procedure can also place a Witness Note (the GM places it; Soul Gaze's variant is automated).",
+    "Notations (Face: disguise and ordinary invisibility cannot hide its identity from you within 60 feet; Voice: you know when it contradicts a statement it made while noted; Wound: you know when it gains or loses Hit Points, possession, contamination or a Resonance Mark within 60 feet; Threshold: a note on a place tells you who crosses it within 300 feet) are information: the GM tells you."
+   ],
+   "range": null,
+   "area": null,
+   "cost": [],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.choir_of_the_unopened_eye.feature.hymn_of_stillness": {
+   "text_sha256": "412ccce57d30ffa5726dfdfdead25d0ce5eb885f47ff8461707667629ac5a559",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "save",
+     "applies_to": "target",
+     "flat": 0,
+     "formula": "none",
+     "damage_types": [],
+     "ability": "wis",
+     "condition": "none",
+     "distance_ft": 60,
+     "on": "",
+     "duration": "instant",
+     "evidence": "The target makes a Wisdom saving throw",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 3,
+        "count_formula": null,
+        "sides": 8,
+        "bonus": null,
+        "bonus_formula": null
+       },
+       "flat": 0,
+       "formula": "key_ability_modifier",
+       "damage_types": [
+        "psychic"
+       ],
+       "ability": "wis",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "It takes 3d8 + Wisdom modifier Psychic damage"
+      },
+      {
+       "type": "reaction_denied",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "until_start_of_next_turn",
+       "evidence": "it cannot take Reactions"
+      },
+      {
+       "type": "speed",
+       "applies_to": "target",
+       "flat": -10,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "until_start_of_next_turn",
+       "evidence": "its Speed is reduced by 10 feet"
+      },
+      {
+       "type": "exposed",
+       "applies_to": "target",
+       "benefits": "invisible",
+       "against": "you",
+       "duration": "until_start_of_next_turn",
+       "evidence": "it cannot willingly benefit from ordinary invisibility ... against you"
+      },
+      {
+       "type": "if_marked",
+       "mark": "Resonance",
+       "applies_to": "target",
+       "effects": [
+        {
+         "type": "spiritual_pressure",
+         "applies_to": "target",
+         "evidence": "if Resonance Marked by you, choose one additional ordinary Spiritual Pressure effect"
+        }
+       ]
+      },
+      {
+       "type": "choir_hymn_record",
+       "applies_to": "target",
+       "evidence": "Sustained Refrain"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 3,
+        "count_formula": null,
+        "sides": 8,
+        "bonus": null,
+        "bonus_formula": null
+       },
+       "flat": 0,
+       "formula": "key_ability_modifier",
+       "damage_types": [
+        "psychic"
+       ],
+       "ability": "wis",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "It takes half damage"
+      },
+      {
+       "type": "choir_hymn_success",
+       "applies_to": "target",
+       "evidence": "Successful Save: Choose either to reduce its Speed by 10 feet or prevent Reactions until the start of your next turn."
+      }
+     ]
+    }
+   ],
+   "options": [
+    {
+     "label": "Reduce Speed",
+     "effects": [
+      {
+       "type": "save",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "wis",
+       "condition": "none",
+       "distance_ft": 60,
+       "on": "",
+       "duration": "instant",
+       "evidence": "The target makes a Wisdom saving throw",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "count_formula": null,
+          "sides": 8,
+          "bonus": null,
+          "bonus_formula": null
+         },
+         "flat": 0,
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "psychic"
+         ],
+         "ability": "wis",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "It takes 3d8 + Wisdom modifier Psychic damage"
+        },
+        {
+         "type": "reaction_denied",
+         "applies_to": "target",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "until_start_of_next_turn",
+         "evidence": "it cannot take Reactions"
+        },
+        {
+         "type": "speed",
+         "applies_to": "target",
+         "flat": -10,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "until_start_of_next_turn",
+         "evidence": "its Speed is reduced by 10 feet"
+        },
+        {
+         "type": "exposed",
+         "applies_to": "target",
+         "benefits": "invisible",
+         "against": "you",
+         "duration": "until_start_of_next_turn",
+         "evidence": "it cannot willingly benefit from ordinary invisibility ... against you"
+        },
+        {
+         "type": "if_marked",
+         "mark": "Resonance",
+         "applies_to": "target",
+         "effects": [
+          {
+           "type": "spiritual_pressure",
+           "applies_to": "target",
+           "evidence": "if Resonance Marked by you, choose one additional ordinary Spiritual Pressure effect"
+          }
+         ]
+        },
+        {
+         "type": "choir_hymn_record",
+         "applies_to": "target",
+         "evidence": "Sustained Refrain"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "count_formula": null,
+          "sides": 8,
+          "bonus": null,
+          "bonus_formula": null
+         },
+         "flat": 0,
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "psychic"
+         ],
+         "ability": "wis",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "It takes half damage"
+        },
+        {
+         "type": "speed",
+         "applies_to": "target",
+         "flat": -10,
+         "duration": "until_start_of_next_turn",
+         "evidence": "Successful Save: choose either to reduce Speed by 10 feet or prevent Reactions"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Prevent Reactions",
+     "effects": [
+      {
+       "type": "save",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "wis",
+       "condition": "none",
+       "distance_ft": 60,
+       "on": "",
+       "duration": "instant",
+       "evidence": "The target makes a Wisdom saving throw",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "count_formula": null,
+          "sides": 8,
+          "bonus": null,
+          "bonus_formula": null
+         },
+         "flat": 0,
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "psychic"
+         ],
+         "ability": "wis",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "It takes 3d8 + Wisdom modifier Psychic damage"
+        },
+        {
+         "type": "reaction_denied",
+         "applies_to": "target",
+         "flat": 0,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "until_start_of_next_turn",
+         "evidence": "it cannot take Reactions"
+        },
+        {
+         "type": "speed",
+         "applies_to": "target",
+         "flat": -10,
+         "formula": "none",
+         "damage_types": [],
+         "ability": "none",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "until_start_of_next_turn",
+         "evidence": "its Speed is reduced by 10 feet"
+        },
+        {
+         "type": "exposed",
+         "applies_to": "target",
+         "benefits": "invisible",
+         "against": "you",
+         "duration": "until_start_of_next_turn",
+         "evidence": "it cannot willingly benefit from ordinary invisibility ... against you"
+        },
+        {
+         "type": "if_marked",
+         "mark": "Resonance",
+         "applies_to": "target",
+         "effects": [
+          {
+           "type": "spiritual_pressure",
+           "applies_to": "target",
+           "evidence": "if Resonance Marked by you, choose one additional ordinary Spiritual Pressure effect"
+          }
+         ]
+        },
+        {
+         "type": "choir_hymn_record",
+         "applies_to": "target",
+         "evidence": "Sustained Refrain"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "count_formula": null,
+          "sides": 8,
+          "bonus": null,
+          "bonus_formula": null
+         },
+         "flat": 0,
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "psychic"
+         ],
+         "ability": "wis",
+         "condition": "none",
+         "distance_ft": 0,
+         "on": "",
+         "duration": "instant",
+         "evidence": "It takes half damage"
+        },
+        {
+         "type": "reaction_denied",
+         "applies_to": "target",
+         "duration": "until_start_of_next_turn",
+         "evidence": "Successful Save: choose either to reduce Speed by 10 feet or prevent Reactions"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [
+    "An ordinary disguise cannot help it against you while still (the GM applies it); a lower-Source-CL creature that fails by 5 or more cannot speak a deliberate lie while the Hymn persists (the GM applies it)."
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 60
+   },
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 3
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": {
+    "text": "One creature that can hear you or bears your Witness Note"
+   },
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.subpath.qi.spirit_bow_cultivator.feature.seeking_arrow": {
+   "text_sha256": "74495a354285a88b456032e18c029e4e15473a480351e350e68c71187c0f317a",
+   "reviewed_by": "subpaths 2026-09-28",
+   "effects": [],
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "subpaths-review",
+    "targets": [
+     "Spirit Bow"
+    ],
+    "scope": "named",
+    "when": "use",
+    "optional": true,
+    "limit": "once_per_turn",
+    "group": "",
+    "precondition": "",
+    "effects": [
+     {
+      "type": "spend_resource",
+      "applies_to": "self",
+      "flat": 1,
+      "formula": "none",
+      "evidence": "Cost: 1 Qi"
+     }
+    ],
+    "options": [
+     {
+      "label": "Far-Seeking Arrow",
+      "effects": [
+       {
+        "type": "advantage",
+        "applies_to": "self",
+        "evidence": "Attacking at long range does not impose Disadvantage."
+       }
+      ]
+     },
+     {
+      "label": "Cover-Piercing Arrow",
+      "effects": [
+       {
+        "type": "advantage",
+        "applies_to": "self",
+        "evidence": "Ignore Half Cover and Three-Quarters Cover."
+       }
+      ]
+     },
+     {
+      "label": "Blood-Seeking Arrow",
+      "effects": [
+       {
+        "type": "advantage",
+        "applies_to": "self",
+        "evidence": "Gain Advantage if the target has taken damage since the start of your previous turn."
+       }
+      ]
+     },
+     {
+      "label": "Revealing Arrow",
+      "effects": [
+       {
+        "type": "deny_invisible",
+        "applies_to": "target",
+        "evidence": "the target cannot benefit from Invisible or ordinary visual concealment against you"
+       }
+      ]
+     },
+     {
+      "label": "Curving Arrow",
+      "effects": [
+       {
+        "type": "movement",
+        "applies_to": "self",
+        "distance_ft": 0,
+        "evidence": "The arrow may travel around one obstacle no wider than 10 feet."
+       }
+      ]
+     }
+    ]
+   },
+   "riders": [
+    "Cover-Piercing, Revealing and Curving Arrow are typed as the closest available block; Revealing Arrow's exact \"cannot benefit from Invisible against you\" effect and Curving Arrow's path-around-an-obstacle geometry are GM-adjudicated on the table's grid."
+   ]
+  },
+  "tianxia.subpath.qi.spirit_bow_cultivator.feature.piercing_shot": {
+   "text_sha256": "1ee004db959139ec44268bc3f19c92a11ebf3feb441538c269c2f84cb28d8379",
+   "reviewed_by": "subpaths 2026-09-28",
+   "options": [
+    {
+     "label": "Force",
+     "effects": [
+      {
+       "type": "save",
+       "applies_to": "target",
+       "ability": "dex",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 6,
+          "sides": 8
+         },
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "6d8 Force damage"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "applies_to": "target",
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "Half damage"
+        }
+       ],
+       "evidence": "Dexterity saving throw"
+      }
+     ]
+    },
+    {
+     "label": "Piercing",
+     "effects": [
+      {
+       "type": "save",
+       "applies_to": "target",
+       "ability": "dex",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 6,
+          "sides": 8
+         },
+         "damage_types": [
+          "piercing"
+         ],
+         "evidence": "6d8 Piercing damage"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "applies_to": "target",
+         "damage_types": [
+          "piercing"
+         ],
+         "evidence": "Half damage"
+        }
+       ],
+       "evidence": "Dexterity saving throw"
+      }
+     ]
+    }
+   ],
+   "riders": [
+    "Choose Force or Piercing as the damage type for this use (a free player choice); the other choice is the same button under a different label.",
+    "Ignoring Half/Three-Quarters Cover, passing through creatures, and dealing double damage to unattended objects/barriers/vehicles/structures/Formation Anchors are GM-adjudicated -- the table has no generic cover-ignoring or object-damage-doubling hook for a line attack."
+   ]
+  },
+  "tianxia.tradition.spirit.black_current_walker.feature.enter_the_black_current": {
+   "text_sha256": "04304c435c864d81c70d37ecef087e5d8d89bf5cbbbc23d53bef7ce95096ac97",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "spirit_tradition",
+     "runs": "combat/ext/black_current_walker.py",
+     "evidence": "Flow After the Strike (move 10 feet without provoking, 15 through a Resonance Marked target's space; a Soulwake) and Wake Mark"
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "passive",
+    "trigger": "After you deal damage to a meaningful hostile creature with Mind Spike, a Spirit Awakening technique, an unarmed strike, or a weapon attack with a weapon you are proficient with",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "Current Without Footing: during your turn you may move across liquid surfaces, narrow rails, rope, branches, loose rubble, snow, mud, fragile rooftops and vertical surfaces as though they were stable ground; you fall or sink at the end of the turn unless you reach a supporting surface (the GM applies it: the map has no such surfaces).",
+    "Flow After the Strike needs a weapon you are proficient with (the table checks your training): an unarmed strike, Mind Spike or another Spirit Awakening technique always qualify."
+   ],
+   "range": null,
+   "area": null,
+   "cost": [],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.black_current_walker.feature.river_cut_passage": {
+   "text_sha256": "38d4352d28ae64e38977405f1a82306c4d607e17a431e4c664a160b448cd4f0a",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [],
+   "options": [
+    {
+     "label": "Psychic",
+     "effects": [
+      {
+       "type": "black_current_river_cut",
+       "applies_to": "self",
+       "picks_destination": true,
+       "distance_ft": "speed",
+       "evidence": "Move up to your Speed by spiritual step ... Choose up to your Proficiency Bonus creatures whose spaces you entered or passed adjacent to. Each chosen creature makes a Dexterity saving throw.",
+       "effects": [
+        {
+         "type": "save",
+         "applies_to": "target",
+         "ability": "dex",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "damage",
+           "applies_to": "target",
+           "dice": {
+            "count": 5,
+            "sides": 8
+           },
+           "damage_types": [
+            "psychic"
+           ],
+           "evidence": "5d8 Psychic damage"
+          },
+          {
+           "type": "mark",
+           "mark": "Resonance",
+           "applies_to": "target",
+           "duration": {
+            "kind": "until_end_of_your_next_turn"
+           },
+           "evidence": "becomes Resonance Marked until the end of your next turn"
+          },
+          {
+           "type": "black_current_aside",
+           "applies_to": "target",
+           "evidence": "is moved 5 feet to either side of your route if a legal space exists"
+          }
+         ],
+         "on_success": [
+          {
+           "type": "half_damage",
+           "applies_to": "target",
+           "damage_types": [
+            "psychic"
+           ],
+           "evidence": "It takes half damage and is not moved"
+          }
+         ],
+         "evidence": "Each chosen creature makes a Dexterity saving throw"
+        }
+       ]
+      }
+     ],
+     "riders": []
+    },
+    {
+     "label": "Slashing",
+     "effects": [
+      {
+       "type": "black_current_river_cut",
+       "applies_to": "self",
+       "picks_destination": true,
+       "distance_ft": "speed",
+       "evidence": "Move up to your Speed by spiritual step ... Choose up to your Proficiency Bonus creatures whose spaces you entered or passed adjacent to. Each chosen creature makes a Dexterity saving throw.",
+       "effects": [
+        {
+         "type": "save",
+         "applies_to": "target",
+         "ability": "dex",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "damage",
+           "applies_to": "target",
+           "dice": {
+            "count": 5,
+            "sides": 8
+           },
+           "damage_types": [
+            "slashing"
+           ],
+           "evidence": "5d8 Slashing damage"
+          },
+          {
+           "type": "mark",
+           "mark": "Resonance",
+           "applies_to": "target",
+           "duration": {
+            "kind": "until_end_of_your_next_turn"
+           },
+           "evidence": "becomes Resonance Marked until the end of your next turn"
+          },
+          {
+           "type": "black_current_aside",
+           "applies_to": "target",
+           "evidence": "is moved 5 feet to either side of your route if a legal space exists"
+          }
+         ],
+         "on_success": [
+          {
+           "type": "half_damage",
+           "applies_to": "target",
+           "damage_types": [
+            "slashing"
+           ],
+           "evidence": "It takes half damage and is not moved"
+          }
+         ],
+         "evidence": "Each chosen creature makes a Dexterity saving throw"
+        }
+       ]
+      }
+     ],
+     "riders": []
+    },
+    {
+     "label": "Cold",
+     "effects": [
+      {
+       "type": "black_current_river_cut",
+       "applies_to": "self",
+       "picks_destination": true,
+       "distance_ft": "speed",
+       "evidence": "Move up to your Speed by spiritual step ... Choose up to your Proficiency Bonus creatures whose spaces you entered or passed adjacent to. Each chosen creature makes a Dexterity saving throw.",
+       "effects": [
+        {
+         "type": "save",
+         "applies_to": "target",
+         "ability": "dex",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "damage",
+           "applies_to": "target",
+           "dice": {
+            "count": 5,
+            "sides": 8
+           },
+           "damage_types": [
+            "cold"
+           ],
+           "evidence": "5d8 Cold damage"
+          },
+          {
+           "type": "mark",
+           "mark": "Resonance",
+           "applies_to": "target",
+           "duration": {
+            "kind": "until_end_of_your_next_turn"
+           },
+           "evidence": "becomes Resonance Marked until the end of your next turn"
+          },
+          {
+           "type": "black_current_aside",
+           "applies_to": "target",
+           "evidence": "is moved 5 feet to either side of your route if a legal space exists"
+          }
+         ],
+         "on_success": [
+          {
+           "type": "half_damage",
+           "applies_to": "target",
+           "damage_types": [
+            "cold"
+           ],
+           "evidence": "It takes half damage and is not moved"
+          }
+         ],
+         "evidence": "Each chosen creature makes a Dexterity saving throw"
+        }
+       ]
+      }
+     ],
+     "riders": []
+    }
+   ],
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [],
+   "range": null,
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 5,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.heartbinder.feature.vow_mark": {
+   "text_sha256": "f41599544b80a1e47a74cf3f0521956c96e943acf2f166ecbea19e806f7d432a",
+   "reviewed_by": "sys-resources-states 2026-09-29",
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "reviewed",
+    "modifies": null
+   },
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 2,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "range": {
+    "kind": "feet",
+    "feet": 30
+   },
+   "target": {
+    "text": "One willing creature"
+   },
+   "duration": {
+    "kind": "special",
+    "amount": null,
+    "concentration": false,
+    "text": "Until either participant ends it"
+   },
+   "effects": [
+    {
+     "type": "mark",
+     "mark": "Vow Mark",
+     "applies_to": "ally",
+     "duration": {
+      "kind": "until_removed"
+     },
+     "evidence": "You can maintain a number of Vow Marks equal to your Proficiency Bonus. ... During combat or a similarly pressured scene, it requires an Action and 2 Resonance. (A Vow Mark bears Devotion, Stand Together, Heart's Rebuke, Borrowed Courage, Chain of Devotion and Unbroken Vow.)"
+    }
+   ],
+   "riders": [
+    "The rite needs a willing creature; outside immediate danger it is a 1-minute rite that costs no Resonance (combat/ext/heartbinder.py works it at the fight's first turn, marking the nearest typed teammates up to your Proficiency Bonus). The 30-foot reach of the in-combat rite is a table judgment (the text names none).",
+    "Stand Together (combat/ext/heartbinder.py): when you or a Vow-Marked ally within 30 feet places a Resonance Mark on a hostile creature, you may spend 1 Devotion to give one Vow-Marked ally within 30 feet Temporary Hit Points equal to Wisdom modifier + Proficiency Bonus, once per round per creature.",
+    "Devotion (combat/ext/heartbinder.py): 1 per turn, from a Reaction or Resonance spent to protect a marked creature from a hostile source (a damage share, Heart's Rebuke, Unbroken Vow, a Chain reroll) or a marked creature taking damage in another marked creature's place; no more than once per turn, up to your Proficiency Bonus, none at the start of a fight. The promise, condition and save-against-fear bullets are GM-adjudicated.",
+    "Heart-Sense (Bonus Action, spend 1 Resonance, remote sense on a Vow-Marked creature) is out-of-fight information-gathering; GM-adjudicated.",
+    "While a marked creature is within 1 mile you know whether it is Bloodied, Charmed, Frightened, possessed, at 0 Hit Points, or suffering a major emotional or identity wound (its category only): GM-adjudicated."
+   ]
+  },
+  "tianxia.subpath.body.thousand_fold_steel_body.feature.quench_the_impact": {
+   "text_sha256": "1cc72c497d05bbe82f6b90cf1ac26f8c37139e640f99a2c967e1866d62431ec2",
+   "reviewed_by": "subpaths 2026-09-28; Claude riders/c7 2026-09-30 (combat/ext/steel_forms.py asks and spends the Reaction; the generic row halved every hit)",
+   "options": null,
+   "cost": [],
+   "use_limit": null,
+   "riders": [],
+   "effects": [
+    {
+     "type": "path_passive",
+     "kind": "steel",
+     "role": "quench",
+     "evidence": "Reaction (asked as the damage is about to land), 1 Stamina, once per round: a Form made active now and its Quench (Edge: next melee attack + 2d8; Spine: 2d8 + CON off the damage; Reed: move 15 feet after). Body Refining Subpath Compendium R8, Thousand-Fold Steel Body; combat/ext/steel_forms.py"
+    }
+   ],
+   "activation": {
+    "economy": "passive",
+    "trigger": null,
+    "requirement": null,
+    "source": "reviewed",
+    "modifies": null
+   },
+   "modifier": null
+  },
+  "tianxia.subpath.body.thousand_fold_steel_body.feature.folded_edge_hidden_spine": {
+   "text_sha256": "f36b70f6030e8bf42476e8039116e10213c11533e66f922f0a830240ed0680fa",
+   "reviewed_by": "subpaths 2026-09-28; Claude riders/c7 2026-09-30 (the ignore-Resistance half is the feature_blocks.json defense row)",
+   "modifier": null,
+   "riders": [
+    "Double damage to an unattended object, barrier, vehicle, structure or Formation Anchor is the GM's (Attack an object has no Edge Form rider)."
+   ],
+   "effects": [
+    {
+     "type": "path_passive",
+     "kind": "steel",
+     "role": "folded",
+     "evidence": "Once per turn when you hit while Edge Form is active (asked): AC - 1, no Reactions, or + 2d8. Body Refining Subpath Compendium R8, Thousand-Fold Steel Body; combat/ext/steel_forms.py"
+    }
+   ],
+   "activation": {
+    "economy": "passive",
+    "trigger": null,
+    "requirement": null,
+    "source": "reviewed",
+    "modifies": null
+   }
+  },
+  "tianxia.subpath.qi.dream_qi_cultivator.feature.dreamer_s_rest": {
+   "text_sha256": "acd4104c4049bb6da964d89d5085eea83dde9eaed09c5a53ad5f001a6d9b3dd7",
+   "reviewed_by": "A2GQISUB10 2026-10-11",
+   "use_limit": null,
+   "riders": [
+    "Oneiric Recovery and awareness while resting apply during rests."
+   ],
+   "effects": [
+    {
+     "type": "dream_ward",
+     "evidence": "Dream Ward: Advantage and once-per-scene failed-save rescue"
+    }
+   ],
+   "modifier": null
+  },
+  "tianxia.subpath.qi.dream_qi_cultivator.feature.lucid_strike": {
+   "text_sha256": "8159da7bb1888dc967cde89002377742a631d2f70a4a1fde64784953d35b3608",
+   "reviewed_by": "A2GQISUB10 2026-10-11",
+   "effects": [],
+   "options": [
+    {
+     "label": "Stolen Reaction",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 8
+         },
+         "damage_types": [
+          "psychic"
+         ],
+         "evidence": "3d8 Psychic",
+         "dice_by_cl": [
+          [
+           6,
+           10,
+           3,
+           8
+          ],
+          [
+           11,
+           16,
+           4,
+           8
+          ],
+          [
+           17,
+           99,
+           5,
+           8
+          ]
+         ]
+        },
+        {
+         "type": "save",
+         "applies_to": "target",
+         "ability": "wis",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "condition",
+           "applies_to": "target",
+           "condition": "reaction_denied",
+           "evidence": "Cannot take Reactions",
+           "expires_on": "START_OF_SOURCE_NEXT_TURN"
+          }
+         ],
+         "on_success": [],
+         "evidence": "Wisdom saving throw"
+        }
+       ]
+      }
+     ],
+     "include_in_menu": true
+    },
+    {
+     "label": "Endless Corridor",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 8
+         },
+         "damage_types": [
+          "psychic"
+         ],
+         "evidence": "3d8 Psychic",
+         "dice_by_cl": [
+          [
+           6,
+           10,
+           3,
+           8
+          ],
+          [
+           11,
+           16,
+           4,
+           8
+          ],
+          [
+           17,
+           99,
+           5,
+           8
+          ]
+         ]
+        },
+        {
+         "type": "save",
+         "applies_to": "target",
+         "ability": "wis",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "speed",
+           "applies_to": "target",
+           "flat": -10,
+           "evidence": "Speed reduced by 10 feet",
+           "expires_on": "START_OF_SOURCE_NEXT_TURN"
+          }
+         ],
+         "on_success": [],
+         "evidence": "Wisdom saving throw"
+        }
+       ]
+      }
+     ],
+     "include_in_menu": true
+    },
+    {
+     "label": "False Opening",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 8
+         },
+         "damage_types": [
+          "psychic"
+         ],
+         "evidence": "3d8 Psychic",
+         "dice_by_cl": [
+          [
+           6,
+           10,
+           3,
+           8
+          ],
+          [
+           11,
+           16,
+           4,
+           8
+          ],
+          [
+           17,
+           99,
+           5,
+           8
+          ]
+         ]
+        },
+        {
+         "type": "save",
+         "applies_to": "target",
+         "ability": "wis",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "disadvantage",
+           "applies_to": "target",
+           "on": "its next attack roll",
+           "evidence": "Disadvantage on its next attack roll",
+           "expires_on": "START_OF_SOURCE_NEXT_TURN"
+          }
+         ],
+         "on_success": [],
+         "evidence": "Wisdom saving throw"
+        }
+       ]
+      }
+     ],
+     "include_in_menu": true
+    },
+    {
+     "label": "Fractured Concentration",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 8
+         },
+         "damage_types": [
+          "psychic"
+         ],
+         "evidence": "3d8 Psychic",
+         "dice_by_cl": [
+          [
+           6,
+           10,
+           3,
+           8
+          ],
+          [
+           11,
+           16,
+           4,
+           8
+          ],
+          [
+           17,
+           99,
+           5,
+           8
+          ]
+         ]
+        },
+        {
+         "type": "save",
+         "applies_to": "target",
+         "ability": "wis",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "disadvantage",
+           "applies_to": "target",
+           "on": "its next Concentration saving throw",
+           "expires_on": "START_OF_SOURCE_NEXT_TURN",
+           "evidence": "Fractured Concentration until the start of your next turn"
+          }
+         ],
+         "on_success": [],
+         "evidence": "Wisdom saving throw"
+        }
+       ]
+      }
+     ],
+     "include_in_menu": true
+    },
+    {
+     "label": "Shifting Horizon",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 8
+         },
+         "damage_types": [
+          "psychic"
+         ],
+         "evidence": "3d8 Psychic",
+         "dice_by_cl": [
+          [
+           6,
+           10,
+           3,
+           8
+          ],
+          [
+           11,
+           16,
+           4,
+           8
+          ],
+          [
+           17,
+           99,
+           5,
+           8
+          ]
+         ]
+        },
+        {
+         "type": "save",
+         "applies_to": "target",
+         "ability": "wis",
+         "dc": "technique_save_dc",
+         "on_fail": [
+          {
+           "type": "lucid_horizon",
+           "applies_to": "target",
+           "expires_on": "START_OF_SOURCE_NEXT_TURN",
+           "evidence": "Shifting Horizon until the start of your next turn"
+          }
+         ],
+         "on_success": [],
+         "evidence": "Wisdom saving throw"
+        }
+       ]
+      }
+     ],
+     "include_in_menu": true
+    }
+   ],
+   "riders": []
+  },
+  "tianxia.subpath.qi.dream_qi_cultivator.feature.dream_refinement": {
+   "text_sha256": "ba778ef2d972746fefed58622928a01be75ea12322540aa373d596803ed7fa4f",
+   "reviewed_by": "subpaths 2026-09-28",
+   "options": [
+    {
+     "label": "Regain Qi",
+     "effects": [
+      {
+       "type": "save",
+       "applies_to": "target",
+       "ability": "wis",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 6,
+          "sides": 8
+         },
+         "damage_types": [
+          "psychic"
+         ],
+         "evidence": "6d8 Psychic damage"
+        },
+        {
+         "type": "gain_resource",
+         "applies_to": "self",
+         "flat": 2,
+         "formula": "none",
+         "on": "Qi",
+         "evidence": "regain 2 Qi"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "applies_to": "target",
+         "damage_types": [
+          "psychic"
+         ],
+         "evidence": "Half damage"
+        }
+       ],
+       "evidence": "Wisdom saving throw"
+      }
+     ]
+    },
+    {
+     "label": "Temporary Hit Points",
+     "effects": [
+      {
+       "type": "save",
+       "applies_to": "target",
+       "ability": "wis",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 6,
+          "sides": 8
+         },
+         "damage_types": [
+          "psychic"
+         ],
+         "evidence": "6d8 Psychic damage"
+        },
+        {
+         "type": "temp_hp",
+         "applies_to": "self",
+         "flat": 0,
+         "formula": "triple_pb",
+         "evidence": "gain Temporary Hit Points equal to 3 x PB"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "applies_to": "target",
+         "damage_types": [
+          "psychic"
+         ],
+         "evidence": "Half damage"
+        }
+       ],
+       "evidence": "Wisdom saving throw"
+      }
+     ]
+    },
+    {
+     "label": "Remove Distortion",
+     "effects": [
+      {
+       "type": "save",
+       "applies_to": "target",
+       "ability": "wis",
+       "dc": "technique_save_dc",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 6,
+          "sides": 8
+         },
+         "damage_types": [
+          "psychic"
+         ],
+         "evidence": "6d8 Psychic damage"
+        },
+        {
+         "type": "remove_condition",
+         "applies_to": "target",
+         "condition": "none",
+         "evidence": "remove one Lucid Distortion or Dream condition you created on the target"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "applies_to": "target",
+         "damage_types": [
+          "psychic"
+         ],
+         "evidence": "Half damage"
+        }
+       ],
+       "evidence": "Wisdom saving throw"
+      }
+     ]
+    }
+   ],
+   "use_limit": "once_per_turn",
+   "cost": [
+    [
+     {
+      "resource": "qi",
+      "amount": 4
+     }
+    ]
+   ],
+   "riders": [
+    "Choose Regain Qi, Temporary Hit Points, or Remove Distortion on a failed save (a free player choice); you can regain Qi this way only once per round and at most Proficiency Bonus times per scene (GM-tracked). Harvest a Surface Dream (Refine Cultivation Residue / Refine Surface Memory / Refine Emotional Residue) is a 10-minute ritual outside a fight's timescale; GM-adjudicated."
+   ]
+  },
+  "tianxia.subpath.qi.dream_qi_cultivator.feature.shared_dream_concordance": {
+   "text_sha256": "3a77fe837496554e7618f07cd332c238efce000d6911554b0301dfda3cf5016f",
+   "reviewed_by": "subpaths 2026-09-28",
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   },
+   "riders": [
+    "The unwilling target's Wisdom save, the Dream-Bound condition (Restrained, no Reactions, no willing teleport, Disadvantage on Concentration saves, repeated save with CL-gated frequency) and Walk the Shared Dream's once-per-turn move/effect are a multi-turn maintained condition with save frequency that depends on relative Source CL -- beyond the table's generic repeat-save hook. GM-adjudicated."
+   ]
+  },
+  "tianxia.subpath.qi.dream_qi_cultivator.feature.dream_ascension": {
+   "text_sha256": "fc4a7505dd80c53bf68d88a9a5b94b88134c764fe4f330143d907e87a4728483",
+   "reviewed_by": "subpaths 2026-09-28",
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   },
+   "modifier": null,
+   "options": null,
+   "effects": [
+    {
+     "type": "zone",
+     "applies_to": "enemies_in_area",
+     "distance_ft": 30,
+     "evidence": "A lucid dreamscape overlays the field; hostile creatures treat it as difficult terrain."
+    },
+    {"type": "zone", "triggers": [{"on": ["enter", "start"], "who": "hostile", "effects": [
+    {
+     "type": "save",
+     "applies_to": "enemies_in_area",
+     "ability": "wis",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "enemies_in_area",
+       "dice": {
+        "count": 4,
+        "sides": 8
+       },
+       "damage_types": [
+        "psychic"
+       ],
+       "evidence": "4d8 Psychic damage"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage",
+       "applies_to": "enemies_in_area",
+       "damage_types": [
+        "psychic"
+       ],
+       "evidence": "Half damage and no Dream Burden"
+      }
+     ],
+     "evidence": "A hostile creature makes a Wisdom saving throw when it enters for the first time during a turn or starts there"
+    }
+    ]}]}
+   ],
+   "riders": [
+    "Unreliable Ground's Dream Burden choice (no Reactions / Speed -15 / Disadvantage on next attack / Disadvantage on next Concentration save / no willing teleport / no Invisible-concealment benefit) is a player choice on a failed save; apply one by hand. Ascendant Dreamer's other benefits (Psychic Resistance, see through concealment, ignore difficult terrain, Fly 30/Hover, Lucid Strike as a Bonus Action once per turn from anywhere in the field, discounted Refine a Waking Dream, free 0-Qi use, discounted Concordance) are build/aura passives without a fight-mechanic hook beyond what is typed above; apply them narratively while the field is up. Dream Roads and Lucid Revision are GM-adjudicated."
+   ]
+  },
+  "tianxia.tradition.spirit.yokai_channeler.feature.yokai_mask": {
+   "text_sha256": "4c59ea7bac3ef315e39863622ee28cc6543d332a27adbc147c2cf5434e8b2132",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "spirit_tradition",
+     "runs": "combat/ext/yokai_channeler.py",
+     "evidence": "Lineage Gift: Tengu -- as a Reaction when pushed or knocked Prone, spend 1 Resonance to move 10 feet to a legal space and remain standing; Kappa -- as a Reaction when you or an adjacent ally would be moved, spend 1 Resonance to reduce that movement by 10 feet and shift the creature 5 feet; Jorogumo -- once on each of your turns when you Resonance Mark a creature, you may reduce its Speed by 5 feet until the mark ends."
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "bonus_action",
+    "trigger": null,
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "Your lineage (Kitsune, Tengu, Kappa or Jorogumo, chosen at CL3) is not on the Factory sheet: the table keeps it for the fight (the \"Yokai Lineage\" setting buttons, or asked the first time Unmasking needs it). Its Tell, Need, Taboo (2d10 Psychic for a knowing violation) and skill proficiency are the GM's and the sheet's.",
+    "Suppressing or revealing your Tell (Bonus Action) and using Wisdom for Deception about your nature -- not combat abilities.",
+    "Kitsune Foxfire Misdirection -- blocked: the table has no Insight contest against you and no attackable illusion, reflection or duplicate.",
+    "Tengu reduces the fall used for damage by 10 feet per Proficiency Bonus. Double jump distance, Kappa swimming and held breath, and Jorogumo climbing still require their movement procedure."
+   ],
+   "range": null,
+   "area": null,
+   "cost": [],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.yokai_channeler.feature.unmasking": {
+   "text_sha256": "1d29d784b07f5a463b37d24de8d9f5c78a033f8c188cafff44b5f87a5f1bd0e1",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "yokai_unmask",
+     "applies_to": "self",
+     "evidence": "Choose an appropriate bite, claw, horn, wing-blade, tail, web-strike, water-heavy blow, or foxfire lash when you activate Unmasking. It deals 1d8 + Wisdom modifier damage of your lineage affinity or an appropriate physical type. Once on each of your turns when you hit with the natural weapon or a creature fails its save against Mind Spike, deal additional damage equal to your Proficiency Bonus of your lineage affinity."
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "bonus_action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [
+    "The Tell cannot be suppressed while Unmasking lasts -- not a combat effect. The weapon's shape (bite, claw, horn ...) is description: the table asks its damage type.",
+    "Kitsune: the step after a missed attack against your foxfire double is a free 5-foot step (no Opportunity Attack).",
+    "Worn equipment merging into the form -- the GM's."
+   ],
+   "range": null,
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 2
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "special",
+    "amount": null,
+    "concentration": false,
+    "text": "The scene"
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.yokai_channeler.feature.yokai_s_bargain": {
+   "text_sha256": "1d39b0101fd41ba371c0f8cd14336b3188aff5e9d40e35893bcca1195075fb38",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "Yokai's Bargain is negotiated: it forms only if both parties knowingly accept its stated terms, and its benefits (skill Advantage, travel speed, Temporary Hit Points at the start of the first scene it is pursued, telepathy, crossing a ward) and a Yokai Claim after a knowing breach are the GM's."
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 30
+   },
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 3,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "hours",
+    "amount": 24,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.subpath.qi.black_sea_leviathan_womb.feature.inner_sea_awakening": {
+   "text_sha256": "6f6cd42a6f82b68c9ba4d4c8a6d32fc4cc6395fc4756bb120349ef64aade5e52",
+   "reviewed_by": "subpaths 2026-09-28",
+   "modifier": null,
+   "options": null,
+   "riders": [
+    "Automated by combat/ext/black_sea_leviathan_womb.py: once per turn, a Qi-powered feature of yours that damages or forcibly moves a hostile creature places one Depth Mark on it; once per turn, a Qi-powered feature of yours affecting a Depth-Marked creature may spend 1 Inner-Sea Depth to choose one -- 2d8 (4d8 at CL17) Cold or Force damage, pull 10 feet, Speed -15, deny Reactions, or Temporary HP equal to twice PB (a free player choice, kept until changed).",
+    "The printed Grapple/Restrain/Speed-reduction-only triggers for Pressure of Recognition (without damage or forced movement) are GM-adjudicated -- the table has no generic \"applied one of these five specific effects\" scan.",
+    "Resistance to Cold, swim Speed, amphibious breathing, deep-water pressure immunity and submerged Darkvision are passive build benefits, not fight actions."
+   ]
+  },
+  "tianxia.tradition.spirit.unwritten_footprint.feature.step_no_record_keeps": {
+   "text_sha256": "ee1cff506378afb48a070ee2e4e04defb736ed95e2cab187086a2fa835f61f3b",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "unwritten_slip",
+     "applies_to": "target",
+     "harmful": true,
+     "evidence": "It makes a Wisdom saving throw. Failed Save: Place an Unwritten Trace on it; you are unnoticed by that creature until the start of your next turn. After resolving Slip the Conclusion, you may move 10 feet without provoking opportunity attacks from the target. Ambush Without Hatred."
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "bonus_action",
+    "trigger": null,
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "\"Unnoticed\" at the table: the creature does not notice you (it bears your Unnoticing condition, or you are Hidden); what it perceives, remembers or can communicate is the GM's.",
+    "Slip the Conclusion's \"can perceive you\", touching or addressing it (the table counts damaging or targeting it), and the success's direction -- the GM's.",
+    "Ambush Without Hatred's rule against staged concealment -- the GM's.",
+    "Trace-Eating Passage (no mundane trail) is not a combat ability."
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 60
+   },
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 1
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.unwritten_footprint.feature.knife_between_thoughts": {
+   "text_sha256": "ff83f88dd26b293829a5bdb8d23bdcbe868b306e0f915b0719d9d61b242de29a",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "spirit_tradition",
+     "runs": "combat/ext/unwritten_footprint.py",
+     "evidence": "Between-Thought Strike: spend 2 Resonance before the roll. Misattribute the Blow: move 10 feet; the target makes a Wisdom saving throw."
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "reaction",
+    "trigger": "A traced creature targets you with an attack or single-target hostile technique",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": "Mind Spike"
+   },
+   "riders": [
+    "The game prevents Reactions aimed at you after Between-Thought Strike. Its restrictions on communicating your exact location or giving another creature a targeting benefit still need manual resolution.",
+    "Misattribute the Blow's false source (your former position, an afterimage, a shadow) is flavor; the table resolves the save's result."
+   ],
+   "range": null,
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 2
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.unwritten_footprint.feature.steal_the_witness": {
+   "text_sha256": "12b7c45d0385da1940dbb39088323c7eaa6ccb1fe9b92d4b83a1d463f02dfabe",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "unwritten_steal",
+     "applies_to": "target",
+     "harmful": true,
+     "evidence": "It makes a Wisdom saving throw. Failed Save: You become Unwritten to the target. Successful Save: Place an Unwritten Trace on it and remove its Reactions until the start of its next turn."
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "Treating your spaces as empty, not communicating your location, and repeat saves on a Grapple, touch or spoken declaration -- the GM's (the table gives the repeat save when you attack it or target it with a technique).",
+    "Creatures without a mind, hive minds, wards and higher perfect witnesses contesting it -- the GM's."
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 60
+   },
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 5,
+      "amount_formula": null
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.subpath.body.kensei.feature.blade_fist": {
+   "text_sha256": "221a7b577685a183e28187f65a1c948bbc3e458860952206e028bf0ac990defb",
+   "reviewed_by": "subpaths 2026-09-28; Claude riders/c7 2026-09-30",
+   "modifier": null,
+   "riders": [
+    "Refined Iron Fist and Heavenly Fist applying to an integrated Blade, and drawing or stowing a Blade, are the GM's."
+   ],
+   "effects": [
+    {
+     "type": "path_passive",
+     "kind": "unarmed_types",
+     "add": true,
+     "damage_types": [
+      "slashing"
+     ],
+     "evidence": "Your unarmed strikes may deal Slashing damage."
+    },
+    {
+     "type": "path_passive",
+     "kind": "integrated_weapon",
+     "group": "blade",
+     "dex": true,
+     "evidence": "While wielding a Blade weapon: use Dexterity or Constitution for its attack and damage rolls; with Constitution, your Cultivation Attack Modifier (combat/ext/integrated_weapons.py)."
+    }
+   ],
+   "options": null
+  },
+  "tianxia.subpath.body.kensei.feature.sword_draws_before_thought": {
+   "text_sha256": "0560a327b2272279cbee0f54431fd666b58a0135a50cb18dbf47556079a7dbba",
+   "reviewed_by": "subpaths 2026-09-28; Claude riders/c7 2026-09-30",
+   "options": null,
+   "modifier": null,
+   "riders": [
+    "The choice comes at the start of your first turn (the table cannot ask before the first turn), so \"+2 AC until the start of your first turn\" is the GM's."
+   ],
+   "effects": [
+    {
+     "type": "path_passive",
+     "kind": "sword_draws",
+     "evidence": "Asked at the start of your first turn of the fight: move half your Speed, one unarmed or Blade attack, or Advantage on your first attack roll this round. Body Refining Subpath Compendium R8, Kensei; combat/ext/kensei.py"
+    }
+   ],
+   "activation": {
+    "economy": "passive",
+    "trigger": null,
+    "requirement": null,
+    "source": "reviewed",
+    "modifies": null
+   }
+  },
+  "tianxia.subpath.body.kensei.feature.flowing_blade_stance": {
+   "text_sha256": "d3764fb31f1347af8d5e8ab585b9f5c6fae28483c2c24496c5d3b86a4de111d6",
+   "reviewed_by": "subpaths 2026-09-28; Claude riders/c7 2026-09-30",
+   "modifier": null,
+   "riders": [],
+   "effects": [
+    {
+     "type": "state",
+     "name": "flowing_blade_stance",
+     "label": "Flowing Blade Stance",
+     "duration": "one_minute",
+     "evidence": "For the duration: unarmed and Blade attacks may deal Force or Slashing, a 5-foot move once per turn after a hit, and the Reaction attack when a melee attack misses you (combat/ext/kensei.py)."
+    },
+    {
+     "type": "ac_bonus",
+     "applies_to": "self",
+     "flat": 1,
+     "duration": "one_minute",
+     "evidence": "Gain +1 AC."
+    }
+   ],
+   "options": null
+  },
+  "tianxia.subpath.body.kensei.feature.severing_palm": {
+   "text_sha256": "bd9d6fe20241adefea454e8e9f51b95fcabd3aa3c1014a18580153122bc8b550",
+   "reviewed_by": "subpaths 2026-09-28; Claude riders/c7 2026-09-30",
+   "modifier": null,
+   "riders": [],
+   "effects": [],
+   "options": null
+  },
+  "tianxia.subpath.body.kensei.feature.sword_saint_incarnation": {
+   "text_sha256": "2c1162f09cefc5b54d25c4f1d08d0b9cdbf01164717e0c7278cf8bafc9e2af5f",
+   "reviewed_by": "subpaths 2026-09-28; Claude riders/c7 2026-09-30; A2GBODSUB3 2026-10-11",
+   "options": null,
+   "use_limit": "once_per_scene",
+   "cost": [
+    [
+     {
+      "resource": "stamina",
+      "amount": 7
+     }
+    ]
+   ],
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": false
+   },
+   "riders": [],
+   "effects": [
+    {
+     "type": "state",
+     "name": "sword_saint_incarnation",
+     "label": "Sword Saint Incarnation",
+     "duration": "one_minute",
+     "evidence": "For the duration: Force or Slashing on unarmed and Blade attacks, once per turn + 3d8 on a hit, Opportunity Attacks against you have Disadvantage (combat/ext/kensei.py). Fly Speed 40 feet with Hover, hostile creature passage as difficult terrain and critical range 19–20 for eligible attacks."
+    },
+    {
+     "type": "ac_bonus",
+     "applies_to": "self",
+     "flat": 2,
+     "duration": "one_minute",
+     "evidence": "Gain +2 AC."
+    },
+    {
+     "type": "path_passive",
+     "kind": "reach_bonus",
+     "feet": 5,
+     "attacks": "melee",
+     "state": "sword_saint_incarnation",
+     "label": "Sword Saint Incarnation",
+     "evidence": "Your melee reach increases by 5 feet."
+    },
+    {
+     "type": "zone",
+     "follows_owner": true,
+     "size_ft": 10,
+     "duration": "one_minute",
+     "evidence": "Your reach (10 feet during the transformation).",
+     "triggers": [
+      {
+       "who": "hostile",
+       "on": [
+        "enter",
+        "start"
+       ],
+       "effects": [
+        {
+         "type": "save",
+         "applies_to": "enemies_in_area",
+         "ability": "dex",
+         "evidence": "The first time during a turn that a hostile creature enters your reach or starts its turn there, it makes a Dexterity saving throw.",
+         "on_fail": [
+          {
+           "type": "damage",
+           "applies_to": "target",
+           "dice": {
+            "count": 3,
+            "sides": 8
+           },
+           "damage_types": [
+            "force",
+            "slashing"
+           ]
+          },
+          {
+           "type": "path_results",
+           "family": "sword_saint",
+           "name": "Sword Saint Incarnation",
+           "count": 1,
+           "prompt": "Sword Saint Incarnation: {target} failed its save; choose one.",
+           "options": [
+            {
+             "label": "No Reactions",
+             "effects": [
+              {
+               "type": "reaction_denied",
+               "applies_to": "target",
+               "expires_on": "START_OF_TARGET_NEXT_TURN"
+              }
+             ]
+            },
+            {
+             "label": "Speed -10",
+             "effects": [
+              {
+               "type": "speed",
+               "applies_to": "target",
+               "flat": -10,
+               "expires_on": "START_OF_TARGET_NEXT_TURN"
+              }
+             ]
+            }
+           ]
+          }
+         ],
+         "on_success": [
+          {
+           "type": "half_damage",
+           "applies_to": "target",
+           "damage_types": [
+            "force",
+            "slashing"
+           ]
+          },
+          {
+           "type": "speed",
+           "applies_to": "target",
+           "flat": -5,
+           "expires_on": "START_OF_TARGET_NEXT_TURN"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "modifier": null,
+   "area": {
+    "shape": "emanation",
+    "size_ft": 10,
+    "centered_on_self": true
+   },
+   "range": {
+    "kind": "self",
+    "feet": null
+   }
+  },
+  "tianxia.subpath.body.yamabushi.feature.stone_skin": {
+   "text_sha256": "d421f9e4056e2e891e9847a351064a480e40e85d2d67dba668cf2826dac095cd",
+   "reviewed_by": "subpaths 2026-09-28; Claude riders/c7 2026-09-30 (the +1 AC is a defense row gated on Unarmored Defense, like the Cold Resistance)",
+   "riders": [
+    "Holding your breath for 1 hour and Advantage on Constitution saves against extreme cold, altitude, forced marches, weather and mundane exposure are the GM's (the table has none of those)."
+   ]
+  },
+  "tianxia.subpath.body.yamabushi.feature.waterfall_stance": {
+   "text_sha256": "f2f136d2d2334eea69b64667eaab6fd84a48728f1de79c3a6e50bb2018cce838",
+   "reviewed_by": "subpaths 2026-09-28; Claude riders/c7 2026-09-30 (a state; its empty speed row and fall row removed)",
+   "effects": [
+    {
+     "type": "state",
+     "name": "waterfall_stance",
+     "label": "Waterfall Stance",
+     "duration": "one_minute",
+     "evidence": "For the duration: Advantage on saves against forced movement, Prone, Frightened and Exhaustion; it ends if you become Unconscious (Body Refining Subpath Compendium R8, Yamabushi; combat/ext/yamabushi.py)."
+    },
+    {
+     "type": "condition",
+     "applies_to": "self",
+     "condition": "ignore_difficult",
+     "duration": "one_minute",
+     "evidence": "Ignore nonmagical difficult terrain."
+    }
+   ],
+   "riders": [
+    "Rain, waterfalls, and heavy wind do not interfere with your vision, hearing, or movement."
+   ]
+  },
+  "tianxia.subpath.body.yamabushi.feature.mountain_s_wrath": {
+   "text_sha256": "45013e6c6f1aeaded9b40a680cac0274d2c4c2ae855e9de798ccb8431f68060e",
+   "reviewed_by": "subpaths 2026-09-28; Claude riders/c7 2026-09-30 (the broken ground is a zone; objects take double through a feature block)",
+   "effects": [
+    {
+     "type": "save",
+     "exclude_self": true,
+     "recipient_text": "The sphere is centered on you and affects each other creature in the area once. You are not a target. Allies are affected unless another feature protects them.",
+     "applies_to": "creatures_in_area",
+     "ability": "dex",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "creatures_in_area",
+       "dice": {
+        "count": 6,
+        "sides": 6
+       },
+       "damage_types": [
+        "bludgeoning",
+        "force"
+       ],
+       "evidence": "6d6 Bludgeoning or Force damage"
+      },
+      {
+       "type": "condition",
+       "applies_to": "creatures_in_area",
+       "condition": "prone",
+       "evidence": "falls Prone"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage",
+       "applies_to": "creatures_in_area",
+       "damage_types": [
+        "bludgeoning",
+        "force"
+       ],
+       "evidence": "takes half damage and remains standing"
+      }
+     ],
+     "evidence": "On a failed save"
+    },
+    {
+     "type": "zone",
+     "applies_to": "creatures_in_area",
+     "on": "difficult terrain",
+     "duration": "special",
+     "evidence": "The ground becomes difficult terrain until cleared or repaired."
+    }
+   ],
+   "riders": [
+    "Clearing the broken ground requires 1 minute of work with suitable tools per 5-foot square, or an appropriate repair."
+   ]
+  },
+  "tianxia.tradition.spirit.inner_soul_gate_ascetic.feature.root_soul_gate": {
+   "text_sha256": "0ab31941ca0b4f73dd1324f913003010f963b6d7a3d5ee79f87ff7172d7b0fb3",
+   "reviewed_by": "A2GTRA3 2026-10-11",
+   "effects": [
+    {
+     "type": "spirit_tradition",
+     "runs": "combat/ext/inner_soul_gate.py",
+     "evidence": "Rooted Identity (Advantage against possession); Root Reclamation (Reaction, 1 Resonance); Root Opening (Bonus Action, 1 Resonance, the scene)."
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "reaction",
+    "trigger": "You are knocked Prone, moved against your will, Grappled or Restrained by a spirit-affecting effect, or an effect attempts to separate your soul from your body",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "Rooted Identity's proficiency in Athletics or Acrobatics (or Medicine or Insight) is part of the character sheet.",
+    "Advantage against soul displacement, soul-body exchange or ejection, and forced movement caused by a spirit, psychic effect or incorporeal creature -- the GM's (the table gives it against possession).",
+    "Root Reclamation against a Grappled or Restrained \"by a spirit-affecting effect\" or a separation effect: the table offers the Advantage on a save against Prone, Grappled, Restrained, forced movement or possession; the Wisdom save when the effect grants no roll (its save DC, else the Authority DC) is the GM's. It cannot stop movement from terrain collapse, a mundane vehicle or an effect too large to resist.",
+    "Root Opening: the minimum Speed of 10 feet against ordinary Spiritual Pressure is not yet enforced."
+   ],
+   "range": null,
+   "area": null,
+   "cost": null,
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.inner_soul_gate_ascetic.feature.sacral_soul_gate": {
+   "text_sha256": "7a47a0f43ccba1b2ab011210205c31b49f2dd7dbaad41b66bfcf4696c5b490cf",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "spirit_tradition",
+     "runs": "combat/ext/inner_soul_gate.py",
+     "evidence": "Sacral Reorientation (Reaction, 2 Resonance, once per round: add your Wisdom modifier to a failed Dexterity, Wisdom, or Charisma save); Sacral Opening (Bonus Action, 2 Resonance, the scene)."
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "reaction",
+    "trigger": "You fail a Dexterity, Wisdom, or Charisma saving throw",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "Fluid Affect: Advantage on checks to tell whether an emotion is your own, imposed, inherited or an echo, and Soul Gaze tells you more about a creature's surface emotion -- information: the GM tells you.",
+    "Sacral Reorientation's free Soul Gaze on yourself (source category, severity, recovery route) is information; its order with Soulward Response is the GM's.",
+    "Sacral Opening: moving through the space of a creature bearing your Resonance Mark as difficult terrain is the GM's (the table's movement does not pass through creatures); \"effects that would force you to act from an imposed emotion\" are read as Charmed and Frightened."
+   ],
+   "range": null,
+   "area": null,
+   "cost": null,
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.inner_soul_gate_ascetic.feature.solar_soul_gate": {
+   "text_sha256": "2ef9eebe3b6fe26e2f37c055b8f0839e0cd39959e086a63360da85292663ec23",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "spirit_tradition",
+     "runs": "combat/ext/inner_soul_gate.py",
+     "evidence": "Solar Core (Resistance to Psychic damage; Advantage against Charmed and Frightened); Solar Opening (Bonus Action, 4 Resonance, the scene)."
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "passive",
+    "trigger": null,
+    "requirement": null,
+    "source": "riders_c8",
+    "modifies": null
+   },
+   "riders": [
+    "Solar Core: if Soul Armor also grants Resistance to Psychic damage, reduce Psychic damage by your Proficiency Bonus after Resistance instead -- the GM's; Advantage against coercive emotional manipulation and effects that would make you renounce your identity or Soul Anchor -- the GM's.",
+    "Solar Opening's 10-foot spiritual light revealing lower-Source-CL possession residue, emotional contamination and dream parasites is information; against an equal or higher effect that weaponizes your own chosen emotion it gives Advantage instead of immunity (the GM rules it)."
+   ],
+   "range": null,
+   "area": null,
+   "cost": null,
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.subpath.body.drunken_fist.feature.swaying_step": {
+   "text_sha256": "8b62e3d6d5ee8a1d07b60c6f2fcb8c9223a11f56e43d89da61c0875928b592da",
+   "reviewed_by": "subpaths 2026-09-28; Claude riders/c7 2026-09-30 (the modifier names the Body Refining path feature Stomping Step)",
+   "effects": [],
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "subpaths-review",
+    "targets": [
+     "Stomping Step"
+    ],
+    "scope": "named",
+    "when": "use",
+    "optional": true,
+    "limit": "none",
+    "group": "",
+    "precondition": "",
+    "effects": [],
+    "options": [
+     {
+      "label": "Move 5 Feet",
+      "effects": [
+       {
+        "type": "movement",
+        "applies_to": "self",
+        "distance_ft": 5,
+        "evidence": "Move 5 feet without provoking Opportunity Attacks."
+       }
+      ]
+     },
+     {
+      "label": "Stand from Prone",
+      "effects": [
+       {
+        "type": "remove_condition",
+        "applies_to": "self",
+        "condition": "prone",
+        "evidence": "Stand from Prone without spending movement."
+       }
+      ]
+     },
+     {
+      "label": "Fall Prone and Move",
+      "effects": [
+       {
+        "type": "condition",
+        "applies_to": "self",
+        "condition": "prone",
+        "evidence": "Fall Prone intentionally"
+       },
+       {
+        "type": "movement",
+        "applies_to": "self",
+        "distance_ft": 5,
+        "evidence": "then move 5 feet."
+       }
+      ]
+     },
+     {
+      "label": "Dexterity Advantage",
+      "effects": [
+       {
+        "type": "advantage",
+        "applies_to": "self",
+        "ability": "dex",
+        "on": "your next Dexterity saving throw",
+        "duration": {
+         "kind": "until_start_of_next_turn"
+        },
+        "evidence": "Gain Advantage on your next Dexterity saving throw before the start of your next turn."
+       }
+      ]
+     },
+     {
+      "label": "Acrobatics Advantage",
+      "effects": [
+       {
+        "type": "advantage",
+        "applies_to": "self",
+        "on": "your next Acrobatics check",
+        "duration": {
+         "kind": "until_start_of_next_turn"
+        },
+        "evidence": "Gain Advantage on your next Acrobatics check before the start of your next turn."
+       }
+      ]
+     }
+    ]
+   },
+   "riders": []
+  },
+  "tianxia.subpath.qi.demon_prison_seal_cultivator.feature.first_chain_borrowed_nature": {
+   "text_sha256": "66c7b4aaa205004bd65c0e7fbff7c04972f97595846d93603b1f7885dd4955f5",
+   "reviewed_by": "subpaths 2026-09-28",
+   "modifier": null,
+   "riders": [
+    "Not automated as a modifier (scope_too_broad: any_sphere_technique with no home sphere reaches every technique, but the print restricts the +PB damage to a Qi feature or Domain Armament, and only while at least one Chain is open). Once per turn when you deal damage with a Qi feature or Domain Armament while a Chain is open, add Proficiency Bonus damage of your Demon Nature's type. Player/GM-adjudicated.",
+    "Converting one Qi feature's damage per turn to your Demon Nature's type (gaining the Daemonic tag) is a free player choice per use, GM-adjudicated.",
+    "First-Chain Defense (from your Demon Nature) is defined outside this record; apply it per that Nature's own text.",
+    "Consecrated Suppression: an equal- or higher-Source-CL anti-daemonic effect may force a Charisma save against its DC -- on a failure, close one Chain. This is a save forced by an incoming enemy effect, not one the table's generic hooks resolve automatically; GM-adjudicated."
+   ]
+  },
+  "tianxia.subpath.body.bojutsu.feature.staff_form": {
+   "schema": "TianxiaFoundry.TypedMechanic.v1",
+   "mechanic_id": "tianxia.subpath.body.bojutsu.feature.staff_form",
+   "kind": "subpath_feature",
+   "name": "Staff Form",
+   "sphere_id": null,
+   "source": {
+    "path": "09_RULES/Source_Text/Paths/Body/Tianxia_Body_Refining_Subpath_Compendium_R8.md",
+    "line": 1125,
+    "file_sha256": "74dff956598e6e78d87a5fbbc0e532223e0581e3ec1df8c4a0eb313e562a5cb6",
+    "text_sha256": "aea7ef5eae66cbb5dfaed2ea679790bb7c439b6ebb85a5b0f78fb23cce9e4d34"
+   },
+   "activation": {
+    "economy": "passive",
+    "trigger": null,
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "header_economy": false,
+   "cost": [],
+   "use_limit": null,
+   "range": null,
+   "area": null,
+   "target": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "effects": [
+    {
+     "type": "bojutsu",
+     "kind": "form",
+     "evidence": "Choose Constitution with Cultivation Attack Modifier for each Staff attack; +5 feet reach during your turn."
+    }
+   ],
+   "riders": [
+    "Refined Iron Fist and Heavenly Fist apply their own cultivation-powered, adamantine, Force-damage, and object-damage permissions to the integrated Staff; those integrations remain pending.",
+    "Staff Form's Constitution choice is offered for ordinary Staff Attack actions; mixed per-strike ability choices within one multiattack and Constitution selection for Staff Reaction attacks remain pending. Its reach also applies to Staff features during your turn; generalized feature-range integration remains pending."
+   ],
+   "description": [
+    "While wielding a Staff weapon:",
+    "- It is integrated into your Body Refining cultivation.",
+    "- Refined Iron Fist and Heavenly Fist apply to it.",
+    "This does not grant the Spear or Weapons Sphere.",
+    "- No Sphere grant. Staff Form does not grant a Sphere, Sphere talent, Recorded Art, or proficiency with another Polearm."
+   ],
+   "coverage": "CORE_WITH_RIDERS",
+   "provenance": {
+    "method": "typed-mechanics-parser.v1"
+   },
+   "subpath_id": "tianxia.subpath.body.bojutsu",
+   "typing_status": "reviewed_final",
+   "structure_source": "model_v2",
+   "text_sha256": "aea7ef5eae66cbb5dfaed2ea679790bb7c439b6ebb85a5b0f78fb23cce9e4d34",
+   "reviewed_by": "Codex riders/lane13",
+   "modifier": null
+  },
+  "tianxia.subpath.qi.heaven_thunder_storm_soul.feature.tribulation_scarred_meridians": {
+   "text_sha256": "2cad67215c5afa3a184fe596a5a48983213f2440f1d6c7d8adc3cdd0862f4732",
+   "reviewed_by": "subpaths 2026-09-28",
+   "modifier": null,
+   "riders": [
+    "Heaven-Spark Step (once per turn, after gaining a Tribulation Spark or dealing Lightning/Thunder damage with a Qi-powered feature, move 5 feet without provoking, including through one hostile creature's reach) and First Thunder Seal (once per turn, place one Thunder Seal after your Qi-powered Lightning/Thunder damage affects a hostile creature) are GM/player-adjudicated -- the table has no generic \"any Qi-powered feature dealing one of these two types\" scope.",
+    "Spend Spark -- Thunder Edge: spend 1 Tribulation Spark, once per turn, when one of your Qi-powered features deals damage, add 2d8 (3d8 at CL11, 4d8 at CL17) Lightning or Thunder damage to one affected creature; if it bears at least two Thunder Seals, also deny its Reactions until the start of its next turn. GM/player-adjudicated alongside the trigger above; the cost is 1 Tribulation Spark."
+   ]
+  },
+  "tianxia.subpath.qi.ten_thousand_sword_array_cultivator.feature.sword_seed": {
+   "text_sha256": "ab927211c25c1d671db2dc8fa3539ce507e60bbdfd60ce08a8ce343d9d9f09fa",
+   "reviewed_by": "subpaths 2026-09-28",
+   "activation": {
+    "economy": "bonus_action",
+    "trigger": null,
+    "requirement": null,
+    "source": "reviewed-simplified"
+   },
+   "effects": [
+    {
+     "type": "movement",
+     "applies_to": "self",
+     "distance_ft": 20,
+     "evidence": "Move the floating Seed Sword up to 20 feet"
+    },
+    {
+     "type": "attack",
+     "attack_kind": "cultivation_melee",
+     "count": 1,
+     "on_hit": [
+      {
+       "type": "damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 1,
+        "sides": 6
+       },
+       "formula": "key_ability_modifier",
+       "evidence": "1d6 + your Qi Cultivation key ability modifier"
+      }
+     ]
+    }
+   ],
+   "riders": [
+    "Cultivate Sword Seed (Ritual Time 10 minutes, 1 Qi, bind or project the Seed Sword), Release the Seed Sword, and Call the Seed Sword are out-of-the-attack setup/positioning actions; GM-adjudicated on the table's grid."
+   ]
+  },
+  "tianxia.subpath.qi.ten_thousand_sword_array_cultivator.feature.sword_intent": {
+   "text_sha256": "ec3a30560d38113a6e37efcae89f082f6707ff081e72594881c26fa13ebadf3f",
+   "reviewed_by": "subpaths 2026-09-28",
+   "effects": [],
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "subpaths-review",
+    "targets": [
+     "Sword Seed",
+     "Domain Armament Attack"
+    ],
+    "scope": "named",
+    "when": "hit",
+    "optional": true,
+    "limit": "once_per_turn",
+    "group": "",
+    "precondition": "Spend 1 Qi",
+    "effects": [],
+    "options": [
+     {
+      "label": "Dread Intent",
+      "effects": [
+       {
+        "type": "save",
+        "applies_to": "target",
+        "ability": "wis",
+        "dc": "technique_save_dc",
+        "on_fail": [
+         {
+          "type": "condition",
+          "applies_to": "target",
+          "condition": "frightened",
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "Frightened of you"
+         }
+        ],
+        "on_success": [
+         {
+          "type": "reaction_denied",
+          "applies_to": "target",
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "Cannot take Reactions until the start of its next turn"
+         }
+        ],
+        "evidence": "Choose one Intent. The visible mark lasts until the start of your next turn."
+       }
+      ]
+     },
+     {
+      "label": "Severing Intent",
+      "effects": [
+       {
+        "type": "save",
+        "applies_to": "target",
+        "ability": "wis",
+        "dc": "technique_save_dc",
+        "on_fail": [
+         {
+          "type": "reaction_denied",
+          "applies_to": "target",
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "No Reactions"
+         },
+         {
+          "type": "disadvantage",
+          "applies_to": "target",
+          "on": "its next Concentration saving throw",
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "Disadvantage on its next Concentration saving throw"
+         }
+        ],
+        "on_success": [
+         {
+          "type": "reaction_denied",
+          "applies_to": "target",
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "No Reactions until the start of its next turn"
+         }
+        ],
+        "evidence": "Wisdom saving throw"
+       }
+      ]
+     },
+     {
+      "label": "Arresting Intent",
+      "effects": [
+       {
+        "type": "save",
+        "applies_to": "target",
+        "ability": "wis",
+        "dc": "technique_save_dc",
+        "on_fail": [
+         {
+          "type": "speed",
+          "applies_to": "target",
+          "flat": -15,
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "Speed reduced by 15 feet"
+         }
+        ],
+        "on_success": [
+         {
+          "type": "speed",
+          "applies_to": "target",
+          "flat": -5,
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "Speed reduced by 5 feet"
+         }
+        ],
+        "evidence": "Wisdom saving throw"
+       }
+      ]
+     },
+     {
+      "label": "Displacing Intent",
+      "effects": [
+       {
+        "type": "save",
+        "applies_to": "target",
+        "ability": "wis",
+        "dc": "technique_save_dc",
+        "on_fail": [
+         {
+          "type": "forced_movement",
+          "applies_to": "target",
+          "distance_ft": 10,
+          "evidence": "Push or pull up to 10 feet"
+         }
+        ],
+        "on_success": [
+         {
+          "type": "forced_movement",
+          "applies_to": "target",
+          "distance_ft": 5,
+          "evidence": "Push or pull 5 feet"
+         }
+        ],
+        "evidence": "Wisdom saving throw"
+       }
+      ]
+     },
+     {
+      "label": "Exposing Intent",
+      "effects": [
+       {
+        "type": "save",
+        "applies_to": "target",
+        "ability": "wis",
+        "dc": "technique_save_dc",
+        "on_fail": [
+         {
+          "type": "deny_invisible",
+          "applies_to": "target",
+          "evidence": "Cannot benefit from Invisible or ordinary visual concealment against you"
+         },
+         {
+          "type": "advantage",
+          "applies_to": "self",
+          "on": "the next sword attack against it before your next turn",
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "the next sword attack against it before your next turn gains Advantage"
+         }
+        ],
+        "on_success": [
+         {
+          "type": "deny_invisible",
+          "applies_to": "target",
+          "duration": {
+           "kind": "until_start_of_next_turn"
+          },
+          "evidence": "Cannot benefit from Invisible against you until your next turn"
+         }
+        ],
+        "evidence": "Wisdom saving throw"
+       }
+      ]
+     }
+    ]
+   },
+   "riders": [
+    "Also triggers on a weapon attack using your bound Seed Sword, a Qi-powered sword technique, or a weapon-delivered technique through a qualifying sword -- those are not named compiled actions here, so apply the same choice by hand if one of those delivers the hit. A creature can bear one Sword Intent from you; applying another replaces it."
+   ]
+  },
+  "tianxia.subpath.qi.ten_thousand_sword_array_cultivator.feature.sword_array_field": {
+   "text_sha256": "86e6a46421ebff39ca1471791adffd14346f8593acf732c36e26f45a8d224ddf",
+   "reviewed_by": "subpaths 2026-09-28; audit3-mmx5 2026-10-02 (CL table)",
+   "effects": [
+    {"type": "zone", "triggers": [{"on": ["enter", "start"], "who": "hostile", "effects": [
+    {
+     "type": "save",
+     "applies_to": "enemies_in_area",
+     "recipient_text": "A hostile creature makes a Dexterity saving throw when it enters for the first time during a turn or starts there.",
+     "ability": "dex",
+     "dc": "technique_save_dc",
+     "on_fail": [
+      {
+       "type": "damage",
+       "applies_to": "target",
+       "dice": {
+        "count": 3,
+        "count_formula": null,
+        "sides": 8,
+        "bonus": null,
+        "bonus_formula": null
+       },
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [
+        "slashing",
+        "force"
+       ],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "`3d8` Slashing or Force damage",
+       "origin": "model_v2",
+       "dice_by_cl": [
+        [
+         1,
+         16,
+         3,
+         8
+        ],
+        [
+         17,
+         20,
+         4,
+         8
+        ]
+       ]
+      },
+      {
+       "type": "reaction_denied",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "until_start_of_next_turn",
+       "evidence": "no Reactions until the start of its next turn",
+       "origin": "model_v2"
+      }
+     ],
+     "on_success": [
+      {
+       "type": "half_damage",
+       "applies_to": "target",
+       "flat": 0,
+       "formula": "none",
+       "damage_types": [],
+       "ability": "none",
+       "condition": "none",
+       "distance_ft": 0,
+       "on": "",
+       "duration": "instant",
+       "evidence": "Half damage.",
+       "origin": "model_v2"
+      }
+     ],
+     "origin": "model_v2"
+    }
+    ]}]}
+   ],
+   "duration": {
+    "kind": "minutes",
+    "amount": 1,
+    "concentration": true
+   },
+   "riders": [
+    "Array Pursuit (Reaction, once per round: when a hostile creature willingly leaves the field or teleports out, make one Sword Domain Armament Attack -- or a Cultivation Attack from a sword-path point within 5 feet, dealing normal Domain Armament damage -- before it leaves) is GM/player-adjudicated; it does not trigger Sword Intent without paying its own cost.",
+    "Sword Control Inside the Field (60-foot control range, 40-foot movement, free repositioning, disappear/reappear along sword paths) and Sword-Qi Origin (a non-weapon-hit sword technique may originate from a visible sword-path point) are positioning rules the table's grid resolves narratively."
+   ]
+  },
+  "tianxia.tradition.spirit.candlemaker.feature.wick_of_the_self": {
+   "text_sha256": "5ed4dc573b5e435948e0fc0da6fc9b6561947c3a9595799158030f581cfacfd9",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "save",
+     "applies_to": "target",
+     "ability": "wis",
+     "dc": "technique_save_dc",
+     "evidence": "It makes a Wisdom saving throw",
+     "on_fail": [
+      {
+       "type": "mark",
+       "mark": "Soul-Wick Mark",
+       "applies_to": "target",
+       "evidence": "Place one Soul-Wick Mark on the target."
+      },
+      {
+       "type": "rider",
+       "evidence": "Candle Marking Rite: you learn the target's first applicable sustaining category (bodily vitality, active defense, courage, Concentration, possession, oath, external blessing, companion bond, external anchor) -- the GM tells you."
+      }
+     ],
+     "on_success": [
+      {
+       "type": "rider",
+       "evidence": "Candle Marking Rite: the target is not marked, but you learn whether its Source CL is lower than, equal to, or higher than yours and whether a stronger effect conceals its soul-flame -- the GM tells you."
+      }
+     ]
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "bonus_action",
+    "trigger": null,
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "A willing creature may fail the save automatically (the GM applies it).",
+    "Wicksight (while your Soul Candle is within 60 feet): you know when a creature within 60 feet is possessed, dream-haunted, Resonance Marked, Frightened, Charmed, at 0 Hit Points or concentrating, and whether its soul-flame is stable, faltering, divided, borrowed, concealed or externally sustained (information: the GM answers).",
+    "Your Soul Candle (a 1-minute vigil before the fight; 1 Resonance without materials) is a Tiny Asset you hold: AC 12 + Proficiency Bonus, 5 x Proficiency Bonus Hit Points (the Soul Candle pool), resists Psychic and Fire. As a Bonus Action, spend 1 Resonance to move it up to 30 feet to hover in a space you can see (the GM places it; the table measures from you)."
+   ],
+   "range": {
+    "kind": "feet",
+    "feet": 60
+   },
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 1
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.candlemaker.feature.candle_against_the_dark": {
+   "text_sha256": "a5debb096b91293b20a827e2b904a1a8e7a63b2d3cf6a7c647095639e17731ab",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "spirit_tradition",
+     "runs": "combat/ext/d20_rewrite_rules.py (the reroll, Temporary HP), combat/ext/candlemaker.py (Burn Bright / Take the Soot)",
+     "evidence": "The target rerolls the saving throw and must use the new result ... After this reaction resolves, choose one: Burn Bright, Take the Soot"
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "reaction",
+    "trigger": "You or an ally within 30 feet of you or your Soul Candle fails an Intelligence, Wisdom, or Charisma saving throw",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "Black-Wax Seal: when the reroll turns a failure into a success you may spend 1 more Resonance: until the end of its next turn ordinary possession, forced soul movement and removal of its soul automatically fail (the GM applies it: the table has no possession)."
+   ],
+   "range": null,
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 2
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.candlemaker.feature.funeral_light": {
+   "text_sha256": "d0b1cf2987cc6952d9d13b5c5e3b837df2b649dd5a4fa91c5547d7e22ecd63da",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [],
+   "options": [
+    {
+     "label": "Vigil of the Departed",
+     "effects": [],
+     "riders": [
+      "Vigil of the Departed: a corpse or free spirit may answer up to three brief questions during the next minute; an unwilling spirit makes a Charisma save or must answer one honestly (a conversation: the GM runs it)."
+     ]
+    },
+    {
+     "label": "Funeral Suppression",
+     "effects": [],
+     "riders": [
+      "Funeral Suppression: make a Cultivation Check against a haunt's, possession's, curse's or spiritual contamination's save DC or Source CL; success ends an ordinary lower-Source-CL effect, suppresses a Restricted or equal one for 10 minutes, or one printed expression of a higher one until the end of your next turn; failure tells you its authority category, a recovery route and its anchor (the GM rules it: those effects are not tracked by source authority at the table)."
+     ]
+    },
+    {
+     "label": "Funeral Candle (Psychic)",
+     "effects": [
+      {
+       "type": "save",
+       "applies_to": "target",
+       "ability": "wis",
+       "dc": "technique_save_dc",
+       "evidence": "It makes a Wisdom saving throw",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 5,
+          "sides": 8
+         },
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "psychic"
+         ],
+         "evidence": "It takes 5d8 + Wisdom modifier Psychic damage"
+        },
+        {
+         "type": "healing_reduction",
+         "applies_to": "target",
+         "expires_on": "START_OF_SOURCE_NEXT_TURN",
+         "evidence": "cannot regain Hit Points until the start of your next turn"
+        },
+        {
+         "type": "spend_mark",
+         "mark": "Soul-Wick Mark",
+         "applies_to": "target",
+         "evidence": "Consume one Soul-Wick Mark"
+        },
+        {
+         "type": "candle_sustained",
+         "applies_to": "target",
+         "evidence": "sustained by Concentration: Disadvantage on the next save to maintain it"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "applies_to": "target",
+         "damage_types": [
+          "psychic"
+         ],
+         "evidence": "It takes half damage, and you do not consume the mark"
+        },
+        {
+         "type": "candle_sustained",
+         "applies_to": "target"
+        }
+       ]
+      }
+     ],
+     "riders": [
+      "If the target is sustained by possession, an external blessing, an oath-backed defense or a spiritual Anchor you have identified, it has Disadvantage on the next save or Cultivation Check to maintain that expression before the end of its next turn (the GM applies it; Concentration is automated)."
+     ]
+    },
+    {
+     "label": "Funeral Candle (Fire)",
+     "effects": [
+      {
+       "type": "save",
+       "applies_to": "target",
+       "ability": "wis",
+       "dc": "technique_save_dc",
+       "evidence": "It makes a Wisdom saving throw",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 5,
+          "sides": 8
+         },
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "fire"
+         ],
+         "evidence": "It takes 5d8 + Wisdom modifier Fire damage"
+        },
+        {
+         "type": "healing_reduction",
+         "applies_to": "target",
+         "expires_on": "START_OF_SOURCE_NEXT_TURN",
+         "evidence": "cannot regain Hit Points until the start of your next turn"
+        },
+        {
+         "type": "spend_mark",
+         "mark": "Soul-Wick Mark",
+         "applies_to": "target",
+         "evidence": "Consume one Soul-Wick Mark"
+        },
+        {
+         "type": "candle_sustained",
+         "applies_to": "target",
+         "evidence": "sustained by Concentration: Disadvantage on the next save to maintain it"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "applies_to": "target",
+         "damage_types": [
+          "fire"
+         ],
+         "evidence": "It takes half damage, and you do not consume the mark"
+        },
+        {
+         "type": "candle_sustained",
+         "applies_to": "target"
+        }
+       ]
+      }
+     ],
+     "riders": [
+      "If the target is sustained by possession, an external blessing, an oath-backed defense or a spiritual Anchor you have identified, it has Disadvantage on the next save or Cultivation Check to maintain that expression before the end of its next turn (the GM applies it; Concentration is automated)."
+     ]
+    },
+    {
+     "label": "Funeral Candle (Necrotic)",
+     "effects": [
+      {
+       "type": "save",
+       "applies_to": "target",
+       "ability": "wis",
+       "dc": "technique_save_dc",
+       "evidence": "It makes a Wisdom saving throw",
+       "on_fail": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 5,
+          "sides": 8
+         },
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "necrotic"
+         ],
+         "evidence": "It takes 5d8 + Wisdom modifier Necrotic damage"
+        },
+        {
+         "type": "healing_reduction",
+         "applies_to": "target",
+         "expires_on": "START_OF_SOURCE_NEXT_TURN",
+         "evidence": "cannot regain Hit Points until the start of your next turn"
+        },
+        {
+         "type": "spend_mark",
+         "mark": "Soul-Wick Mark",
+         "applies_to": "target",
+         "evidence": "Consume one Soul-Wick Mark"
+        },
+        {
+         "type": "candle_sustained",
+         "applies_to": "target",
+         "evidence": "sustained by Concentration: Disadvantage on the next save to maintain it"
+        }
+       ],
+       "on_success": [
+        {
+         "type": "half_damage",
+         "applies_to": "target",
+         "damage_types": [
+          "necrotic"
+         ],
+         "evidence": "It takes half damage, and you do not consume the mark"
+        },
+        {
+         "type": "candle_sustained",
+         "applies_to": "target"
+        }
+       ]
+      }
+     ],
+     "riders": [
+      "If the target is sustained by possession, an external blessing, an oath-backed defense or a spiritual Anchor you have identified, it has Disadvantage on the next save or Cultivation Check to maintain that expression before the end of its next turn (the GM applies it; Concentration is automated)."
+     ]
+    }
+   ],
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [],
+   "range": {
+    "kind": "feet",
+    "feet": 30
+   },
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 4
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.candlemaker.feature.last_flame": {
+   "text_sha256": "332d40a33d012ed7325a6fef0a8cca330c7d5743fa7160b06b616183a470e4a7",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "spirit_tradition",
+     "runs": "combat/ext/candlemaker.py",
+     "evidence": "If reduced to 0 Hit Points, it drops to 1 Hit Point ... cannot benefit from being Hidden or Invisible ... Borrowed Final Breath"
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "reaction",
+    "trigger": "A creature within 30 feet of you or your Soul Candle is reduced to 0 Hit Points, fails a death saving throw, would die from an ordinary instant-death effect, or would have its soul removed from its body",
+    "requirement": "Your Soul Candle is present and has at least 1 Hit Point",
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "Last Flame ignores a failed death saving throw, including both failures from a natural 1 (automated). Ordinary instant death and soul-removal delay, and temporary protection against possession, soul removal and instant death, still require manual resolution.",
+    "Borrowed Final Breath: the next time you drop to 0 Hit Points, immediately gain one failed death saving throw (automated). An equal- or higher-Source-CL healing rite, suitable Spiritual Exorcism or a proper funeral-cleansing vigil removes the debt; these recovery procedures remain text.",
+    "Secret Laws, divine judgment, artifact execution, tribulation authority and similar require a Cultivation Check or a specific counterprocedure (the GM rules it)."
+   ],
+   "range": null,
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 6
+     }
+    ]
+   ],
+   "use_limit": "once_per_scene",
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.candlemaker.feature.thousand_year_lantern": {
+   "text_sha256": "71498f6ef747a73f232e0c27515533828710f32eb0411206892d741127aab995",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "candle_lantern",
+     "applies_to": "self",
+     "evidence": "The Soul Candle becomes a Thousand-Year Lantern ... Its Asset Hit Points double for the duration."
+    },
+    {
+     "type": "zone",
+     "follows_owner": true,
+     "triggers": [],
+     "evidence": "a 30-foot-radius Spirit Awakening field centered on the candle",
+     "inside": [
+      {
+       "id": "lantern",
+       "who": "ally",
+       "name": "Thousand-Year Lantern",
+       "rule": {
+        "save_against": {
+         "mode": "ADVANTAGE",
+         "against": [],
+         "abilities": [
+          "INT",
+          "WIS",
+          "CHA"
+         ],
+         "next": false
+        },
+        "death_save_mode": {
+         "mode": "ADVANTAGE",
+         "first": false
+        }
+       },
+       "reading": "Advantage on death saving throws and on Intelligence, Wisdom, and Charisma saving throws"
+      }
+     ]
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": "A functioning Soul Candle",
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "Allies in the field cannot be possessed or have their souls displaced by ordinary lower-Source-CL effects (the GM applies it).",
+    "You may use Spiritual Exorcism once during the activation without spending Resonance if the target is in the field (the GM refunds it).",
+    "A creature restored by Last Flame within the field gains Borrowed Final Breath when the protecting field ends (automated)."
+   ],
+   "range": null,
+   "area": {
+    "shape": "emanation",
+    "size_ft": 30,
+    "centered_on_self": true
+   },
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 10
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "special",
+    "amount": null,
+    "concentration": false,
+    "text": "The scene"
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.halo_eater.feature.taste_the_radiance": {
+   "text_sha256": "eb17cd0d23f449bb268db1cdc98ca766c4dfdfd9b17e96bc4881b7b3489c48bf",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "spirit_tradition",
+     "runs": "combat/ext/halo_eater.py",
+     "evidence": "If the triggering creature is a meaningful hostile creature, gain 1 Stolen Radiance and Temporary Hit Points equal to your Proficiency Bonus. Until the end of your next turn, the creature is savored by you."
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "reaction",
+    "trigger": "A creature within 60 feet gains or activates qualifying radiance, receives supernatural healing, or becomes Resonance Marked by you while carrying qualifying radiance",
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "riders": [
+    "You learn its broad purpose and category (healing, warding, cleansing, empowering, oath-bearing, shrine-backed, divine, artifact ...), whether its Source CL is lower, equal or higher than yours, and its authority tier; a concealed source can require a Cultivation Check -- information: the GM tells you.",
+    "Stolen Radiance also comes from a hostile creature succeeding on a save because of a blessing or activating a visibly sanctified effect the table does not see, and never from your own effects, staged blessings, harmless summons or ceremonial healing -- the GM's. Qualifying radiance at the table: a beneficial effect its own side put on the creature (a buff condition, AC, resistance, immunity, Speed), or healing / Temporary Hit Points from a technique; the GM rules out mundane recovery, armor and cover."
+   ],
+   "range": null,
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 1
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.echo_step_disciple.feature.afterimage_edge": {
+   "text_sha256": "4096b3881a3f592af4eed982de79b202eadf1964fa2021f24ca4f673baea3e13",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "spirit_tradition",
+     "runs": "combat/ext/echo_step_disciple.py",
+     "evidence": "Record the Killing Step; Strike From the Echo; Step Through the Opening"
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "passive",
+    "trigger": null,
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "Strike From the Echo measures reach, range and line of sight from the Echo Position; cover against the attack is still worked out from your own space (the GM may give the Echo's cover instead)."
+   ],
+   "range": null,
+   "area": null,
+   "cost": null,
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.echo_step_disciple.feature.echo_counter": {
+   "text_sha256": "9ceb3b26af56e1572331bf376d992a4b966d1c16fe71276165ee20190331e2ee",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "spirit_tradition",
+     "runs": "combat/ext/echo_step_disciple.py",
+     "evidence": "Record your current space as an Echo Position, then move 10 feet without provoking opportunity attacks."
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "reaction",
+    "trigger": "A creature you can perceive targets you with an attack or enters your reach",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "\"Or enters your reach\": Echo Counter against a creature entering your reach is the GM's (the table moves a creature along its whole path at once, so there is no moment to answer mid-move); against an attack it is a button.",
+    "Cross the Blade-Hum against a creature that only moves through an Echo Position is answered when its move is committed: a failed save's Speed 0 ends the rest of its movement, but it is not pulled back to the Echo (the GM may stop it there)."
+   ],
+   "range": null,
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 2
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.echo_step_disciple.feature.three_step_soul_execution": {
+   "text_sha256": "d18cc48a65e2340f651611f748dd67c29a7b2b497a839b559275e43ddad01800",
+   "reviewed_by": "A2GTRA2 2026-10-11",
+   "effects": [
+    {
+     "type": "echo_three_step",
+     "applies_to": "self",
+     "evidence": "Choose up to three legal origins among your space and your Echo Positions. Each origin must be within 30 feet of the next origin in the sequence.",
+     "final_save": {
+      "type": "save",
+      "applies_to": "target",
+      "ability": "cha",
+      "dc": "technique_save_dc",
+      "on_fail": [
+       {
+        "type": "reaction_denied",
+        "applies_to": "target",
+        "duration": {
+         "kind": "until_start_of_next_turn"
+        },
+        "evidence": "cannot take Reactions"
+       },
+       {
+        "type": "speed",
+        "applies_to": "target",
+        "flat": 0,
+        "halved": true,
+        "duration": {
+         "kind": "until_start_of_next_turn"
+        },
+        "evidence": "Speed is halved"
+       },
+       {
+        "type": "disadvantage",
+        "applies_to": "target",
+        "on": "its next Intelligence, Wisdom, or Charisma saving throw",
+        "duration": {
+         "kind": "until_end_of_your_next_turn"
+        },
+        "evidence": "Disadvantage on its next Intelligence, Wisdom, or Charisma saving throw"
+       }
+      ],
+      "on_success": [
+       {
+        "type": "reaction_denied",
+        "applies_to": "target",
+        "duration": {
+         "kind": "until_start_of_next_turn"
+        },
+        "evidence": "cannot take Reactions until the start of its next turn"
+       }
+      ],
+      "evidence": "If all three attacks hit the same Resonance Marked target, it makes a Charisma saving throw after the final hit"
+     }
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [],
+   "range": null,
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 5
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.tradition.spirit.echo_step_disciple.feature.pursuit_without_distance": {
+   "text_sha256": "16aa8c9e56df508c2880344fdd8e3ddf90edc61defa473740ea7198fc340fd74",
+   "reviewed_by": "riders_c8 2026-09-30",
+   "effects": [
+    {
+     "type": "echo_follow",
+     "applies_to": "self",
+     "evidence": "move up to your Speed by spiritual step toward a legal space within 10 feet of its destination; or move to an Echo Position within 60 feet and use Mind Spike against the target. After arriving, record your space as an Echo Position."
+    }
+   ],
+   "options": null,
+   "modifier": null,
+   "activation": {
+    "economy": "reaction",
+    "trigger": "The creature bearing your Pursuit Mark moves at least 15 feet, teleports, enters invisibility, changes form, crosses a portal, or leaves your current line of sight",
+    "requirement": null,
+    "source": "model_v2",
+    "modifies": null
+   },
+   "riders": [
+    "Follow the Vanishing Point when the marked creature teleports, turns invisible, changes form, crosses a portal or leaves your line of sight, and its Cultivation Check option for a teleport or route, are the GM's (the table answers a move of 15 feet or more).",
+    "Pursuit Mark: you know the marked creature's direction and approximate distance within 1 mile (information); Spiritual Exorcism or a higher-Source-CL boundary also ends it (the GM rules it).",
+    "Cut the Retreat (once per round, consume an Echo Position when the pursued creature leaves it or moves away: Wisdom save, failed: its movement ends after 5 feet and 3d8 Psychic; success: 10 feet less movement) is the GM's: the table cannot stop a move part-way.",
+    "Soul Splitting -- Second Stance (your soul fragment's own Echo Position) is the GM's: the table has no Soul Fragment."
+   ],
+   "range": null,
+   "area": null,
+   "cost": [
+    [
+     {
+      "resource": "resonance",
+      "amount": 4
+     }
+    ]
+   ],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": null,
+   "after": null,
+   "min_cp_cost": null,
+   "weapon_delivery": null
+  },
+  "tianxia.subpath.qi.devil_heart_second_furnace.feature.demon_seed_overdraw": {
+   "text_sha256": "a43097ecd239da66713c1a2c153dc865c4759e2396b61ca4832aad6f9a1e19e7",
+   "reviewed_by": "MGR-T14 Second Furnace native progression",
+   "effects": [],
+   "modifier": null,
+   "riders": []
+  }
+ }
+}
