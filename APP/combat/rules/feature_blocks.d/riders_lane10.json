@@ -1,0 +1,174 @@
+{
+  "features": {
+    "TAL_FENCING_BIND_WEAPON": {
+      "block": "needle",
+      "kind": "bind_weapon",
+      "why": "When you win a Disarm (the target fails a weapon's Disarm save) you may bind its weapon (or attacking limb) to yours instead of knocking it away: the engine's Grapple (escape DC = your Cultivation Save DC, the binding weapon's reach), the bound weapon cannot attack, your binding weapon cannot attack, the bound creature may let go of the weapon for free; all of it ends when the grapple ends or you are Incapacitated (combat/ext/needle_bind.py)."
+    },
+    "TAL_FENCING_MERIDIAN_SEALING_BIND": {
+      "block": "needle",
+      "kind": "meridian_sealing_bind",
+      "why": "When a creature fails to escape your Bind Weapon, choose one effect until the bind ends (replacing the last): it cannot take Reactions; Disadvantage on attack rolls against creatures other than you; each foot of its movement costs 1 extra foot (combat/ext/needle_bind.py)."
+    },
+    "TAL_FENCING_TRAITOROUS_BLADE": {
+      "block": "needle",
+      "kind": "traitorous_blade",
+      "why": "When you win a Disarm the weapon goes into your hand instead of the ground (held_by, as Take a dropped weapon); with your Bonus Action left you may attack with it at once (combat/ext/needle_bind.py)."
+    },
+    "TAL_FENCING_VACUUM_CUT": {
+      "block": "needle",
+      "kind": "vacuum_cut",
+      "why": "Each melee weapon attack of the Attack action gets a \"Vacuum Cut\" variant: expend Martial Focus, reach 30 feet for the first strike of that Attack action (the later strikes keep the weapon's reach), offered against a creature beyond the weapon's own reach; still a melee weapon attack (Exploits, Mastery, cover, sight) (combat/ext/needle_vacuum.py)."
+    },
+    "TAL_FENCING_NO_SPACE_BETWEEN_THOUGHT_AND_STEEL": {
+      "block": "needle",
+      "kind": "no_space",
+      "why": "Vacuum Cut's reach is 60 feet (combat/ext/needle_vacuum.py); the second draw needs nothing at the table, because drawing a weapon already costs no Action and can be done any number of times."
+    },
+    "TAL_FENCING_VACUUM_SLICE": {
+      "block": "needle",
+      "kind": "vacuum_slice",
+      "why": "A \"Vacuum Slice\" variant of each melee weapon attack: Martial Focus and the Bonus Action; one attack roll against every creature in a 30-by-5-foot line, the weapon's normal damage to each hit, no Exploits, Mastery or riders (combat/ext/needle_vacuum.py)."
+    },
+    "TAL_FORCE_IMMOVABLE_ANCHOR": {
+      "block": "force",
+      "kind": "immovable_anchor",
+      "why": "A willing creature (you or an ally) within 5 feet of yourself or one of your Pressure Anchors has Advantage on saves against forced movement and falling Prone, a Shove's included (combat/ext/force.py, the save hook)."
+    },
+    "TAL_FORCE_KINETIC_RESERVOIR": {
+      "block": "force",
+      "kind": "kinetic_reservoir",
+      "why": "When Counterpressure reduces damage, that much pressure (up to 5 x CL) is stored until the end of your next turn; the next Impact, Shockwave, Ground-Answering Palm or Returning Impact that damages a creature adds all of it as Force damage to one damaged target (combat/ext/force.py)."
+    },
+    "TAL_FORCE_RECOIL_WARD": {
+      "block": "force",
+      "kind": "recoil_ward",
+      "why": "When Counterpressure reduces damage dealt by a creature within 30 feet of the protected target you may pay 1 more CP: it makes a Strength save or is pushed 5 feet directly away from the protected target, within your Force Limit (combat/ext/force.py)."
+    },
+    "TAL_FORCE_MERIDIAN_OF_IMPACT": {
+      "block": "object_damage",
+      "on": "technique",
+      "extra_die": true,
+      "label": "Meridian of Impact",
+      "why": "'Objects, structures, and Barriers along the route take one additional damage die': every map object in the line takes the technique's damage roll and one more of its damage dice (combat/ext/objects.py)."
+    },
+    "TAL_SHADOW_SHADOWLESS_REVERSAL": {
+      "block": "shadow",
+      "kind": "shadowless_reversal",
+      "why": "When a hit lands on you: your Reaction and 5 CP (once per round) leave a false silhouette and Shadow Step you (up to half your Speed) out of the attack's reach -- the attack misses; the silhouette snares the first creature entering its space or starting its turn there (Dexterity save: Restrained, or Speed -10 feet) until the start of your next turn (combat/ext/shadow.py, the hit_response hook)."
+    },
+    "TAL_SHADOW_SHADOW_EXCHANGE": {
+      "block": "shadow",
+      "kind": "shadow_exchange",
+      "why": "When you or an ally within 60 feet is hit: your Reaction and 4 CP teleport it up to 20 feet out of the attack's reach -- the attack misses (combat/ext/shadow.py, the hit_response hook)."
+    },
+    "TAL_SHADOW_LONG_ROAD_BETWEEN_LANTERNS": {
+      "block": "shadow",
+      "kind": "long_road",
+      "why": "The action \"Long Road Between Lanterns\" (Action, 5 CP): from one of your Shadow Anchors (you within 5 feet of it) to within 5 feet of another, with up to your Proficiency Bonus of willing allies within 5 feet of the start (combat/ext/shadow.py)."
+    },
+    "tianxia.talent.destruction.hammer_through_the_line": {
+      "block": "destruction",
+      "kind": "hammer",
+      "keeps_compiling": true,
+      "why": "Owned Hammer collision adds one Destruction Die, not the CL-scaled blast pool. Newly sealed flag; old row behavior retained.",
+      "single_collision_die": true
+    },
+    "tianxia.talent.destruction.ruinous_interruption": {
+      "block": "destruction",
+      "kind": "ruinous",
+      "keeps_compiling": true,
+      "why": "Ruinous Interruption's ownership, read from this fight's own row by combat/ext/destruction_blast.py. An ownership marker only: keeps_compiling leaves the talent's own typing exactly as it was."
+    },
+    "tianxia.talent.destruction.break_the_guard": {
+      "block": "destruction",
+      "kind": "break_guard",
+      "keeps_compiling": true,
+      "why": "Break the Guard's ownership, read from this fight's own row by combat/ext/destruction_blast.py. An ownership marker only: keeps_compiling leaves the talent's own typing exactly as it was."
+    },
+    "tianxia.talent.destruction.ashen_denial": {
+      "block": "destruction",
+      "kind": "ashen",
+      "why": "Withering Break: the damaged creature cannot gain Temporary HP until the start of your next turn and loses the Temporary HP it has before the damage (combat/ext/destruction_blast.py)."
+    },
+    "tianxia.talent.destruction.calamity_chain_reaction": {
+      "block": "destruction",
+      "kind": "chain",
+      "why": "When your Destructive Blast drops a creature to 0 Hit Points you may spend 1 CP: one creature within 10 feet takes one Destruction Die of the blast's type; once per release (combat/ext/destruction_blast.py)."
+    },
+    "tianxia.talent.destruction.catastrophe_engine": {
+      "block": "destruction",
+      "kind": "engine",
+      "why": "Once per turn when Deepen the Calamity is paid for a Blast Shape augment's release, 1 CP of the augment comes back (combat/ext/destruction_blast.py)."
+    },
+    "tianxia.talent.destruction.heaven_cracking_release": {
+      "block": "destruction",
+      "kind": "cracking",
+      "why": "A toggle: the next Deepened blast pays 2 CP more and one creature that failed its save against it loses Reactions and has its Speed halved until the start of your next turn; once per fight (combat/ext/destruction_blast.py)."
+    },
+    "tianxia.talent.destruction.ruin_that_remembers": {
+      "block": "destruction",
+      "kind": "ruin_trace",
+      "why": "When your Destructive Blast damages a creature you may pay 2 CP for a Ruin Trace (1 minute, one per creature); the next blast that damages it consumes the trace for two more Destruction Dice (combat/ext/destruction_blast.py)."
+    },
+    "TAL_MONKEY_STYLE_IMPROVISED_MASTER": {
+      "block": "monkey",
+      "kind": "improvised_master",
+      "keeps_compiling": true,
+      "why": "A Tap Finish spent after an improvised-weapon hit during the caper deals 1d6 + Proficiency Bonus (combat/ext/monkey.py)."
+    },
+    "TAL_MONKEY_STYLE_STAFF_OF_THE_LAUGHING_SAGE": {
+      "block": "monkey",
+      "kind": "staff_sage",
+      "why": "Once per turn on a staff hit while Capering Footwork is active, a Monkey Link may be spent on one Staff Finish: Sweeping Tail (push 10 feet), Crooked Branch (pull 10 feet), Peach-Stealing Tap (no Reactions), Upside-Down Strike (move 10 feet) (combat/ext/monkey.py)."
+    },
+    "TAL_MONKEY_STYLE_HEAVEN_UPROOTING_STAFF": {
+      "block": "object_damage",
+      "on": "technique",
+      "double": true,
+      "double_for": [
+        "structure",
+        "unattended"
+      ],
+      "covers": [
+        "Structures and unattended objects take double damage."
+      ],
+      "label": "Heaven-Uprooting Staff",
+      "why": "'Structures and unattended objects take double damage': every such map object in the area takes the technique's damage roll, doubled once (combat/ext/objects.py)."
+    },
+    "tianxia.talent.disease.infection_of_the_cultivation_breath": {
+      "block": "disease",
+      "kind": "breath",
+      "why": "When a creature bearing at least two of your Contagion Tokens spends CP, your Reaction spends one of those tokens: a Constitution save -- no CP regained and Disadvantage on concentration saves until the start of your next turn, or no CP regained until the start of its next turn (combat/ext/disease.py)."
+    },
+    "tianxia.talent.disease.spreading_infection": {
+      "block": "disease",
+      "kind": "spreading",
+      "why": "When a creature bearing your Contagion Tokens starts its turn within 10 feet of another creature: your Reaction and 2 CP, once per round, make the nearest hostile one save or gain a token (combat/ext/disease.py)."
+    },
+    "tianxia.talent.poison.virulent_presence": {
+      "block": "poison",
+      "kind": "virulent_presence",
+      "why": "While Venom-Sovereign Incarnation is active, an enemy starting its turn within 20 feet of you makes a Constitution save; on a failure the chosen option (a standing pick: 4d8 Poison or Acid, Poisoned, no Reactions, or healing halved until the start of its next turn), on a success half of the 4d8 when damage was chosen (combat/ext/poison.py)."
+    },
+    "TAL_FENCING_THE_ONE_OPENING_BENEATH_HEAVEN": {
+      "block": "needle",
+      "kind": "one_opening",
+      "why": "Each melee weapon attack gets the variant '<weapon> attack: The One Opening Beneath Heaven' (Martial Focus, once per fight): move up to your Speed toward a creature without provoking, then one attack with Advantage and no Weapon Mastery; a hit adds twelve rolls of the weapon's damage die and the three consequences picked from its menu (combat/ext/needle_opening.py)."
+    },
+    "tianxia.talent.music.shattering_chorus": {
+      "block": "object_damage",
+      "on": "technique",
+      "needs": ["unattended", "fragile"],
+      "covers": ["Unattended fragile objects may also crack or shatter."],
+      "label": "Shattering Chorus",
+      "why": "'Unattended fragile objects may also crack or shatter': every unattended glass, crystal or ice map object in the cone takes the chorus's damage roll (combat/ext/objects.py; 'fragile' in combat/object_rules.py has_tag)."
+    },
+    "tianxia.talent.radiance.expose_false_form": {
+      "block": "radiance",
+      "kind": "expose_false_form",
+      "expose_checks": true,
+      "why": "When your Dawnmark lands on an Invisible or Hidden enemy, 1 CP is paid: until that Dawnmark ends the creature's Invisible and Hidden give it no benefit in attacks (combat/ext/radiance.py)."
+    }
+  }
+}
