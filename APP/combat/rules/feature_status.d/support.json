@@ -1,0 +1,465 @@
+{
+ "features": {
+  "tianxia.talent.space.folded_reach": {
+   "status": "applied",
+   "why": "Rider lane C11 (2026-09-30): the Folded Reach button marks its user until the end of the turn; the next melee weapon attack or touch technique may reach 10 / 15 / 20 feet farther (by CL) through its \"(Folded Reach)\" twin (combat/ext/folded_reach.py). Line of sight and cover are still measured from the user's own square."
+  },
+  "tianxia.talent.space.door_that_is_not_there": {
+   "status": "table",
+   "why": "A temporary false opening through a wall/door/curtain needs object and boundary state (which walls block movement, which have a \"boundary\" the table can punch through) that the grid engine doesn't track; already compiles with no typed effects (1 CP, otherwise inert)."
+  },
+  "TAL_SPACE_SPATIAL_AWARENESS": {
+   "status": "outside",
+   "why": "Both modes are information-gathering (sense a spatial disturbance; spend 1 CP to learn facts about a target via a Cultivation Check) with no HP/condition/resource effect on the fight itself; the GM adjudicates what is learned."
+  },
+  "TAL_QIWEAVING_ADDITIONAL_QIWEAVING_PACKAGE": {
+   "status": "build",
+   "why": "Chooses another Qiweaving Package (its base ability and talent list become learnable); a build-time choice, not itself a fight effect. The chosen package's own base ability/talents are separate records already reviewed."
+  },
+  "TAL_QIWEAVING_APPLY_MODULATION": {
+   "status": "definition",
+   "why": "Grants permission to apply one owned Modulation talent to a technique once per turn; the effect is whichever separate Modulation talent is applied. None of this owner's other reviewed Qiweaving records here are tagged Modulation, so there is nothing else to wire up for them."
+  },
+  "TAL_QIWEAVING_MINOR_QI_ARTS": {
+   "status": "outside",
+   "why": "A menu of cosmetic effects (color/warm/chill a Tiny object, a faint harmless sound or light, predicting weather) the text itself bars from dealing damage, imposing a condition, or creating Cover; GM-adjudicated flavor, not a combat resource effect."
+  },
+  "tianxia.talent.formations.borrowed_geometry": {
+   "status": "outside",
+   "why": "Reduces the CP cost of a Prepared Array, which is itself a 10-minute ritual built outside combat."
+  },
+  "tianxia.talent.formations.formation_thread_relay": {
+   "status": "applied",
+   "why": "Lets a keyed ally originate one Cultivation Attack from a Node or the Array Eye instead of from themself: the grant is a stored condition (one use, until the start of the owner's next turn) and the attack runs from the array's own origin square (combat/ext/formation_talents.py, combat/ext/remote_origins.py). Whether the ally may take it is read from current perception (target_knowledge.located), so a pinpointing sense works while the attack's own requires_seen_target still stands."
+  },
+  "tianxia.talent.formations.linked_formation_network": {
+   "status": "table",
+   "why": "Long-range teleport between two linked Prepared Arrays (each built via a 10-minute ritual outside combat, and \"linked\" isn't tracked state); out of scope for a fight."
+  },
+  "tianxia.talent.formations.additional_pattern": {
+   "status": "build",
+   "why": "Learns one additional Basic Pattern to use with Set Array; a build-time choice, not itself a fight effect."
+  },
+  "tianxia.talent.formations.array_within_array": {
+   "status": "outside",
+   "why": "A secondary array nested inside a Prepared Array, which is itself a 10-minute ritual built outside combat."
+  },
+  "FORMATIONS_BASE_FORMATION_TRAINING": {
+   "status": "build",
+   "why": "Grants a skill/tool proficiency, a formation kit, and one known Basic Pattern; a build-time grant."
+  },
+  "tianxia.talent.formations.formation_devours_technique": {
+   "status": "applied",
+   "why": "A Reaction and 3 CP when a hostile technique reaches across your array's boundary: a Formation Check against its save DC (or 10 + its CP cost), then reduce its damage by 4d8 (6d8 at CL 17), give keyed creatures inside Advantage on the save, or stop it when everything it reaches is across the boundary (combat/ext/formation_riders.py). Suppressing another ongoing effect is the GM's."
+  },
+  "TAL_BEASTMASTERY_EXTRA_BEASTMASTERY_PACKAGE": {
+   "status": "build",
+   "why": "Gains a second Beastmastery Package (Rider or Tamer); a build-time choice."
+  },
+  "TAL_BEASTMASTERY_DEFENSIVE_RIDER": {
+   "status": "table",
+   "why": "Redirects an attack from your mount to yourself. Mounts are modeled (combat/ext/mounts.py), but the redirect changes the attack's target after it is declared, which needs a retarget point in the locked Gate 2 attack resolution (combat/gate2_engine.py); left to the GM until that lock round."
+  },
+  "TAL_BEASTMASTERY_MEAT_SHIELD": {
+   "status": "table",
+   "why": "Total Cover from your mount, and redirecting an attack onto it. Mounts are modeled (combat/ext/mounts.py), but cover from a shared-space creature and the redirect need a retarget point in the locked Gate 2 attack resolution (combat/gate2_engine.py); left to the GM until that lock round."
+  },
+  "TAL_BEASTMASTERY_MOUNTED_MANEUVERS": {
+   "status": "applied",
+   "why": "The mount takes Dash, Disengage and Dodge and can Shove with its own Strength; combat/ext/mounts.py."
+  },
+  "TAL_BEASTMASTERY_RUN_DOWN": {
+   "status": "applied",
+   "why": "The mount makes an Overrun as an Action or Bonus Action; combat/ext/mounts.py."
+  },
+  "TAL_BEASTMASTERY_SKIRMISH_RIDER": {
+   "status": "applied",
+   "why": "The mount Disengages as a Bonus Action; combat/ext/mounts.py."
+  },
+  "TAL_BEASTMASTERY_STEADY_HANDLER": {
+   "status": "outside",
+   "why": "Treats a Wisdom (Animal Handling) roll as a flat 10; an exploration/social skill check, not a combat resource effect."
+  },
+  "TAL_BEASTMASTERY_BROAD_SKILLS": {
+   "status": "outside",
+   "why": "Expands which creatures the downtime Tame training can affect, with a check penalty; modifies a build/downtime ability."
+  },
+  "TAL_BEASTMASTERY_CALL_BEAST": {
+   "status": "outside",
+   "why": "Beast Allies travel to you over up to (1 mile x CL) at their own best speed; a scene-transition/logistics effect, not something that resolves within a fight's rounds."
+  },
+  "TAL_BEASTMASTERY_WILD_SPEAKER": {
+   "status": "outside",
+   "why": "Communicate with Beasts; no HP/condition/resource effect on a fight."
+  },
+  "BEASTMASTERY_BASE_BEASTMASTERY_TRAINING": {
+   "status": "build",
+   "why": "Grants a proficiency, a bonus talent, and a chosen Package; a build-time grant."
+  },
+  "BEASTMASTERY_BASE_RIDER_PACKAGE": {
+   "status": "applied",
+   "why": "The steed is a Large token the rider starts on, sharing its space; Mount/Dismount cost half Speed; Skillful Riding protects the mount's Dexterity saves; combat/ext/mounts.py."
+  },
+  "BEASTMASTERY_BASE_TAMER_PACKAGE": {
+   "status": "outside",
+   "why": "Tame is 8-hour downtime training with a Wisdom (Animal Handling) check; Tamer Capacity/Commands/Contested Control govern an owned creature outside a specific fight action."
+  },
+  "tianxia.talent.beastmastery.mounted_offense": {
+   "status": "applied",
+   "why": "Advantage on the mounted rider's melee attacks against smaller unmounted creatures (attack_mode hook, combat/ext/mounts.py)."
+  },
+  "TAL_BEASTMASTERY_SHARED_SADDLE_RHYTHM": {
+   "status": "applied",
+   "why": "After the mount's Dash, Disengage or Dodge, one of three choices offered as buttons; combat/ext/mounts.py."
+  },
+  "TAL_BEASTMASTERY_TRAMPLING_LINE": {
+   "status": "applied",
+   "why": "After the mount's successful Overrun, one of four choices offered as buttons; combat/ext/mounts.py."
+  },
+  "TAL_BEASTMASTERY_DISTANT_TAMER": {
+   "status": "table",
+   "why": "Extends Beast Tamer's range; not itself a fight action (Beast Tamer, its target, is fixed below)."
+  },
+  "TAL_BEASTMASTERY_GREAT_BEAST_CHARGE": {
+   "status": "applied",
+   "why": "The mount's Speed of movement over nonmagical difficult terrain with no Opportunity Attack from the charged creature, then the closing melee attack and the mount's Overrun as buttons; combat/ext/mounts.py."
+  },
+  "TAL_BEASTMASTERY_ENDURING_CONTROL": {"status": "applied", "why": "Enduring Control makes Beast Tamer last 8 hours. The saved control and harm-ending records use the same expiry time."},
+  "tianxia.talent.beastmastery.lookout": {
+   "status": "applied",
+   "why": "You and your tamed beasts and mount within 30 feet share the highest passive Perception among you, for Hidden Eye and trap detection (combat/ext/beastmastery_tamer.py, rider lane C10)."
+  },
+  "tianxia.talent.ink.painted_law_of_the_scene": {
+   "status": "outside",
+   "why": "Chooses a custom narrow rule for your Ink Domain from open-ended examples (\"spoken lies appear as black characters\", etc.); a GM-adjudicated custom rule, not a fixed mechanical effect."
+  },
+  "INK_BASE_READ_THE_TRACE": {
+   "status": "outside",
+   "why": "Studies an inscription for information via a Cultivation/Investigation-style check; no combat resource effect."
+  },
+  "tianxia.talent.ink.name_testing_brush": {
+   "status": "outside",
+   "why": "Reveals what kind of disguise/illusion/possession is present; information, no combat resource effect."
+  },
+  "tianxia.talent.ink.seal_the_passage": {
+   "status": "outside",
+   "why": "Wards a door/chest/gate against being opened; a security ward for use between fights, not a fight action."
+  },
+  "INK_BASE_LIVING_INK": {
+   "status": "definition",
+   "why": "Flavor/resource narration for how Ink talents manifest (fingertips, brush, blood, etc.); no combat resource effect of its own."
+  },
+  "tianxia.talent.talismans.hidden_sleeve_preparation": {
+   "status": "applied",
+   "why": "+2 to the Prepared Talisman Limit (combat/ext/talismans.py: the prepared_talismans pool); drawing or stowing without an object interaction is not tracked."
+  },
+  "tianxia.talent.talismans.message_talisman": {
+   "status": "outside",
+   "why": "Sends a written/whispered message to a paired talisman; communication, not a combat resource effect."
+  },
+  "tianxia.talent.talismans.featherfall_talisman": {
+   "status": "table",
+   "why": "Negates falling damage and lets the target descend safely; falling/elevation isn't modeled on this table."
+  },
+  "tianxia.talent.talismans.seal_breaker_s_eye": {
+   "status": "outside",
+   "why": "Advantage on Read the Script checks against talismans; an out-of-combat identification aid."
+  },
+  "tianxia.talent.talismans.talisman_master_s_ink": {
+   "status": "outside",
+   "why": "Brewing spiritual ink during a rest, crafting cost/reroll benefits; downtime crafting."
+  },
+  "tianxia.talent.talismans.elemental_talisman": {
+   "status": "build",
+   "why": "Chooses the damage type and a crafting-time CP option for a formula you craft; a build/crafting choice baked into the talisman when made, not a fight-time effect."
+  },
+  "tianxia.talent.talismans.qi_storage_talisman": {
+   "status": "applied",
+   "why": "A Bonus Action that uses up a prepared talisman and restores CP equal to your Proficiency Bonus (the most it can store; combat/ext/talismans.py)."
+  },
+  "tianxia.talent.talismans.rapid_talisman": {
+   "status": "outside",
+   "why": "Halves crafting time at the cost of a higher crafting DC; downtime crafting."
+  },
+  "tianxia.talent.talismans.talisman_affinity": {
+   "status": "outside",
+   "why": "Chooses a crafting-time benefit for one formula family; downtime crafting."
+  },
+  "tianxia.talent.talismans.warding_talisman": {
+   "status": "table",
+   "why": "A flat +1 bonus to saving throws using one chosen ability for its duration; no generic \"flat bonus to a future save\" effect type exists to hang a persistent, ability-specific modifier on without new engine plumbing."
+  },
+  "TALISMANS_BASE_EMERGENCY_STROKE": {
+   "status": "applied",
+   "why": "An Action, 1 CP: a temporary Common talisman (combat/ext/talismans.py emergency_talismans, spent only by a Common formula); Proficiency Bonus uses a fight, then 2 CP each."
+  },
+  "TALISMANS_BASE_READ_THE_SCRIPT": {
+   "status": "outside",
+   "why": "An Intelligence check to learn facts about a talisman/inscription; information, no combat resource effect."
+  },
+  "TALISMANS_BASE_TALISMAN_SCRIBE": {
+   "status": "build",
+   "why": "Grants a proficiency and known formulae; a build-time grant."
+  },
+  "tianxia.talent.talismans.formula_copyist": {
+   "status": "outside",
+   "why": "Faster copying and a detection Advantage for forged/trapped formulae; downtime crafting/investigation."
+  },
+  "tianxia.talent.talismans.reusable_talisman": {
+   "status": "outside",
+   "why": "Crafting rules for reusable jade talismans; downtime crafting."
+  },
+  "tianxia.talent.talismans.advanced_talisman_crafting": {
+   "status": "outside",
+   "why": "Unlocks crafting higher-rank talismans and reverse engineering; downtime crafting."
+  },
+  "tianxia.talent.talismans.triggered_talisman": {
+   "status": "outside",
+   "why": "Gives a crafted talisman an observable trigger instead of direct activation; a crafting-time choice."
+  },
+  "tianxia.talent.talismans.talisman_recall": {
+   "status": "table",
+   "why": "Recalls a talisman a creature is holding or wearing; retrieving one specific tracked item from another creature's possessions isn't modeled at that granularity."
+  },
+  "tianxia.talent.talismans.permanent_talisman": {
+   "status": "outside",
+   "why": "A 30-day, 5,000gp+ crafting project; downtime crafting."
+  },
+  "tianxia.talent.talismans.battle_stroke_scripture": {
+   "status": "applied",
+   "why": "A Bonus Action, 3 CP: for 1 minute Emergency Stroke is also a Bonus Action (combat/ext/talismans.py)."
+  },
+  "tianxia.talent.spirit_companions.call_the_little_shrine": {
+   "status": "outside",
+   "why": "Prepares a shrine object for a spirit to shelter in during a short rest; downtime/narrative."
+  },
+  "tianxia.talent.spirit_companions.host_the_small_god": {
+   "status": "outside",
+   "why": "Forms a Hosting Bond and grants a narrow, GM-adjudicated benefit (a check Advantage once per short rest, minor resistance, perception, or flavor); the bond-formation itself isn't a fight action."
+  },
+  "tianxia.talent.spirit_companions.ancestral_ear": {
+   "status": "outside",
+   "why": "Learn a spirit's emotional tone and get Advantage on a social check; social/information, no combat resource effect."
+  },
+  "tianxia.talent.spirit_companions.iron_courtesy": {
+   "status": "outside",
+   "why": "A social encounter check to avoid offending a spirit; not a combat resource effect."
+  },
+  "TAL_SPIRIT_COMPANIONS_COVENANT_BOND": {
+   "status": "outside",
+   "why": "Establishes the willing relationship (a Major Spirit Bond) that other talents build on; a narrative/build setup, not itself a fight effect."
+  },
+  "TAL_SPIRIT_COMPANIONS_SPIRIT_REGARD": {
+   "status": "outside",
+   "why": "Advantage on a future social/Cultivation check to interact with a marked target; social, no combat resource effect."
+  },
+  "TAL_SPIRIT_COMPANIONS_TEMPORARY_SCENE_BOND": {
+   "status": "outside",
+   "why": "A scene-long narrative favor (advice, an omen, safe passage) from a minor spirit; not a fight action."
+  },
+  "tianxia.talent.spirit_companions.covenant_spirit": {
+   "status": "outside",
+   "why": "Defines the bonded spirit's Nature/Need/Taboo/role; a build/narrative setup (Battle Manifestation and Spirit Body are what actually bring a combat-capable companion onto the table)."
+  },
+  "tianxia.talent.spirit_companions.minor_spirit_agreements": {
+   "status": "outside",
+   "why": "Once-per-long-rest noncombat favors from minor spirits (rumors, warnings, safe passage); explicitly \"cannot use combat actions\"."
+  },
+  "tianxia.talent.spirit_companions.spirit_speech": {
+   "status": "outside",
+   "why": "Communication with spirits, and a skill-substitution for one social check; not a combat resource effect."
+  },
+  "tianxia.talent.spirit_companions.vessel_mark": {
+   "status": "outside",
+   "why": "A 10-minute preparation marking an object as a spirit vessel; downtime/build."
+  },
+  "tianxia.talent.spirit_companions.independent_counsel": {
+   "status": "outside",
+   "why": "Adds Proficiency (or half) to an ability check tied to the spirit's Nature, once per short rest; typically a skill/knowledge check outside combat resolution."
+  },
+  "tianxia.talent.spirit_companions.oath_written_in_incense": {
+   "status": "outside",
+   "why": "Reduces Bond Strain (a relationship-tracking resource) after a long rest; a downtime/narrative bookkeeping effect."
+  },
+  "tianxia.talent.spirit_companions.gentle_offering_method": {
+   "status": "outside",
+   "why": "Reduces Bond Strain via an Offering during a rest/quiet scene; downtime/narrative."
+  },
+  "tianxia.talent.spirit_companions.exorcist_s_mercy": {
+   "status": "outside",
+   "why": "A Cultivation Check against a hosting spirit with a GM-chosen menu of narrative outcomes (suppress the bond, force a manifestation, etc.); GM-adjudicated rather than a fixed typed effect."
+  },
+  "tianxia.talent.spirit_companions.deep_hosting": {
+   "status": "outside",
+   "why": "Grants one open-ended, GM-approved body-bound expression chosen from the spirit's Nature; not a fixed mechanical effect."
+  },
+  "tianxia.talent.spirit_companions.court_of_small_spirits": {
+   "status": "outside",
+   "why": "Coordinates Minor Spirit Agreements for downtime services (surveying, rumors, watch); not a fight action."
+  },
+  "tianxia.talent.spirit_companions.spirit_court_command": {
+   "status": "outside",
+   "why": "A GM-chosen minor bonus (+1 to a check, a bit more range, a visible omen) for coordinating a Minor Spirit Agreement; narrative-scale, not a fixed rules effect."
+  },
+  "tianxia.talent.spirit_companions.spirit_pact_technique": {
+   "status": "outside",
+   "why": "Lets a Forged Technique be assigned to the bond rather than to you; a build-time authoring rule, not a fight effect of its own."
+  },
+  "tianxia.talent.spirit_companions.shrine_anchor": {
+   "status": "outside",
+   "why": "A 1-hour ritual anchoring a spirit to a location for narrow, mostly out-of-combat benefits; downtime setup."
+  },
+  "tianxia.talent.spirit_companions.first_nature_expression": {
+   "status": "build",
+   "why": "The spirit learns one additional Nature Expression; a build-time grant."
+  },
+  "TAL_SPIRIT_COMPANIONS_MANIFESTATION_LIMITS": {
+   "status": "definition",
+   "why": "States when a spirit CANNOT use a Nature Expression (sealed, Taboo violated, etc.); a rules constraint, not an effect of its own."
+  },
+  "tianxia.talent.spirit_companions.external_spirit_source": {
+   "status": "table",
+   "why": "Lets a Nature Expression originate from the spirit's space instead of yours: relocates an effect's origin point, which the grid engine doesn't support (same limit as Folded Reach in Space)."
+  },
+  "tianxia.talent.spirit_companions.nature_talent_investment": {
+   "status": "build",
+   "why": "The spirit learns a Mortal-tier talent from one of its Nature Spheres; a build-time grant."
+  },
+  "tianxia.talent.spirit_companions.dual_nature_expression": {
+   "status": "build",
+   "why": "The spirit gains a second active Nature Sphere; a build-time grant."
+  },
+  "tianxia.talent.spirit_companions.great_nature_expression": {
+   "status": "build",
+   "why": "The spirit learns a Foundation-tier talent from one of its Nature Spheres; a build-time grant."
+  },
+  "TAL_SECT_STEWARDSHIP_COURTYARD_ALLOTMENT": {
+   "status": "outside",
+   "why": "Secures downtime lodging/space in an institution; a Merit Die spend on a non-combat check bonus."
+  },
+  "TAL_SECT_STEWARDSHIP_DEPARTMENT_LEDGER": {
+   "status": "outside",
+   "why": "Supervises a non-combat downtime project (reduce its time/wastage); explicitly downtime."
+  },
+  "TAL_SECT_STEWARDSHIP_DISCIPLE_REGISTER": {
+   "status": "outside",
+   "why": "Manages a downtime group of juniors/workers for non-combat duties."
+  },
+  "TAL_SECT_STEWARDSHIP_NOTICE_BOARD_READER": {
+   "status": "outside",
+   "why": "Reads mission boards for GM-answered questions; downtime information-gathering."
+  },
+  "TAL_SECT_STEWARDSHIP_COMMUNAL_RICE_BOWL": {
+   "status": "outside",
+   "why": "Improves a downtime Petition roll for food/lodging/tools."
+  },
+  "TAL_SECT_STEWARDSHIP_FIELD_AND_KITCHEN_ROSTER": {
+   "status": "outside",
+   "why": "Organizes downtime ordinary labor for 4 hours; explicitly non-combat."
+  },
+  "TAL_SECT_STEWARDSHIP_OUTER_GATE_ROUTINE": {
+   "status": "outside",
+   "why": "Regains a Merit Die from completing a non-combat Duty, and secures downtime food/lodging."
+  },
+  "TAL_SECT_STEWARDSHIP_CLEAN_LEDGER_HAND": {
+   "status": "outside",
+   "why": "Notices forged paperwork and produces proof of a completed Duty; downtime investigation/bookkeeping."
+  },
+  "TAL_SECT_STEWARDSHIP_DORMITORY_NETWORK": {
+   "status": "outside",
+   "why": "A downtime rumor-network Sect Check."
+  },
+  "TAL_SECT_STEWARDSHIP_SENIOR_BROTHER_S_ERRAND": {
+   "status": "outside",
+   "why": "Grants a temporary Merit Die usable only on a non-combat errand Duty."
+  },
+  "TAL_SECT_STEWARDSHIP_QUIET_APOLOGY_METHOD": {
+   "status": "outside",
+   "why": "Smooths over a non-combat social-scene etiquette mistake."
+  },
+  "TAL_SECT_STEWARDSHIP_WORKER_S_FRIEND": {
+   "status": "outside",
+   "why": "A Merit Die bonus to a social check with ordinary workers; downtime."
+  },
+  "TAL_SECT_STEWARDSHIP_CONTRIBUTION_EXCHANGE": {
+   "status": "outside",
+   "why": "Exchanges Merit for downtime institutional goods/access."
+  },
+  "TAL_SECT_STEWARDSHIP_MEDICINE_HALL_QUEUE": {
+   "status": "outside",
+   "why": "Improves a downtime Petition for medical treatment/wait time."
+  },
+  "TAL_SECT_STEWARDSHIP_DISCIPLINE_MEDIATION": {
+   "status": "outside",
+   "why": "Delays a non-combat social/disciplinary escalation via a Sect Check; explicitly non-combat."
+  },
+  "TAL_SECT_STEWARDSHIP_STIPEND_DISCIPLINE": {
+   "status": "outside",
+   "why": "Manages downtime pay/stipend logistics."
+  },
+  "tianxia.talent.sect_stewardship.hall_apprenticeship": {
+   "status": "outside",
+   "why": "A downtime benefit from working an hour in a chosen hall."
+  },
+  "tianxia.talent.sect_stewardship.common_scripture_notes": {
+   "status": "outside",
+   "why": "Notes from a public lesson grant a later non-combat check bonus; downtime study."
+  },
+  "tianxia.talent.sect_stewardship.inner_gate_pass": {
+   "status": "outside",
+   "why": "Improves a downtime Petition for restricted-area access."
+  },
+  "tianxia.talent.sect_stewardship.public_dao_lecture": {
+   "status": "outside",
+   "why": "A downtime lecture granting listeners a later study/meditation check bonus."
+  },
+  "TAL_SECT_STEWARDSHIP_DEACON_S_SEAL": {
+   "status": "outside",
+   "why": "Issues a lawful non-combat institutional instruction; explicitly \"not mind control\"."
+  },
+  "tianxia.talent.sect_stewardship.inner_archive_index": {
+   "status": "outside",
+   "why": "Downtime library/archive research via a Sect Check."
+  },
+  "TAL_SECT_STEWARDSHIP_MISSION_TEAM_ORGANIZER": {
+   "status": "outside",
+   "why": "Organizes a non-combat support team for a Duty/mission; the team explicitly avoids combat."
+  },
+  "TAL_SECT_STEWARDSHIP_SECT_TOKEN_ETIQUETTE": {
+   "status": "outside",
+   "why": "Identifies Standing/rank markers and avoids etiquette mistakes; social, no combat resource effect."
+  },
+  "SECT_STEWARDSHIP_BASE_ACCEPTING_A_DUTY": {
+   "status": "outside",
+   "why": "Declares and resolves a non-combat Duty once per Long Rest; explicitly non-combat throughout."
+  },
+  "SECT_STEWARDSHIP_BASE_PETITIONING_THE_HALL": {
+   "status": "outside",
+   "why": "The base downtime Petition mechanic (food, lodging, tools, access); explicitly cannot obtain combat allies or resources."
+  },
+  "TAL_SECT_STEWARDSHIP_ANCESTRAL_WRIT": {
+   "status": "outside",
+   "why": "Invokes an ancestral record for a non-combat institutional effect (delay punishment, open an archive, etc.)."
+  },
+  "SECT_STEWARDSHIP_BASE_LEARNING_SECT_STEWARDSHIP": {
+   "status": "build",
+   "why": "Chooses the Sect Stewardship key ability and a skill/tool proficiency; a build-time choice."
+  },
+  "SECT_STEWARDSHIP_BASE_MERIT_DICE": {
+   "status": "definition",
+   "why": "Defines the Merit Dice resource (size, maximum, how it's regained); the resource itself, not an effect."
+  },
+  "SECT_STEWARDSHIP_BASE_SECT_CHECK": {
+   "status": "definition",
+   "why": "Defines how to roll a Sect Check; a rules term other Sect Stewardship talents use, not an effect of its own."
+  },
+  "SECT_STEWARDSHIP_BASE_STANDING": {
+   "status": "definition",
+   "why": "Defines the Standing grades (No/Servant/Outer/Inner/Core); a rules term, not an effect."
+  },
+  "SECT_STEWARDSHIP_BASE_TAKING_A_PLACE": {
+   "status": "build",
+   "why": "Chooses a Sect Role each Long Rest, granting a Merit Die bonus to role-related non-combat checks; a build/downtime choice."
+  }
+ }
+}
