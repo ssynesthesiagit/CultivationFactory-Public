@@ -1,0 +1,48 @@
+{
+ "features": {
+  "tianxia.subpath.body.bojutsu.feature.sweeping_strike": {
+   "block": "already_applied",
+   "why": "combat/ext/bojutsu.py owns Sweeping Strike's optional Staff-hit choice, its single Stamina payment, save and chosen result. Its compile_actions marker exposes manual choices on either side's turn; compiling a generic paid-hit reaction as well would charge again, including after declining the plug-in's choice."
+  },
+  "tianxia.subpath.body.black_thorn_demon_body.feature.thorn_flesh_armory": {
+   "block": "black_thorn_demon_body",
+   "kind": "thorn_flesh_armory",
+   "why": "Once per turn on an unarmed-strike hit, spend 1 Demon Spine: add 2d6 Piercing or Slashing (a free player choice), then a Constitution save; on a failure, Bleeding until the start of your next turn (combat/ext/black_thorn_demon_body.py)."
+  },
+  "tianxia.subpath.body.kensei.feature.blade_fist": {
+   "block": "kensei",
+   "kind": "blade_fist",
+   "why": "Once per turn on an unarmed-strike or integrated-Blade-weapon hit, choose one -- Proficiency Bonus Slashing damage, Speed -5, deny Reactions, or draw/stow a Blade weapon (a free player choice, kept until changed) (combat/ext/kensei.py)."
+  },
+  "tianxia.subpath.body.kensei.feature.severing_palm": {
+   "block": "kensei",
+   "kind": "severing_palm",
+   "why": "Once per turn on an unarmed-strike or integrated-Blade-weapon hit, spend 4 Stamina: choose one severing effect (Arm/Leg/Breath/Flow/Guard, a free player choice); the target makes a Constitution save gating its severity (combat/ext/kensei.py)."
+  },
+  "tianxia.tradition.spirit.black_current_walker.feature.enter_the_black_current": {
+   "block": "black_current_walker",
+   "kind": "flow_after_the_strike",
+   "why": "Once on each of your turns, immediately after you deal damage with Mind Spike, a Spirit Awakening technique, an unarmed strike, or a proficient weapon attack, move 10 feet without provoking (15 feet, through the target's space, if it is Resonance Marked) (combat/ext/black_current_walker.py)."
+  },
+  "tianxia.tradition.spirit.echo_step_disciple.feature.afterimage_edge": {
+   "block": "echo_step_disciple",
+   "kind": "strike_from_the_echo",
+   "why": "Once on each of your turns when you use Mind Spike, an unarmed strike, or a proficient weapon attack against a Resonance Marked target, add your Wisdom modifier to one damage roll (combat/ext/echo_step_disciple.py). Treating an Echo Position as the attack's origin is a GM-adjudicated positioning rider."
+  },
+  "tianxia.subpath.qi.devil_heart_second_furnace.feature.demon_seed_overdraw": {
+   "block": "devil_heart_second_furnace",
+   "kind": "demon_seed_overdraw",
+   "why": "Once per turn, when you pay at least 1 Qi for a Qi feature, refund Proficiency Bonus Qi, gain 1 Corruption and 1 Devil Qi, then choose one Seed-Fed Reinforcement (Temporary HP = PB; move 5 feet; move Domain Armament 10 feet; or Advantage on an Intimidation/Cultivation Check), a free player choice kept until changed (combat/ext/devil_heart_second_furnace.py)."
+  },
+  "tianxia.subpath.qi.devil_heart_second_furnace.feature.devil_qi_augment": {
+   "block": "devil_heart_second_furnace",
+   "kind": "devil_qi_augment",
+   "why": "Once per turn after a qualifying cultivation feature deals damage, offer the owner 1 Devil Qi for 2d8/3d8/4d8 Necrotic, Psychic, or Force damage and one printed rider; the rider affects only a creature that took the extra damage (combat/ext/devil_heart_second_furnace.py)."
+  },
+  "tianxia.subpath.qi.black_sea_leviathan_womb.feature.inner_sea_awakening": {
+   "block": "black_sea_leviathan_womb",
+   "kind": "inner_sea_awakening",
+   "why": "Once per turn, a Qi-powered feature that damages or forcibly moves a hostile creature places one Depth Mark on it; once per turn, a Qi-powered feature affecting a Depth-Marked creature may spend 1 Inner-Sea Depth to choose one of five riders (a free player choice, kept until changed) (combat/ext/black_sea_leviathan_womb.py)."
+  }
+ }
+}
