@@ -1,0 +1,1092 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "BLACKSMITH_BASE_HAMMER_THE_MARK": {
+      "text_sha256": "c3b38b5c365411e062c2041d71e5363066d38d1cc6643f566e78fa9a5becc44e",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-28",
+      "effects": [
+        {
+          "type": "mark",
+          "mark": "Forge Mark",
+          "applies_to": "self",
+          "duration": {
+            "kind": "until_removed"
+          },
+          "evidence": "Place 1 Forge Mark on it.",
+          "origin": "structure"
+        }
+      ]
+    },
+    "BLACKSMITH_BASE_SET_THE_WORKPIECE": {
+      "text_sha256": "f380244bba4728c92cdbd34adb871bea342996f1740b1d1c36a33470cc4fed0a",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-28",
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "checks made to repair, adjust, fit, or identify that workpiece",
+          "duration": "one_minute",
+          "evidence": "you have Advantage on checks made to repair, adjust, fit, or identify that workpiece",
+          "origin": "model_v2"
+        }
+      ]
+    },
+    "tianxia.talent.blacksmith.furnace_court_of_the_thousandfold_temper": {
+      "text_sha256": "92fc838fb401d132451a88eb455dfc5d8e5598b74cd3898638bc4090b0830b12",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-28",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Area: 30-foot Emanation originating from you",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "checks made to repair, maintain, draw, stow, fit, or use prepared equipment",
+          "duration": "one_minute",
+          "evidence": "allies inside the area gain Advantage on checks made to repair, maintain, draw, stow, fit, or use prepared equipment",
+          "origin": "model_v2"
+        },
+        {
+          "type": "extra_damage",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_round",
+          "evidence": "the first time each round that an ally inside hits with a weapon bearing your Forge Mark, add your Proficiency Bonus to the damage roll",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_round",
+          "evidence": "the first time each round that an ally inside is hit while wearing armor or carrying a shield bearing your Forge Mark, reduce the damage by your Proficiency Bonus",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "mark",
+          "mark": "Forge Mark",
+          "applies_to": "self",
+          "duration": {
+            "kind": "until_removed"
+          },
+          "evidence": "once at the start of each of your turns, place 1 Forge Mark on one current workpiece inside the area",
+          "origin": "structure"
+        }
+      ]
+    },
+    "tianxia.talent.blacksmith.incarnation_of_the_living_forge": {
+      "text_sha256": "9b5c6f1c584c56852e8c964fd43bc20a410ee894d917c2a0dc09776700cb25e8",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-28",
+      "effects": [
+        {
+          "type": "temp_hp",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "when you spend a Forge Mark, gain Temporary HP equal to your Proficiency Bonus",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire",
+            "lightning"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "you have Resistance to Fire and Lightning damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "saving throws against Exhaustion caused by heat, labor, smoke, or forced work",
+          "duration": "one_minute",
+          "evidence": "you have Advantage on saving throws against Exhaustion caused by heat, labor, smoke, or forced work",
+          "origin": "model_v2"
+        },
+        {
+          "type": "mark",
+          "mark": "Forge Mark",
+          "applies_to": "self",
+          "duration": {
+            "kind": "until_removed"
+          },
+          "evidence": "once per turn, place 1 Forge Mark on a current workpiece without using an action",
+          "origin": "structure"
+        }
+      ]
+    },
+    "tianxia.talent.blacksmith.two_beat_temper": {
+      "text_sha256": "615aa3f8b532cf82b7a5c89a5d3f0bfa06f07b3092bc10ae4e5fcb2bfca57338",
+      "reviewed_by": "sweep sw-blacksmith A2 printed-rule review 2026-10-08",
+      "effects": [],
+      "riders": [],
+      "modifier": null,
+      "automation_coverage": "FULL"
+    },
+    "tianxia.talent.blood.blood_emperor_incarnation": {
+      "text_sha256": "823b59f06607dd23dd0315488001af08fe0ba3561aafd5e551e53336f16f5342",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-28; AUTO80 2026-10-05 kept here (one reviewed record per mechanic): \"Bloodsense range becomes 1 mile\" is a typed gain_sense row on the engine's own Bloodsense (combat/rules/senses.json bloodsense 60 ft, combat/ext/docket_senses.py), so the table stretches the real sense for the Incarnation's minute instead of reminding the GM.",
+      "effects": [
+        {
+          "type": "speed",
+          "applies_to": "self",
+          "flat": 40,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Fly Speed 40 feet and Hover",
+          "origin": "model_v2"
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "bludgeoning",
+            "piercing",
+            "slashing",
+            "necrotic"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Resistance to Bludgeoning, Piercing, Slashing, and Necrotic damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 20,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Crimson Aura: When a Bloodied enemy starts its turn within 20 feet",
+          "origin": "sw-blacksmith-review",
+          "triggers": [
+            {
+              "on": [
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "if_bloodied",
+                  "applies_to": "target",
+                  "evidence": "When a Bloodied enemy starts its turn within 20 feet",
+                  "effects": [
+                    {
+                      "type": "mark",
+                      "mark": "Blood Thread",
+                      "applies_to": "target",
+                      "duration": {
+                        "kind": "until_start_of_your_next_turn"
+                      },
+                      "evidence": "apply Blood Thread automatically to one Bloodied enemy that starts its turn within 20 feet"
+                    },
+                    {
+                      "type": "save", "applies_to": "enemies_in_area",
+                      "ability": "con",
+                      "dc": "technique_save_dc",
+                      "evidence": "it makes a Constitution saving throw",
+                      "on_fail": [
+                        {
+                          "type": "damage",
+                          "applies_to": "target",
+                          "dice": {
+                            "count": 4,
+                            "count_formula": null,
+                            "sides": 8,
+                            "bonus": null,
+                            "bonus_formula": null
+                          },
+                          "flat": 0,
+                          "formula": "none",
+                          "damage_types": [
+                            "necrotic"
+                          ],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 0,
+                          "on": "",
+                          "duration": "instant",
+                          "evidence": "Take 4d8 Necrotic damage",
+                          "origin": "model_v2"
+                        },
+                        {
+                          "type": "regain_half_dealt",
+                          "evidence": "Failed Save: ... you regain HP equal to half the damage dealt. Successful Save: ... You regain no HP."
+                        }
+                      ],
+                      "on_success": [
+                        {
+                          "type": "half_damage",
+                          "evidence": "Take half damage",
+                          "origin": "sw-blacksmith-review"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "immunity",
+          "applies_to": "self",
+          "conditions": [
+            "bleeding"
+          ],
+          "duration": "one_minute",
+          "evidence": "Immunity to ordinary bleeding effects"
+        },
+        {
+          "type": "stance",
+          "name": "Blood Emperor Incarnation",
+          "rounds": 10,
+          "evidence": "Blood Thread damage becomes 6d10 Necrotic or Piercing damage; Crimson Sacrifice costs 4 HP per replaced CP instead of 5 HP"
+        },
+        {
+          "type": "gain_sense",
+          "applies_to": "self",
+          "sense": "bloodsense",
+          "range_ft": 5280,
+          "evidence": "Bloodsense range becomes 1 mile."
+        }
+      ],
+      "area": {
+        "shape": "emanation",
+        "size_ft": 20,
+        "centered_on_self": true
+      },
+      "riders": []
+    },
+    "tianxia.talent.blood.scarlet_mist_form": {
+      "text_sha256": "2f074575279c6cab7f1398745871a515b8f35cb690826814bc577e58ccea9e10",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-28; AUTO80 2026-10-05 kept here (one reviewed record per mechanic): \"Transform partially into blood mist\" is the mist_form row (combat/ext/blood_scarlet_mist.py) that the two movement clauses answer for, and \"ability to move through occupied spaces as difficult terrain\" plus \"ability to apply Blood Thread automatically to one creature whose space you move through, once per turn\" now run through the engine's own creature-passage seams. Only the 1-inch clause stays a GM line.",
+      "effects": [
+        {
+          "type": "speed",
+          "applies_to": "self",
+          "flat": 30,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Fly Speed 30 feet and Hover",
+          "origin": "model_v2"
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "bludgeoning",
+            "piercing",
+            "slashing"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Resistance to nonmagical Bludgeoning, Piercing, and Slashing damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "checks made to escape Grappled or Restrained",
+          "duration": "concentration",
+          "evidence": "Advantage on checks made to escape Grappled or Restrained",
+          "origin": "model_v2"
+        },
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Fly Speed 30 feet and Hover",
+          "origin": "model_v2"
+        },
+        {
+          "type": "mist_form",
+          "applies_to": "self",
+          "evidence": "Transform partially into blood mist"
+        }
+      ],
+      "riders": [
+        "ability to pass through openings as narrow as 1 inch"
+      ]
+    },
+    "tianxia.talent.blood.crimson_wave": {
+      "text_sha256": "8d45775f6aab14686c05a69e4acc0eaf9beee8699e7885e9802080474b4f5ee8",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-28",
+      "effects": [
+        {
+          "type": "save", "recipient_text": "Choose Necrotic or Piercing when you activate the talent. Creatures in the area make Constitution saving throws.", "applies_to": "creatures_in_area",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 4,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "necrotic",
+                "piercing"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "CL 5-10: 4d6 Necrotic or Piercing damage.",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  5,
+                  10,
+                  4,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  6,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  8,
+                  6
+                ]
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "necrotic",
+                "piercing"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The creature takes half damage.",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.talent.blood.heartblood_rebirth": {
+      "text_sha256": "35a806d5cd545b405da74f972ec8afaa9e6025586c4797ceb461081fe6987841",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-28",
+      "effects": [
+        {
+          "type": "hold_at_1hp",
+          "applies_to": "self",
+          "keep": 1,
+          "evidence": "return with 1 HP"
+        },
+        {
+          "type": "condition",
+          "condition": "incapacitated",
+          "evidence": "are Incapacitated",
+          "origin": "parser",
+          "applies_to": "self",
+          "duration": "until_start_of_next_turn"
+        },
+        {
+          "type": "heartblood_return",
+          "evidence": "At the start of your next turn: return with 1 HP; regain CP equal to your Proficiency Bonus; gain 2d10 Temporary HP.",
+          "effects": [
+            {
+              "type": "ac_becomes",
+              "amount": 15,
+              "applies_to": "self",
+              "duration": "until_start_of_next_turn",
+              "evidence": "AC becomes 15"
+            },
+            {
+              "type": "resistance",
+              "applies_to": "self",
+              "damage_types": [
+                "acid",
+                "bludgeoning",
+                "cold",
+                "fire",
+                "force",
+                "lightning",
+                "necrotic",
+                "piercing",
+                "poison",
+                "slashing",
+                "thunder"
+              ],
+              "duration": "until_start_of_next_turn",
+              "evidence": "gain Resistance to all damage except Radiant and Psychic"
+            },
+            {
+              "type": "speed",
+              "applies_to": "self",
+              "becomes": 0,
+              "duration": "until_start_of_next_turn",
+              "evidence": "cannot move voluntarily"
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Heartblood Rebirth fails if: your soul is destroyed; the cocoon is destroyed; a Secret effect prevents revival (the GM's call)."
+      ]
+    },
+    "tianxia.talent.blood.rivers_run_red": {
+      "text_sha256": "35436921cb855103de0daa9d769badb4be8f899b5278899432d8f8a424f565c9",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-28",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "30-foot-radius sphere",
+          "origin": "sw-blacksmith-review",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save", "applies_to": "creatures_in_area",
+                  "ability": "con",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 8,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "necrotic",
+                        "piercing"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 8d8 Necrotic or Piercing damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "poisoned",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "become Poisoned until the start of its next turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 8,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "necrotic",
+                        "piercing"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take half damage",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2",
+                  "evidence": "it makes a Constitution saving throw"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "rivers_run_red",
+          "evidence": "A Bloodied creature inside also counts as bearing your Blood Thread until it leaves the area."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_BRUTE_HEAVEN_CRASHING_THROW": {
+      "text_sha256": "7aa9824d744afb5c18f9bd8d488aa8a09fdc0589d44e4ca089dac023a3b2a998",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-28",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "forced_movement",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 60,
+              "on": "",
+              "duration": "instant",
+              "evidence": "throw the target up to 60 feet in any legal direction",
+              "origin": "model_v2"
+            },
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "evidence": "the target and creatures within 10 feet of its landing space make Dexterity saving throws",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "dice": {
+                    "count": 8,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "damage_types": [
+                    "bludgeoning",
+                    "force"
+                  ],
+                  "type_choice": true,
+                  "evidence": "Take 8d10 Bludgeoning or Force damage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "origin": "sw-blacksmith-review"
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "prone",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "and fall Prone",
+                  "origin": "model_v2"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "evidence": "Take half damage",
+                  "origin": "sw-blacksmith-review"
+                }
+              ]
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "Prerequisite: Mountain-Swing Throw, CL 15+",
+        "Timing Detail: Special Attack",
+        "On a success: Make one Brutal Shove.",
+        "ignore ordinary size limits",
+        "the target and creatures within 10 feet of its landing space make Dexterity saving throws",
+        "The thrown target automatically fails its save if it collides with a solid surface before landing.",
+        "Heaven-Crashing Throw does not automatically move: artifacts; Formation cores; Domains; creatures protected by a stronger immovability effect. Those may require a contested Cultivation Check."
+      ]
+    },
+    "TAL_BRUTE_THE_HAND_THAT_REPOSITIONED_HEAVEN": {
+      "text_sha256": "4fc88d9fe18f1fcb5f79564cfeee57fe35b7665b84416e31be95557095670dd6",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-28",
+      "use_limit": "once_per_long_rest",
+      "options": [
+        {
+          "label": "Creature",
+          "effects": [
+            {
+              "type": "advantage",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "Brutal Shove attack roll",
+              "duration": "instant",
+              "evidence": "Make one Brutal Shove with Advantage",
+              "origin": "model_options"
+            },
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 100,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "move the target up to 100 feet in one legal direction",
+                  "origin": "model_options"
+                },
+                {
+                  "type": "save",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "con",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "the target makes a Constitution saving throw",
+                  "on_fail": [
+                    {
+                      "type": "condition",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "stunned",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_end_of_turn",
+                      "evidence": "Become Stunned until the end of your next turn"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "Cannot take Reactions until the start of your next turn"
+                    }
+                  ],
+                  "origin": "model_options"
+                }
+              ],
+              "on_miss": [],
+              "origin": "sw-blacksmith-review"
+            }
+          ]
+        },
+        {
+          "label": "Tear Open a Major Breach",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "str",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Make a Strength check against a GM-set DC",
+              "origin": "model_options",
+              "on_fail": [],
+              "on_success": []
+            }
+          ]
+        },
+        {
+          "label": "Shift the Object",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "str",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Make a Strength check against a GM-set DC",
+              "on_success": [
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 30,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "shift the object up to 30 feet"
+                }
+              ],
+              "origin": "model_options"
+            }
+          ]
+        },
+        {
+          "label": "Collapse a Section",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "str",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Make a Strength check against a GM-set DC",
+              "origin": "model_options",
+              "on_fail": [],
+              "on_success": []
+            }
+          ]
+        },
+        {
+          "label": "Turn to Rubble",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "str",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Make a Strength check against a GM-set DC",
+              "origin": "model_options",
+              "on_fail": [],
+              "on_success": []
+            }
+          ]
+        },
+        {
+          "label": "Force Open a Passage",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "str",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Make a Strength check against a GM-set DC",
+              "origin": "model_options",
+              "on_fail": [],
+              "on_success": []
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Classification: Secret Brute Inheritance",
+        "Prerequisite: CL 17+, Court of the Moving Mountain, hidden mountain-moving scripture",
+        "Range: Reach or 30 feet against a tethered target",
+        "Choose one creature, unattended object, temporary Barrier, or ordinary structure section.",
+        "Make one Brutal Shove with Advantage.",
+        "On a success: ignore ordinary size limits; apply up to three Manhandle talents you know; the target makes a Constitution saving throw.",
+        "##### Object, Barrier, or Structure",
+        "Make a Strength check against a GM-set DC.",
+        "On a success, choose one: tear open a major breach; shift the object up to 30 feet; collapse one ordinary section; turn the object into rubble; force open one sealed mundane passage.",
+        "The Hand That Repositioned Heaven does not automatically move or destroy: artifacts; Formation cores; Domains; Secret Inheritances; Realm-defining structures.",
+        "treat any collision as Hammer with +6d10 collision damage"
+      ],
+      "effects": []
+    },
+    "TAL_BRUTE_COURT_OF_THE_MOVING_MOUNTAIN": {
+      "text_sha256": "299fa9881e565ff41bd6fe7dd9e3b45267c2d703953ad82c66d5ab7e85cd9be3",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-28",
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Strength (Athletics) checks",
+          "duration": "one_minute",
+          "evidence": "gain Advantage on Strength (Athletics) checks",
+          "origin": "model_v2"
+        },
+        {
+          "type": "forced_movement",
+          "applies_to": "target",
+          "flat": 5,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 5,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "when Brutal Shove succeeds, move the target 5 additional feet",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "state",
+          "name": "court_of_the_moving_mountain",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "ends_if_incapacitated": true,
+          "label": "Court of the Moving Mountain: forced movement 10 ft shorter, shoves push 5 ft more, a collision regains Martial Focus once a turn",
+          "evidence": "reduce forced movement affecting you by 10 feet; when Brutal Shove succeeds, move the target 5 additional feet; once per turn when a creature collides with terrain or another creature, regain Martial Focus. Court of the Moving Mountain ends early if you become Incapacitated."
+        },
+        {
+          "type": "condition",
+          "condition": "brute_court_grapple_size",
+          "applies_to": "self",
+          "condition_data": {
+            "brute_grapple_steps": 1,
+            "label": "Court of the Moving Mountain: counts 1 size larger for Grapple while this ability lasts",
+            "brute_grapple_resist_steps": 1
+          },
+          "evidence": "count as one size larger for Grapple"
+        }
+      ],
+      "riders": [
+        "ignore nonmagical difficult terrain created by rubble, debris, and broken ground"
+      ]
+    },
+    "TAL_BRUTE_SHIFT_WEIGHT": {
+      "text_sha256": "0794cd44f8822a2882f13ac2aa6ed6054128ae7372c78fe56e85fa4a6a9e3d3f",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-28; rider lane C16 2026-09-30 (the shove is the Brutal Shove contest)",
+      "effects": [
+        {
+          "type": "brutal_shove",
+          "applies_to": "target",
+          "no_manhandle": true,
+          "evidence": "Shove the triggering creature: the Brutal Shove contest (push 5 feet or Prone, the extra movement, Strength damage; no Manhandle talent)"
+        }
+      ],
+      "riders": [
+        "Trigger: also a contested Strength check the creature fails against you (this table offers the attack-roll trigger only)"
+      ]
+    },
+    "tianxia.talent.blood.vital_transfusion": {
+      "text_sha256": "0960072e4c4c6e0e413605ffb0f2d339c7d7d614114092f2b9ba14548371adb0",
+      "reviewed_by": "sweep sw-blacksmith 2026-09-29; AUTO80 2026-10-05 dropped the printed limitation rider: \"does not restore missing limbs or remove major injuries\" is what the transfuse row already is (it only ever moves Hit Points), so it stays printed on the ability and is no longer a rule the GM is asked to apply.",
+      "effects": [
+        {
+          "type": "transfuse",
+          "applies_to": "target",
+          "dice": {
+            "count": 1,
+            "sides": 8
+          },
+          "dice_by_cl": [
+            [
+              1,
+              4,
+              1,
+              8
+            ],
+            [
+              5,
+              10,
+              2,
+              8
+            ],
+            [
+              11,
+              16,
+              3,
+              8
+            ],
+            [
+              17,
+              20,
+              4,
+              8
+            ]
+          ],
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "evidence": "Up to 1d8 + your key ability modifier (CL 1-4), 2d8 (CL 5-10), 3d8 (CL 11-16), 4d8 (CL 17-20). One living creature you touch regains HP equal to the self-damage taken.",
+          "origin": "sw-blacksmith-review"
+        }
+      ],
+      "riders": []
+    }
+  }
+}
