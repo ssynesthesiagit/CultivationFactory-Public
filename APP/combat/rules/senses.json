@@ -1,0 +1,60 @@
+{
+ "schema": "TianxiaCombat.Senses.v1",
+ "note": "Senses on the combat table (owner 2026-09-28 docket: \"Darkvision, Blindsight, Tremorsense, Scent, AND the spheres' own unique senses\"; combat/senses.py). kinds: how each sense works on the table. grants: the records that give a sense -- 'always' while the character has the record, 'martial_focus' while it holds Martial Focus, 'active' for the duration after the ability is used (combat/ext/docket_senses.py), 'meld' while it is one of the character's active Melds (several at once: the owner struck the printed one-Meld limit on 2026-09-29). or_add_ft: 'If the target already possesses Darkvision, increase its Darkvision range by N feet instead'. gm: records whose sense depends on a state the table does not track; the sense is left to the GM. PROPOSED RULINGS (the texts are silent): a sense that pinpoints (Tremorsense, Spiritual Truesight) finds a hidden creature within its range when its owner Searches, with no check; a creature that sees a hidden one with Blindsight or Truesight finds it the same way; every fighter on the table stands on the ground, so 'while touching a solid surface' holds.",
+ "kinds": {
+  "darkvision": {"sight": true, "through": ["darkness_named"], "evidence": "DARK_BASE_DARKNESS: A creature with Darkvision can see through this Darkness. TAL_DARK_PURE_DARKNESS: Darkvision is reduced to 5 feet inside your Darkness."},
+  "blindsight": {"sight": true, "through": ["darkness", "obscured"], "sees_hidden": true, "evidence": "Blindsight counts as sight within its range (Sight Beyond Sight); it does not see through total cover (Crowned Serpent)."},
+  "truesight": {"sight": true, "through": ["darkness"], "sees_hidden": true, "evidence": "Truesight: sees in magical darkness and sees invisible creatures; it does not penetrate solid objects or reveal creatures behind Total Cover (True Sight)."},
+  "truesight_darkness": {"sight": true, "through": ["darkness"], "evidence": "Crown of the Unblinking Sun: Truesight out to 30 feet, but only for perceiving illusions, disguises, possession signs, magical darkness, and spiritual corruption."},
+  "spiritual_sense": {"sight": true, "through": ["darkness", "obscured"], "sees_hidden": true, "evidence": "Spiritual Sense: against an ordinary living creature, Complete Soul, or spirit within range, Spiritual Sense functions as Blindsight; not a creature behind total cover."},
+  "tremorsense": {"sight": false, "pinpoints": true, "evidence": "Tremorsense pinpoints eligible creatures and moving objects but does not count as sight (Sight Beyond Sight)."},
+  "spiritual_truesight": {"sight": false, "pinpoints": true, "evidence": "Spiritual Truesight is a line-of-effect spiritual sense, not universal visual Truesight; it reveals the true spiritual position of a perceptible creature within range and line of effect (Spirit Awakening Procedure Addendum 15)."},
+  "scent": {"sight": false, "evidence": "Pure Darkness: all other senses, including Blindsight and Scent, have their range reduced by half. No fight rule of its own on this table."},
+  "bloodsense": {"sight": false, "evidence": "Bloodsense (60 feet): the direction of Bloodied creatures, whether a visible creature is injured; it does not reveal Invisible creatures. Information for the player; no fight rule of its own."},
+  "qi_sensing": {"sight": false, "evidence": "Qi Sensing (30 feet): the presence of active supernatural energy; it does not reveal a precise occupied space for an Invisible creature. Information for the player."},
+  "wicksight": {"sight": false, "evidence": "Wicksight (60 feet): whether a creature it can spiritually perceive is possessed, Frightened, Charmed, at 0 Hit Points or sustaining Concentration. Information for the player."}
+ },
+ "darkvision_sees_through": {"names": ["Darkness"], "evidence": "DARK_BASE_DARKNESS: 'A creature with Darkvision can see through this Darkness.' Other magical darkness keeps Darkvision out unless its text says otherwise (Obscure Passage: 'Darkvision cannot see through it'); Pure Darkness cuts Darkvision to 5 feet."},
+ "pure": {"talent": "Pure Darkness", "darkvision_ft": 5, "others": "half", "evidence": "TAL_DARK_PURE_DARKNESS: Darkvision is reduced to 5 feet inside your Darkness. All other senses, including Blindsight and Scent, have their range reduced by half."},
+ "hidden_conditions": ["condition:typed.hidden", "condition:typed.invisible"],
+ "blinded_conditions": ["condition:typed.blinded"],
+ "grants": {
+  "TAL_DARK_DARKVISION": {"when": "meld", "senses": [{"sense": "darkvision", "range_ft": 60, "or_add_ft": 30}], "evidence": "Grant the target Darkvision out to 60 feet. If the target already possesses Darkvision, increase its Darkvision range by 30 feet instead."},
+  "BLOOD_BASE_BLOODSENSE": {"when": "always", "senses": [{"sense": "bloodsense", "range_ft": 60}], "evidence": "You sense exposed blood, fresh wounds, and meaningful living circulation within 60 feet."},
+  "tianxia.path.qi_cultivation.feature.qi_sensing": {"when": "always", "senses": [{"sense": "qi_sensing", "range_ft": 30}], "evidence": "Qi Sensing is always active unless suppressed. Within 30 feet, perceive the presence of active supernatural energy."},
+  "tianxia.path.spirit_awakening.feature.spiritual_sense": {"when": "always", "senses": [{"sense": "spiritual_sense", "range_by_cl": [[1, 10, 10], [11, 16, 30], [17, 20, 60]]}], "evidence": "Spiritual Sense is always active unless suppressed. CL 1-10: 10 feet; 11-16: 30 feet; 17-20: 60 feet."},
+  "tianxia.tradition.spirit.candlemaker.feature.wick_of_the_self": {"when": "always", "senses": [{"sense": "wicksight", "range_ft": 60}], "evidence": "While your Soul Candle is within 60 feet, you gain Wicksight (the candle is taken to be with its maker)."},
+  "tianxia.tradition.spirit.inner_soul_gate_ascetic.feature.crown_soul_gate": {"when": "always", "senses": [{"sense": "spiritual_truesight", "range_ft": 30}], "evidence": "You gain Spiritual Truesight 30 feet as defined in the Procedure Addendum."},
+  "tianxia.subpath.body.heaven_thunder_drum_body.feature.heaven_drum_circulation": {"when": "always", "senses": [{"sense": "tremorsense", "range_ft": 30}], "evidence": "Tremorsense 30 feet while touching a solid surface."},
+  "tianxia.subpath.qi.abyssal_depths_cultivator.feature.deep_s_embrace": {"when": "always", "senses": [{"sense": "darkvision", "range_ft": 60, "or_add_ft": 30}], "evidence": "Darkvision 60 feet, or increase existing Darkvision by 30 feet."},
+  "tianxia.subpath.qi.mountain_core_cultivator.feature.stone_sense": {"when": "always", "senses": [{"sense": "tremorsense", "range_ft": 30}], "evidence": "While touching connected earth, stone, or metal, gain Tremorsense 30 feet."},
+  "TAL_THE_HIDDEN_EYE_TRUE_SIGHT": {"when": "martial_focus", "senses": [{"sense": "truesight", "range_ft": 120}], "evidence": "Range: 120 feet. While you hold Martial Focus, gain Truesight within range."},
+  "tianxia.path.qi_cultivation.feature.immortal_of_qi": {"when": "always", "senses": [{"sense": "truesight", "range_ft": 60}, {"sense": "qi_sensing", "range_ft": 120}], "evidence": "Permanent Nine Heavens Gaze: Nine Heavens Gaze is always active; no Action required, no Qi cost."},
+  "tianxia.subpath.body.thousand_eyed_calamity_body.feature.thousand_eyed_revelation": {"when": "active", "senses": [{"sense": "truesight", "range_ft": 120}, {"sense": "blindsight", "range_ft": 60}], "evidence": "Bonus Action, 1 minute: Truesight 120 feet and Blindsight 60 feet."},
+  "tianxia.subpath.body.hundred_beast_scripture.feature.sovereign_of_ten_thousand_beasts": {"when": "active", "senses": [{"sense": "darkvision", "range_ft": 120}], "evidence": "1 minute: Gain Darkvision 120 feet."},
+  "tianxia.subpath.qi.mountain_core_cultivator.feature.atlas_ascension": {"when": "active", "senses": [{"sense": "tremorsense", "range_ft": 60}], "evidence": "1 minute: Gain Tremorsense 60 feet."},
+  "tianxia.subpath.body.yamabushi.feature.avatar_of_the_mountain": {"when": "active", "senses": [{"sense": "tremorsense", "range_ft": 30}], "evidence": "1 minute: Gain Tremorsense 30 feet while touching a solid surface."},
+  "TAL_SOUND_SOUND_SOVEREIGN_INCARNATION": {"when": "active", "senses": [{"sense": "blindsight", "range_ft": 30}], "evidence": "Bonus Action, 1 minute: gain Blindsight 30 feet based on vibration and soul-sound."},
+  "TAL_THE_HIDDEN_EYE_SOVEREIGN_HIDDEN_EYE_INCARNATION": {"when": "active", "senses": [{"sense": "blindsight", "range_ft": 30}], "evidence": "Bonus Action, 1 minute: you have Blindsight within 30 feet."},
+  "tianxia.talent.source.dragon_vein_mantle": {"when": "active", "duration": {"kind": "minutes", "amount": 1}, "senses": [{"sense": "tremorsense", "range_ft": 30}], "evidence": "Bonus Action, 4 CP, 1 minute: While the mantle lasts, you gain Tremorsense out to 30 feet."},
+  "tianxia.talent.radiance.crown_of_the_unblinking_sun": {"when": "active", "senses": [{"sense": "truesight_darkness", "range_ft": 30}], "evidence": "Concentration, up to 1 minute: Truesight out to 30 feet, but only for ... magical darkness ..."},
+  "tianxia.tradition.spirit.mushroom_dreamwalker.feature.fruiting_body_of_the_dream": {"when": "active", "senses": [{"sense": "blindsight", "range_ft": 60, "against_conditions": ["condition:typed.unconscious", "condition:typed.poisoned", "condition:typed.frightened", "condition:typed.charmed"]}], "evidence": "The scene: Blindsight 60 feet against sleeping, poisoned, frightened, charmed, hallucinating, possessed, spiritually contaminated, Resonance Marked, or Dream-Spore-marked creatures (the table tracks the first four)."}
+ },
+ "gm": {
+  "tianxia.subpath.qi.abyssal_depths_cultivator.feature.tidal_resilience": "Deep-Sight Adaptation: while fully submerged or in an Abyssal environment, gain Darkvision 60 feet, or increase existing Darkvision by 30 feet. Ignore Lightly Obscured caused by ordinary water, silt, or depth. The table does not track full submersion or Abyssal environments; apply these conditional benefits by hand. This does not see through supernatural darkness, solid objects, or Heavily Obscured cultivated ink.",
+  "tianxia.subpath.qi.black_sea_leviathan_womb.feature.inner_sea_awakening": "Darkvision 60 feet while submerged or inside an Abyssal field: the table has no water depth.",
+  "TAL_DAEMONIC_CULTIVATION_BORROW_THE_MONSTER_S_SHAPE": "Night eyes (Darkvision 60 feet or +30) is one borrowed trait chosen away from the fight.",
+  "tianxia.talent.blood.bloodline_awakening": "Darkvision 60 feet is one benefit chosen at a 1-hour ritual.",
+  "tianxia.talent.blood.bloodline_ascension": "Darkvision 120 feet is one benefit chosen at a ritual.",
+  "tianxia.subpath.qi.shugenja.feature.elemental_form": "Earth form's Tremorsense 30 feet: one form chosen when it is used.",
+  "tianxia.subpath.qi.onmyoji.feature.shikigami_companion": "The shikigami's senses, not its summoner's.",
+  "tianxia.subpath.qi.onmyoji.feature.kami_invitation": "The invited kami's senses, not its summoner's.",
+  "tianxia.subpath.qi.onmyoji.feature.onmyodo_grandmaster": "The shikigami's senses, not its summoner's.",
+  "tianxia.subpath.qi.nightmare_dream_qi_cultivator.feature.nightmare_sovereign": "Truesight 60 feet only against Dream, Illusion and emotional concealment."
+ },
+ "melds": {
+  "sphere": "tianxia.sphere.dark",
+  "talents": ["TAL_DARK_CLEARSIGHT", "TAL_DARK_DARK_SLAUGHTER", "TAL_DARK_DARKVISION", "TAL_DARK_HIDE_IN_DARKNESS"],
+  "evidence": "Meld (Action, no CP cost): Grant the target one Meld talent you know. The first in this list that the character knows is the Meld a fight starts with; granting another later adds to the Melds it benefits from instead of replacing that one (owner 2026-09-29 struck the printed one-Meld limit)."
+ }
+}
