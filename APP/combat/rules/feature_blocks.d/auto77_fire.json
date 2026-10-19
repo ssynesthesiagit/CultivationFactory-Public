@@ -1,0 +1,30 @@
+{
+ "schema": "TianxiaFoundry.FeatureBlocks.v1",
+ "note": "Fire sphere block rows (AUTO77, 2026-10-05): the printed lines that were GM riders, now answered by combat/ext/fire_sphere.py and combat/ext/base_augments.py's Overheat rows.",
+ "features": {
+  "FIRE_TAL_BURNING_WEAPON": {
+   "block": "auto77_fire",
+   "kind": "burning_weapon",
+   "why": "'Imbue one weapon, unarmed strike, or natural weapon with flame. Once per turn when the bearer hits with that weapon, add Fire damage: 1-10: 1d6; 11-16: 2d6; 17-20: 3d6. The hit applies Burn.' (combat/ext/fire_sphere.py, the imbue_weapon action effect and after_hit).",
+   "keeps_compiling": true
+  },
+  "tianxia.talent.fire.white_hot_focus": {
+   "block": "auto77_fire",
+   "kind": "focus",
+   "why": "'The next Fire talent you use this turn gains one: Advantage on one attack roll; one target has Disadvantage on its saving throw; add your Path key ability modifier to one Fire damage roll; ignore Resistance to Fire damage for one target. After the talent resolves, take Fire damage equal to your Proficiency Bonus.' (combat/ext/fire_sphere.py, four compiled buttons and the attack_mode/save/attack_damage_bonus/damage_roll_bonus/resistance_ignored readers).",
+   "keeps_compiling": true
+  },
+  "tianxia.talent.fire.furnace_heart": {
+   "block": "auto77_fire",
+   "kind": "furnace_heart",
+   "why": "'Overheat self-damage is reduced by half' (combat/ext/fire_sphere.py, the talent's own state marker and final_damage).",
+   "keeps_compiling": true
+  },
+  "tianxia.talent.fire.fire_sovereign_incarnation": {
+   "block": "auto77_fire",
+   "kind": "sovereign",
+   "why": "'Overheat self-damage is reduced to 0' (combat/ext/fire_sphere.py, final_damage).",
+   "keeps_compiling": true
+  }
+ }
+}
