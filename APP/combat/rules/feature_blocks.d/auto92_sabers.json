@@ -1,0 +1,144 @@
+{
+  "features": {
+    "tianxia.talent.sabers.battleline_shove_cut": {
+      "block": "sabers_rider",
+      "kind": "battleline_shove_cut_v2",
+      "hit_effects": [
+        {
+          "type": "if_moved",
+          "min_ft": 10,
+          "effects": [
+            {
+              "type": "if_size_at_most",
+              "max_size": "Large",
+              "effects": [
+                {
+                  "type": "paid_option",
+                  "talent": "tianxia.talent.sabers.battleline_shove_cut",
+                  "name": "Battleline Shove-Cut: spend 1 CP after your saber hit",
+                  "ways": [
+                    [
+                      {
+                        "resource_id": "primary",
+                        "amount": 1
+                      }
+                    ]
+                  ],
+                  "effects": [
+                    {
+                      "type": "save",
+                      "ability": "str",
+                      "applies_to": "target",
+                      "dc": "technique_save_dc",
+                      "on_fail": [
+                        {
+                          "type": "rider_menu",
+                          "id": "battleline_outcome",
+                          "name": "Battleline Shove-Cut",
+                          "options": [
+                            {
+                              "id": "push",
+                              "label": "Push the creature 10 feet",
+                              "effects": [
+                                {
+                                  "type": "forced_movement",
+                                  "applies_to": "target",
+                                  "direction": "away",
+                                  "distance_ft": 10
+                                }
+                              ]
+                            },
+                            {
+                              "id": "prone",
+                              "label": "Knock the creature Prone",
+                              "effects": [
+                                {
+                                  "type": "condition",
+                                  "condition": "prone",
+                                  "applies_to": "target"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "on_success": [
+                        {
+                          "type": "forced_movement",
+                          "applies_to": "target",
+                          "direction": "away",
+                          "distance_ft": 5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "why": "Explicitly owned new sealed marker. After actual Sabers hit, 10 feet willing movement this turn, Large or smaller, optional 1 CP after hit, STR final save: chosen push10 or Prone on failure; push5 on success. Native forced movement does not provoke.",
+      "source_mechanics": [
+        "tianxia.talent.sabers.army_line_chopping_field",
+        "tianxia.talent.sabers.banner_cleaving_advance",
+        "tianxia.talent.sabers.battlefield_beheading_line",
+        "tianxia.talent.sabers.battleline_shove_cut",
+        "tianxia.talent.sabers.beheading_feint",
+        "tianxia.talent.sabers.bloodless_butcher_s_lesson",
+        "tianxia.talent.sabers.circle_cleaving_saber",
+        "tianxia.talent.sabers.counter_slope_dao",
+        "tianxia.talent.sabers.crescent_through_the_shield_wall",
+        "tianxia.talent.sabers.cruel_draw_cut",
+        "tianxia.talent.sabers.domain_of_the_unanswered_cut",
+        "tianxia.talent.sabers.execution_platform_presence",
+        "tianxia.talent.sabers.forward_cut",
+        "tianxia.talent.sabers.guard_cutting_parry",
+        "tianxia.talent.sabers.hard_draw_cut",
+        "tianxia.talent.sabers.hewing_entry",
+        "tianxia.talent.sabers.horse_cutting_arc",
+        "tianxia.talent.sabers.kingfisher_beheads_the_retreat",
+        "tianxia.talent.sabers.red_trail_pursuit",
+        "tianxia.talent.sabers.rider_s_passing_cut",
+        "tianxia.talent.sabers.saber_scare",
+        "tianxia.talent.sabers.shield_hacking_rhythm",
+        "tianxia.talent.sabers.short_saber_infighting",
+        "tianxia.talent.sabers.ten_step_pursuit_doctrine",
+        "tianxia.talent.sabers.thousand_saber_infantry_road",
+        "tianxia.talent.sabers.wrap_the_head_return_the_edge"
+      ]
+    },
+    "tianxia.talent.sabers.ten_step_pursuit_doctrine": {
+      "block": "sabers_rider",
+      "kind": "ten_step_pursuit_v2",
+      "source_mechanics": [
+        "tianxia.talent.sabers.red_trail_pursuit"
+      ],
+      "hit_effects": [
+        {
+          "type": "paid_option",
+          "talent": "tianxia.talent.sabers.ten_step_pursuit_doctrine",
+          "name": "Ten-Step Pursuit Doctrine: spend 2 CP after the pursuit hit",
+          "ways": [
+            [
+              {
+                "resource_id": "primary",
+                "amount": 2
+              }
+            ]
+          ],
+          "effects": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "duration": "until_end_of_next_turn",
+              "evidence": "reduce the target\u2019s Speed by 10 feet until the end of its next turn"
+            }
+          ]
+        }
+      ],
+      "why": "New sealed source-specific paid hit row. Only actual Red Trail Pursuit hit asks optional2CP; native speed modifier owns recipient-next-end expiry. Expanded historical hit eligibility still needs lock work."
+    }
+  }
+}
