@@ -1,0 +1,74 @@
+{
+  "features": {
+    "TAL_WEATHER_WEATHERPROOF_MANTLE": {
+      "block": "weather",
+      "kind": "weatherproof_mantle",
+      "why": "One purchase is for one Weather Sign ('Choose one Weather Sign talent you know ... choosing a different Weather Sign each time'): the sign is asked once and kept on the owner, so a Mantle of another sign gains nothing from it. That sign's named Resistance is put on the mantled creature as condition rule data, read by the shared damage_defenses path (combat/ext/standard_conditions.py); Wind's 'Resistance to nonmagical ranged weapon damage' is answered through the same damage_defenses seam because it is about the attack rather than the damage type; Dry's 'necrotic damage from desiccation' is stated for the table; and the printed Advantage on saves against cold weather (Heat) and dehydration (Dry) rides the save hook."
+    },
+    "TAL_WEATHER_WEATHER_BACKLASH": {
+      "block": "weather",
+      "kind": "weather_backlash",
+      "why": "A melee hit on a creature carrying one of your Sky Mantles burns the attacker for your Proficiency Bonus, typed by the Mantle's sign and once per round per mantled creature (combat/ext/weather_mantle.py, after_hit)."
+    },
+    "TAL_WEATHER_SHARED_WEATHER_FAVOR": {
+      "block": "weather",
+      "kind": "shared_weather_favor",
+      "why": "The printed extra willing recipients of a Sky Mantle, all on the same sign, are compiled as extra choose_willing recipients on the cast (combat/ext/weather_mantle.py, compile_actions); each recipient is asked through the ordinary consent transport."
+    },
+    "TAL_WEATHER_PERSISTENT_SHROUD": {
+      "block": "weather",
+      "kind": "persistent_shroud",
+      "why": "2 additional Cultivation Points for a Shroud that lasts without Concentration and ends after the target's three successful saves; at Mortal Realm only one of yours may be active (combat/ext/weather_shroud.py, compile_actions and compile_resources)."
+    },
+    "TAL_WEATHER_PRESSURE_CRACKING_SHROUD": {
+      "block": "weather",
+      "kind": "pressure_cracking_shroud",
+      "why": "2 Cultivation Points on a failed save against your Cloud Shroud take away the target's Resistance to that Shroud's damage type until the end of your next turn (combat/ext/weather_shroud.py, Pressure-Cracking Shroud)."
+    },
+    "TAL_WEATHER_LIGHTNING_CHOOSES_THE_ROD": {
+      "block": "weather",
+      "kind": "lightning_chooses_the_rod",
+      "why": "Move your Thunder Shroud to another creature within 30 feet of the original target without using an action, once per round; the new target makes the Shroud's saving throw at once (combat/ext/weather_shroud.py, Move Thunder Shroud)."
+    },
+    "TAL_WEATHER_QUICK_MANTLE": {
+      "block": "weather",
+      "kind": "quick_mantle",
+      "why": "The Sky Mantle cast as a Bonus Action, and one free combat cast per short rest, are compiled as extra casts of the base ability (combat/ext/weather_mantle.py, compile_actions) with an evented allowance for the free cast."
+    },
+    "TAL_WEATHER_LINGERING_MANTLE": {
+      "block": "weather",
+      "kind": "lingering_mantle",
+      "why": "2 additional Cultivation Points for a cast that lasts its remaining duration without Concentration, with one of yours at a time at Mortal Realm (combat/ext/weather_mantle.py, compile_actions and the weather_sky_mantle effect)."
+    },
+    "TAL_WEATHER_FOUNDATION_WEATHER_FIELD": {
+      "block": "weather",
+      "kind": "foundation_weather_field",
+      "why": "A2WEATHER: sealed gathered-field and Shroud hooks in combat/ext/weather_fields.py."
+    },
+    "TAL_WEATHER_CORE_WEATHER_FIELD": {
+      "block": "weather",
+      "kind": "core_weather_field",
+      "why": "A2WEATHER: sealed gathered-field and Shroud hooks in combat/ext/weather_fields.py."
+    },
+    "TAL_WEATHER_WEATHER_CUT": {
+      "block": "weather",
+      "kind": "weather_cut",
+      "why": "A2WEATHER: sealed gathered-field and Shroud hooks in combat/ext/weather_fields.py."
+    },
+    "TAL_WEATHER_STORM_BIRTH": {
+      "block": "weather",
+      "kind": "storm_birth",
+      "why": "A2WEATHER: sealed gathered-field and Shroud hooks in combat/ext/weather_fields.py."
+    },
+    "TAL_WEATHER_SEVERE_SHROUD": {
+      "block": "weather",
+      "kind": "severe_shroud",
+      "why": "A2WEATHER: sealed gathered-field and Shroud hooks in combat/ext/weather_fields.py."
+    },
+    "TAL_WEATHER_SKY_BOUND_RANGE": {
+      "block": "weather",
+      "kind": "sky_bound_range",
+      "why": "A2WEATHER: realm-scaled range in combat/ext/weather_fields.py, compile_action."
+    }
+  }
+}
