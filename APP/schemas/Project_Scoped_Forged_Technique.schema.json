@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Project_Scoped_Forged_Technique.schema.json",
+  "title": "Project-scoped Forged Technique v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_id",
+    "project_id",
+    "display_name",
+    "forging_rule_id",
+    "component_ids",
+    "component_provenance",
+    "created_by_event_id",
+    "execution",
+    "display_projection",
+    "record_hash"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "TianxiaFoundry.ProjectForgedTechnique.v1"
+    },
+    "record_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "forging_rule_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "component_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 240
+      }
+    },
+    "component_provenance": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "record_id",
+          "record_hash",
+          "pack_id",
+          "pack_version",
+          "pack_hash",
+          "source_id",
+          "source_hash",
+          "source_anchor",
+          "source_path",
+          "causal_event_id"
+        ],
+        "properties": {
+          "role": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          },
+          "record_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          },
+          "record_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "pack_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          },
+          "pack_version": {
+            "type": "string"
+          },
+          "pack_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "source_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          },
+          "source_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "source_anchor": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_path": {
+            "type": "string"
+          },
+          "causal_event_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "created_by_event_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "execution": {
+      "type": "object",
+      "required": [
+        "timing",
+        "cost",
+        "range",
+        "target",
+        "resolution",
+        "effect",
+        "failure",
+        "duration",
+        "limits",
+        "counterplay"
+      ],
+      "additionalProperties": true
+    },
+    "display_projection": {
+      "type": "object"
+    },
+    "record_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}
