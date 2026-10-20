@@ -1,0 +1,151 @@
+{
+ "features": {
+  "tianxia.talent.chains.prisoner_s_bell": {
+   "block": "prisoners_bell",
+   "why": "Rider lane C15: 'When a creature escapes one of your Chains talents, destroys one of your Chain Objects, teleports away from one of your Tethers ... learn the direction of its escape and whether it used physical movement, teleportation, spiritual escape, forced movement, or outside assistance ... Once per short rest ... use Restraining Hook against that creature without spending CP if it is within range' (combat/ext/chains_sphere.py, answering the hold_escaped report of combat/ext/hold_escapes.py)."
+  },
+  "TAL_GUARDIAN_ADAMANT_GUARDIAN_INCARNATION": {
+   "block": "reaction_economy",
+   "grant": "extra",
+   "covers": {
+    "any": true
+   },
+   "while_state": "adamant_guardian_incarnation",
+   "name": "Adamant Guardian Incarnation",
+   "why": "Rider lane C15: 'gain one additional Reaction each round; this explicitly overrides the ordinary one-Reaction limit; still use only one Reaction for any single trigger' while the incarnation lasts (combat/ext/reaction_economy.py)."
+  },
+  "TAL_SCOUNDREL_SOVEREIGN_OF_TEN_THOUSAND_EMPTY_SLEEVES": {
+   "block": "reaction_economy",
+   "grant": "extra",
+   "covers": {
+    "sphere": "tianxia.sphere.scoundrel"
+   },
+   "while_state": "sovereign_of_ten_thousand_empty_sleeves",
+   "name": "Sovereign of Ten Thousand Empty Sleeves",
+   "why": "Rider lane C15: 'gain one additional Reaction each round, usable only for Scoundrel talents' while it lasts (combat/ext/reaction_economy.py)."
+  },
+  "TAL_DRUNKEN_STYLE_SOVEREIGN_CHAOS_STEP_INCARNATION": {
+   "block": "reaction_economy",
+   "while_state": "chaos_step_incarnation",
+   "name": "Sovereign Chaos-Step Incarnation",
+   "grants": [
+    {
+     "grant": "free",
+     "covers": {
+      "features": [
+       "TAL_DRUNKEN_STYLE_SWAYING_GUARD"
+      ]
+     }
+    },
+    {
+     "grant": "extra",
+     "covers": {
+      "sphere": "tianxia.sphere.drunken_style"
+     }
+    }
+   ],
+   "why": "Rider lane C15: 'Once per round, you may use Swaying Guard without spending your Reaction or Martial Focus. You gain one additional Reaction each round, which can be used only for Drunken Style talents.' (combat/ext/reaction_economy.py; Swaying Guard costs no Martial Focus on the table)."
+  },
+  "TAL_LIGHTNING_LIGHTNING_SOVEREIGN_INCARNATION": {
+   "block": "reaction_economy",
+   "grant": "free",
+   "covers": {
+    "features": [
+     "TAL_LIGHTNING_STATIC_GUARD"
+    ]
+   },
+   "while_state": "lightning_sovereign_incarnation",
+   "name": "Lightning Sovereign Incarnation",
+   "why": "Rider lane C15: 'You may use Static Guard without spending your Reaction once per round.' (combat/ext/reaction_economy.py; the incarnation's own state row)."
+  },
+  "TAL_FLOWING_RIVER_NO_CENTER_UNDER_HEAVEN": {
+   "block": "reaction_economy",
+   "grant": "free",
+   "covers": {
+    "features": [
+     "TAL_FLOWING_RIVER_FLOWING_RESPONSE"
+    ]
+   },
+   "while_state": "no_center_under_heaven",
+   "name": "No Center Under Heaven",
+   "why": "Rider lane C15: 'you may use Flowing Response without spending your Reaction once per round' while it lasts (combat/ext/reaction_economy.py)."
+  },
+  "tianxia.talent.jester.court_of_words_without_offense": {
+   "block": "reaction_economy",
+   "grant": "free",
+   "covers": {
+    "punchline": true
+   },
+   "while_state": "court_of_words_without_offense",
+   "name": "Court of Words Without Offense",
+   "why": "Rider lane C15: 'once per round, deliver one Punchline without spending your Reaction' while the Court lasts (combat/ext/reaction_economy.py; a Punchline is a reaction that needs a Foil mark)."
+  },
+  "tianxia.talent.jester.recluse_at_court_incarnation": {
+   "block": "reaction_economy",
+   "grant": "free",
+   "covers": {
+    "punchline": true
+   },
+   "while_state": "recluse_at_court_incarnation",
+   "name": "Recluse-at-Court Incarnation",
+   "why": "Rider lane C15: 'deliver one Punchline per round without spending your Reaction' while it lasts (combat/ext/reaction_economy.py)."
+  },
+  "TAL_FATE_FATE_SOVEREIGN_INCARNATION": {
+   "block": "reaction_economy",
+   "grant": "no_cost",
+   "covers": {
+    "features": [
+     "TAL_FATE_TWIST_OF_FATE"
+    ]
+   },
+   "while_state": "fate_sovereign_incarnation",
+   "name": "Fate-Sovereign Incarnation",
+   "why": "Rider lane C15: 'Once per round, you may use Twist of Fate without spending CP' while it lasts (combat/ext/reaction_economy.py answers generic_reaction_costs; Twist of Fate is once a round by its own rule)."
+  },
+  "TAL_THE_HIDDEN_EYE_PIERCING_SENSES": {
+   "block": "attack_mode_removal",
+   "remove": [
+    "DISADVANTAGE:invisible",
+    "DISADVANTAGE:blinded",
+    "DISADVANTAGE:obscured"
+   ],
+   "range_ft": 30,
+   "why": "Rider lane C15: 'When you make an attack roll against a target within range, you do not have Disadvantage on that attack roll solely because: the target has the Invisible condition; the target is in a Heavily Obscured area; or you have the Blinded condition' (combat/ext/attack_mode_removal.py)."
+  },
+  "tianxia.talent.pressure_points.reversing_pulse": {
+   "block": "reversing_pulse",
+   "range_ft": 30,
+   "why": "Rider lane C15: Reversing Pulse answers as HP or Temporary HP is about to land (combat/ext/healing_interception.py: Constitution save; halve on a failure, minus PB on a success)."
+  },
+  "TAL_YIN_WOUND_THAT_REFUSES_DAWN": {
+   "block": "wound_that_refuses_dawn",
+   "why": "Rider lane C15: after Diminish Recovery, the first (CL 11: each) HP or Temporary HP the target gains before the start of your next turn is PB less (combat/ext/healing_interception.py)."
+  },
+  "TAL_YIN_SPENDING_A_WANING_MARK#diminish_force": {
+   "block": "diminish_recovery",
+   "why": "Rider lane C15: Diminish Recovery -- spend a Waning Mark as the marked creature regains HP or gains Temporary HP: PB + key ability modifier less (combat/ext/healing_interception.py). Keyed on the compiled child of Spending a Waning Mark (the parent splits into it), which every Yin character owns; Diminish Force keeps its own reaction row."
+  },
+  "TAL_FORCE_RETURNING_IMPACT": {
+   "block": "reaction_economy",
+   "grant": "free",
+   "covers": {
+    "features": [
+     "TAL_FORCE_RETURNING_IMPACT"
+    ]
+   },
+   "name": "Returning Impact",
+   "why": "AUTO87 2026-10-05, reviewed AUTO87f1: 'Trigger: Counterpressure reduces damage from a melee attack ... Cost: 2 CP. After resolving Counterpressure, return the caught pressure toward the source.' Counterpressure spends the Reaction on that same moment and the printed rule does not exempt this follow-up, so as written it could never be taken at all. This grant is the UNRULED reading 'a follow-up on the same moment rides the Reaction that moment already spent' -- OPEN OWNER QUESTION Q28 in docs/rules/RULES_OPEN_QUESTIONS.md; delete this row to go back to the printed reading (the talent then stays a GM line). Its 2 CP and its printed damage are unchanged either way."
+  },
+  "TAL_FORCE_TEN_THOUSAND_REBOUNDS": {
+   "block": "reaction_economy",
+   "grant": "free",
+   "covers": {
+    "features": [
+     "TAL_FORCE_TEN_THOUSAND_REBOUNDS"
+    ]
+   },
+   "name": "Ten Thousand Rebounds",
+   "why": "AUTO87 2026-10-05, reviewed AUTO87f1: 'Trigger: You activate Counterpressure ... Duration: Until the start of your next turn.' It is spent on the Counterpressure that arms it, not on a second Reaction of its own; its printed duration would otherwise be over before it could answer anything. This grant is the same UNRULED reading as Returning Impact above -- OPEN OWNER QUESTION Q28 in docs/rules/RULES_OPEN_QUESTIONS.md; delete this row to go back to the printed reading. Its 8 CP and its once-per-long-rest limit are unchanged either way."
+  }
+ }
+}
