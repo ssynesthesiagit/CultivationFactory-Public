@@ -1,0 +1,56 @@
+{
+ "features": {
+  "SMOKE_BASE_DENSE_SMOKE": {
+   "status": "definition",
+   "why": "A rules-term paragraph (\"Dense smoke is Heavily Obscured for creatures that rely on sight... does not deafen, poison, block Tremorsense, or prevent attacks\"); other talents (Dense Veil, Wall of Smoke, Smoke Domain) reference the term but it has no independent activation of its own."
+  },
+  "SMOKE_BASE_SMOKE_TRACE": {
+   "status": "applied",
+   "why": "The once-per-round placement is built as a manual action, \"Place Smoke Trace\" (combat/ext/ironclad_smoke.py), simplified from the printed seven environmental triggers (movement, attack rolls, CP/spell slot/technique use, breath/speech, Fire damage, object events, Hide/Invisible) to a no-action player/AI choice, since no generic event-trigger coverage exists here for all seven. Gated to once per round by a self-mark so the free (no-economy) action cannot loop forever for the AI. The Proficiency-Bonus active-trace cap is not separately enforced."
+  },
+  "TAL_SMOKE_SMOKE_STEP": {
+   "status": "applied",
+   "why": "Slip the Chimney Path (built in combat/ext/ironclad_smoke.py, since the base three Smoke Responses share one un-split mechanic id) checks TAL_SMOKE_SMOKE_STEP's ownership directly and sets its own move distance to 15/20 ft by CL, since Smoke Step's own modifier (which targets \"Slip the Chimney Path\" by name) cannot attach: that action is built by a compile_actions plug-in, which runs after the modifier pass finishes."
+  },
+  "TAL_SMOKE_BLACK_CHIMNEY_ROUTE": {
+   "status": "applied",
+   "why": "Same as Smoke Step above: Slip the Chimney Path checks TAL_SMOKE_BLACK_CHIMNEY_ROUTE directly and sets its move distance to 30 ft. Simplification: the printed \"only inside your Smoke Domain, and only then does it skip needing line of sight\" gate is not modeled -- the 30 ft distance is always used once the talent is owned (CL10+ prerequisite chain makes the Domain very likely already relevant for this fight)."
+  },
+  "TAL_SMOKE_BLACKEN_THE_FLAME": {
+   "status": "table",
+   "why": "Its trigger (\"Fire damage is dealt inside your Smoke Veil or through your Smoke Veil\") answers Fire damage dealt to ANY creature in the veil's area, not to Lingfeng herself -- it does not match any phrase in combat/rules/reaction_trigger_phrases.json (which only recognizes self-directed \"damaged\"/\"ally_damaged\" style triggers), so combat/reaction_triggers.py classifies it unsupported and factory_compiler.py skips it. Adding a new phrase pattern would mean editing that shared, non-.d-overridable config file for one CL-gated Reaction; left as a genuine gap rather than force a shared-file change for a single talent."
+  },
+  "TAL_SMOKE_ASH_ON_THE_FOOTPRINTS": {
+   "status": "table",
+   "why": "\"When a creature leaves your Smoke Veil, you may place a Smoke Trace\" -- a movement-boundary trigger this engine has no generic hook for (no zone-exit event exists to key a reaction off). The Advantage-on-Survival/Perception-to-notice-the-passage clause is also a non-attack-roll check, never mechanically enforced on this table regardless."
+  },
+  "tianxia.talent.smoke.scent_eating_smoke": {
+   "status": "table",
+   "why": "Body 2026-09-29: corrected id (this entry previously used a non-existent 'TAL_SMOKE_SCENT_EATING_SMOKE', so it never matched anything and the talent fell through to a plain unlabelled passive skip). Grants Advantage on Dexterity (Stealth) checks to creatures standing inside the caster's Smoke Veil, made to hide from creatures relying primarily on smell, with an exception for a creature the caster has already left a Smoke Trace on. The 2026-09-28 check_mode mechanism (typed_executor.py) now makes ability-check Advantage mechanically enforceable in principle, but this effect is zone-conferred (every creature currently standing in the Smoke Veil, not the caster alone) and would need continuous membership tracking as creatures enter/leave the veil each turn plus the Smoke-Trace carve-out -- a small aura-style build, not a one-line typing fix. Left as a GM-only rider rather than half-model it (e.g. granting it to the caster only, which the text does not say)."
+  },
+  "TAL_SMOKE_SMOKE_MIRROR_TRAIL": {
+   "status": "table",
+   "why": "\"When one creature inside your Smoke Veil becomes Invisible, successfully Hides, teleports, or leaves the veil without using normal movement, you may place a Smoke Trace\" -- like Ash on the Footprints, no generic engine hook exists for these state-change/movement-mode events."
+  },
+  "TAL_SMOKE_ASHEN_COURT_RECORD": {
+   "status": "table",
+   "why": "\"When a creature inside your Smoke Domain makes an attack roll, casts a spell, spends CP, uses a spell slot, uses a supernatural technique, or becomes Invisible\" -- a Domain-wide, any-creature, multi-trigger reaction with no reaction_trigger_phrases.json pattern; same category of gap as Blacken the Flame, compounded by needing the still-unbuilt Smoke Domain area-membership check."
+  },
+  "BLACKSMITH_BASE_QUENCH_THE_MARK": {
+   "status": "definition",
+   "why": "\"Spend Forge Marks to activate a Blacksmith response, talent, or improvement\" is the naming/definition paragraph for the spend-a-Forge-Mark idiom every other Blacksmith talent already uses directly (the compiler's generic \"spend_mark\" effect type); it has no activation of its own to compile."
+  },
+  "tianxia.talent.blacksmith.quench_in_breath": {
+   "status": "table",
+   "why": "\"When you spend a Forge Mark on a workpiece you hold, wear, or touch, reduce the next Fire/Cold/Lightning/Acid damage you take\" -- a trigger keyed on the character's OWN act of spending a mark (via any of several different talents/responses), which has no generic \"after I spend this specific resource\" reaction hook on this table."
+  },
+  "TAL_IRON_FIST_MERCIFUL_HAND": {
+   "status": "applied",
+   "why": "Merciful Hand can leave a creature at 1 HP when your Unarmed Strike would defeat it. Choose Prone, a legal free-hand Grapple, no Reactions until the end of its next turn, or an immediate 5-foot step without an opportunity attack from it. Costs no resource, Action or Reaction; restores Martial Focus if absent."
+  },
+  "TAL_IRON_FIST_IRON_FIST_BREAKS_THE_WEAPON": {
+   "status": "applied",
+   "why": "Automated as a Reaction (see reviewed_final.d: the printed text never states an Action Type, inferred from context to match its Guard/Meridian siblings) that makes an Unarmed Strike against the attacker, exactly like Counter Palm. The weapon-targeting/breaking branch (damage thresholds, Cultivation Check to resist) is GM-only -- no object-durability system exists on this table."
+  }
+ }
+}
