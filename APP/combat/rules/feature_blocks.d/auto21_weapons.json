@@ -1,0 +1,25 @@
+{
+  "note": "Weapons Sphere talents this table automates (automation lane AUTO21, 2026-10-04; review fixes AUTO21r1f1). One block, one kind per talent; combat/ext/weapons_sphere.py is the only owner and reads its own compiled rows through combat/ext/passive_rows.row_of. A key must not appear in two files, and a key listed here is a talent the engine resolves: a talent with no key at all is one this table does not automate, and it keeps its printed text. Formation Weapon Drill is such a talent (review AUTO21r1f1): the printed benefit needs to know whether the forced movement passed through the owner's threatened area, which a one-save-with-no-path resolution cannot answer, so it is decided at the table.",
+  "features": {
+    "tianxia.talent.weapons.break_the_guard": {
+      "block": "weapons_talent",
+      "kind": "break_the_guard",
+      "why": "Hitting a creature that benefits from a Shield, parry, guard stance or ward: offered to spend 1 Martial Focus for Breaking Method (add your Proficiency Bonus to the damage) even without a qualifying weapon tag, then a Strength saving throw against your Weapon Method DC; on a failure one of its defensive bonuses is 2 lower until the start of your next turn. It is a Weapon Method, so this turn's one Weapon Method must still be unspent (combat/ext/weapons_sphere.py)."
+    },
+    "tianxia.talent.weapons.iron_against_iron": {
+      "block": "weapons_talent",
+      "kind": "iron_against_iron",
+      "why": "Breaking Method actually used on this hit against a weapon, shield or object a creature holds: its holder makes a Strength saving throw against your Weapon Method DC; on a failure attacks made with that item are 2 lower until the start of your next turn. The trigger is read off the Weapon Method this hit executed, so an ordinary hit, and the second hit of a two-hit attack once the turn's one method is spent, do nothing. A rattled shield makes no attacks and so changes no number. The item is not destroyed (that stays the GM's call for magic items and cultivation treasures) (combat/ext/weapons_sphere.py)."
+    },
+    "tianxia.talent.weapons.soft_weapon_discipline": {
+      "block": "weapons_talent",
+      "kind": "soft_weapon_discipline",
+      "why": "Missing with a Flexible weapon attack: offered to pull the weapon back safely, so the next Opportunity Attack against you has Disadvantage until the start of your next turn (combat/ext/weapons_sphere.py)."
+    },
+    "tianxia.talent.weapons.shifting_grip_scripture": {
+      "block": "weapons_talent",
+      "kind": "shifting_grip_scripture",
+      "why": "At the start of each of your turns, choose the grip of a Versatile, Staff, Polearm, Flexible or Variable Reach weapon you are holding: Close Grip (attack creatures next to you normally), Long Grip (reach 5 feet farther, and your own attacks against creatures next to you have Disadvantage, until the start of your next turn) or Guard Grip (1 more Armor Class and your Speed 5 feet lower until the start of your next turn). A grip lasts only while that weapon is still in your hands (combat/ext/weapons_sphere.py)."
+    }
+  }
+}
