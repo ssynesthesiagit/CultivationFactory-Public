@@ -1,0 +1,51 @@
+{
+  "features": {
+    "foundation.beast_echo_marrow_v0_2A.generate_pack_echo": {
+      "block": "generate",
+      "resource": "foundation",
+      "on": ["echo_scope_hit", "echo_beast_hit"],
+      "max": 1,
+      "per_round": 1,
+      "expires": "end_of_next_turn",
+      "refresh": true,
+      "trigger_owner": "beast_echo_marrow",
+      "why": "Gain Pack Echo (max 1, once a round, refreshing) after a Fixed Beast-Echo Scope hit while an ally or bonded companion is within 30 ft of you or the target, or after hitting a beast-aspected creature; it expires at the end of your next turn (combat/pressure.py owns the clocks; combat/ext/beast_echo_marrow.py generates both receipts, so the compiled generic own-hit reaction is claimed out instead of paying again)."
+    },
+    "foundation.beast_echo_marrow_v0_2A.pack_marrow_strike": {
+      "block": "beast_echo",
+      "kind": "pack_marrow_strike",
+      "why": "Paid rider on a qualifying hit; combat/ext/beast_echo_marrow.py owns the spend, the damage of the hit's type, and the Refined Pack Marrow and Beast-Echo Marrow State riders."
+    },
+    "foundation.beast_echo_marrow_v0_2A.beast_sense_witness": {
+      "block": "beast_echo",
+      "kind": "beast_sense_witness",
+      "why": "Spend 1 Pack Echo to add PB to a Fixed Beast-Echo Scope check or saving throw; combat/ext/beast_echo_marrow.py registers the d20_rewrite rule (and the Companion Echo companion-bond rule and its psychic-damage reroll)."
+    },
+    "foundation.beast_echo_marrow_v0_2A.marrow_pack_guard": {
+      "block": "beast_echo",
+      "kind": "marrow_pack_guard",
+      "keeps_compiling": true,
+      "why": "The plug-in's ownership row: the printed reaction (spend 1 Pack Echo when you, a bonded companion or an ally within 30 feet takes damage from a creature your side damaged since the start of your last turn, or from a beast, predator, natural-weapon, blood, fear or pack-aura source: reduce it by PB + your cultivation ability modifier; a bonded companion hit by a beast-aspected source may also move 5 feet without provoking) compiles as its own generic reaction from the typed record, which keeps compiling alongside this row. combat/ext/beast_echo_marrow.py owns the trigger filter (reaction_geometry_allowed), the +modifier (damage_reduction_bonus), the companion riders and the once-per-round pack budget."
+    },
+    "foundation.beast_echo_marrow_v0_2A.companion_echo": {
+      "block": "beast_echo",
+      "kind": "companion_echo",
+      "why": "Refined rider on Marrow Pack Guard for a bonded companion and Beast-Sense Witness for a companion-bond save/check; combat/ext/beast_echo_marrow.py owns the another PB and the psychic-damage reroll."
+    },
+    "foundation.beast_echo_marrow_v0_2A.pack_marrow": {
+      "block": "beast_echo",
+      "kind": "pack_marrow",
+      "why": "Refined rider on Pack-Marrow Strike: another PB when the fighter damaged the same target since the start of the fighter's last turn (combat/ext/beast_echo_marrow.py)."
+    },
+    "foundation.beast_echo_marrow_v0_2A.predator_answer": {
+      "block": "beast_echo",
+      "kind": "predator_answer",
+      "why": "Refined rider on generating Pack Echo from a beast-aspected hit: temporary HP equal to PB or a 5-foot move without provoking (combat/ext/beast_echo_marrow.py; the player chooses, the AI takes the temporary HP)."
+    },
+    "foundation.beast_echo_marrow_v0_2A.beast_echo_marrow_state": {
+      "block": "beast_echo",
+      "kind": "beast_echo_marrow_state",
+      "why": "Bonus Action, 1 Pack Echo + 2 CP, once per combat or major scene: the one-minute state for the fighter and one bonded companion or ally within 60 ft (combat/ext/beast_echo_marrow.py owns the action, the pair's mode hooks and riders)."
+    }
+  }
+}
