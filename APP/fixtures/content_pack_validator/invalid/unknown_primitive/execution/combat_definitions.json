@@ -1,0 +1,72 @@
+{
+  "candidate_status": "CANDIDATE_NON_AUTHORITATIVE",
+  "definitions": [
+    {
+      "complete": true,
+      "definition_id": "tianxia.execution.flame_lash.fixture",
+      "definition_version": "1.0.0",
+      "kind": "action",
+      "primitive_ids": [
+        "combat.unknown.fixture"
+      ],
+      "record_id": "tianxia.talent.fire.flame_lash.fixture",
+      "source_binding": {
+        "anchor": "fixture:flame_lash:execution",
+        "source_id": "tianxia.source.fixture.cpk1",
+        "source_path": "sources/authenticated_source.json",
+        "source_sha256": "9751463bf4e13ba91babd9b56a003f72eb687a06b8da969f5caece334914438e",
+        "source_version": "1.0.0"
+      },
+      "typed_fields": {
+        "economy": {
+          "cost": 1
+        },
+        "resolution": {
+          "attack_ability": "intelligence",
+          "damage": "1d8",
+          "damage_type": "fire"
+        },
+        "target": {
+          "domain": "single_creature",
+          "range_feet": 30
+        },
+        "timing": "ACTION"
+      }
+    },
+    {
+      "complete": true,
+      "definition_id": "tianxia.execution.ember_bite.fixture",
+      "definition_version": "1.0.0",
+      "kind": "action",
+      "primitive_ids": [
+        "combat.creature.action",
+        "combat.target.single",
+        "combat.damage.fire"
+      ],
+      "record_id": "tianxia.creature.ember_fox.fixture",
+      "source_binding": {
+        "anchor": "fixture:ember_fox:execution",
+        "source_id": "tianxia.source.fixture.cpk1",
+        "source_path": "sources/authenticated_source.json",
+        "source_sha256": "9751463bf4e13ba91babd9b56a003f72eb687a06b8da969f5caece334914438e",
+        "source_version": "1.0.0"
+      },
+      "typed_fields": {
+        "economy": {
+          "cost": 1
+        },
+        "resolution": {
+          "attack_bonus": 4,
+          "damage": "1d6+2",
+          "damage_type": "fire"
+        },
+        "target": {
+          "domain": "single_creature",
+          "range_feet": 5
+        },
+        "timing": "ACTION"
+      }
+    }
+  ],
+  "schema_version": "TianxiaContentPackCandidate.CombatDefinitions.v1"
+}
