@@ -1,0 +1,37 @@
+{
+  "features": {
+    "tianxia.talent.pressure_points.nine_needle_cascade": {
+      "block": "shi_pp_point",
+      "point_effects": [
+        {
+          "type": "extra_targets",
+          "count": 1,
+          "prefer": "hostile_or_decline",
+          "choice_name": "Nine-Needle Cascade",
+          "choice_prompt": "Nine-Needle Cascade after {actor}'s {action} touches {first}: choose one additional creature. It makes a Dexterity save; on failure, choose a Numbing Point penalty until the start of your next turn. No additional cost. You may decline.",
+          "within_ft_of_first": 10,
+          "evidence": "Choose one additional creature within 10 feet of the target",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "shi_pp_apply_numbing",
+                  "evidence": "Failed Save: Apply Numbing Point to the second creature."
+                }
+              ],
+              "on_success": [],
+              "evidence": "Failed Save: Apply Numbing Point to the second creature."
+            }
+          ],
+          "sight": false,
+          "requires_perception": true,
+          "range_from_user": false
+        }
+      ],
+      "why": "Nine-Needle Cascade is a Point the character picks, so its second creature clause only runs if the talent is registered as an owned Point (combat/ext/shi_pressure_points.py reads this block). The extra creature is picked within 10 feet of the creature already touched and makes its own save."
+    }
+  }
+}
