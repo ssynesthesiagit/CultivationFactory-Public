@@ -1,0 +1,46 @@
+{
+  "features": {
+    "TAL_BEASTMASTERY_MEAT_SHIELD": {
+      "block": "shield_face",
+      "kind": "meat_shield",
+      "why": "Mounted Total Cover on a chosen edge and Reactive Cover's Martial Focus attack redirection (combat/ext/meat_shield.py)."
+    },
+    "tianxia.talent.shield.projected_shield_face": {
+      "block": "shield_face",
+      "kind": "projected",
+      "why": "Flexible Cover's Shield Face becomes a 15-foot-wide plane centered on its edge and protects the creatures directly behind it (combat/ext/shield_faces.py, the directional_cover hook); the projected Face is attached to you and moves with you. Active Defense already applies to every attack roll on this table."
+    },
+    "TAL_SHIELD_MOVING_RAMPART": {
+      "block": "shield_face",
+      "kind": "moving_rampart",
+      "why": "Flexible Cover as a Bonus Action without Martial Focus, your movement does not end the Face, and one free change of edge during your turn (combat/ext/shield_faces.py); the Face still ends at the start of your next turn."
+    },
+    "TAL_SHIELD_THE_MOUNTAIN_FITS_BEHIND_ONE_SHIELD": {
+      "block": "shield_face",
+      "kind": "mountain",
+      "why": "Flexible Cover's Face is up to 30 feet wide (combat/ext/shield_faces.py); the forced-movement reduction and the Prone Advantage are not run (no forced-movement hook on a creature behind a face)."
+    },
+    "TAL_BERSERKER_DEATHLESS": {
+      "block": "life_state",
+      "kind": "death_mode",
+      "mode": "ADVANTAGE",
+      "massive_multiplier": 3,
+      "why": "Advantage on death saving throws, three times the maximum HP for massive damage, and Stable recovery after one saved 1d4-minute deadline (combat/ext/life_state.py)."
+    },
+    "tianxia.talent.life.soul_lamp_continuity": {
+      "block": "life_state",
+      "kind": "soul_lamp",
+      "why": "When you would die with at least 1 CP left, spend all your CP to keep a Soul-Lamp for a minute; when it ends, a Constitution save against DC 20 brings you back with 1 HP and a level of Exhaustion (combat/ext/life_state.py)."
+    },
+    "tianxia.talent.life.minute_gate_resuscitation": {
+      "block": "life_state",
+      "kind": "minute_gate",
+      "why": "One-Breath Resuscitation reaches a creature dead within the last minute, for 1 CP more once it has been dead longer than a round (combat/ext/life_state.py)."
+    },
+    "tianxia.talent.warleader.unending_loyalty": {
+      "block": "life_state",
+      "kind": "unending_loyalty",
+      "why": "Recall Spirit reaches a creature that died within the last minute and gives back twice your CL + Warleader key modifier Hit Points (combat/ext/life_state.py); the death after an hour is out of a fight."
+    }
+  }
+}
