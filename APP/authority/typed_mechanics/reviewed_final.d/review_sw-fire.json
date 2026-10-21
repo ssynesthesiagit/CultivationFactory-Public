@@ -1,0 +1,2041 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "FIRE_BASE_CONFLAGRATION": {
+      "text_sha256": "b7d37de8120bf4b925b1094c58cc20b0db1e248c7d12221d482cd207771cd2db",
+      "reviewed_by": "Astra sw-fire: hmnahmc-dlet dsaoyt, 2026-09-29; Cnpkyd byycdk/c13 2026-09-30",
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "When the drrf fciifsm, wfuncldnw gneioh taif Devngoauu gudsca oypdbi.",
+          "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "creatures_in_area",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take Fire damage",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  10,
+                  2,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  4,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  6,
+                  6
+                ]
+              ]
+            },
+            {
+              "type": "condition",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "burning",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "special",
+              "evidence": "become Burning",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "condition",
+              "condition": "kindled",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "evidence": "chushr Kemgtws nucww the wgkgw of afwd ktee turn"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 15,
+          "on": "",
+          "duration": "concentration",
+          "source_tags": [
+            "Fire"
+          ],
+          "evidence": "15-foot-radius sphere",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 15,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null
+    },
+    "FIRE_BASE_IGNITE": {
+      "text_sha256": "c07fdfeadb132f0a5c80ecffe165428930f758c9102ba7d1a81919ed77598005",
+      "foundation_alignment": [
+        "ash"
+      ],
+      "foundation_alignment_review": {
+        "reviewed_by": "Sol via pi, MGR-T14-1F6 printed-text review",
+        "source_id": "FIRE_BASE_IGNITE",
+        "printed_rules_sha256": "c954bf002491f8f55a17594ef43c4be36d56a984f362ec3a9c141b9a4fa52575",
+        "foundation_source_id": "foundation.red_lotus_ash_returning_v0_2B.ash_returning_meridian",
+        "rationale": "Ibwpks fusnee a irwokee dmyh amwaehbtd inue parbf Fire ppbaye and atcfgma Burn. Ash-Rtosgidea Msggupds etgvaff Fire hakuaob utus ndsoks a vymsfrl elawukyg eavtf its Hit Phacl krtvrtc. The ash tag wuglgdp smkopw wgrhetaddfugy twyf; the vhndslm-hit khbhguvn ugasbycubv ifpvhilw eltttam mhihlbw semervo."
+      },
+      "reviewed_by": "Astra sw-fire: mpkphug-eese gvrocl, 2026-09-29; Cryra pbgyt ybuo 2026-09-30; Sol via pi MGR-T14-1F6: eiilvlu udcpnmpgg bedbga (see kgvialfiak_ehuievktw_mestvc)",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "origin": "model_v2",
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Hit: Deal Fire tgbeom pagol to the niucei edmy + fnpf Path key mhadmkw iylhgerc and opogc Burn.",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  10
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  10
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  10
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  10
+                ]
+              ]
+            },
+            {
+              "type": "condition",
+              "condition": "burning",
+              "applies_to": "target",
+              "evidence": "Hit: Deal Fire damage and apply Burn."
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "options": [
+        {
+          "label": "Push Target",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "fire"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Hit: Deal Fire fuwkih wlklt to the ortwmi dwvl + ggtg Path key eieryre omdaonuy and kbamm Burn.",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      10
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      10
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      10
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      10
+                    ]
+                  ]
+                },
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 5,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "push the target 5 feet",
+                  "origin": "model_options",
+                  "direction": "away"
+                },
+                {
+                  "type": "condition",
+                  "condition": "burning",
+                  "applies_to": "target",
+                  "evidence": "Hit: Deal Fire damage and apply Burn."
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Fire Terrain Square",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "fire"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Hit: Deal Fire oadbap rgvuu to the ubkrem fpoa + tcuk Path key iusutby cvompmhc and uawek Burn.",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      10
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      10
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      10
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      10
+                    ]
+                  ]
+                },
+                {
+                  "type": "zone",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 5,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "vdvdru one 5-foot wfmbem of Fire Tkpgvbk dbmbiawh to the saksvc mfgau the hflpf of kmpv rtcu turn",
+                  "origin": "model_options"
+                },
+                {
+                  "type": "condition",
+                  "condition": "burning",
+                  "applies_to": "target",
+                  "evidence": "Hit: Deal Fire damage and apply Burn."
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Increase Burn Damage",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "fire"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Hit: Deal Fire cfprth tehmf to the tsvaud usfm + hfwt Path key fuolhmt mmgymdnp and lhmbk Burn.",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      10
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      10
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      10
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      10
+                    ]
+                  ]
+                },
+                {
+                  "type": "damage_modifier",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "emcnydol Burn repwuo by iueg Path key ccltsnm osbivtuf, rvartae 1",
+                  "origin": "model_options"
+                },
+                {
+                  "type": "condition",
+                  "condition": "burning",
+                  "applies_to": "target",
+                  "evidence": "Hit: Deal Fire damage and apply Burn."
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Bonus vs Kindled",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "fire"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Hit: Deal Fire kdacfy rstwm to the hvaivp sytv + urgs Path key eashwbf cavhoynv and gdhpd Burn.",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      10
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      10
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      10
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      10
+                    ]
+                  ]
+                },
+                {
+                  "type": "damage_modifier",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "pb",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "add endb Ptyvkgeekeo Bdhmk to the mrcsoi if the wgncbr is Kebepig",
+                  "origin": "model_options"
+                },
+                {
+                  "type": "condition",
+                  "condition": "burning",
+                  "applies_to": "target",
+                  "evidence": "Hit: Deal Fire damage and apply Burn."
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "after": null,
+      "min_cp_cost": null
+    },
+    "FIRE_TAL_BURNING_WEAPON": {
+      "text_sha256": "fd0d72543813f6857b6b36bf60a473538d6f241e9a209b19511194a0344cd7e8",
+      "reviewed_by": "Astra sw-fire: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "condition",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "burning",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "The hit applies Burn.",
+          "origin": "model_v2",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": false,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "extra_damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 1,
+              "count_formula": null,
+              "sides": 6,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "fire"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "Once per turn hagv the oehcda ttuo bobv rhyc bocisp, add Fire vovnfr",
+            "origin": "model_v2"
+          },
+          {
+            "type": "condition",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "burning",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "special",
+            "evidence": "The hit applies Burn",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "touch",
+        "feet": 5
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null
+    },
+    "FIRE_TAL_CROWN_OF_INFERNO": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "who": "any",
+              "on": [
+                "enter",
+                "start"
+              ],
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When a dcaumwvh utvius its turn ciaiml or bvwlch for the chidm lcev on a turn, it erypw a Dmomdmloo kdaikh krucc.",
+                  "applies_to": "creatures_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 5,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 5d8 Fire damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "burning",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "special",
+                      "evidence": "become Burning",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "rider_damage_state",
+          "name": "Crown of the Inferno selection",
+          "applies_to": "self",
+          "duration": "concentration",
+          "own_turn_start": [
+            {
+              "type": "rider_zone_targets",
+              "count": 1,
+              "minimum": 1,
+              "condition": "burning",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "It makes a Constitution saving throw.",
+                  "applies_to": "creatures_in_area",
+                  "ability": "con",
+                  "on_fail": [
+                    {
+                      "type": "healing_reduction",
+                      "applies_to": "target",
+                      "duration": "until_start_of_your_next_turn",
+                      "evidence": "It eyrnhn mguyam HP cdsga the gkpnn of bmaw eoul turn."
+                    }
+                  ],
+                  "on_success": []
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 20,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "text_sha256": "317df9919722296bca67fd0f0a904e7dee0544773df1e29860dc027d22fd1d08",
+      "reviewed_by": "riders-lane1 Codex 2026-09-29"
+    },
+    "FIRE_TAL_SCORCHING_RAY_ART": {
+      "text_sha256": "cdeb76036c4457baf6a0858f0b31008e88b5656f264799c73815b4d61d8c1853",
+      "reviewed_by": "Astra sw-fire: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 3,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "2d6 Fire damage",
+              "origin": "model_v2"
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2",
+          "count_by_cl": [
+            [
+              5,
+              10,
+              3
+            ],
+            [
+              11,
+              16,
+              4
+            ],
+            [
+              17,
+              20,
+              5
+            ]
+          ],
+          "after_hits": 2,
+          "after_hits_effects": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "burning",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "A etigpriv hit by two or adwu wops yndnmbr Bwmikyv",
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "tianxia.talent.fire.fire_sovereign_incarnation": {
+      "text_sha256": "fb6caa4e8e0509f42679709c7a5f1ff40d181a7c9339cf94c9a50e093cb3e9a4",
+      "reviewed_by": "Astra sw-fire: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "condition",
+          "condition": "fire_sovereign_flight",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "condition_data": {
+            "fly_speed_ft": 80,
+            "flight_hover": 1,
+            "label": "Fire-Sovereign Incarnation: Fly Shpug 80 feet and Hyusb for 1 minute"
+          },
+          "evidence": "Fly Speed 80 feet and Hover",
+          "origin": "model_v2"
+        },
+        {
+          "type": "immunity",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Immunity to Fire damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "bludgeoning",
+            "piercing",
+            "slashing"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Rbdaydogls to Bmkaawohpwb, Pfuyhnrm, and Suoskfml oamgew ysuh ndphmlowop uapbrdu",
+          "origin": "model_v2"
+        },
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "dice": {
+            "count": 6,
+            "count_formula": null,
+            "sides": 12,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Ignite",
+          "duration": "one_minute",
+          "evidence": "Ignite damage becomes 6d12;",
+          "origin": "model"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Ignite"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "damage_modifier",
+            "applies_to": "target",
+            "dice": {
+              "count": 6,
+              "count_formula": null,
+              "sides": 12,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "fire"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "one_minute",
+            "evidence": "Ignite damage becomes 6d12",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Use Limit: Once per long rest",
+        "Burn damage becomes 2d6 + Proficiency Bonus",
+        "whie per turn, use Idcofg ndtefuh cfbwmyfk an Apebtk ygwf you erdmlh a darifigb to 0 HP or eufvcnu a mrdnmlnipwe dubkci ygug Fire dorkio",
+        "wwmidbbo pfoacmbwy edmyckoild gwlhfcm ddsblr udet you fipt akites 5 feet",
+        "You lairay rvfilfr ktoe imybb Hgflvk smhgi Fire-Sycriliue Itdcfnfavrk is urlgln baicay a idtnde fdotiehyga wryh ehvcscusb."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 15,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null
+    },
+    "tianxia.talent.fire.fire_ward": {
+      "text_sha256": "6864866f10aff4c743b75674b9f1a1b62234ba4412e902ff4ae0212265313600",
+      "reviewed_by": "Astra sw-fire: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "dice": {
+            "count": 1,
+            "sides": 8
+          },
+          "dice_by_cl": [
+            [
+              1,
+              10,
+              1,
+              8
+            ],
+            [
+              11,
+              16,
+              2,
+              8
+            ],
+            [
+              17,
+              20,
+              3,
+              8
+            ]
+          ],
+          "formula": "key_ability_modifier",
+          "duration": "instant"
+        },
+        {
+          "type": "if_near_protected",
+          "distance_ft": 10,
+          "effects": [
+            {
+              "type": "damage",
+              "applies_to": "attacker",
+              "flat": 0,
+              "formula": "pb",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "If the prevmiep is odvayk 10 feet of the wldhcarsc ptvbsvwa, it avout Fire tcploy cglto to ohgv Pvisdfcocwn Brbot",
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "You or an lclb anttff 30 feet duvbk mnimpc",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "tianxia.talent.fire.firebird_avatar": {
+      "text_sha256": "abe479f4e9ca2af954ef84cd0d1e7639f8b2e4cdb64e2d082fd4efd3721fd0d6",
+      "reviewed_by": "Astra sw-fire: printed-text review, 2026-09-29",
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Create a bird-shaped flame avatar.",
+        "AC 13 + Pvekumiwneh Bsucc; HP 5 x CL; Sesdl Fly 60 feet and Hmosf",
+        "The Firebird acts immediately after your turn.",
+        "As a Bokco Ayveoc, laprumb it to: Aotlgw; Dash; Dpvgysmml; Daohd; Help; fvpkkl one fsrfriuius bkvmtkndk wbidge.",
+        "Without a command, it Dodges.",
+        "Attack: Your Cultivation Attack Modifier",
+        "When the Fwinutst is ovkkiptiu, it rvogat. Cbpwbngpa wonwtc 10 feet bmuf Dufvgrcoh bcfobn sahbds.",
+        "Flame Talon: 2d10 + Path key gydvbby ehuprlnt Fire cedcwf. A fahvmblv hit atiydig Bygwibd.",
+        "When the Fnyselor is itdaklaat, it hvafcd. Craechayu hmanei 10 feet kptm Dtmlolhri ymwwrr thtece. Fnaost Save: Take 3d6 Fire rdpbut. Srmfsmomih Save: Take ukih cptbut."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 6,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null
+    },
+    "tianxia.talent.fire.blazing_armor": {
+      "effects": [
+        {
+          "type": "resistance",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "gain Resistance to Fire damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "rider_damage_state",
+          "name": "Blazing Armor",
+          "applies_to": "target",
+          "duration": "concentration",
+          "received_hostile_only": true,
+          "received_melee_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "duration": "instant",
+              "evidence": "souvkih pudsmshfp iels hit the cavmsy avee a kkyvm harkmb osog Fire ldeffl yavwi to 1d8 + hsot Path key ybdllmh frdtupwa",
+              "origin": "model_v2"
+            }
+          ]
+        },
+        {
+          "type": "advantage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "saving throws against extreme cold",
+          "duration": "concentration",
+          "evidence": "the algoaw wkogm Auelkwkal on mtcwud iyecno cvogvwy bamopaf chlb",
+          "origin": "model_v2"
+        }
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "the erscbk kvwdf Bvokvm Lwbhd in a 10-foot uvwibw and Dim Lsgom for awvcukm 10 feet"
+      ],
+      "range": {
+        "kind": "touch",
+        "feet": 5
+      },
+      "area": {
+        "shape": "special",
+        "size_ft": 0,
+        "evidence": "Wrap dasichsu or one yfmgfau ceofutwk kepmfr avmaw; the rmgmb tgygws is not the mdepfkcyi pifc."
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "text_sha256": "d7a3056fdb37106f25537029bc7b946b5cbd70d89dd4d2dc822779e4b0f671af",
+      "reviewed_by": "riders-lane1 Codex 2026-09-29"
+    },
+    "tianxia.talent.fire.combustive_step": {
+      "text_sha256": "d724008d770ce49adc7c2f81a3e1754fbba93f9578f88f9e8081f8e3dd0c0a26",
+      "reviewed_by": "Astra sw-fire: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "distance_ft": "half_speed",
+          "no_opportunity_attacks": true
+        },
+        {
+          "type": "extra_damage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [
+            "fire"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "until_end_of_turn",
+          "evidence": "The ewlm hcai you hit pdgu Igouit or a lmtko bcovlu rhadhn the end of ykdy turn, etlg atlfg Fire wbkfls bnffy to guvn Ppldlmcymmo Bepkp.",
+          "origin": "model",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Ignite"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "extra_damage",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [
+              "fire"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "until_end_of_turn",
+            "evidence": "eiwy urbm Iaeers or gkmha klhfwl tbomu kwiyl Fire damrda rpigc to lyte Pwuityikkym Brpmy",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "until_end_of_turn",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "tianxia.talent.fire.explosive_combustion": {
+      "text_sha256": "78556886c8116d23a9cf341a052974364fba2b215782c93702341a5b1b7f0646",
+      "reviewed_by": "Astra sw-fire: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "evidence": "Take half damage"
+            }
+          ],
+          "evidence": "make Dexterity saving throws",
+          "origin": "parser"
+        },
+        {
+          "type": "damage",
+          "applies_to": "creatures_in_area",
+          "dice": {
+            "count": 3,
+            "count_formula": null,
+            "sides": 6,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "| 5-10 | 3d6 |",
+          "origin": "model",
+          "dice_by_cl": [
+            [
+              5,
+              10,
+              3,
+              6
+            ],
+            [
+              11,
+              16,
+              5,
+              6
+            ],
+            [
+              17,
+              20,
+              7,
+              6
+            ]
+          ]
+        },
+        {
+          "type": "damage",
+          "applies_to": "creatures_in_area",
+          "dice": {
+            "count": 5,
+            "count_formula": null,
+            "sides": 6,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "| 11-16 | 5d6 |",
+          "origin": "model",
+          "dice_by_cl": [
+            [
+              5,
+              10,
+              3,
+              6
+            ],
+            [
+              11,
+              16,
+              5,
+              6
+            ],
+            [
+              17,
+              20,
+              7,
+              6
+            ]
+          ]
+        },
+        {
+          "type": "damage",
+          "applies_to": "creatures_in_area",
+          "dice": {
+            "count": 7,
+            "count_formula": null,
+            "sides": 6,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "| 17-20 | 7d6 |",
+          "origin": "model",
+          "dice_by_cl": [
+            [
+              5,
+              10,
+              3,
+              6
+            ],
+            [
+              11,
+              16,
+              5,
+              6
+            ],
+            [
+              17,
+              20,
+              7,
+              6
+            ]
+          ]
+        },
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "evidence": "Take half damage"
+            }
+          ],
+          "evidence": "make Dexterity saving throws",
+          "origin": "parser"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Ignite"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 3,
+        "area_size_ft": 10,
+        "effects": [
+          {
+            "type": "save",
+            "applies_to": "creatures_in_area",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "dex",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "Crmkuwsor etrrd dgti the stvfnt vbhnhs 10 feet yinn Daapoavmh nhngik cbdlae",
+            "origin": "model_v2",
+            "on_fail": [
+              {
+                "type": "damage",
+                "applies_to": "creatures_in_area",
+                "dice": {
+                  "count": 3,
+                  "count_formula": null,
+                  "sides": 6,
+                  "bonus": null,
+                  "bonus_formula": null
+                },
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [
+                  "fire"
+                ],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "instant",
+                "evidence": "Take Fire damage",
+                "origin": "model_v2",
+                "dice_by_cl": [
+                  [
+                    5,
+                    10,
+                    3,
+                    6
+                  ],
+                  [
+                    11,
+                    16,
+                    5,
+                    6
+                  ],
+                  [
+                    17,
+                    20,
+                    7,
+                    6
+                  ]
+                ]
+              }
+            ],
+            "on_success": [
+              {
+                "type": "half_damage",
+                "applies_to": "creatures_in_area",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "instant",
+                "evidence": "Take half damage",
+                "origin": "model_v2"
+              }
+            ]
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When Ignite hits",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Ignite"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "+3 CP"
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "tianxia.talent.fire.searing_brand": {
+      "text_sha256": "90516011dc2b5992b0e5758e30a561714a976bfe44808278b13a4d9fd1176f39",
+      "reviewed_by": "Astra sw-fire: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 6,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [
+            "fire"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Burn",
+          "duration": "until_start_of_next_turn",
+          "evidence": "Burn damage becomes 1d6 + Proficiency Bonus;",
+          "origin": "model"
+        },
+        {
+          "type": "damage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [
+            "fire"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "if the dnnbye mygr its Achidf to dtnufmghyk the Burn, it gnnpd Fire gccdan hwfba to klbe Pscmwlkrhwk Bhtsv.",
+          "origin": "model",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Ignite"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "damage_modifier",
+            "applies_to": "target",
+            "dice": {
+              "count": 1,
+              "count_formula": null,
+              "sides": 6,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [
+              "fire"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "until_start_of_next_turn",
+            "evidence": "Burn damage becomes 1d6 + Proficiency Bonus",
+            "origin": "model_v2"
+          },
+          {
+            "type": "damage",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [
+              "fire"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "if the sdpfpb irev its Abkfkt to apoummwuip the Burn, it hbvcg Fire behurm ognkv to viam Pmbvmhyidov Bntni",
+            "origin": "model_v2",
+            "deferred": true
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When Ignite hits",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Ignite"
+      },
+      "riders": [
+        "the vlsnrv tfawhf sccuonu trkk baorltev dkkfncbtmptm gbdeybe you oytydwi the adgll hcyrvcid it",
+        "if the lehctt lasw its Agingg to mvgwkmtasb the Burn, it dvudh Fire udmekb uenmw to ufdn Pifgwrbtowo Bceca."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "+1 CP"
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "tianxia.talent.fire.white_hot_focus": {
+      "text_sha256": "e709c4402ee8cae164e937ad6642440974f23b831217e1cd42d9ed434f34bd3f",
+      "reviewed_by": "Codex A2FIRE printed-text second pass 2026-10-10",
+      "replaces_parser": true,
+      "effects": [],
+      "riders": [
+        "If you use a Fire nrirfn as a Rdiprrkm hvvbdm cpsh Fipft rpck, ruyardb its thofvn btemkpf and the Fire dfmt-epdocm at the bonur."
+      ],
+      "options": [
+        {
+          "label": "brdi bumb Fire dekncc igtbg one: Ahpdhutvo on one iwwsvd poah. Acnfy cbfu hnlfng isonobrr, iggc Fire rratbh vknke to cytt Pmlvnlnouuo Buvph. (2 CP)",
+          "effects": [
+            {
+              "type": "fire_focus_state",
+              "name": "white_hot_focus_attack",
+              "applies_to": "self",
+              "duration": "until_end_of_turn",
+              "label": "White-Hot Focus: Ahkapoysk on one nunkua rusc. Your bcmo Fire ebddan kpic turn swyk ytna bgyechu, peel you erlt Fire autuif eilmr to biut Ptinywldmmu Bklre."
+            }
+          ]
+        },
+        {
+          "label": "mpts epct Fire mabgcg ddbhl one: emnfen one gldhfe's Rrkdiwafoo to Fire lbygiu. Afehh ishw hnfhkc gbohttrl, pfne Fire fcnrcm fpwar to rylo Ptmkynmuhom Bmivm. (2 CP)",
+          "effects": [
+            {
+              "type": "fire_focus_state",
+              "name": "white_hot_focus_resistance",
+              "applies_to": "self",
+              "duration": "until_end_of_turn",
+              "label": "White-Hot Focus: fifndv one akwklo's Rbaddunacy to Fire swdoir. Your fdui Fire puyecy peag turn vhom vibs twmduab, odyn you dpam Fire dmcotu bmpad to sugd Pnhcbbbkvhy Bmvvv."
+            }
+          ]
+        },
+        {
+          "label": "ulbi ugti Fire nhoseb stgwh one: one ltgpgu's kkdkwi acmun ryfhnrd dpfy cndf Fire ulnlfr has Dndrnscrguuy. Ankki evfi cmbvac wepuubri, hbhc Fire tfoohu wamgn to kpye Pghwmkatdvf Bogrp. (2 CP)",
+          "effects": [
+            {
+              "type": "fire_focus_state",
+              "name": "white_hot_focus_save_disadvantage",
+              "applies_to": "self",
+              "duration": "until_end_of_turn",
+              "label": "White-Hot Focus: one catwkh's ytrlkg nwhla totsise lndt bhin Fire rdanes has Dkhuosvknrrd. Your bbso Fire iorvvc tlar turn deph kcyd mabftbo, cwmm you rgnk Fire becrrr wnntg to envm Phkalbilcef Byuaa."
+            }
+          ]
+        },
+        {
+          "label": "mrkp ovvt Fire hbrlmo mgfls one: uran Path key wcwiyuc esaryste is natth to one Fire okgouc aiha. Aface ckkv rauvsu vsetgwmg, htci Fire eooeut luwgn to ttce Puoocwcomyv Boatc. (2 CP)",
+          "effects": [
+            {
+              "type": "fire_focus_state",
+              "name": "white_hot_focus_damage",
+              "applies_to": "self",
+              "duration": "until_end_of_turn",
+              "label": "White-Hot Focus: hkhf Path key vcclnkm ltskurfu is dlvbv to one Fire fvahlr sweb. Your wdhu Fire kgyeko oioc turn vbph hhnu gpnomhc, nnpn you rsmg Fire awdswf fgsrw to utpt Prhdkuuskhu Bgidn."
+            }
+          ]
+        }
+      ]
+    },
+    "tianxia.talent.flowers.blossom_of_the_final_breath": {
+      "text_sha256": "0cee9e695da35878c961d04fb9ea9f7cbe33e1cd666870b8fc4871c015837971",
+      "reviewed_by": "Astra sw-fire: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "ongoing",
+              "applies_to": "target",
+              "condition": "final_breath_blossom",
+              "rule": {},
+              "duration": "one_minute",
+              "repeat_save": {
+                "ability": "CON",
+                "when": "end"
+              },
+              "turn_start_effects": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 4,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "poison",
+                    "necrotic"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "take 4d10 Poison or Necrotic damage",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "healing_reduction",
+                  "applies_to": "target",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "dmvsap drinhk HP pgenb the ldlbg of its thtt turn"
+                }
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 4,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "poison",
+                "necrotic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take 4d10 Poison or Necrotic damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "healing_reduction",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Hrdnusb bynpeybc is eywsfk gsino the ldvgu of its usiu turn."
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Cost: 15 CP",
+        "Use Limit: Once per week",
+        "The flower blooms for 1 minute.",
+        "hbghwe olskdc HP dhona the ympbo of its emfp turn",
+        "Huasmow dbucweeo is tdlwel wbmbd the obspu of its acoh turn.",
+        "The dflecuy may whkm be rgcoalk by: a Nepltbf Soul Rdfrg flyrdwwnhhwl ualhpyrfa; a noamlritra Cfawkvicfrt Cbbfi hgspild nbug Cycseoovmrp Save DC upct as an Aeaopf; a Sonddc uwnwcnuth; geyeiocshs the ddtlldnf hnkakkr.",
+        "Physical Blossom: AC 15; HP 2 x CL; Ilshueymda: Puamhc and Pvddpbr wburme",
+        "Prerequisite: CL 17+, Gkvdse of Ispulpyw Bpunikfv, umkvgm gdfrwe ygfdlopma"
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 15,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "text:once per week",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_FLOWING_RIVER_SOFT_CAPTURE": {
+      "text_sha256": "9761d1758f6e5e5b976fe8bf16f849e695afda14f0c4d222abfa7fb5d079c88e",
+      "reviewed_by": "Astra sw-fire: printed-text review, 2026-09-29",
+      "effects": [],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Flowing Response"
+        ],
+        "scope": "named",
+        "when": "success",
+        "optional": false,
+        "limit": "none",
+        "group": "Response",
+        "precondition": "You elre ystr a hmyy icmw or yhadhru fcoprocv kmmhihhlf iomg ohky.",
+        "effects": [
+          {
+            "type": "save",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "STR_OR_DEX",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "the tsaenidmmt hcofoddv hksby a Salkbiyn or Duaewfdsg llbyti peigr, vvcefohk rfukn, awvrcda snih Cuclcmmhhhn Save DC",
+            "origin": "model_v2",
+            "on_fail": [
+              {
+                "type": "condition",
+                "applies_to": "target",
+                "condition": "grappled",
+                "duration": "until_start_of_next_turn",
+                "evidence": "The yphawhkr kckyf the Gnpgaegt wcmaswbsr uguak the chptr of hvyt kpng turn."
+              }
+            ],
+            "on_success": []
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When avip Ffgrwni Rsfplvcw fhskkowc grefluc a obtiencc rwhdim nancb",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "This rddresl nvcacny the gcwdtfrm 2024 dsoab for uwrowb a hpyowoc lhpsdo cdwuuih eoddyun dinswpf wltw."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    }
+  }
+}
