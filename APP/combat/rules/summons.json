@@ -1,0 +1,338 @@
+{
+ "schema": "TianxiaFoundry.SummonRules.v1",
+ "note": "Owner-editable summons and companions (owner 2026-09-27: 'might as well do the summons too'). Read when a fight's characters are compiled, so a change shows up in the next fight. 'sources' says which ability brings which creature: arrives 'start' (already with the summoner when the fight begins: rituals that last until destroyed, a manifested spirit, tamed beasts) or 'action' (the ability itself calls it mid-fight). A summoned creature acts right after its summoner's turn. command 'bonus_action': one Bonus Action of the summoner commands every one of that group within command_range_ft to follow an order on its next turn; uncommanded, it acts on its own instincts (owner 2026-10-17; authority record: docs/SUMMON_INSTINCT_OWNER_AUTHORITY.md). command 'free': it needs no command (Tame: 'Giving ordinary commands requires no Action'). Numbers may be formulas of pb, cl, key (the summoner's key ability modifier) and atk (the summoner's Cultivation attack modifier). 'improvements' are talents that change a creature. 'beasts' are the ordinary creatures a Tamer can train; 'tamer_default' is used until the owner picks. 'lifetime' is optional; 'ends_with_summoner' removes an opted-in creature at the next turn boundary after its summoner is defeated. Set it only when explicit rules or owner authority require that ending. No current source opts in: Corpse Servant's 'Until destroyed or dismissed' does not mean until its summoner is defeated. Missing policy leaves the creature's printed duration, destruction and concentration rules unchanged, including in older saves.",
+ "sources": {
+  "tianxia.talent.chains.chain_clone": {
+   "creature": "chain_clone",
+   "choose_visible_space": true,
+   "arrives": "action",
+   "count": 1,
+   "command": "bonus_action",
+   "command_range_ft": 1000,
+   "concentration": true,
+   "range_ft": 30,
+   "evidence": "Chain Clone: one humanoid chain construct, acts after your turn; Bonus Action command, otherwise it acts on its own instincts (owner 2026-10-17). No command distance is printed; 1000 feet covers the combat map."
+  },
+  "tianxia.talent.stars.star_shadow": {
+   "creature": "star_shadow",
+   "choose_visible_space": true,
+   "arrives": "action",
+   "count": 1,
+   "command": "bonus_action",
+   "command_range_ft": 60,
+   "concentration": true,
+   "range_ft": 30,
+   "evidence": "Star Shadow (rider lane C2, 2026-09-30): Action, 30 feet, Concentration up to 1 minute; only one at a time; it acts immediately after your turn; a Bonus Action commands it (Attack, Dash, Disengage, Dodge, Help, Search); without a command, it acts on its own instincts (owner 2026-10-17)"
+  },
+  "tianxia.talent.disease.living_plague": {"creature": "living_plague", "arrives": "action", "count": 1, "command": "bonus_action", "command_range_ft": 60, "concentration": true, "range_ft": 30,
+   "evidence": "Living Plague (rider lane 10, 2026-09-29): Action, 30 feet, Concentration up to 1 minute; only one at a time; it acts immediately after your turn; a Bonus Action commands it (Attack, Dash, Dodge, Help, Hide, Climb); without a command, it acts on its own instincts (owner 2026-10-17)"},
+  "tianxia.talent.music.echo_performer": {"creature": "echo_performer", "arrives": "action", "count": 1, "command": "free", "concentration": true, "range_ft": 30, "evidence": "Echo Performer (rider lane 10, 2026-09-29): Action, 30 feet, Concentration up to 1 minute: an echoing duplicate that can take the Help action and disappears when damaged; not an independent creature (it takes no command)"},
+  "tianxia.talent.shadow.shadow_lurk": {"creature": "shadow_lurk", "arrives": "action", "count": 1, "command": "free", "concentration": true, "range_ft": 5,
+   "evidence": "Shadow Lurk (rider lane 10, 2026-09-29): Action, Touch, Concentration up to 10 minutes: detach the target's Cast Shadow as a loyal scout that acts immediately after its source (the user's own shadow at the table; another creature's is the GM's)"},
+  "tianxia.talent.talismans.talisman_spirit": {"creature": "talisman_spirit", "arrives": "action", "count": 1, "command": "none", "range_ft": 5, "duration_rounds": 10, "evidence": "Talismans, Talisman Spirit (rider lane 9): Action, 6 CP, 1 minute: you animate one prepared talisman into a small talisman spirit; it acts immediately after your turn; if reduced to 0 hit points it is destroyed. Its carried-talisman activation, Help and retrieving are the GM's (no talisman objects on the table); uncommanded, it acts on its own instincts (owner 2026-10-17)."},
+  "TAL_DEATH_CORPSE_SERVANT": {"creature": "corpse_servant", "arrives": "start", "count": "pb", "command": "bonus_action", "command_range_ft": 60, "command_group": "death", "command_group_name": "Death servants", "control": "death", "load": 1,
+   "evidence": "Death Control Limit = Proficiency Bonus, 1 Control Load each; Commanding Death Servants: a Bonus Action commands any number within 60 feet, one action each; if not commanded, it acts on its own instincts (owner 2026-10-17). Corpse Servant Duration: Until destroyed or dismissed (authority/typed_mechanics/rules_text.json, TAL_DEATH_CORPSE_SERVANT). Owner defeat is neither destruction nor dismissal, so this source has no owner-defeat lifetime policy"},
+  "TAL_DEATH_GHOST_LANTERN": {"creature": "ghost_lantern", "arrives": "action", "count": 1, "command": "bonus_action", "command_range_ft": 60, "range_ft": 30,
+   "evidence": "Action, 3 CP: a floating lantern that moves up to 30 feet when you use a Bonus Action; AC 14, 1 HP"},
+  "tianxia.subpath.body.shinobi.feature.shadow_afterimage": {"creature": "shadow_afterimage", "arrives": "action", "count": 1, "command": "none", "range_ft": 15,
+   "evidence": "Bonus Action, 4 Stamina: one Shadow Afterimage within 15 feet; AC 13 + PB, 1 HP, Speed 30, immune to Poison and Psychic; it cannot attack, deal damage, activate items or use cultivation features"},
+  "TAL_SOUND_ECHO_DECOY": {"creature": "echo_decoy", "arrives": "action", "count": 1, "command": "none", "range_ft": 60, "concentration": true, "evidence": "Action, 3 CP, Concentration up to 1 minute: a sound-body decoy in an unoccupied space within 60 feet; AC 10, 1 HP, it disappears when damaged (Sound, Echo Decoy). It stands where it is made and does nothing."},
+  "tianxia.talent.ink.painted_beast": {"creature": "painted_beast", "arrives": "action", "count": 1, "command": "bonus_action", "command_range_ft": 120, "range_ft": 30, "concentration": true,
+   "evidence": "Action, 4 CP, Concentration: acts immediately after your turn; a Bonus Action commands it; without a command, it acts on its own instincts (owner 2026-10-17); only one at a time"},
+  "tianxia.talent.ash.ash_clone": {"appearance_traits": {"label": "Ash Clone: Fly 30 feet and Hover; destruction leaves Ash Terrain until the caster next starts a turn", "fly_speed_ft": 30, "flight_hover": true, "destroyed_terrain": {"name": "Ash Terrain", "terrain": "ash terrain", "radius_ft": 10, "until_owner_next_start": true}}, "choose_visible_space": true, "creature": "ash_clone", "arrives": "action", "count": 1, "command": "bonus_action", "command_range_ft": 120, "range_ft": 30, "concentration": true,
+   "evidence": "Action, 5 CP, Concentration: one humanoid cinder figure within 30 feet; it acts immediately after your turn; as a Bonus Action you command it (Attack, Dash, Disengage, Dodge, Help, Hide); without a command it acts on its own instincts (owner 2026-10-17) (the command range is not printed: a reading, as the Painted Beast's)"},
+  "tianxia.talent.ink.ten_thousand_illustrated_soldiers": {"creature": "painted_formation", "arrives": "start", "count": 2, "command": "bonus_action", "command_range_ft": 120,
+   "evidence": "24-hour ritual: in an ordinary encounter, up to two Painted Formations (commanded like the Painted Beast, a reading)"},
+  "tianxia.talent.spirit_companions.battle_manifestation": {"creature": "bonded_spirit", "arrives": "start", "count": 1, "command": "bonus_action", "command_range_ft": 120,
+   "requires": ["tianxia.talent.spirit_companions.covenant_spirit"],
+   "evidence": "Battle Manifestation: the bonded spirit keeps a combat body with Hit Points and basic actions; its statistics are the Bonded Companion chassis (a reading: Covenant Spirit alone is not a full companion), Guardian archetype"},
+  "tianxia.subpath.body.bone_monarch.feature.bone_guard_manifestation": {"creature": "bone_guard", "arrives": "action", "count": 1, "command": "bonus_action", "command_range_ft": 1000, "range_ft": 30, "duration_rounds": 10,
+   "evidence": "Bone Monarch, CL10 Bone Guard Manifestation: Action, 5 Stamina, 1 minute, one at a time; acts immediately after your turn; a Bonus Action commands it; without a command, it acts on its own instincts (owner 2026-10-17)"},
+  "tianxia.subpath.qi.paper_cultivator.feature.paper_dragon": {"creature": "paper_dragon", "arrives": "action", "count": 1, "command": "bonus_action", "command_range_ft": 1000, "range_ft": 30, "concentration": true,
+   "evidence": "Paper Cultivator, CL10 Paper Dragon: Action, 5 Qi, 1 minute, Concentration, one at a time; acts immediately after your turn; Command Paper Dragon is a Bonus Action; without a command, it acts on its own instincts (owner 2026-10-17) (no command range is printed, so none is applied)"},
+  "tianxia.tradition.spirit.soul_warden_necromancer.feature.raise_specter": {"choose_visible_space": true, "creature": "predatory_specter", "arrives": "action", "count": 1, "command": "bonus_action", "command_range_ft": 1000, "range_ft": 30,
+   "evidence": "Soul Warden / Necromancer, CL10 Raise Specter: Action, 5 Resonance and 1 Soul Fragment, the scene; no independent turn; moves up to 40 feet at the end of your turn; a Bonus Action directs one immediate Specter Expression"},
+  "tamer": {"arrives": "start", "command": "free",
+   "evidence": "Tamer Package, Tame: trained beasts, up to Proficiency Bonus of them; Commands: ordinary commands require no Action"},
+  "rider": {"arrives": "start", "command": "mount", "command_range_ft": 1000, "requires": ["BEASTMASTERY_BASE_RIDER_PACKAGE"],
+   "evidence": "Rider Package, Skillful Riding: 'while you ride a willing mount' -- the rider starts the fight in the saddle of a trained mount (a reading: the owner's text gives no mount of its own, so the sheet's pick, default the Warhorse, is the one it rides). Mounted combat: D&D 5.5e (2024) Player's Handbook"},
+  "TAL_DEATH_ROUSE_LESSER_DEAD": {"creature": "lesser_corpse_servant", "arrives": "start", "count": 1, "command": "bonus_action", "command_range_ft": 60, "command_group": "death", "command_group_name": "Death servants", "control": "death", "load": 1,
+   "evidence": "Ritual, 10 minutes, 1 CP, Control Load 1: animates one Common corpse as a Lesser Corpse Servant, 8 hours or until destroyed/dismissed; 'You may maintain only one Lesser Corpse Servant created by this base ability at a time' (ironroot 2026-09-28: was not wired to any creature at all)"},
+  "TAL_DEATH_GRAVE_FORMATION": {"creature": "grave_formation", "arrives": "start", "count": 1, "command": "bonus_action", "command_range_ft": 60, "command_group": "death", "command_group_name": "Death servants", "control": "death", "load": 3,
+   "evidence": "Grave Formation (rider lane C14): Ritual, 1 hour, 8 CP, Control Load 3, 24 hours: one Grave Formation (stat block below) bound before the fight; it acts immediately after your turn, is commanded according to Commanding Death Servants (a Bonus Action, 60 feet) and acts on its own instincts when not commanded (owner 2026-10-17); 'You may maintain Grave Formations only within your Death Control Limit'"},
+  "TAL_DEATH_LEGION_OF_THE_RESTLESS_DEAD": {"creature": "grave_formation", "group": "legion_formation", "name": "Legion Grave Formation", "arrives": "start", "count": 2, "command": "bonus_action", "command_range_ft": 60, "command_group": "death", "command_group_name": "Death servants", "control": "death", "load": 3,
+   "evidence": "Legion of the Restless Dead (rider lane C14): 'During an ordinary encounter, represent the legion with up to two Grave Formations. These formations count against your Death Control Limit only while in the encounter.'"},
+ "tianxia.subpath.qi.painting_cultivator.feature.living_painting#tiger": {"ability": "tianxia.subpath.qi.painting_cultivator.feature.living_painting", "family": "living_painting", "family_name": "Living Painting", "creature": "living_painting_tiger",
+   "arrives": "action", "count": 1, "command": "bonus_action", "command_range_ft": 120, "range_ft": 30, "concentration": true,
+   "evidence": "Painting Cultivator, CL6 Living Painting: Action, 4 Qi, 1 minute, Concentration; 'Choose: Tiger, Crane, Tortoise, Serpent. You may maintain one Living Painting'; acts immediately after your turn, acts on its own instincts unless commanded with a Bonus Action (owner 2026-10-17). No command range is printed: the Painted Beast's 120 feet, a reading"},
+ "tianxia.subpath.qi.painting_cultivator.feature.living_painting#crane": {"ability": "tianxia.subpath.qi.painting_cultivator.feature.living_painting", "family": "living_painting", "family_name": "Living Painting", "creature": "living_painting_crane",
+   "arrives": "action", "count": 1, "command": "bonus_action", "command_range_ft": 120, "range_ft": 30, "concentration": true,
+   "evidence": "Painting Cultivator, CL6 Living Painting: Action, 4 Qi, 1 minute, Concentration; 'Choose: Tiger, Crane, Tortoise, Serpent. You may maintain one Living Painting'; acts immediately after your turn, acts on its own instincts unless commanded with a Bonus Action (owner 2026-10-17). No command range is printed: the Painted Beast's 120 feet, a reading"},
+ "tianxia.subpath.qi.painting_cultivator.feature.living_painting#tortoise": {"ability": "tianxia.subpath.qi.painting_cultivator.feature.living_painting", "family": "living_painting", "family_name": "Living Painting", "creature": "living_painting_tortoise",
+   "arrives": "action", "count": 1, "command": "bonus_action", "command_range_ft": 120, "range_ft": 30, "concentration": true,
+   "evidence": "Painting Cultivator, CL6 Living Painting: Action, 4 Qi, 1 minute, Concentration; 'Choose: Tiger, Crane, Tortoise, Serpent. You may maintain one Living Painting'; acts immediately after your turn, acts on its own instincts unless commanded with a Bonus Action (owner 2026-10-17). No command range is printed: the Painted Beast's 120 feet, a reading"},
+ "tianxia.subpath.qi.painting_cultivator.feature.living_painting#serpent": {"ability": "tianxia.subpath.qi.painting_cultivator.feature.living_painting", "family": "living_painting", "family_name": "Living Painting", "creature": "living_painting_serpent",
+   "arrives": "action", "count": 1, "command": "bonus_action", "command_range_ft": 120, "range_ft": 30, "concentration": true,
+   "evidence": "Painting Cultivator, CL6 Living Painting: Action, 4 Qi, 1 minute, Concentration; 'Choose: Tiger, Crane, Tortoise, Serpent. You may maintain one Living Painting'; acts immediately after your turn, acts on its own instincts unless commanded with a Bonus Action (owner 2026-10-17). No command range is printed: the Painted Beast's 120 feet, a reading"}
+ },
+ "control_limits": {"death": {"limit": "pb", "evidence": "Death Control Limit: 'Your Death Control Limit equals your Proficiency Bonus. Each undead asset has a Control Load. Lesser Corpse Servant: 1 ... Corpse Servant: 1 ... Grave Formation: 3 ... You cannot willingly exceed your Death Control Limit' -- sources with \"control\": \"death\" share it (combat/summons.py _within_control_limits; rider lane C14)."}},
+ "tamer_talents": ["Beast Tamer", "Accomplice", "Focusing Connection", "Double Team", "Defensive Teamwork", "Call Beast", "Distant Tamer", "Enduring Control", "Steady Handler", "Beast Companion"],
+ "tamer_default": ["wolf"],
+ "mount_default": "warhorse",
+ "mount_note": "The Rider Package (Skillful Riding) rides a willing mount: the fight starts with the rider mounted on this beast (a Large one: 2x2 squares) unless the sheet picks none (mount = empty). Only a beast marked mountable can be a mount; a mount must be at least one size larger than its rider (5.5e Mounted Combat), and every Factory fighter is Medium.",
+ "improvements": {
+  "TAL_SHADOW_ANIMATED_SHADOW": {"creature": "shadow_lurk", "hp": "cl", "evidence": "Animated Shadow: the lurk's HP becomes 2 x CL (its one half-damage weapon attack is the GM's: a summon cannot borrow its source's weapon)"},
+  "tianxia.talent.death.bone_general": {"creature": "corpse_servant", "ac": 2, "extra_damage": {"dice": "1d8", "damage_type": "NECROTIC"},
+   "evidence": "Bone General: choose two improvements -- +2 AC and Grave Strike deals +1d8 Necrotic damage (default picks)"},
+  "TAL_DEATH_DEATHLESS_GUARD": {"creature": "corpse_servant", "guard": {"dice_by_cl": {"1": "1d8", "11": "2d8", "17": "3d8"}, "bonus": "pb", "range_ft": 5},
+   "evidence": "A commanded Corpse Servant may take the Guard action: until your next turn, when a creature within 5 feet of it is hit, its Reaction reduces the damage by 1d8 + PB (2d8 at CL 11, 3d8 at CL 17)"},
+  "tianxia.talent.spirit_companions.spirit_body": {"creature": "bonded_spirit", "hp": "2*cl",
+   "evidence": "Spirit Body: additional Hit Points equal to twice your Cultivation Level"},
+  "tianxia.talent.talismans.living_scripture_servitor": {"creature": "talisman_spirit", "hp": "5*pb",
+   "evidence": "Living Scripture Servitor: the Talisman Spirit's hit points become 10 x your Proficiency Bonus (its own 5 x PB plus these)"}
+ },
+ "creatures": {
+  "chain_clone": {
+   "name": "Chain Clone",
+   "ac": "14+pb",
+   "hp": "6*cl",
+   "speed": 30,
+   "size": "medium",
+   "attacks": [
+    {
+     "name": "Chain Strike",
+     "attack_bonus": "atk",
+     "dice": "2d8",
+     "bonus": "key",
+     "damage_type": "BLUDGEONING",
+     "damage_types": [
+      "BLUDGEONING",
+      "SLASHING"
+     ],
+     "reach_ft": 5,
+     "on_hit_effects": [
+      {
+       "type": "chains_clone_slow"
+      }
+     ]
+    }
+   ],
+   "specials": [
+    {
+     "id": "tether",
+     "name": "Set the Tether",
+     "range_ft": 30,
+     "target_kind": "ANY_CREATURE",
+     "effects": [
+      {
+       "type": "chains_clone_tether"
+      }
+     ],
+     "numbers": {
+      "save_dc": "dc"
+     },
+     "parameters": {
+      "player_only": false
+     }
+    },
+    {
+     "id": "grapple",
+     "name": "Grapple",
+     "range_ft": 5,
+     "target_kind": "HOSTILE_ENTITY",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "STR_OR_DEX",
+       "max_size_larger": 1,
+       "on_fail": [
+        {
+         "type": "condition",
+         "condition": "grappled",
+         "applies_to": "target",
+         "until_escape": true
+        }
+       ]
+      }
+     ],
+     "numbers": {
+      "save_dc": "8+pb"
+     }
+    },
+    {
+     "id": "shove_prone",
+     "name": "Shove: Prone",
+     "range_ft": 5,
+     "target_kind": "HOSTILE_ENTITY",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "STR_OR_DEX",
+       "max_size_larger": 1,
+       "on_fail": [
+        {
+         "type": "condition",
+         "condition": "prone",
+         "applies_to": "target"
+        }
+       ]
+      }
+     ],
+     "numbers": {
+      "save_dc": "8+pb"
+     }
+    },
+    {
+     "id": "shove_push",
+     "name": "Shove: Push 5 ft",
+     "range_ft": 5,
+     "target_kind": "HOSTILE_ENTITY",
+     "effects": [
+      {
+       "type": "save",
+       "ability": "STR_OR_DEX",
+       "max_size_larger": 1,
+       "on_fail": [
+        {
+         "type": "forced_movement",
+         "direction": "away",
+         "distance_ft": 5,
+         "applies_to": "target"
+        }
+       ]
+      }
+     ],
+     "numbers": {
+      "save_dc": "8+pb"
+     }
+    },
+    {
+     "id": "help",
+     "name": "Help: Distract",
+     "range_ft": 5,
+     "target_kind": "HOSTILE_ENTITY",
+     "effects": [
+      {
+       "type": "chains_clone_help"
+      }
+     ],
+     "parameters": {
+      "player_only": false
+     }
+    }
+   ],
+   "creature_type": "Construct"
+  },
+  "star_shadow": {
+    "name": "Star Shadow",
+    "ac": "13+pb",
+    "hp": "5*cl",
+    "speed": 30,
+    "attacks": [
+      {
+        "name": "Star Strike",
+        "attack_bonus": "atk",
+        "dice": "2d8",
+        "bonus": "key",
+        "damage_type": "RADIANT",
+        "damage_types": [
+          "RADIANT",
+          "FORCE",
+          "COLD"
+        ],
+        "reach_ft": 5
+      }
+    ],
+    "evidence": "Star Shadow: AC 13 + PB; HP 5 x CL; walking 30 feet and native Fly 30 feet, Hover (combat/ext/stars.py); Star Strike uses your attack modifier and deals 2d8 + key modifier Radiant, Force, or Cold; its hit applies your Stellar Mark."
+  },
+  "living_plague": {"name": "Living Plague", "ac": "13+pb", "hp": "5*cl", "speed": 30,
+   "attacks": [{"name": "Infected Strike", "attack_bonus": "atk", "dice": "2d8", "bonus": "key", "damage_type": "NECROTIC", "damage_types": ["NECROTIC", "POISON", "PSYCHIC"], "reach_ft": 5}],
+   "evidence": "Living Plague: AC 13 + your Proficiency Bonus; HP 5 x your CL; Speed 30 feet, Climb 30 feet; Infected Strike: your Cultivation Attack Modifier, 2d8 + your key ability modifier Necrotic, Poison, or Psychic and one Contagion Token (combat/ext/disease.py)"},
+  "echo_performer": {"name": "Echo Performer", "ac": "14", "hp": "1", "speed": 30, "attacks": [], "evidence": "Echo Performer: AC 14; 1 HP; Speed 30 feet; can take the Help action for one creature that can perceive it; disappears when damaged"},
+  "shadow_lurk": {"name": "Shadow Lurk", "ac": "10+pb", "hp": "cl", "speed": 30, "attacks": [],
+   "evidence": "Shadow Lurk: AC 10 + your Proficiency Bonus; HP equal to your CL; Speed 30 feet; cannot attack; may move, Dodge, Hide, Help"},
+  "talisman_spirit": {"name": "Talisman Spirit", "ac": 15, "hp": "5*pb", "speed": 30, "immune_conditions": ["poisoned", "prone"], "attacks": [], "evidence": "Talismans, Talisman Spirit: AC 15; hit points equal to 5 x your Proficiency Bonus; Fly Speed 30 feet, hover (the table has no altitude: it moves 30 feet); immunity to Poisoned and Prone"},
+  "corpse_servant": {"name": "Corpse Servant", "ac": "12+pb", "hp": "5*cl+key", "speed": 30,
+   "immune_damage": ["POISON"], "immune_conditions": ["charmed", "frightened", "poisoned"],
+   "attacks": [{"name": "Grave Strike", "attack_bonus": "atk", "dice": "2d6", "bonus": "key", "damage_type": "NECROTIC", "reach_ft": 5}]},
+  "grave_formation": {"name": "Grave Formation", "creature_type": "Undead", "footprint": "large", "ac": "12+pb", "hp": "10*cl", "speed": 20,
+   "immune_damage": ["POISON"], "immune_conditions": ["charmed", "frightened", "poisoned"],
+   "attacks": [{"name": "Grave Assault", "attack_bonus": "atk", "dice": "4d8", "bloodied_dice": "2d8", "bonus": "key", "damage_type": "NECROTIC",
+                "damage_types": ["BLUDGEONING", "SLASHING", "NECROTIC"], "reach_ft": 10}],
+   "evidence": "Grave Formation Stat Block: Undead; Large or Huge depending on remains (Large here); AC 12 + PB; HP 10 x CL; Speed 20; Poison immunity; Charmed, Frightened, Poisoned immunity; Grave Assault: melee, Cultivation Attack Modifier, reach 10 feet, 4d8 + key Bludgeoning, Slashing or Necrotic (whichever lands hardest), 2d8 + key at half its HP or fewer. Corpse Engine (regaining HP near a corpse) is the GM's: the table has no corpses."},
+  "lesser_corpse_servant": {"name": "Lesser Corpse Servant", "ac": "10+pb", "hp": "3*cl+key", "speed": 25,
+   "immune_damage": ["POISON"], "immune_conditions": ["charmed", "frightened", "poisoned"],
+   "attacks": [{"name": "Grave Strike", "attack_bonus": "atk", "dice": "1d6", "bonus": "key", "damage_type": "NECROTIC", "reach_ft": 5}]},
+  "ghost_lantern": {"name": "Ghost Lantern", "ac": 14, "hp": 1, "speed": 30, "immune_damage": ["POISON", "PSYCHIC"], "attacks": [],
+   "light": {"radius_ft": 20, "level": "dim", "color": "#bfe8ff"}},
+  "shadow_afterimage": {"name": "Shadow Afterimage", "ac": "13+pb", "hp": 1, "speed": 30, "immune_damage": ["POISON", "PSYCHIC"], "attacks": []},
+  "echo_decoy": {"name": "Echo Decoy", "ac": 10, "hp": 1, "speed": 0, "attacks": []},
+  "painted_beast": {"name": "Painted Beast", "creature_type": "Construct", "ac": "12+pb", "hp": "5*cl", "speed": 40,
+   "immune_damage": ["POISON"], "immune_conditions": ["charmed", "frightened", "poisoned"],
+   "attacks": [{"name": "Ink Fang", "attack_bonus": "atk", "dice": "2d6", "bonus": "key", "damage_type": "SLASHING", "reach_ft": 5}]},
+  "ash_clone": {"name": "Ash Clone", "ac": "13+pb", "hp": "5*cl", "speed": 30,
+   "attacks": [{"name": "Cinder Strike", "attack_bonus": "atk", "dice": "2d8", "bonus": "key", "damage_type": "FIRE", "damage_types": ["FIRE", "NECROTIC", "PSYCHIC"], "reach_ft": 5}]},
+  "painted_formation": {"name": "Painted Formation", "ac": "13+pb", "hp": "10*cl", "speed": 30,
+   "attacks": [{"name": "Formation Assault", "attack_bonus": "atk", "dice": "4d8", "bonus": "key", "damage_type": "SLASHING", "reach_ft": 5, "bloodied_dice": "2d8"}]},
+  "bone_guard": {"name": "Bone Guard", "ac": "14+pb", "hp": "5*cl", "speed": 30, "saves_from_owner": true, "immune_damage": ["POISON"], "immune_conditions": ["poisoned"],
+   "attacks": [{"name": "Bone Strike", "attack_bonus": "atk", "dice": "2d8", "bonus": "con", "damage_type": "PIERCING", "damage_types": ["PIERCING", "BLUDGEONING"], "reach_ft": 5}],
+   "innate_reaction": {"name": "Guard the Sovereign", "kind": "ally_attacked", "range_ft": 5,
+    "evidence": "Reaction: When you or an ally within 5 feet of the Bone Guard is targeted by an attack, impose Disadvantage on that attack roll.",
+    "effects": [{"type": "disadvantage", "applies_to": "attacker", "on": "that attack roll", "duration": "instant", "evidence": "impose Disadvantage on that attack roll"}]}},
+  "paper_dragon": {"name": "Paper Dragon", "size": "large", "evidence": "Paper Cultivator, CL10 Paper Dragon: Create a Large Paper Dragon in an unoccupied space.", "ac": "14+pb", "hp": "5*cl", "speed": 30, "resist_damage": ["BLUDGEONING", "PIERCING", "SLASHING"],
+   "vulnerable_damage": ["FIRE"], "immune_damage": ["POISON", "PSYCHIC"], "immune_conditions": ["charmed", "frightened", "poisoned"],
+   "attacks": [{"name": "Paper Bite", "attack_bonus": "atk", "dice": "2d8", "dice_by_cl": {"1": "2d8", "17": "3d8"}, "bonus": "key",
+                "damage_type": "SLASHING", "damage_types": ["SLASHING", "FORCE"], "reach_ft": 10}]},
+  "predatory_specter": {"name": "Predatory Specter", "ac": "dc", "hp": "6*pb", "speed": 40, "saves_from_owner": ["INT", "WIS", "CHA"], "resist_damage": ["PSYCHIC", "NECROTIC"],
+   "immune_damage": ["POISON"], "immune_conditions": ["poisoned", "prone", "grappled", "restrained"],
+   "attacks": [{"name": "Spectral Strike", "attack_bonus": "atk", "dice": "2d10", "bonus": "wis", "damage_type": "NECROTIC", "reach_ft": 5}]},
+  "bonded_spirit": {"name": "Bonded Spirit", "ac": "12+pb+1", "hp": "5+5*cl+5*3", "speed": 30,
+   "scores": {"STR": 16, "DEX": 12, "CON": 16, "INT": 6, "WIS": 12, "CHA": 10},
+   "attacks": [{"name": "Companion Strike", "attack_bonus": "pb+3", "dice": "companion", "bonus": 3, "damage_type": "BLUDGEONING", "reach_ft": 5}]},
+  "living_painting_tiger": {"name": "Living Painting (Tiger)", "ac": "13+pb", "hp": "4*cl", "speed": 50, "saves_from_owner": true,
+   "resist_damage": ["BLUDGEONING", "PIERCING", "SLASHING"], "immune_damage": ["POISON", "PSYCHIC"], "immune_conditions": ["charmed", "frightened", "poisoned"],
+   "attacks": [{"name": "Painted Strike", "attack_bonus": "atk", "dice": "2d8", "bonus": "key", "damage_type": "FORCE", "damage_types": ["BLUDGEONING", "PIERCING", "SLASHING", "FORCE"], "reach_ft": 5, "save_dc": "dc", "rider": "tiger"}]},
+  "living_painting_crane": {"name": "Living Painting (Crane)", "ac": "13+pb", "hp": "4*cl", "speed": 70, "saves_from_owner": true,
+   "resist_damage": ["BLUDGEONING", "PIERCING", "SLASHING"], "immune_damage": ["POISON", "PSYCHIC"], "immune_conditions": ["charmed", "frightened", "poisoned"],
+   "attacks": [{"name": "Painted Strike", "attack_bonus": "atk", "dice": "2d8", "bonus": "key", "damage_type": "FORCE", "damage_types": ["BLUDGEONING", "PIERCING", "SLASHING", "FORCE"], "reach_ft": 5}],
+   "specials": [{"id": "painted_passage", "name": "Painted Passage", "target_kind": "CELL", "range_ft": 25,
+    "parameters": {"any_cell": true, "painted_passage": 20},
+    "effect": {"type": "painted_passage", "distance_ft": 20},
+    "evidence": "Instead of Painted Strike, choose one willing creature within 5 feet; move it up to 20 feet to a legal unoccupied space the Crane can perceive; no Opportunity Attacks, may cross open air, cannot cross solid barriers (the range here is the Crane to the space: 5 feet to the creature + 20 feet)"}]},
+  "living_painting_tortoise": {"name": "Living Painting (Tortoise)", "ac": "15+pb", "hp": "4*cl", "speed": 25, "saves_from_owner": true,
+   "resist_damage": ["BLUDGEONING", "PIERCING", "SLASHING"], "immune_damage": ["POISON", "PSYCHIC"], "immune_conditions": ["charmed", "frightened", "poisoned"],
+   "innate_reaction": {"name": "Shell Ward", "kind": "ally_damaged", "range_ft": 5,
+    "evidence": "Reaction by the Tortoise, trigger: an ally within 5 feet is hit by an attack -- reduce the triggering damage by your Proficiency Bonus and grant the ally Half Cover until the start of its next turn (once per round: it is a Reaction)",
+    "effects": [{"type": "damage_modifier", "formula": "pb", "applies_to": "self", "evidence": "Reduce the triggering damage by your Proficiency Bonus"},
+                {"type": "shell_ward_cover", "evidence": "grant the ally Half Cover until the start of its next turn"}]},
+   "attacks": [{"name": "Painted Strike", "attack_bonus": "atk", "dice": "2d8", "bonus": "key", "damage_type": "FORCE", "damage_types": ["BLUDGEONING", "PIERCING", "SLASHING", "FORCE"], "reach_ft": 5}]},
+  "living_painting_serpent": {"name": "Living Painting (Serpent)", "ac": "13+pb", "hp": "4*cl", "speed": 40, "saves_from_owner": true,
+   "resist_damage": ["BLUDGEONING", "PIERCING", "SLASHING"], "immune_damage": ["POISON", "PSYCHIC"], "immune_conditions": ["charmed", "frightened", "poisoned"],
+   "attacks": [{"name": "Painted Strike", "attack_bonus": "atk", "dice": "2d8", "bonus": "key", "damage_type": "FORCE", "damage_types": ["BLUDGEONING", "PIERCING", "SLASHING", "FORCE"], "reach_ft": 10, "save_dc": "dc", "rider": "serpent"}]}
+ },
+ "companion_dice_by_cl": {"1": "1d8", "5": "2d8", "11": "3d8", "17": "4d8"},
+ "beasts": {
+  "wolf": {"name": "Wolf", "cr": "1/4", "ac": 13, "hp": 11, "speed": 40, "scores": {"STR": 12, "DEX": 15, "CON": 12, "INT": 3, "WIS": 12, "CHA": 6},
+   "attacks": [{"name": "Bite", "attack_bonus": 4, "dice": "2d4", "bonus": 2, "damage_type": "PIERCING", "reach_ft": 5,
+                "on_hit_save": {"ability": "STR", "dc": 11, "condition": "prone"}}]},
+  "mastiff": {"name": "Mastiff", "cr": "1/8", "ac": 12, "hp": 5, "speed": 40, "scores": {"STR": 13, "DEX": 14, "CON": 12, "INT": 3, "WIS": 12, "CHA": 7},
+   "attacks": [{"name": "Bite", "attack_bonus": 3, "dice": "1d6", "bonus": 1, "damage_type": "PIERCING", "reach_ft": 5,
+                "on_hit_save": {"ability": "STR", "dc": 11, "condition": "prone"}}]},
+  "panther": {"name": "Panther", "cr": "1/4", "ac": 12, "hp": 13, "speed": 50, "scores": {"STR": 14, "DEX": 15, "CON": 10, "INT": 3, "WIS": 14, "CHA": 7},
+   "attacks": [{"name": "Bite", "attack_bonus": 4, "dice": "1d6", "bonus": 2, "damage_type": "PIERCING", "reach_ft": 5},
+               {"name": "Claw", "attack_bonus": 4, "dice": "1d4", "bonus": 2, "damage_type": "SLASHING", "reach_ft": 5}]},
+  "warhorse": {"name": "Warhorse", "cr": "1/2", "size": "large", "mountable": true, "ac": 11, "hp": 19, "speed": 60, "scores": {"STR": 18, "DEX": 12, "CON": 13, "INT": 2, "WIS": 12, "CHA": 7},
+   "attacks": [{"name": "Hooves", "attack_bonus": 6, "dice": "2d6", "bonus": 4, "damage_type": "BLUDGEONING", "reach_ft": 5}]},
+  "dire_wolf": {"name": "Dire Wolf", "cr": "1", "size": "large", "mountable": true, "ac": 14, "hp": 37, "speed": 50, "scores": {"STR": 17, "DEX": 15, "CON": 15, "INT": 3, "WIS": 12, "CHA": 7},
+   "attacks": [{"name": "Bite", "attack_bonus": 5, "dice": "2d6", "bonus": 3, "damage_type": "PIERCING", "reach_ft": 5,
+                "on_hit_save": {"ability": "STR", "dc": 13, "condition": "prone"}}]},
+  "tiger": {"name": "Tiger", "cr": "1", "size": "large", "mountable": true, "ac": 12, "hp": 37, "speed": 40, "scores": {"STR": 17, "DEX": 15, "CON": 14, "INT": 3, "WIS": 12, "CHA": 8},
+   "attacks": [{"name": "Bite", "attack_bonus": 5, "dice": "1d10", "bonus": 3, "damage_type": "PIERCING", "reach_ft": 5},
+               {"name": "Claw", "attack_bonus": 5, "dice": "1d8", "bonus": 3, "damage_type": "SLASHING", "reach_ft": 5}]},
+  "brown_bear": {"name": "Brown Bear", "cr": "1", "size": "large", "mountable": true, "ac": 11, "hp": 34, "speed": 40, "scores": {"STR": 19, "DEX": 10, "CON": 16, "INT": 2, "WIS": 13, "CHA": 7},
+   "attacks": [{"name": "Claws", "attack_bonus": 6, "dice": "2d6", "bonus": 4, "damage_type": "SLASHING", "reach_ft": 5},
+               {"name": "Bite", "attack_bonus": 6, "dice": "1d8", "bonus": 4, "damage_type": "PIERCING", "reach_ft": 5}]},
+  "hawk": {"name": "Hawk", "cr": "0", "ac": 13, "hp": 1, "speed": 60, "scores": {"STR": 5, "DEX": 16, "CON": 8, "INT": 2, "WIS": 14, "CHA": 6},
+   "attacks": [{"name": "Talons", "attack_bonus": 5, "dice": "1d1", "bonus": 0, "damage_type": "SLASHING", "reach_ft": 5}]}
+ }
+}
