@@ -1,0 +1,957 @@
+{
+ "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+ "note": "Whole typed records checked by hand against their printed text (owner 2026-09-28: 'we need to automate every aspect before another playtest'; tools/build_typed_mechanics_authority.py applies them last, only while text_sha256 matches). Ruin damage is Force (the Unmaking default).",
+ "mechanics": {
+  "TAL_UNMAKING_BLACK_TRACE": {
+   "text_sha256": "00a45f673bc281eb03867033639abeacf2be7d5074bee435f18f8e403f7417fe",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [],
+   "options": [
+    {
+     "label": "Fray",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 10
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           10
+          ],
+          [
+           5,
+           9,
+           2,
+           10
+          ],
+          [
+           10,
+           14,
+           3,
+           10
+          ],
+          [
+           15,
+           20,
+           4,
+           10
+          ]
+         ],
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "On hit, the target takes Ruin damage based on your Realm."
+        },
+        {
+         "type": "healing_reduction",
+         "applies_to": "target",
+         "evidence": "The target cannot regain HP until the start of your next turn."
+        }
+       ],
+       "on_miss": [],
+       "evidence": "Make a ranged Cultivation Attack."
+      }
+     ]
+    },
+    {
+     "label": "Sting",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 10
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           10
+          ],
+          [
+           5,
+           9,
+           2,
+           10
+          ],
+          [
+           10,
+           14,
+           3,
+           10
+          ],
+          [
+           15,
+           20,
+           4,
+           10
+          ]
+         ],
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "On hit, the target takes Ruin damage based on your Realm."
+        },
+        {
+         "type": "deny_reactions_against",
+         "applies_to": "target",
+         "evidence": "The target cannot take Reactions against you until the start of your next turn."
+        }
+       ],
+       "on_miss": [],
+       "evidence": "Make a ranged Cultivation Attack."
+      }
+     ]
+    },
+    {
+     "label": "Mark",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 3,
+          "sides": 10
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           10
+          ],
+          [
+           5,
+           9,
+           2,
+           10
+          ],
+          [
+           10,
+           14,
+           3,
+           10
+          ],
+          [
+           15,
+           20,
+           4,
+           10
+          ]
+         ],
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "On hit, the target takes Ruin damage based on your Realm."
+        },
+        {
+         "type": "mark",
+         "mark": "Black Trace Mark",
+         "applies_to": "target",
+         "duration": {
+          "kind": "until_end_of_your_next_turn"
+         },
+         "evidence": "The next Unmaking talent that damages the target before the end of your next turn deals additional Ruin damage equal to your Proficiency Bonus."
+        }
+       ],
+       "on_miss": [],
+       "evidence": "Make a ranged Cultivation Attack."
+      }
+     ]
+    },
+    {
+     "label": "Fray, Unbound Trace",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 6,
+          "sides": 10
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           2,
+           10
+          ],
+          [
+           5,
+           9,
+           4,
+           10
+          ],
+          [
+           10,
+           14,
+           6,
+           10
+          ],
+          [
+           15,
+           20,
+           8,
+           10
+          ]
+         ],
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "On hit, the damage becomes the Unbound Trace value instead."
+        },
+        {
+         "type": "healing_reduction",
+         "applies_to": "target",
+         "evidence": "The target cannot regain HP until the start of your next turn."
+        }
+       ],
+       "on_miss": [],
+       "evidence": "Make a ranged Cultivation Attack."
+      },
+      {
+       "type": "gain_resource",
+       "applies_to": "self",
+       "resource_id": "resource:named.black_vein_strain",
+       "flat": 1,
+       "evidence": "After the attack resolves, whether it hits or misses, choose one: gain 1 Black Vein Strain"
+      }
+     ]
+    },
+    {
+     "label": "Sting, Unbound Trace",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 6,
+          "sides": 10
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           2,
+           10
+          ],
+          [
+           5,
+           9,
+           4,
+           10
+          ],
+          [
+           10,
+           14,
+           6,
+           10
+          ],
+          [
+           15,
+           20,
+           8,
+           10
+          ]
+         ],
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "On hit, the damage becomes the Unbound Trace value instead."
+        },
+        {
+         "type": "deny_reactions_against",
+         "applies_to": "target",
+         "evidence": "The target cannot take Reactions against you until the start of your next turn."
+        }
+       ],
+       "on_miss": [],
+       "evidence": "Make a ranged Cultivation Attack."
+      },
+      {
+       "type": "gain_resource",
+       "applies_to": "self",
+       "resource_id": "resource:named.black_vein_strain",
+       "flat": 1,
+       "evidence": "After the attack resolves, whether it hits or misses, choose one: gain 1 Black Vein Strain"
+      }
+     ]
+    },
+    {
+     "label": "Mark, Unbound Trace",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 6,
+          "sides": 10
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           2,
+           10
+          ],
+          [
+           5,
+           9,
+           4,
+           10
+          ],
+          [
+           10,
+           14,
+           6,
+           10
+          ],
+          [
+           15,
+           20,
+           8,
+           10
+          ]
+         ],
+         "formula": "key_ability_modifier",
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "On hit, the damage becomes the Unbound Trace value instead."
+        },
+        {
+         "type": "mark",
+         "mark": "Black Trace Mark",
+         "applies_to": "target",
+         "duration": {
+          "kind": "until_end_of_your_next_turn"
+         },
+         "evidence": "The next Unmaking talent that damages the target before the end of your next turn deals additional Ruin damage equal to your Proficiency Bonus."
+        }
+       ],
+       "on_miss": [],
+       "evidence": "Make a ranged Cultivation Attack."
+      },
+      {
+       "type": "gain_resource",
+       "applies_to": "self",
+       "resource_id": "resource:named.black_vein_strain",
+       "flat": 1,
+       "evidence": "After the attack resolves, whether it hits or misses, choose one: gain 1 Black Vein Strain"
+      }
+     ]
+    }
+   ],
+   "riders": [
+    "Crack (against an object, construct, armor, shield, barrier or temporary qi structure): +PB Ruin damage -- the GM applies it.",
+    "Unbound Trace's cost here is 1 Black Vein Strain; the printed alternatives (1d6 + PB self-damage, or 1 Crack on a focus) are the GM's to swap in."
+   ]
+  },
+  "TAL_UNMAKING_RUIN_CHANNEL": {
+   "text_sha256": "8198c4b3d0984bb5246c772c85c99d3ae2cb8d322a012de7a5ce8dbe1008b333",
+   "reviewed_by": "claude 2026-09-28",
+   "effects": [
+    {
+     "type": "ruin_channel",
+     "applies_to": "self",
+     "dice_by_cl": [
+      [
+       1,
+       4,
+       2,
+       8
+      ],
+      [
+       5,
+       9,
+       3,
+       8
+      ],
+      [
+       10,
+       14,
+       5,
+       8
+      ],
+      [
+       15,
+       20,
+       7,
+       8
+      ]
+     ],
+     "damage_types": [
+      "force"
+     ],
+     "evidence": "The next time before the duration ends that you hit with that Channel, deal additional Ruin damage based on your Realm."
+    }
+   ],
+   "options": null,
+   "riders": []
+  },
+  "TAL_VOID_VOID_NEEDLE": {
+   "text_sha256": "f932075ea2b2d8a6160561368c1750fc9415b492bf700ba3005d0b032a7f866b",
+   "reviewed_by": "claude 2026-09-28; Codex owner edit 2026-09-30",
+   "effects": [],
+   "options": [
+    {
+     "label": "Empty Vitality",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "evidence": "Make a ranged Cultivation Attack.",
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 2,
+          "sides": 8
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           8
+          ],
+          [
+           5,
+           10,
+           2,
+           8
+          ],
+          [
+           11,
+           16,
+           3,
+           8
+          ],
+          [
+           17,
+           20,
+           4,
+           8
+          ]
+         ],
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "Hit: Deal damage of your default Void type equal to the listed dice + your Path key ability modifier.",
+         "formula": "key_ability_modifier"
+        },
+        {
+         "type": "void_pressure",
+         "choice": "vitality",
+         "applies_to": "target",
+         "evidence": "The target cannot gain Temporary HP until the start of your next turn."
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Unsettle Invisibility",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "evidence": "Make a ranged Cultivation Attack.",
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 2,
+          "sides": 8
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           8
+          ],
+          [
+           5,
+           10,
+           2,
+           8
+          ],
+          [
+           11,
+           16,
+           3,
+           8
+          ],
+          [
+           17,
+           20,
+           4,
+           8
+          ]
+         ],
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "Hit: Deal damage of your default Void type equal to the listed dice + your Path key ability modifier.",
+         "formula": "key_ability_modifier"
+        },
+        {
+         "type": "void_pressure",
+         "choice": "invisibility",
+         "applies_to": "target",
+         "evidence": "The target cannot gain the Invisible condition from an ordinary temporary supernatural effect until the start of your next turn."
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    },
+    {
+     "label": "Cost Lock",
+     "effects": [
+      {
+       "type": "attack",
+       "attack_kind": "cultivation_ranged",
+       "count": 1,
+       "evidence": "Make a ranged Cultivation Attack.",
+       "on_hit": [
+        {
+         "type": "damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 2,
+          "sides": 8
+         },
+         "dice_by_cl": [
+          [
+           1,
+           4,
+           1,
+           8
+          ],
+          [
+           5,
+           10,
+           2,
+           8
+          ],
+          [
+           11,
+           16,
+           3,
+           8
+          ],
+          [
+           17,
+           20,
+           4,
+           8
+          ]
+         ],
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "Hit: Deal damage of your default Void type equal to the listed dice + your Path key ability modifier.",
+         "formula": "key_ability_modifier"
+        },
+        {
+         "type": "void_pressure",
+         "choice": "cost_lock",
+         "applies_to": "target",
+         "evidence": "Once per turn when Void Needle hits: the target cannot reduce printed technique costs below the listed cost until the start of your next turn."
+        }
+       ],
+       "on_miss": []
+      }
+     ]
+    }
+   ],
+   "riders": [
+    "Fray Barrier: against a temporary Barrier, reduce its HP by your Proficiency Bonus as well (the GM applies it).",
+    "The damage type is Force here (the default Void type)."
+   ],
+   "modifier": null,
+   "activation": {
+    "economy": "action",
+    "trigger": null,
+    "requirement": null,
+    "source": "printed_action_type"
+   },
+   "range": {
+    "kind": "feet",
+    "feet": 60
+   },
+   "area": null,
+   "cost": [],
+   "use_limit": null,
+   "duration": {
+    "kind": "instant",
+    "amount": null,
+    "concentration": false
+   },
+   "target": {
+    "text": "One creature, object, or temporary Barrier"
+   },
+   "after": null,
+   "min_cp_cost": null
+  },
+  "TAL_UNMAKING_SECOND_RUIN_FORM_BLACK_PALM_VESSEL": {
+   "text_sha256": "44f1feba682bf4c7e2d0d735381fc9891f97b1009b11d15040900370286ba7b8",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "riders": [],
+   "effects": [
+    {
+     "type": "stance",
+     "name": "Second Ruin Form",
+     "rounds": 10,
+     "ruin_channel_bonus": "pb",
+     "evidence": "You allow Unmaking qi to circulate through your hands and forearms. For the duration:",
+     "hit_riders": [
+      {
+       "attack_kinds": [
+        "unarmed"
+       ],
+       "once_per_turn": true,
+       "label": "+2d10 Ruin damage",
+       "effects": [
+        {
+         "type": "extra_damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 2,
+          "sides": 10
+         },
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "once per turn, when you hit with an unarmed strike, add 2d10 Ruin damage"
+        }
+       ]
+      }
+     ],
+     "end_of_turn_if_damaged": [
+      {
+       "type": "gain_resource",
+       "resource_id": "resource:named.black_vein_strain",
+       "flat": 1,
+       "evidence": "at the end of each of your turns in which you damaged a creature with this form, gain 1 Black Vein Strain"
+      }
+     ],
+     "unarmed_ruin": true
+    }
+   ]
+  },
+  "TAL_UNMAKING_FIRST_RUIN_FORM_EXTERNAL_VESSEL_MANDATE": {
+   "text_sha256": "59aaada5ea7896451f46e8dc3ca6bd9d35955e7e3a28d58e558f289eaaeb7649",
+   "reviewed_by": "claude 2026-09-28 + AUTO84 2026-10-05 + AUTO84f1 2026-10-05 (the d6 that delays a Crack, the delayed Crack when the form ends, and the Black Trace as the Channel breaks now run: combat/ext/unmaking_channels.py delay_or_crack / settle_delayed_crack, combat/ext/unmaking_forms.py _vessel_black_trace; the form now asks which held weapon or implement it binds its qi to -- unmaking_form_channel -- so only the chosen Channel's Crack can be delayed, and the free Black Trace is offered through an ordinary choice the moment the Channel breaks as the form ends)",
+   "modifier": null,
+   "riders": [],
+   "effects": [
+    {
+     "type": "stance",
+     "name": "First Ruin Form",
+     "rounds": 10,
+     "evidence": "You bind Unmaking qi to an External Channel ... For the duration:",
+     "hit_riders": [
+      {
+       "attack_kinds": [
+        "weapon"
+       ],
+       "once_per_turn": true,
+       "label": "+2d8 Ruin damage",
+       "effects": [
+        {
+         "type": "extra_damage",
+         "applies_to": "target",
+         "dice": {
+          "count": 2,
+          "sides": 8
+         },
+         "damage_types": [
+          "force"
+         ],
+         "evidence": "once per turn, when you hit with the chosen Channel, deal additional Ruin damage equal to 2d8"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "unmaking_form_channel",
+     "evidence": "Choose one held weapon or implement."
+    }
+   ]
+  },
+  "tianxia.subpath.body.shinobi.feature.pressure_point_strike": {
+   "text_sha256": "ece2109284cb595c17840567d2807862f2af7f25fc314d06c324703f3bf8ef30",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": {
+    "schema": "TianxiaFoundry.TypedModifier.v1",
+    "source": "reviewed",
+    "targets": [
+     "Unarmed Strike"
+    ],
+    "scope": "named",
+    "when": "hit",
+    "optional": true,
+    "limit": "once_per_turn",
+    "group": "",
+    "precondition": "",
+    "effects": [
+     {
+      "type": "save",
+      "applies_to": "target",
+      "flat": 0,
+      "formula": "none",
+      "damage_types": [],
+      "ability": "con",
+      "condition": "none",
+      "distance_ft": 0,
+      "on": "",
+      "duration": "until_start_of_next_turn",
+      "evidence": "On a successful save, it cannot take Reactions until the start of its next turn.",
+      "on_success": [
+       {
+        "type": "reaction_denied",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "none",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "until_start_of_next_turn",
+        "evidence": "it cannot take Reactions until the start of its next turn"
+       }
+      ],
+      "origin": "model_options"
+     }
+    ],
+    "options": [
+     {
+      "label": "No Reactions",
+      "effects": [
+       {
+        "type": "reaction_denied",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "none",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "",
+        "duration": "until_start_of_next_turn",
+        "evidence": "No Reactions until the start of its next turn.",
+        "origin": "model_options"
+       }
+      ]
+     },
+     {
+      "label": "Speed Reduced",
+      "effects": [
+       {
+        "type": "speed",
+        "applies_to": "target",
+        "flat": -10,
+        "formula": "none",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 10,
+        "on": "",
+        "duration": "until_start_of_next_turn",
+        "evidence": "Speed reduced by 10 feet until the start of its next turn.",
+        "origin": "model_options"
+       }
+      ]
+     },
+     {
+      "label": "Attack Disadvantage",
+      "effects": [
+       {
+        "type": "disadvantage",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "none",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "attack rolls",
+        "duration": "until_start_of_next_turn",
+        "evidence": "Disadvantage on its next attack roll before the start of its next turn.",
+        "origin": "model_options"
+       }
+      ]
+     },
+     {
+      "label": "Concentration Disadvantage",
+      "effects": [
+       {
+        "type": "disadvantage",
+        "applies_to": "target",
+        "flat": 0,
+        "formula": "none",
+        "damage_types": [],
+        "ability": "none",
+        "condition": "none",
+        "distance_ft": 0,
+        "on": "Concentration saving throws",
+        "duration": "until_start_of_next_turn",
+        "evidence": "Disadvantage on its next Concentration saving throw before the start of its next turn.",
+        "origin": "model_options"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "TAL_UNMAKING_UNBOUND_TRACE": {
+   "text_sha256": "bb0731b8d9ca939f00d5bdc56677f25db63983fdd136df84f25835d9c36f7273",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": [],
+   "riders": []
+  },
+  "TAL_UNMAKING_EXECUTION_THROUGH_THE_FAULT": {
+   "text_sha256": "2814ce31bb536f742919eebaa14fba7541bf6c850199dbb8b64b669b5150b8cf",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": [],
+   "riders": []
+  },
+  "TAL_UNMAKING_CRACK_THE_NAME_OF_THE_TOOL": {
+   "text_sha256": "4c1346bcf328e67f2273452aa968205a950f6f884296dd5f938dafcb3126c676",
+   "reviewed_by": "claude 2026-09-28",
+   "modifier": null,
+   "effects": [],
+   "riders": []
+  },
+  "TAL_IRON_FIST_COUNTER_PALM": {
+     "schema": "TianxiaFoundry.TypedMechanic.v1",
+     "mechanic_id": "TAL_IRON_FIST_COUNTER_PALM",
+     "kind": "talent",
+     "name": "Counter Palm",
+     "sphere_id": "tianxia.sphere.iron_fist",
+     "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 47080,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "79cb9d62d35bf76298dcfecd583900036978977bc18fac9372fe01384f514272"
+     },
+     "activation": {
+        "economy": "reaction",
+        "trigger": "A creature within reach misses you with a melee attack",
+        "requirement": null,
+        "source": "printed_action_type"
+     },
+     "header_economy": true,
+     "cost": [
+        [
+           {
+              "resource": "martial_focus",
+              "amount": 1
+           }
+        ]
+     ],
+     "use_limit": null,
+     "range": null,
+     "area": null,
+     "target": null,
+     "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+     },
+     "effects": [
+        {
+           "type": "attack",
+           "attack_kind": "unarmed",
+           "count": 1,
+           "strike_with": "unarmed",
+           "evidence": "Make one Unarmed Strike against the triggering creature.",
+           "on_hit": [
+              {
+                 "type": "damage",
+                 "weapon_damage": true,
+                 "evidence": "Make one Unarmed Strike"
+              },
+              {
+                 "type": "iron_bell_on_hit",
+                 "evidence": "Owned Bell-Ringing Body Shot: When you hit an Opened creature with an Unarmed Strike, choose one."
+              },
+              {
+                 "type": "iron_form_on_hit",
+                 "evidence": "If the attack hits, you may apply one Form talent you know."
+              }
+           ],
+           "on_miss": []
+        }
+     ],
+     "riders": [
+        "Counter Palm: other known Forms beyond Breaking Knuckle, eligible Rising Knee and Elbow in the Door remain GM adjudicated."
+     ],
+     "description": [],
+     "coverage": "CORE_WITH_RIDERS",
+     "provenance": {
+        "method": "typed-mechanics-parser.v1"
+     },
+     "typing_status": "reviewed_final",
+     "structure_source": "model_v2",
+     "text_sha256": "79cb9d62d35bf76298dcfecd583900036978977bc18fac9372fe01384f514272",
+     "reviewed_by": "Codex 2026-09-29"
+  }
+ }
+}
