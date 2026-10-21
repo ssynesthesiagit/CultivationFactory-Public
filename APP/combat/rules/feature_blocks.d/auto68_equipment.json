@@ -1,0 +1,24 @@
+{
+  "schema": "TianxiaFoundry.FeatureBlocks.v1",
+  "note": "Equipment sphere rows the table now runs (automation lane AUTO68, 2026-10-05: 'automate everything'; reviewed AUTO68f1, 2026-10-05).",
+  "features": {
+    "tianxia.talent.equipment.iron_rain_readiness": {
+      "block": "lane9_equipment",
+      "kind": "iron_rain_area",
+      "keeps_compiling": true,
+      "why": "New bundles retain the ranged-hit generic Reaction and opt into Iron Rain Readiness's failed Dexterity area-save guard through exact save-packet provenance. Older saved bundles have no area guard row."
+    },
+    "tianxia.talent.equipment.breath_aligned_armor": {
+      "block": "lane9_equipment",
+      "kind": "breath_aligned",
+      "why": "While wearing Fitted Armor, the existing stand_cost hook quotes 5 feet. Armor itself imposes no Acrobatics penalty in the table's proficient fitted-armor model."
+    },
+    "tianxia.talent.equipment.reinforced_robes": {
+      "block": "defense",
+      "defenses": [
+        {"kind": "ac_calculation", "base": 10, "ability": "DEX", "amount": "key_mod", "requires": ["unarmored", "no_shield"]}
+      ],
+      "why": "While you are wearing no armor and not using a shield, your Armor Class equals 10 + your Dexterity modifier + your Equipment key ability modifier. That sentence states a whole Armor Class calculation, not a bonus: owner amendment R1 says alternate calculations replace rather than stack and that one applicable calculation is used, so this row is the alternate calculation (base 10, the Dexterity modifier, plus the key modifier) and combat/armour.alternate_ac_calculations hands it to combat/armour.armor_class, which uses the highest of the sheet's own calculation and this one instead of adding it. The general 'unarmored' and 'no_shield' requirements are the same compile-time gates every defense row uses, and worn armour replaces the unarmored calculation entirely, as printed."
+    }
+  }
+}
