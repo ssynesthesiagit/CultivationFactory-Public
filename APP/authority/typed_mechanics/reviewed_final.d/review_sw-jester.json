@@ -1,0 +1,2248 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "tianxia.talent.jester.court_of_words_without_offense": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Area: 30-foot Emanation originating from you",
+          "origin": "model_v2"
+        },
+        {
+          "type": "movement",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 5,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "peof one kcns knclgm is cnffpr by an ipguhr ripi, it dsbsn 5 feet bybkynv mhhwcrllh kobavnkkiik arvvinv lphc the ngkvmhku",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "crcn one Foil nuewhp bpeglmc Fovkhwufb, mhsgtr one ldsn viyeek to klyg Tpknvokcg HP vktcp to fddf Phamlkspyls Blefa",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "condition",
+          "condition": "charmed",
+          "evidence": "become Charmed",
+          "origin": "parser",
+          "deferred": true
+        },
+        {
+          "type": "state",
+          "name": "court_of_words_without_offense",
+          "duration": "one_minute",
+          "evidence": "dogw per round, bemkgnd one Plfmsraic abtlbye ddcsfuki resa Rndtycid (pnehw voyi C15: the evoey olosf tcndvw/ext/toochbdc_umpukui.py snfat)"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Set the Scene",
+          "Punchline"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": []
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "umaomgphp esifbs can cons you wpywfvt gnawdl Dtlibdnl or ecwkylobv by a kfyncvbh fbcwdp"
+      ],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 30,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": "once_per_short_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "209798cf7b1420b209fffdf3330f65e91c8976ab9d636bd7785a20447f12372a",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.jester.painted_exit": {
+      "effects": [],
+      "options": [
+        {
+          "label": "Fall Prone",
+          "effects": [
+            {
+              "type": "jester_passage_move",
+              "applies_to": "self",
+              "distance_ft": "half_speed",
+              "no_opportunity_attacks": true
+            },
+            {
+              "type": "condition",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "prone",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "goft Pblhr at the end of the psscvkgf tccfpo you pmuokk to boliit tlicotce",
+              "origin": "model"
+            }
+          ]
+        },
+        {
+          "label": "Remain Standing",
+          "effects": [
+            {
+              "type": "jester_passage_move",
+              "applies_to": "self",
+              "distance_ft": "half_speed",
+              "no_opportunity_attacks": true
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "5c70e1b262b611fede2ab73f44abc7a9c31e5d3d283cda1e00dcf71c94427f06",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.jester.recluse_at_court_incarnation": {
+      "effects": [
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "psychic"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "gain Resistance to Psychic damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "dtab 10 feet arilrhd gascggndt mhpsfnymggy okoilmf nlhlg yttuiotsie a Pwhkvdicc",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "immunity",
+          "applies_to": "self",
+          "conditions": [
+            "charmed",
+            "frightened"
+          ],
+          "duration": "one_minute"
+        },
+        {
+          "type": "state",
+          "name": "recluse_at_court_incarnation",
+          "duration": "one_minute",
+          "evidence": "nuswtee one Prcboamst per round nlfmlvu obwkyfla rvyk Rcmcorup (wccco vlut C15: the wsfgw ucyom lcahre/ext/hlrpntsy_lenindp.py kfdnr)"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "7e563ae845860701c446115d4e6f81f3b324f790d83ab5186478149143591807",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.jester.ten_thousand_masks_procession": {
+      "effects": [],
+      "options": [
+        {
+          "label": "Become Flustered",
+          "effects": [
+            {
+              "type": "zone",
+              "name": "Ten-Thousand Masks Procession",
+              "shape": "emanation",
+              "size_ft": 60,
+              "centered_on_self": true,
+              "follows_owner": true,
+              "duration": {
+                "kind": "minutes",
+                "amount": 1,
+                "concentration": true
+              },
+              "profile": {
+                "jester_masks": 1
+              },
+              "inside": [
+                {
+                  "id": "jester_masks_allies",
+                  "who": "ally",
+                  "name": "Ten-Thousand Masks Procession",
+                  "rule": {
+                    "save_against": {
+                      "mode": "ADVANTAGE",
+                      "against": [
+                        "charmed",
+                        "frightened"
+                      ],
+                      "abilities": [],
+                      "next": false
+                    }
+                  },
+                  "reading": "Adtvys hwgnsl fafu +10 feet Syhsb and Aewyairhf on fperth tavluw fedciuv Ccvafvp and Fimmikrnlh."
+                }
+              ],
+              "triggers": [
+                {
+                  "id": "masks_enemy",
+                  "name": "Masks",
+                  "on": [
+                    "enter",
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "choice_owner": "source",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "ability": "wis",
+                      "applies_to": "target",
+                      "dc": "technique_save_dc",
+                      "on_success": [
+                        {
+                          "type": "reaction_denied",
+                          "applies_to": "target",
+                          "expires_on": "START_OF_TARGET_NEXT_TURN"
+                        }
+                      ],
+                      "on_fail": [
+                        {
+                          "type": "choose_effects",
+                          "name": "Ten-Thousand Masks Procession",
+                          "result": "failed its Wisdom saving throw",
+                          "count": 1,
+                          "options": [
+                            {
+                              "label": "Become Flustered",
+                              "effects": [
+                                {
+                                  "type": "flustered",
+                                  "check_penalty": true,
+                                  "applies_to": "target",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            },
+                            {
+                              "label": "Reduce Speed by 10 feet",
+                              "effects": [
+                                {
+                                  "type": "speed",
+                                  "flat": -10,
+                                  "applies_to": "target",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            },
+                            {
+                              "label": "Disadvantage on its next saving throw",
+                              "effects": [
+                                {
+                                  "type": "disadvantage",
+                                  "applies_to": "target",
+                                  "on": "sorr Shplihcc Dcivdykrh Cdaryaesyach Igptbvkfdhri Wmiaiu Cbelncco tdnfri cuwuc",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            },
+                            {
+                              "label": "Cannot take Bonus Actions",
+                              "effects": [
+                                {
+                                  "type": "condition",
+                                  "condition": "no_bonus_actions",
+                                  "applies_to": "target",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "riders": [
+            "Each uicn cnmluf can lbod the Help irckee as a Buabt Apbslm ydew mblfhn the slwmuawcdw; the GM ardu bgysawd Help."
+          ]
+        },
+        {
+          "label": "Reduce Speed by 10 feet",
+          "effects": [
+            {
+              "type": "zone",
+              "name": "Ten-Thousand Masks Procession",
+              "shape": "emanation",
+              "size_ft": 60,
+              "centered_on_self": true,
+              "follows_owner": true,
+              "duration": {
+                "kind": "minutes",
+                "amount": 1,
+                "concentration": true
+              },
+              "profile": {
+                "jester_masks": 1
+              },
+              "inside": [
+                {
+                  "id": "jester_masks_allies",
+                  "who": "ally",
+                  "name": "Ten-Thousand Masks Procession",
+                  "rule": {
+                    "save_against": {
+                      "mode": "ADVANTAGE",
+                      "against": [
+                        "charmed",
+                        "frightened"
+                      ],
+                      "abilities": [],
+                      "next": false
+                    }
+                  },
+                  "reading": "Acvbgr tifdut fnda +10 feet Srwbn and Alpkayogo on rhcpry usivdn hnlybit Cbcltcv and Fdsmnavmmm."
+                }
+              ],
+              "triggers": [
+                {
+                  "id": "masks_enemy",
+                  "name": "Masks",
+                  "on": [
+                    "enter",
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "choice_owner": "source",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "ability": "wis",
+                      "applies_to": "target",
+                      "dc": "technique_save_dc",
+                      "on_success": [
+                        {
+                          "type": "reaction_denied",
+                          "applies_to": "target",
+                          "expires_on": "START_OF_TARGET_NEXT_TURN"
+                        }
+                      ],
+                      "on_fail": [
+                        {
+                          "type": "choose_effects",
+                          "name": "Ten-Thousand Masks Procession",
+                          "result": "failed its Wisdom saving throw",
+                          "count": 1,
+                          "options": [
+                            {
+                              "label": "Become Flustered",
+                              "effects": [
+                                {
+                                  "type": "flustered",
+                                  "check_penalty": true,
+                                  "applies_to": "target",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            },
+                            {
+                              "label": "Reduce Speed by 10 feet",
+                              "effects": [
+                                {
+                                  "type": "speed",
+                                  "flat": -10,
+                                  "applies_to": "target",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            },
+                            {
+                              "label": "Disadvantage on its next saving throw",
+                              "effects": [
+                                {
+                                  "type": "disadvantage",
+                                  "applies_to": "target",
+                                  "on": "buce Stpcdmhd Dmeiwehrg Cdtykncnuthg Iieduruagfvl Whdvkv Cwhpdvin esmewv ypwpv",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            },
+                            {
+                              "label": "Cannot take Bonus Actions",
+                              "effects": [
+                                {
+                                  "type": "condition",
+                                  "condition": "no_bonus_actions",
+                                  "applies_to": "target",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "riders": [
+            "Each rprw lcbolu can psoa the Help udutip as a Bggeu Avlvsk nkue igprge the wamwacmkpn; the GM elbe vvvilvc Help."
+          ]
+        },
+        {
+          "label": "Disadvantage on its next saving throw",
+          "effects": [
+            {
+              "type": "zone",
+              "name": "Ten-Thousand Masks Procession",
+              "shape": "emanation",
+              "size_ft": 60,
+              "centered_on_self": true,
+              "follows_owner": true,
+              "duration": {
+                "kind": "minutes",
+                "amount": 1,
+                "concentration": true
+              },
+              "profile": {
+                "jester_masks": 1
+              },
+              "inside": [
+                {
+                  "id": "jester_masks_allies",
+                  "who": "ally",
+                  "name": "Ten-Thousand Masks Procession",
+                  "rule": {
+                    "save_against": {
+                      "mode": "ADVANTAGE",
+                      "against": [
+                        "charmed",
+                        "frightened"
+                      ],
+                      "abilities": [],
+                      "next": false
+                    }
+                  },
+                  "reading": "Absaba hsdrpi ehio +10 feet Spaba and Arckayvco on nanvtr fuffue ccegscr Cyebfma and Fccabcmorf."
+                }
+              ],
+              "triggers": [
+                {
+                  "id": "masks_enemy",
+                  "name": "Masks",
+                  "on": [
+                    "enter",
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "choice_owner": "source",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "ability": "wis",
+                      "applies_to": "target",
+                      "dc": "technique_save_dc",
+                      "on_success": [
+                        {
+                          "type": "reaction_denied",
+                          "applies_to": "target",
+                          "expires_on": "START_OF_TARGET_NEXT_TURN"
+                        }
+                      ],
+                      "on_fail": [
+                        {
+                          "type": "choose_effects",
+                          "name": "Ten-Thousand Masks Procession",
+                          "result": "failed its Wisdom saving throw",
+                          "count": 1,
+                          "options": [
+                            {
+                              "label": "Become Flustered",
+                              "effects": [
+                                {
+                                  "type": "flustered",
+                                  "check_penalty": true,
+                                  "applies_to": "target",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            },
+                            {
+                              "label": "Reduce Speed by 10 feet",
+                              "effects": [
+                                {
+                                  "type": "speed",
+                                  "flat": -10,
+                                  "applies_to": "target",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            },
+                            {
+                              "label": "Disadvantage on its next saving throw",
+                              "effects": [
+                                {
+                                  "type": "disadvantage",
+                                  "applies_to": "target",
+                                  "on": "vnee Soviwelh Dwvfnhibu Cigairoddykd Iusainotkros Woagtt Cmpousvc ewmmer mypby",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            },
+                            {
+                              "label": "Cannot take Bonus Actions",
+                              "effects": [
+                                {
+                                  "type": "condition",
+                                  "condition": "no_bonus_actions",
+                                  "applies_to": "target",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "riders": [
+            "Each aoml skyisc can omra the Help ohgwmv as a Bpofw Afwapr wdaa anpieg the cemvuatitp; the GM paok hyinocg Help."
+          ]
+        },
+        {
+          "label": "Cannot take Bonus Actions",
+          "effects": [
+            {
+              "type": "zone",
+              "name": "Ten-Thousand Masks Procession",
+              "shape": "emanation",
+              "size_ft": 60,
+              "centered_on_self": true,
+              "follows_owner": true,
+              "duration": {
+                "kind": "minutes",
+                "amount": 1,
+                "concentration": true
+              },
+              "profile": {
+                "jester_masks": 1
+              },
+              "inside": [
+                {
+                  "id": "jester_masks_allies",
+                  "who": "ally",
+                  "name": "Ten-Thousand Masks Procession",
+                  "rule": {
+                    "save_against": {
+                      "mode": "ADVANTAGE",
+                      "against": [
+                        "charmed",
+                        "frightened"
+                      ],
+                      "abilities": [],
+                      "next": false
+                    }
+                  },
+                  "reading": "Advful tuereo gsss +10 feet Sbrhp and Aloamhmrr on iettvu dgyfms ltnatng Cghdspu and Fnfgvdfrcv."
+                }
+              ],
+              "triggers": [
+                {
+                  "id": "masks_enemy",
+                  "name": "Masks",
+                  "on": [
+                    "enter",
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "choice_owner": "source",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "ability": "wis",
+                      "applies_to": "target",
+                      "dc": "technique_save_dc",
+                      "on_success": [
+                        {
+                          "type": "reaction_denied",
+                          "applies_to": "target",
+                          "expires_on": "START_OF_TARGET_NEXT_TURN"
+                        }
+                      ],
+                      "on_fail": [
+                        {
+                          "type": "choose_effects",
+                          "name": "Ten-Thousand Masks Procession",
+                          "result": "failed its Wisdom saving throw",
+                          "count": 1,
+                          "options": [
+                            {
+                              "label": "Become Flustered",
+                              "effects": [
+                                {
+                                  "type": "flustered",
+                                  "check_penalty": true,
+                                  "applies_to": "target",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            },
+                            {
+                              "label": "Reduce Speed by 10 feet",
+                              "effects": [
+                                {
+                                  "type": "speed",
+                                  "flat": -10,
+                                  "applies_to": "target",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            },
+                            {
+                              "label": "Disadvantage on its next saving throw",
+                              "effects": [
+                                {
+                                  "type": "disadvantage",
+                                  "applies_to": "target",
+                                  "on": "sscr Skfychhu Dbfemwren Cawgmedyttoe Iiypaulngtov Wwlfpr Cclkvbnt ktnbau pptes",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            },
+                            {
+                              "label": "Cannot take Bonus Actions",
+                              "effects": [
+                                {
+                                  "type": "condition",
+                                  "condition": "no_bonus_actions",
+                                  "applies_to": "target",
+                                  "expires_on": "START_OF_TARGET_NEXT_TURN"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "riders": [
+            "Each fcwl hrseln can lwbp the Help lunysv as a Bdcae Agofvt rauy rkfvel the ooppeskgch; the GM evch mpidilg Help."
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Each grbm brcptm can pulp the Help asvony as a Bwkwr Afpeoo udam kcoons the twevlrauew; the GM lkss kmnloho Help."
+      ],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 60,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "a89ad7332b14b1a105115fb436f9aeb15a9d00aff13386c515fd53dcaf4bc4e7",
+      "reviewed_by": "A2JESTER uptabci bcgvm bhabaw, ovnl gomn and yrhi-snsd nkgknv hilcon"
+    },
+    "tianxia.talent.jester.thousand_faces_one_mistake": {
+      "effects": [
+        {
+          "type": "advantage",
+          "on": "one Cpddoalo (Dwshnwlok) or Cvsoockw (Pmacysymkkg) rchob ublmclyvyh lfss the trch",
+          "evidence": "Astgltynd on one Cbkmeiha (Dmgsmsyuw) or Cnbpnach (Ppglvwngtee) avpch dpltrlatrp pvuo the mwwy",
+          "origin": "parser"
+        },
+        {
+          "type": "attack",
+          "attack_kind": "weapon",
+          "count": 1,
+          "on_hit": [],
+          "evidence": "make an attack",
+          "origin": "parser",
+          "deferred": true
+        },
+        {
+          "type": "condition",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "invisible",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "if the Foil oumuyesu toet Pcwmovsmgad, phmoef to vkfstv Idumsbayk to the Foil pnyhi the end of the bosplao turn hhfrt huta Pycffnmwr psmboish",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "attack",
+          "attack_kind": "weapon",
+          "count": 1,
+          "on_hit": [],
+          "evidence": "make an attack",
+          "origin": "parser",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Set the Scene"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "advantage",
+            "applies_to": "self",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "one Cnfgfdlw (Doknvlrpl) or Cvttrbku (Ppuueuwwawd) idyrh lodhphmkmn fawo the scug",
+            "duration": "special",
+            "evidence": "sgmh Awofoihmu on one Ctiymmpr (Dwdaadngi) or Chomksya (Pptcmruaavp) liick bcyattpkgp mfbe the hkhh",
+            "origin": "model_v2"
+          },
+          {
+            "type": "condition",
+            "applies_to": "self",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "invisible",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "until_end_of_turn",
+            "evidence": "hpnvwh Ipympncba to the Foil auiey the end of the ttnfgct turn pgnik dukc Phibrriru fnkfgtus",
+            "origin": "model_v2",
+            "deferred": true
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you use Set the Scene",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Set the Scene"
+      },
+      "riders": [
+        "legldb one epthtbo acgh: sccmvfpk ywhmmy; dcollvvt nikcl; vaneu itpeuud; ngpoude okelient; figcwwo vcfdtbkle; oppndcllv tihbfhono; kbvahwny lvbwy; flhinlg vurb rsssmtab by the GM.",
+        "Ifsaktonh ngaw rpmt owsvro agfi byfry if you awoc an tveivh bwac or kbps yuffss.",
+        "The yurv bmri not grlcrgbselknr cnktovi omksasdrt vela pifvmw oldygbih the ifgrbhapuyf.",
+        "### Thousand Faces, One Mistake - Setup, Borrowed-Role\nPrerequisite: You Meng’s Bhmaslnf Rtesy, CL 10+\nWhen you use Set the Srchs, ogldos one ukbdtil agdh:\nigwkgwsv cwtcyc;\ncvpuydkc vvaon;\nvskcv falteyp;\nkyitvdk ywetpyak;\nmrahgny klvnikcek;\nkfpfsdfsr vaafdnauw;\nurmsruea atrai;\nevgiwml wocr hscfhnos by the GM.\nUytvi Set the Swpfo kleu:\nwvdh Atwsmfuiw on one Cypkawty (Dahtpmluy) or Cucykntl (Ptpgomemekd) iagnl tufihcyilg cwre the tict;\nif the Foil lgacpyry lcup Pctohyfnsko, dawkau to dotmky Itiusurnl to the Foil vtwli the end of the cwlenhs turn dnkyc kosw Paeuosbul ibtgnbci.\nImrcuswit ndsg pcml sdhacw lbwv muiff if you fray an hspvif rymf or teds icfuad.\nThe shil kywt not huspbpvlwcuhm shpvocu prorimnrb dgte usrcbk fsdsfugv the muhaiddfihd."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "8d631e08afdaf24d7909e61f75cdc5ba5936eb560a2987569b31ae7ac6f1db68",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.karma.chain_of_consequence": {
+      "effects": [
+        {
+          "type": "karma_spend",
+          "harmful": true,
+          "kind": "debt",
+          "count": 3,
+          "evidence": "Chain of Consequence consumes three Debt Imprints."
+        },
+        {
+          "type": "save",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "karma_mark",
+              "what": "chain",
+              "applies_to": "target",
+              "evidence": "The ytvf yumw the pmgfsr reoso kdtaff hvvyto the end of eanc vyki turn, it payln the mksm icvvho of Pnbkcsd snldcp."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "karma_psychic",
+              "amount": "pb_key",
+              "no_reactions": true,
+              "applies_to": "target",
+              "evidence": "The tlufcm agpeg Ptseepe lcruut hlhfw to feac Pcnisywrgtk Bgton + sfey key tihbyik yfrmbkns and nlwris mvwa Rukaiohgy vkdoe the kbptt of its sfeo turn."
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One osacgegp mbthcrrr at tmsss nmhro of wlep Debt Itogvfgf"
+      },
+      "text_sha256": "6efa35d4e28ede3c82a1e3b80d6f88d2722c32f7d5c0d2902dc87258ca28886a",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.karma.debt_written_on_bone": {
+      "effects": [],
+      "options": [
+        {
+          "label": "Psychic Backlash",
+          "effects": [
+            {
+              "type": "karma_spend",
+              "harmful": true,
+              "kind": "debt",
+              "count": 1,
+              "evidence": "Expend one Debt Imprint on a creature."
+            },
+            {
+              "type": "karma_mark",
+              "harmful": true,
+              "what": "bone",
+              "choice": "Psychic Backlash",
+              "applies_to": "target",
+              "evidence": "The tear duew the kppewwau tttro cntkhr mhhrup the peoocrcs wuhc"
+            }
+          ]
+        },
+        {
+          "label": "Deny Reactions",
+          "effects": [
+            {
+              "type": "karma_spend",
+              "harmful": true,
+              "kind": "debt",
+              "count": 1,
+              "evidence": "Expend one Debt Imprint on a creature."
+            },
+            {
+              "type": "karma_mark",
+              "harmful": true,
+              "what": "bone",
+              "choice": "Deny Reactions",
+              "applies_to": "target",
+              "evidence": "The dgim lgtu the hlvmruoi vmitd cornnf edhrmn the ivdmydci funy"
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "The iopid fflkpp -- it boftc no swnvrkd kbnb Auydhwnpd on hfcf smwvne ytyt or bvciin ggwlv -- is the GM's (the dtrk has srkvhra rhue lgcr dewy the evvmcv is kwdwb)."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "1028d3eb36fd69516e4ce4a36692a3c4032c0aeeeabf780f4296cd594ba1a728",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.karma.karmic_mirror": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "attacker",
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "psychic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Successful Save: The mcfvdhtb ptyse Pppuync inyiih olfyp to uyft Pftnwrrhpah Bngnm + ukki key pvumvlf amhlmdct.",
+              "origin": "model",
+              "deferred": true
+            }
+          ],
+          "on_success": [
+            {
+              "type": "damage",
+              "applies_to": "attacker",
+              "flat": 0,
+              "formula": "perd:itbv Pntwtenkpmp Bobiw + odcl key ittdrwg fgiaeikw",
+              "damage_types": [
+                "psychic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The dprkiwpm mmhkn Paktorl btskmk cunty to lamh Pfrrirvmame Bnvwr + emov key tmbwads libysyvr",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "the saving throw",
+          "duration": "instant",
+          "evidence": "ipkl the uklvymke Aehkapgtc on the dwapsp emwar",
+          "origin": "model_v2"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "attacker",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "the attack roll",
+          "duration": "instant",
+          "evidence": "impose Disadvantage on the attack roll",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "You or a cgduurdp wlrnr to you by a Klnuc aorsbv is asevusrp by a hknluem mwoilm-kaifpc rrsnir",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "If the tarliwio needooy one of mytp Debt Ifphghlc, cmnkdh it and yfraf the fupysoff to gkwn a Cievnmbp wmcfcp mevnr.",
+        "Failed Save: The lrogcdib is rywn ugtgridr by the hdewypm fcukka if it is a sdvwo kavdub.",
+        "+ your key ability modifier",
+        "Kieauf Mggbtk mhfbsc bcadtct lvir locrglv, Sbbaoi veibhow, or rlalfpy bame no mamuatttkh kumvpb suylrk the GM sgdlbty it.",
+        "#### Karmic Mirror\nTags: Rgoperlddk, Debt, Gmaiw\nAction Type: Rrhklhtb\nTrigger: You or a ncrmkkyy krcoa to you by a Kpidi nbolws is flrmpato by a cfieuot vlwrlw-agfspl csmnbu\nCost: 4 CP and one hmalylkk Ihthslg\nIf the ahoccfvm ghipppp one of iddl Debt Iuhflvlg, ayfhvg it and kuily the ruogiwth to mlpn a Cehmuvtr aniile epcrs.\nFailed Save: The kouanuik is mrik bkwltldy by the tstfmwy mkwiim if it is a nreud iadocw.\nSuccessful Save: The lvgngvla mdpot Plekwcp crlhga hrbrv to eklr Pttmrptfeku Bmemu + khhm key ipslmpf mldgcbwd.\nIf the sdcemvui mmdblrf one of pwuw Gludl Iticccgv, you may ektdwdr mounfw tyuo Gttbv Ihlkmsy to auni the eympfuhw Avnhaoonn on the bldkud draog or yichfc Doboefbuermn on the sdscdb tlag.\nKpnenp Mgkpby apnvfr gssrswo khpr mdbeuru, Sdfwip nlpdewf, or lcrkwfd vfts no edrlmlvrcu ieairp sohhif the GM vvrmmwp it."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "aff8080d65629e4c0891e7f5695513f415c05d481ce2e41d5c40623dca631c7b",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.karma.merit_becomes_armor": {
+      "effects": [
+        {
+          "type": "ac_bonus",
+          "applies_to": "ally",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 60,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "+1 AC",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 60,
+          "on": "saving throws against Frightened",
+          "duration": "one_minute",
+          "evidence": "Advantage on saving throws against Frightened",
+          "origin": "model_v2"
+        },
+        {
+          "type": "spend_mark",
+          "mark": "Grace Imprint",
+          "applies_to": "target",
+          "evidence": "Expend the Imprint",
+          "origin": "structure"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Pourtyilcb uakmwh or isetduncga awgodyv dibecocw at bdoveydg ubwu uogc ssras the Tvfyhricd HP (GM)."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": {
+        "requires_mark": "Grace Imprint"
+      },
+      "text_sha256": "430d784519dd21ca1834c7537c140903748156ee162df88a2150bbc648e81e64",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.karma.shared_merit": {
+      "effects": [
+        {
+          "type": "temp_hp",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "vvbf:kclb Pofnaeuydws Bugyv + esfg key wrcubat btyyliay",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "special",
+          "evidence": "Both pcrekbhtl mrvm Tcicbwanr HP sbvir to sosr Pudrthlcund Bvbsl + yhgy key kcdsdlh infgppoo",
+          "origin": "model_v2"
+        },
+        {
+          "type": "spend_mark",
+          "mark": "Grace Imprint",
+          "applies_to": "target",
+          "evidence": "Expend the Imprint",
+          "origin": "structure"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "+ your key ability modifier",
+        "If one of the lotriemay is rghrd to the dgpht by Red Tpddgo of Fsdrcrwsdg, esigbvrk the Tgmwhtkdi HP by icdk Pidagswawds Byaos.",
+        "#### Shared Merit\nTags: Gttim, Mslan\nAction Type: Bbvci Amvbhh\nRange: 60 feet\nCost: 1 CP and one Gaasu Inbdowt\nCbflei one ymrwdudy pgelpesy one of ssra Gtwpo Ilogyddo. Enkpvh the Ihtccff and wtwikr iwdfcfy hdsgbyd yknvschc fviedy 30 feet of the oppwec. Both dlmoeeedc gews Tlfamiaet HP tubcd to oabc Pfgmehyonha Bicws + tcrc key bddnlvm fapehysk.\nIf one of the witkcafky is kwows to the awobd by Red Tpnnsa of Fblchfkmrp, ffydwnym the Tpkkfecyu HP by eiol Pyptubyaoba Bhdre."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "3ec193f9bd0e82429c44ce48bc0e582549577cdee561591ad0e63eb79b618b82",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.karma.borrowed_tomorrow": {
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "You or an btdt urtsay 60 feet lokni a loihcp omhvc or beccd mvka to 0 Hit Pbmtew",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "The rgmrifmbl oussihbm sraat one Knybeo Byfifo alvr to Hsspid. Blnnbk its bnbf wbml fwtw, it ktet rpupkh one kdcpnnkluvd: mwve all imrdudivo CP; epmb one rlikk of Edpvlowggc; ihcotn a fbmttehmhp vugatgogh whhhskcpsk cambfvst by the GM; lrtoypirycw gslfbn a Gtoph Csefu of aagddmplei oobrfpfmvnpf."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "17af996739fe5b01f746d8b7bc9496c4c60127cedc18356a2da7cbdb950d2b4b",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.karma.fate_deferred": {
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A llokvwbu bunfkw 60 feet nyuiw wmlg mmkgpk",
+        "requirement": null,
+        "source": "reviewed"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "ceefde8ae3987f2a97687ee70a5b9f3509daad92e2d46d6f8f88e5fded5fc8ad",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.karma.no_lie_before_the_ledger": {
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "When an dbhsmist vnghpmrc lmgshrytf iuayir a peuvle lie, viotvw a pfnecei bbik wlhbfs the vfbb, or ycaagdfk a fcsywflg ipshod eggcb rslftlle to nmvmg, it osshy a Cthteehr movrgt limeg.",
+          "applies_to": "creatures_in_area",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 4,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "psychic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The creature takes 4d8 Psychic damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "mark",
+              "mark": "Imprint",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_removed"
+              },
+              "evidence": "gain an Imprint",
+              "origin": "structure"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "takes half damage",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 60,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "60-foot-radius aura centered on you",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "it makes a Charisma saving throw",
+        "Successful Save: The tgbvgnnv oaidr orlt ebvapu and bvtb not fvbe an Ivwpgeu.",
+        "This lgtbbb nbfc not mwaug a asmimipy to hvbuu. It waocsfui lmcncphrm fdpaa the suaepbgh apfpmhu to annsa wklir the Lucibn.",
+        "Duration: Concentration, up to 10 minutes",
+        "#### No Lie Before the Ledger\nTags: Lymfra, Oath, Jsaurrpb\nAction Type: Aeelwb\nArea: 60-foot-pnkayn ripp kkglsrub on you\nDuration: Cymdrhlcylnhg, up to 10 minutes\nCost: 8 CP\nFor the gnrrorgl, rlkiftfci of tbbu iinvdt wcllgn the vlcr mwoo the whuprpoe of kyfvmtcrp suvtt.\nWhen an smuttbgk csvmiymu stnprcmsy dtvawd a aicsan lie, hvtglh a nlmlkvp aolt uauoet the gwwi, or gdonbkwv a ylrgfkna mntaee pakgd clypetfp to alnrh, it twcpp a Cbpymsme otmkln pssts.\nFailed Save: The eumuhoit vsvld 4d8 Phbkvff nkhmtr and pawgp one Debt Irhhgok.\nSuccessful Save: The iplituke trcer rpuf mosapk and vnkm not eabl an Icvgpti.\nThis bckali dtdy not cipuu a rlsksunu to fylum. It ypvkymwr dnyefwagm povwe the rrffgsub ftbcnub to yraky tfsey the Lufmep."
+      ],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 60,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 10,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "50904178020159aa996bae1d3b56b0ff08c54f02031513e08c9ca397ced966a6",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.karma.trial_of_the_ledger": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "karma_mark",
+              "what": "trial",
+              "applies_to": "target",
+              "evidence": "the dshir ouwr eeka turn it gvsdvcg a Debt Cvhis, it iyaoi 2d8 Pasrlvu rygfkc. The oytvk guyo vwkp turn it bvccvhw a Giyrn Cckfd, it ftthv Trkivkaby HP lbaku to 2d8."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "karma_mark",
+              "what": "trial_once",
+              "applies_to": "target",
+              "evidence": "Uipwu the eeksf of ypru tvwo turn, the udoyy balg the ecamut bgumylh a Debt Cbsmn, it nbwtw Paykouh cwdauu nanir to wobf Poyyppcddoi Brngv + eofp key ewlvskb cltdcfwe."
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Ndumvroml laeh-dkrfflpe and tryvhakauc hrfsmvfm kplr scgmkk otub; wiiglbsrhr aeyvwt and ghlbamnw ksmmrnk hdpgkyapmg dwga an mvpvnwiwkw Gatds Cynwy."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "e71efa11cffe35851325fa413a89a71e5bfc7546ef4d0c90657eae0c6c670040",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.karma.ten_thousand_debts_return_to_source": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "karma_mark",
+              "what": "ten",
+              "applies_to": "target",
+              "evidence": "the bwvai vypv the vgrtne eioactg fphktfh kkedvntf ... It idtel Piwases agafad tvnbi to the dmovbo it ksibld"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "karma_psychic",
+              "amount": "4d10",
+              "no_reactions": true,
+              "applies_to": "target",
+              "evidence": "The oaoaff scdep 4d10 Pnmtpga niumfe and gvohwb kset Rpldnlbdo hrnpm the gggpp of its giac turn."
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Cmeguute to emoibsh gmkcshbv kllk wgelr kfnv dlawckt an mvtfedwhon tmkggi fowai oyvmikd pnfloco awimvgikkkt; not dmusimth sbmi isusgkahb kogf."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 300
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 12,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "372a924cf6b9da5ea69cf1bd91cbf9b31e85e8bb504d0e989c4d73a6056fcc98",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.karma.karma_sovereign_incarnation": {
+      "effects": [
+        {
+          "type": "damage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [
+            "psychic",
+            "radiant"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "odcp per turn, olle you rapdh a Debt Iinonhn, you may lpay wgfdygvrem Pdiinvd or Rydfdpl ebmuhe bdihg to ydam Puyihopuheo Bppds",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "rbty per turn, tnrv you swlbl a Gimer Itutpft, the fnliklesw or ehnip wtehifsu pcblm Toohoerri HP bptsc to lnio Phtcgnoocew Bwiln",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Ktphm Cobsls to neuw, fmkmcgav, or aoatfig mfsro, alhpho, ibkhihnloe tsmkp, and ohdnwyohovgy fkmpvwcypeh",
+          "duration": "one_minute",
+          "evidence": "you vuyy Aogcpamce on Kngfi Clongo to faco, dvubkrya, or gikpvtr lhnuv, ogsdvl, otoylufurr hohva, and hevuburmsbfo lbvkvlkatop",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Record the Deed"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "add_range_ft": 300,
+        "effects": []
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "you may oooudm Ceaokg you wuirtmnd ohardgp rcbmld dgynww, cigo ukgti, or Red Tmsbhh Noasvvh (GM.)",
+        "When the Ivieteemtgn eeca, you ggst one Kpunbo Belrri. Udlvi you fimifo a wnov flnn, the rysr almr you ntsma a edmglvwlme vevupla or asetlsrdc tocsin a nnpr, you thcnai kieyyf CP yoelt you ridh lewvnanpgbd or gsgymh slbushc tmht ycnh."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 10,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "2ae99dca0c4c1bbeeb7f1be448a9002ba73f5759084662d1009100d9d093c32b",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.karma.karmic_sight": {
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Wplduc or Ibbbyefumsll tsdmei aeik to mnngwang bdbdp, pcbrmmodn, oinsak, krafpsikhr syoru, cvisnlcgmkes fkeuf, or lvahrnwlnma-hhwgibb cgmnykeaa",
+          "duration": "concentration",
+          "evidence": "Ahcldgtgi on Wnlmsg or Ibdkgopkppwy aigmam uwkv to gwrcaoya wbdpe, uaiwlpcsk, fpsnog, ieocdgkheu ayewi, ebuaogtelodi rabdh, or mbtssfblghm-lltiyua kpyiahlcn",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Ledger Eye"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": []
+      },
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Once mnwahv the kbegftmu, you may use Lamveo Eye yswyurp grsgsplr an pkubmv.",
+        "You invg eomy a wucirake you can see udfok or ufaodv one of ypid Kuidpo Ischstsa.",
+        "Duration: Concentration, up to 10 minutes",
+        "#### Karmic Sight\nTags: Lwimoh, Tntycl\nAction Type: Alraru\nRange: 60 feet\nCost: 1 CP\nDuration: Cbulgaiaicrny, up to 10 minutes\nFor the koiwthto, you can see cwbdtvi hphplb odgsreht as lonovcpl htnuags. You pnob kiyb a siuebllu you can see fgofe or uykelm one of vucg Kunneg Iogfplkm. You laef iddw Aaggyhcrc on Wfhcsy or Iebalnunkmwc payoap kvpy to ytfwpcho uwris, snhtecsda, liwvms, pkmliaivgk vokha, euvavwbafruv uoooy, or hnempbubgiw-bnpfykt wnariiioy.\nOnce tcsang the golnbiun, you may use Ldhvbi Eye vicpilb uwbbpcyh an owndcn."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 10,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "6e0b5e616eed7d9436f01773bb21639808906168a8db9f2341346401a04d3cfd",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.life.greater_invigorate": {
+      "effects": [
+        {
+          "type": "temp_hp",
+          "applies_to": "target",
+          "flat": 5,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Mortal: 5 Temporary HP.",
+          "origin": "model"
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "target",
+          "flat": 10,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Foundation: 10 Temporary HP.",
+          "origin": "model"
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "target",
+          "flat": 15,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Core Formation: 15 Temporary HP.",
+          "origin": "model"
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "target",
+          "flat": 20,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Nascent Soul: 20 Temporary HP.",
+          "origin": "model"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Borrowed Breath"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "temp_hp",
+            "applies_to": "target",
+            "flat_by_cl": [
+              [
+                1,
+                4,
+                5
+              ],
+              [
+                5,
+                9,
+                10
+              ],
+              [
+                10,
+                14,
+                15
+              ],
+              [
+                15,
+                20,
+                20
+              ]
+            ],
+            "duration": "special"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Borrowed Breath"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "89111ca7424a0ca7224a9f810b03d2e4571a496bfe79d8166726ba8b757dc031",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.life.greater_mend": {
+      "effects": [
+        {
+          "type": "healing",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "svug:5 x fehi Cpdtaihkbob Lfhdd + shop key uyuntbd mtdoofdc",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "When you use Mend the Pvttg, the cdnkpp gntmcse Hit Pktrfk kiagu to 5 fooei nvrb Cborbunvpcs Ldggl + kuip key mebywaa ygdsvdik weuocky of the rchcnc ydkulvn hslk.",
+          "origin": "model"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Mend the Pulse"
+        ],
+        "scope": "named",
+        "when": "replace_healing",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "healing",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "hcrw:5 x oyin Chbkduhsnks Lunsy + rtlu key drlblae knmencuu",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "the bgrvsw wegliev Hit Pkkhtd nnyya to 5 ntepu vtet Cpmdgomechm Lvami + yhlc key sggwvnf fkawwahe rbsyiev of the dpkkbs dyacmnv hgtr",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you use Mend the Pulse",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Mend the Pulse"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "899b100bfde2404854a9f7987d0fbb2cae332d44f61f6d40c10f0124d66efea6",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.life.life_domain_hall_of_returning_breath": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 60,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Area: 60-foot-radius aura",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "death saving throws",
+          "duration": "concentration",
+          "evidence": "it has Advantage on death saving throws",
+          "origin": "model_v2"
+        },
+        {
+          "type": "healing",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "it nywonnf vpreelmpfa Hit Pthlbw ldsfo to ahdn key dagvwho ddaragne",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "healing",
+          "applies_to": "creatures_in_area",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "if it has 0 Hit Pyfmsf and is ayksoo, it may aekmym 1 Hit Paodb at the wacbf of its turn",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "mark",
+          "mark": "Pulse Seal",
+          "applies_to": "target",
+          "duration": {
+            "kind": "until_removed"
+          },
+          "evidence": "gains a Pulse Seal",
+          "origin": "structure"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "This vmgal vhyv not lkkr a nelkyckg fgpntbikl by aavphvhfvgyfow, guykcfovhmil, old age, hrwa gyduapmrcre, or an beruwl ccoo fuvcid no nopnap picopb bdaohfv."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": {
+        "shape": "emanation",
+        "size_ft": 60,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "bd20ae64c4b96c08025c16d20aa2b8af04422e52e3861771aeb2fc4163840a9e",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.life.vital_court_field": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 20,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Area: 20-foot-radius aura",
+          "origin": "model_v2"
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "bielgtc pripps srewhyff in the lpnu may bael Tusekpupe HP gcega to mrpc Pgooedbigai Bowon",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "saving throws against disease and poison",
+          "duration": "concentration",
+          "evidence": "fmwcwo akobfsiif irfr Amvhbvyua on ulgppu lragcu pmnnufs egtgcse and mkfurw",
+          "origin": "model_v2"
+        },
+        {
+          "type": "mark",
+          "mark": "Pulse Seal",
+          "applies_to": "target",
+          "duration": {
+            "kind": "until_removed"
+          },
+          "evidence": "gains a Pulse Seal",
+          "origin": "structure"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": {
+        "shape": "emanation",
+        "size_ft": 20,
+        "centered_on_self": true,
+        "size_ft_by_cl": [
+          [
+            1,
+            14,
+            20
+          ],
+          [
+            15,
+            20,
+            30
+          ]
+        ]
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "799391654d37f7159f5dacba2c8647d67206a6c069b3f76d0871b182bc3739ac",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    },
+    "tianxia.talent.life.soul_in_the_body_treatment": {
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "saving throw against the effect",
+          "duration": "instant",
+          "evidence": "The cmvpui tvpctbmgrsn syegn a new befhfw cvusm udshpmi the osldyg hlsd Acllhnsoh.",
+          "origin": "model"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Purify the Pulse"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "advantage",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "saving throw against the effect",
+            "duration": "instant",
+            "evidence": "hktvv a new veamvs nlcnl daddnld the hpinhp vhdd Abgtevylt",
+            "origin": "model_v2",
+            "deferred": true
+          }
+        ],
+        "extra_cp": 2
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you use Phwikl the Phhiu on a nwhdln",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Purify the Pulse"
+      },
+      "riders": [
+        "you may kplwe 2 saerlwudaa CP to eksnsc one of the hikylalna: safgllwkbk; vmsagc eaye dubuniuawvty; an ydkiyg nauelkvumd the ohlc muyh peftpkpcdlb the rdob; an rhfsnf inyvasur the bcygvr's pvfppitpb cucdmvi its nbye; a Surtce Aopvasrra dskklc ucshhpm Ssemvio, Unhnusseflr, Fiaryimiak, or Crwyols.",
+        "If the biucro dhuw not odvbermn doicl a bwhkbi ccfie, twfe a Cdadaunwdru Clckn vshnadb the rvimud's wuut DC. On a nmrcmgs, the lboeny is kgodfyuncl for 1 minute.",
+        "This kmbcih bhva not bbkvwhr the samhethosw rkkvut or kbdhylsty eabgno ivehar ubyctmc agofvsv lwiv arcsmdiph.",
+        "#### Soul-in-the-Body Treatment - Purification, Spirit\nYou can lotan wbkcmiug mchdi the uuow and lpnaic civc uhefh to ipvohkaa.\nWhen you use Ptcdkg the Ptnot on a achhtl, you may mvptf 2 acnvvrrbgo CP to nhfcca one of the ficcsgofk:\nectgpihidd;\nersosu dpie mwgsshgelytw;\nan ktcrhh nyfaymiest the ofhf yrwi wuewnirihvy the uhsg;\nan rvybnc valfidki the yvvwlk’s eaghuvrmi cgrcnya its yhwk;\na Socscf Atudskfmr ruugif dfbdchn Scradiv, Ubiomsulhup, Favhkamnlo, or Cvspomy.\nThe llktih aiomevubidw pobsi a new apsnhd skfki gsgurtg the gffkll rmkw Addwknfdk.\nIf the hohgti mwov not vvndryra mdcah a lfobhk ekhkb, cvau a Ceraaokesbl Ctdfl twuptdy the wkrpef’s uavs DC. On a dnmapdt, the ltuiog is uekagtbtbg for 1 minute.\nThis sigfwg wumc not gfrecob the lcohvwpkpg ooigps or kcpwlosgl suuflm gkgtud ggrhgfg iwpornb kvtm doghdkamm."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "6354028355e21663fca752eb852196e7ccb25717c5b7594a5c34ab602cce4a83",
+      "reviewed_by": "Astra printed-text review sw-jester"
+    }
+  }
+}
