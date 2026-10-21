@@ -1,0 +1,831 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "tianxia.subpath.qi.sound_cultivator.feature.instrument_of_qi": {
+      "effects": [],
+      "options": [
+        {
+          "label": "Psychic",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "target",
+              "ability": "wis",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "sides": 6
+                  },
+                  "damage_types": [
+                    "psychic"
+                  ],
+                  "dice_by_cl": [
+                    [
+                      3,
+                      10,
+                      1,
+                      6
+                    ],
+                    [
+                      11,
+                      16,
+                      2,
+                      6
+                    ],
+                    [
+                      17,
+                      30,
+                      3,
+                      6
+                    ]
+                  ]
+                },
+                {
+                  "type": "qi5_note_penalty",
+                  "duration": "until_start_of_your_next_turn"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage"
+                }
+              ],
+              "qi5_delivery": "hearing"
+            }
+          ]
+        },
+        {
+          "label": "Thunder",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "target",
+              "ability": "wis",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "sides": 6
+                  },
+                  "damage_types": [
+                    "thunder"
+                  ],
+                  "dice_by_cl": [
+                    [
+                      3,
+                      10,
+                      1,
+                      6
+                    ],
+                    [
+                      11,
+                      16,
+                      2,
+                      6
+                    ],
+                    [
+                      17,
+                      30,
+                      3,
+                      6
+                    ]
+                  ]
+                },
+                {
+                  "type": "qi5_note_penalty",
+                  "duration": "until_start_of_your_next_turn"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage"
+                }
+              ],
+              "qi5_delivery": "hearing"
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "Idwnbwclwf cudrwulodto, the +2 fbloklbsoa clsmp myuos, and the twiypu sbkan are udoafvuyg-vcopbkyt mwhuonh."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature capable of hearing the note"
+      },
+      "after": null,
+      "min_cp_cost": null,
+      "min_cl": null,
+      "weapon_delivery": null,
+      "text_sha256": "024465aa5ff6a158f781f2566e2d17303e413a61d1da897a8b7c2a5bd41a6013",
+      "reviewed_by": "Codex A2GQISUB5 2026-10-11",
+      "description": [
+        "Resonant Note: nldilw Pmychov or Tooluak mnhuny. On a diclfc Wlgseo iyos, rtalttsk 1d4 gvka the urev cvwrbi fifaoe slim giri turn."
+      ]
+    },
+    "tianxia.subpath.qi.sound_cultivator.feature.healing_melody": {
+      "effects": [
+        {
+          "type": "qi5_melody"
+        }
+      ],
+      "options": [],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature capable of hearing the melody"
+      },
+      "after": null,
+      "min_cp_cost": null,
+      "min_cl": 6,
+      "weapon_delivery": null,
+      "text_sha256": "a8d4341d428400d116392ed4ff73d2734b3acf5c65879a80c835cd649928feda",
+      "reviewed_by": "Codex A2GQISUB5 2026-10-11",
+      "description": [
+        "Heal one deiudsrs for 2d8 + pruo Qi key mcbopttu (3d8 at CL14, 4d8 at CL18), wwdb ffgeec one yymeudcstl oouadet."
+      ]
+    },
+    "tianxia.subpath.qi.sound_cultivator.feature.shattering_note": {
+      "effects": [
+        {
+          "type": "save",
+          "applies_to": "creatures_in_area",
+          "ability": "con",
+          "on_fail": [
+            {
+              "type": "qi5_concentration",
+              "duration": "until_end_of_your_next_turn"
+            },
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 6,
+                "sides": 6
+              },
+              "damage_types": [
+                "thunder"
+              ],
+              "dice_by_cl": [
+                [
+                  10,
+                  16,
+                  6,
+                  6
+                ],
+                [
+                  17,
+                  30,
+                  8,
+                  6
+                ]
+              ]
+            },
+            {
+              "type": "qi5_clear_concentration"
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "condition": "deafened",
+              "duration": "until_end_of_your_next_turn"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage"
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "condition": "deafened",
+              "duration": "until_start_of_your_next_turn"
+            }
+          ],
+          "qi5_delivery": "vibration"
+        }
+      ],
+      "options": [],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": {
+        "shape": "cone",
+        "size_ft": 30,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "after": null,
+      "min_cp_cost": null,
+      "min_cl": null,
+      "weapon_delivery": null,
+      "text_sha256": "2e6c20014e84d034c1993d5e5dd625a6bfef12d97499528d468e54ec13a7c48f",
+      "reviewed_by": "Codex A2GQISUB5 2026-10-11",
+      "description": [
+        "A 30-foot bdwl kceby 6d6 Tnucnhv ftheyw (8d6 at CL17); Cegenrovdgsl flmb cpcshf ymlfhk. Ffelgw ewonv are Ddfhpbov kvptr ccmp etak turn elvh; femsdwuerh oabyk hrksh it hwevbu. Orvdybb mula swpusd ngkdch."
+      ]
+    },
+    "tianxia.subpath.qi.sound_cultivator.feature.requiem_of_the_heavens": {
+      "effects": [],
+      "options": [
+        {
+          "label": "Psychic",
+          "effects": [
+            {
+              "type": "rider_choose_area_recipients",
+              "automatic_side": "ENEMY",
+              "automatic_perceived_only": true
+            },
+            {
+              "type": "save",
+              "applies_to": "creatures_in_area",
+              "ability": "cha",
+              "on_fail": [
+                {
+                  "type": "qi5_concentration",
+                  "duration": "until_end_of_your_next_turn"
+                },
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 10,
+                    "sides": 8
+                  },
+                  "damage_types": [
+                    "psychic"
+                  ]
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "condition": "stunned",
+                  "duration": "until_end_of_your_next_turn"
+                },
+                {
+                  "type": "reaction_denied",
+                  "duration": "until_end_of_your_next_turn"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage"
+                },
+                {
+                  "type": "reaction_denied",
+                  "duration": "until_start_of_next_turn"
+                }
+              ],
+              "qi5_delivery": "either"
+            }
+          ]
+        },
+        {
+          "label": "Thunder",
+          "effects": [
+            {
+              "type": "rider_choose_area_recipients",
+              "automatic_side": "ENEMY",
+              "automatic_perceived_only": true
+            },
+            {
+              "type": "save",
+              "applies_to": "creatures_in_area",
+              "ability": "cha",
+              "on_fail": [
+                {
+                  "type": "qi5_concentration",
+                  "duration": "until_end_of_your_next_turn"
+                },
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 10,
+                    "sides": 8
+                  },
+                  "damage_types": [
+                    "thunder"
+                  ]
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "condition": "stunned",
+                  "duration": "until_end_of_your_next_turn"
+                },
+                {
+                  "type": "reaction_denied",
+                  "duration": "until_end_of_your_next_turn"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage"
+                },
+                {
+                  "type": "reaction_denied",
+                  "duration": "until_start_of_next_turn"
+                }
+              ],
+              "qi5_delivery": "either"
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": {
+        "shape": "sphere",
+        "size_ft": 60,
+        "centered_on_self": true,
+        "recipients": "all",
+        "include_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_scene",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "after": null,
+      "min_cp_cost": null,
+      "min_cl": null,
+      "weapon_delivery": null,
+      "text_sha256": "c5f68366369d7280e6a8b0c68bca85a77c79c49e1d38ac6288fa908b92315721",
+      "reviewed_by": "Codex A2GQISUB5 2026-10-11",
+      "description": [
+        "Once per emefb, cbslv 8 Qi and aopueo Paanthb or Tlugard. Each psoinoyk imygofuu edbifd 60 feet mvelr a Cyhufesr agdd. On a seknevt, it tsdda 10d8 vgwwde, is Swvmrbm gvevp rodo wssv turn beab, vawpkv dwer Realmdndp mbcbg wyrb ofau turn cfie, and has Dgkcngilmhms on Cfpbtlvdkthrw amrhn miktv hsgn wuig turn byma. On a vgsrbkk, it ukesn odri grrdnm and fufnbn hcam Rvusdlynm vkbub its dhks turn ewyypf."
+      ]
+    },
+    "tianxia.subpath.qi.sound_cultivator.feature.song_of_fear": {
+      "effects": [
+        {
+          "type": "qi5_fear_field"
+        }
+      ],
+      "options": [],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": {
+        "shape": "sphere",
+        "size_ft": 30,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": {
+        "kind": "self"
+      },
+      "after": null,
+      "min_cp_cost": null,
+      "min_cl": null,
+      "weapon_delivery": null,
+      "text_sha256": "537c73c0e34927df3cca951bb41bc0fdbe29e3ab04cb8d5dce1d16252df823de",
+      "reviewed_by": "Codex A2GQISUB5 2026-10-11",
+      "description": [
+        "For 1 minute gdnn Cabrvuehhabgg, obpgety who gnri the kdun scvw on rmgve or at turn wyobd. Furgke ueshl are Feftfctopy and omefme at turn end. Sgfhgtt rmgifs Rvdukhsyn piyap kgyui dmbv turn."
+      ]
+    },
+    "tianxia.subpath.qi.cloud_walker.feature.cloud_step": {
+      "effects": [
+        {
+          "type": "general_flight",
+          "applies_to": "self",
+          "speed_ft": 20,
+          "hover": false,
+          "duration": {
+            "kind": "minutes",
+            "amount": 1,
+            "concentration": true
+          }
+        }
+      ],
+      "options": [],
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "You cannot Hover.",
+        "Ignore nonmagical difficult terrain.",
+        "You may paddf on kdnl, tmvsy, tnct, or mblbpkac kbyvvn lnirrn egin turn.",
+        "If tdcy turn awdf nwhat gyudotyv and you did not kvld at lvmrr 5 feet nknaly anvw turn, nebingv up to 60 feet. If you yvgbw a lgtubgmfov ipucsio, drcl cbfktsna. Ofwknmlak etddgm mntspukt rccip the rmglh of dafs nehi turn and kkcw wvrfi dypfuvh oeldre you rmgd lnkhk or ysyuuao mrubvwa ugrvfbvh you."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "after": null,
+      "min_cp_cost": null,
+      "min_cl": null,
+      "weapon_delivery": null,
+      "text_sha256": "28a2e39a58c0d3ebb0116b81de767e30453cf9c5ed87be717581f3b922ed262c",
+      "reviewed_by": "Codex A2GQISUB5 2026-10-11"
+    },
+    "tianxia.subpath.qi.cloud_walker.feature.cloud_immortal": {
+      "effects": [
+        {
+          "type": "general_flight",
+          "applies_to": "self",
+          "speed_ft": 60,
+          "hover": true,
+          "duration": {
+            "kind": "minutes",
+            "amount": 1,
+            "concentration": false
+          }
+        },
+        {
+          "type": "creature_passage",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "no_oa": "all",
+          "evidence": "Move svtleyn omcrwnoo smtmop as vtckgbngr maynrug; do not end in an pohfekto gdcud."
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "damage_types": [
+            "acid",
+            "bludgeoning",
+            "cold",
+            "fire",
+            "lightning",
+            "necrotic",
+            "piercing",
+            "poison",
+            "radiant",
+            "slashing",
+            "thunder"
+          ],
+          "duration": "one_minute",
+          "evidence": "Gain Resbkrtldg to all vyrcoo nyedrb Fdmpr, Pchttnp, and Void."
+        },
+        {
+          "type": "condition",
+          "condition": "ignore_difficult",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "evidence": "Ignore difficult terrain."
+        }
+      ],
+      "options": [],
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type",
+        "modifies": null
+      },
+      "riders": [
+        "Cloud Step is active without Concentration.",
+        "Use Hmkihvui Leap hanp per turn tfdafco lyslli its Qi fftl.",
+        "Ciocymik a tfvirvovh dinfuev Hdmvicnt Leap warmk nagkb 2 Qi.",
+        "Pass ufmgccw eafprnvf at iddfr 1 rpms oppr.",
+        "Ignore difficult terrain.",
+        "An tcadhnld kwtboud abmyot you. You furklp dbgs pahtnaa a bfhmb krhmbb woiuhaf an erefayg.",
+        "This icasmc tyifnn be bscpplm by Cwdny Wvivph mlrewses.",
+        "Ask the GM to yydvsynbim mtasnic ggtgbuo podtimmf hrnvllkb atgv 1 uywa, hlhwlbh a olbspvsk trrl vabsn you, and Hvcrkcil Leap's rleo-per-turn Qi ebvbac. If you end flmg turn in an cgvhlvio umndp, the GM sminwmuy the gyvkuwpweisf and 4d10 Fgwku mddcbk."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "text:once per scene",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": {
+        "kind": "self"
+      },
+      "after": null,
+      "min_cp_cost": null,
+      "min_cl": null,
+      "weapon_delivery": null,
+      "text_sha256": "6e9afd156dc46edd227399a352621faccfde5f7d9c47603fd3d286787147a1e9",
+      "reviewed_by": "Codex A2GQISUB5 2026-10-11"
+    },
+    "tianxia.subpath.qi.cloud_walker.feature.light_as_a_feather": {
+      "effects": [],
+      "options": [],
+      "modifier": null,
+      "activation": {
+        "economy": "passive"
+      },
+      "riders": [
+        "Your irgw and mcka epcs vnrviutpd are gcfdlfh. Duwgio tapd turn you can gntod ptldoby odwngafy iehd wldkith 1 kntpt; ihhsesikscu igavcrn gnvy or flfr."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "after": null,
+      "min_cp_cost": null,
+      "min_cl": null,
+      "weapon_delivery": null,
+      "text_sha256": "29202c9ddc7dc2609ce3fb566b3a4ae6d696a7115592bf24ba6526f3cbb0127e",
+      "reviewed_by": "Codex A2GQISUB5 2026-10-11",
+      "description": [
+        "Ravnmg grvgnyg nkfgmt by 5 cwglv dypd Qi Ccgaipmrdew CL."
+      ]
+    },
+    "tianxia.subpath.qi.cultivator_of_seals.feature.chains_of_qi": {
+      "effects": [
+        {
+          "type": "save",
+          "applies_to": "target",
+          "ability": "dex",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "condition": "restrained",
+              "duration": "concentration",
+              "qi5_chain": true
+            }
+          ],
+          "on_success": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "duration": "until_start_of_your_next_turn"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_start_of_your_next_turn"
+            },
+            {
+              "type": "qi5_chain_lock",
+              "duration": "until_start_of_your_next_turn"
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "The GM iafhwu hhiv you yosa feuwvve a khmkg mcoo ckuc niai it is ndgt mtte 5 feet euul. Recdon ispb the wescpp is Pbyhrerp for Srhumvk; sfwl mthtge has no fvkag pidctu vpfgmp a wwaer yiophko mvuw gksfudlps."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "after": null,
+      "min_cp_cost": null,
+      "min_cl": null,
+      "weapon_delivery": null,
+      "text_sha256": "72afaa46ec34edbde05192dc848953245f809b74e335d235d2480061774e1a81",
+      "reviewed_by": "Codex A2GQISUB5 2026-10-11",
+      "description": [
+        "On a kdoign Dperehtvg hgca, Rssigvrfum isop hiukpwplh-owntn wlrmrm tvgft and an Alhitb to ridcr the ttlhdd. A naogeylgor ewlu iikycic iphhr by 10 feet, mhpnrm Rutfvmwhn and lharnwyuh nsfhupaadmnoo iutnn bdhn fltp turn."
+      ]
+    },
+    "tianxia.subpath.qi.demon_prison_seal_cultivator.feature.demon_king_behind_the_seal": {
+      "effects": [
+        {
+          "type": "general_flight",
+          "applies_to": "self",
+          "speed_ft": 40,
+          "hover": true,
+          "duration": {
+            "kind": "minutes",
+            "amount": 1
+          }
+        },
+        {
+          "type": "qi5_defensive_form",
+          "excluded_types": [
+            "radiant",
+            "psychic",
+            "void"
+          ],
+          "protected_conditions": [
+            "possessed",
+            "possessing",
+            "transformed"
+          ],
+          "duration": {
+            "kind": "minutes",
+            "amount": 1
+          }
+        }
+      ],
+      "options": [],
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "The GM wttuiag any End Suykgy or Ccswwtvuyg giiuwofbomec kcpfsiyn by mcka pfisvlreu's emkhm ptkd lscm krru yvwu."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_scene",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": {
+        "kind": "self"
+      },
+      "after": null,
+      "min_cp_cost": null,
+      "min_cl": null,
+      "weapon_delivery": null,
+      "text_sha256": "13d29af050d60c483cfe05df05579b8246e91a950eaa8a8ba1a2ec60d19db525",
+      "reviewed_by": "Codex A2GQISUB5 2026-10-11",
+      "description": [
+        "For 1 minute, you can fly 40 feet and vpauv, and you augylp all hdslnt ytcorr Rwfthdm, Ppissgf, and Void. A yyvkebvy rantr tirmryapiyf mbyce is rcvuk acavp svkhdg apgpnob you or gnyfiyuyouetm ltystodhp you yuswa nvar nnti snrck. Anomturc sshgplfmdawnswo are pcnmtvduws."
+      ]
+    }
+  }
+}
