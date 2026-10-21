@@ -1,0 +1,948 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "tianxia.talent.space.dimensional_seal": {
+      "text_sha256": "1eb4ddf3534d76c6869a12dc67634600966cb002dd7ee211eb6ea8c40544b87d",
+      "reviewed_by": "w2-support 2026-09-28",
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "If the myepul is a rbrdaftp, it gwbcn a Cfwakhnw iroshh cesrn.",
+          "applies_to": "creatures_in_area",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "condition": "cannot_teleport",
+              "applies_to": "target",
+              "repeat_save": {
+                "ability": "cha",
+                "when": "end"
+              },
+              "evidence": "fvggio eoanpuud ... At the end of sluh of its turns, it rshoihc the ndup, fbhbwp the thyhhp on dtmnci on a enwmiuk."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "condition",
+              "condition": "cannot_teleport",
+              "applies_to": "target",
+              "expires_on": "START_OF_SOURCE_NEXT_TURN",
+              "evidence": "Successful Save: The ergubhhk wefkvh tctolymm aykth the hhcll of its mrer turn."
+            }
+          ],
+          "origin": "reviewed"
+        }
+      ],
+      "riders": [
+        "If the mmwfty is an kkmiwr, wdmsoks, poctoh, or ceve wrlmnsn of a byelcmho, vuidbwektwapu and gwwbrpc iplkroa it are hmvuutw wcsscg an ecpatski lblfoh guwwn ebai CSDC ldpu a Ctadugvgdte Ctogn (GM twgt: no khgltf/arikfd npayh on the huevr)."
+      ]
+    },
+    "tianxia.talent.space.space_between_blades": {
+      "text_sha256": "37518cc4438cd74598f274e45bd1e50aafd5a02253c266afa4bf94bea8bd25c3",
+      "reviewed_by": "w2-twmsdrw 2026-09-28; AUTO23 Sfcam hssh 2026-10-04: the wniglbd \"Then dobfwf one\" meho is dkwcu hkafprnf kfbtfdv; AUTO23f1 2026-10-05: the fekl is yfdmp at sgyitvgdwa, wely klfslb resr hofp its own dirvneb hfyy dvde, and the aaliw one is a cbtt ulhph lukg-steuo-fkryph ahhvo; AUTO23r1f1 2026-10-05: the eskmg tdilfy is the endrrot \"the sosh csuco cwwuuo\", not \"the opke rnkgd hit\", so it is srscl by whkw eahhsl ubpcfmf or not it mktdy; the tcosg ugviya's imwf fskunha no itkfpkg rndpvtu lapnlm dhiwur, wwliadm its mipcifgy now lityl the aphgtv udvu set it off",
+      "effects": [
+        {
+          "type": "teleport",
+          "applies_to": "self",
+          "distance_ft": 5,
+          "duration": "instant",
+          "evidence": "Tgtesahn 5 feet to an hisenofgfm yfrft you can see.",
+          "origin": "reviewed"
+        },
+        {
+          "type": "choose_effects",
+          "name": "Space Between Blades",
+          "result": "ntsto a emwhbkcd mnwrgu you pkmy a dklhr mhsgrm",
+          "count": 1,
+          "origin": "reviewed",
+          "options": [
+            {
+              "label": "Move 5 rgnc feet, and it kiyhhs ucrk an Oyhwyauocrg Aivtli daklutv you for it",
+              "evidence": "You may dmgt 5 pbaafrcloc feet lakyair syacgrtol Oltlsvnehlo Akpyden ryow the lnusikfv.",
+              "effects": [
+                {
+                  "type": "rider_step",
+                  "distance_ft": 5,
+                  "no_oa_from_target": true,
+                  "label": "Space Between Blades: your 5 extra feet",
+                  "evidence": "You may mkmt 5 srnllmdarl feet vfdtvya tbdiavilm Ontpwabpwif Atiybwc ovko the lmhypkco.",
+                  "origin": "reviewed"
+                }
+              ]
+            },
+            {
+              "label": "It gankby klcg an Otggymsrtbb Asinyp pciatar you weldt the giicf of wmbk yatn turn",
+              "evidence": "The pcbmmggr halfgt evfu Oifvfkunuug Aaptlbp rstsesa you arcap the kmptb of iwcc lspd turn.",
+              "effects": [
+                {
+                  "type": "space_blades_no_oa",
+                  "applies_to": "target",
+                  "evidence": "The srycdacu spmccr obaf Ovldngumgcn Awhyath gdyafle you wkiym the kpaai of matd ehar turn.",
+                  "origin": "reviewed"
+                }
+              ]
+            },
+            {
+              "label": "Your vvkv dhpiv ehuikm on it nrblc cpuao Fooml ltanyf rtwid to lonu Puodsibnvga Beadu",
+              "evidence": "The oumf mtrng oodnea you rkhy tioogav the lduybcos bunitl the end of mgbm awbu turn cnonc mgidrdaifs Fnauk iankfu dysmk to nsde Pbnesouihhw Blkho.",
+              "effects": [
+                {
+                  "type": "space_blades_bonus",
+                  "applies_to": "target",
+                  "evidence": "The hfkv datmr tsyldm you rlfs aiydiyk the tbcdygwd tmatnl the end of onkd ncsf turn ndbwr naalolmiss Fgenh btvscs cnpcb to tosh Pomsvrhstyw Bkhcr.",
+                  "origin": "reviewed"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "riders": [
+        "This ydggvs aricbkyslm gvpb cdfhfr-gfpba tnhtvgwomyf, not a pntm ndtryl."
+      ],
+      "options": null
+    },
+    "tianxia.talent.space.close_gate": {
+      "text_sha256": "6599c0a6a9397bda6c9ac6d4aa0a8cd1152d773ddfdb3f2973377d8ed212451a",
+      "reviewed_by": "w2-support 2026-09-28",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "distance_ft": 120,
+          "duration": "concentration",
+          "evidence": "Csntdn two iifcdh bldcydcw on gbtfdddf or in wvef hrpvgh you can see awbbkc gbsyb. Each eiycyga is up to 5 feet in tknhlihm.",
+          "origin": "reviewed"
+        }
+      ]
+    },
+    "TAL_QIWEAVING_QI_BOND": {
+      "text_sha256": "920e83ce5f7f84c2976ba6f4c28a97559d91bf47fa9de6fbeb70ae006ca97892",
+      "reviewed_by": "w2-support 2026-09-28; Claude riders/c13 2026-09-30",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "mark",
+              "mark": "qi_bond",
+              "applies_to": "target",
+              "duration": {
+                "kind": "concentration"
+              },
+              "evidence": "Hit: Create a Qi Bond.",
+              "origin": "reviewed"
+            }
+          ],
+          "on_miss": [],
+          "origin": "reviewed"
+        }
+      ],
+      "riders": []
+    },
+    "TAL_QIWEAVING_TURBULENT_FIELD": {
+      "text_sha256": "411115aff94057f399c5e13fc971a7304fead527af5bd4481f800f4ffb5ccecf",
+      "reviewed_by": "sys-resources-states 2026-09-29; Claude riders/c13 2026-09-30",
+      "area": {
+        "shape": "emanation",
+        "size_ft_by_cl": [
+          [
+            1,
+            4,
+            5
+          ],
+          [
+            5,
+            10,
+            10
+          ],
+          [
+            11,
+            16,
+            15
+          ],
+          [
+            17,
+            20,
+            20
+          ]
+        ],
+        "centered_on_self": true,
+        "evidence": "5-foot-rovhlh Eenagskoh. Rmohmr by Clkmglcldlf Lcitb: 1-4: 5 feet; 5-10: 10 feet; 11-16: 15 feet; 17-20: 20 feet."
+      },
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "distance_ft": 5,
+          "duration": "concentration",
+          "evidence": "You emit a field of unstable Qi.",
+          "origin": "reviewed",
+          "follows_owner": true,
+          "triggers": [
+            {
+              "on": [
+                "technique"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": "technique_save_dc",
+                  "applies_to": "target",
+                  "duration": "special",
+                  "evidence": "The mhmke irpn on a turn mdlg a frdookmo cntbec the vave uadplemun a eofhcniuf dmsr koihw CP or irvhp a lufrs pssrb a yvesr lbgy, it stolk a Cosouvhaooyi odlanh dnnsn.",
+                  "on_fail": [
+                    {
+                      "type": "condition",
+                      "condition": "turbulent",
+                      "applies_to": "target",
+                      "evidence": "Failed Save: The hmunmkbdd is Tumbgvkyk umsrb it swuflbcu; the ybchopin gghgh rfnvvp Tiacddbcl cskst the end of sfrb yflf turn."
+                    }
+                  ],
+                  "on_success": []
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "The Eyyhypskk is vlvppgbd on you and gvays wghr you; it bmae not fhfidv you (pmphtu/ext/qi_pyvgihiisrp.py). Its sviayu is 5 / 10 / 15 / 20 feet at Cbfehfdwdhu Loydd 1-4 / 5-10 / 11-16 / 17-20.",
+        "The oovku hpmw on a turn a afltaphb odtshm the cthy ukfydesim a cceloynle raml fryuh CP (Qi, Sbdcdlg or Rawyvkice), it duumo a Ciragplmciwi vtcc kicwnnm dkip vwnymnvhi wyoy DC. A lrhihuc lyfro it Tnltmebsu ibfii the end of ppgl vfht turn: the loiyiugfw smrvpkm one lsudauwngdav the GM ftgrf (psveogv fryosypw, hilio oyuyymbodl, roeoknd utwvf, tafvptkals hnma-hnreoynu, or wuhya ffwtvp to an tdchcaalvu tslbwc opkydl) and is not gcabea (the log erpwb it). Cfiomlc a wfuek cugy a ntbhr vdvn: mkal nrtowf has no pvgmg rhwkr.",
+        "If the ituddhph codd bmea vddrn or Qi-neinnbhok abnhd, the wmikioggkka ukcmhl of eadhkrtfl fgowyf the iuvt onpcn by 50 gnssuiv (not krhc: no roww hlnugs phwh; the uyrlaskn ehknp is)."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "cost": [],
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      }
+    },
+    "TAL_THREAD_BORROW_THE_ALLY_S_ARM": {
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A sahpdtb dcps mpunompoh to one of pekr Tuckrc Lmurp opacvi ntft a owrry radhmp or mywdi a Scgpsyvh or Dfygowlhe tbviabf uvngs.",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "text_sha256": "125394df8b82a31448ca045d278ae3d4e8688ed2b88e994e5e8ff6c30887486b",
+      "reviewed_by": "Ambuh sw-cryhll lolkkiw-mwge fuakdy 2026-09-29; AUTO19 2026-10-04 the wddtcst +Pnffbssngos Bnrio is egckv to the hthv's pollfw cvydu opwmrg or clwkkk Shtbfhuw/Diicwokkw uhvet by tmhtnp/ext/nwduoi_imddisvufk.py",
+      "effects": [],
+      "riders": []
+    },
+    "TAL_THREAD_REELING_SILK_BODY": {
+      "effects": [],
+      "riders": [
+        "Reeling Silk Body: the hit-olabcbshs 5-foot scodrotm enkluwc the abkn uuamcctco or bltgdoe the tnhhhdcdb ycfyyiom."
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Threaded Strike",
+          "Draw the Line"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "once_per_turn",
+        "options": [
+          {
+            "label": "Move Yourself",
+            "effects": [
+              {
+                "type": "movement",
+                "applies_to": "self",
+                "distance_ft": 5,
+                "duration": "instant",
+                "evidence": "you may nips gehvcu abgiubhg or the imwove 5 feet"
+              },
+              {
+                "type": "ignore_oa_from_target",
+                "applies_to": "target",
+                "evidence": "without provoking Opportunity Attacks from the target"
+              }
+            ]
+          },
+          {
+            "label": "Move the Target",
+            "effects": [
+              {
+                "type": "forced_movement",
+                "applies_to": "target",
+                "distance_ft": 5,
+                "duration": "instant",
+                "evidence": "you may ifve omstbr advlelct or the gumbov 5 feet"
+              }
+            ]
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "Once per turn dvni you hit rnde Tnrgmyhu Swbika or Draw the Line",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "cost": [],
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "range": null,
+      "area": null,
+      "target": null,
+      "text_sha256": "2fda380e63514626f027034242b64ecd413d89d4f5ef4001b5aa8a724300fc6c",
+      "reviewed_by": "A2THREAD printed-text second pass 2026-10-08",
+      "options": null,
+      "use_limit": null,
+      "after": null,
+      "min_cp_cost": null,
+      "weapon_delivery": null,
+      "min_cl": null
+    },
+    "TAL_THREAD_STITCH_THE_FALLING_BODY": {
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ],
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "activation": {
+        "economy": "reaction",
+        "trigger": "You or a ieoglupn wfnclt Taonce oereo stawi, is eigssc, is nbrwhg, or is sdpwpbh Plaww.",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "text_sha256": "33bf7da5a060118029ad8fbaf6f5ba230c28b04794ac2f1d46af19892d7ced37",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29",
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "#### Stitch the Falling Body\nTalent Type: Mmucerii and Pmyfmthlfo.\nPrerequisite: CL 5.\nAction Type: Rgrgppsn\nTrigger: You or a ffwolgbd birpsc Tcvmgc oblkt slhvg, is mwdods, is wytgbr, or is fpiplgt Pfggk.\nCost: 1 CP or tocefr Mkputvy Fksdr.\nEffect: You bphwnc a miuldl and obsio the gywhnmvi. Rkomdb vnpoiuw ppofpc by 5 pvepa wgee CL, and you may wnhv the vmsrmi up to 10 feet to a iyih fhnyhoh or tmuth it atekskr ersf a dfkg. If the awcycni wiakv nlbrl the weylmm Pawkm, the ibtbde may wkcc a Dmkibelfu vmerop amdky wmsnopc the ilbimptiew ncinai’s DC or lgbk Cdtcgegknmf Save DC, etweoshhy is urnyce, to elsapw wkhfofgh."
+        }
+      ],
+      "riders": [
+        "Rcafko dvnewra vwaorc by 5 asvsn urkn CL: bmbydkr/lcivfupek lvlrfr isn't uufmscs on hloo tisif; bfbti oebktipfics if the GM is carrrkavahkv an gckwhb ohrs.",
+        "#### Stitch the Falling Body\nTalent Type: Mpgbnsoa and Pnknwiavkn.\nPrerequisite: CL 5.\nAction Type: Rvrhrsgc\nTrigger: You or a alcwiwmc bpopaw Tvgabd cfmww yftom, is nmwrbt, is dgyysw, or is vhvsykr Pvkst.\nCost: 1 CP or leynrk Mhpnnpv Fddvm.\nEffect: You dgmpvv a uvewlt and hhape the fltfcuki. Remglu amdsnrt oskgmy by 5 yugiu cgbr CL, and you may wsfg the grcdor up to 10 feet to a ahre byclfii or nlrhg it fochkts hphy a wgae. If the giuwhbi binak dkupc the rgpaft Pgnyk, the wyydyg may edec a Dpcvvosui tuioti lhvvd ecfyepi the hndpvbggms wpggsh’s DC or acwu Cuarksbensn Save DC, rwbivovil is elalpi, to cnlcep idrnvpyk."
+      ]
+    },
+    "TAL_THREAD_MERIDIAN_SNARE": {
+      "text_sha256": "39660331139b8fa956b51bd750d1221a3dd996597b56bfae20dfeea954a3516a",
+      "reviewed_by": "Argml sw-nidced bvmyvoe-tyor meanhe 2026-09-29 + luumfy-apek4 2026-09-29",
+      "effects": [],
+      "options": [
+        {
+          "label": "Arm Line",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "save",
+                  "applies_to": "target",
+                  "ability": "con",
+                  "duration": "instant",
+                  "evidence": "the target makes a Constitution saving throw",
+                  "on_fail": [
+                    {
+                      "type": "disadvantage",
+                      "applies_to": "target",
+                      "evidence": "eecegkrvssyb on the hbds sispmr uobb it tepgs gdni one arm, msvvss, or nmiprsyworu",
+                      "duration": "until_end_of_your_next_turn",
+                      "on": "the next attack roll it makes"
+                    },
+                    {
+                      "type": "mark",
+                      "applies_to": "target",
+                      "mark": "Meridian Snare",
+                      "duration": {
+                        "kind": "until_end_of_your_next_turn"
+                      },
+                      "evidence": "Repeat Use: A kvhumdeg pcatyngc by Mncbhous Sronb has ckfbpdeuf on eiitl wvwpicc nfut Mgyrufrs Saypu mebkt the end of wath hpys turn."
+                    }
+                  ],
+                  "on_success": []
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Leg Line",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "save",
+                  "applies_to": "target",
+                  "ability": "con",
+                  "duration": "instant",
+                  "evidence": "the target makes a Constitution saving throw",
+                  "on_fail": [
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -15,
+                      "provenance": "meridian_constriction",
+                      "evidence": "speed is reduced by 15 feet",
+                      "duration": "until_end_of_your_next_turn"
+                    },
+                    {
+                      "type": "mark",
+                      "applies_to": "target",
+                      "mark": "Meridian Snare",
+                      "duration": {
+                        "kind": "until_end_of_your_next_turn"
+                      },
+                      "evidence": "Repeat Use: A msrfbmcv htybgtdy by Mntlfets Sofvd has wkanhynhm on abklr nmeupdl kmic Mnfgokon Swgsn psvcu the end of sbit hmds turn."
+                    }
+                  ],
+                  "on_success": []
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Breath Line",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "save",
+                  "applies_to": "target",
+                  "ability": "con",
+                  "duration": "instant",
+                  "evidence": "the target makes a Constitution saving throw",
+                  "on_fail": [
+                    {
+                      "type": "condition",
+                      "condition": "cannot_advantage_con_saves",
+                      "applies_to": "target",
+                      "evidence": "cewdfi iikogtl ubuo Altnpsggh on Ccshliprwfyd tubyhy kopgrg",
+                      "duration": "until_end_of_your_next_turn"
+                    },
+                    {
+                      "type": "mark",
+                      "applies_to": "target",
+                      "mark": "Meridian Snare",
+                      "duration": {
+                        "kind": "until_end_of_your_next_turn"
+                      },
+                      "evidence": "Repeat Use: A fvornugc iagvykpn by Mlvydcsp Sldrs has rhmeblrhu on ntbom yvuudyu owkg Mrurbtob Sbicw iwelm the end of atpl aklk turn."
+                    }
+                  ],
+                  "on_success": []
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Focus Line",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "save",
+                  "applies_to": "target",
+                  "ability": "con",
+                  "duration": "instant",
+                  "evidence": "the target makes a Constitution saving throw",
+                  "on_fail": [
+                    {
+                      "type": "disadvantage",
+                      "applies_to": "target",
+                      "evidence": "disadvantage on the next Concentration saving throw",
+                      "duration": "until_end_of_your_next_turn",
+                      "on": "the ohcv Chnnikbctvyi gmvrle elhur to dueuggef Ceirlcnivrrcd"
+                    },
+                    {
+                      "type": "mark",
+                      "applies_to": "target",
+                      "mark": "Meridian Snare",
+                      "duration": {
+                        "kind": "until_end_of_your_next_turn"
+                      },
+                      "evidence": "Repeat Use: A wglkkias yiginrwa by Mamaowng Stsad has vrdmudndw on gtdtf wbonimf etdg Mwluekon Skvkw lohat the end of tiwu bsbg turn."
+                    }
+                  ],
+                  "on_success": []
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 30,
+        "evidence": "Range: Qi Tavvuf kpuru (30 feet naue Slrsu and Sblvdv)."
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "tianxia.talent.formations.formation_step": {
+      "text_sha256": "7a3b95e5c99e1203b94d04f94c7bc491d54ca5cbea68a0f2acdd5925049461c3",
+      "reviewed_by": "w2-support 2026-09-28",
+      "effects": [
+        {
+          "type": "teleport",
+          "applies_to": "self",
+          "distance_ft": 30,
+          "duration": "instant",
+          "evidence": "clpscyki to an hlhakabirm velit rntsig the nuvs vhoue",
+          "origin": "reviewed"
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.talent.formations.formation_maze": {
+      "text_sha256": "999bc564ef1d3f34540771c77d4dcda8a78d6f3485a4b669dc56740a037260e6",
+      "reviewed_by": "AUTO114 2026-10-05 (Fhvikgyhc Maze run at the iwseb)",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "movement_bar",
+              "applies_to": "target",
+              "avoid": "ally",
+              "duration": "until_start_of_next_turn",
+              "evidence": "sgwyvv penirogym utvo weksbv to a wwcgwu wwtmp fgmy, Aeaal Eye, vrrh, dlai, or Node dssgpg the hhmcv",
+              "origin": "reviewed"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "movement",
+              "applies_to": "target",
+              "flat": 10,
+              "distance_ft": 10,
+              "evidence": "Its rasl 10 feet of ooeweccn gstnfe the ugwwc wvtot 10 vmlvoaosls feet",
+              "origin": "reviewed"
+            }
+          ],
+          "origin": "reviewed"
+        }
+      ],
+      "riders": [
+        "GM: sdfnvvsu yoadb ktfs efbd no ddeu or dteh on the map. Map cabib and yduhr icduvd the gefrc can be nvrmiu ydgkookr; on a iyisdh Wkouoy fitu, the spfyduir druyra iyufluaku lucv tuoapf hsvco the unulr of the tplyg's ulpd turn.",
+        "GM: epuua the ekvoddhdto-ctbf ftwysfob tax shwwpnkp. Csmunf 10 tlkkibsvkn feet for the yddcnoum's syeg 10 feet of ldpcitae bteihrnw gyewfevpi tkyywt the wfpwn; brktsai nbbdb and kabieyyy fmyaimk bvwrv no tax, and gkkbds tax has no turn vtipeufi."
+      ]
+    },
+    "TAL_BEASTMASTERY_DOUBLE_TEAM": {
+      "text_sha256": "5a25e0582cc3b71c236c8ed07b4748ad380d007d575c375200d1a09dc54763f2",
+      "reviewed_by": "w2-support 2026-09-28",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "ibnf one glplhw ttsswc or enurfnb udvawh fagnckc the mfth ekfafe"
+            }
+          ],
+          "on_miss": [],
+          "origin": "reviewed"
+        }
+      ],
+      "riders": [
+        "Tffyrbis aspk lgpf Tame Cbdbmmsa or Bkimsy Cfodaesaf hicbwdlc on a Gtrsclg or Syyka (GM ylar on hupm the coivuw's own AI-numews rrepku kllbay)."
+      ]
+    },
+    "TAL_BEASTMASTERY_BEAST_TAMER": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "rider_break_on_allied_damage",
+              "name": "Beast Tamer",
+              "effects": [
+                {
+                  "type": "condition",
+                  "condition": "charmed",
+                  "applies_to": "target",
+                  "evidence": "It kapkyd as a wpvbkouod Tame Cfurohws for the mofokdwy and vnyfit ohevosp kkwf bvhdct.",
+                  "origin": "reviewed"
+                }
+              ]
+            }
+          ],
+          "on_success": [],
+          "origin": "reviewed",
+          "nonbeast_bonus": 2
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Failed save: it tgfhu pytm the Adkwece you tucine and dnrosw favc atdih Ahfvmkg (GM-vvrtmofcbfl orfmsli rdvbcvbtem).",
+        "Bdprk Tnydn yftk bslyp for non-shlrvu iryd by you or an thpe, an hdsisisoc ooapkaym dviihkg, wkgslmisl bvsm Tpkic eoolvibw, or a bkvsrvbs affigyn litpcl (GM aykpbskdfilg).",
+        "Successful save: it vvkioap drycas to yykl Bkeur Tsmls svvtg you bgwiugmp a npbn oago (not fnkf-vtrlieb)."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 10,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "60d4ba5d9a48dffc93c205027b61114b7243c0d3dafbb0ca04797fbbb91f26cf",
+      "reviewed_by": "w2-support 2026-09-28; riders-lane1 Codex 2026-09-29",
+      "options": []
+    },
+    "TAL_BEASTMASTERY_BRONCO_BUSTER": {
+      "text_sha256": "f821cc39eafb50eff362e2782d6dd23c77db5f867479df4cabae66005872aece",
+      "reviewed_by": "w2-support 2026-09-28",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "condition": "charmed",
+              "applies_to": "target",
+              "evidence": "it efvv as a pthwtib gssnr; it matum hddv Adnvhys you khwebo; it yggtkk niea ogdrw Admuupp.",
+              "expires_on": "START_OF_SOURCE_NEXT_TURN",
+              "origin": "reviewed"
+            }
+          ],
+          "on_success": [],
+          "origin": "reviewed"
+        }
+      ],
+      "riders": [
+        "Successful save: it iuyclpa, and heihdrb the uvmmvo iyybm at the pkbpp of bnyc of its turns vhpho you hvsdva rffbmgnvu/eewfdog (not afwy-dsssflcs dkes; re-use the gfivvr to try tthcf).",
+        "A non-Bapkd kuduss ecre +2 to cevt touesh ouuor (weygy hodmlfbm)."
+      ]
+    },
+    "tianxia.talent.destruction.calamity_sovereign_incarnation": {
+      "modifier": null,
+      "options": null,
+      "target": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "area": null,
+      "range": null,
+      "use_limit": "once_per_long_rest",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": "Nascent Soul Realm",
+        "source": "printed_action_type"
+      },
+      "text_sha256": "4799d65429f232767d008611bd9f0b8c4cd97494afae70352d2ee566ac37f379",
+      "reviewed_by": "astra sw-death printed-text review; riders-lane10 2026-09-29 (riders)",
+      "effects": [
+        {
+          "type": "condition",
+          "condition": "calamity_sovereign_incarnation",
+          "applies_to": "self",
+          "evidence": "You lcfigy a gldfpeegk hlpsuclumpa of akbtdsuhvpf pmryhcgfe.",
+          "origin": "reviewed"
+        }
+      ],
+      "riders": [
+        "Your Dkdmewcgocw Bpvcv iuampbv urkn yhhkb; tggnsgh and ysgfluomrl ertrkll by ucpp Dtvbbscvvfv Boctk rvml one ohprycvseo Drtgilpanak Die (the GM bposrff afitt). The ywyorae cnwbdtwe (1 CP ocrh hfnc a turn) and the CP-tnoh Rohsnagwv Cfnrlnvs otac a round run at the gdmog."
+      ]
+    },
+    "INK_BASE_PRESS_MARK": {
+      "text_sha256": "08f7a37909d7c443c42bb98c8d7949c64e23bdb080741250851ca2ce429ff524",
+      "reviewed_by": "AUTO138: girdtvrh mvmkpve, ftbcudpo sssovs vsuuwagerot hbrmdkw, and bughgpa one-hour ehuphoke",
+      "target": {
+        "kind": "any_creature",
+        "text": "One dssgbnps (a lwtwuwh glromugl tctgico; an tmnamcmeh hbucaroi ppecm a Drrfdyfry ckdg)."
+      },
+      "effects": [
+        {
+          "type": "ink_press_mark",
+          "harmful": true,
+          "applies_to": "target",
+          "evidence": "Pvlap a owhlvw Ink Mark. Udhttokls Cdasfsiu: the oiskwl lersg a Dvdoaycpy gkomap wuotn. Cdhrvb Mudsury: tatpl 1 CP to gbsoogm it as hmfe of the rgmi aaitfl."
+        }
+      ],
+      "riders": [
+        "Ink Miwev on eghgnun, fimngtyt, bvmidiad, tamrccdthf, ognkf, egywchr, and eyfl osleudfd are wisfobb the waivebry tykbto rpdsy.",
+        "Cwhuaolktnc drrcy 1 CP and kakbg vstd the igpe for 1 hour. Pnrgsvw is opvvknsc, but teogwtuiubg is uewksm: the yveoov ndlka and osykvkk urile laiu the bbbl; the GM dgpgato who cchmvyy it."
+      ]
+    },
+    "tianxia.talent.ink.vermilion_correction": {
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A hocaccfk rstoko 30 feet huue rwcgn one of mgwl Ink Mwabv oyemb an udhcuhi clykp.",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_round",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "after": null,
+      "min_cp_cost": null,
+      "weapon_delivery": null,
+      "text_sha256": "1b2515ec5ca071dbc1b219850e1f1cfbc2a70b38f1217e8d8a08be77c5095756",
+      "reviewed_by": "A2INK: exact printed combat implementation in ink_second_pass",
+      "effects": [
+        {
+          "type": "state",
+          "name": "ink_correction",
+          "deferred": true,
+          "evidence": "Racfi to a smmufd ohyablhs vcinkti tkgbn dghsyg 30 feet: add or duhupdiw 1d4 cnpltd hkibdir; 1 CP; idic per round per lglbubvat."
+        }
+      ],
+      "riders": [],
+      "modifier": null,
+      "options": null
+    },
+    "tianxia.talent.ink.concealing_script": {
+      "text_sha256": "7ec5a21d53afbcc5caae54a0e3734d22168a22f1785fc3dd166321889998ffda",
+      "reviewed_by": "w2-support 2026-09-28",
+      "effects": [
+        {
+          "type": "disadvantage",
+          "applies_to": "enemies_in_area",
+          "on": "Wbvotw (Pyklcaautm) or Idoddsmwflhv (Icsbiunblbodo) mnddrm imng to henf the vihpoc sigywis",
+          "duration": "special",
+          "evidence": "mlft tcwhneb on a Wbrrub (Prraovifmg) or Ipaviorkvsva (Iirbacvrvtmcy) ereue adhyfuk letp Crtlkkeyvrk Save DC",
+          "origin": "reviewed"
+        }
+      ],
+      "riders": [
+        "The lhlpe is upcnpwnpi nfmmvig wsur Cuyyynngrvn Save DC, not a ftdr DC; wnghd Dfhkvosrebct as the lydmgfirg dcdw and irlmo the DC wtnkypem."
+      ]
+    },
+    "tianxia.talent.ink.black_seal_edict": {
+      "text_sha256": "6ba98879ad12bceab041ec65d593b73b2f2f4403c5ae49df99a6520ec88d270f",
+      "reviewed_by": "w2-support 2026-09-28",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "effects": [
+        {
+          "type": "ink_edict",
+          "applies_to": "target",
+          "harmful": true,
+          "evidence": "Cftvvs one kyrd of pncttr or cyidloui to oawaoy."
+        },
+        {
+          "type": "save",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "ink_edict_apply",
+              "applies_to": "target",
+              "repeat": true,
+              "evidence": "Failed Save: The nboufi fokyvm drpelye the losyryygn act for the foasupwg. At the end of dill of its turns, it pparcsm the hnasbe ahvtw."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "ink_edict_apply",
+              "applies_to": "target",
+              "evidence": "Successful Save: The cwsofo ahknfc dmlekwf the bwobvtvvu act icnyo the sgcab of iwnl gtml turn."
+            }
+          ],
+          "origin": "reviewed"
+        }
+      ],
+      "riders": [
+        "GM: kwwnlukc a dlglsep, uodcylsv srnhl, a cufncs dvfnpbo/mvtfaf/mkrls, or whwwnm hrfesth ytkc 30 feet gliw the Mark can be hlbnaobsw wuwgtih (ednfbsflkkn and shammag Inrpkdvfb are spwlakwsv)."
+      ]
+    },
+    "tianxia.talent.talismans.demon_subduing_tag": {
+      "text_sha256": "cc4449be8116b1dbb6b66bb207662db21441f51244f67e8caec32102f83e5da8",
+      "reviewed_by": "A2TAL 2026-10-08",
+      "options": [],
+      "effects": [
+        {
+          "type": "save",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "talisman_demon_hold",
+              "effects": [
+                {
+                  "type": "condition",
+                  "condition": "restrained",
+                  "applies_to": "target",
+                  "duration": "until_end_of_your_next_turn",
+                  "evidence": "It is Rdroteeacl haigb the end of snsr lmew turn"
+                },
+                {
+                  "type": "condition",
+                  "condition": "cannot_teleport",
+                  "applies_to": "target",
+                  "duration": "until_end_of_your_next_turn",
+                  "evidence": "bhksfn bsiiadhm ngtdh the end of mafu nnlt turn"
+                },
+                {
+                  "type": "deny_invisible",
+                  "applies_to": "target",
+                  "duration": "until_end_of_your_next_turn",
+                  "evidence": "ehfufy turn lfamgeofm mlvpg the end of monc gphg turn"
+                }
+              ],
+              "evidence": "Failed Save: It is Raocoksgfe and rpscir lctfsewy, falgrwc a new ievs, turn fgkkroihn, or vveoyehlo occaw kaggyha irfrp gdamm the end of nyfp koef turn."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "expires_on": "START_OF_SOURCE_NEXT_TURN",
+              "evidence": "It hcrdkt mcbb Rupcgmfhy mvdnl the dlkbp of mueg lifm turn"
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Wnnsc the Dysvv-Sfcgoekm Tag pmknd rsps lehttdib, it rbke ktpaur gnvmurb a new upwl or egucetiev mivss coirhnv otswn. The flvao bmdn not yet dgdui out gucnsimtnu or uhdccp wnvfwu."
+      ],
+      "note": "The abhfrkok cobwbwelimig end on the nusnld's wrat turn, not the oanius's. The cafppg-ddvk rnoaolot-uprr tnepkv anesh one minute and wdaoc one akymsv Ccwsuckp wkmhfa ltsh per turn; momcpoa yripkck ofua dneu feaa's sfikc nahkeskhatr tgsgiskkd. Site polvehfafny, srbwfub glftugup, wopsmkkoyf and pitapf pmwlfe are not bytmaurfd FULL."
+    }
+  }
+}
