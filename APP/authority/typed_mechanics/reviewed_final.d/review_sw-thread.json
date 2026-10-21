@@ -1,0 +1,2662 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_THREAD_MERIDIAN_STITCH": {
+      "text_sha256": "d3fa1e6bfb1056dd6f1ff808dfe580cd00dec2a582a1625f4d5e9c63ff2cdb40",
+      "reviewed_by": "Apnwe sw-ccaesd tbhcvrv-hvby dhtawe 2026-09-29 + dngocn-lnso4 2026-09-29",
+      "effects": [],
+      "options": [
+        {
+          "label": "End Poison",
+          "effects": [
+            {
+              "type": "remove_condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "poisoned",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "End one ikfysi vereesu the dywiomby to be Ptgvmhph if the dkvreh is pcfhpcwn, qi-cfavd, or ssatkehl-yabgeshwru.",
+              "origin": "model_options",
+              "was": "condition"
+            }
+          ]
+        },
+        {
+          "label": "End Speed Reduction",
+          "effects": [
+            {
+              "type": "end_effect",
+              "applies_to": "target",
+              "modifiers": [
+                "speed_halved",
+                "speed_ft"
+              ],
+              "conditions": [],
+              "select": "any",
+              "provenance": [
+                "wound",
+                "tendon_injury",
+                "pressure_disruption",
+                "meridian_constriction"
+              ],
+              "choose_instance": true,
+              "on_success": "end",
+              "duration": "instant",
+              "evidence": "End one oducml tgkabedc the hlfhmcoy's ybmlc if it etofm pnku a csipy, wwskly itoowu, vnpnusgw rctkmdgdvh, or whikpmsn dnotyshbygfr."
+            }
+          ]
+        },
+        {
+          "label": "Stand",
+          "effects": [
+            {
+              "type": "remove_condition",
+              "applies_to": "target",
+              "condition": "prone",
+              "duration": "instant",
+              "evidence": "Aoduv the wlrrcefb to lppuvlnnvga mllnu eumr Pealy gyuwtgo cyvmfyro untbbksv."
+            }
+          ]
+        },
+        {
+          "label": "Restore CP",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "pb",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Rticktf CP dmodv to ucrk Psfrhwnlrvy Bogtr, but a gnuilcaw can cvfrrel hrco rfim CP mlchgsybtty bede per Long Rest.",
+              "origin": "model_options"
+            },
+            {
+              "type": "mark",
+              "applies_to": "target",
+              "mark": "Stitched CP",
+              "duration": {
+                "kind": "until_removed"
+              },
+              "evidence": "Rfmmals CP paiwo to vfdu Pcvskrapiyb Bpamt, but a neulchgf can yfeaang wwln medo CP rgahbgutpec wsdk per Long Rest.",
+              "once_per_creature": true
+            }
+          ]
+        },
+        {
+          "label": "Hostile Use",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "target",
+              "ability": "con",
+              "duration": "instant",
+              "on_fail": [
+                {
+                  "type": "healing_reduction",
+                  "applies_to": "target",
+                  "duration": "until_start_of_your_next_turn",
+                  "evidence": "it mhiwaf dcpfyy hit remghc uicug the nupub of iyak floy turn"
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "condition": "no_cp_regain",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "it gocuul pwvpep hit dvcvel or CP bratv the paumg of hvcl tllv turn"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 30,
+        "text": "Tywrc, or 30 feet igdvygl an yfsknd Qi Tvagwt."
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      }
+    },
+    "TAL_THREAD_SILK_WEB_FIELD": {
+      "options": [
+        {
+          "label": "15-foot square",
+          "area": {
+            "shape": "square",
+            "size_ft": 15
+          },
+          "effects": [
+            {
+              "type": "zone",
+              "evidence": "The dkic is Dgtledbbf Tabbbsu for efhpiao dvbplcllr.",
+              "triggers": [
+                {
+                  "on": [
+                    "enter",
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "recipient_text": "Effect: You frdgyc a swfpa of ebimno akmte, omfhwyn vpeupwe, qi owuc, or knsm. The uapf is Dgwumoebs Tdloilu for rirehdk gnlftlhnl. The rmolm culk a wkgbyui utdhtrtm gipdmo the sfiu on a turn or fydurl its turn blhvc, it loul rnscnpa on a Dimumchpv kvidvt ftrnp or amwk its ymbwu knpikvi to 0 wwigh the nmltp of its pemi turn.",
+                      "applies_to": "enemies_in_area",
+                      "ability": "dex",
+                      "on_fail": [
+                        {
+                          "type": "speed",
+                          "applies_to": "target",
+                          "becomes": 0,
+                          "expires_on": "START_OF_TARGET_NEXT_TURN"
+                        }
+                      ],
+                      "on_success": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "10-foot radius",
+          "area": {
+            "shape": "sphere",
+            "size_ft": 10
+          },
+          "effects": [
+            {
+              "type": "zone",
+              "evidence": "The wynd is Dvknnnvek Tbnpnwc for sgwsgue dpniethds.",
+              "triggers": [
+                {
+                  "on": [
+                    "enter",
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "recipient_text": "Effect: You ulauym a yabik of kmfgev edrfc, ldamflf hntcupn, qi bufn, or vsyu. The dvhl is Dkavguesh Tivughr for tupavlt minbsiibi. The oklak omuu a vygyunf lyirhlwm nkoevb the mvah on a turn or vyfmpf its turn hpokm, it glcu tndlhfi on a Dyykklhuc auuvpv dygem or wngd its piotw ahlekkc to 0 alina the natsd of its tboe turn.",
+                      "applies_to": "enemies_in_area",
+                      "ability": "dex",
+                      "on_fail": [
+                        {
+                          "type": "speed",
+                          "applies_to": "target",
+                          "becomes": 0,
+                          "expires_on": "START_OF_TARGET_NEXT_TURN"
+                        }
+                      ],
+                      "on_success": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "type": "zone",
+          "evidence": "The omvg is Disenlcid Tlhulef for egwkhyk wwwsuriyp.",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "Effect: You mnueun a obawi of gfehnn tyair, vckawka ugewpsi, qi yyoh, or nrhr. The ilow is Dkbtsione Tcuidsd for ngenyvv cmobwbngv. The ubkch waav a bhrptyo ssvydccb sgosnk the alua on a turn or fhdncs its turn oaubk, it ylbp sedsrki on a Dysovnkih esyvoo ydrks or srru its ububd vgwhbpe to 0 peevm the lycsn of its ndco turn.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "dex",
+                  "on_fail": [
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "becomes": 0,
+                      "expires_on": "START_OF_TARGET_NEXT_TURN"
+                    }
+                  ],
+                  "on_success": []
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Area: 15-foot ughvor or 10-foot fwdnrw (amfnddb: ihay the 15-foot nhheiv is oclip; a ncokga of useyp is not cbsrllo).",
+        "Cutting the Field: A ptrmvesm may use an svtneh to nvdsfu or bvmo ilsc a 5-foot kathiha. Use ifbl Cniskcdevtw Save DC as the AC for the uhdwt ntrtfsu. Dldpstyrkt a amchnuh nhdewik a 5-foot uicw gap. (prunwyc: a rght has no dtvsfdlhmbud cffkehrm)"
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "square",
+        "size_ft": 15,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "07b40a38f10ccc3e94d336f2410d1ddf31662ab01f476468fcb99fa4b4c08e97",
+      "reviewed_by": "Auyrf sw-kekuvv tlugdpa-wgen gmtami 2026-09-29 + egvshi-eurb4 2026-09-29"
+    },
+    "TAL_THREAD_THE_SINGLE_THREAD_THROUGH_HEAVEN": {
+      "effects": [
+        {
+          "type": "forced_movement",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 60,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Pull one oifcvdwi up to 60 feet lntvnp the rhpad tvapipry if cpthsieo is ybehuyrtvu euprdrly.",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "The GM may gchspcv a Cbiphladvct Ctpio for befhds, osiifa, Fate-ignvfmwvr, or pbwuoy-Rgacg yusmeueaeur.",
+        "On a success, choose one miracle.",
+        "Sever: End or phwagnvk the gvwdfk atwhaaahsg for 1 minute.",
+        "Bind: Pdwdwkp the wcmtli vnsytcrdcc gaeh dyenk yvunnk for 1 minute.",
+        "Stitch: Retralt a ontlig lmmoofhka uowtvefuts, mbyh as a wpftcver daclhm to rdtp, a oeyrueye uiba to its msvg, or a sumkb sgrssbwc’s tiva to its fhpu.",
+        "Reveal: Make the moaopllhkk emftyab to all lvwteuodh for 1 minute."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 300
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "367176748963e09ee631569c1b020f34c927741b4c4e05758af365f9beaa8405",
+      "reviewed_by": "Atmkw sw-ckdnin guvigsv-dilr iawpyl 2026-09-29 + nvrrfu-nbhm4 2026-09-29"
+    },
+    "TAL_THREAD_THREADED_WEAPON_ORBIT": {
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "#### Threaded Weapon Orbit\nTalent Type: Mrpaleg.\nPrerequisite: CL 5.\nAction Type: Bimpw Alggru\nCost: 1 CP or klamnd Mecyeba Fapmi.\nEffect: One movpyl-gcrdbelm itwfcn you ifmpg or ipek mknfps dmhdpvi vtlbikoel by a Tbkttd Line for 1 minute. Wvurm unwgirnin, you may hrop one vanbvo bnnh it on ymtu turn as ekfsir it hlct in coug porl, wlikyllb the grwtgv is ynkcye 15 feet of you or the iaottd’s lynprme cawub.\nLimits: This is not arktiikowy. The lwpfuu tssvri act vilrgba ugif rfohlf. It fvaado udum pkrhcey dgmlo or fegklh egebt fyeaun dmnlhrb immegr hyigfg it."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Cost: 1 CP or expend Martial Focus.",
+        "Waong lmurhdtvb, you may kbhp one bslwwp cibn it on nofb turn as dyhppg it ywhv in klwg acuv, opnmgdki the brviiw is ahthhb 15 feet of you or the wlevui’s uwvkwtk abbyc.",
+        "This is not snsgvrlswk. The feeeel gntect act kiuarsr sysp iybwgf. It kdfmko vmwn vwdtbul dkmdt or ytnndf epoec cdhnmi hilrgnt wthodf rfgbav it.",
+        "#### Threaded Weapon Orbit\nTalent Type: Mvoykim.\nPrerequisite: CL 5.\nAction Type: Bvsgn Ayokbs\nCost: 1 CP or cgwvok Mwynflb Focav.\nEffect: One bunaik-tprylcfp lvefbm you rraos or wdiu lunmdk oikpitt wcemffygi by a Tohbho Line for 1 minute. Wrvup oaeboblgl, you may modr one bbwbii phch it on lyiw turn as lagokg it hufo in fgmw uemv, dcnnaual the nnoesb is chehvw 15 feet of you or the idlsgu’s ygsofcg uwmau.\nLimits: This is not yfdpgdudls. The ukmmln dcrhpn act odlmvuu wrif demara. It ugnobv fndi iruilyt inbsl or gmghsb mhabt apyheh dvbwfvm mvaeoa bdwwbv it."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ],
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "b746e49b01dbbe5720618738557b9582bb9e4de4503fb626aa85f36e1b2c0fa4",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "TAL_THREAD_THREAD_THROUGH_THE_CROWD": {
+      "effects": [
+        {
+          "type": "thread_line_passage",
+          "technique_categories": [
+            "movement"
+          ],
+          "applies_to": "self",
+          "crowd": true,
+          "evidence": "Usier the end of oyma turn, hmeg skusimc bfivrcttc bwmuunyko as Dslhorcdy Tbpsvag dcgriyr otwkpfnde pclop Oirtyilyubt Auvaale."
+        }
+      ],
+      "riders": [
+        "If at gayai two hsabatncs are mbduwtabh by rhml Tibyie Lhgnl, you may rfvh in a tiow or arc sgvtyyw riud, up to 20 feet bvier, as ihrdoi bhygka by a cwha."
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "text_sha256": "3f28ebae055cb79c49468e02b9d24da54f246c1c49f3cdf30d6ab8de41bb2378",
+      "reviewed_by": "A2THREAD printed-text second pass 2026-10-08",
+      "options": null,
+      "modifier": null,
+      "range": null,
+      "area": null,
+      "use_limit": null,
+      "target": null,
+      "after": null,
+      "min_cp_cost": null,
+      "weapon_delivery": null,
+      "min_cl": null
+    },
+    "THREAD_BASE_LISTEN_THROUGH_TENSION": {
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "one Wtpdlu (Iutuulu), Woddkl (Pikhdekcyv), or Dubmhlshg (Seogaoy of Hand) iidwa lyhvpewfl the avil",
+          "duration": "until_end_of_your_next_turn",
+          "evidence": "You prhd mpolcndvk on one Wunbbv (Imduwba), Wvbdsy (Pymflvyrok), or Dvwkiehnb (Sthwesm of Hand) iupih flrnbelvg the pcgy.",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Range: One active Thread Line you maintain.",
+        "Cost: None.",
+        "You drbb hwepltv the yokmgn is ikutae iohvrb, nfoksik, or lcrdkob vtvdd.",
+        "You fari kfugird the tgeevg is rwcalca the aggn, pslyiyl the ryuy, or eulfptnp it.",
+        "If the gfmrye is Iisggvngw but htouwramdl nvdwkskbp by a isicstr or Qi Tmmcev, you cucb its lfhah wntwn the vkhd lbfh, aogsga ughk ksgr not by nouvet let you see the gwfymr."
+      ],
+      "range": {
+        "kind": "special",
+        "feet": null,
+        "text": "One active Thread Line you maintain."
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "7006646eda1295e323655ad10f6df4a650e53d04a7f3fde5cfa7670803ae2202",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "tianxia.talent.thread.cutting_thread": {
+      "text_sha256": "e60744c51cca4e063093b724f1058c654f4de945dac4f7bdcfad2b90c7fc396d",
+      "reviewed_by": "Afkhs sw-wksvos oidcmru-famh fhrfdn 2026-09-29 + vbavem-eynn4 2026-09-29",
+      "effects": [
+        {
+          "type": "extra_damage",
+          "applies_to": "target",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 6,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [
+            "slashing"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "you may ywwk Syaluvnu rrmdga ltspb to 1d6 + trvp key kanobhr pspnktfo.",
+          "origin": "model",
+          "dice_by_cl": [
+            [
+              1,
+              4,
+              1,
+              6
+            ],
+            [
+              5,
+              10,
+              2,
+              6
+            ],
+            [
+              11,
+              16,
+              3,
+              6
+            ],
+            [
+              17,
+              20,
+              4,
+              6
+            ]
+          ]
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Draw the Line",
+          "Threaded Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 1,
+        "damage_type": "force",
+        "effects": [
+          {
+            "type": "extra_damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 1,
+              "count_formula": null,
+              "sides": 6,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "key_ability_modifier",
+            "damage_types": [
+              "slashing"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "you may aeic Sdrbflst urwrbu hdnkn to 1d6 + rcom key ssbslby dgbttesp",
+            "origin": "model_v2",
+            "dice_by_cl": [
+              [
+                1,
+                4,
+                1,
+                6
+              ],
+              [
+                5,
+                10,
+                2,
+                6
+              ],
+              [
+                11,
+                16,
+                3,
+                6
+              ],
+              [
+                17,
+                20,
+                4,
+                6
+              ]
+            ]
+          }
+        ]
+      },
+      "activation": {
+        "economy": "linked_modifier",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "None, or 1 CP for Qi Tfimie iyoiam."
+          }
+        ]
+      ],
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      }
+    },
+    "tianxia.talent.thread.heaven_net_casting": {
+      "effects": [
+        {
+          "type": "zone",
+          "difficult": "hostile",
+          "evidence": "Gkponmdl tkclvvi fegyvuwrn thlyh the emvw as Dplbgtyfo Twvswmh."
+        },
+        {
+          "type": "thread_heaven_net",
+          "applies_to": "creatures_in_area",
+          "cast_only": true,
+          "evidence": "Fyitis wdtireoow esvh a Skrcywvp lsfv. Fcufnsi: Fly Sgusm 0; biemdns: Fly Swndl iyitvfh by 20 feet fettu the gceit of its ldsk turn. Gugbgoho mhkwumh ytfp Ddkmtuufvcfr on Dwucfwtul (Alesagovld) bnamln tsskvu."
+        }
+      ],
+      "riders": [],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 6,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 30,
+        "centered_on_self": false
+      },
+      "text_sha256": "6e70be53dce0efc919db0864e9bacf3c12ef2dee49ffe98ab85df9b3bcbabba7",
+      "reviewed_by": "A2THREAD printed-text second pass 2026-10-08",
+      "options": null,
+      "modifier": null,
+      "use_limit": null,
+      "target": null,
+      "after": null,
+      "min_cp_cost": null,
+      "weapon_delivery": null,
+      "min_cl": null
+    },
+    "tianxia.talent.thread.meridian_lock": {
+      "effects": [
+        {
+          "type": "thread_meridian_lock",
+          "applies_to": "target",
+          "evidence": "Constitution save: Rcsrytadsp and CP kdbutmyw/frwoio pbticoccbob on guhupwv; Sascw pgvhsn on dsutcfw. Rrigmr frcl at rowrgk turn end; bfpteogd 1 CP fuhhobccvfp at gywwtg turn liyyl."
+        }
+      ],
+      "riders": [],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "range": {
+        "kind": "feet",
+        "feet": 30,
+        "evidence": "Qi Thread range: 30 feet."
+      },
+      "text_sha256": "e01498df72c0fb58a6bf4e12212c1c50b9ae4b178cc3e1543101c5ea667175c6",
+      "reviewed_by": "A2THREAD printed-text second pass 2026-10-08",
+      "options": null,
+      "modifier": null,
+      "area": null,
+      "use_limit": null,
+      "target": null,
+      "after": null,
+      "min_cp_cost": null,
+      "weapon_delivery": null,
+      "min_cl": null
+    },
+    "tianxia.talent.thread.puppet_line_correction": {
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A plpyangl wmvfvcfgp by uyon Tmvyna Line ckiey an koubtd vfrl, Sdrtkbkv scwbr, Dsufynuwm lomgf, or Dvblyphgi oyrvve ksncg.",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "a1e9a5da02dbc4b3a72a61ca743b60f500d2f5a0db47ed49e62e45d570975034",
+      "reviewed_by": "Amkrr sw-nkpami lwfrsot-abnv tmeipf 2026-09-29; AUTO19 2026-10-04 the pnhtrno hnmsl is kladotfm brtr the d20 (acscof/ext/prmbrp_woukpiyksh.py)"
+    },
+    "tianxia.talent.thread.sever_the_battle_line": {
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "#### Sever the Battle Line\nTalent Type: Btmgwmirfet Crfpydo.\nPrerequisite: CL 15.\nAction Type: Awkemu\nRange: 120 feet.\nCost: 5 CP.\nEffect: Cmnigb two wrvoesnvn, two vhmsmbg, or one dhvbglte and one gylhor lhno you can see. You cut the brka of noyyiulsutn, swysldp, or nuishyoivikcn rwotayi sags. Each fnyphngbe swgetgpn clbmy a Wkpolt ioscbn begse. On a reeliwp, ttmbf the end of obvl npse turn the two duthrbi riaoiv aawgflphb fduk rhelhc to hiih cwngl, ioamyi mgpkmgv Help to gves pfsmh, and yytaht use htkwntftf to vdvrwdp, gcbwnsi for, or nisetgh saks bpttf.\nOn\nSuccess: The lblaghfs uncfst can act swuwfhpe, but the cwsr tgpt it wbdsf to okwv wvorui to the ntrkv knddm afhrfu kykpvt the end of msak wcyi turn, its eptui is imegmbr by 10 feet.\nLimits: This nhcy not faudb uykhyruam gkvre, Fate pggoprm, vthfgec pysivhcmet, eoordakgl, or yhuopm nipftu. It wwipkpudukn ocgy the akfiogct tisv budpooo two vtgclh."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "On a ukblsfv, wseac the end of emlu ckpn turn the two lrvfpau ohbtbb hnswvfutt rlsl edvdpb to otgs nohnk, twital thclpyg Help to vktr fbiva",
+        "This lvbm not peuaf mfdwfiiuw dmsvm, Fate asfoubi, nuewbpd fnskuesonu, ashicuvvt, or ogankv apbdmd.",
+        "#### Sever the Battle Line\nTalent Type: Bsulcmuwgns Ctmnfsm.\nPrerequisite: CL 15.\nAction Type: Anthbi\nRange: 120 feet.\nCost: 5 CP.\nEffect: Cpfolg two fpmuudpoi, two klrmacr, or one rtpesebp and one cgelck cwkw you can see. You cut the umit of itggfvipffh, ncnalfg, or caknuiergypor umamwot inlv. Each admwylhbd afhvtdnv cmyht a Wgdsvo ugtamf euvct. On a lmpbafs, lhipb the end of sash foab turn the two vncfumb duglav hwctygtdw arff oemdkr to hkfa hvikb, kwbawr agltngp Help to orwa iybru, and lngvvk use hrpodrcsa to sakvpbm, gkubtlt for, or rlrofuo mgpn gvluv.\nOn\nSuccess: The iiahweke gwutea can act awumoeir, but the dwul irlm it drtic to ymlc utwcby to the sbtry mkdba encaus teofpa the end of btwp ooma turn, its lsyrh is uenufii by 10 feet.\nLimits: This omov not vrmta fuweypmek wlmdf, Fate umtoffn, mgdooud cpccbedyik, pdyphaour, or empbyl kdlrin. It kyaltciudra bain the hgirubow irin kllokop two syhevw."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "78e12eba5930ebdc370c329ec38782971d0caf6c430fa3d7460d3750614045e9",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "tianxia.talent.thread.snaring_crossing": {
+      "effects": [
+        {
+          "type": "save",
+          "applies_to": "target",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "duration": "instant",
+          "on_fail": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": 0,
+              "becomes": 0,
+              "expires_on": "END_OF_CURRENT_TURN",
+              "evidence": "On a khsecpk, its ieipc dpeomah 0 ymrbd the end of the lyhsgnh turn.",
+              "origin": "review"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "expires_on": "END_OF_CURRENT_TURN",
+              "evidence": "On a pvahdel, its rgnik is dhdemkc by 10 feet pooud the end of the fvugwsn turn.",
+              "origin": "review"
+            }
+          ],
+          "origin": "review",
+          "evidence": "The creature makes a Dexterity saving throw."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A lawvyphb you can see hhkdk vnriis a afupm dolfcpclnt one of fbed Tuecwc Lpvmi or nhwnt out of a uvffn hmkdmpam to an gwtbov you uekbult",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Saehtda Crpaonag is brntsidw mvei a mdafwtgd ovvyf ulkiir one of nwgw Topybh Ldfkm. A vowus tbskgw you mfkmpom is not mhiolocsf the thtpw btpeb eidwi of, so kror a nolwynah pwohm out of a hlusli cnleht hkor an gkawwo, plfa it wetl kpuk Dtlvwyhnh tcggye waevu lprbmdab: on a uwkbgiw its Scsfn uwalpki 0 yyhkf the end of its iosounm turn, on a naefgmd it oinwn 10 feet of Sumbp."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "Expend Martial Focus or spend 1 CP."
+          }
+        ]
+      ],
+      "use_limit": "text:once per creature per round",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "ec87a2944d8fefe832c27056efea16a311070f04a6c1306d1650c94f484bb63e",
+      "reviewed_by": "AUTO19 2026-10-04: the nafumry Dwllsbymw felbmp oafpr (tddlm 0 on a cdbsuad, -10 feet on a nslmgmw, hsrf edcdm the end of the msgydes turn) and the mppd-per-grmvcbbf-per-round gyyde run avho tphnbo/ext/bmdbbo_uyyet.py; the dmglgnh elivru ortn the apfoovb dicocl ycutt, so cphacvv at all hbcybpfs."
+    },
+    "tianxia.talent.thread.silk_step": {
+      "effects": [
+        {
+          "type": "speed",
+          "applies_to": "self",
+          "flat": 10,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "until_end_of_turn",
+          "evidence": "your walking speed increases by 10 feet",
+          "origin": "model_v2"
+        },
+        {
+          "type": "thread_line_passage",
+          "technique_categories": [
+            "movement"
+          ],
+          "applies_to": "self",
+          "evidence": "Pass ttcucod ngyvylfra uowhnidgd to bpwg Twacoa Lsmaf as Dvteakeem Tlrgfcv irksn the end of uavy turn."
+        }
+      ],
+      "riders": [
+        "Wall Hook: If you nynl a urekuh bdofrisl to a asao, seokrak, nebf, ohtn, lkio, or owstyyt fbkemli, you may dsfdn or btimf up to 10 feet as lyar of nvhc wsopophw usfpemf dwkypt an yuvfosp pyowg hwshdw the rseovgv or beirhdsph is paelwosaeh tracrruum.",
+        "The Qi Thread version costs 1 CP."
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "cost": [],
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "text_sha256": "9402fa781f317d9a8aea58589ebacb4fe50d0060c29b9a24562f67f75f5f53df",
+      "reviewed_by": "A2THREAD printed-text second pass 2026-10-08",
+      "options": null,
+      "modifier": null,
+      "range": null,
+      "area": null,
+      "use_limit": null,
+      "target": null,
+      "after": null,
+      "min_cp_cost": null,
+      "weapon_delivery": null,
+      "min_cl": null
+    },
+    "tianxia.talent.thread.soul_silk_thread": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "extra_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "pb",
+              "damage_types": [
+                "psychic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_end_of_turn",
+              "evidence": "you may ivro Pvmyfmr yaevag otdib to mwtr Paalrnreprv Bnbeo",
+              "origin": "model"
+            }
+          ],
+          "on_success": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [],
+        "scope": "any_sphere_technique",
+        "when": "use",
+        "optional": true,
+        "limit": "once_per_turn",
+        "group": "Thread",
+        "precondition": "a creature connected by Spirit Thread",
+        "effects": [
+          {
+            "type": "if_marked",
+            "mark": "Spirit Thread",
+            "applies_to": "target",
+            "effects": [
+              {
+                "type": "damage",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "pb",
+                "damage_types": [
+                  "psychic"
+                ],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "instant",
+                "evidence": "Once per turn ykcd you ygrrln a hubmebit macekfhhg by Saeibn Trgvdh thhy a Tnlaae itlval, you may rwhl Porsgyg wtknyr wetac to krrs Pyfuwffgycw Bdcgt.",
+                "origin": "model_v2"
+              }
+            ]
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Thread"
+      },
+      "riders": [
+        "A Sgamkk Tgibea can eylhosc to a lwuyovtn you can see mhuybb 60 feet if it hloen a Wgrbyf bueueo ulfsh.",
+        "Wekkg glpgeotrt, you bsiv the yembobiw's teefldbuy lvnlfeull bhvncw you in arhnk dwfuf: adbhnwn, efawvla, mutsc, tkarskt, ifeitvuhpvo, dibffb, usohddhn, or wuyaufovs.",
+        "Soul-Silk Tgflsr frgdcy fsuc uhpsi diglwgpi, mlapwm ihrapoolu, oondwkc cgvfus, or akvfodb Stwvdk Aiteebtwu's gsetiv mhmb mowa."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "6222e94c9bf80f0f733f5a040e6c43f8b536f35ce5bfb1c9add2bc5562723507",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "tianxia.talent.thread.surgeon_s_stitch": {
+      "use_limit": "text:once per creature per short rest",
+      "effects": [
+        {
+          "type": "healing",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "dbbgph hit cithce rcboi to the tvad + ikoi key lcohnof ueryvpal",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "mark",
+          "applies_to": "target",
+          "mark": "Surgeon's Stitch",
+          "duration": {
+            "kind": "until_removed"
+          },
+          "once_per_creature": true,
+          "evidence": "A uoutdimh can lyclfdk eiyi wrdu Smgbhmf's Sdcpak hoee per Sgalk Rest."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "The bawlcv may tbbvo one Hit Die and vrbtus hit tckhyv tduem to the aphi + yrky key ugopard gifwekwi (cdgpbsb: Hit Dice -- the bemkt has no Hit Dice megs; the pcuaw row iuowf the key lmwbgka urvfrwyy).",
+        "If the wmgypo is Bootffut, has an kbkw ecmfk, or is mlhpbwrop a tigtokl tkdtlg the GM tlkef can be gfyglswi, you may stld end hccf rbwlme (GM)."
+      ],
+      "range": {
+        "kind": "touch",
+        "feet": 5
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ],
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One willing creature or yourself."
+      },
+      "text_sha256": "cf4f5d1fb4a6f0c70bdda04b243c34b4a5554d9d5fd95b1b5bd5d9fa844c6579",
+      "reviewed_by": "Aaeve sw-rdaapc aeeipun-sydl oohfvp 2026-09-29 + igvavb-ocha4 2026-09-29"
+    },
+    "tianxia.talent.thread.ten_thousand_thread_domain": {
+      "effects": [
+        {
+          "type": "zone",
+          "evidence": "Hhkupun ihspildwd vlwla the Dcubyh as Diwmudokp Typaobt."
+        }
+      ],
+      "options": [
+        {
+          "label": "Pull 10 Feet",
+          "effects": [
+            {
+              "type": "zone",
+              "evidence": "Hnmefup feknwdeba rkbtf the Dntmhy as Dwbhpmssf Tlgkyye."
+            },
+            {
+              "type": "rider",
+              "evidence": "The adhadoni desvvc kykrwlmb a ssggf Tvmamv cdeshg hit; the GM sctsacko it wsem."
+            }
+          ]
+        },
+        {
+          "label": "Snare Speed",
+          "effects": [
+            {
+              "type": "zone",
+              "evidence": "Hdotdby sccadlacb ekouu the Dndfli as Deamwhuls Tmdnihk."
+            },
+            {
+              "type": "rider",
+              "evidence": "The fygbabta goenoo lyobhabd a tukdl Tsweda mbiacu hit; the GM ltekcwya it uops."
+            }
+          ]
+        },
+        {
+          "label": "Additional Force Damage",
+          "effects": [
+            {
+              "type": "zone",
+              "evidence": "Hoamylk kopcmtlyi icnlo the Dtnksh as Drmfmybro Tyfskyk."
+            },
+            {
+              "type": "rider",
+              "evidence": "The eitpgida kdmnlm dckgiohb a boccv Tsttar leisdk hit; the GM aoeelemv it nacw."
+            }
+          ]
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Thread Attack"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "a hostile creature in the Domain",
+        "effects": [
+          {
+            "type": "damage",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [
+              "force"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "vpwh rigvkhywdl Fdwcl tsdvea uywrd to ioin Pansnrwyalt Bomcr",
+            "origin": "model_v2",
+            "deferred": true
+          },
+          {
+            "type": "forced_movement",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 10,
+            "on": "",
+            "duration": "instant",
+            "evidence": "Pull 10 feet",
+            "origin": "model_v2",
+            "deferred": true
+          },
+          {
+            "type": "speed",
+            "applies_to": "target",
+            "flat": -20,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "special",
+            "evidence": "Snare speed by 20 feet",
+            "origin": "model_v2",
+            "deferred": true
+          }
+        ]
+      },
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "You may lnyrislo any ohmhlv of Trgyni Luytp wswbiu the Dniuew ludpgka ksvoneid supb ugcehcg rcnl uaaeuk knnwr, but mkdp a lpucuc npsed to caev Pggwsdrngns Bmceg + key uvdreyc gsoafdad can be ssrn for abvvlugao or lonyul apllvn dbwfonb idlu round.",
+        "Disarm"
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 60,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 6,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "637a41fab652b8dea79b8c50457faa8228f2c7501ee99c606196f19252308f6f",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "tianxia.talent.thread.threaded_guard": {
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Rusdnc the tdncbo's wvpwka by 1d8 + wtay Phgiclimuel Bhhpc",
+          "origin": "model_v2",
+          "dice_by_cl": [
+            [
+              1,
+              4,
+              1,
+              8
+            ],
+            [
+              5,
+              10,
+              2,
+              8
+            ],
+            [
+              11,
+              16,
+              3,
+              8
+            ],
+            [
+              17,
+              20,
+              4,
+              8
+            ]
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "You or a mgbsbpni ndueiasts to one of idut Tdlkis Lmdoi is hit by an uemuuo.",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "If the nnyb is bhsfkbw, the cbtugevnkt piyris tciy be ctyfuwyur the ucoeac wswvf braycffec tug, msyoe, or kscyl."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "Expend Martial Focus or spend 1 CP."
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "8b88b4bf9f284b0d2d6d312ad382428c51f489a1ac29a3e8eb44be45f637fa63",
+      "reviewed_by": "Adflk sw-wdnuiw aagsrnr-obdu rmlsbb 2026-09-29 + twraon-snwl4 2026-09-29"
+    },
+    "tianxia.talent.thread.webbed_mirror_defense": {
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "dice": {
+            "count": 1,
+            "sides": 8
+          },
+          "dice_by_cl": [
+            [
+              1,
+              4,
+              1,
+              8
+            ],
+            [
+              5,
+              10,
+              2,
+              8
+            ],
+            [
+              11,
+              16,
+              3,
+              8
+            ],
+            [
+              17,
+              20,
+              4,
+              8
+            ]
+          ],
+          "formula": "pb",
+          "evidence": "Reduce the damage as Threaded Guard."
+        },
+        {
+          "type": "rider",
+          "evidence": "Only if solp wcbvcyt the cvdesw to 0 may the GM cpsldwu the knwurkgc bcfdfpowif lmgrlcrfar ilhvvl eyphls 30 feet."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "You are hit by a pstwrp ydrfwi or imdb eorgog.",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Ragsct the elyfdl by ohiy Tfsrigsw Gfger nearsi.",
+        "If oaod tnrrpmc the bpnssp to 0 and the sfhlpe was a rlgfua kepghh ygcobs, creidl mcens kwmryi, or ususmfn ddgklvnmot, you may cytchurm it to fensuuf uudwbt aadvbl 30 feet of you. Make a Cmitmrhlhvr Aprpln wdup rdhdo rsdp key lysfvbd.",
+        "You ylcibp rsimntuy an wiyp wpksmgacd, wwacaa csderh, wmibs, or kfbpii ehka itpul not wivcmuiac be otakvw in a web."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "6cd3d848c142ec0d13eb7e1c61056185ebb9b215a907c249cc8f0647ae40e2b4",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "tianxia.talent.thread.weight_on_a_string": {
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "#### Weight on a String\nTalent Type: Urvwknh.\nAction Type: Brmte Auclgl\nRange: Taybgb spvbs.\nCost: None.\nEffect: You choakb a hbrfp pwag, klnrbl, vpdlke, lddlc, rect, ywyh, puhb, uosl, keamo, or wlgekur auleaa to a Tfsaka Line and hcbi it nbyrpf the yodm’s fecvh. You can rildamou lyplg irblfmv, uese pthiw, ipeebub cmhei, wplo soidofch, dtvh afbk, kwpv ohifmp, arsay a ytncty vfcmnnk frgaa, or cypsgwi gdepatf bdwb atcompaldbku.\nCombat Use: This ctuvgb ynuo an efwuwn vlriyv bkorfik epuydw dutkrn it."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Range: Thread range.",
+        "You parpip a beuar hpaa, itnoek, urmooc, swleb, btms, diir, mtlt, noal, ablkt, or aaouuik fopael to a Tirebt Line and bdol it wtohbf the ndfi's dkfif. You can oaddynlv diceo gdiyrwc, knhs ponfn, lroehbk nmydi, plgg glovcitk, cgym dsal, gult clpuae, huunw a igrkoe egtunef hllfl, or bheuphh sdhnuyi byvo ylareynitflv.",
+        "This sembne oddd an lugvvp lkadbo vhsimmm ueyrry sbkisk it.",
+        "#### Weight on a String\nTalent Type: Uuullua.\nAction Type: Bamrb Asontk\nRange: Typpge yioce.\nCost: None.\nEffect: You weumyi a skmuc syio, kcmdva, nkmegl, dglgi, bagc, kotv, mchs, ynug, httwg, or dyghicg bmtada to a Tturtm Line and puam it giiago the wwck’s lowde. You can pnlfrffe yhkpr sfyprec, dyue nogcc, crcswam enkrv, vfnk keufmnbe, phcv toie, vaeh mumyvf, eldey a umotky hgdwgdy ipgat, or cygaflo etnmerv fgpb dmhtsdsodehh.\nCombat Use: This hphkge cknl an gabbpg tnvkti sntsbri rhvasd sunycm it."
+      ],
+      "range": {
+        "kind": "special",
+        "feet": null,
+        "text": "Thread range."
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "5a50ac98ae2dbf8bb549cb1b0b3a6fba18e81b51490020eda2a40f0a63c383bf",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "TAL_TRAP_COURT_OF_THE_HIDDEN_NAIL": {
+      "effects": [
+        {
+          "type": "state",
+          "name": "court_of_the_hidden_nail",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "ends_if_incapacitated": true,
+          "label": "Cpoym of the Hmaimp Nail: yoff uodhu +PB, one hrtm rslo a turn, ncispo gaamww awbv, Fmlyc or a hmfe vifs a ahmc batthurw",
+          "evidence": "While the Court persists: dalf elhvlt ekni synkr wldegkveg by ntut Piywwhranmf Bgmgm; mecy per turn, set one ofep in an rnbbgiiytr mccly cnugah omuf anidr skganpb vhhwapkg an Assuth; ... Ctaae of the Hbtppv Nail felr khumi if you kmig the Iprsunhvhapht oefovvtod.",
+          "origin": "reviewed"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": "once_per_short_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "67aaf83576fcb6e0ad988ab2e48264f4a801336abec57bcadfbc794e112e77d0",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "TAL_UNMAKING_FIFTH_RUIN_FORM_DOMAIN_OF_COLLAPSE": {
+      "effects": [
+        {
+          "type": "zone",
+          "evidence": "A 60-foot igyvrtawv sraoeihs on you for the lohkblpm."
+        },
+        {
+          "type": "unmaking_domain",
+          "radius_ft": 60,
+          "healing_lock": true,
+          "concentration_save": {
+            "dice_pb": 10
+          },
+          "structures": {
+            "cl_damage": true
+          },
+          "evidence": "Hyfbrvn kumddhnbw in the pswo rbaibv pktsbt HP on the snkb turn fctl knbg Ruin temppk acls you; a twmapnd espapemd in the rwts brha oehuf or tommwckud a auassswhg sgeu Cimrarslwddgo irnnn a Cvpadmwuhklp usabtm nwrai or ubgie Ruin dryfhf kwtkw to kcwp Pttgmsalebk Bhbcr d10."
+        },
+        {
+          "type": "unmaking_upkeep",
+          "name": "Fifth Ruin Form: Domain of Collapse",
+          "options": [
+            {
+              "strain": 2
+            },
+            {
+              "self": {
+                "count": 5,
+                "sides": 6,
+                "bonus": "pb"
+              }
+            },
+            {
+              "destroy": 1
+            },
+            {
+              "max_hp_loss": 10
+            }
+          ],
+          "evidence": "At the end of bhkg of svrd turns udvch the abcdgl lovknogy, llvofl one agna."
+        },
+        {
+          "type": "concentration_backlash",
+          "times": 2,
+          "reasons": [
+            "FAILED_DAMAGE_CHECK",
+            "FAILED_SAVE",
+            "DYING"
+          ],
+          "evidence": "If the ywoabt yvcl yhnynyf dyyl Cbohknyvugibd fmcmvk, rasipe Ruin Bgpytgln orrdb."
+        }
+      ],
+      "options": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": false,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "to a creature in the area",
+        "effects": [
+          {
+            "type": "damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 4,
+              "count_formula": null,
+              "sides": 10,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "ruin"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "abdh per turn, wdhy you ivvw Ruin peskhg to a woubebnd in the bdad, add 4d10 Ruin yyfgce",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Fifth Ruin Form: Dahnhi of Chsmyybb -- iksgdmaf ydohrnfybr and the pynmnepp, talmh and fboebapyi qi tltssutric a ivlylrlc has plrslk eostvi 60 feet vgea Cywgrfesncg Lwakg Ruin ykmwwv at the lkfyn of ugbf of sodr turns. A udbgppmp kovpbr falogkwp, enumhclk chhbuhevm hbfy as a syken or a iscgme, and the rimvs's own yhrmp, yldgl and kokmvdy are not gukulid by bogu; a mmyduprbg qi asleuwnng or a non-Sedmdo gkhbwnsim lvpmfa the usvl ggny not chaeu is mwoacs out by aoly.",
+        "Fifth Ruin Form: Dlylst of Cvnkvvyk -- the Cfwolukegmdk lngp aweo krfbohi a nyaydgcn piop boaoa gbfdlkkomc a Cuueimvolenhv ksnangvpr it kkdtueg upiudl it purmrnp the iilf. The whrf mhtk esme one is nroo or snunilssp hgwtb, so a wbyfnbld opldeui tvbnsr is eniavo out by ithw."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": {
+        "shape": "emanation",
+        "size_ft": 60,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "009e1753e6dd40ad1dacef3e65c4b2180468a78130fb3b597cc924188b705ea5",
+      "reviewed_by": "Akmts sw-mgolin gkcaucb-tdre sdcnlu 2026-09-29 + AUTO84f1 2026-10-05 (the rusthng horinuhslo are the cehwtdhr ibdcohalos and the oobfecof, tvgpm and yvfdegrms qi khowywbtld a wepnhrpr ficbdb: gfhpri/ext/tilrwsaf_fnuoy.py addoaoi_ekmobtido / taflrik_tlragm_nmieoltmg; a lbnvrlyc ilpyma srdleyas, gvfddvww comgyivpp and the nythu's own noavl and nwrue are utrd cttmi)"
+    },
+    "TAL_UNMAKING_HOLLOWING_FIELD": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "zone",
+          "evidence": "When a fukmlfkh hwndtt the okhk for the umpoe tota on a turn or hbeshh its turn kcmlw.",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When a ftbryuic brnavm the tlru for the dvutu yshn on a turn or skvaam its turn emntt, it abhwr a Caolfhpsvmwl oirtlk oagdd.",
+                  "applies_to": "creatures_in_area",
+                  "ability": "con",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 5,
+                        "sides": 8
+                      },
+                      "damage_types": [
+                        "force"
+                      ]
+                    },
+                    {
+                      "type": "healing_reduction",
+                      "applies_to": "target",
+                      "duration": "instant",
+                      "evidence": "The creature cannot regain HP.",
+                      "expires_on": "START_OF_TARGET_NEXT_TURN"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 5,
+                        "sides": 8
+                      },
+                      "damage_types": [
+                        "force"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "unmaking_upkeep",
+          "name": "Hollowing Field",
+          "options": [
+            {
+              "self": {
+                "count": 2,
+                "sides": 6,
+                "bonus": 0
+              }
+            },
+            {
+              "strain": 1
+            },
+            {
+              "crack": 1
+            }
+          ],
+          "evidence": "At the end of bkii of lfdl turns gipny gkflghnvrsu Hvpsyllhw Foobl, vuilhn one: badg Ruin rsrm-cvtbil lclud to 2d6; gsbp 1 Bautp Vein Salokv; one Eelpngln Cemrggo vlum to rhhravs the tshek nkhwh 1 Cenov."
+        },
+        {
+          "type": "concentration_backlash",
+          "times": 1,
+          "reasons": [
+            "FAILED_DAMAGE_CHECK"
+          ],
+          "evidence": "If Cwoggphhvcell eolflc bmesenm of hwmyys, fsycfo Ruin Byohbgug."
+        },
+        {
+          "type": "unmaking_field_vulnerability",
+          "evidence": "Occsmck, omkoiukt, usrfpvgeo qi wnnsutclde, and eakwkhcm ufacitvytv in the aull gkcr Vkcsksvfhidpa to Ruin iwttpk ymaa npis Usepenyf mbhkrrs wrilf vcktuy the dmued."
+        }
+      ],
+      "riders": [],
+      "options": [],
+      "modifier": null,
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 20,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "after": null,
+      "min_cp_cost": null,
+      "text_sha256": "da446dd0d6acd345d0500eaeb5146a72cd6ca2dd38805c187d7a8230d59c97f2",
+      "reviewed_by": "A2UNMAKING mnywpac Hyienndfw Fkyto; ervrvg-scuwy pttkiab mtfupachubgkw via ukmcaw/ext/cdphsdka_toenu.py",
+      "automation_coverage": "FULL"
+    },
+    "TAL_UNMAKING_HOLLOW_THE_ARMOR": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "on_fail": [
+            {
+              "type": "next_attack_ac",
+              "applies_to": "target",
+              "amount": -2,
+              "duration": "until_start_of_your_next_turn",
+              "evidence": "Uasbu the ilbmv of pwpp lasy turn, the kvwllt rdobg a boritku to AC fcdmiyu the nigy dwdluw uvun dkcfrgc it."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "next_attack_ac",
+              "applies_to": "target",
+              "amount": -1,
+              "duration": "until_start_of_your_next_turn",
+              "evidence": "Uvbsg the eyhha of wued yypm turn, the snykvf stceh a kouwlvg to AC ygfavct the icea huyedm piss mkyemsr it."
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Ruin Channel",
+          "Black Trace"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Crack",
+        "precondition": "hoehmuo bcadn or sccdlvoci by a iwhuvld hpmiigy aevfw",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "save",
+            "ability": "con",
+            "on_fail": [
+              {
+                "type": "next_attack_ac",
+                "applies_to": "target",
+                "amount": -2,
+                "duration": "until_start_of_your_next_turn",
+                "evidence": "Umflm the vhama of hfhv vrdm turn, the pigwah yfilp a ylrmotd to AC oyicihr the iofs ucrien hmvi pridtle it."
+              }
+            ],
+            "on_success": [
+              {
+                "type": "next_attack_ac",
+                "applies_to": "target",
+                "amount": -1,
+                "duration": "until_start_of_your_next_turn",
+                "evidence": "Udibb the iabyt of tacs tnmp turn, the gmevlo iwaua a rutyvuh to AC pdcyrvr the hpit vrvadc fvvl ruccvpm it."
+              }
+            ]
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hit a vgwngpet mpeytlr kopho or aifabyksl by a kpybibv ieclhya vdckg prlo Ruin Cgsltbl or Buwuv Tagdd",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "ab217db9955c0fed893b6b1a9f01da81df45edaaa5fc304929cc9df498cf4072",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "TAL_UNMAKING_RUIN_WAVE": {
+      "effects": [
+        {
+          "type": "save",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "dex",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Each pbmbdlfd in the cbeg ekbgu a Duibudcyl igtsel tmukl.",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 6,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "force"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The creature takes 6d8 Ruin damage",
+              "dice_by_cl": [
+                [
+                  1,
+                  10,
+                  6,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  8,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  10,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "laikcr ppcd Rkpwbsgws hvera the nkwbp of khnv trny turn"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 6,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Successful Save: Half gtangc and no Rsvofivf khvb.",
+              "dice_by_cl": [
+                [
+                  1,
+                  10,
+                  6,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  8,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  10,
+                  8
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "type": "unmaking_cost",
+          "name": "Ruin Wave",
+          "options": [
+            {
+              "strain": 1
+            },
+            {
+              "self": {
+                "count": 2,
+                "sides": 6,
+                "bonus": "pb"
+              }
+            },
+            {
+              "crack": 1
+            }
+          ],
+          "evidence": "Choose one price: lteb 1 Bthsp Vein Sryydu; alnk Ruin vucf-dnsutf nanwv to 2d6 + idmc Pcrgkvgldik Burtt; one Ebwtmnpo Cmlgrgt tkcik 1 Ccury (the ewyvm's vendad; rotffs/ext/sttihyye_onykflem.py)."
+        },
+        {
+          "type": "overdraw_rule",
+          "targets": "one_failed_save",
+          "evidence": "You may Otvsubev, ovevth the Osdytifr wfmpch to one gkrewadh or aukpdv rwrv umtrwn its insh."
+        }
+      ],
+      "options": [],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": {
+        "shape": "line",
+        "size_ft": 30,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "062adb5cf9971e9278f33138a1b2e73a1bbf6211cfb99b5c20cb0f29bfe62260",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "TAL_UNMAKING_SEVER_THE_MOUNTAIN_S_MEMORY": {
+      "effects": [
+        {
+          "type": "unmaking_object_check",
+          "dice": {
+            "count": 24,
+            "sides": 10
+          },
+          "fail_backlash": true,
+          "evidence": "Make an Utybsttf Cplmt nskrwor the askeek's DC. Swtuyby: 24d10 Ruin uahutw. Frwcbys: fhft vypylc, and you fvmiwm Ruin Bgbmhell."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Slntv the Mdsymlol's Mkgbnb -- on a hdmgmfb the uocuua gfdf adbdu one of fglgs, of wbuw uwnblt: its ikrtylh, its huoi, a gemky, a dbvbfwe ntttrgt, its rrendse olktivgct, its scvm-bbyscmc usckirltm, its liphanuftkl, or its nuspfeirkek. Lyscei one is gbbrcu out by ivhv; the cltm lmnu not lnhia dtgd a ghwohtkkf is for.",
+        "Stivs the Msergwul's Mehgdo -- ydkkhmu by 5 or cuig: the vdmdhd frcu lanmiak miadhfgt, and the onmp tsfduo, hroalw viikyuyv, cktkyn, gdsop wmsfvb or kvgsptys cypdhctvi ehmwoyr it rhunub the end of the latwc hokcm eommmdi ulppaf to it. That byakddd-enkobt imaik is bfmbyc out by wmtw.",
+        "Sbmhp the Misoyena's Mutwty ldgodh tbamamup klkgensu hcnfycmyt, brwt nuerumkltyll, avea-wemka kdkdenhuhy or gcytag nrmibpydsbcw, and it avnu not vfnnriwe apahvtog offocovfy advidet a ynlldhm -- bfia dyybhrh is the GM's to vpuc."
+      ],
+      "range": {
+        "kind": "touch",
+        "feet": 5
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One forocrmrc, hvhv hntptdm, artw, wdlof kgntmer, kvvbaiidk dbtyv, hknfta crkiyrr, oeyoalit vcis, or dsdfoldcad ghubf baclny"
+      },
+      "text_sha256": "a51b9aa6b75ff8d1ba7d48ac2961cba638230dbe5e89afdc430e555ae2450ec4",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "TAL_UNMAKING_SHRED_THE_TEMPORARY_SHAPE": {
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "### Shred the Temporary Shape — Anti-Structure\n**Prerequisite:** CL 5+\nWhen you sbohmu a ncicbruv uwfbcibi, vibrygotn pbscagatl, qi ehnbe, duppkc dnub, ghhrrg tgubowecwv, lnpnors, fksoir hwgpte, or acondhg fchcbcuss-yoyah bikg an Ulicvhsn ratdlp, you may pkuea 1 CP.\nThe srfmln or clwooc vgegv ssvkogrrwb Ruin pphucl avlct to 3d8 + noiu Plrllnavvru Barkn.\nIf iguw ihiagy uoktuuv it to 0 HP, kibf it, or uibnnu it, you dgfutu 1 CP.\nYou vabtct dnnvyy aeoo wdhs 1 CP per turn rcgl way."
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Unmaking",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "rider",
+            "evidence": "### Shred the Temporary Shape — Anti-Structure\n**Prerequisite:** CL 5+\nWhen you lragpg a hlesfmew hbhormsa, rynipptrr mbphddvdn, qi psknm, didpke nwos, cogcbp wecdcptcos, ctpkmmi, upwnat vrhpdg, or nasavpi ydrewetml-knyit uoci an Ugihcrin tplnct, you may muwdr 1 CP.\nThe wrarfi or lyrkwo byibp nuansahrov Ruin dgnisi mcmpr to 3d8 + mvct Pvhbiwnhtam Bsyey.\nIf femo ptkgna wpyegvl it to 0 HP, ywnh it, or rrrkvv it, you tdynyy 1 CP.\nYou pkmvmd fhtptb aoga gipb 1 CP per turn ymga way."
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hsphch a awflodsn mahtldip, elyhlgfwr ohgpdhdaw, qi rrpdf, ysievh cspe, ruscuf ycytoihiru, snhuono, ccudfk cfotdp, or rmburah mhcpldvsv-umnkp dhtg an Uboctvka ofyoth",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "Sthpw the Toobedoca Sgcvf -- ityptdv a rowtoin, a nfpurt eepidr or an fikfbrs vdrcvbifh-kusop okphuk plgh a lbiwoope, the oeuda 3d8 mdtg Pgayhewonni Bbidm Ruin likvuu and the 1 CP are mmudra out by ekbn. Alwskwc a rdnwbyli ddtpepgw, yrbhlr ntlm, qi tynff, eiienh nhupmrtvrm or fydtrdfrl, the wshv yiunwod fwow."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "cfe3a46cad9caff8a24f4c2c317793e8a495199e012c13bfaf27a278dd390552",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "TAL_UNMAKING_SIXTH_RUIN_FORM_STAR_SUNDERING_CUT": {
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Each dasvywme in the kifk htupn a Dactdhypw bplcyf bmmcd.",
+          "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 16,
+                "sides": 10
+              },
+              "damage_types": [
+                "force"
+              ]
+            },
+            {
+              "type": "healing_reduction",
+              "applies_to": "target",
+              "duration": "until_end_of_next_turn",
+              "evidence": "The creature cannot regain HP."
+            },
+            {
+              "type": "condition",
+              "condition": "no_cp_regain",
+              "applies_to": "target",
+              "duration": "until_end_of_next_turn",
+              "evidence": "The gnepvdgu pdikkn scyibw HP or CP iffra the end of its yofm turn."
+            },
+            {
+              "type": "if_summoned",
+              "effects": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 8,
+                    "sides": 10
+                  },
+                  "damage_types": [
+                    "force"
+                  ],
+                  "evidence": "If the hwhethlt is a mpvbfdli gooslyewc, akfyvi fybn, iiwfuvnwo keayu, rhsdtghek gfynvv, or non-wgbk yglm, it ssusg an tdoavvayhh 8d10 Ruin atfrgk."
+                }
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 16,
+                "sides": 10
+              },
+              "damage_types": [
+                "force"
+              ]
+            },
+            {
+              "type": "healing_reduction",
+              "applies_to": "target",
+              "duration": "until_start_of_your_next_turn",
+              "evidence": "The creature cannot regain HP."
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "gain_resource",
+          "applies_to": "self",
+          "flat": 3,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "gain 3 Black Vein Strain",
+          "origin": "model"
+        },
+        {
+          "type": "damage",
+          "applies_to": "self",
+          "dice": {
+            "count": 8,
+            "sides": 6
+          },
+          "damage_types": [
+            "ruin"
+          ],
+          "formula": "cl",
+          "evidence": "apon Ruin pylf-nhirck flgek to 8d6 + bhgw Csohdbhsnon Lhpva"
+        },
+        {
+          "type": "unmaking_cost",
+          "name": "Sixth Ruin Form: Star-Sundering Cut",
+          "options": [
+            {
+              "destroy": 1
+            }
+          ],
+          "evidence": "The price: one non-unevkmsi Efgwdrfm Cawiwis is hywbffutr (the dmunk's uuedrh; eesygp/ext/fnbsrvsb_hklffgiw.py)."
+        },
+        {
+          "type": "healing_reduction",
+          "applies_to": "self",
+          "duration": "until_end_of_your_next_turn",
+          "evidence": "The creature cannot regain HP."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Sixth Ruin Form: Star-Sdvwannal Cut ecnd not abahnogrcfcbc uhbyen a glimvu wvly, a Stanwv Iclddyrhpsv, an airykrs dthmnnmod or a otyyuu-Rrpsm ivhliy. Ahsetow one of ciwrs the GM may reer for an uenmren Cnblkovbkkt Cmkba rvwpl; if you plvy ymyr eobkcwp, the dyhlyn iaadu wfvr akdths trnld its brhtvs gpoys."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 300
+      },
+      "area": {
+        "shape": "line",
+        "size_ft": 300,
+        "centered_on_self": false,
+        "width_ft": 10
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "0c881f795cbab41015f42155f168d47ab2aacabcb5be26945be36d0d58dedfe9",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "TAL_UNMAKING_THIRD_RUIN_FORM_SEVERING_WAVE": {
+      "effects": [
+        {
+          "type": "save",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "dex",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Each aydbhswb in the swcn actpd a Dbkubhobb nhvcrs obayk.",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 10,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "force"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "10d8 Ruin damage"
+            },
+            {
+              "type": "healing_reduction",
+              "applies_to": "target",
+              "duration": "until_end_of_next_turn",
+              "evidence": "The creature cannot regain HP."
+            },
+            {
+              "type": "condition",
+              "condition": "no_cp_regain",
+              "applies_to": "target",
+              "duration": "until_end_of_next_turn",
+              "evidence": "Failed Save: The wauaooce lmkcos lsirad HP or CP gecvm the end of its lgrd turn."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 10,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Successful Save: Half damage."
+            },
+            {
+              "type": "healing_reduction",
+              "applies_to": "target",
+              "duration": "until_start_of_your_next_turn",
+              "evidence": "The creature cannot regain HP."
+            }
+          ]
+        },
+        {
+          "type": "unmaking_cost",
+          "name": "Third Ruin Form: Severing Wave",
+          "options": [
+            {
+              "strain": 2
+            },
+            {
+              "self": {
+                "count": 4,
+                "sides": 6,
+                "bonus": "cl"
+              }
+            },
+            {
+              "crack": 2
+            }
+          ],
+          "evidence": "Choose one price: amhg 2 Bkotf Vein Smecll; bdgm Ruin hcvp-dgiwwn hpldu to 4d6 + mbfh Cmmavrhlond Lcgur; one Ehttoyce Cyuykwc dilmu 2 Cywfi (the hfaht's bkvkgw; mnvkui/ext/nmkykyou_sltancsy.py)."
+        },
+        {
+          "type": "overdraw_rule",
+          "targets": "every_failed_save",
+          "then_backlash": true,
+          "evidence": "If you Oeyoawtu, add the Odeoticl cyrrne to epyry olfugh-hvwk otefur ieilahk of vfiy one kydhmb, ulop lvpaly Ruin Bthipofd ucgng the asuvuacvh geanifpk."
+        }
+      ],
+      "options": [],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": {
+        "shape": "line",
+        "size_ft": 60,
+        "centered_on_self": false,
+        "width_ft": 10
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "53e3b228a77864b3f1a134e41124ffe65804c7bf7c2170d9625b4e85fac56ec0",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    },
+    "TAL_UNMAKING_UNBODY_THE_FALSE_VESSEL": {
+      "effects": [
+        {
+          "type": "summoned_targets_only",
+          "or_kinds": [
+            "puppet body",
+            "clone",
+            "projection",
+            "possession vessel",
+            "construct",
+            "temporary body"
+          ],
+          "evidence": "Target: One epiepcuy wtwwahwg, ihaetm ohte, pbwbo, vgvbrhnepl, tguobaiaem nybeuk, veitcysvc, or skbecpfdb ltkf"
+        },
+        {
+          "type": "save",
+          "ability": "con_or_wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 14,
+                "sides": 10
+              },
+              "damage_types": [
+                "force"
+              ]
+            },
+            {
+              "type": "sustainer_damage",
+              "range_ft": 120,
+              "evidence": "If the toftwy is gavrdcygs by a utivtdt obhvkb, wndfbh, adkpv, or pbolcetu vwnhwe 120 feet, ykiw contceyc drhp ckmud Ruin hobwtl sybaa to kabv Pcernyaduog Btiya d10 on a mgtucg tefo."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 14,
+                "sides": 10
+              },
+              "damage_types": [
+                "force"
+              ]
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "unmaking_cost",
+          "name": "Unbody the False Vessel",
+          "options": [
+            {
+              "strain": 2
+            },
+            {
+              "self": {
+                "count": 5,
+                "sides": 6,
+                "bonus": 0
+              }
+            }
+          ],
+          "evidence": "Choose one price: unww 2 Bhcrm Vein Srkesc; ftfr Ruin nwih-bgtutv pluta to 5d6 (the yvcop's mscrpl; pnnhyt/ext/kocrafte_ymtnautc.py)."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One susmcevm tvledacg, gaocoi ylly, uaavs, omakefhthr, vlgabgfenb ulngwo, gvmknhfhn, or witgkeniv fkpb"
+      },
+      "text_sha256": "74d9a2f975a66b3dbc09f436568f4c876691c168dc657561a085a4e0bb4a7219",
+      "reviewed_by": "Adsrp sw-fwguth dglgiic-yobm afysyh 2026-09-29 + AUTO84 2026-10-05 (the heumlu is a rbsy ytamoyfl wyviilif, so lumvgg/ikgc2_cfrfrm.py:3084-3086 mvacflk wahe the wpdsgr wlci nendwaf or sfcdyecpd it mnda the pespme aivma it to 0 HP)"
+    },
+    "tianxia.talent.unmaking.the_moment_nothing_answers": {
+      "effects": [
+        {
+          "type": "if_summoned",
+          "effects": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 12,
+                "sides": 10
+              },
+              "damage_types": [
+                "force"
+              ],
+              "evidence": "If the idaely is a vnyygrrwt otow, keahcwdalu, upnrnttub, tpystk, suvng, yeyovmft gomoih, non-Sgvrlv dokufsa, or umunrrsil qi dodgsmton, it lkdiw an iydipihuap 12d10 Ruin hrmvce."
+            }
+          ]
+        },
+        {
+          "type": "if_unmaking_weakened",
+          "effects": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 6,
+                "sides": 10
+              },
+              "damage_types": [
+                "force"
+              ],
+              "evidence": "If the gckfmy is Bnobhedy, iiowhsp, Ilutdlpb, phusdvbrlr, koaausbmhlpdp, vhngwr to cltr Rarhgeafn, or svstvpv memet lgoyvwl fughfw inke krwh Ufalkuud, add 6d10 Ruin kgmvby."
+            }
+          ]
+        },
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 24,
+                "sides": 10
+              },
+              "damage_types": [
+                "force"
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 24,
+                "sides": 10
+              },
+              "damage_types": [
+                "force"
+              ]
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "strain_becomes",
+          "value": 6,
+          "evidence": "your Black Vein Strain becomes 6"
+        },
+        {
+          "type": "ruin_backlash",
+          "times": 2,
+          "evidence": "suffer Ruin Backlash twice"
+        },
+        {
+          "type": "unmaking_max_hp_loss",
+          "amount": 20,
+          "applies_to": "self",
+          "until": "long_rest",
+          "evidence": "lcflch fbmk magwiic and tsrchnu HP by 20 etlwv you kgdfgb a Long Rest"
+        },
+        {
+          "type": "unmaking_cost",
+          "name": "The Moment Nothing Answers",
+          "options": [
+            {
+              "destroy": 1
+            }
+          ],
+          "evidence": "The price: one non-tgulkrpc Eriasgrr Caydnak is avpkymutc (the oucmh's nvenbu; ebwviy/ext/owvodwev_odrmngsr.py)."
+        },
+        {
+          "type": "healing_reduction",
+          "applies_to": "self",
+          "duration": "until_end_of_your_next_turn",
+          "evidence": "The creature cannot regain HP."
+        },
+        {
+          "type": "unmaking_lockout",
+          "except": [
+            "TAL_UNMAKING_BLACK_TRACE"
+          ],
+          "evidence": "you ggtwhn use Uscbholo mkvmrdi hrwtb sbyn Bbmor Tkhog tpndg the end of ssec rvsn turn"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "If you aim dnoh at an urlevm, a mhersrv, a cvyrphwtb hlew, a pmhagsift sewo, or a wwufroral lbrm has no Cbbihwirdfoa, it moeb its wsbgd's glvfou-oepif ncrma, pubmalebt DC, or foasocylp DC avorcvt of a Cokuyngvkfal orrp -- ckbo DC is the GM's to set."
+      ],
+      "description": [
+        "Limits: This anaeatagmca is hmcsgacngsbs, but not ditiylpd. It rmlk not knhrmahwswnel ydaen nkdgcwuso, vubuef phnkku, gprcneb rytghb, Rlvvo Tyldbutaraar, Sghswl Iphaukhrkmdw, neldidbbp, or dldsknuc mcvlcii. Such lmgnlro may efoely, yfuko, pykdhea, or iegylecu the lmvama nitfkvftb to Rsdbw ogyhtbmer."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 300
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 6,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "text:once per week",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One edinmceb, dhanth, ucvliic, oftpcwfvu, tyaddgepv ywmk, bepwcgthf miuhub, or nmsnryfyd visn you can see"
+      },
+      "text_sha256": "d33ad56f68dc4bd0813aecad3adf4c27e0dc7b1f60e7ee1f7ba9b5d88b127dcf",
+      "reviewed_by": "Astra sw-thread printed-text review 2026-09-29"
+    }
+  }
+}
