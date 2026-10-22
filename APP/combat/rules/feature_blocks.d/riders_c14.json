@@ -1,0 +1,42 @@
+{
+ "features": {
+  "tianxia.talent.pressure_points.technique_closing_point": {
+   "block": "shi_pp_seal",
+   "why": "Rider lane C14: Touch the Point: Close a Seal (combat/ext/shi_pressure_points.py) runs Technique-Closing Point's typed rows, which lock one ability through combat/ext/ability_lockout.py."
+  },
+  "TAL_AXES_MOUNTAIN_FELLING_AXE_BODY": {
+   "block": "object_damage",
+   "on": "attack",
+   "weapon": "axe",
+   "reduce_threshold_pb": true,
+   "needs_condition": "condition:typed.axes_body_reach",
+   "label": "Mountain-Felling Axe Body",
+   "why": "Rider lane C14: 'your axe attacks against objects ... reduce Damage Thresholds by your Proficiency Bonus for that attack only' while the form lasts (combat/ext/objects.py; needs_condition = the form's state from combat/ext/axes_body_reach.py). Its 'ignore Resistance to nonmagical weapon damage' is already true: its prerequisite Hewing Intent makes the owner's axe attacks magical when the character is compiled (axes_body_reach.hewing_traits), and objects have no nonmagical-only resistance. The talent's own rows keep compiling."
+  },
+  "tianxia.talent.chains.weighted_links": {
+   "block": "forced_movement_bonus",
+   "ft": 5,
+   "abilities": [
+    "TAL_CHAINS_CHAIN_LASH_BASE"
+   ],
+   "max_size_larger": 1,
+   "why": "Rider lane C14: 'when Chain Lash pulls or pushes a target, increase the movement by 5 feet if the target is no more than one size larger than you' (combat/ext/push_lengthening.py); the talent's own rows keep compiling."
+  },
+  "tianxia.talent.gravity.gravity_domain": {
+   "block": "forced_movement_bonus",
+   "ft": 10,
+   "area": true,
+   "pusher": "owner",
+   "sphere": "tianxia.sphere.gravity",
+   "why": "Rider lane C14: 'Inside the Domain: ... Forced movement caused by your Gravity talents increases by 10 feet' (combat/ext/push_lengthening.py); the Domain's own rows keep compiling."
+  },
+  "TAL_AIR_STORM_WITHOUT_DIRECTION": {
+   "block": "forced_movement_bonus",
+   "ft": 10,
+   "area": true,
+   "who": "hostile",
+   "option": "No Fixed Direction",
+   "why": "Rider lane C14: 'No Fixed Direction: When a hostile creature is pushed or pulled in the area, increase that movement by 10 feet' -- when the storm was raised with that choice (combat/ext/push_lengthening.py); the storm's own rows keep compiling."
+  }
+ }
+}
