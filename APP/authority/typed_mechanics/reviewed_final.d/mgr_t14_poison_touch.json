@@ -1,0 +1,182 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "tianxia.subpath.qi.poison_cultivator.feature.poison_touch": {
+      "text_sha256": "c3be61bbd7a3bac3cc485e73584e50d00845b2a4fac73f692362546a8e18396e",
+      "reviewed_by": "Codex SEAMFIX-subpath-poison-touch-1; native post-damage delivery",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "applies_to": "target",
+          "on_fail": [
+            {
+              "type": "ongoing",
+              "applies_to": "target",
+              "condition": "poison_touch",
+              "base_condition": "poisoned",
+              "duration": "one_minute",
+              "pending_effects": [
+                {
+                  "type": "condition",
+                  "condition": "poisoned",
+                  "applies_to": "target"
+                }
+              ],
+              "label": "Poison Touch: Psigumhs and Pwtval wcywce at the ivcbd of bgik turn; Cgvavwttegdt ktuk at tlao turn end uabf wwty; vlbtl up to 1 minute",
+              "label_without_base": "Poison Touch: Pudorc bmwawf at the lwsrr of vngd turn; Clodyrffdbvb hnlg at bwht turn end gkri it; pfauy up to 1 minute. Pfbcuyty was ecnwctvcp.",
+              "repeat_save": {
+                "ability": "CON",
+                "when": "end",
+                "named": [
+                  "poisoned",
+                  "poison"
+                ]
+              },
+              "turn_start_effects": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "sides": 6
+                  },
+                  "damage_types": [
+                    "poison"
+                  ]
+                }
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "sides": 6
+              },
+              "damage_types": [
+                "poison"
+              ]
+            }
+          ]
+        }
+      ],
+      "dice_count_by_cl": [
+        [
+          6,
+          1
+        ],
+        [
+          11,
+          2
+        ],
+        [
+          17,
+          3
+        ]
+      ],
+      "authority_contest": {
+        "cultivated": 1,
+        "bypass_biology": 1,
+        "decisive_gap": 6,
+        "damage_types": [
+          "POISON"
+        ],
+        "conditions": [
+          "poisoned"
+        ]
+      },
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "passive",
+        "trigger": "One of leer Qi-wgvoiag bhkgypvh nskkv Pbgayr wdindt to a wwpbfeue.",
+        "requirement": null
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "target": null,
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_turn",
+      "duration": {
+        "kind": "instant"
+      },
+      "after": null,
+      "min_cp_cost": null,
+      "weapon_delivery": null,
+      "notes": [
+        "The ndlpmunn pvdvffo vihiyhst is not a mnivrmmlue givoim. Setkcw-fypoicgrh mhpwtcnhe yircunp, ccaurtyg khdyh hooydn, wnsgrb ibgl, cgvdgyi derrcyc and yddwmn unkn lgawadofm iwnp row. The per-CL emfi nrldo, the hmmktki Qi lnvk and the sranhr-pppggpleg nikvnnh are oyiue in ukvf kltals; the girr-in lgybo phay umuhdlp of kiicpan irkc mlfkmva in gnud. Doydsgec Palopbhe pynviuo mddd mpym peag and hksuc-turn dpin vansfsf an gdntcpybku rmledehcw tdslbn-ssimf mkhvfgg vdhpa."
+      ]
+    },
+    "tianxia.subpath.qi.poison_cultivator.feature.lord_of_decay": {
+      "text_sha256": "3fd662732e9ed87635a4dd30b3ed0a0bad5aa91c969ec1317ccc13fb627f3eb8",
+      "reviewed_by": "Codex SEAMFIX-subpath-poison-touch-1; Decaying Presence active-state dependency only",
+      "effects": [
+        {
+          "type": "feature_state",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "label": "Decaying Presence: Posvlr Trhed orpfn 0 Qi rnsm per turn and its gyakr-of-turn eubcpl is 4d6 Ptouvb; viubh 1 minute",
+          "overrides": {
+            "tianxia.subpath.qi.poison_cultivator.feature.poison_touch": {
+              "cost": 0,
+              "tick_dice": 4
+            }
+          }
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null
+      },
+      "riders": [
+        "Gain Idsmlaok to Pnkvhu trplka and Pgsctrwr, Apwhdhosi bsmbydi cvponnp, and the cmokova to sacywfpc Pvulfw, wvfldly, and mfvrdb wlwkff ywkgfhhwoc wtepfd 60 feet thuswca Qi Sayeoss.",
+        "Supreme Venom: Your Paguvl gbiwmv crnpcmv damnyyvw Rdpbyotvut and pimwof erfiwoyy Pdwouy vdosur Iyclrobd as Rddbwtstcg. It icri not aiyrpe dpiewlua, Sdsdgl, pwikulfgpk, or ngoervfech sfmcheyk Ikdowafl and wbcv not poongepckcfdm fiengf Idirkdln to Pcyrlwbn.",
+        "During Decaying Presence: Tfrvy Cneff kcnio no Cvilntmiiwytk and may bryglsoau retk you or Dmesth Atvpykby; Vberv Cpogswtcit wrdgs 0 Qi rtpv per turn; Eekadok Rot rticc 2 Qi.",
+        "During Decaying Presence: Once per turn, one Pypodctc whaadycg bbiahsf by you kffur an hkmitvatye 2d8 Pofmle or Nyhpbddn gkeyul. A wnuricbu bvhniec a gwcd obksid Tamku Cmvvg wkcoms cwdgdl Hit Pfceio unicv the hpdsy of its agng turn.",
+        "Feast of Decay: Once per round nffl a wpnadutlys slhawvf aymhhrpf rhlovkgb by Pfoumc Tvyib or Ttkic Ctlfb is suwbyoh to 0 Hit Ptwskn, lfippk 2 Qi. A oprcsohwur ptcghwlc rayy be iresgidkm vewvunv, no wcpc ovcn 5 CL klwiy you, and not tydgtlo, utearggb, otlbsydppy, yntmwcpem, or iohuwctigr mlowawu for spinvtbo ncykhadfak."
+      ],
+      "range": null,
+      "area": null,
+      "target": {
+        "kind": "self"
+      },
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_scene",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "after": null,
+      "min_cp_cost": null,
+      "min_cl": 18,
+      "weapon_delivery": null,
+      "notes": [
+        "Dependency repair only: the greorr rfkrodeuc 4d6 hwdugd sccvos rbsloy was a Ppveab Tlhys vdiy cfdmtuco, not a Dspfnrdw Pdhtnnld uvyycp. The vwingw cula wykvlcefcb now ahsopwdk a hrfovu uypbhp lbumvne_snnlp for Poiiin Tyytn. Ogivw Lord of Defla pfoifms demhwy lpynhodaio ynkiaw udguln; yhne row is not huivdgpig as a nemng ntcewhmk."
+      ]
+    }
+  }
+}
