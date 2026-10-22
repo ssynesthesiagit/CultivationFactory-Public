@@ -1,0 +1,162 @@
+{
+ "retired": true,
+ "note": "Owner-editable arena for Factory test fights (owner 2026-09-24: default arena with pillars to break line of sight). Squares are 5 ft; x runs 0..width-1 west to east, y runs 0..height-1 north to south. terrain_type BLOCKED = pillar (cannot be entered, blocks line of sight); SIMPLE_COVER = +2 AC cover; QI_HAZARD = hazard. starting_positions: the two sides take the westmost and eastmost spots; the fixture fighters' ids keep their own spots when they fight here. Edits apply to the next new fight; saved fights keep the arena they started with.",
+ "battlefield_version": "1.0.0",
+ "display_name": "Pillar Arena",
+ "stable_id": "battlefield:factory_pillar_arena",
+ "kind": "BATTLEFIELD",
+ "source": "Factory test-fight arena (owner-editable)",
+ "information_model": "FULLY_VISIBLE",
+ "victory_boundary": "NONLETHAL_WARDED_COURT",
+ "square_size_ft": 5,
+ "width_squares": 20,
+ "height_squares": 14,
+ "starting_positions": {
+  "lee_jia_early_book1_cl5": {
+   "x": 2,
+   "y": 5
+  },
+  "an_eui_early_book1_cl5": {
+   "x": 2,
+   "y": 8
+  },
+  "west_extra": {
+   "x": 2,
+   "y": 11
+  },
+  "ling_qi_early_outer_sect_cl5": {
+   "x": 17,
+   "y": 2
+  },
+  "bai_meizhen_early_outer_sect_cl5": {
+   "x": 17,
+   "y": 5
+  },
+  "bai_cui": {
+   "x": 17,
+   "y": 8
+  }
+ },
+ "terrain_regions": [
+  {
+   "region_id": "pillar.northwest",
+   "terrain_type": "BLOCKED",
+   "movement_cost": 0,
+   "description": "Stone pillar: cannot be entered and blocks line of sight.",
+   "cells": [
+    {
+     "x": 6,
+     "y": 3
+    },
+    {
+     "x": 7,
+     "y": 3
+    },
+    {
+     "x": 6,
+     "y": 4
+    },
+    {
+     "x": 7,
+     "y": 4
+    }
+   ]
+  },
+  {
+   "region_id": "pillar.southwest",
+   "terrain_type": "BLOCKED",
+   "movement_cost": 0,
+   "description": "Stone pillar: cannot be entered and blocks line of sight.",
+   "cells": [
+    {
+     "x": 6,
+     "y": 9
+    },
+    {
+     "x": 7,
+     "y": 9
+    },
+    {
+     "x": 6,
+     "y": 10
+    },
+    {
+     "x": 7,
+     "y": 10
+    }
+   ]
+  },
+  {
+   "region_id": "pillar.northeast",
+   "terrain_type": "BLOCKED",
+   "movement_cost": 0,
+   "description": "Stone pillar: cannot be entered and blocks line of sight.",
+   "cells": [
+    {
+     "x": 12,
+     "y": 3
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 12,
+     "y": 4
+    },
+    {
+     "x": 13,
+     "y": 4
+    }
+   ]
+  },
+  {
+   "region_id": "pillar.southeast",
+   "terrain_type": "BLOCKED",
+   "movement_cost": 0,
+   "description": "Stone pillar: cannot be entered and blocks line of sight.",
+   "cells": [
+    {
+     "x": 12,
+     "y": 9
+    },
+    {
+     "x": 13,
+     "y": 9
+    },
+    {
+     "x": 12,
+     "y": 10
+    },
+    {
+     "x": 13,
+     "y": 10
+    }
+   ]
+  },
+  {
+   "region_id": "pillar.centre",
+   "terrain_type": "BLOCKED",
+   "movement_cost": 0,
+   "description": "Stone pillar: cannot be entered and blocks line of sight.",
+   "cells": [
+    {
+     "x": 9,
+     "y": 6
+    },
+    {
+     "x": 10,
+     "y": 6
+    },
+    {
+     "x": 9,
+     "y": 7
+    },
+    {
+     "x": 10,
+     "y": 7
+    }
+   ]
+  }
+ ]
+}
