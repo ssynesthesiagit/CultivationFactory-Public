@@ -1,0 +1,3005 @@
+{
+  "schema_version": "TianxiaFoundry.ServiceContracts.v1",
+  "generated_from": "Phase 4A-HF1 reconciled FastAPI routes with Stage 2 rules-causal proposal v2, canonical AdvancementEvent.v3, safe formula/training authority, deterministic LevelingLedger.v2 projections, and preserved Stage 1 manual/optional DeepSeek behavior. No Stage 2 AI/provider bridge.",
+  "error_schema": "schemas/Service_Error.schema.json",
+  "response_schemas": {
+    "ObjectResponse": {
+      "type": "object"
+    },
+    "Stage1PromptV2Response": {
+      "type": "object",
+      "required": [
+        "prompt_id",
+        "project_id",
+        "project_revision",
+        "prompt_sha256",
+        "prompt_text",
+        "envelope",
+        "deterministic"
+      ],
+      "properties": {
+        "prompt_id": {
+          "type": "string"
+        },
+        "project_id": {
+          "type": "string"
+        },
+        "project_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "prompt_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "prompt_text": {
+          "type": "string"
+        },
+        "envelope": {
+          "type": "object",
+          "required": [
+            "schema_version",
+            "response_schema_version",
+            "decision_slots"
+          ],
+          "properties": {
+            "schema_version": {
+              "const": "TianxiaFoundry.Stage1PromptEnvelope.v2"
+            },
+            "response_schema_version": {
+              "const": "TianxiaFoundry.AIClipboard.Stage1.v2"
+            },
+            "decision_slots": {
+              "type": "array",
+              "minItems": 1
+            }
+          }
+        },
+        "deterministic": {
+          "const": true
+        }
+      }
+    },
+    "Stage1ExchangeV2Response": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "attempt_id",
+        "prompt_id",
+        "project_id",
+        "validation",
+        "decisions"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "TianxiaFoundry.Stage1ClipboardExchange.v2"
+        },
+        "attempt_id": {
+          "type": "string"
+        },
+        "prompt_id": {
+          "type": "string"
+        },
+        "project_id": {
+          "type": "string"
+        },
+        "validation": {
+          "type": "object"
+        },
+        "decisions": {
+          "type": "array"
+        },
+        "decision_batch": {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "TianxiaFoundry.BlueprintDecisionBatch.v1"
+            }
+          }
+        },
+        "commit": {
+          "type": "object",
+          "properties": {
+            "advancement_event_count_before": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "advancement_event_count_after": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "projection_status": {
+              "enum": [
+                "projection_pending",
+                "projected",
+                "projection_failed"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "Stage1StatusV2Response": {
+      "type": "object",
+      "required": [
+        "project_id",
+        "stage_id",
+        "prompts",
+        "attempts",
+        "advancement_event_count",
+        "network_calls"
+      ],
+      "properties": {
+        "project_id": {
+          "type": "string"
+        },
+        "stage_id": {
+          "const": "stage_1_source_blueprint"
+        },
+        "prompts": {
+          "type": "array"
+        },
+        "attempts": {
+          "type": "array"
+        },
+        "blueprint_head": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "advancement_event_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "network_calls": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "AIProviderStatusResponse": {
+      "type": "object",
+      "required": [
+        "provider_id",
+        "mode",
+        "settings",
+        "secret",
+        "ready",
+        "manual_clipboard_available",
+        "direct_commit_allowed",
+        "mechanical_authority",
+        "automatic_retries",
+        "usage_totals"
+      ],
+      "properties": {
+        "provider_id": {
+          "const": "deepseek"
+        },
+        "mode": {
+          "const": "optional_stage1_transport_only"
+        },
+        "settings": {
+          "type": "object"
+        },
+        "secret": {
+          "type": "object",
+          "required": [
+            "present",
+            "source",
+            "persistent"
+          ],
+          "properties": {
+            "present": {
+              "type": "boolean"
+            },
+            "source": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "persistent": {
+              "type": "boolean"
+            }
+          }
+        },
+        "ready": {
+          "type": "boolean"
+        },
+        "manual_clipboard_available": {
+          "const": true
+        },
+        "direct_commit_allowed": {
+          "const": false
+        },
+        "mechanical_authority": {
+          "const": false
+        },
+        "automatic_retries": {
+          "const": 0
+        },
+        "usage_totals": {
+          "type": "object"
+        }
+      }
+    },
+    "AIProviderRunResponse": {
+      "type": "object",
+      "required": [
+        "run_id",
+        "provider_id",
+        "project_id",
+        "prompt_id",
+        "prompt_sha256",
+        "model",
+        "endpoint",
+        "request_sha256",
+        "status",
+        "usage",
+        "secret_persisted_in_run",
+        "direct_commit_performed",
+        "mechanical_authority"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string"
+        },
+        "provider_id": {
+          "const": "deepseek"
+        },
+        "project_id": {
+          "type": "string"
+        },
+        "prompt_id": {
+          "type": "string"
+        },
+        "prompt_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "model": {
+          "type": "string"
+        },
+        "endpoint": {
+          "const": "https://api.deepseek.com/chat/completions"
+        },
+        "request_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "status": {
+          "enum": [
+            "started",
+            "provider_error",
+            "response_rejected",
+            "validated"
+          ]
+        },
+        "usage": {
+          "type": "object"
+        },
+        "attempt": {
+          "$ref": "#/response_schemas/Stage1ExchangeV2Response"
+        },
+        "secret_persisted_in_run": {
+          "const": false
+        },
+        "direct_commit_performed": {
+          "const": false
+        },
+        "mechanical_authority": {
+          "const": false
+        }
+      }
+    },
+    "AIProviderRunListResponse": {
+      "type": "object",
+      "required": [
+        "project_id",
+        "runs"
+      ],
+      "properties": {
+        "project_id": {
+          "type": "string"
+        },
+        "runs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/response_schemas/AIProviderRunResponse"
+          }
+        }
+      }
+    },
+    "ArrayResponse": {
+      "type": "array",
+      "items": {}
+    },
+    "HtmlResponse": {
+      "type": "string",
+      "contentMediaType": "text/html"
+    },
+    "SessionResponse": {
+      "type": "object",
+      "required": [
+        "token",
+        "bound_host",
+        "principal"
+      ],
+      "properties": {
+        "token": {
+          "type": "string",
+          "minLength": 16
+        },
+        "bound_host": {
+          "const": "127.0.0.1"
+        },
+        "principal": {
+          "$ref": "#/response_schemas/LocalPrincipalResponse"
+        }
+      },
+      "additionalProperties": false
+    },
+    "HealthResponse": {
+      "type": "object",
+      "required": [
+        "ok",
+        "version",
+        "status",
+        "data_directory",
+        "database",
+        "bound_host",
+        "ai_integration",
+        "character_generation",
+        "factory_compilation"
+      ],
+      "properties": {
+        "ok": {
+          "const": true
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "data_directory": {
+          "type": "string"
+        },
+        "database": {
+          "type": "string"
+        },
+        "bound_host": {
+          "const": "127.0.0.1"
+        },
+        "ai_integration": {
+          "type": "string"
+        },
+        "character_generation": {
+          "type": "string"
+        },
+        "factory_compilation": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "VersionResponse": {
+      "type": "object",
+      "required": [
+        "foundry_version",
+        "gm_screen_target",
+        "gm_screen_hash"
+      ],
+      "properties": {
+        "foundry_version": {
+          "type": "string"
+        },
+        "gm_screen_target": {
+          "type": "string"
+        },
+        "gm_screen_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SystemStatusResponse": {
+      "type": "object",
+      "required": [
+        "health",
+        "factory_adapter",
+        "catalog",
+        "ai_provider",
+        "installed_content_packs",
+        "recent_errors",
+        "directories"
+      ],
+      "properties": {
+        "health": {
+          "$ref": "#/response_schemas/HealthResponse"
+        },
+        "factory_adapter": {
+          "type": "object"
+        },
+        "catalog": {
+          "type": "object"
+        },
+        "ai_provider": {
+          "$ref": "#/response_schemas/AIProviderStatusResponse"
+        },
+        "installed_content_packs": {
+          "type": "array"
+        },
+        "recent_errors": {
+          "type": "array"
+        },
+        "directories": {
+          "type": "object"
+        }
+      }
+    },
+    "FactoryRunResponse": {
+      "type": "object",
+      "required": [
+        "run_id",
+        "verdict",
+        "exit_code",
+        "duration_ms",
+        "stdout_path",
+        "stderr_path",
+        "details"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string"
+        },
+        "verdict": {
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "exit_code": {
+          "type": "integer"
+        },
+        "duration_ms": {
+          "type": "integer"
+        },
+        "stdout_path": {
+          "type": "string"
+        },
+        "stderr_path": {
+          "type": "string"
+        },
+        "details": {
+          "type": "object"
+        }
+      }
+    },
+    "CatalogSearchResponse": {
+      "type": "object",
+      "required": [
+        "records",
+        "count",
+        "offset",
+        "limit"
+      ],
+      "properties": {
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "DependencyResponse": {
+      "type": "object",
+      "required": [
+        "record_id"
+      ],
+      "properties": {
+        "record_id": {
+          "type": "string"
+        },
+        "dependencies": {
+          "type": "array"
+        },
+        "reverse_dependencies": {
+          "type": "array"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "dependencies"
+          ]
+        },
+        {
+          "required": [
+            "reverse_dependencies"
+          ]
+        }
+      ]
+    },
+    "ValidationResponse": {
+      "type": "object",
+      "required": [
+        "valid",
+        "issues"
+      ],
+      "properties": {
+        "valid": {
+          "type": "boolean"
+        },
+        "issues": {
+          "type": "array"
+        }
+      }
+    },
+    "ProjectResponse": {
+      "type": "object",
+      "required": [
+        "project_id",
+        "project",
+        "content_locks",
+        "event_count",
+        "draft_event_count"
+      ],
+      "properties": {
+        "project_id": {
+          "type": "string"
+        },
+        "project": {
+          "type": "object"
+        },
+        "content_locks": {
+          "type": "array"
+        },
+        "event_count": {
+          "type": "integer"
+        },
+        "draft_event_count": {
+          "type": "integer"
+        }
+      }
+    },
+    "ReplayResponse": {
+      "type": "object",
+      "required": [
+        "project_id",
+        "event_count",
+        "latest_event_hash",
+        "chain_valid",
+        "state",
+        "state_hash"
+      ],
+      "properties": {
+        "project_id": {
+          "type": "string"
+        },
+        "event_count": {
+          "type": "integer"
+        },
+        "latest_event_hash": {
+          "type": "string"
+        },
+        "chain_valid": {
+          "type": "boolean"
+        },
+        "state": {
+          "type": "object"
+        },
+        "state_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "ChainResponse": {
+      "type": "object",
+      "required": [
+        "project_id",
+        "valid",
+        "event_count",
+        "latest_event_hash"
+      ],
+      "properties": {
+        "project_id": {
+          "type": "string"
+        },
+        "valid": {
+          "type": "boolean"
+        },
+        "event_count": {
+          "type": "integer"
+        },
+        "latest_event_hash": {
+          "type": "string"
+        }
+      }
+    },
+    "ExportResponse": {
+      "type": "object",
+      "required": [
+        "exported",
+        "path",
+        "filename",
+        "sha256",
+        "state_hash",
+        "event_count"
+      ],
+      "properties": {
+        "exported": {
+          "const": true
+        },
+        "path": {
+          "type": "string"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "state_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "event_count": {
+          "type": "integer"
+        }
+      }
+    },
+    "ImportResponse": {
+      "type": "object",
+      "required": [
+        "imported",
+        "project_id",
+        "state_hash",
+        "latest_event_hash",
+        "event_count"
+      ],
+      "properties": {
+        "imported": {
+          "const": true
+        },
+        "project_id": {
+          "type": "string"
+        },
+        "state_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "latest_event_hash": {
+          "type": "string"
+        },
+        "event_count": {
+          "type": "integer"
+        }
+      }
+    },
+    "SchemaRegistryStatusResponse": {
+      "type": "object",
+      "required": [
+        "registry_version",
+        "network_resolution",
+        "schema_count",
+        "schemas"
+      ],
+      "properties": {
+        "registry_version": {
+          "const": "TianxiaFoundry.SchemaRegistry.v1"
+        },
+        "network_resolution": {
+          "const": false
+        },
+        "schema_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "schemas": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "SchemaDocumentResponse": {
+      "type": "object",
+      "required": [
+        "$schema",
+        "$id",
+        "type"
+      ],
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "$id": {
+          "type": "string"
+        },
+        "type": {}
+      },
+      "additionalProperties": true
+    },
+    "AIStageContractValidationResponse": {
+      "type": "object",
+      "required": [
+        "accepted_for_event_drafting",
+        "bridge_implemented",
+        "schema_version",
+        "valid",
+        "diagnostics"
+      ],
+      "properties": {
+        "accepted_for_event_drafting": {
+          "const": false
+        },
+        "bridge_implemented": {
+          "const": false
+        },
+        "schema_version": {
+          "const": "TianxiaFoundry.AIClipboard.v1"
+        },
+        "valid": {
+          "type": "boolean"
+        },
+        "diagnostics": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CanonicalValidationInventoryResponse": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "total",
+        "valid",
+        "invalid",
+        "diagnostics"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "TianxiaFoundry.RulesCatalogRecord.v1"
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "valid": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "invalid": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "diagnostics": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CanonicalRulesCatalogRecordResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://tianxia.local/foundry/schemas/Rules_Catalog_Record.schema.json",
+      "title": "Tianxia Rules Catalog Record",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "record_id",
+        "content_type",
+        "display_name",
+        "publication",
+        "content_binding",
+        "source",
+        "legality",
+        "grants",
+        "execution_templates",
+        "display_projection",
+        "compatibility",
+        "revision_history",
+        "regression_tests",
+        "record_hash"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "TianxiaFoundry.RulesCatalogRecord.v1"
+        },
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "content_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "aliases": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "publication": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "published_version"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "draft",
+                "validated",
+                "published",
+                "deprecated"
+              ]
+            },
+            "published_version": {
+              "type": "string"
+            },
+            "replaced_by": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "content_binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "pack_id",
+            "pack_version",
+            "pack_hash"
+          ],
+          "properties": {
+            "pack_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            },
+            "pack_version": {
+              "type": "string"
+            },
+            "pack_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_id",
+            "source_hash",
+            "anchor"
+          ],
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            },
+            "path": {
+              "type": "string"
+            },
+            "anchor": {
+              "type": "string",
+              "minLength": 1
+            },
+            "line_ranges": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                ],
+                "items": false,
+                "minItems": 2,
+                "maxItems": 2
+              }
+            },
+            "source_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "source_text": {
+              "type": "string"
+            }
+          }
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 8000
+        },
+        "legality": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "acquisition_channels",
+            "prerequisites",
+            "incompatibilities",
+            "minimum_cl",
+            "realm_rules",
+            "source_cl",
+            "suppression"
+          ],
+          "properties": {
+            "acquisition_channels": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            },
+            "prerequisites": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "kind",
+                  "target_id",
+                  "operator"
+                ],
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200,
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+                  },
+                  "target_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200,
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+                  },
+                  "operator": {
+                    "enum": [
+                      "requires",
+                      "one_of",
+                      "all_of",
+                      "not",
+                      "minimum",
+                      "maximum"
+                    ]
+                  },
+                  "value": {}
+                },
+                "additionalProperties": false
+              }
+            },
+            "incompatibilities": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            },
+            "minimum_cl": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "realm_rules": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "source_cl": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "suppression": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+          }
+        },
+        "grants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "grant_type",
+              "target_id",
+              "operation"
+            ],
+            "properties": {
+              "grant_type": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "target_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "operation": {
+                "enum": [
+                  "create",
+                  "add",
+                  "replace",
+                  "unlock",
+                  "modify",
+                  "permit"
+                ]
+              },
+              "value": {},
+              "condition": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "execution_templates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "template_id",
+              "template_type",
+              "payload"
+            ],
+            "properties": {
+              "template_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "template_type": {
+                "enum": [
+                  "action",
+                  "state",
+                  "resource",
+                  "modifier",
+                  "procedure",
+                  "passive_statistic",
+                  "permission",
+                  "companion",
+                  "item_projection"
+                ]
+              },
+              "payload": {
+                "type": "object"
+              },
+              "created_record_id_pattern": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "display_projection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "short_description",
+            "full_description",
+            "surfaces"
+          ],
+          "properties": {
+            "short_description": {
+              "type": "string",
+              "minLength": 1
+            },
+            "full_description": {
+              "type": "string",
+              "minLength": 1
+            },
+            "surfaces": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "sort_key": {
+              "type": "string"
+            }
+          }
+        },
+        "compatibility": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "factory",
+            "gm_screen"
+          ],
+          "properties": {
+            "factory": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "gm_screen": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "revision_history": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "version",
+              "summary"
+            ],
+            "properties": {
+              "version": {
+                "type": "string"
+              },
+              "summary": {
+                "type": "string"
+              },
+              "previous_record_hash": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "regression_tests": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "test_id",
+              "kind",
+              "expected"
+            ],
+            "properties": {
+              "test_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "kind": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "input": {
+                "type": "object"
+              },
+              "expected": {}
+            }
+          }
+        },
+        "record_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "CanonicalCharacterProjectResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://tianxia.local/foundry/schemas/Character_Project.schema.json",
+      "title": "Tianxia Character Project",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "project_id",
+        "name",
+        "revision",
+        "status",
+        "active_stage",
+        "created_at",
+        "updated_at",
+        "factory_target",
+        "gm_screen_target",
+        "content_lock",
+        "user_locks",
+        "source_inputs",
+        "stage_commits",
+        "event_stream",
+        "generated_artifacts",
+        "candidates",
+        "acceptance"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "TianxiaFoundry.CharacterProject.v1"
+        },
+        "project_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "stage_1",
+            "stage_2",
+            "stage_3",
+            "stage_4",
+            "compile_ready",
+            "candidate_ready",
+            "simulated",
+            "final_release_ready",
+            "blocked",
+            "archived"
+          ]
+        },
+        "active_stage": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 4
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "factory_target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "producer",
+            "candidate_schema",
+            "payload_sha256"
+          ],
+          "properties": {
+            "producer": {
+              "type": "string"
+            },
+            "candidate_schema": {
+              "type": "string"
+            },
+            "payload_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "gm_screen_target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "consumer",
+            "patch",
+            "save_schema"
+          ],
+          "properties": {
+            "consumer": {
+              "type": "string"
+            },
+            "patch": {
+              "type": "string"
+            },
+            "save_schema": {
+              "type": "string"
+            }
+          }
+        },
+        "builder_handoff": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "filename": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "contract_schema": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "content_lock": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "catalog_build_id",
+            "lock_hash",
+            "packs"
+          ],
+          "properties": {
+            "catalog_build_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            },
+            "lock_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "packs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "pack_id",
+                  "version",
+                  "content_hash"
+                ],
+                "properties": {
+                  "pack_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200,
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "content_hash": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "user_locks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "lock_id",
+              "field",
+              "value",
+              "created_revision"
+            ],
+            "properties": {
+              "lock_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "field": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {},
+              "created_revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "source": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "source_inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "evidence_id",
+              "kind",
+              "path_or_reference",
+              "sha256"
+            ],
+            "properties": {
+              "evidence_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "kind": {
+                "enum": [
+                  "file",
+                  "url",
+                  "user_directive",
+                  "builder_handoff",
+                  "source_excerpt"
+                ]
+              },
+              "path_or_reference": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "notes": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "stage_commits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "stage",
+              "revision",
+              "status",
+              "state_hash",
+              "prompt_packet_ids",
+              "response_ids",
+              "event_ids"
+            ],
+            "properties": {
+              "stage": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "status": {
+                "enum": [
+                  "in_progress",
+                  "sealed",
+                  "invalidated"
+                ]
+              },
+              "state_hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "prompt_packet_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+                }
+              },
+              "response_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+                }
+              },
+              "event_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+                }
+              }
+            }
+          }
+        },
+        "event_stream": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "count",
+            "head_hash"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "head_hash": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "generated_artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "artifact_type",
+              "path",
+              "project_revision",
+              "sha256"
+            ],
+            "properties": {
+              "artifact_type": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "path": {
+                "type": "string"
+              },
+              "project_revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "generator_version": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "candidate_id",
+              "project_revision",
+              "filename",
+              "bytes",
+              "sha256",
+              "classification"
+            ],
+            "properties": {
+              "candidate_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "project_revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "filename": {
+                "type": "string"
+              },
+              "bytes": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "classification": {
+                "enum": [
+                  "COMMAND_5_GM_SCREEN_CANDIDATE_READY",
+                  "SIMULATED_CONSUMER_PASS_REAL_GMSCREEN_ACCEPTANCE_REQUIRED",
+                  "FINAL_RELEASE_READY"
+                ]
+              }
+            }
+          }
+        },
+        "acceptance": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "candidate_id",
+              "evidence_class",
+              "verdict",
+              "report_sha256"
+            ],
+            "properties": {
+              "candidate_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "evidence_class": {
+                "enum": [
+                  "local_consumer_simulation",
+                  "real_gm_screen_user_acceptance"
+                ]
+              },
+              "verdict": {
+                "type": "string"
+              },
+              "report_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        },
+        "backup_policy": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "retention_count": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "CanonicalAdvancementEventArrayResponse": {
+      "type": "array",
+      "items": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://tianxia.local/foundry/schemas/Advancement_Event.schema.json",
+        "title": "Tianxia Advancement Event",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schema_version",
+          "event_id",
+          "project_id",
+          "project_revision",
+          "sequence",
+          "event_type",
+          "effective_point",
+          "legal_channel",
+          "subject",
+          "content_binding",
+          "source_evidence",
+          "created_records",
+          "updated_records",
+          "retired_records",
+          "idempotency_key",
+          "previous_event_hash",
+          "state_before_hash",
+          "state_after_hash",
+          "event_hash",
+          "created_at"
+        ],
+        "properties": {
+          "schema_version": {
+            "const": "TianxiaFoundry.AdvancementEvent.v1"
+          },
+          "event_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+          },
+          "project_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+          },
+          "project_revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "event_type": {
+            "enum": [
+              "acquire",
+              "evolve",
+              "replace",
+              "retire",
+              "author_metadata",
+              "lock_change",
+              "migration"
+            ]
+          },
+          "effective_point": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "character_cl",
+              "order"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "level",
+                  "background_creation",
+                  "manual_training",
+                  "foundation_awakening",
+                  "foundation_refinement",
+                  "foundation_perfection",
+                  "loot_acquisition",
+                  "downtime_forging",
+                  "companion_bond",
+                  "migration",
+                  "other"
+                ]
+              },
+              "character_cl": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 30
+              },
+              "order": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "label": {
+                "type": "string",
+                "maxLength": 200
+              }
+            }
+          },
+          "legal_channel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+          },
+          "subject": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_id",
+              "content_type"
+            ],
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "content_type": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "display_name": {
+                "type": "string"
+              }
+            }
+          },
+          "content_binding": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "pack_id",
+              "pack_version",
+              "pack_hash",
+              "record_hash",
+              "catalog_build_id"
+            ],
+            "properties": {
+              "pack_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "pack_version": {
+                "type": "string"
+              },
+              "pack_hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "record_hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "catalog_build_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            }
+          },
+          "source_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "source_id",
+                "source_hash",
+                "source_anchor"
+              ],
+              "properties": {
+                "source_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+                },
+                "source_hash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "source_anchor": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source_path": {
+                  "type": "string"
+                },
+                "line_ranges": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                }
+              }
+            }
+          },
+          "capacity": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "slot_cost": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "capacity_type": {
+                "type": "string"
+              },
+              "capacity_before": {
+                "type": "number"
+              },
+              "capacity_after": {
+                "type": "number"
+              }
+            }
+          },
+          "training": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "source_record_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "dc": {
+                "type": "integer"
+              },
+              "time_days": {
+                "type": "number",
+                "minimum": 0
+              },
+              "roll_total": {
+                "type": "integer"
+              },
+              "result": {
+                "enum": [
+                  "success",
+                  "failure",
+                  "automatic",
+                  "not_applicable"
+                ]
+              }
+            }
+          },
+          "created_records": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            }
+          },
+          "updated_records": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            }
+          },
+          "retired_records": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            }
+          },
+          "planner_response_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "supersedes_event_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            }
+          },
+          "migration": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": true
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+          },
+          "previous_event_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state_before_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "state_after_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "event_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "Stage2ProposalResponse": {
+      "type": "object",
+      "required": [
+        "proposal_id",
+        "project_id",
+        "status",
+        "proposal_hash"
+      ],
+      "properties": {
+        "proposal_id": {
+          "type": "string"
+        },
+        "project_id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "proposal_hash": {
+          "type": "string"
+        },
+        "schema_version": {
+          "enum": [
+            "TianxiaFoundry.Stage2AdvancementProposal.v1",
+            "TianxiaFoundry.Stage2AdvancementProposal.v2"
+          ]
+        }
+      }
+    },
+    "Stage2ValidationResponse": {
+      "type": "object",
+      "required": [
+        "proposal_id",
+        "status",
+        "valid",
+        "blocker_report"
+      ],
+      "properties": {
+        "proposal_id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid": {
+          "type": "boolean"
+        },
+        "blocker_report": {
+          "type": "object"
+        }
+      }
+    },
+    "Stage2StatusResponse": {
+      "type": "object",
+      "required": [
+        "project_id",
+        "project_revision",
+        "content_lock_hash",
+        "proposals",
+        "artifacts",
+        "blockers"
+      ],
+      "properties": {
+        "project_id": {
+          "type": "string"
+        },
+        "project_revision": {
+          "type": "integer"
+        },
+        "content_lock_hash": {
+          "type": "string"
+        },
+        "proposals": {
+          "type": "array"
+        },
+        "artifacts": {
+          "type": "array"
+        },
+        "blockers": {
+          "type": "array"
+        }
+      }
+    },
+    "Stage2LedgerResponse": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "project_id",
+        "rows",
+        "final_state_hash"
+      ],
+      "properties": {
+        "schema_version": {
+          "enum": [
+            "TianxiaFoundry.LevelingLedger.v1",
+            "TianxiaFoundry.LevelingLedger.v2"
+          ]
+        },
+        "project_id": {
+          "type": "string"
+        },
+        "rows": {
+          "type": "array"
+        },
+        "final_state_hash": {
+          "type": "string"
+        }
+      }
+    },
+    "LocalPrincipalResponse": {
+      "type": "object",
+      "required": [
+        "principal_id",
+        "display_name",
+        "provider",
+        "security_identifier"
+      ],
+      "properties": {
+        "principal_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "security_identifier": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "ApprovalChallengeResponse": {
+      "type": "object",
+      "required": [
+        "challenge"
+      ],
+      "properties": {
+        "challenge": {
+          "type": "object",
+          "required": [
+            "schema_version",
+            "challenge_id",
+            "challenge_hash",
+            "principal",
+            "operation",
+            "subject_type",
+            "subject_id",
+            "exact_bytes_hash",
+            "binding_hash",
+            "project_lock_hash",
+            "issued_at",
+            "expires_at",
+            "nonce"
+          ],
+          "properties": {
+            "schema_version": {
+              "const": "TianxiaFoundry.ExactApprovalChallenge.v1"
+            },
+            "challenge_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "challenge_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "principal": {
+              "$ref": "#/response_schemas/LocalPrincipalResponse"
+            },
+            "operation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "subject_type": {
+              "type": "string",
+              "minLength": 1
+            },
+            "subject_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "exact_bytes_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "binding_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "project_lock_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "issued_at": {
+              "type": "string",
+              "minLength": 1
+            },
+            "expires_at": {
+              "type": "string",
+              "minLength": 1
+            },
+            "nonce_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "nonce": {
+              "type": "string",
+              "minLength": 32
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "Stage2HostileAuditResponse": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "project_id",
+        "valid",
+        "chain",
+        "stage2",
+        "blockers",
+        "canonical_artifacts_available"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "TianxiaFoundry.Stage2HostileAudit.v1"
+        },
+        "project_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "valid": {
+          "type": "boolean"
+        },
+        "chain": {
+          "type": "object"
+        },
+        "stage2": {
+          "type": "object"
+        },
+        "blockers": {
+          "type": "array"
+        },
+        "canonical_artifacts_available": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "operations": [
+    {
+      "operation_id": "get_root",
+      "method": "GET",
+      "path": "/",
+      "request_model": null,
+      "response_schema": "HtmlResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_ai-provider",
+      "method": "GET",
+      "path": "/api/ai-provider",
+      "request_model": null,
+      "response_schema": "AIProviderStatusResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_ai-provider_configure",
+      "method": "POST",
+      "path": "/api/ai-provider/configure",
+      "request_model": "AIProviderConfigureRequest",
+      "response_schema": "AIProviderStatusResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "delete_api_ai-provider_key",
+      "method": "DELETE",
+      "path": "/api/ai-provider/key",
+      "request_model": null,
+      "response_schema": "AIProviderStatusResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_ai-provider_key",
+      "method": "POST",
+      "path": "/api/ai-provider/key",
+      "request_model": "AIProviderKeyRequest",
+      "response_schema": "AIProviderStatusResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_ai-provider_runs_run_id",
+      "method": "GET",
+      "path": "/api/ai-provider/runs/{run_id}",
+      "request_model": null,
+      "response_schema": "AIProviderRunResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_ai-stage-responses_validate",
+      "method": "POST",
+      "path": "/api/ai-stage-responses/validate",
+      "request_model": "TianxiaFoundry.AIClipboard.v1",
+      "response_schema": "AIStageContractValidationResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_catalog_dependencies_record_id",
+      "method": "GET",
+      "path": "/api/catalog/dependencies/{record_id:path}",
+      "request_model": null,
+      "response_schema": "DependencyResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_catalog_rebuild",
+      "method": "POST",
+      "path": "/api/catalog/rebuild",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_catalog_records",
+      "method": "GET",
+      "path": "/api/catalog/records",
+      "request_model": null,
+      "response_schema": "CatalogSearchResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_catalog_records_record_id",
+      "method": "GET",
+      "path": "/api/catalog/records/{record_id:path}",
+      "request_model": null,
+      "response_schema": "CanonicalRulesCatalogRecordResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_catalog_reverse-dependencies_record_id",
+      "method": "GET",
+      "path": "/api/catalog/reverse-dependencies/{record_id:path}",
+      "request_model": null,
+      "response_schema": "DependencyResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_catalog_status",
+      "method": "GET",
+      "path": "/api/catalog/status",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_catalog_validation",
+      "method": "GET",
+      "path": "/api/catalog/validation",
+      "request_model": null,
+      "response_schema": "CanonicalValidationInventoryResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_content-packs",
+      "method": "GET",
+      "path": "/api/content-packs",
+      "request_model": null,
+      "response_schema": "ArrayResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_content-packs_exact-trust-challenge",
+      "method": "POST",
+      "path": "/api/content-packs/exact-trust-challenge",
+      "request_model": "PackageChallengeRequest",
+      "response_schema": "ApprovalChallengeResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_content-packs_install",
+      "method": "POST",
+      "path": "/api/content-packs/install",
+      "request_model": "PackageRequest",
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_content-packs_validate",
+      "method": "POST",
+      "path": "/api/content-packs/validate",
+      "request_model": "PackageRequest",
+      "response_schema": "ValidationResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "delete_api_content-packs_pack_id_version",
+      "method": "DELETE",
+      "path": "/api/content-packs/{pack_id}/{version}",
+      "request_model": "PackStateRequest",
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_content-packs_pack_id_version",
+      "method": "GET",
+      "path": "/api/content-packs/{pack_id}/{version}",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_content-packs_pack_id_version_lifecycle-challenge",
+      "method": "POST",
+      "path": "/api/content-packs/{pack_id}/{version}/lifecycle-challenge",
+      "request_model": "PackStateChallengeRequest",
+      "response_schema": "ApprovalChallengeResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_content-packs_pack_id_version_publish",
+      "method": "POST",
+      "path": "/api/content-packs/{pack_id}/{version}/publish",
+      "request_model": "PackStateRequest",
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_content-packs_pack_id_version_retire",
+      "method": "POST",
+      "path": "/api/content-packs/{pack_id}/{version}/retire",
+      "request_model": "PackStateRequest",
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_content-packs_pack_id_version_supersede",
+      "method": "POST",
+      "path": "/api/content-packs/{pack_id}/{version}/supersede",
+      "request_model": "PackStateRequest",
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_contracts",
+      "method": "GET",
+      "path": "/api/contracts",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_draft-events_draft_id_approve",
+      "method": "POST",
+      "path": "/api/draft-events/{draft_id}/approve",
+      "request_model": "ApproveRequest",
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_draft-events_draft_id_commit",
+      "method": "POST",
+      "path": "/api/draft-events/{draft_id}/commit",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_draft-events_draft_id_validate",
+      "method": "POST",
+      "path": "/api/draft-events/{draft_id}/validate",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_factory_configure",
+      "method": "POST",
+      "path": "/api/factory/configure",
+      "request_model": "ConfigureVendorRequest",
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_factory_health-check",
+      "method": "POST",
+      "path": "/api/factory/health-check",
+      "request_model": null,
+      "response_schema": "FactoryRunResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_factory_runs",
+      "method": "GET",
+      "path": "/api/factory/runs",
+      "request_model": null,
+      "response_schema": "ArrayResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_factory_status",
+      "method": "GET",
+      "path": "/api/factory/status",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_foundation-packs_prepare",
+      "method": "POST",
+      "path": "/api/foundation-packs/prepare",
+      "request_model": "FoundationHandoffPrepareRequest",
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_health",
+      "method": "GET",
+      "path": "/api/health",
+      "request_model": null,
+      "response_schema": "HealthResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_inbox",
+      "method": "GET",
+      "path": "/api/inbox",
+      "request_model": null,
+      "response_schema": "ArrayResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_projects",
+      "method": "GET",
+      "path": "/api/projects",
+      "request_model": null,
+      "response_schema": "ArrayResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_projects",
+      "method": "POST",
+      "path": "/api/projects",
+      "request_model": "CreateProjectRequest",
+      "response_schema": "ProjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_projects_import",
+      "method": "POST",
+      "path": "/api/projects/import",
+      "request_model": "PackageRequest",
+      "response_schema": "ImportResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_projects_project_id",
+      "method": "GET",
+      "path": "/api/projects/{project_id}",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_projects_project_id_ai-provider_runs",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/ai-provider/runs",
+      "request_model": null,
+      "response_schema": "AIProviderRunListResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_projects_project_id_canonical",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/canonical",
+      "request_model": null,
+      "response_schema": "CanonicalCharacterProjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_projects_project_id_compatibility-projection",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/compatibility-projection",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_projects_project_id_content-locks",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/content-locks",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_projects_project_id_draft-events",
+      "method": "POST",
+      "path": "/api/projects/{project_id}/draft-events",
+      "request_model": "DraftEventRequest",
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_projects_project_id_event-chain",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/event-chain",
+      "request_model": null,
+      "response_schema": "ChainResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_projects_project_id_events",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/events",
+      "request_model": null,
+      "response_schema": "CanonicalAdvancementEventArrayResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_projects_project_id_export",
+      "method": "POST",
+      "path": "/api/projects/{project_id}/export",
+      "request_model": "ExportRequest",
+      "response_schema": "ExportResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_projects_project_id_migration_preview",
+      "method": "POST",
+      "path": "/api/projects/{project_id}/migration/preview",
+      "request_model": "MigrationPreviewRequest",
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_projects_project_id_projection_artifacts_artifact_name",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/projection/artifacts/{artifact_name}",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_projects_project_id_projection_build",
+      "method": "POST",
+      "path": "/api/projects/{project_id}/projection/build",
+      "request_model": "ProjectionBuildRequest",
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_projects_project_id_projection_status",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/projection/status",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_projects_project_id_read-models",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/read-models",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_projects_project_id_read-models_rebuild",
+      "method": "POST",
+      "path": "/api/projects/{project_id}/read-models/rebuild",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_projects_project_id_replay",
+      "method": "POST",
+      "path": "/api/projects/{project_id}/replay",
+      "request_model": null,
+      "response_schema": "ReplayResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_projects_project_id_stage1_prompt",
+      "method": "POST",
+      "path": "/api/projects/{project_id}/stage1/prompt",
+      "request_model": null,
+      "response_schema": "Stage1PromptV2Response",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_projects_project_id_stage1_status",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/stage1/status",
+      "request_model": null,
+      "response_schema": "Stage1StatusV2Response",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_projects_project_id_stage1_user-locks",
+      "method": "POST",
+      "path": "/api/projects/{project_id}/stage1/user-locks",
+      "request_model": "Stage1UserLocksRequest",
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_projects_stage2_artifact",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/stage2/artifacts/{artifact_name}",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_projects_stage2_audit",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/stage2/audit",
+      "request_model": null,
+      "response_schema": "Stage2HostileAuditResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_projects_stage2_ledger",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/stage2/ledger",
+      "request_model": null,
+      "response_schema": "Stage2LedgerResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_projects_stage2_proposals",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/stage2/proposals",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_projects_stage2_proposals",
+      "method": "POST",
+      "path": "/api/projects/{project_id}/stage2/proposals",
+      "request_model": "Stage2ProposalRequest",
+      "response_schema": "Stage2ProposalResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_projects_stage2_quarantine_artifact",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/stage2/quarantine/{artifact_name}",
+      "request_model": null,
+      "response_schema": "ObjectResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_projects_stage2_rebuild",
+      "method": "POST",
+      "path": "/api/projects/{project_id}/stage2/rebuild",
+      "request_model": null,
+      "response_schema": "Stage2StatusResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_projects_stage2_status",
+      "method": "GET",
+      "path": "/api/projects/{project_id}/stage2/status",
+      "request_model": null,
+      "response_schema": "Stage2StatusResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_schemas_status",
+      "method": "GET",
+      "path": "/api/schemas/status",
+      "request_model": null,
+      "response_schema": "SchemaRegistryStatusResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_schemas_schema_version",
+      "method": "GET",
+      "path": "/api/schemas/{schema_version}",
+      "request_model": null,
+      "response_schema": "SchemaDocumentResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_session",
+      "method": "GET",
+      "path": "/api/session",
+      "request_model": null,
+      "response_schema": "SessionResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_stage1_attempts_attempt_id",
+      "method": "GET",
+      "path": "/api/stage1/attempts/{attempt_id}",
+      "request_model": null,
+      "response_schema": "Stage1ExchangeV2Response",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_stage1_attempts_attempt_id_approve-commit",
+      "method": "POST",
+      "path": "/api/stage1/attempts/{attempt_id}/approve-commit",
+      "request_model": "Stage1ApproveCommitRequest",
+      "response_schema": "Stage1ExchangeV2Response",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_stage1_prompts_prompt_id",
+      "method": "GET",
+      "path": "/api/stage1/prompts/{prompt_id}",
+      "request_model": null,
+      "response_schema": "Stage1PromptV2Response",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_stage1_prompts_prompt_id_ai-provider_run",
+      "method": "POST",
+      "path": "/api/stage1/prompts/{prompt_id}/ai-provider/run",
+      "request_model": "AIProviderRunRequest",
+      "response_schema": "AIProviderRunResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_stage1_prompts_prompt_id_responses_validate",
+      "method": "POST",
+      "path": "/api/stage1/prompts/{prompt_id}/responses/validate",
+      "request_model": "Stage1ResponseRequest",
+      "response_schema": "Stage1ExchangeV2Response",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_stage2_proposal",
+      "method": "GET",
+      "path": "/api/stage2/proposals/{proposal_id}",
+      "request_model": null,
+      "response_schema": "Stage2ProposalResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "post_api_stage2_proposal_approval-challenge",
+      "method": "POST",
+      "path": "/api/stage2/proposals/{proposal_id}/approval-challenge",
+      "request_model": "ApprovalChallengeRequest",
+      "response_schema": "ApprovalChallengeResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_stage2_proposal_approve",
+      "method": "POST",
+      "path": "/api/stage2/proposals/{proposal_id}/approve",
+      "request_model": "Stage2ApproveRequest",
+      "response_schema": "Stage2ProposalResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_stage2_proposal_commit",
+      "method": "POST",
+      "path": "/api/stage2/proposals/{proposal_id}/commit",
+      "request_model": "Stage2CommitRequest",
+      "response_schema": "ObjectResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "post_api_stage2_proposal_validate",
+      "method": "POST",
+      "path": "/api/stage2/proposals/{proposal_id}/validate",
+      "request_model": null,
+      "response_schema": "Stage2ValidationResponse",
+      "mutation": true
+    },
+    {
+      "operation_id": "get_api_system_status",
+      "method": "GET",
+      "path": "/api/system/status",
+      "request_model": null,
+      "response_schema": "SystemStatusResponse",
+      "mutation": false
+    },
+    {
+      "operation_id": "get_api_version",
+      "method": "GET",
+      "path": "/api/version",
+      "request_model": null,
+      "response_schema": "VersionResponse",
+      "mutation": false
+    }
+  ]
+}
