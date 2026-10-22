@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "TianxiaCombatMapSelectionDraft.v2",
+  "title": "Tianxia Combat Multi-Step Map Selection Draft",
+  "description": "Cancelable, non-authoritative browser state pinned to one exact decision and a closed subset of server-issued legal candidate IDs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "match_id", "decision_id", "state_version", "actor_id", "controller_mode",
+    "interaction_mode", "selection_steps", "step_index", "legal_candidate_ids",
+    "remaining_candidate_ids", "preferred_candidate_id", "selected_candidate_id",
+    "selected_target_id", "selected_destination", "selected_area_center"
+  ],
+  "properties": {
+    "schema": {"const": "TianxiaCombatMapSelectionDraft.v2"},
+    "match_id": {"type": "string", "minLength": 1},
+    "decision_id": {"type": "string", "minLength": 1},
+    "state_version": {"type": "integer", "minimum": 0},
+    "actor_id": {"type": "string", "minLength": 1},
+    "controller_mode": {"enum": ["MANUAL", "SUGGESTED", "MANUAL_AI_BRIDGE"]},
+    "interaction_mode": {"enum": ["select_target", "select_destination", "select_area", "select_exact"]},
+    "selection_steps": {
+      "type": "array", "minItems": 1, "maxItems": 2, "uniqueItems": true,
+      "items": {"enum": ["select_target", "select_destination", "select_area"]}
+    },
+    "step_index": {"type": "integer", "minimum": 0, "maximum": 2},
+    "legal_candidate_ids": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^candidate:"}
+    },
+    "remaining_candidate_ids": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^candidate:"}
+    },
+    "preferred_candidate_id": {"type": ["string", "null"], "pattern": "^candidate:"},
+    "selected_candidate_id": {"type": ["string", "null"], "pattern": "^candidate:"},
+    "selected_target_id": {"type": ["string", "null"]},
+    "selected_destination": {"$ref": "#/$defs/positionOrNull"},
+    "selected_area_center": {"$ref": "#/$defs/positionOrNull"}
+  },
+  "$defs": {
+    "positionOrNull": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object", "additionalProperties": false, "required": ["x", "y"],
+          "properties": {"x": {"type": "integer", "minimum": 0}, "y": {"type": "integer", "minimum": 0}}
+        }
+      ]
+    }
+  }
+}
