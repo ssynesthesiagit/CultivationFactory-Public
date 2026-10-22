@@ -1,0 +1,22 @@
+{
+  "schema": "TianxiaFoundry.FeatureBlocks.d.v1",
+  "note": "Automation lane AUTO19 (2026-10-04), corrected by AUTO19f1 (2026-10-05): the Thread Sphere reactions whose printed moment the generic reaction reader cannot see (a d20 already rolled, a step that crosses a drawn line). Ownership rows only; combat/ext/thread_correction.py answers the printed bonus from the d20 itself and combat/ext/thread_lines.py answers Snaring Crossing at the movement step that crosses the line.",
+  "features": {
+    "tianxia.talent.thread.puppet_line_correction": {
+      "block": "thread_correction",
+      "kind": "puppet_line_correction",
+      "cp": 2,
+      "why": "Puppet-Line Correction: Reaction, 2 CP. A creature connected by one of your Thread Lines rolls an attack, a Strength or Dexterity check, or a Dexterity save; a willing one adds your Proficiency Bonus, an unwilling one makes a Wisdom saving throw and loses that bonus from its roll on a failure (combat/ext/thread_correction.py). The generic creature_d20 row could only apply one signed amount before the roll, so the printed willingness branch is answered from the d20 instead. Willingness is the rolling creature's own answer, and the printed price and Reaction are spent for the attempt whether or not the saving throw fails."
+    },
+    "TAL_THREAD_BORROW_THE_ALLY_S_ARM": {
+      "block": "thread_correction",
+      "kind": "borrow_the_ally_s_arm",
+      "cp": 1,
+      "why": "Borrow the Ally's Arm: Reaction, 1 CP. A willing ally connected by one of your Thread Lines misses with a melee attack or fails a Strength or Dexterity check, and adds your Proficiency Bonus to that roll (combat/ext/thread_correction.py). It answers a roll that has already come out wrong, which a before-the-roll generic reaction cannot, and it is offered before Puppet-Line Correction for an ally because it costs 1 CP rather than 2."
+    },
+    "tianxia.talent.thread.snaring_crossing": {
+      "block": "thread_snare",
+      "why": "Snaring Crossing: Reaction, expend Martial Focus or 1 CP. A creature you can see moves across a space containing one of your Thread Lines: it makes a Dexterity saving throw, and on a failure its Speed becomes 0 until the end of its current turn (on a success it loses 10 feet of Speed instead). Each creature can be snared only once per round (combat/ext/thread_lines.py, at the movement step itself). A fixed anchor you control is not tracked at the table, so a creature leaving a square beside one is left to the GM."
+    }
+  }
+}
