@@ -1,0 +1,45 @@
+{
+  "features": {
+    "TAL_YIN_BORROWED_CONSEQUENCE": {
+      "block": "yin_borrowed_consequence",
+      "name": "Borrowed Consequence",
+      "divisor": 2,
+      "bonus_damage_types": [
+        "fire",
+        "radiant",
+        "thunder"
+      ],
+      "expires_on": "START_OF_SOURCE_NEXT_TURN",
+      "why": "Actual Diminish Force reduction receipt grants half as source-tracked Temporary HP; explicit Yang provenance or the three printed damage types adds PB."
+    },
+    "TAL_YIN_RETURN_THE_OVEREXTENSION": {
+      "block": "yin_return_overextension",
+      "name": "Return the Overextension",
+      "extra_cp": 2,
+      "cap_cl": 3,
+      "damage_types": [
+        "psychic",
+        "cold",
+        "necrotic"
+      ],
+      "why": "Optional paid retaliation consumes the actual reduction, capped at three times CL, without another mark or action."
+    },
+    "TAL_YIN_STILL_THE_BRIGHT_STRIKE": {
+      "block": "yin_still_bright_strike",
+      "name": "Still the Bright Strike",
+      "responses": [
+        "TAL_YIN_SPENDING_A_WANING_MARK#diminish_force",
+        "TAL_YIN_SPENDING_A_WANING_MARK#diminish_aim"
+      ],
+      "effects": [
+        {
+          "type": "speed",
+          "applies_to": "target",
+          "flat": -10,
+          "expires_on": "START_OF_TARGET_NEXT_TURN"
+        }
+      ],
+      "why": "Successful Force/Aim mark consumption applies a native timed speed penalty; normal speed calculation clamps at zero."
+    }
+  }
+}
