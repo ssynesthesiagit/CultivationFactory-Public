@@ -1,0 +1,18 @@
+{
+  "features": {
+    "TAL_LIGHTNING_ARC_PRIMER": {
+      "block": "arc_upgrade",
+      "for": ["lash"],
+      "range_ft": 10,
+      "conductive_becomes_charged": true,
+      "why": "Arc Primer: 'When Lightning Lash hits and you choose its Arc rider, the Arc can target one creature or object within 10 feet instead of 5 feet. If the Arc target is Conductive, it also becomes Charged until the start of your next turn.' Read by combat/ext/arcs.py when Lightning Lash's Arc option arcs (a typed modifier could not: a named modifier applies to every option of Lash, and its add_range_ft widened Lash's attack range instead of the Arc)."
+    },
+    "TAL_LIGHTNING_CURRENT_BEYOND_THE_SKIN": {
+      "block": "charge_realm",
+      "arc_range_ft": 15,
+      "charge_cap_add": 1,
+      "charge_lasts": "until_end_of_your_next_turn",
+      "why": "Current Beyond the Skin: 'Your Arc range increases to 15 feet'; 'Your Charge limit increases by 1'; 'A target you Charge remains Charged until the end of your next turn instead of the start of your next turn' (combat/ext/lightning_riders.py; the mark_cap and mark_duration hooks of typed_executor.block_mark)."
+    }
+  }
+}
