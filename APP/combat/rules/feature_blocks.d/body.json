@@ -1,0 +1,54 @@
+{
+  "features": {
+    "TAL_IRON_FIST_MERCIFUL_HAND": {
+      "block": "body_merciful_hand",
+      "why": "The Iron Fist plug-in uses the native final-damage checkpoint: an owned Unarmed Strike can spare its target at 1 HP, choose one of the four printed effects, and regain absent Martial Focus."
+    },
+    "TAL_IRON_FIST_MERIDIAN_LOCK": {
+      "block": "body_meridian_lock",
+      "why": "Its printed modifier targets Meridian-Sealing Palm, a modifier-derived variant of Unarmed Strike with no standalone built row to attach to (see reviewed_final.d/ironclad.json's rider). Marked automated here instead; combat/ext/body_iron_fist.py's after_save hook reads this block to know the actor owns the talent and adds Meridian-Sealing Palm's second (Breath) seal on a failed save."
+    },
+    "TAL_IRON_FIST_FALLING_LEAF_SWEEP": {
+      "block": "body_falling_leaf_sweep",
+      "why": "Its printed effect needs a second, different creature than the one Unarmed Strike's Shove option just hit -- the generic named-modifier system only ever extends the SAME ability's own effects on the SAME target. Marked automated here; combat/ext/body_iron_fist.py's after_save hook reads this block and, on a failed Shove-Prone save, sweeps the nearest other hostile creature(s) within 5 feet of the fallen target."
+    },
+    "TAL_IRON_FIST_DRAGON_STEP_CLINCH": {
+      "block": "body_dragon_step_clinch",
+      "why": "A continuous choice (maintain a body clinch instead of a free hand) with its own Speed penalty and a conditional Advantage-to-escape grant on the grappled target -- not a simple named-ability modifier. Marked automated here; combat/ext/body_iron_fist.py adds the Maintain/End toggle, the speed hook, and the check_mode-based escape Advantage for characters owning this block."
+    },
+    "TAL_BERSERKER_BONE_BREAKER": {
+      "block": "gu_berserker_exertion",
+      "why": "Body 2026-09-29 (docket-peer-reported bug fix): its printed effect is a real attack_roll/SUBTRACT_DIE modifier on the TARGET's next attack roll -- a target-directed effect type combat/ext/docket_maneuvers.py's generic 'one Exertion talent' modifier-variant system would silently degrade to a GM-only rider (no generic typed effect type for it). Marked automated here instead; combat/ext/gu_berserker.py's after_hit hook applies whichever of Bone-Breaker/Bell-Ringer/Cultivation Sunder the character's free Exertion toggle currently selects, on any damaging Batter (unarmed or weapon)."
+    },
+    "TAL_BERSERKER_BELL_RINGER": {
+      "block": "gu_berserker_exertion",
+      "bell_runtime": 1,
+      "why": "Same as Bone-Breaker above: its real mechanization (the bell_rung condition) needs custom code, not the generic modifier-variant system. See combat/ext/gu_berserker.py's after_hit hook and its free Exertion toggle."
+    },
+    "TAL_BERSERKER_CULTIVATION_SUNDER": {
+      "block": "gu_berserker_exertion",
+      "covers": [
+        "Cultivation Sunder does not automatically dispel: Domains;",
+        "Secret Inheritances;",
+        "artifacts;",
+        "Formation cores;",
+        "Realm-defining transformations."
+      ],
+      "why": "GM-only either way (comparing Batter damage to an arbitrary ongoing effect's rank has no generic automation path), but kept in the same one-chosen-Exertion-talent toggle as Bone-Breaker/Bell-Ringer (combat/ext/gu_berserker.py) rather than left to combat/ext/docket_maneuvers.py's generic system, so the GM-only rider only ever appears when this is the one actually chosen, not stacked with the others. The printed list of things it does not dispel names Domains, Secret Inheritances, artifacts and Formation cores, none of which this table tracks as a dispellable effect, so that list states the table's behaviour rather than GM work."
+    },
+    "TAL_FLOWING_RIVER_TWO_CURRENTS_MEET": {
+      "block": "flowing_river",
+      "why": "Body 2026-09-29 (coordinator-reported: a peer's own Two Currents Meet version was dropped in the wave-2 merge). Its printed modifier targets the generic 'Flowing Response' reaction with empty effects (RIDERS_ONLY coverage) -- nothing for the generic modifier-attachment system to add. combat/ext/flowing_river.py's own hand-built Response-talent choice (predating the newer generic talent_categories.json 'one_per'/'two' system, which only reaches reactions built through _generic_reaction/_attach_reaction_modifiers, not this custom one) now offers every pair of known Response talents as its own 'Flowing Response: X + Y (Martial Focus)' toggle alongside the single-talent ones, and _succeed spends 1 Martial Focus and applies both when a pair is chosen and both are legal for the triggering creature."
+    },
+    "TAL_BERSERKER_BERSERK": {
+      "block": "defense",
+      "defenses": [
+        {"kind": "reduction_before_resistance", "amount": "pb",
+         "damage_types": ["ACID", "BLUDGEONING", "COLD", "FIRE", "FORCE", "LIGHTNING", "NECROTIC", "PIERCING", "POISON", "PSYCHIC", "RADIANT", "SLASHING", "THUNDER"],
+         "requires_condition": "condition:typed.body_adrenaline_berserk"}
+      ],
+      "covers": ["Apply this reduction before Resistance.", "While active"],
+      "why": "Body 2026-09-29: was typed as an unconditional -PB to all damage, but the printed effect is 'while active' -- Berserk is one of the Berserker sphere's Adrenaline talents (a base rule never captured as its own mechanic in the typed authority: 'at the start of your turn, choose whether to enter Adrenaline; while active, take a -2 AC penalty and gain the benefit of one Adrenaline talent you know'). combat/ext/body_berserker.py adds the missing Adrenaline toggle (the -2 AC penalty and a marker condition per chosen talent); this defense block only applies while that marker names Berserk specifically. 'Apply this reduction before Resistance' needed a new reduction_before_resistance kind in combat/typed_reactions.py (the existing 'reduction' kind applies after Resistance)."
+    }
+  }
+}
