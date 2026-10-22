@@ -1,0 +1,18 @@
+{
+  "features": {
+    "GLASS_BASE_FAULTLINE_MARKS": {
+      "block": "mark_caps",
+      "caps": {"faultline mark": "pb"},
+      "why": "Faultline Marks: 'You can have a number of Faultline Marks active at one time equal to your Proficiency Bonus' (combat/ext/elements_marks.py's generic mark_caps compile_block; combat/typed_executor.py's block_mark already ends the oldest past the cap once one is registered)."
+    },
+    "TAL_YIN_MARK_LIMIT": {
+      "block": "mark_caps",
+      "caps": {"waning mark": "pb"},
+      "why": "Mark Limit: 'You can maintain a number of Waning Marks equal to your Proficiency Bonus' (combat/ext/elements_marks.py's generic mark_caps compile_block)."
+    },
+    "TAL_EARTH_BURDEN_THE_BLADE": {
+      "block": "elements_earth_burden_the_blade",
+      "why": "Burden the Blade: a third-party's hit (whichever creature carries your Burden Mark), not your own attack -- automated via the attack_resolved hook in combat/ext/elements_earth.py rather than factory_compiler's modifier-variant system."
+    }
+  }
+}
