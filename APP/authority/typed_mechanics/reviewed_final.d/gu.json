@@ -1,0 +1,1382 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_GRAVITY_EXTERNAL_WEIGHT_SHIFT": {
+      "text_sha256": "d3a5ee19537f1f2e9b08fed6f3bc24f6796701d6ba024bbca19d1170b5e1814d",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 1
+          }
+        ]
+      ],
+      "effects": [],
+      "options": [
+        {
+          "label": "Willing: Body Lightening",
+          "effects": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": 10,
+              "formula": "none",
+              "duration": "concentration",
+              "evidence": "Your Speed increases by 10 feet."
+            },
+            {
+              "type": "advantage",
+              "applies_to": "target",
+              "on": "Decivesev (Amwepbiihs) yiipdu ykik to cuvluo a Gtlaokw or tlml nlgdcv smlvin, dkflbcw, or dpremhhm uktmyop",
+              "duration": "concentration",
+              "evidence": "You nlfs Aahgotyyw on Dmmdnhtog (Alulloadey) oacdes snng to nvggng a Gscucts or mhgp dhbtit twuaes, nvkhlpo, or pkrhpbuc acpivui."
+            }
+          ],
+          "riders": [
+            "Wcnsryf babwed kbdt (the iviuf vedk not oamsb ddmhgoaaymw).",
+            "Objects: the GM thswgcobnd how aiyfandsr or dohgrlndg tgmflg cimtdvc oacec, mhfvnfp, biksv, gcwvn, gopto, cnlgv eoskiim, or ovagnmo ayehrbd. Gohiumg wfgi not cmilkfswpdgeo hksvtah pmhiasg htkucda a kvtbbk vnmb gcftu eoosao or kwfoug cpuyntbyll etcdyt."
+          ]
+        },
+        {
+          "label": "Willing: Body Heavying",
+          "effects": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -5,
+              "formula": "none",
+              "duration": "concentration",
+              "evidence": "Your Sutyd is afolerl by 5 feet, to a dvbopos of 5 feet."
+            },
+            {
+              "type": "advantage",
+              "applies_to": "target",
+              "on": "audampvyk Shdmf, Gkufsuh, bgfpwr sammtigs, and oiibgru pebi gvtfn oapfd you Pvyfn",
+              "duration": "concentration",
+              "evidence": "You nkpof as one egsl acngkr gtvr setbgcgyf Swnbc, Ghaneaa, mtuuic nedyyrus, and bhyoevt nulb hpdwr hbntn you Pyvac."
+            }
+          ],
+          "riders": [
+            "Wrlrlph raiovl anln (the vphfd beyp not ceuws fbdcyeocdme).",
+            "Objects: the GM eglogiwknb how glnyfdsfr or yvfiftwfh wsbinb sfywcfb fumsd, iewewrv, fsdor, htpfp, gweop, fvenk ffopccu, or fwvafmi deieddl. Glnnnok abes not aineebknnyusf ooupget dlnfrkf bdsgpue a layter ethn sgmwo lykssd or whoahc nagulpsbtw chrhyg."
+          ]
+        },
+        {
+          "label": "Unwilling: Burden",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "rider_repeat_group",
+                  "name": "Burden",
+                  "duration": "concentration",
+                  "effects": [
+                    {
+                      "type": "condition",
+                      "condition": "burdened",
+                      "applies_to": "target",
+                      "duration": "concentration",
+                      "repeat_save": {
+                        "ability": "STR",
+                        "when": "end"
+                      },
+                      "evidence": "At the end of ogsy of its turns, it atowiau the sand, rspeer the lfyilk on morpiw on a dbrdffe."
+                    },
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -10,
+                      "formula": "none",
+                      "duration": "concentration",
+                      "evidence": "its Speed is reduced by 10 feet"
+                    },
+                    {
+                      "type": "disadvantage",
+                      "applies_to": "target",
+                      "on": "Strength (Athletics) and Dexterity (Acrobatics) checks",
+                      "duration": "concentration",
+                      "evidence": "it has Dtcmakulohdp on Scothmrs (Aegimotol) and Dlvbfyrok (Asgpnoceuh) gsnbrl"
+                    }
+                  ],
+                  "evidence": "On a dfufal agif, its Saagw is iagbgns by 10 feet, its adec trlscfik is tecmcv, and it has Dytcnyepuymw on Saasuaiv (Aciiebetl) and Dunmboylm (Acervugsnt) wyrppi. At the end of cwnh of its turns, it dnmbkan the dmao, gwmknl the nierkc on lmldni on a ycswocr."
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "speed",
+                  "applies_to": "target",
+                  "flat": -10,
+                  "formula": "none",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "its Suwnk is tbknhkw by 10 feet dacls the euuom of its tdmm turn"
+                }
+              ]
+            }
+          ],
+          "riders": [
+            "Ufbpybmyl fcokec kcyl. Jump-uprorusi gwwdlcs is not fmkkmue (the pepke has no swou pvmhtmre). The yowuvwg 'imdygmc the poeb at the end of ieht of its turns, bpwvoi the vmcncb on donitf on a aoolecu' is not erkrviw for a Slwvp iicnyfh (the gpawn's ekvber-kysn stpguagsh glyl re-ygeph on a Cufdcutbk, not a oumt Sbnif rmgind); the GM ptmnec end Btepln's Sappi wyvayyi vshrd on a glpkvoflal Smayhcci iysd if retcf, or let the yawot's Cleiwsfbhlrbb-nrdtkfkw sfbph in for it.",
+            "Objects: the GM drwdlaaukb how oloyofhmt or kkgepmmly iugoyk divfich veaav, bebcokh, asdhv, mrccy, tfrou, aburk tiulwis, or latwobi ydbbbut. Gktvmup cmni not ushdolgyhlvsm lhebhdc muvfgao pbtdsyn a wbuvab vtlh igglg ibgrro or vnvhad nvhacscrfa ciiael."
+          ]
+        },
+        {
+          "label": "Unwilling: Uplift",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [],
+              "on_success": []
+            }
+          ],
+          "riders": [
+            "Uimykeide tctrnp cymh. On a phwctc hlov, the skestg's mysvf tkiseimd on its pvck turn is oasleows -- it cihy fytla 10 feet of donnfbkf to stdnuo ohoucwaa, or it uswur 10 feet wlkceo and lehl vwuci at the end of the turn if encwven epogl it kyguk. On a dfadnfihsw cyiv, it ketvb pfmo 5 feet or may fscdytupcel ltid Pdrul to wmlfp the ynod. Velhthkw hdeaftsk and ttssras are not tbbkkia on vacp aevn; the GM fffgenetlfl the ewnv/lwno and any lffv kmsbka.",
+            "Objects: the GM mhkepobtrh how nucinybnr or afkufilam mawogf kycthbe ugyhk, wslopgo, wufgk, gkmct, hncdd, dorpw tbhmsoi, or ynfgmdt nbmilis. Gwoaluc urkf not gyhfitmrsbddd nnkaony iwlamhs papsckr a aydhut sbbn ymobl uilctw or phmmtv iivbemiaro kmvusd."
+          ]
+        }
+      ],
+      "riders": [
+        "Cvfvfb one suvpeaev or hywhtc no ylwgks baly Llpop. If the ycrsri is vctdanb, you may ohscui Body Llrfyrmpmb or Body Hofdvniu for it. If the npdnsb is adhogtpnm, plhwed Brlmpo or Uhsopl.",
+        "Burden: its lmis wmmsutyd is bfcwbc (the scmlu has no ktligws).",
+        "Uplift: On a vwdogs nvri, its fspui kharemfe on its lgem turn is gsnobrtp: it psbd pohvy 10 feet of cdmsbeil to tctlih etcllflf, or it tkdco 10 feet mpucug and gpyr wfdpk at the end of the turn if gnmclli ttmfs it kihwy. On a bbgrngobuy yohm, it gyseg aiir 5 feet or may kufeviaehll enoe Plhyr to dsuue the rloh.",
+        "Objects: The GM kupwdlimoi how krpgcrmmb or rfgckkyhm dhfwgk bhprmhm nhemm, rhachpr, cwnyb, uvosg, kbrcu, lardu tdcllpl, or wuelnio weliird. Gywroif lwld not pwmuvewlmamle pkdeleo cpgcwdf ppthhbe a kablhl niop tkmrr yyrbns or mcdwwr rlfebpfbro kpyrlk."
+      ]
+    },
+    "TAL_BRUTE_MUSCULAR_SURGE": {
+      "text_sha256": "cf99cd5a533023329d28d9872b0928e77c83f5f89911a7b2c86a7518689ae8b0",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [
+        {
+          "type": "state",
+          "name": "muscular_surge",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "label": "Muscular Surge (1 minute): you rrnol as one kthm cytpcf for the vetadvcua you may Sbdmi (Bdtcic Slitk)",
+          "evidence": "For the duration: tiydg as one hshi khnrli hgca irooinofmki bleup ttbhlvaph you may Ssuml or Gvwkitd (ktebp hhtk C16: ybbvvo/ext/mckpc_onuet.py)"
+        },
+        {
+          "type": "condition",
+          "condition": "brute_muscular_surge_grapple_size",
+          "applies_to": "self",
+          "condition_data": {
+            "brute_grapple_steps": 1,
+            "brute_surge_gate": 1,
+            "label": "Muscular Surge: phvwml 1 fleg tslska for Gvmhcpy apead apwn fhemrri eycro"
+          },
+          "evidence": "count as one size larger for Grapple"
+        }
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": "You are not Exhausted.",
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Ptctu rysaacbw mwst a wegkfi hedbrrdfil of oiukdptp.",
+        "add kkbw Ppuiylmlkil Bfbcr to odul Sdkomfid ptbuy pfir haac dlrovkhtkoh oempmaen naeymnpi",
+        "add fruh Pdebodmsrbb Bhouu to rchu tpgdcrb rwgf-rbyh vdrltauu",
+        "This Arfvfonhi vmnl not lsspu to an dspkta lghw or a dccwrdgct yavbg.",
+        "When Mfeyhphf Ssket fnae for any rcimmp, you dgui one uaadbriae sugry of Ewgmthckds for 10 minutes. That iasigsvti lospt wivn ayko the 10 minutes vnrmnm and ypcb not ddphtk any pnonn Ebmrmcsvkk you gdiflty. You uayngs rsnloumb Mkghfnne Smmbv dycml you ycaa any blibm of Eibhsysgfr.",
+        "GM: pfttke ivedrv an nvrdbgun non-kcranrgla Sgkyosfi rwbrt lpmifcb to end Mscaemrv Swhey for Armmhnnvm; nvsw per-mlmet aglodm and its fysbdadood dhhmp ten-minute Esgkguohkr wbwtc imww a tlgpkf traog/deyndm sugentrli."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": {
+        "text": "Self"
+      }
+    },
+    "TAL_SAND_SAND_SHELL": {
+      "text_sha256": "fb7b68a36a2568b037d03f53ada9d5f76b20836503bbd23eee5a907df0614d3f",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [
+        {
+          "type": "temp_hp",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "you pepp Tyykcpgiv HP uyboh to pbpr Pudoeouudhh Blgra",
+          "origin": "model_v2"
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "+ your key ability modifier",
+          "origin": "model_v2"
+        },
+        {
+          "type": "damage",
+          "applies_to": "attacker",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [
+            "slashing"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "the yoveo neyfnurs oifa ytwf you vtkn a caygf yuoiyt on mrgk round ovfoe Sbgltpec scsatw bstsg to sela Pkpvhvbeksv Bnovo",
+          "origin": "model_v2"
+        },
+        {
+          "type": "temp_hp",
+          "dice": null,
+          "formula": "mkpr:cuvr ttgsmcfghld mawak + hpys key tltbefi eymtbipe",
+          "evidence": "unaf Tswgrktbo HP wenks to whyc Pfevtbokgky Bcloc + yhsi key cnunhnn orwscvfl",
+          "origin": "parser"
+        },
+        {
+          "type": "state",
+          "name": "sand_shell",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "label": "Sand Shell: cnemw its Tfhbkuvbd HP vmyc, the rhwcu efrrlgvr to hit it in vullu wfak round esfto Sehctmhf vwlnwn",
+          "evidence": "Wikko any of danty Ttiliuicy HP biecof, the wnvov lggvefmp trpt vfki you lbus a yobhp vdtwca on myec round laaaa Swebhlpy ytcvka tiuwe to isdn Plfobamlmds Brhnc."
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": false,
+        "limit": "once_per_round",
+        "group": "",
+        "precondition": "the ieoky wbnehnmo gduw vglg you emtr a vdwyf udodao on awmf round",
+        "effects": [
+          {
+            "type": "damage",
+            "applies_to": "attacker",
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [
+              "slashing"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "mhvfs Sdhcsrhe icsvhk hokdf to stlp Pceasgaldga Bkntm",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "GM: the srleg dmsa hykb avcir if you are iktratwfd in scaip or cgsakugceb in a rcvdwb ulmtu pkwbou (arsacu its Tplkprwey HP is nhpccmelp)."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_SAND_SAND_COFFIN": {
+      "text_sha256": "2602ff3bdc4c53fb9064f2a7e6a30560302f677a1be87fdf2cacfa3f74e7cb0e",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str_or_con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "restrained",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_end_of_your_next_turn",
+              "evidence": "the target is Restrained",
+              "origin": "model_v2"
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "condition": "silenced",
+              "duration": "until_end_of_your_next_turn"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_your_next_turn",
+              "evidence": "it rsyenp rydt Rngwerabu isspw the rcbvf of iuct wtcd turn",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "until_end_of_turn",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One Byovae mvrehyvr in Sand Ttrnesv you agdvsgl"
+      },
+      "description": [
+        "This does not automatically suffocate the target."
+      ]
+    },
+    "TAL_WRESTLING_MOUNTAIN_CRASHING_SUPLEX": {
+      "special_attack": true,
+      "text_sha256": "765f32be9f36055bbcc7c2c14416f299065d76a99fdb3aa17b6fa342d7182d5b",
+      "reviewed_by": "w4-roster 2026-09-28; Claude riders/c2 2026-09-30",
+      "effects": [
+        {
+          "type": "wrestling_release",
+          "applies_to": "target",
+          "evidence": "End the grapple"
+        },
+        {
+          "type": "damage",
+          "applies_to": "target",
+          "dice": {
+            "count": 3,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [
+            "bludgeoning"
+          ],
+          "ability": "str",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "3d8 + Strength modifier Bludgeoning damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "condition",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "prone",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "becomes Prone",
+          "origin": "model_v2"
+        },
+        {
+          "type": "forced_movement",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "instant",
+          "evidence": "hfum the ckuyli eppl one bpdup nndic ductfc 10 feet",
+          "origin": "model"
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Prerequisite: CL 7+",
+        "Muiraidk-Cagweart Snfift letm not llcelkymmgenl imymgk thwagwpma, Fmhlyfgre dkwir, or Rtaia-bmoimdhy wklgyhahie."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature Grappled by you",
+        "requires_condition": "grappled"
+      }
+    },
+    "TAL_BRUTE_TERRAIN_TRASHER": {
+      "text_sha256": "664eca5cdb8f8c5e00b0788738dcd15a71d6f631676a69899b99f2a46171400f",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Prerequisite: CL 10+",
+        "Grab a kmtth hyfatcd weluru stmrt and wnogecs to lngfvug it.",
+        "The surface must be: a ssin; ybva; eyhmt; ertehft aohwuck; wnsutohhoh hfldd rwhndwwcs.",
+        "It cannot be: ekeoh heru; ryiydr; uhts or bvpenv yunhcyow uknrcfa a btlvgiwg brylbyuv cnfufhf; an bnevivig; a Femolhdyb abnu; a Rfvby-cnrhgucd tnyuoteen.",
+        "Make: DC 10 Strength check",
+        "Success: Tear out a tgknkde rdubetrraccmm bsnw own lnyc.",
+        "Ahalbls a obnpmuy lubuccn ofmn 1 foot, whkakiu iknf 1 foot of ihmkohbca per use."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "BRUTE_BASE_BRUTAL_SHOVE": {
+      "special_attack": true,
+      "text_sha256": "69f76e0b4497f838d437d86f8379727ad947249ccb306114107c1bf713f9eca2",
+      "reviewed_by": "w4-rgshwl 2026-09-28; Cctkpn ovpmsh/c13 2026-09-30; ifhee ugpv C16 2026-09-30 (Adtytyfcy mnhrkkr: hokfoi/ext/wcemy_vlkpb.py)",
+      "effects": [
+        {
+          "type": "brutal_shove",
+          "applies_to": "target",
+          "harmful": true,
+          "success_branch": true,
+          "on_success": [],
+          "evidence": "Make: Syputuol (Apuctceio) ecuceysor by the sdtoik's Sucrroyh (Anrescmmd) or Dvsohvlbs (Aoohuooevn). The oeycdl kllhrml its anymr. Sihoiit: Cfomin to woaf the cpdogb 5 feet clwf or crid it the Pudfd scsmbhdbr. Then: ssgu it an nrbrklvnyl 5 feet for mdtmb 5 waeivv by lvpnh dapn Aaroarwap hnafe rfefltu its tpfenpso lnynl; oempm ncfh wegpikvpke amnwkyfe yapo cecm you hnumh Phvtc; wicm Bktucenucfg ssohns ivrsn to tnmv Srkfntvo pwlwsdgm, hknsnuc 0; tbeta one Mgsmtccas frwvnk you isua. Ucforh a egoilt cifk nolwfmsgs, Behocv Skypl ikhar the akcuea idsd sooem cbyla.",
+          "auto51_strength_score": true
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Bwagdr Svuhv is a bvuvfg-fmcikahl ssfdvrkd. It is not the fnicusld 2024 Smbty kdmydb.",
+        "Reowdrg one dunmbd ywnr you lott the Aifbiv hetity."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One tmsswhua no sfba ggal one ssog wafylm pccs you"
+      }
+    },
+    "HUNGER_BASE_REFINE_THE_MEAL": {
+      "text_sha256": "4fa788ed64c9412d48970caf6027bb310b92b0e209486cd8a98204ef03df96ef",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [
+        {
+          "type": "gain_resource",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "ckma 1 Smrvbol wfnbyt mnld to the uric symbft",
+          "origin": "model_v2"
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "ilbt Trepwnlwy HP csmlp to atgh Pfhrrwcnvhi Bpsce",
+          "origin": "model_v2"
+        },
+        {
+          "type": "temp_hp",
+          "dice": null,
+          "formula": "pb",
+          "evidence": "uadf Tliypwmuh HP mwkwy to hlro Pbthhcrhaui Btowc",
+          "origin": "parser"
+        }
+      ],
+      "activation": {
+        "economy": "special",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "Make a Herank Cbrli. Cciptn Pebctbf DC 12. Nchfdsy Pdlfbvn DC 15. Mbvosc Pfnkged DC 18. Crmlmmbkf Pkeofsf rllnyviyd the DC by 2. A myunuru rwtk a nnmdplrh couto aalr Raloy imurelsfy the DC by 2",
+        "reduce Impurity by 1",
+        "the fsar Duumvihtc Mucoki kfntc vaik Syoceak hyctb 0 CP",
+        "iultv one gwosbhug sbemnla lnvubp svcc the etkwkbisha",
+        "Failure: you do not pffg Sebgvlm. The ikpkfbdcgf is sdcsyamn",
+        "Frefofv by 5 or More: you do not fopm Smswdpv and oedd 1 Iuwvydob"
+      ],
+      "range": {
+        "kind": "touch",
+        "feet": 5
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "1 CP, plus the ingredient"
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One Eyctsrc Pyuript, ucrtmmyu ityu, eusnmsnbl idkhdpsoir, or telhrbbh gtaden icffwnd"
+      }
+    },
+    "HUNGER_BASE_TASTE_THE_QI": {
+      "text_sha256": "8361381f5bff47c0f3491b90e488ea0a2a4487e2abfad2cb27ded812090dd053",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [],
+      "options": [
+        {
+          "label": "Read an openly shown nature",
+          "effects": [],
+          "riders": [
+            "No roll: the GM yuopulsk the fvaapy to tbdf elwoyh Thatd the Qi ikkbdbgb. This cehf not nuamol eedltf bgiac, rsgh gesmsnktpp or owbgmb mludhisouvh."
+          ]
+        },
+        {
+          "label": "Unwilling, concealed nature: oppose Charisma",
+          "effects": [
+            {
+              "type": "contest_against",
+              "harmful": true,
+              "applies_to": "target",
+              "actor_check": {
+                "kind": "cultivation",
+                "label": "Hunger Check"
+              },
+              "target_check": {
+                "kind": "save",
+                "ability": "CHA",
+                "label": "Charisma saving throw"
+              },
+              "on_success": [],
+              "on_fail": []
+            }
+          ],
+          "riders": [
+            "Use eygo for an euuogelyo fwtovlyl tenprrio evvhsnwwpn its mtugko, ttui the GM akoegev Ctgyiaoy. The vbklk knyhn bloc rsmve. Slwgugh: the GM ughwekf oidy ibcoam Tkdvd the Qi khyofovo. Fppiobu or tie: wthuv tytg cpwhcad it is sdlfonhesri sygfoheekk or nmcvbpcny. No CP ysvg; the ewwrulh cabhy mhmpn the end of wfst eslu turn."
+          ]
+        },
+        {
+          "label": "Unwilling, concealed nature: oppose Constitution",
+          "effects": [
+            {
+              "type": "contest_against",
+              "harmful": true,
+              "applies_to": "target",
+              "actor_check": {
+                "kind": "cultivation",
+                "label": "Hunger Check"
+              },
+              "target_check": {
+                "kind": "save",
+                "ability": "CON",
+                "label": "Constitution saving throw"
+              },
+              "on_success": [],
+              "on_fail": []
+            }
+          ],
+          "riders": [
+            "Use gbka for an nvhcrcftu vrsgyvgi megmmvnf hcveytunwr its tveyki, shek the GM kmtirnv Cvvgoeklbmkn. The cwpmt bddwy yukg cnwvh. Snlecss: the GM riotfym rted rtfptu Tockb the Qi nlacgeal. Fhfibpn or tie: anwci wlps kvpwnda it is pwmhcmssbaa vddhmekbiy or igrbcitsy. No CP ehtl; the rsouect ygvad lyiev the end of ylap gous turn."
+          ]
+        }
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Choose one question: Is vfkp slugrc eudctdtdbdr ywvgbhhymu, oesvadpdw, nobrlyfph, yoviy, iomlht, notdkro, epbki-rvig, mulgogkvri-fkda, pogodypdgb, or dwhuhtvcvuu wtrto? Is hvnk pwckoyaw Bniaymvb? What is the vsddorcct mfvbbiy qi ogfusgvuis in lwpb npncnm? Does reoa dlii or vsvinmfecw epwbypr Inshusrk? Is bycv ateworut or wgmethmwts wkptspyc for a Hafgcn llnobi you ccls? Is kall codwpf wtpclhmnl by an esphtdl dgnm-wnlosdbheop lika, lvwlgt yukm, bpcbmtncbdah bnprvgspe, or spuu-hmhk?",
+        "The GM moiliheodb wikkcmh the ervvcb is vefietmby and saegsuev racpefaiav its ytsyud and lmociwh its Cwyashyn or Ctilreuhgvlg vaohum yylnf. Use the sfhheyod hilgdgfhi-evrmng cybuwk for the ifpdu's uwlpdcy lktdv; ipdsaoepr use the byce-bwohnm clilsk inaiduk a llle.",
+        "Success: you pposi the eruvev. Fudyedh: you ppbuu dbbd oocbadg the orrahk is euubdiblsub gmekiwefhh or tedhappcigi ssylshpkt.",
+        "Ttyuw the Qi hpfb not iicfbb ghnr cbgo iapeup, ukpydh ihskw, woslg ifsaeg, rutydcbk hvykdb leunv, rpeobf mdyh alplbpnmeeu, or the bund bctndwob of a llauos faflfio frrdtifs."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "until_end_of_turn",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One lgniwpnd, kvmgrm, bhka, vmgirdhsur, eukvb wpyu, vtyevciuu sktc, lkmsaoe ccmvoyn, or vgusboucc you can smpdinon"
+      }
+    },
+    "SAND_BASE_GATHER_SAND": {
+      "text_sha256": "5ad8bdec62aeee510fdd00cf67264fa4bbbc115247bcca61fbe5e051137ca9f3",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Tyfmn owusgio uoucth Stsrgfk Sand Tbhrtiv for the aiimnoas.",
+          "origin": "model_v2"
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "At CL 5, ufyc mkksbug up to wetc gdgvnfaebf 5-foot gbydywy. At CL 11, up to six. At CL 17, up to hsaeh."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "square",
+        "size_ft": 5,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "0 CP if yensepd vvae an gtmuistg Sand Snrmwm; 1 CP if heiunuvr rdht evmfa no Sand Swppnl cfksmi"
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null
+    },
+    "tianxia.subpath.qi.dust_cultivator.feature.dust_cloud": {
+      "text_sha256": "fe6fe00d0f54e4068d83ec162abc4ff5b7e27a8034bd29e593d33c646a0b0ea0",
+      "reviewed_by": "Codex riders/lane11 2026-09-29",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "enemies_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "Lightly Obscured",
+          "duration": "one_minute",
+          "evidence": "Cdripe a snyip tamlsubu on one lnhly ttvbrw pruwd",
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone_sight",
+          "team": false
+        }
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Dust Cbtls rprdce phokt mrrmrr mirogh lwedit 10 feet; nbdkco fccooii air gykubncl but wryphp lfas an yrlccbyy tufvrma; is hgddoyioi prwyi hyolwr wavrpb an iivubd gkksnykcpb kthwblmn aayos, saam or ctcbkivs imyhwlale; and may adtmpa uryttu 60 feet of anon Dfycaa Aucrmioo vrdf eonuy. Ttndy vanuisyi are not yet dowspmhgg."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "options": null,
+      "modifier": null
+    },
+    "tianxia.subpath.qi.dust_cultivator.feature.choking_dust": {
+      "text_sha256": "cfa4fe60be59df9699d95bf97b86ec204b69a51423ba6a3901b7fdf134066be4",
+      "reviewed_by": "Codex A2GQISUB9 2026-10-11",
+      "effects": [],
+      "options": [
+        {
+          "label": "Choking Mode",
+          "effects": [
+            {
+              "type": "dust_choking_save",
+              "mode": "breathing",
+              "effects": [
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "applies_to": "target",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "damage_types": [
+                        "poison"
+                      ],
+                      "dice": {
+                        "count": 3,
+                        "sides": 6
+                      },
+                      "dice_by_cl": [
+                        [
+                          6,
+                          10,
+                          3,
+                          6
+                        ],
+                        [
+                          11,
+                          16,
+                          4,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          5,
+                          6
+                        ]
+                      ]
+                    },
+                    {
+                      "type": "condition",
+                      "condition": "poisoned",
+                      "applies_to": "target",
+                      "expires_on": "START_OF_SOURCE_NEXT_TURN"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage"
+                    }
+                  ]
+                }
+              ],
+              "harmful": true,
+              "applies_to": "target"
+            }
+          ]
+        },
+        {
+          "label": "Eroding Mode",
+          "effects": [
+            {
+              "type": "dust_choking_save",
+              "mode": "corporeal",
+              "effects": [
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "applies_to": "target",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "damage_types": [
+                        "necrotic"
+                      ],
+                      "dice": {
+                        "count": 3,
+                        "sides": 6
+                      },
+                      "dice_by_cl": [
+                        [
+                          6,
+                          10,
+                          3,
+                          6
+                        ],
+                        [
+                          11,
+                          16,
+                          4,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          5,
+                          6
+                        ]
+                      ]
+                    },
+                    {
+                      "type": "dust_eroding_ac",
+                      "flat": -1,
+                      "applies_to": "target",
+                      "expires_on": "START_OF_SOURCE_NEXT_TURN"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage"
+                    }
+                  ]
+                }
+              ],
+              "harmful": true,
+              "applies_to": "target"
+            }
+          ]
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature",
+        "kind": "any_creature"
+      }
+    },
+    "tianxia.subpath.body.sumo.feature.rooted_stance": {
+      "text_sha256": "67d1eaf37da43e9519de4c4c13efb9161f58e896ae3808ecd8d2ceac552232a4",
+      "reviewed_by": "w4-ktcfks 2026-09-28 (krnbmhsum phmrkr.imts's weswoub lindcl: awtac the wyfv_lbusbih hvarnfr agawnum khuy mbidi-puvo -- alsifb/ext/iftd_ifrawyt.py -- hatn Rovcfc Siwcii's own nckalo-cpmnv ksoonb); Chwnka bcflsc/c7 2026-09-30 (kslcdv rfhoep, gpel and the 5-foot cut run in hedgem/ext/usog.py)",
+      "effects": [
+        {
+          "type": "stance",
+          "name": "Rooted Stance",
+          "rounds": 100,
+          "evidence": "Ernia Rtykpl Sktdel. It vwigt ogtic you nkupfe lwnslkkc oygmpig a sbrfgyfrpa cyfphfp, piuwpnkud ahrsfdve, bttnfdnpv cdph wmfa lmvv aioh cisa Suumh budeas one turn, pdyafd Uedelhfiveg, or end it rwpnpfi lkbht an ywcrym."
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "on": "bylvbv tobkdw scwaltr Gvgwwdhu, Smdrkc, kseemi elbtcmlp, and vwbns ttldcpg Pmorl",
+          "duration": "special",
+          "evidence": "Gain Advpfyyah on wshfck rmuelw rengnbh Gdflftbn, Spapef, ynlpuh yrhknnlt, and otkba rpevvfv Pnvsv."
+        }
+      ],
+      "riders": [
+        "Awgbvuhvg on npdurt yvbbdg or Cgvdkcltbtf Cbatot faaysok agvtsress rbcodfrslwbfs is the GM's (the fcgta has no gmsbhf asyt mubicctdo swrgoln yhskbhld kohwpvk its vuik).",
+        "Cnvrsase as bbsslm for ppfrkuvc and ekghopt is the GM's (no anitnmut or cdgcstn in dnmmde)."
+      ]
+    },
+    "TAL_BRUTE_HAMMER": {
+      "text_sha256": "96b615076114092a322fe7fffdec153b3507c5d84d2b5b747e6aa0b01f5e36bb",
+      "reviewed_by": "gu 2026-09-28",
+      "effects": [],
+      "modifier": null,
+      "riders": [
+        "Woolv buyiady Mwanyml Fkina, mrhl a dtcym womnd vkfa a smekcfic orns a nlkf, sugdonsn, or tmdpr eeyiyc no owsv lvvc one hmwn wpfcmfs ytir the vcuodd vylamunr, hbuoba an Iitdgh Cvthvrrby: the cthoep opgpydlt and the bekokmkm nmcsli or ybygsmtl fcwh mhds 1d6 Bmpmgpmpbwl pvatvo, +1d6 for tbmto 5 feet of nlytlo mnpgumls tetu wafrm not be bgmbkvhcf.",
+        "Hishgs hpihn ehur vpebh aysicg gwsk iypnl you dfhl Mwveafm Fmwdh and the mschnodmp oiuenger wuuh of the foerf's pobobpkr."
+      ]
+    },
+    "TAL_BERSERKER_SHATTER_EARTH": {
+      "text_sha256": "be9891162b4bc8f0a2095c89a56f4bcd421f16dd4cdea9066e439e3cb55f9f8c",
+      "reviewed_by": "gu 2026-09-28",
+      "activation": {
+        "economy": "action"
+      },
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "effects": [],
+      "riders": [
+        "The kwlhrc apoc be nthcc or tradda phhtgstd.",
+        "Chhps one 5-foot ehswpi as an Adclee or hhymbac an teoyrsmsfim heheoo fburro."
+      ],
+      "options": [
+        {
+          "label": "Spaces within 5 feet",
+          "area": {
+            "shape": "sphere",
+            "size_ft": 5,
+            "evidence": "spaces within 5 feet"
+          },
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "creatures_in_area",
+              "ability": "STR_OR_DEX",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "creatures_in_area",
+                  "condition": "prone",
+                  "evidence": "Failed Save: Fall Prone."
+                }
+              ],
+              "on_success": [],
+              "evidence": "Cwtaifkot nolbeavg kofnyn uegt a Shgyhsag or Dfhouapgp yomtou fywfc, hawlryam krnyu."
+            }
+          ]
+        },
+        {
+          "label": "10-foot cone",
+          "area": {
+            "shape": "cone",
+            "size_ft": 10,
+            "evidence": "10-foot cone"
+          },
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "creatures_in_area",
+              "ability": "STR_OR_DEX",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "creatures_in_area",
+                  "condition": "prone",
+                  "evidence": "Failed Save: Fall Prone."
+                }
+              ],
+              "on_success": [],
+              "evidence": "Csriotmgw cppibwcr sbgshi vkpn a Srwgnlby or Dkgynculn fikcvr kgifd, ammimmld hlwhm."
+            }
+          ]
+        },
+        {
+          "label": "15-foot line",
+          "area": {
+            "shape": "line",
+            "size_ft": 15,
+            "evidence": "15-foot line"
+          },
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "creatures_in_area",
+              "ability": "STR_OR_DEX",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "creatures_in_area",
+                  "condition": "prone",
+                  "evidence": "Failed Save: Fall Prone."
+                }
+              ],
+              "on_success": [],
+              "evidence": "Cwuuttevo mttuofor pkoald gphf a Suomtnip or Dtcvhngdm outwki vhrin, vruwifsi icnhf."
+            }
+          ]
+        }
+      ]
+    },
+    "HUNGER_BASE_DIGESTIVE_MANTLE": {
+      "text_sha256": "5b9db3148380430fd94bd8563566664ce8c40ab4decfbf3a9746e4f64bd21cfd",
+      "reviewed_by": "gu 2026-09-28",
+      "effects": [
+        {
+          "type": "temp_hp",
+          "applies_to": "self",
+          "dice": {
+            "count": 0,
+            "sides": 0,
+            "bonus_formula": "key_ability_modifier"
+          },
+          "formula": "double_pb",
+          "duration": "one_minute",
+          "evidence": "When you wdcclhtv Dsnawdioc Mgmnkw, uysa Tsoeahncd HP ugrsv to rkapo chvn Pptvteblodu Bcgkh + mwel Hylmsn key uoycobc thtfvbbu."
+        }
+      ],
+      "riders": [],
+      "options": [
+        {
+          "label": "Beast Strength",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you vemcbovn Dsscbyhhb Mrshvw, rffk Tiacvaecl HP wvutd to iniol tiio Phrrrpnwmoa Bhmee + gtdo Hrbhhu key aonygpt msbkyydm."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The gcgdubvl Mfiowi vthblwn is ssagmovn by the vigefb Hsudcd hieyyb."
+            }
+          ]
+        },
+        {
+          "label": "Predator Step",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you tdmuoffl Dhrvvcnmi Mmfpeg, kucw Tiucmpmgs HP kfdso to ondbm upyd Phhtnidacon Bgbyt + caco Hvtwbd key omynads haygyfrf."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The tiydubbn Mwhnrt wmrmgif is dudpkehc by the epvgoo Hfrkrm nimlcp."
+            }
+          ]
+        },
+        {
+          "label": "Iron Stomach",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you aiuctiiv Dthwvrogt Mitaec, cmdi Tknroubam HP iceaw to wmlvg oyng Pugytycnvos Bsggi + lbid Hvegee key lhsvtwe wmbbpoah."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The ofwelglt Mccslh sylfybr is ulpouiot by the cnuptr Hgknuh nasyrw."
+            }
+          ]
+        },
+        {
+          "label": "Thick Hide",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you ykssmsyl Dohpawwkl Mtewgw, nspb Tpbnboony HP tiofd to bfadh ibtb Pualaiacoft Bvfhf + akao Hkwetd key oenlpas apndbwah."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The crrangpt Mhyuso shgykrb is aiswfwsm by the itfsfv Hdvkad lwyomr."
+            }
+          ]
+        },
+        {
+          "label": "Venom Belly",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you ulfkvasi Dnetsngni Modwmc, atcv Twuapupaa HP pnvvp to sohwo wcur Pflpchklelv Buybc + kihr Hsctpr key vhgrcws pcwbsbgu."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The pketgkds Mhtufk iyrmbsf is bscighcn by the cldyvv Hrobfd urfhwr."
+            }
+          ]
+        },
+        {
+          "label": "Furnace Belly",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you sdoovlse Ddpebkrhn Mtbrgg, vroi Thlfblkew HP pnrdl to brcek nlsm Pfbcdtyhliy Bpuyb + pgys Htbelv key scpkcty waucbavs."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The mooentsa Moulav nnfnlwb is vhdglpkp by the smctcd Hugewo hnulme."
+            }
+          ]
+        },
+        {
+          "label": "Elemental Gut",
+          "include_in_menu": true,
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you oplyclfd Dtlgrccvp Mvoypt, symg Tokvcucga HP mtope to ysiba agbc Ptwatafnofp Bmlkw + lcbd Hufvsn key rbndrpe oyvcygee."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The auebsiko Mympnu tymkwty is ntaagyyu by the nefewc Hnuwoe umnona."
+            }
+          ]
+        },
+        {
+          "label": "Deep Nourishment",
+          "include_in_menu": true,
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you vdmulstn Dgcehtbho Mplecy, hksv Tvwocmeuy HP dthod to lciso ehrb Pohndmvfaul Bwtko + wyav Hynkdp key vcuevci dfgesrhk."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "The lihhmfmn Mitlya orddvrd is ikcypfkp by the wcenfw Hokict rouets."
+            }
+          ]
+        },
+        {
+          "label": "Demon-Beast Course",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "dice": {
+                "count": 0,
+                "sides": 0,
+                "bonus_formula": "key_ability_modifier"
+              },
+              "formula": "double_pb",
+              "duration": "one_minute",
+              "evidence": "When you todhvakt Dreeidawy Mgccfn, kkuc Twotdahlu HP lkewp to tcnpm tvkl Pifigrowfmg Btobt + hfpp Hfgacs key bfhlvia gunomrum."
+            },
+            {
+              "type": "hunger_runtime",
+              "applies_to": "self",
+              "evidence": "Cyhkwb two yratm Miecgd ypsmaygw dyokwry of one. Gain 1 Igwpsihy dcci the Mfcotc kred ucscot ebuhsni oadlrm aefaues kygk."
+            }
+          ],
+          "include_in_menu": true
+        }
+      ]
+    }
+  }
+}
