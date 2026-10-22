@@ -1,0 +1,129 @@
+{
+  "authority_surfaces": [
+    "ordinary_operation_tags",
+    "imposed_strain_targets",
+    "method_self_risk_tags",
+    "foundation_vulnerability_tags",
+    "repair_interfaces",
+    "foundation_challenge_routes",
+    "transformation_routes",
+    "acquisition_context_tags"
+  ],
+  "foundation_form_tags": [
+    "BODY_FORM",
+    "BONE_FORM",
+    "CORE_FORM",
+    "DANTIAN_FORM",
+    "EMBRYO_OR_WOMB_FORM",
+    "HEART_FORM",
+    "IMPRINT_FORM",
+    "MARROW_FORM",
+    "MERIDIAN_FORM",
+    "RECORD_FORM",
+    "ROOT_FORM",
+    "SOUL_ANCHOR_FORM",
+    "TENDON_FORM",
+    "VESSEL_FORM"
+  ],
+  "global_rules": [
+    "No exhaustive pairwise authority.",
+    "Exact named overrides require direct authored evidence.",
+    "One shared Sphere is insufficient.",
+    "Generic repair/challenge/administrative operations do not score ordinary compatibility.",
+    "Method self-risk is not directional strain.",
+    "Insufficient evidence returns GM_REVIEW_REQUIRED."
+  ],
+  "ordinary_operation_tags": [
+    "BLOOD_REFINEMENT",
+    "BODY_TEMPERING",
+    "COMPANION_ALIGNMENT",
+    "COMPRESSION",
+    "CONTRACT_ALIGNMENT",
+    "CYCLING",
+    "DANTIAN_REFINEMENT",
+    "DREAM_ALIGNMENT",
+    "FILTERING",
+    "FORMATION_ALIGNMENT",
+    "HARMONIZATION",
+    "KARMA_ALIGNMENT",
+    "MARROW_REFINEMENT",
+    "MERIDIAN_CIRCULATION",
+    "OATH_ALIGNMENT",
+    "PREDATION",
+    "QI_REFINEMENT",
+    "RECOVERY",
+    "REDIRECTION",
+    "RITUAL_ALIGNMENT",
+    "SOUL_ANCHORING",
+    "SPIRIT_STABILIZATION",
+    "SWORD_ALIGNMENT",
+    "TRANSFORMATION",
+    "VESSEL_EXPANSION"
+  ],
+  "provenance_gate": {
+    "corrective_breakthrough_policy": "May support only correction interfaces.",
+    "foundation_allowed_source_surface_classes": {
+      "affinity_sphere_ids": [
+        "FOUNDATION_CANONICAL_SPHERE_INTERFACE"
+      ],
+      "form_tags": [
+        "FOUNDATION_CULTIVATION_FORM"
+      ],
+      "ordinary_operation_tags": [
+        "FOUNDATION_POSITIVE_CULTIVATION_BEHAVIOR"
+      ]
+    },
+    "ineligible_raw_tag_policy": "Ignored by resolver even if present in a raw tag list.",
+    "method_allowed_source_surface_classes": {
+      "affinity_sphere_ids": [
+        "METHOD_CANONICAL_SPHERE_INTERFACE"
+      ],
+      "foundation_form_affinity_tags": [
+        "METHOD_CULTIVATION_FORM"
+      ],
+      "ordinary_operation_tags": [
+        "METHOD_POSITIVE_CULTIVATION_BEHAVIOR",
+        "METHOD_POSITIVE_BREAKTHROUGH_CLAUSE"
+      ]
+    },
+    "negative_breakthrough_policy": "May support only METHOD_DIRECTIONAL_STRAIN provenance and never positive ordinary operations.",
+    "ordinary_compatibility_requirement": "At least one provenance entry with polarity POSITIVE, scoring_eligibility ORDINARY_COMPATIBILITY, and the surface-specific allowed source_surface_class."
+  },
+  "repair_interface_tags": [
+    "DANTIAN_REPAIR",
+    "DEVIATION_CORRECTION",
+    "HIDDEN_INJURY_REPAIR",
+    "MERIDIAN_REPAIR",
+    "PURIFICATION"
+  ],
+  "resolver_states": [
+    "CORRECTIVE_OPPORTUNITY",
+    "GM_REVIEW_REQUIRED",
+    "INCOMPATIBLE",
+    "NATURAL_AFFINITY",
+    "STRAINED",
+    "TRANSFORMATION_OPPORTUNITY",
+    "WORKABLE",
+    "WORKABLE_WITH_FRICTION"
+  ],
+  "schema": "Tianxia.MethodCompatibilityTraitTaxonomy.v0.6",
+  "source_safe_matching": {
+    "examples_that_must_not_emit_COLD_RISK": [
+      "practice",
+      "choice",
+      "apprentices"
+    ],
+    "normalization": "Unicode NFKC + casefold + punctuation/hyphen boundaries + whole-token/explicit phrase regex",
+    "substring_matching_forbidden": true
+  },
+  "status": "MET1R3_SEMANTIC_SURFACE_POLARITY_AUTHORITY_READY",
+  "transformation_mode_tags": [
+    "GOLDEN_ELIXIR",
+    "REBIRTH",
+    "RETURN_TO_SOURCE",
+    "REVERSAL",
+    "SHEDDING",
+    "TRANSMUTATION"
+  ],
+  "version": "0.6"
+}
