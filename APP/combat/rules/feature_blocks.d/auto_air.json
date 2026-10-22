@@ -1,0 +1,16 @@
+{
+  "note": "Air sphere building blocks (automation lane AUTO18, 2026-10-04): numbers printed in APP/authority/typed_mechanics/rules_text.json, read by combat/ext/altitude_abilities.py. A key that is not here automates nothing.",
+  "features": {
+    "TAL_AIR_FEATHER_FALL_BREATH": {
+      "block": "altitude_abilities",
+      "kind": "fall_cushion",
+      "name": "Feather-Fall Breath",
+      "range_ft": 30,
+      "reduce_ft_by_cl": [[1, 4, 30], [5, 20, 60]],
+      "targets_by_cl": [[1, 16, 1], [17, 20, "pb"]],
+      "upright_cl": 11,
+      "cost": 0,
+      "why": "\"You create a cushioning current. Reduce the fall distance used to calculate fall damage by 30 feet for the target. At CL 5, reduce it by 60 feet. At CL 11, the target may also land on its feet if it is not Incapacitated. At CL 17, you may affect a number of falling creatures within range equal to your Proficiency Bonus.\" A Reaction answering a fall (combat/falling.settle), for one creature (your Proficiency Bonus of them at CL 17), costing only the Reaction."
+    }
+  }
+}
