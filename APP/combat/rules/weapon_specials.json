@@ -1,0 +1,672 @@
+{
+ "schema": "TianxiaFoundry.WeaponSpecials.v2",
+ "note": "Owner-editable (2026-09-26): how each weapon fights, on top of its Item Book profile. Owner: \"each weapon type to express in mechanics how they fight ... in line with dnd 5e as far as it can be but the special properties can be like how pathfinder does it if the mechanics arent there in 5e\". weapons: keys are chassis item ids (a treasure weapon on that chassis gets the same). mastery is one 2024 weapon mastery (Cleave, Graze, Nick, Push, Sap, Slow, Topple, Vex), taken from the Item Book's nearest 5e weapon; it applies to every attack with the weapon. maneuvers are Pathfinder-style tricks from the Item Book tags (Hook/Hooking and polearms trip, Disarm/Sword-Breaker disarm, Pin pins, Pulling pulls, rope and chain weapons trip and grapple): each is its own attack button, and the first hit of that Attack action also tries it (the hit still deals its damage). damage replaces the printed damage, reach_ft the printed reach. A save's DC is 8 + proficiency bonus + the attack's ability modifier. mastery_requires / maneuver_requires (or a maneuver's own requires) may be \"proficiency\" or null. proficiency: a character adds its proficiency bonus to weapon attack rolls only when proficient -- classes_by_path is each Path's weapon training (Item Book classes simple, martial, exotic); grants are Sphere abilities, talents, Subpath features or Sphere ids that give a weapon group (groups list weapon names, the last part of the item id; \"*\" is any weapon); choose N marks a grant where the player picks weapons, which the sheet does not record, so it covers the weapons the character carries, treasure first. Edits apply to the next fight. pick_up_economy is what picking up a disarmed weapon costs (ACTION, BONUS_ACTION or NONE). max_size_larger limits a maneuver to targets no more than that many sizes larger than you; until_escape makes a condition last until the target escapes. A maneuver's condition may be a list (Pin gives grappled and pinned); its ends may be start_of_your_next_turn or end_of_its_next_turn; advantage_if_larger gives the target Advantage on the save when it is more than that many sizes larger than you. A grappler drags the creature along when it moves (each foot costs 1 extra foot unless the creature is two or more sizes smaller) and may let go for free. A grant's group may be a list. The improvised group is improvised weapons (every fighter can grab one: 1d4 Bludgeoning, thrown 20/60, proficiency bonus only with a grant). mastery_requires: sphere means a weapon's mastery needs a Sphere listed in mastery_spheres (Sphere id -> the group of weapons it covers, any = all); proficiency or null are the other settings. weapon_methods is the Weapons Sphere's Apply Weapon Method (for its holders only): each method lists the tags/properties/kinds it needs; minor ones are free, major ones expend Martial Focus; one method per turn, on the Attack action's first hit.",
+ "mastery_requires": "sphere",
+ "maneuver_requires": null,
+ "masteries": {
+  "Cleave": "After a melee hit, attack a second creature within 5 ft of the first and within reach; no ability modifier to its damage unless negative. Once per turn.",
+  "Graze": "A miss still deals damage equal to the attack's ability modifier, of the weapon's type.",
+  "Nick": "The Light weapon's extra (off-hand) attack is part of the Attack action instead of a Bonus Action. Once per turn.",
+  "Push": "A hit pushes the target 10 ft away if it is Large or smaller.",
+  "Sap": "A hit gives the target Disadvantage on its next attack roll before the start of your next turn.",
+  "Slow": "A hit reduces the target's Speed by 10 ft until the start of your next turn.",
+  "Topple": "A hit forces a Constitution save or the target falls Prone.",
+  "Vex": "A hit gives you Advantage on your next attack roll against that creature before the end of your next turn."
+ },
+ "maneuvers": {
+  "Trip": {
+   "save": "STR_OR_DEX",
+   "condition": "prone",
+   "text": "The target, if no more than one size larger than you, makes a Strength or Dexterity save (its better) or falls Prone.",
+   "max_size_larger": 1
+  },
+  "Grapple": {
+   "save": "STR_OR_DEX",
+   "condition": "grappled",
+   "text": "The target, if no more than one size larger than you, makes a Strength or Dexterity save or is Grappled until it escapes (its Action: Athletics or Acrobatics against this DC), you are down, or it is beyond your reach.",
+   "max_size_larger": 1,
+   "until_escape": true
+  },
+  "Disarm": {
+   "save": "STR_OR_DEX",
+   "condition": "disarmed",
+   "text": "The target makes a Strength or Dexterity save or drops its best weapon: those attacks are gone until it spends the pick-up (pick_up_economy)."
+  },
+  "Pin": {
+   "save": "STR_OR_DEX",
+   "condition": [
+    "grappled",
+    "pinned"
+   ],
+   "until_escape": true,
+   "max_size_larger": 1,
+   "text": "Owner 2026-09-26 (Pathfinder-style): the target, if no more than one size larger than you, makes a Strength or Dexterity save or is Grappled and Pinned. Its Escape grapple Action breaks the pin first; it is still Grappled and needs a second success to break free."
+  },
+  "Pull": {
+   "save": "STR",
+   "pull_ft": 10,
+   "text": "The target, if no more than one size larger than you, makes a Strength save or is pulled 10 ft toward you.",
+   "max_size_larger": 1
+  }
+ },
+ "weapons": {
+  "tianxia.mortal.weapon.bi_shou": {
+   "weight": "1 lb.",
+   "weight_why": "2024 weight of the Dagger (owner 2026-09-26: carrying capacity).",
+   "mastery": "Nick",
+   "maneuvers": [],
+   "why": "Dagger."
+  },
+  "tianxia.mortal.weapon.cha_hu_cha": {
+   "weight": "4 lb.",
+   "weight_why": "2024 weight of the Trident: a fork (its mastery twin is the Pike, 18 lb, too heavy for it) (owner 2026-09-26: carrying capacity).",
+   "mastery": "Push",
+   "maneuvers": [
+    "Trip",
+    "Pin"
+   ],
+   "why": "Pike; a polearm fork: Pin tag."
+  },
+  "tianxia.mortal.weapon.chui": {
+   "weight": "5 lb.",
+   "weight_why": "2024 weight of the Warhammer (owner 2026-09-26: carrying capacity).",
+   "mastery": "Push",
+   "maneuvers": [],
+   "why": "Warhammer."
+  },
+  "tianxia.mortal.weapon.dan_gong": {
+   "weight": "2 lb.",
+   "weight_why": "2024 weight of the Shortbow: a bow that shoots pellets (owner 2026-09-26: carrying capacity).",
+   "mastery": "Slow",
+   "maneuvers": [],
+   "why": "Sling."
+  },
+  "tianxia.mortal.weapon.dao": {
+   "weight": "3 lb.",
+   "weight_why": "2024 weight of the Longsword (owner 2026-09-26: carrying capacity).",
+   "mastery": "Sap",
+   "maneuvers": [],
+   "why": "Longsword."
+  },
+  "tianxia.mortal.weapon.duan_cha": {
+   "weight": "4 lb.",
+   "weight_why": "2024 weight of the Trident (owner 2026-09-26: carrying capacity).",
+   "mastery": "Topple",
+   "maneuvers": [
+    "Pin"
+   ],
+   "why": "Trident; Pin tag."
+  },
+  "tianxia.mortal.weapon.duan_dao": {
+   "weight": "2 lb.",
+   "weight_why": "2024 weight of the Handaxe (owner 2026-09-26: carrying capacity).",
+   "mastery": "Vex",
+   "maneuvers": [],
+   "why": "Handaxe."
+  },
+  "tianxia.mortal.weapon.duan_jian": {
+   "weight": "2 lb.",
+   "weight_why": "2024 weight of the Shortsword (owner 2026-09-26: carrying capacity).",
+   "mastery": "Vex",
+   "maneuvers": [],
+   "why": "Shortsword."
+  },
+  "tianxia.mortal.weapon.emei_ci": {
+   "weight": "2 lb.",
+   "weight_why": "2024 weight of the Dagger x2 (a pair) (owner 2026-09-26: carrying capacity).",
+   "mastery": "Nick",
+   "maneuvers": [
+    "Disarm"
+   ],
+   "why": "Dagger; Bind tag."
+  },
+  "tianxia.mortal.weapon.fei_biao": {
+   "weight": "1/4 lb.",
+   "weight_why": "2024 weight of the Dart (owner 2026-09-26: carrying capacity).",
+   "mastery": "Vex",
+   "maneuvers": [],
+   "why": "Dart."
+  },
+  "tianxia.mortal.weapon.fu": {
+   "weight": "2 lb.",
+   "weight_why": "2024 weight of the Handaxe (owner 2026-09-26: carrying capacity).",
+   "mastery": "Vex",
+   "maneuvers": [],
+   "why": "Handaxe."
+  },
+  "tianxia.mortal.weapon.ge": {
+   "weight": "6 lb.",
+   "weight_why": "2024 weight of the Glaive (owner 2026-09-26: carrying capacity).",
+   "mastery": "Graze",
+   "maneuvers": [
+    "Trip",
+    "Pull"
+   ],
+   "why": "Glaive; Hooking and Pulling."
+  },
+  "tianxia.mortal.weapon.gong_jian": {
+   "weight": "2 lb.",
+   "weight_why": "2024 weight of the Longbow (owner 2026-09-26: carrying capacity).",
+   "mastery": "Slow",
+   "maneuvers": [],
+   "why": "Longbow."
+  },
+  "tianxia.mortal.weapon.gou_shuang_gou": {
+   "weight": "6 lb.",
+   "weight_why": "2024 weight of the Scimitar x2 (a pair) (owner 2026-09-26: carrying capacity).",
+   "mastery": "Nick",
+   "maneuvers": [
+    "Trip",
+    "Disarm"
+   ],
+   "why": "Scimitar; Hooking and Disarm tags."
+  },
+  "tianxia.mortal.weapon.guandao_yanyuedao": {
+   "weight": "6 lb.",
+   "weight_why": "2024 weight of the Glaive (owner 2026-09-26: carrying capacity).",
+   "mastery": "Graze",
+   "maneuvers": [
+    "Trip"
+   ],
+   "why": "Glaive; a polearm."
+  },
+  "tianxia.mortal.weapon.gun": {
+   "weight": "4 lb.",
+   "weight_why": "2024 weight of the Quarterstaff (owner 2026-09-26: carrying capacity).",
+   "mastery": "Topple",
+   "maneuvers": [],
+   "why": "Quarterstaff (Topple already trips)."
+  },
+  "tianxia.mortal.weapon.hu_die_dao": {
+   "weight": "6 lb.",
+   "weight_why": "2024 weight of the Scimitar x2 (a pair) (owner 2026-09-26: carrying capacity).",
+   "mastery": "Nick",
+   "maneuvers": [
+    "Disarm"
+   ],
+   "why": "Scimitar; Bind tag and guarding hilts."
+  },
+  "tianxia.mortal.weapon.ji": {
+   "weight": "6 lb.",
+   "weight_why": "2024 weight of the Halberd (owner 2026-09-26: carrying capacity).",
+   "mastery": "Cleave",
+   "maneuvers": [
+    "Trip"
+   ],
+   "why": "Halberd; Hooking."
+  },
+  "tianxia.mortal.weapon.jian": {
+   "weight": "3 lb.",
+   "weight_why": "2024 weight of the Longsword (owner 2026-09-26: carrying capacity).",
+   "mastery": "Sap",
+   "maneuvers": [],
+   "why": "Longsword."
+  },
+  "tianxia.mortal.weapon.jie_bian": {
+   "weight": "3 lb.",
+   "weight_why": "2024 weight of the Whip (owner 2026-09-26: carrying capacity).",
+   "mastery": "Slow",
+   "maneuvers": [
+    "Trip",
+    "Grapple"
+   ],
+   "why": "Whip; Flexible and Bind."
+  },
+  "tianxia.mortal.weapon.liu_xing_chui": {
+   "weight": "2 lb.",
+   "weight_why": "2024 weight of the Flail (owner 2026-09-26: carrying capacity).",
+   "mastery": "Sap",
+   "maneuvers": [
+    "Trip"
+   ],
+   "why": "Flail; Flexible."
+  },
+  "tianxia.mortal.weapon.mao": {
+   "weight": "6 lb.",
+   "weight_why": "2024 weight of the Lance (owner 2026-09-26: carrying capacity).",
+   "mastery": "Topple",
+   "maneuvers": [
+    "Pin"
+   ],
+   "why": "Lance; Pin tag."
+  },
+  "tianxia.mortal.weapon.nu_gong": {
+   "weight": "18 lb.",
+   "weight_why": "2024 weight of the Heavy Crossbow (owner 2026-09-26: carrying capacity).",
+   "mastery": "Push",
+   "maneuvers": [],
+   "why": "Heavy Crossbow."
+  },
+  "tianxia.mortal.weapon.qiang": {
+   "weight": "3 lb.",
+   "weight_why": "2024 weight of the Spear (its mastery twin is the Pike, 18 lb, too heavy for it) (owner 2026-09-26: carrying capacity).",
+   "mastery": "Push",
+   "maneuvers": [
+    "Trip",
+    "Pin"
+   ],
+   "why": "Pike; a polearm with the Pin tag."
+  },
+  "tianxia.mortal.weapon.san_jie_gun": {
+   "weight": "2 lb.",
+   "weight_why": "2024 weight of the Flail (owner 2026-09-26: carrying capacity).",
+   "mastery": "Sap",
+   "maneuvers": [
+    "Trip"
+   ],
+   "why": "Flail; Flexible."
+  },
+  "tianxia.mortal.weapon.sheng_biao": {
+   "weight": "1 lb.",
+   "weight_why": "2024 weight of the a rope and a dart (its mastery twin, the Whip, is 3 lb) (owner 2026-09-26: carrying capacity).",
+   "mastery": "Slow",
+   "maneuvers": [
+    "Trip",
+    "Grapple"
+   ],
+   "why": "Whip; Returning Line and Bind. Owner 2026-09-26: reaches 5-30 ft, 1d2 damage for its versatility.",
+   "reach_ft": 30,
+   "damage": "1d2 Piercing"
+  },
+  "tianxia.mortal.weapon.tie_bian": {
+   "weight": "2 lb.",
+   "weight_why": "2024 weight of the Flail (owner 2026-09-26: carrying capacity).",
+   "mastery": "Sap",
+   "maneuvers": [
+    "Disarm"
+   ],
+   "why": "Flail; Sword-Breaker."
+  },
+  "tianxia.mortal.weapon.tie_chi": {
+   "weight": "4 lb.",
+   "weight_why": "2024 weight of the Mace (owner 2026-09-26: carrying capacity).",
+   "mastery": "Sap",
+   "maneuvers": [
+    "Disarm"
+   ],
+   "why": "Mace; Disarming."
+  },
+  "tianxia.mortal.weapon.tie_jian": {
+   "weight": "5 lb.",
+   "weight_why": "2024 weight of the Warhammer (owner 2026-09-26: carrying capacity).",
+   "mastery": "Push",
+   "maneuvers": [
+    "Disarm"
+   ],
+   "why": "Warhammer; Sword-Breaker."
+  },
+  "tianxia.mortal.weapon.tong_zhu": {
+   "weight": "1/4 lb.",
+   "weight_why": "2024 weight of the Dart (owner 2026-09-26: carrying capacity).",
+   "mastery": "Vex",
+   "maneuvers": [],
+   "why": "Dart."
+  },
+  "tianxia.mortal.weapon.yue_ya_chan": {
+   "weight": "6 lb.",
+   "weight_why": "2024 weight of the Glaive (owner 2026-09-26: carrying capacity).",
+   "mastery": "Graze",
+   "maneuvers": [
+    "Trip"
+   ],
+   "why": "Glaive; Hooking."
+  },
+  "tianxia.mortal.weapon.zi_wu": {
+   "weight": "2 lb.",
+   "weight_why": "2024 weight of the Dagger x2 (a pair) (owner 2026-09-26: carrying capacity).",
+   "mastery": "Nick",
+   "maneuvers": [
+    "Trip",
+    "Disarm"
+   ],
+   "why": "Dagger; Hooking and Disarming."
+  }
+ },
+ "proficiency": {
+  "classes_by_path": {
+   "tianxia.path.body_refining": [
+    "simple",
+    "martial"
+   ],
+   "tianxia.path.qi_cultivation": [
+    "simple"
+   ],
+   "tianxia.path.spirit_awakening": [
+    "simple"
+   ]
+  },
+  "groups": {
+   "spear": [
+    "qiang",
+    "mao",
+    "cha_hu_cha",
+    "duan_cha"
+   ],
+   "sword": [
+    "jian",
+    "duan_jian",
+    "zhan_ma_dao"
+   ],
+   "saber": [
+    "dao",
+    "duan_dao",
+    "hu_die_dao"
+   ],
+   "staff": [
+    "gun",
+    "san_jie_gun"
+   ],
+   "polearm": [
+    "qiang",
+    "mao",
+    "guandao_yanyuedao",
+    "yue_ya_chan",
+    "cha_hu_cha",
+    "ji",
+    "ge"
+   ],
+   "bow": [
+    "gong_jian",
+    "nu_gong",
+    "dan_gong"
+   ],
+   "chain": [
+    "jie_bian",
+    "liu_xing_chui",
+    "san_jie_gun"
+   ],
+   "ranged_or_thrown": [
+    "gong_jian",
+    "nu_gong",
+    "dan_gong",
+    "fei_biao",
+    "tong_zhu",
+    "bi_shou",
+    "duan_dao",
+    "duan_cha",
+    "fu"
+   ],
+   "any": "*",
+   "improvised": [
+    "improvised"
+   ],
+   "axe": [
+    "fu",
+    "ge",
+    "shou_fu",
+    "yue",
+    "zhan_fu"
+   ]
+  },
+  "grants": {
+   "SPEAR_BASE_SPEAR_TRAINING": {
+    "group": "spear",
+    "why": "Spear Training: spears, pikes, lances, and tridents."
+   },
+   "SWORD_BASE_SWORD_TRAINING": {
+    "group": "sword",
+    "why": "Sword Training: shortswords, longswords, and greatswords."
+   },
+   "SABERS_BASE_SABER_LINE_METHOD": {
+    "group": "saber",
+    "choose": 1,
+    "why": "Saber-Line Method: one saber-profile weapon."
+   },
+   "TAL_MONKEY_STYLE_LAUGHING_STAFF_AND_BORROWED_WEAPON": {
+    "group": [
+     "staff",
+     "improvised"
+    ],
+    "why": "Quarterstaffs, staffs, and improvised weapons used through Monkey Style."
+   },
+   "TAL_SNIPER_SNIPER_TRAINING": {
+    "group": "ranged_or_thrown",
+    "choose": 1,
+    "why": "One ranged or one thrown weapon of your choice."
+   },
+   "tianxia.talent.weapons.arsenal_student": {
+    "group": "any",
+    "choose": 2,
+    "why": "Two additional legal weapons (or one family)."
+   },
+   "tianxia.sphere.weapons": {
+    "group": "any",
+    "choose": 3,
+    "why": "Weapon Literacy: three legal weapons (or a family, or one exotic and two ordinary)."
+   },
+   "tianxia.subpath.body.bojutsu.feature.staff_form": {
+    "group": "staff",
+    "why": "Staff Form: Staff weapons."
+   },
+   "tianxia.subpath.body.heaven_binding_chain_body.feature.chain_body_integration": {
+    "group": "chain",
+    "why": "Chain Weapons."
+   },
+   "tianxia.subpath.body.sun_piercing_bow_body.feature.bow_body": {
+    "group": "bow",
+    "why": "Bow weapons."
+   },
+   "tianxia.subpath.body.white_heron_crescent_body.feature.crescent_body_integration": {
+    "group": "polearm",
+    "why": "Polearm weapons."
+   },
+   "TAL_DRUNKEN_STYLE_ACCIDENTAL_WEAPON": {
+    "group": "improvised",
+    "why": "Improvised weapons used as part of Drunken Style talents."
+   },
+   "TAL_DUAL_WIELDING_MIXED_DEFENSE": {
+    "group": "improvised",
+    "why": "Proficiency with improvised weapons."
+   },
+   "tianxia.talent.jester.ridiculous_weapon": {
+    "group": "improvised",
+    "why": "Proficiency with improvised weapons."
+   }
+  }
+ },
+ "sphere_maneuvers": {"tianxia.sphere.the_piercing_needle": ["Disarm"], "tianxia.sphere.brute": ["Disarm"]},
+ "pick_up_economy": "BONUS_ACTION",
+ "mastery_spheres": {
+  "tianxia.sphere.weapons": "any",
+  "tianxia.sphere.sword": "sword",
+  "tianxia.sphere.spear": "spear",
+  "tianxia.sphere.sabers": "saber",
+  "tianxia.sphere.axes": "axe",
+  "tianxia.sphere.chains": "chain",
+  "tianxia.sphere.sniper": "ranged_or_thrown",
+  "tianxia.sphere.monkey_style": "staff"
+ },
+ "weapon_methods": {
+  "Guarding": {
+   "kind": "minor",
+   "requires": [
+    "guard",
+    "balanced edge",
+    "guarding hilt",
+    "nonlethal",
+    "staff-like"
+   ],
+   "effects": [
+    {
+     "type": "guard_against"
+    }
+   ],
+   "text": "The target's next attack against you before the start of your next turn has Disadvantage."
+  },
+  "Pressing": {
+   "kind": "minor",
+   "requires": [
+    "cut",
+    "smash",
+    "thrust",
+    "sweep"
+   ],
+   "effects": [
+    {
+     "type": "movement",
+     "distance_ft": 5
+    },
+    {
+     "type": "ignore_oa_from_target"
+    }
+   ],
+   "text": "After the hit you may move 5 ft without provoking opportunity attacks from the target."
+  },
+  "Measuring": {
+   "kind": "minor",
+   "requires": [
+    "reach",
+    "long",
+    "projectile",
+    "thrust"
+   ],
+   "effects": [
+    {
+     "type": "speed",
+     "amount": -10,
+     "applies_to": "target",
+     "expires_on": "START_OF_SOURCE_NEXT_TURN"
+    }
+   ],
+   "text": "The target's speed is reduced by 10 ft until the start of your next turn."
+  },
+  "Hidden": {
+   "kind": "minor",
+   "requires": [
+    "concealed",
+    "hidden"
+   ],
+   "effects": [
+    {
+     "type": "damage",
+     "dice": {
+      "count": 1,
+      "sides": 4
+     },
+     "damage_types": [
+      "<weapon_damage_type>"
+     ],
+     "applies_to": "target",
+     "once_per_fight": "<weapon>"
+    }
+   ],
+   "text": "+1d4 damage of the weapon's type, once per fight with that weapon (the Factory does not track whether it was seen drawn)."
+  },
+  "Hooking: Pull": {
+   "kind": "major",
+   "requires": [
+    "hooking",
+    "pulling",
+    "disarming",
+    "flexible"
+   ],
+   "save": "STR_OR_DEX",
+   "on_fail": [
+    {
+     "type": "forced_movement",
+     "distance_ft": 5,
+     "direction": "toward",
+     "applies_to": "target"
+    }
+   ],
+   "text": "Strength or Dexterity save or pulled 5 ft."
+  },
+  "Hooking: No reactions": {
+   "kind": "major",
+   "requires": [
+    "hooking",
+    "pulling",
+    "disarming",
+    "flexible"
+   ],
+   "save": "STR_OR_DEX",
+   "on_fail": [
+    {
+     "type": "condition",
+     "condition": "reaction_denied",
+     "applies_to": "target",
+     "expires_on": "START_OF_SOURCE_NEXT_TURN"
+    }
+   ],
+   "text": "Strength or Dexterity save or it cannot take reactions until the start of your next turn."
+  },
+  "Hooking: Weapon disadvantage": {
+   "kind": "major",
+   "requires": [
+    "hooking",
+    "pulling",
+    "disarming",
+    "flexible"
+   ],
+   "save": "STR_OR_DEX",
+   "on_fail": [
+    {
+     "type": "disadvantage",
+     "on": "its next attack roll",
+     "applies_to": "target",
+     "expires_on": "START_OF_SOURCE_NEXT_TURN"
+    }
+   ],
+   "text": "Strength or Dexterity save or Disadvantage on its next attack before the start of your next turn."
+  },
+  "Pinning": {
+   "kind": "major",
+   "requires": [
+    "pinning",
+    "reach",
+    "fork",
+    "spear",
+    "staff",
+    "polearm"
+   ],
+   "save": "STR",
+   "advantage_if_larger": 1,
+   "on_fail": [
+    {
+     "type": "condition",
+     "condition": "held_fast",
+     "applies_to": "target",
+     "expires_on": "START_OF_SOURCE_NEXT_TURN"
+    }
+   ],
+   "text": "Strength save or speed 0 until the start of your next turn; a creature more than one size larger has Advantage."
+  },
+  "Breaking": {
+   "kind": "major",
+   "requires": [
+    "armor-breaking",
+    "sword-breaker",
+    "heavy-headed",
+    "chopping edge",
+    "smash"
+   ],
+   "effects": [
+    {
+     "type": "damage",
+     "formula": "pb",
+     "damage_types": [
+      "<weapon_damage_type>"
+     ],
+     "applies_to": "target"
+    }
+   ],
+   "text": "Add your proficiency bonus to the damage."
+  },
+  "Sweeping": {
+   "kind": "major",
+   "requires": [
+    "sweeping",
+    "flexible",
+    "staff",
+    "polearm",
+    "heavy-headed"
+   ],
+   "effects": [
+    {
+     "type": "sweep"
+    }
+   ],
+   "text": "A second creature within your reach and within 5 ft of the target takes damage equal to your proficiency bonus."
+  }
+ }
+}
