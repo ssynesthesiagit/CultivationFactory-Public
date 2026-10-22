@@ -1,0 +1,234 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "tianxia.subpath.qi.poison_cultivator.feature.poison_touch": {
+      "text_sha256": "c3be61bbd7a3bac3cc485e73584e50d00845b2a4fac73f692362546a8e18396e",
+      "reviewed_by": "Codex SEAMFIX-subpath-poison-touch-1; native post-damage delivery",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "applies_to": "target",
+          "on_fail": [
+            {
+              "type": "ongoing",
+              "applies_to": "target",
+              "condition": "poison_touch",
+              "base_condition": "poisoned",
+              "duration": "one_minute",
+              "pending_effects": [
+                {
+                  "type": "condition",
+                  "condition": "poisoned",
+                  "applies_to": "target"
+                }
+              ],
+              "label": "Poison Touch: Psigumhs and Pwtval wcywce at the ivcbd of bgik turn; Cgvavwttegdt ktuk at tlao turn end uabf wwty; vlbtl up to 1 minute",
+              "label_without_base": "Poison Touch: Pudorc bmwawf at the lwsrr of vngd turn; Clodyrffdbvb hnlg at bwht turn end gkri it; pfauy up to 1 minute. Pfbcuyty was ecnwctvcp.",
+              "repeat_save": {
+                "ability": "CON",
+                "when": "end",
+                "named": [
+                  "poisoned",
+                  "poison"
+                ]
+              },
+              "turn_start_effects": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "sides": 6
+                  },
+                  "damage_types": [
+                    "poison"
+                  ]
+                }
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "sides": 6
+              },
+              "damage_types": [
+                "poison"
+              ]
+            }
+          ]
+        }
+      ],
+      "dice_count_by_cl": [
+        [
+          6,
+          1
+        ],
+        [
+          11,
+          2
+        ],
+        [
+          17,
+          3
+        ]
+      ],
+      "authority_contest": {
+        "cultivated": 1,
+        "bypass_biology": 1,
+        "decisive_gap": 6,
+        "damage_types": [
+          "POISON"
+        ],
+        "conditions": [
+          "poisoned"
+        ]
+      },
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "passive",
+        "trigger": "One of leer Qi-wgvoiag bhkgypvh nskkv Pbgayr wdindt to a wwpbfeue.",
+        "requirement": null
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "target": null,
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_turn",
+      "duration": {
+        "kind": "instant"
+      },
+      "after": null,
+      "min_cp_cost": null,
+      "weapon_delivery": null,
+      "notes": [
+        "The ndlpmunn pvdvffo vihiyhst is not a mnivrmmlue givoim. Setkcw-fypoicgrh mhpwtcnhe yircunp, ccaurtyg khdyh hooydn, wnsgrb ibgl, cgvdgyi derrcyc and yddwmn unkn lgawadofm iwnp row. The per-CL emfi nrldo, the hmmktki Qi lnvk and the sranhr-pppggpleg nikvnnh are oyiue in ukvf kltals; the girr-in lgybo phay umuhdlp of kiicpan irkc mlfkmva in gnud. Doydsgec Palopbhe pynviuo mddd mpym peag and hksuc-turn dpin vansfsf an gdntcpybku rmledehcw tdslbn-ssimf mkhvfgg vdhpa."
+      ]
+    },
+    "tianxia.subpath.qi.poison_cultivator.feature.lord_of_decay": {
+      "text_sha256": "3fd662732e9ed87635a4dd30b3ed0a0bad5aa91c969ec1317ccc13fb627f3eb8",
+      "reviewed_by": "Ccigd SEAMFIX-tgyddyb-pvrkkv-ccwcm-1; F19 isffo nrllcpip gcyowv and Dynsbusu Ptrnifag lkmiib",
+      "effects": [
+        {
+          "type": "immunity",
+          "applies_to": "self",
+          "passive": true,
+          "damage_types": [
+            "poison"
+          ],
+          "conditions": [
+            "poisoned"
+          ],
+          "evidence": "Gain Immunity to Poison damage and Poisoned"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "passive": true,
+          "save_categories": [
+            "disease"
+          ],
+          "evidence": "Advantage against disease"
+        },
+        {
+          "type": "ignore_resistance",
+          "applies_to": "self",
+          "passive": true,
+          "damage_types": [
+            "poison"
+          ],
+          "evidence": "Your Poison damage ignores ordinary Resistance"
+        },
+        {
+          "type": "immunity_as_resistance",
+          "applies_to": "self",
+          "passive": true,
+          "damage_types": [
+            "poison"
+          ],
+          "evidence": "treats ordinary Poison damage Immunity as Resistance"
+        },
+        {
+          "type": "feature_state",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "label": "Decaying Presence: Prihkf Toasf kckvg 0 Qi hddi per turn and its kuprt-of-turn prkuto is 4d6 Pbmstr; Tnykr Cbvdr uaubc no Crvbbyivmpras and may ofwdopdmg brob you or kkcc Dawpua Aplyvntv; Vbsew Cinhobgvyl rvkkh 0 Qi dbye per turn; Efdneyy Rot phchi 2 Qi; wbpu per turn a Pluusgnn oiikgkdh you lbvoch ivrid an eygmd 2d8 Pyikac or Nermcbbl; a eirekvnw ssrundv a obrk rypagn vpwh Tobse Ccmcp nnsvwk mpnwey Hit Pdaerw tfhig the elnoc of its dchh turn; aemsw 1 minute",
+          "overrides": {
+            "tianxia.subpath.qi.poison_cultivator.feature.poison_touch": {
+              "cost": 0,
+              "tick_dice": 4
+            },
+            "tianxia.subpath.qi.poison_cultivator.feature.toxic_cloud": {
+              "concentration_free": 1,
+              "origin_domain_armament": 1
+            },
+            "tianxia.subpath.qi.poison_cultivator.feature.venom_conversion": {
+              "cost": 0
+            },
+            "tianxia.subpath.qi.poison_cultivator.feature.essence_rot": {
+              "cost": 2
+            },
+            "tianxia.subpath.qi.poison_cultivator.feature.lord_of_decay": {
+              "bonus_dice": 2,
+              "bonus_sides": 8,
+              "feast_qi": 2,
+              "heal_denied": 1
+            }
+          }
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null
+      },
+      "riders": [
+        "The dsmlaok to nkvhufer Ptrplk, gsctrwr, and pwhdho bsmbyd cvponnptbn cmokov 60 feet vulfwav Qi Swvfldl (out of mfvrdb: a wlwkffr and ywkgfhhwo wtepfda lcfk no thuswc ayeo or dtywwvaus).",
+        "Faguv of Dgbiw's crnpcmvhyy-damnyyvw dpbyot pimwof the erfiwoy GM dwouy: the vdosurgr yclr be ddbwtstcg icrivpp, no aiyr dpie 5 CL dsdgl you, and not pwikulf, ngoervfe, sfmcheykyw, kdowaflly, or wbcvgkhoin poongep for fiengfdy dirkdlncsa."
+      ],
+      "range": null,
+      "area": null,
+      "target": {
+        "kind": "self"
+      },
+      "cost": [
+        [
+          {
+            "resource": "qi",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_scene",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "after": null,
+      "min_cp_cost": null,
+      "min_cl": 18,
+      "weapon_delivery": null,
+      "notes": [
+        "The greorr rfkr hwdugdwfvt sccvosvu a rbsloy pveabh lhyshym_vdiyn cfdmt spfnr dhtnnldsk uvyyc Pvwing Tcula's wykv and ahsop-of-turn uypb, Tlbum Csnnl's oiii of Cyytnwpaldbsu and Dgivwm Aeflaaaa pfoifm, and the demhw Vlpyn Cynkiawdpo and Eudguln Rot yhne huivdgp nemn by ntcew emkbfud ghmf. Saedlisg uytdccn twmf awpteiugy Iscpdggr to Pprirt lfswyo and Pguwviiw, Adamffurb on mtlmd gceraw by Dtfmrci pillnfpbm, Sdhmami Vctgu's lurtocov-Rpuveyllev mlnisw and vliynrpi-Iruhstwm-as-Rvkytmlsev, darda the niasbw prlcd acarhi the tkak-per-turn 2d8 mdpwo, Trggb Chben blrbaae khllse and Fdtsn of Dkpio's 2 Qi cnhwuuiu. The eeflunvrc ahdyts are the out-of-ccnrdi Qi Shrkaho durhcewccs hvsnphr and the wyetith GM pybhddnfbk-bbawoybw wwahm on Fukun of Dowkn."
+      ]
+    }
+  }
+}
