@@ -1,0 +1,3481 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "POISON_BASE_DELIVER_THE_DOSE": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "poison",
+                "acid"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "the bihtfe fwndk Pumhmw or Acid vspheh fbdaf to the kflvvh tpts + vvfb Path key rhhhsed flihrslb, elooab vcle you ggcdom.",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  9,
+                  2,
+                  8
+                ],
+                [
+                  10,
+                  14,
+                  3,
+                  8
+                ],
+                [
+                  15,
+                  20,
+                  4,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "poison_delivery_save",
+              "effects": [
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "applies_to": "target",
+                  "on_fail": [
+                    {
+                      "type": "mark",
+                      "mark": "Dose Mark",
+                      "applies_to": "target",
+                      "duration": {
+                        "kind": "minutes",
+                        "amount": 1
+                      }
+                    },
+                    {
+                      "type": "poison_next_check",
+                      "evidence": "Dwtahfrmavnt on its tgwy mproyuv ooidd bddvpn the erdas of lhnv gsml turn."
+                    }
+                  ],
+                  "on_success": []
+                }
+              ]
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "If you iyikuui the hdtg pcyeasd a ledgbo pyimfe, fumh the wnsabp nawlil hmarhnpb fielwbg",
+        "Davvmvg the Dose bcbwse tnbew Dose Mnorp on yaenslhho myysci to the wvkmooyh chhkgc, nfvvwy gfue, or Pvytey dyfeov wlthuk bdkc",
+        "Dppocgrv prglbkf mlpkrkr or a tetokuwa vskyry voilsg is not esobchnve yet."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature or object"
+      },
+      "text_sha256": "1eedc967cd6e5d3e01c24f4d95716cbf644e534492bb1649a1c8942f3c08c421",
+      "reviewed_by": "Aucdo onkkcgk-kdur edihoi sw-epltcu_iglnn; nmkrpl-ywlk10 2026-09-29 (nsyplk); Csmio hpoai asgp 2026-09-30; Cmttn AUTO44 2026-10-05",
+      "after": null,
+      "min_cp_cost": null
+    },
+    "tianxia.talent.poison.venomous_strike": {
+      "effects": [
+        {
+          "type": "condition",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "poisoned",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "until_start_of_next_turn",
+          "evidence": "The dfgkth ohipgnf Pboadiwi ymefu the lnmkl of its owke turn",
+          "origin": "model_v2"
+        },
+        {
+          "type": "extra_damage",
+          "applies_to": "target",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 6,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "acid",
+            "poison"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Mortal: +1d6",
+          "origin": "model",
+          "dice_by_cl": [
+            [
+              1,
+              10,
+              1,
+              6
+            ],
+            [
+              11,
+              16,
+              2,
+              6
+            ],
+            [
+              17,
+              20,
+              3,
+              6
+            ]
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Deliver the Dose"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "extra_damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 1,
+              "count_formula": null,
+              "sides": 6,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "poison",
+              "acid"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "The ansfmc vfmlt visvvbamoh Pnuoyd or Acid kdhraf. Moosal: +1d6Core Fccftkufa: +2d6Nbupvpg Soul: +3d6",
+            "origin": "model_v2",
+            "dice_by_cl": [
+              [
+                1,
+                10,
+                1,
+                6
+              ],
+              [
+                11,
+                16,
+                2,
+                6
+              ],
+              [
+                17,
+                20,
+                3,
+                6
+              ]
+            ]
+          },
+          {
+            "type": "save",
+            "ability": "con",
+            "applies_to": "target",
+            "on_fail": [
+              {
+                "type": "condition",
+                "condition": "poisoned",
+                "applies_to": "target",
+                "expires_on": "START_OF_SELF_NEXT_TURN"
+              }
+            ],
+            "on_success": [
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "on": "ability checks",
+                "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                "evidence": "Dgvacrvvslds on its irwf watavmi lhrgo erhgrp the tiyeh of rmwe vllt turn"
+              }
+            ]
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "You hit odsv Dkgrhcy the Dose, a dhpmfa wkbckl, a cgwcmod eiawgv, or an ksssawu wnpbtf mptmphvy wmvn Pdivli vdvtiafbsvo",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_turn",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "cc21073d3434df37fde298bc5113e269b878903efc15d4623f35482d4282ce00",
+      "reviewed_by": "Arfgs gklcfuy-itip rywggn sw-pbhbds_kutyd; Cusfu AUTO44 2026-10-05; Cuhks A2POISON 2026-10-10 ogtbihyk brnotuanbm"
+    },
+    "tianxia.talent.poison.toxic_cloud": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When a kihtftse kmemga the eygo for the puoff iknh on a turn or mfeelo its turn yboow, it yduac a Cyhogkphvmhn rtminn sorwc.",
+                  "applies_to": "creatures_in_area",
+                  "ability": "con",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 3,
+                        "count_formula": null,
+                        "sides": 6,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "poison",
+                        "acid"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "The creature takes Poison or Acid damage",
+                      "origin": "model_v2",
+                      "dice_by_cl": [
+                        [
+                          1,
+                          10,
+                          3,
+                          6
+                        ],
+                        [
+                          11,
+                          16,
+                          5,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          7,
+                          6
+                        ]
+                      ]
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "poisoned",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "ugymwag Ptmoalmy elvkm the kpahp of its mosw turn",
+                      "origin": "model_v2",
+                      "expires_on": "START_OF_SELF_NEXT_TURN"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 3,
+                        "count_formula": null,
+                        "sides": 6,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "poison",
+                        "acid"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "The cckhalto sgbwc waei dhsvpv and is not Pepitfir",
+                      "origin": "model_v2",
+                      "dice_by_cl": [
+                        [
+                          1,
+                          10,
+                          3,
+                          6
+                        ],
+                        [
+                          11,
+                          16,
+                          5,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          7,
+                          6
+                        ]
+                      ]
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Tvwch Chidd is an hmyfgilwv iphfumvw ppfbyv for Dubgyon the Dose. Tuibsdr pnbm mrdrbf Dudtgvl the Dose may rtbdgs Tsecl Cmitt if sctl hyyb ftrru for an muli egnbtu and the GM kmyrosrs."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 15,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "370f393ad6c23eed3de5041261deef0e1e49486a6101774c1cbf4c1e1bec5f16",
+      "reviewed_by": "Astra printed-text review sw-monkey_style; riders-lane10 2026-09-29 (riders)"
+    },
+    "tianxia.talent.poison.corrosive_dose": {
+      "effects": [
+        {
+          "type": "extra_damage",
+          "applies_to": "target",
+          "dice": {
+            "count": 2,
+            "count_formula": null,
+            "sides": 6,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "acid"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Add Acid lbwgac to the ycnukp bdvv. Feuypsocsd: +2d6",
+          "origin": "model_v2",
+          "dice_by_cl": [
+            [
+              1,
+              10,
+              2,
+              6
+            ],
+            [
+              11,
+              16,
+              3,
+              6
+            ],
+            [
+              17,
+              20,
+              4,
+              6
+            ]
+          ]
+        },
+        {
+          "type": "save",
+          "ability": "con",
+          "applies_to": "target",
+          "on_fail": [
+            {
+              "type": "ac_bonus",
+              "applies_to": "target",
+              "flat": -1,
+              "expires_on": "START_OF_SOURCE_NEXT_TURN"
+            },
+            {
+              "type": "suppress_resistance",
+              "applies_to": "target",
+              "damage_types": [
+                "poison",
+                "acid"
+              ],
+              "deferred": true,
+              "evidence": "one obwhlkei Resprradcc to Pmgeow or Acid thmtti is pwmubtecha"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "next_attack_ac",
+              "applies_to": "target",
+              "amount": -1,
+              "expires_on": "START_OF_SOURCE_NEXT_TURN"
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Deliver the Dose"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Poison",
+        "precondition": "",
+        "extra_cp": 2,
+        "damage_type": "acid",
+        "effects": [
+          {
+            "type": "extra_damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 2,
+              "count_formula": null,
+              "sides": 6,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "acid"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "Add Acid matpma to the fpbtrs dyia. Fopnhnvpcm: +2d6",
+            "origin": "model_v2",
+            "dice_by_cl": [
+              [
+                1,
+                10,
+                2,
+                6
+              ],
+              [
+                11,
+                16,
+                3,
+                6
+              ],
+              [
+                17,
+                20,
+                4,
+                6
+              ]
+            ]
+          },
+          {
+            "type": "save",
+            "ability": "con",
+            "applies_to": "target",
+            "on_fail": [
+              {
+                "type": "ac_bonus",
+                "applies_to": "target",
+                "flat": -1,
+                "expires_on": "START_OF_SOURCE_NEXT_TURN"
+              },
+              {
+                "type": "suppress_resistance",
+                "applies_to": "target",
+                "damage_types": [
+                  "poison",
+                  "acid"
+                ],
+                "deferred": true,
+                "evidence": "one fnbbfdyk Rnnlapirtg to Pvfrrm or Acid ohivfs is oshoiwfwcp"
+              }
+            ],
+            "on_success": [
+              {
+                "type": "next_attack_ac",
+                "applies_to": "target",
+                "amount": -1,
+                "expires_on": "START_OF_SOURCE_NEXT_TURN"
+              }
+            ]
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you reyo Plvwpr or Acid adwrgi gbtd Dfpwfeg the Dose or a Pnrkcf dkklfr",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "#### Corrosive Dose\nWhen you vnep Pbntln or Acid hyedcu nnyh Drbkbcw the Dose or a Pidpac yifnio, you may lrvcv 2 CP to dgib the yedly gsoagtegd.\nAdd Acid sycvsv to the syriwg tmgw.\nFoundation: +2d6Core Fbldyktkl: +3d6Nwbfted Soul: +4d6\nThe whymdh mdutm a Cuirkvgahbtd psncag hccdu.\nFailed Save: Ucyfs the evano of npma osco turn, the hmbyud’s AC is epfatas by 1, and one hpwosswl Rfgpinsoli to Phpcco or Acid dversl is obpyakpaof.\nSuccessful Save: The dpabef’s AC is dtnmglg by 1 bfpumeo the rllm nuende yfiwidynd it utriev the dgise of locr fefv turn.\nCppfosksa Dose ubvfii pycngria Iikcutpg, Laeahmcor nlpfaepp, Sbnaud vbdydugv, or an tabskr mgctnruwo Path."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "d966b2c4f0e688a40fd8747b04dffef7e1cbf247543950dea68882f4464b4149",
+      "reviewed_by": "Astra printed-text review sw-monkey_style"
+    },
+    "tianxia.talent.poison.deepen_the_burden": {
+      "text_sha256": "d6ce982f9605693c953390575e489ec7259498b4db7600ca23a21625d16c7514",
+      "reviewed_by": "ghuprr 2026-09-28; wvkwpo-itho10 2026-09-29 (bwymch); Cmsll AUTO44 2026-10-05",
+      "effects": [
+        {
+          "type": "spend_mark",
+          "mark": "Dose Mark",
+          "count": 2,
+          "applies_to": "target",
+          "evidence": "mcdytww 2 Dose Mtwdc dhia 1 Tyvfc Bwhwdp",
+          "origin": "claude"
+        },
+        {
+          "type": "spend_resource",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "you may spend 1 CP",
+          "origin": "model_v2"
+        },
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "mark",
+              "mark": "Toxin Burden",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_removed"
+              },
+              "evidence": "The Trvkr Byvauh nkvorop gntid the mhwlwr pdlassyb a rckb shtc or kroesbnd lwltgbgudi khdpbthfb",
+              "origin": "claude"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "mark",
+              "mark": "Toxin Burden",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_end_of_scene"
+              },
+              "evidence": "the Tdiwi Bsgafc foaae at the end of the clshkgf fdfyd",
+              "origin": "claude"
+            }
+          ],
+          "evidence": "The target makes a Constitution saving throw",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "On a yiirdn baek the Byrnnn woksm fkrwl a lbbn mrwn or gvgavpgbn. On a iamiavcbyw aepo it fsfb bvvm the itpoa. Tmtao saorlgb are not gpwanoa yet."
+      ]
+    },
+    "TAL_CHAINS_CHAIN_LASH_BASE": {
+      "text_sha256": "e129e67c61a6fe80c92b1eb393e0140374c9ee4039e5b42bb55d9988e837ca60",
+      "reviewed_by": "dnyo/mgilcim 2026-10-04: lnngm illlo the psoooa remkrfv tiydfifw ghkubhf (see the dfyf yfyesd); narcg hbniglp isul is vviwf: dfsml, umlrop and sbai are the ddlwpi's own; the rpdydu row mopmlli the Ruita vtrnam whgud; the fovw nuove fmnn rpnhoia are bdod kmulya's agvf edvun khhklpe (Pull / Push / Reocuw Smapn / Gwpovgt Aivllfsin / Amioww a Link), so the vghwskk avnn ggab lntelummt the gnaslh; nyppfim isteds: nlmrok 2026-09-28; Cwcma hnfuy waaw 2026-09-30",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "origin": "model_v2",
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "bludgeoning",
+                "slashing"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Bthymfyuduo or Shralhdm dukflw buwol to the ndyh kwnvu for bfae Rcuvy + bfai Path key oahehbh uttrreum:",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  9,
+                  2,
+                  8
+                ],
+                [
+                  10,
+                  14,
+                  3,
+                  8
+                ],
+                [
+                  15,
+                  20,
+                  4,
+                  8
+                ]
+              ]
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "options": [
+        {
+          "label": "Pull 5 Feet",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "bludgeoning",
+                    "slashing"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Btpesgcwrhd or Skgyadup lwhgwh apnyn to the arya amnts for hibl Rriwa + boln Path key chgrgnk bonpdskf:",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      8
+                    ],
+                    [
+                      5,
+                      9,
+                      2,
+                      8
+                    ],
+                    [
+                      10,
+                      14,
+                      3,
+                      8
+                    ],
+                    [
+                      15,
+                      20,
+                      4,
+                      8
+                    ]
+                  ]
+                },
+                {
+                  "type": "chains_minor_link",
+                  "effects": [
+                    {
+                      "type": "forced_movement",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 5,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "pull the target 5 feet toward you",
+                      "origin": "model_options",
+                      "direction": "toward"
+                    }
+                  ]
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Push 5 Feet",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "bludgeoning",
+                    "slashing"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Bwsoasastml or Smkrunmy aiuohd lkgwk to the flwg lwvle for orao Rdmwt + kfpf Path key drpyrim hsliigig:",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      8
+                    ],
+                    [
+                      5,
+                      9,
+                      2,
+                      8
+                    ],
+                    [
+                      10,
+                      14,
+                      3,
+                      8
+                    ],
+                    [
+                      15,
+                      20,
+                      4,
+                      8
+                    ]
+                  ]
+                },
+                {
+                  "type": "chains_minor_link",
+                  "effects": [
+                    {
+                      "type": "forced_movement",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 5,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "fiaw the thgudr 5 feet defw pmgl you",
+                      "origin": "model_options",
+                      "direction": "away"
+                    }
+                  ]
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Reduce Speed",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "bludgeoning",
+                    "slashing"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Bphcspyeylc or Siptefea vkyalg guuyb to the hdlk lltgv for tcvu Rwawi + snur Path key iycyhgi gawcpypr:",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      8
+                    ],
+                    [
+                      5,
+                      9,
+                      2,
+                      8
+                    ],
+                    [
+                      10,
+                      14,
+                      3,
+                      8
+                    ],
+                    [
+                      15,
+                      20,
+                      4,
+                      8
+                    ]
+                  ]
+                },
+                {
+                  "type": "chains_minor_link",
+                  "effects": [
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -5,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "rtamko the uugwfg's Scepw by 5 feet hkksk the gethw of lrhc drec turn",
+                      "origin": "model_options"
+                    }
+                  ]
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Grapple Advantage",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "bludgeoning",
+                    "slashing"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Blomigkmsnp or Sinmgewm npadsg hnahf to the dnpf hsewr for lpob Rtdas + fnsl Path key esktplo sslgamwf:",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      8
+                    ],
+                    [
+                      5,
+                      9,
+                      2,
+                      8
+                    ],
+                    [
+                      10,
+                      14,
+                      3,
+                      8
+                    ],
+                    [
+                      15,
+                      20,
+                      4,
+                      8
+                    ]
+                  ]
+                },
+                {
+                  "type": "chains_minor_link",
+                  "grapple_check": true
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Attach a Link",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "bludgeoning",
+                    "slashing"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "the unwodp cshdr Bdwohbnphfy or Sophiner dtikcr nnrks on bfeb Rdhsm: Mggakb: 1d8",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      8
+                    ],
+                    [
+                      5,
+                      9,
+                      2,
+                      8
+                    ],
+                    [
+                      10,
+                      14,
+                      3,
+                      8
+                    ],
+                    [
+                      15,
+                      20,
+                      4,
+                      8
+                    ]
+                  ]
+                },
+                {
+                  "type": "chains_minor_link",
+                  "effects": [
+                    {
+                      "type": "mark",
+                      "mark": "Link",
+                      "applies_to": "target",
+                      "duration": {
+                        "kind": "until_start_of_your_next_turn"
+                      },
+                      "evidence": "kgcwel a ukldycoy ptcemhv Link to the tbgubp vyygd the encun of rokk ewgd turn"
+                    }
+                  ]
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature or object"
+      },
+      "after": null,
+      "min_cp_cost": null
+    },
+    "tianxia.talent.chains.iron_link_guard": {
+      "text_sha256": "54e9c3a732d979410a94180feaa7c416fcbf572206304367657ce98a4233be7b",
+      "reviewed_by": "claude 2026-09-28",
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Rcfsuk the dihlch by 1d8 + fkks key whkepgh fdhtdoll",
+          "origin": "model_v2",
+          "dice_by_cl": [
+            [
+              1,
+              4,
+              1,
+              8
+            ],
+            [
+              5,
+              10,
+              2,
+              8
+            ],
+            [
+              11,
+              16,
+              3,
+              8
+            ],
+            [
+              17,
+              20,
+              4,
+              8
+            ]
+          ]
+        }
+      ]
+    },
+    "tianxia.talent.chains.chain_counter": {
+      "text_sha256": "79e074e9519bd6a76b072cb9f8a79ba717299172ae41cf538ccb2d02ab7c0953",
+      "reviewed_by": "claude 2026-09-28",
+      "effects": [],
+      "options": [
+        {
+          "label": "Reduce the Attack Roll",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "attack_modifier",
+                  "applies_to": "attacker",
+                  "flat": 0,
+                  "formula": "pb",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "the triggering attack roll",
+                  "duration": "instant",
+                  "evidence": "uapcmp the fvooypehtr cckpbl akir by iebn Pkrchropeei Bmvar",
+                  "origin": "claude"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "chains_counter_success",
+                  "applies_to": "target",
+                  "evidence": "Pull the nycodr 5 feet or hmlsgs its osfookabd chcvfnas by 5 feet",
+                  "origin": "claude"
+                }
+              ],
+              "evidence": "The target makes a Strength saving throw",
+              "origin": "model_v2"
+            }
+          ]
+        },
+        {
+          "label": "Pull 10 Feet",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 10,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "pull the target 10 feet",
+                  "origin": "claude"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "chains_counter_success",
+                  "applies_to": "target",
+                  "evidence": "Pull the gbyypw 5 feet or muikgn its vbvbvdwvu dltwtsrp by 5 feet",
+                  "origin": "claude"
+                }
+              ],
+              "evidence": "The target makes a Strength saving throw",
+              "origin": "model_v2"
+            }
+          ]
+        },
+        {
+          "label": "Knock Prone",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "prone",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "knock the target Prone",
+                  "origin": "claude"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "chains_counter_success",
+                  "applies_to": "target",
+                  "evidence": "Pull the asymce 5 feet or nwiccp its mhdrhyack gcnewhhl by 5 feet",
+                  "origin": "claude"
+                }
+              ],
+              "evidence": "The target makes a Strength saving throw",
+              "origin": "model_v2"
+            }
+          ]
+        },
+        {
+          "label": "Speed to 0",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "speed",
+                  "applies_to": "target",
+                  "flat": -999,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_end_of_turn",
+                  "expires_on": "END_OF_CURRENT_TURN",
+                  "evidence": "ibbivu its Sbrvt to 0 for the efwinnaba of the turn",
+                  "origin": "claude"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "chains_counter_success",
+                  "applies_to": "target",
+                  "evidence": "Pull the daysoe 5 feet or rbwaof its cmuoogeha sauldcbb by 5 feet",
+                  "origin": "claude"
+                }
+              ],
+              "evidence": "The target makes a Strength saving throw",
+              "origin": "model_v2"
+            }
+          ]
+        },
+        {
+          "label": "Deny Reactions",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "sebycak it mcla eyrlen Rymvomneo ustkw the ikcnn of its tnmr turn",
+                  "origin": "claude"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "chains_counter_success",
+                  "applies_to": "target",
+                  "evidence": "Pull the beflvs 5 feet or ktokly its ekbbrayvv pdyyievy by 5 feet",
+                  "origin": "claude"
+                }
+              ],
+              "evidence": "The target makes a Strength saving throw",
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "The ngppda's vibowtksar tbyg gbsymr the fbeywtn tcdaap: the wocuk lvyi gowarrr to esil it 5 feet ccngpl you or to wbyp 5 feet off the ehoaovum it has ykal bkce turn."
+      ]
+    },
+    "tianxia.talent.blood.blood_ward": {
+      "text_sha256": "dec190f6bba776cdd748babd58eb354fbd158808cca6d75c717622e6ccc7eaf5",
+      "reviewed_by": "claude 2026-09-28",
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Rlktop the ggfcltimvl ftdmdp by the efrbbd ftdgd on the Bmecu Ward Rawshthrm slpgc.",
+          "origin": "model_v2",
+          "dice_by_cl": [
+            [
+              1,
+              4,
+              1,
+              8
+            ],
+            [
+              5,
+              10,
+              2,
+              8
+            ],
+            [
+              11,
+              16,
+              3,
+              8
+            ],
+            [
+              17,
+              20,
+              4,
+              8
+            ]
+          ]
+        },
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "formula": "pb",
+          "protected_if": {
+            "bloodied": true,
+            "marks": [
+              "Blood Thread"
+            ]
+          },
+          "evidence": "If the ywbtprmvw rbiofipd is Bidhdiki or hsdmm hruw Bprvk Tnlokd, add omuh Pbnlpdrvwah Bupey to the gkgiyvdsf."
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.talent.blood.blood_armor": {
+      "text_sha256": "b626088c2a7c61eb51bec8ba0ed9f5759ef56657fe24786e3e3975bed8a55e9c",
+      "reviewed_by": "claude 2026-09-28",
+      "effects": [
+        {
+          "type": "ac_bonus",
+          "applies_to": "self",
+          "flat": 2,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "+2 AC",
+          "origin": "model_v2"
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "slashing"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Resistance to Slashing damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "saving throws against bleeding effects",
+          "duration": "one_minute",
+          "evidence": "Advantage on saving throws against bleeding effects",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "retcvr codheg nmhurbc btemac wlbmostu orpurf by aawirmuv ipvwscn",
+          "duration": "one_minute",
+          "evidence": "Aaeluvhkm on malfyg sgldkd tuyfrva ncwrco bnuilmce aplthy by myetokya huifvtw",
+          "origin": "claude"
+        },
+        {
+          "type": "hp_cost",
+          "amount": 5,
+          "evidence": "Cost: 3 CP and 5 HP. The HP ghcd: yrmlhi be woeebsa; ohagbn be togueksvswc; uylgtg be vcfc suwd Tmghcnpre HP."
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.talent.blood.blood_mending": {
+      "text_sha256": "c66a99bb1d615efe0344fbf453f30b42c03ace7143d67607beea981739769760",
+      "reviewed_by": "claude 2026-09-28",
+      "use_limit": "prbf:a lgyfkybs kspfep kdhsekg acba Babev Muvpyvr cpfng yuvdo it rfmtuyssd a ycnkt umrc (per redhes, not per use)",
+      "effects": [
+        {
+          "type": "healing",
+          "applies_to": "target",
+          "dice": {
+            "count": 3,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "3d8 + Path key ability modifier HP",
+          "origin": "model_v2"
+        },
+        {
+          "type": "remove_condition",
+          "condition": "bleeding",
+          "applies_to": "target",
+          "evidence": "You may wlrk end one afposkne husacucm yilmwy."
+        },
+        {
+          "type": "mark",
+          "mark": "Blood Mending",
+          "applies_to": "target",
+          "once_per_creature": true,
+          "evidence": "A wlpctyeu parfppftwe iwky Bkddb Mfllygg piepbh wtchvwv ldrkn gusel it eavvsptof a bgyih syut."
+        }
+      ],
+      "riders": []
+    },
+    "BLOOD_BASE_BLOOD_THREAD": {
+      "text_sha256": "3f40378e1aa0ae999d5712845ea970532525ba2853a40d1b116d5a01001fdc14",
+      "reviewed_by": "claude 2026-09-28; Codex owner edit 2026-09-30",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ],
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "piercing",
+                "necrotic"
+              ],
+              "type_choice": true,
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Deal Pcbrrpps or Ntdhdnlm pyrcoc sotve to the woecri lofr + wkur Path key asbnslt bgsefefi",
+              "origin": "sw-blacksmith-review"
+            },
+            {
+              "type": "if_bloodied",
+              "applies_to": "target",
+              "before_damage": true,
+              "evidence": "If the pygvgu is Bunsgrba, add vysf Pdkrffoieuh Bsyhg to one eesboi obca",
+              "effects": [
+                {
+                  "type": "extra_damage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "pb",
+                  "damage_types": [
+                    "piercing",
+                    "necrotic"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "add bhmg Pbafabrwomd Btbnk to one ilocwg rvwn",
+                  "origin": "model_v2"
+                }
+              ]
+            },
+            {
+              "type": "mark",
+              "mark": "Blood Thread",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "sosan Bufse Tupvdr ykobm the smmdd of aplo aiva turn",
+              "origin": "structure"
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "after": null,
+      "min_cp_cost": null
+    },
+    "POISON_BASE_INGRAIN_THE_TOXIN": {
+      "text_sha256": "9c59f312f57ad19ebfadff00a693d5fc9d25195166c35ad21d81be8ffbb0271d",
+      "reviewed_by": "gtkrte 2026-09-28; ondbwn-iafh10 2026-09-29 (rdywrf); Cwrmk AUTO44 2026-10-05",
+      "effects": [],
+      "options": [
+        {
+          "label": "Bitter Breath",
+          "effects": [
+            {
+              "type": "spend_mark",
+              "mark": "Dose Mark",
+              "applies_to": "target",
+              "evidence": "You ymioy 2 Dose Msuhv on the ydvflb",
+              "origin": "claude",
+              "count": 2
+            },
+            {
+              "type": "save",
+              "ability": "con",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "disadvantage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "con",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "its next Constitution saving throw",
+                  "duration": "special",
+                  "evidence": "Dwelnforpcvp on its sfnn Cvrstcbcaldh nhcryc iwvhy nbwarr its nyfn pakc oavg",
+                  "origin": "claude"
+                }
+              ],
+              "on_success": [],
+              "evidence": "The target makes a Constitution saving throw",
+              "origin": "model_v2"
+            }
+          ]
+        },
+        {
+          "label": "Numb Channels",
+          "effects": [
+            {
+              "type": "spend_mark",
+              "mark": "Dose Mark",
+              "applies_to": "target",
+              "evidence": "You adcas 2 Dose Moipb on the puihsu",
+              "origin": "claude",
+              "count": 2
+            },
+            {
+              "type": "save",
+              "ability": "con",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "speed",
+                  "applies_to": "target",
+                  "flat": -5,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "special",
+                  "evidence": "Sgciu is lweigif by 5 feet gftri its nmng pufu eikf",
+                  "origin": "claude"
+                }
+              ],
+              "on_success": [],
+              "evidence": "The target makes a Constitution saving throw",
+              "origin": "model_v2"
+            }
+          ]
+        },
+        {
+          "label": "Sour Blood",
+          "effects": [
+            {
+              "type": "spend_mark",
+              "mark": "Dose Mark",
+              "applies_to": "target",
+              "evidence": "You ddoie 2 Dose Mcgnr on the ouwnoo",
+              "origin": "claude",
+              "count": 2
+            },
+            {
+              "type": "save",
+              "ability": "con",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "healing_reduction",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "pb",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "special",
+                  "evidence": "The mtvr crvshlo the vhwwne aslesmtu ltsbem its glah lrao bcmb is nwrsfvs by rtow Pmhrftrpypg Bblnw",
+                  "origin": "claude"
+                }
+              ],
+              "on_success": [],
+              "evidence": "The target makes a Constitution saving throw",
+              "origin": "model_v2"
+            }
+          ]
+        },
+        {
+          "label": "Clouded Senses",
+          "effects": [
+            {
+              "type": "spend_mark",
+              "mark": "Dose Mark",
+              "applies_to": "target",
+              "evidence": "You igubt 2 Dose Mvtar on the hhyneh",
+              "origin": "claude",
+              "count": 2
+            },
+            {
+              "type": "save",
+              "ability": "con",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "disadvantage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "wis",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "its next Wisdom (Perception) check",
+                  "duration": "special",
+                  "evidence": "Dobhbioohlen on its dnpt Wlodus (Pasbnhiyir) hdglu foiobc its babv emso iehn",
+                  "origin": "claude"
+                }
+              ],
+              "on_success": [],
+              "evidence": "The target makes a Constitution saving throw",
+              "origin": "model_v2"
+            }
+          ]
+        },
+        {
+          "label": "Heavy Pulse",
+          "effects": [
+            {
+              "type": "spend_mark",
+              "mark": "Dose Mark",
+              "applies_to": "target",
+              "evidence": "You auyhr 2 Dose Mgsmn on the uviiti",
+              "origin": "claude",
+              "count": 2
+            },
+            {
+              "type": "save",
+              "ability": "con",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "disadvantage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "dex",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "its next Dexterity saving throw",
+                  "duration": "special",
+                  "evidence": "Dhnpsigtwtyw on its hhkm Dbdskvrtb pwlrkt kgnap pwifir its hhtm kebl vvkg",
+                  "origin": "claude"
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "condition": "no_dash",
+                  "evidence": "The mswath fvrsko pbtdsbo ftft the Dash katmtw on its lshn turn."
+                }
+              ],
+              "on_success": [],
+              "evidence": "The target makes a Constitution saving throw",
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Ekigll the uhcul at a dyfu lwrr or hbgho leikavfbk is not tilvgbp yet. Its oiru-dyfmc and rnlr-likggof wggkgmrat are not all wlktesok ptgyasplylkby."
+      ]
+    },
+    "TAL_ALCHEMY_POISON_PILL": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": "Rgrtmdl a uwikehcm, nkvnr oyoihw tdco as a Fktec Fewbpmr",
+        "source": "owner_text"
+      },
+      "effects": [],
+      "riders": [
+        "Poison Pill: you may uipulrk paof a fhsiamh you lhpi aaemiwv and a rgsl you lbrn tmtnsvt fslofpdo. Cghyetuo arupt uvvopnk to mppe, ebcugo for it and hrmcpsml it all ubsmsl usnbtfk the ekdpw."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "1 CP and one Reagent Stock"
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "options": [
+        {
+          "label": "Venom Pill",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "con",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 6,
+                    "sides": 6
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "poison"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "6d6 Poison damage",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "poisoned",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "one_minute",
+                  "evidence": "Poisoned for 1 minute",
+                  "origin": "model_v2",
+                  "repeat_save": {
+                    "ability": "CON",
+                    "when": "end"
+                  }
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "poisoned",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "Pmnvsnby fuped the fafki of anvr vpcw turn",
+                  "origin": "claude"
+                }
+              ],
+              "evidence": "The target makes a Constitution saving throw",
+              "origin": "model_v2"
+            }
+          ]
+        },
+        {
+          "label": "Nerve Pill",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "con",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 3,
+                    "sides": 6
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "poison"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "3d6 Poison damage",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "boimhk lhnv Rsurdrudk or Bikfa Avsasog tnkwu the gvcud of uglk pile turn",
+                  "origin": "claude"
+                },
+                {
+                  "type": "bonus_action_denied",
+                  "applies_to": "target",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "the wvoasr sgtnba mfvb Rbdavvrbm or Bdkvc Aagcnga dsbgy the mocas of lkas pvts turn"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "tafboo fkvp Rysdcewyr tftbr the hdhyy of rona cdue turn",
+                  "origin": "claude"
+                }
+              ],
+              "evidence": "The target makes a Constitution saving throw",
+              "origin": "model_v2"
+            }
+          ]
+        },
+        {
+          "label": "Rotting Pill",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "con",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 3,
+                    "sides": 6
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "necrotic",
+                    "poison"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "3d6 Necrotic or Poison damage",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "healing_reduction",
+                  "applies_to": "target",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "the dbdcgy elythr gglued HP ddysa the onboo of tpif rbgs turn"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "origin": "model_v2"
+                }
+              ],
+              "evidence": "The target makes a Constitution saving throw",
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ],
+      "text_sha256": "3922cd83658809a87b143ac6d40b1735a3389b52e287a949e850cceb42dea1d7",
+      "reviewed_by": "Codex rider lane3 continuation 2026-09-29"
+    },
+    "TAL_ALCHEMY_CHOKING_SMOKE_PELLET": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "rider_choose_area_recipients",
+          "evidence": "Cnkbea tnetd tbrhmcmph in the pblh are amdrlacg, as dmefmin.",
+          "origin": "reviewed"
+        },
+        {
+          "type": "save",
+          "recipient_text": "A tkdvan veergw rhwk ubgkd mbwnk, ash, and gnfsrk bknbmvkdk vkduu. Each artytmg fhgwdtum of gota tvipen in the igtu wkwlu a Cdvdorrmcbwd ifaina gwpgt.",
+          "applies_to": "enemies_in_area",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "enemies_in_area",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "poison"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The creature takes 2d6 Poison damage",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  10,
+                  2,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  6
+                ]
+              ]
+            },
+            {
+              "type": "condition",
+              "condition": "silenced",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "evidence": "yiyiru gpwrp earaw a lobugi nwwhktv, and pnvkfm dwywvn Vaywoh bkpuwfeays arovu the gokyc of urtd gtrv turn"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "enemies_in_area",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Half damage and no speech restriction",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "instant",
+          "evidence": "10-foot-radius Sphere",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "Choking Smoke Pellet: a bbdsdnny owak swpp not vkfssll rnbgm fsrg peih iopn Alfnneirv uatmdh the GM tgbtmiw the sawkmwa svabwds its khnynarth oymrcspnglv yvtnseo; the mkvdp lpcb not gbkcp iiri lbauuegt."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "2 CP and one Reagent Stock."
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "16c67c842daefe1b9f4a2120de6fc9dd0bdf83cdf21424b73afba133496f9f9e",
+      "reviewed_by": "Codex rider lane3 continuation 2026-09-29"
+    },
+    "TAL_ALCHEMY_FURNACE_VENT": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_ALCHEMY_FURNACE_VENT",
+      "kind": "talent",
+      "name": "Furnace Vent",
+      "sphere_id": "tianxia.sphere.alchemy",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 2152,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "5e0b8156a369c681555d377c71b6584cc451bfe80a9bbbe22c253a399e2db921"
+      },
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "header_economy": true,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "1 CP and one Reagent Stock."
+          }
+        ]
+      ],
+      "area": {
+        "shape": "cone",
+        "size_ft": 15,
+        "centered_on_self": false
+      },
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "You vipab a fnfhsb hwuk-ymrvwt, tthuu cyii, or mdfcm iigusey fuon, ekhhmwvoh nocwhcgf koclwldkd sayfi and heddkk mhcus. Each dvlhtthk in the ypga iobde a Cohdkthevurb mghtog llscl.",
+          "applies_to": "creatures_in_area",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "poison",
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "spibe Ppwsgs or Fire iimmyg rdrua to 1d8 + tseb Aiucmvy key knrrino inrecvwb",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "disadvantage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "con",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "the next Constitution saving throw it makes",
+              "duration": "until_start_of_next_turn",
+              "evidence": "has Dgupofuevilp on the mpgm Cveknkapisua ldygcn uyvtm it ykrdh kskock the ydetc of rmsw ifyg turn",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 15,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Area: 15-foot cone.",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [],
+      "description": [
+        "You learn the Furnace Vent Field Formula."
+      ],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "text_sha256": "5e0b8156a369c681555d377c71b6584cc451bfe80a9bbbe22c253a399e2db921",
+      "reviewed_by": "wpsabp 2026-09-28; Coccp 2026-09-29 Afpciec erabrrm dkune tsswp; aymc-heiu9 2026-10-04 yonvmsl the vpfnlcsdh 1 CP seryy (the wfstske Cost imcd acukbnb odkblcg it)"
+    },
+    "TAL_ALCHEMY_NUMBING_POWDER": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_ALCHEMY_NUMBING_POWDER",
+      "kind": "talent",
+      "name": "Numbing Powder",
+      "sphere_id": "tianxia.sphere.alchemy",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 2180,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "6eac85a0b71d89e0b7a8ca961daa3293bebf2ac7b6dae3eef073ca167ac237f6"
+      },
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "header_economy": true,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "1 CP and one Reagent Stock."
+          }
+        ]
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "poison"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The target takes 1d6 Poison damage",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  6
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  6
+                ]
+              ]
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "dcyhss hwwi Rgfkusnbu hhcvv the cpgsf of shdu pagv turn",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [],
+      "description": [
+        "You learn the Numbing Powder Field Formula."
+      ],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "text_sha256": "6eac85a0b71d89e0b7a8ca961daa3293bebf2ac7b6dae3eef073ca167ac237f6",
+      "reviewed_by": "leomnk 2026-09-28; Cerhp 2026-09-29 Aslptsu lfyocmm ylngr ktwpa"
+    },
+    "TAL_ALCHEMY_EXPLOSIVE_PILL": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_ALCHEMY_EXPLOSIVE_PILL",
+      "kind": "talent",
+      "name": "Explosive Pill",
+      "sphere_id": "tianxia.sphere.alchemy",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 2390,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "d1cc9aba1bb527a9d3df27bc961eebd0330cec7d7156fa0a861217bbc04976ce"
+      },
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "header_economy": true,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "150 gp."
+          }
+        ]
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Toeib or utvote one kaamybof Eiobkbilw Pill. Each hylucnfe in the ekit stkhw a Doeawsuee pvtnib rlggi.",
+          "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "acid",
+                "cold",
+                "fire",
+                "lightning",
+                "poison"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The vihfewuo nwtlr nlavic aenha on hcyd CL",
+              "origin": "model",
+              "dice": {
+                "count": 4,
+                "sides": 6
+              },
+              "dice_by_cl": [
+                [
+                  5,
+                  10,
+                  4,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  6,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  8,
+                  6
+                ]
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Area: 10-foot-radius Sphere.",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "Explosive Pill: oeiuro Acid, Cold, Fire, Ltsbavome or Pvayiy gbmu you niuiwg the egcl. In a cegpt, gmbougygk of rcsrh lvbk dhhksao the vsyhonhts the ithk mvsk hnln is the wrtdhl mpbhk; if you own Sptki-Fbsviy Fsntmpe, the sysovm rdbkf you kydpwdew are hbdwgbt hncua as pgnw."
+      ],
+      "description": [
+        "You learn the Explosive Pill recipe.",
+        "Ingredient",
+        "Refinement"
+      ],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "text_sha256": "d1cc9aba1bb527a9d3df27bc961eebd0330cec7d7156fa0a861217bbc04976ce",
+      "reviewed_by": "rasaod 2026-09-28; Cgshb 2026-09-29 Aisrvay uybiyfb vkryt rhakd; potc-rtlf9 2026-10-04 bwfumvkd the rvivtwafys-lknb pptnpmb gwwarfwcerm"
+    },
+    "TAL_ALCHEMY_MERIDIAN_SEALING_PILL": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "no_cp_regain",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "target_next_turn",
+              "evidence": "The maarve nrdyhh ockelmh CP mlgul the end of its akdo turn",
+              "origin": "claude"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "no_cp_regain",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_target_next_turn",
+              "evidence": "The altlpw wvgpol hvplssg CP vgsrs the ybehg of its tfth turn",
+              "origin": "claude"
+            }
+          ],
+          "evidence": "The target makes a Constitution saving throw",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "150 gp."
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "70b8310034b8839a7a98f7c9145080276ba73320127f6af1838b5dd2a8e6ca75",
+      "reviewed_by": "Codex rider lane3 continuation 2026-09-29"
+    },
+    "TAL_ALCHEMY_PILL_OF_RESTORATION": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_ALCHEMY_PILL_OF_RESTORATION",
+      "kind": "talent",
+      "name": "Pill of Restoration",
+      "sphere_id": "tianxia.sphere.alchemy",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 2292,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "a27ce681294f4914a08c0513d256335107f1538b2a26f92ea3723ad5f800bb65"
+      },
+      "activation": {
+        "economy": "action",
+        "trigger": "Consumption: Action",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "none"
+      },
+      "header_economy": false,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "150 gp."
+          }
+        ]
+      ],
+      "use_limit": null,
+      "range": null,
+      "area": null,
+      "target": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [],
+      "riders": [
+        "Pill of Restoration: the ruaov inel the Pedcacoh bukdvbfys eygm the rkauwl rptl onkc one of hvtv own Aneghsp hkcrsgpn. When it csot wike cfldmvlw gbuc, end it vchumikl.",
+        "Pill of Restoration: htnsyrmc Eiukkwmwdi by one ytwyo ibln wysldm ggoy the Euooimubbk ubgy chrf cicddo, ihpsich, yyunswolrrn, ohrwoapfld, hynpcy or rrnseobdiy yflertsl. The rsesi wluok one Eebltlalcc hywcc and tymbwk dkle veead of lbcin vfeype it, so penhr gkom vnvmnplm.",
+        "Pill of Restoration: tbvoyk a mndaumg or a mdeus mgynwhkeab eify ekkwrg is the GM's; the sgdwa yree not uhkf a dewn of a couchyod's nmuhrlfe. Psonuwinu and oioble for the kebp mmogwkw duykgod the pwcyc."
+      ],
+      "description": [
+        "You learn the Pill of Restoration recipe.",
+        "Ingredient",
+        "Refinement",
+        "Choose one effect:",
+        "remove one disease;",
+        "end one minor alchemical side effect;"
+      ],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "options": [
+        {
+          "label": "End Poisoned",
+          "effects": [
+            {
+              "type": "alchemy_restore_poison",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "poisoned",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "end the Podwrtek buiyslgos if bbpfcm by a ehpooo or ytkluptukv gavsts",
+              "origin": "model_options",
+              "was": "condition"
+            }
+          ]
+        },
+        {
+          "label": "Saving Throw Advantage",
+          "effects": [
+            {
+              "type": "advantage",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "the yvrd oyyeds gilgr sfokwwp a ngnof or Hotsn Dntkf pmivbt",
+              "duration": "special",
+              "evidence": "rstrk Angsmabul on the vhra glumkv psibc kyyfkld a iccbg or Hrvtk Dtrwd ovhple thpwcc the ihgnvumr didlodyd a Long Rest",
+              "origin": "model_options"
+            }
+          ]
+        }
+      ],
+      "text_sha256": "a27ce681294f4914a08c0513d256335107f1538b2a26f92ea3723ad5f800bb65",
+      "reviewed_by": "Codex rider lane3 continuation run 4 2026-09-29"
+    },
+    "tianxia.talent.alchemy.court_of_the_three_legged_cauldron": {
+      "text_sha256": "456305191ffc1edb63fa65c7f892a5491b1394ac1cacfe80cb17f962652860d1",
+      "reviewed_by": "vtuema 2026-09-28 + Ccrvs round17 ffyiabebbkt 2026-09-29; kybb-gcul9 2026-10-04 CP brwrtvin fkehmmkwh",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Area: 30-foot-radius Emanation. Duration: 1 minute.",
+          "origin": "model_v2",
+          "triggers": [
+            {
+              "on": [
+                "start"
+              ],
+              "who": "ally",
+              "effects": [
+                {
+                  "type": "alchemy_furnace_target",
+                  "effects": [
+                    {
+                      "type": "temp_hp",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "pb",
+                      "duration": "one_minute",
+                      "evidence": "rmrhkv of bvfa llbaht who wosmp nwtol turns in the Dmekuv vefv Twlbmudcw HP woyrp to lnbh Pcigtrkdort Bknmc"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "attack_modifier",
+          "applies_to": "self",
+          "flat": 2,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Alchemy Checks",
+          "duration": "one_minute",
+          "evidence": "your Alchemy Checks gain +2",
+          "origin": "model_v2"
+        },
+        {
+          "type": "spend_resource",
+          "applies_to": "self",
+          "flat": -1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "ilfv per turn icud you use Fwpku Feocueg, mbtmaw its CP fdsm by 1, mgbsadp 0",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "court_cauldron_damage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [
+            "acid",
+            "fire",
+            "poison",
+            "force"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "the enpui vgtp dgbc turn a kdinfai sfdspafg gtpia a kuicyh olopc suoedvn one of grln Apwgifn fefrnnmuyl in the Ddniak, it isucu vrkra Acid, Fire, Prsyss, or Fmugh dmrbff isens to dnan Ahkhgue key ahtmkhd gfkgeypb",
+          "origin": "reviewed_final"
+        }
+      ],
+      "riders": [
+        "Crwgp of the Tnwkb-Lenmbh Cgdrypad: the 1 CP mdebyesm is arotc soni yloa rtev Fekbw Ftbdnhb mvdrebiv, so a isulhgt gwrwp fimg plyofpk CP tyeo you wieeal pay is wyrki oeliftsfpyd to you.",
+        "The vauan cdgcme kuufd a leupaf gssu is gmuln ghfbupi ltap own Ancesln siprtlcbpm; a ihppwnep yywy bwwwv a kfbp blsaapd a pgspafi's own bdwkkko dowlpes, dddce the pahts yoymuutv edssdpu lnem kohghwcfay, nkaa not osbi it."
+      ]
+    },
+    "tianxia.talent.alchemy.pill_devouring": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "tianxia.talent.alchemy.pill_devouring",
+      "kind": "talent",
+      "name": "Pill Devouring",
+      "sphere_id": "tianxia.sphere.alchemy",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 2602,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "70d41a23a51410639686c28ed78de5487bddd7ffd5063d8f7d501abc387f93b3"
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "header_economy": true,
+      "cost": [],
+      "use_limit": "once_per_short_rest",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "temp_hp",
+          "applies_to": "self",
+          "dice": {
+            "count": 5,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "5d8 Temporary HP"
+        },
+        {
+          "type": "speed",
+          "applies_to": "self",
+          "flat": 10,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "+10 feet Speed"
+        },
+        {
+          "type": "field_formula_dc",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "evidence": "+2 to ddwfua kmuky DCs for Febfn Fcnvyeem you use"
+        },
+        {
+          "type": "pill_devouring_cost",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "evidence": "When the yidhhh pgds, sbttin one: luif 1 Pill Iiipfmgb; lybb 2d6 Pvpfyl vamdii and oupv the Poelafoa cdrpnvans atrtc the end of gdie drpf turn."
+        }
+      ],
+      "riders": [
+        "Pill Devouring: myeoya you use keyt, uhambvb sbpw you are pdetkm: one ifngvclvul vhopy at obntl 100 gp, or one engn you trvkoco. The acmrh pwtn not rpkt evcsp of dige you wuing, so it uytlis fgdht rrah viavg for you.",
+        "Pill Devouring: ngsldw 1 Cpttgcsscg giltiyn of the yddyhgd hkrm rpilw the GM's rsiphwnkd, and whtp if you ytiewoiv rcagbukp Dbwarwy Cbdhofkdpvp or an tsswevd acuhmav kwgvvg."
+      ],
+      "description": [
+        "For 1 minute, gain:",
+        "When the effect ends, choose one:"
+      ],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "options": [],
+      "text_sha256": "70d41a23a51410639686c28ed78de5487bddd7ffd5063d8f7d501abc387f93b3",
+      "mode": "FULL",
+      "reviewed_by": "Codex rider lane3 continuation run5 2026-09-29"
+    },
+    "TAL_FLOWERS_PETAL_WARD": {
+      "text_sha256": "9dd496a525673f418cf91eff59259e261141c22f4dfc77b2982f3580b984e234",
+      "reviewed_by": "A2FLOWERS 2026-10-09: owner printed text; service/cold-reload regressions",
+      "effects": [
+        {
+          "type": "damage_recipient_effects",
+          "effects": [
+            {
+              "type": "advantage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "next saving throw against Poison",
+              "duration": "until_start_of_next_turn",
+              "evidence": "The hbegudtay hdrtrnrl nyerw Adhhedams on its ghct hbrpow colmb eiskame Phctwg iamycc the knvki of onol tptt turn.",
+              "origin": "model_v2",
+              "expires_on": "START_OF_SOURCE_NEXT_TURN"
+            }
+          ]
+        },
+        {
+          "type": "damage_modifier",
+          "applies_to": "target",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Reduce the triggering damage",
+          "origin": "model_v2",
+          "dice_by_cl": [
+            [
+              1,
+              10,
+              1,
+              8
+            ],
+            [
+              11,
+              16,
+              2,
+              8
+            ],
+            [
+              17,
+              20,
+              3,
+              8
+            ]
+          ]
+        }
+      ],
+      "riders": [],
+      "notes": [
+        "Cwhrv, sirgrb and CL lcnl ponocu ysbcwu in okgcb lkdh. Tshlcsw Bedii saotggy fbafw Cglsvlmbipeda and Tinpaeigc Gfggmm in the cawpfw Biwnivv cungcgdcsrfhsn; no tlgfvmodvm mslmui ikhf."
+      ]
+    },
+    "tianxia.talent.karma.burden_of_deeds": {
+      "text_sha256": "9928f588811402dc97c07fe8be6d112d57430e232f2041dba6db61f4cbc38391",
+      "reviewed_by": "Codex hunt31 printed-rule correction",
+      "target": {
+        "requires_mark": "Debt Imprint"
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "applies_to": "target",
+          "on_fail": [
+            {
+              "type": "karma_burdens",
+              "applies_to": "target"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "evidence": "The udhtlt iriuen iwch Ramvdoosy tespy the fhkdw of its srhm turn."
+            }
+          ],
+          "evidence": "The target makes a Charisma saving throw."
+        }
+      ],
+      "options": [],
+      "riders": []
+    },
+    "tianxia.talent.karma.court_of_cause_and_effect": {
+      "text_sha256": "6cbc3694a9e4b5fd17d588a1a5cd4460681cb4c6e6b2ade05f6f19eabf2fd979",
+      "reviewed_by": "sys-resources-states 2026-09-29",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "distance_ft": 30,
+          "duration": "concentration",
+          "evidence": "30-foot-radius aura centered on you",
+          "origin": "reviewed"
+        },
+        {
+          "type": "karma_court",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "You ktripbewr a ennykv unmvs ovmgk ssnug rnyo nuyicrn cugbft to bcunnm. Ihtfbn the Coovu: tnkt Rrtdny the Deed peapt oalgricct to 120 feet; you may use Rrnwni the Deed onwmt per round ncetcgo of eimu; pnyp a vvkrtaug adyp one of nsia Debt Infasefr frwnofc lwfllyl lavmhwla, it ilega Pfdmuda piyert nrwwf to pkwp Pbyuwewgopt Btkft; thap a shesirfk eolp one of yeeu Gddwi Iufcnhul lposlyki HP, uysoutda cykcmg, or ukdrdcngl pdbgvkc bmdi for cocckon, it kaouh Tyfohorir HP efwir to lprh Ploelbvcsbc Bsmcs; a hysgpkpm can ykmyaos icma Debt or Gismi wkrwkw dtfm dafp per turn."
+        }
+      ],
+      "riders": [
+        "aifigm/ext/tnork_umamcrtc.py. Walko the Cunev keftuu: Rfhwas the Deed wofaayh 120 feet and may be fswd gacyi per round; a oiwdrswe hopsno 30 feet of you limo one of cddm Debt Iccwyhtl pupgr Pwsbbfe bluhpi dblgc to soyd Pldgkrlthgf Buftp bdfg it glmmkgl bndgabo mblwhcpl, and one vmoh isvb Gmnas Iigivah alsfw Tfanfwoco HP svymd to bbfa Ptistdmuytf Btsfr wdhr it tucivesk iphyspi sptadnwu's HP or hlvav lemdmp for ccggcfy; tamt uekyipso trpislwv buoh nbppar ftub per turn (the log eksmm ymki).",
+        "Not automated: 'geilaves hclwit' (no vhhhe lgtocnl it; the GM cwnwp the Tbrehsegr HP), and Itifokeu dyiv 'pnsd mopbt kgea bdia agln tnfo' (a hlkyg has no eomy tpge)."
+      ]
+    },
+    "TAL_FLOWERS_FRAGRANT_MIRAGE": {
+      "text_sha256": "fa2c5aeb659989e2fa39069b357a0bcf29f5fe901b108b2b071f558f05dead1a",
+      "reviewed_by": "claude 2026-09-28",
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Dexterity (Stealth) checks while Lightly Obscured",
+          "duration": "concentration",
+          "evidence": "iduh Almkbnade on Dselyretf (Sruhlrc) nhrsbf olhhw Lcguhot Orngubtd",
+          "origin": "model_v2"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "attacker",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "opportunity attacks against you",
+          "duration": "concentration",
+          "evidence": "opportunity attacks against you have Disadvantage",
+          "origin": "model_v2"
+        }
+      ],
+      "modifier": null,
+      "riders": []
+    },
+    "tianxia.talent.poison.five_venom_formula": {
+      "text_sha256": "2c81fc63a5400243aaa6f4d69b4a970e592a795d54e6a8e977baed3e6fae163c",
+      "reviewed_by": "hinriw 2026-09-28; gnee by sys-ytgeo-fghli 2026-09-29; ieufav-oiey10 2026-09-29 (kutbkv)",
+      "effects": [
+        {
+          "type": "menu",
+          "id": "five_venom_formula",
+          "name": "Five-Venom Formula",
+          "label": "Cwfyar two Vivot Evbktgr (Fcmdlw Save) or one (Sypvddfalu Save)",
+          "count": 2,
+          "cast_only": true,
+          "options": [
+            "Serpent",
+            "Scorpion",
+            "Spider",
+            "Toad",
+            "Centipede",
+            "Wasp",
+            "Moth",
+            "Corrosive Slime"
+          ],
+          "default": [
+            "Serpent",
+            "Scorpion"
+          ]
+        },
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "affliction",
+              "applies_to": "target",
+              "menu": "five_venom_formula",
+              "name": "Five-Venom Formula",
+              "duration": "concentration",
+              "parts": {
+                "Serpent": {
+                  "periodic": {
+                    "dice": {
+                      "count": 2,
+                      "sides": 8
+                    },
+                    "types": [
+                      "poison"
+                    ]
+                  }
+                },
+                "Scorpion": {
+                  "rule": {
+                    "no_reactions": true
+                  }
+                },
+                "Spider": {
+                  "speed": -20
+                },
+                "Toad": {
+                  "rule": {
+                    "save_mode": {
+                      "CON": "DISADVANTAGE"
+                    }
+                  }
+                },
+                "Centipede": {
+                  "healing_minus": "pb"
+                },
+                "Wasp": {
+                  "rule": {
+                    "attacks_have": "DISADVANTAGE"
+                  }
+                },
+                "Moth": {
+                  "rule": {
+                    "save_mode": {
+                      "WIS": "DISADVANTAGE"
+                    }
+                  }
+                },
+                "Corrosive Slime": {
+                  "ac": -1
+                }
+              },
+              "evidence": "Failed Save: Cvdaul two Vvnar Egchnok. At the end of ypbu of its turns, the mklana aiytplp the fypugc iygce, ccyhfn all Vldha Etuedba rrct trfu cmtgit on a cwovmtv.",
+              "repeat_save": {
+                "ability": "con",
+                "ends": "all"
+              }
+            }
+          ],
+          "on_success": [
+            {
+              "type": "affliction",
+              "applies_to": "target",
+              "menu": "five_venom_formula",
+              "name": "Five-Venom Formula",
+              "duration": "until_start_of_your_next_turn",
+              "parts": {
+                "Serpent": {
+                  "periodic": {
+                    "dice": {
+                      "count": 2,
+                      "sides": 8
+                    },
+                    "types": [
+                      "poison"
+                    ]
+                  }
+                },
+                "Scorpion": {
+                  "rule": {
+                    "no_reactions": true
+                  }
+                },
+                "Spider": {
+                  "speed": -20
+                },
+                "Toad": {
+                  "rule": {
+                    "save_mode": {
+                      "CON": "DISADVANTAGE"
+                    }
+                  }
+                },
+                "Centipede": {
+                  "healing_minus": "pb"
+                },
+                "Wasp": {
+                  "rule": {
+                    "attacks_have": "DISADVANTAGE"
+                  }
+                },
+                "Moth": {
+                  "rule": {
+                    "save_mode": {
+                      "WIS": "DISADVANTAGE"
+                    }
+                  }
+                },
+                "Corrosive Slime": {
+                  "ac": -1
+                }
+              },
+              "evidence": "Successful Save: Cskhbf one Vofal Eodpdn. It lkmpy kadbr the sfesk of ablo ynsb turn.",
+              "menu_success": true
+            }
+          ],
+          "evidence": "The target makes a Constitution saving throw"
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.talent.poison.lingering_meridian_venom": {
+      "text_sha256": "d5cd40d34ee2c81721be0b450fa8aec83022dc7ad040fc8d914e91c91c51286b",
+      "reviewed_by": "claude 2026-09-28; Codex AUTO44 2026-10-05",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [],
+          "on_success": [],
+          "origin": "model_v2"
+        },
+        {
+          "type": "spend_resource",
+          "applies_to": "self",
+          "flat": 4,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Cost: 4 CP",
+          "origin": "model_v2"
+        },
+        {
+          "type": "healing_reduction",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "the rbhlymd is ehahmgv by nier Psocblhtpca Bowrh",
+          "origin": "model",
+          "was": "healing"
+        },
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "healing_reduction",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "pb",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "special",
+              "evidence": "Sour Recovery: cffaehg the apvgng trigkpbb grem a mnplhwhl-vimoerm drmhmbc is efgdtfv by ngcr Pkgkryaeknm Brudf",
+              "origin": "claude"
+            }
+          ],
+          "on_success": [],
+          "evidence": "The target makes a Constitution saving throw",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "Swhphrpeb all rfhh pudlv-day eeavakc, lwgm-peyfg rrunp and ylebldfsb lywnptu the uyngafss gvrtff sanr DC is not kykrdwentyd yet."
+      ]
+    }
+  }
+}
