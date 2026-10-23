@@ -1,0 +1,89 @@
+{
+ "schema": "TianxiaFoundry.FeatureStatus.v1",
+ "features": {
+  "TAL_THE_HIDDEN_EYE_BASE_SPHERE_FEATURES": {
+   "status": "build",
+   "why": "\"When you first learn the Sphere of the Hidden Eye, gain Analyze and Skill Affinity: Stealth\" -- a one-time grant when the sphere is learned; Analyze itself is automated (combat/ext/mind_hidden_eye.py)."
+  },
+  "TAL_THE_HIDDEN_EYE_SKILL_AFFINITY_STEALTH": {
+   "status": "build",
+   "why": "Gain proficiency in Dexterity (Stealth) (or a bonus talent if already proficient) when the sphere is learned -- a build-time choice, not a fight effect."
+  },
+  "TAL_THE_HIDDEN_EYE_EXPERT_SCOUT": {
+   "status": "build",
+   "why": "Gain Expertise in a chosen, already-proficient skill (Investigation, Perception, Stealth, or Survival) -- a build-time choice."
+  },
+  "TAL_SCOUNDREL_SCOUNDREL_TRAINING": {
+   "status": "build",
+   "why": "\"When you learn Scoundrel: gain proficiency in Dexterity (Sleight of Hand); ... choose one Mortal Realm Scoundrel talent ... choose one Mortal Realm Trick talent\" -- a one-time build-time grant, not something a fight runs."
+  },
+  "TAL_SHADOW_WILLING_CREATURE": {
+   "status": "applied",
+   "why": "Folded into Second Silhouette's own \"Willing Creature\" option (reviewed_final.d/mind.json): the printed text is one of Second Silhouette's target-type branches, not a separate purchasable ability."
+  },
+  "TAL_SHADOW_UNWILLING_CREATURE": {
+   "status": "applied",
+   "why": "Folded into Second Silhouette's own \"Unwilling Creature\" option (reviewed_final.d/mind.json), for the same reason as Willing Creature."
+  },
+  "tianxia.talent.shadow.lingering_trace": {
+   "status": "outside",
+   "why": "Extends a Shadow Mark to 8 hours and gives direction/alive-or-not tracking across up to a mile: world-map tracking between scenes, not a fight effect (fights on this table do not run 8 hours)."
+  },
+  "TAL_UNMAKING_UNMAKE_THE_ANSWER": {
+   "status": "table",
+   "why": "A reaction against \"a barrier, shield, temporary construct, talisman effect, summoned asset, or ongoing defensive technique\" being created: those show up on this table as zones, modifiers, conditions, or summons depending on the talent, with no single creation event a generic reaction can watch for reliably. Automating it well needs the owner to scope which of those forms actually appear at the table."
+  },
+  "TAL_VOID_RETURN_TO_ZERO": {
+   "status": "table",
+   "why": "\"The chosen benefit does not take effect\" needs a pre-emptive hook that runs before a triggering creature's own beneficial effect resolves; this table's reactions (typed_reactions) run after an effect has already happened. Erode Technique, the closest sibling Void talent, only reduces an already-applied benefit for the same reason -- it cannot prevent one either."
+  },
+  "TAL_VOID_CAUSE_EMPTYING_REVERSAL": {
+   "status": "table",
+   "why": "Same engine limitation as Return to Zero: \"the triggering benefit fails\" needs a pre-emptive interrupt this table's reaction timing does not have."
+  },
+  "TAL_VOID_COST_DENYING_NEEDLE": {
+   "status": "table",
+   "why": "Extends Void Needle's own \"Cost Lock\" option, which has no typed effect of its own yet (Void Needle is Tabik Damu's reviewed record; see the worker report). Low standalone value until Cost Lock's cost-reduction-denial exists to extend."
+  },
+  "tianxia.talent.beauty.admiring_crowd_method": {
+   "status": "outside",
+   "why": "Requires an audience, crowd, court, sect hall, market, banquet, performance, or public gathering outside combat before it can be used; not a fight action."
+  },
+  "tianxia.talent.beauty.lovely_monster_bearing": {
+   "status": "applied",
+   "why": "A re-flavoring of Catch the Eye and other Beauty talents (fear/awe/horror instead of elegance/charm); it changes no number or condition the fight tracks."
+  },
+  "TAL_SCOUNDREL_CLEANED_OUT": {
+   "status": "table",
+   "why": "Taking or repositioning a second accessible object on a successful Steal: the table does not track a scene's loose objects/inventory to hand a second one to the thief."
+  },
+  "TAL_SCOUNDREL_STEAL_SKILL": {
+   "status": "table",
+   "why": "Swaps an arbitrary named skill proficiency (the GM's choice of what the target \"reasonably\" has) between two creatures for 1 minute; the table does not run a generic proficiency-swap effect for GM-picked skills."
+  },
+  "TAL_SCOUNDREL_DOUBLE_DIP": {
+   "status": "table",
+   "why": "Lets a successful Dirty Trick apply two of its option-menu effects instead of one; Dirty Trick's own choose-one options are Tabik Damu's reviewed record, and safely extending its selection to two without touching that file needs a shared choose-two mechanism this table does not have yet."
+  },
+  "TAL_SCOUNDREL_IMPOSSIBLE_FASTENING": {
+   "status": "table",
+   "why": "Extends one Dirty Trick condition's duration from \"until the start of your next turn\" to 1 minute; needs a duration-override modifier this table does not have (the same gap as Long Shadow, reviewed_final.d/mind.json)."
+  },
+  "TAL_ILLUSION_GREATER_ILLUSION": {
+   "status": "table",
+   "why": "Adds smell/taste/touch/temperature to figments and says those senses \"cannot deal damage, heal, poison, burn, feed, deafen, suffocate, or physically move anything\"; its one edge with fight weight (casual touch no longer reveals a figment) needs a touch-based illusion-detection check this table does not model."
+  },
+  "TAL_ILLUSION_MISDIRECTION_RESPONSES": {
+   "status": "table",
+   "why": "The five responses themselves are simple, but the trigger (\"you may trigger a Misdirection Response\") is granted piecemeal across several other Illusion talents' own text (Create Figment's False Premise, False Obstruction, Illusionary Terrain, Illusion Domain...); binding it correctly needs the owner to confirm which of those grants are actually in play for these two characters rather than over- or under-offering the response."
+  },
+  "TAL_DARK_HIDE_IN_DARKNESS": {
+    "status": "table",
+    "why": "While your Hide in Darkness Meld is active, you may use Hide inside your own Darkness even when visible. Granting this Meld to another creature is not yet automated."
+  },
+  "TAL_DARK_EXTINGUISH": {
+   "status": "table",
+   "why": "Extinguishing nonmagical light sources needs light-level tracking this table does not model (Darkness's own reviewed_final rider already says the same); its Cultivation-Check-to-counter-one-magical-flame-effect clause is a GM call made case by case, not a generic effect."
+  }
+ }
+}
