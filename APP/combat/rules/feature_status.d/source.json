@@ -1,0 +1,68 @@
+{
+  "features": {
+    "SOURCE_BASE_SOURCE_READING": {
+      "status": "outside",
+      "why": "The printed result is knowledge about a mineral object ('The GM tells you whether it has obvious active qi, obvious instability ...'). The table carries no facts about a stone, a seal or a vein, and it never rolls a Source check, so there is nothing to resolve: an exploration question the GM answers."
+    },
+    "SOURCE_BASE_SOURCE_TRAINING": {
+      "status": "build",
+      "why": "'When you gain the Source sphere, choose one Source talent and gain it for free' is a choice made while the character is built, and its result (the chosen talent, plus Source Reading, Source Pulse and Source Seal) is already in the build."
+    },
+    "tianxia.talent.source.dragon_vein_glimpse": {
+      "status": "outside",
+      "why": "'If the answer is yes, the GM gives you a rough direction or a useful clue' -- the table knows nothing about veins or deposits, and a clue is not a state it can carry."
+    },
+    "tianxia.talent.source.earth_remembers_the_cut": {
+      "status": "outside",
+      "why": "'The GM answers with brief truthful impressions if the earth, stone, or source can carry that memory' -- three questions against the world's memory, which is the GM's."
+    },
+    "tianxia.talent.source.northern_stone_gambler_hand": {
+      "status": "outside",
+      "why": "'treat a d20 roll of 9 or lower as a 10' on a Source check. The table has a general floor seam (combat/ext/__init__.py check_floor, read by ext.floored) but never rolls a Source check -- appraising, cutting or safely handling a mineral object is a Source Reading roll the GM runs -- so a typed floor would sit inert on every row."
+    },
+    "tianxia.talent.source.safe_cut": {
+      "status": "outside",
+      "why": "'failure by 5 or less does not ruin the material' is a statement about a material's condition, and the table tracks no material, no ruined state and no harvest."
+    },
+    "tianxia.talent.source.source_appraiser": {
+      "status": "outside",
+      "why": "'On a success, the GM tells you one of the following facts' -- the same knowledge Source Reading asks for; nothing on the table knows whether a stone is unstable, tampered with or safe to handle."
+    },
+    "tianxia.talent.source.stone_ear": {
+      "status": "outside",
+      "why": "'you know whether there is an obvious hollow space, flowing water, active machinery, recent excavation, or moving creature in contact with the same connected stone' -- the table tracks neither connected stone nor anything behind it."
+    },
+    "tianxia.talent.source.stone_within_stone": {
+      "status": "outside",
+      "why": "'you may ask whether it contains one of the following: a living creature, corpse, curse, disease ...' and 'The GM answers truthfully if the condition is present' -- a question about a sealed object's contents, which the table does not model."
+    },
+    "tianxia.talent.source.closing_the_forbidden_door": {
+      "status": "outside",
+      "why": "Its printed trigger is an object opening, breaking, discharging or activating, which no event on this table records for a trap, a sealed container or a hazard; the Reaction cannot be offered without inventing that state."
+    },
+    "tianxia.talent.source.seal_holding_breath": {
+      "status": "outside",
+      "why": "'a source hazard, cursed stone, sealed mineral object, or visible seal ... would force you to make a saving throw' names the effect about to require the save, which the table does not carry on a save (only the delivery record of committed damage, combat/ext/damage_delivery.py's transient frame)."
+    },
+    "tianxia.talent.source.seal_patch": {
+      "status": "outside",
+      "why": "It lengthens Source Seal's Stillness Seal from 'the next such roll' to 'the next such roll before the end of the seal'; the Source Seal zone carries one seal instance and no count of rolls, so the second roll cannot be told from the first."
+    },
+    "tianxia.talent.source.stone_cover_pulse": {
+      "status": "outside",
+      "why": "'ignores half cover if that cover is made of nonmagical earth, stone, brick, tile, crystal, ore' needs the material of the cover, which combat/rules/terrain.json records for painted terrain but not for the low obstacles combat/effect_cover.py builds."
+    },
+    "tianxia.talent.source.buried_light_lantern": {
+      "status": "outside",
+      "why": "The printed light is 'spiritually active stone, ore, jade, source crystals, inscriptions, seals or source-contaminated cracks' -- materials an area of dim light does not know; the table's light zones are uniform."
+    },
+    "tianxia.talent.source.source_circuit": {
+      "status": "core",
+      "why": "The 1-minute circuit, its Proficiency Bonus on a Source Pulse hit and the 20-foot Speed reduction are resolved, and the printed 'ends early if you are Incapacitated' is the shared ends_if_incapacitated marker, so the circuit comes off with everything else that use put on. What is left is the other half of the same sentence, 'or no longer touching a mineral surface': the map records no surface materials, so nothing on the table can tell mineral ground from mud, and the circuit keeps running until it ends or the GM ends it. That limitation is written on the ability's rider so the player reads it, not hidden."
+    },
+    "tianxia.talent.source.old_mine_shelter_scripture": {
+      "status": "core",
+      "why": "The shared Resistance is resolved and is tied to the damage that paid for it: an accepted and paid Mine-Shelter Reflex stands a mark naming the hazard, the thing delivering, that one activation of it and the wound it answered, the creature its owner accepts gets the Resistance, and accepting spends the mark so one use never shelters two creatures (combat/ext/source_sphere.py). Passing does not spend it -- 'you may choose one willing creature' limits how many creatures are protected, not how often a keeper may be asked -- so a keeper who passes on one creature may still shelter the next creature of that very same springing. A later springing of the same trap, or a second creature's own roll, is a different activation and is not sheltered; saving the fight and loading it again does not let this protection carry over to a later trap trigger. What the table still cannot do is collect two creatures' wounds before applying either one -- it resolves one creature's damage at a time, so a creature hurt earlier in that same activation has already taken its wound by the time the question can be asked. The printed 'The creature must also be touching the same connected stone, earth, or mineral surface, as determined by the GM' stays a GM call: the map records no surface materials, so nothing on the table can test it."
+    }
+  }
+}
