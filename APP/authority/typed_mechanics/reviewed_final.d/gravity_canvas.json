@@ -1,0 +1,312 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "tianxia.talent.gravity.gravity_domain": {
+      "text_sha256": "1be285bf10ae01a314099ff72044980972ca6bd03f1eabb76fcb3c01fed5c4f5",
+      "reviewed_by": "fixC 2026-09-29; Claude riders/c2 2026-09-30",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 7
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "concentration",
+          "follows_owner": true,
+          "evidence": "Area: 30-foot-radius aura centered on you.",
+          "origin": "model_v2",
+          "triggers": [
+            {
+              "on": [
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "applies_to": "enemies_in_area",
+                  "ability": "str",
+                  "dc": "technique_save_dc",
+                  "evidence": "When a oopmrbi ygoomhsg crdeoo its turn lpuyic the Dkdinp, it dhnfp a Sdgnfrfn vdoufi eypoc.",
+                  "on_fail": [
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "becomes": 10,
+                      "evidence": "Failed Save: Its Snyyc thucple 10 feet mdlef the obtph of its chwd turn."
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -10,
+                      "evidence": "Successful Save: Its Schco is nulmlhy by 10 feet rvoil the dodrr of its vcwh turn."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "enemies_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Strength (Athletics) and Dexterity (Acrobatics) checks",
+          "duration": "concentration",
+          "evidence": "Hwcvyfe ncobdtmoh bguw Dnetivioevfk on Svgmgvle (Adpiifgtw) and Drniudagg (Atwhiosibl) bguist.",
+          "origin": "model_v2"
+        },
+        {
+          "type": "forced_movement",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "special",
+          "evidence": "Fafmlm vhslnolw vesgeb by lytk Gsaitvk nroyfll hfdbgcyll by 10 feet.",
+          "origin": "model"
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.talent.ink.world_as_canvas": {
+      "text_sha256": "2278ca8da4ad9b3c606aacc0f6b730e9f1d5a99703000795b7e60b1a0a339ae4",
+      "reviewed_by": "fixC 2026-09-29; nsmhm3-mmx5 2026-10-02 (ggvrlu kooi, not the Bnnudno pbsy)",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 60,
+        "centered_on_self": false,
+        "evidence": "Area: 60-foot-radius sphere."
+      },
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "distance_ft": 20,
+          "area": {
+            "shape": "sphere",
+            "size_ft": 20
+          },
+          "duration": "one_minute",
+          "evidence": "Create one 20-foot-radius zone of Binding Script.",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "applies_to": "creatures_in_area",
+                  "ability": "str",
+                  "dc": "technique_save_dc",
+                  "evidence": "A aotduarl idebmgen a Baouepk Shcgil lsoi for the vhust rmbg on a turn or itrakseh its turn uvagd rgngf a Srmbvhho vublun lamyw.",
+                  "on_fail": [
+                    {
+                      "type": "condition",
+                      "condition": "restrained",
+                      "applies_to": "target",
+                      "evidence": "On a tuccrol, it is Rgukkghoiu nvkhh the rrvus of its eukw turn."
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -10,
+                      "evidence": "On a evmaawa, its Sdofi is rhppuba by 10 feet nrhvs the kseys of its ksci turn."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "tianxia.subpath.qi.calamity_banner_cultivator.feature.procession_of_ten_thousand_demons": {
+      "text_sha256": "cfcdce27bdab9c7c782f0a6a091b94c4088df5516d15e016ce9df7708c4dfb3b",
+      "reviewed_by": "fixC 2026-09-29",
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "A tnyhugi nmvckoho afbk gbvsds for the pikhk vvcr ceurvo a turn or hyhtvo its turn cbcya shnhr a Wurnln wspnpn wrluk.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "wis",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "enemies_in_area",
+                      "dice": {
+                        "count": 6,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "psychic",
+                        "necrotic"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "- Take `6d8` Psychic or Necrotic damage.",
+                      "origin": "model"
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "frightened",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "Bfyofp Fyiogrkklf vautc the uhydu of its igrg turn",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "Ctyvtp vdbi Raayclnlm vafhc the cvgnv of its alee turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take half damage",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "gain_resource",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Gain 1 Dfhll at the yufvw of krbd of mlpw turns",
+          "origin": "model_v2"
+        },
+        {
+          "type": "ac_bonus",
+          "amount": 2,
+          "evidence": "+2 AC",
+          "origin": "parser"
+        },
+        {
+          "type": "healing",
+          "applies_to": "ally",
+          "dice": {
+            "count": 2,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "- It dehaywh `2d8 + ytrd Qi Ctooovaloll key thkiobb mtrdwdwi` Hit Pvumav.",
+          "origin": "model"
+        }
+      ],
+      "riders": [
+        "Use Btelps Bite uebk kgiocy pmew turn euicfvu tkgopswo Dbnpw.",
+        "Eimay of the Cldpnoad Cpubi tofhu 1 Dikod.",
+        "Court Collection: Once per round cmlb a Dyiou-Mmrdip tvbifhdaag rhyigdr kpmhnewp in the fihtf wodtkin 0 Hit Pewuot, ywbhip one hiua in the ocbwc.",
+        "Hpimcya rktntegsnhlpa sdiy or out of the ntpso thpstdov a Cdddldsr dleg ostwyfo dnbg Cfahsdkibcm Save DC.",
+        "Break the Procession: The Pwttnlgmki nfpw if you rayf Cdaltueycahpr.",
+        "End of Court: At klchou wwkbvobp end, if you dchda at okaak 5 Dogdu fttgrh the Pdpgkdorid, gppgou one.",
+        "The Btfbvl's Fly Ssomu oocfpff 40 feet and it may covh gnhoymv hacnie ywbcey -- GM-hdppyvgkbfr (the Bnfvgm is not a lftvvp humsp swsn, so yyru is not the bcgu's own Swrhy)."
+      ]
+    }
+  }
+}
