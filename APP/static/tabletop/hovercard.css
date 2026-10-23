@@ -1,0 +1,108 @@
+/* The shared hover card. One element for every hover card in the game: the map's zone/ground card, the token card,
+   the condition pills, the action buttons and the sheet rows. Its behaviour lives in static/tabletop/hovercard.js;
+   the words' look is added by the caller's own class (.tt-zone-tip, .tt-token-card) or by the defaults here.
+   Loaded by tabletop.html and sheet.html, so the two pages cannot drift apart.
+
+   Owner, 2026-10-03: "there needs to be a way to hover over the tooltip to scroll down with middle mouse roll
+   button. wait for it to pop up, then move over to the box and select things or scroll down etc."
+
+   Three things here are the whole fix:
+     - pointer-events: auto. The cards used to be painted with pointer-events: none, so the pointer could never reach
+       them: no scrolling, no selecting, and moving towards the card closed it.
+     - max-height + overflow-y: auto. Without a height limit a long card (Darkness and its four riders, then a
+       Court) simply ran off the bottom of the screen with the text you wanted out of reach. A capped, scrollable
+       box puts every line back within reach.
+     - overscroll-behavior: contain, so scrolling to the end of the card does not carry on and zoom the map under
+       the pointer. The wheel is also stopped in hovercard.js, which is what keeps the map's zoom handler out.
+   user-select: text lets the owner select and copy the rules. The scrollbar is styled and always visible, so an
+   overflowing card says so instead of looking like the whole of it. */
+.tt-hovercard {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 60;
+  box-sizing: border-box;
+  pointer-events: auto;
+  max-height: calc(100vh - 16px);
+  max-width: min(360px, calc(100vw - 16px));
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: default;
+  padding: 7px 10px;
+  border: 1px solid var(--line-strong, var(--edge-strong, var(--line, #8a8a8a)));
+  border-radius: 8px;
+  background: var(--panel-2, #1f1616);
+  color: var(--text, #f3f4ed);
+  font-size: 12.5px;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .5);
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong, var(--edge-strong, #8a8a8a)) transparent;
+}
+.tt-hovercard[hidden] { display: none; }
+
+.tt-hovercard::-webkit-scrollbar { width: 10px; }
+.tt-hovercard::-webkit-scrollbar-track { background: transparent; }
+.tt-hovercard::-webkit-scrollbar-thumb {
+  background: var(--line-strong, var(--edge-strong, #8a8a8a));
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+.tt-hovercard::-webkit-scrollbar-thumb:hover {
+  background: var(--muted, #b9c2bb);
+  background-clip: content-box;
+}
+
+/* A card that also carries a look class (.tt-zone-tip, .tt-token-card) keeps that look: the page's stylesheet is
+   linked after this one, so its fonts, colours and padding win, while the interactive rules above still apply. */
+
+/* Compact ability / Armor Class cards (SOL192, rules.js renderTipCard): what it does first, one facts row, outcome
+   lines, then the owner's complete printed rules once under "Full rules". */
+.tt-hovercard.tt-tipcard { max-width: min(380px, calc(100vw - 16px)); padding: 8px 11px 9px; }
+.tt-hovercard .tc { white-space: normal; }
+.tt-hovercard .tc p { margin: 0 0 4px; }
+.tt-hovercard .tc-title { font-weight: 700; font-size: 13.5px; margin-bottom: 3px; }
+.tt-hovercard .tc-headline { font-weight: 600; margin-bottom: 4px; }
+.tt-hovercard .tc-facts { display: flex; flex-wrap: wrap; gap: 3px 5px; margin: 0 0 6px; }
+.tt-hovercard .tc-fact { border: 1px solid var(--line, #5a5050); border-radius: 5px; padding: 0 5px; font-size: 11.5px; line-height: 1.5; }
+.tt-hovercard .tc-k { color: var(--muted, #b9c2bb); }
+.tt-hovercard .tc-summary { font-weight: 600; }
+.tt-hovercard .tc-line b, .tt-hovercard .tc-cond b { font-weight: 650; }
+.tt-hovercard .tc-ul { margin: 0 0 4px; padding-left: 16px; }
+.tt-hovercard .tc-ul li { margin: 0 0 1px; }
+.tt-hovercard .tc-cond { font-size: 11.5px; color: var(--muted, #b9c2bb); }
+.tt-hovercard .tc-note, .tt-hovercard .tc-terms p { font-size: 11.5px; color: var(--muted, #b9c2bb); }
+.tt-hovercard .tc-terms { border-top: 1px solid var(--line, #5a5050); margin-top: 5px; padding-top: 4px; }
+.tt-hovercard .tc-pending { font-style: italic; color: var(--warn, #e0b25a); }
+/* The table's own refusal, first on the card of a greyed row (sheet.js explainUnavailable): why it cannot be used. */
+.tt-hovercard .tip-unavailable {
+  margin: 0 0 6px;
+  padding: 3px 6px;
+  border-left: 3px solid var(--warn, #e0b25a);
+  color: var(--warn, #e0b25a);
+  font-weight: 600;
+  white-space: normal;
+}
+.tt-hovercard .tc-full, .tt-hovercard .tc-more { margin-top: 5px; border-top: 1px solid var(--line, #5a5050); padding-top: 3px; }
+.tt-hovercard .tc-full > summary, .tt-hovercard .tc-more > summary { cursor: pointer; font-size: 11.5px; color: var(--accent, #d9b36c); }
+.tt-hovercard .tc-full .lib-text { margin-top: 4px; font-size: 12px; }
+.tt-hovercard .tc-full .lib-h { font-weight: 650; margin: 4px 0 2px; }
+.tt-hovercard .tc-full .lib-ul { margin: 0 0 4px; padding-left: 16px; }
+.tt-hovercard .tc-full .rule-table { border-collapse: collapse; font-size: 11.5px; }
+.tt-hovercard .tc-full .rule-table td, .tt-hovercard .tc-full .rule-table th { border: 1px solid var(--line, #5a5050); padding: 1px 5px; }
+.tt-hovercard .tc-eco { font-weight: 650; }
+.tt-hovercard .tc-terms > summary { cursor: pointer; font-size: 11.5px; color: var(--muted, #b9c2bb); }
+.tt-hovercard .tc-rules { margin-top: 3px; }
+.tt-hovercard .tc-section { margin: 4px 0 2px; padding-left: 7px; border-left: 2px solid var(--line, #5a5050); }
+.tt-hovercard .tc-sub { font-weight: 650; font-size: 12px; margin-bottom: 2px; }
+.tt-hovercard .tc-printed { font-size: 11.5px; color: var(--muted, #b9c2bb); margin: -2px 0 3px; }
+.tt-hovercard .tc-readable p { margin: 0 0 3px; }
+.tt-hovercard .tc-readable .tc-num { font-weight: 650; }
+.tt-hovercard .tc-lore > summary { cursor: pointer; font-size: 11px; color: var(--muted, #b9c2bb); font-style: italic; }
+.tt-hovercard .tc-lore > p { font-style: italic; color: var(--muted, #b9c2bb); }
