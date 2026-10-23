@@ -1,0 +1,71 @@
+{
+  "$id": "https://tianxia.local/schemas/method-compatibility-traits-v0.6.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "acquisition_context_tags": {
+      "type": "array",
+      "uniqueItems": true
+    },
+    "affinity_sphere_ids": {
+      "type": "array",
+      "uniqueItems": true
+    },
+    "correction_interface_tags": {
+      "type": "array",
+      "uniqueItems": true
+    },
+    "foundation_form_affinity_tags": {
+      "type": "array",
+      "uniqueItems": true
+    },
+    "granted_path_ids": {
+      "type": "array",
+      "uniqueItems": true
+    },
+    "imposed_strain_targets": {
+      "type": "array"
+    },
+    "method_id": {
+      "pattern": "^METHOD-[0-9]{3}$",
+      "type": "string"
+    },
+    "method_self_risk_tags": {
+      "type": "array",
+      "uniqueItems": true
+    },
+    "ordinary_operation_tags": {
+      "type": "array",
+      "uniqueItems": true
+    },
+    "schema": {
+      "const": "Tianxia.MethodCompatibilityTraits.v0.6"
+    },
+    "scope_rules": {
+      "type": "object"
+    },
+    "trait_provenance": {
+      "type": "object"
+    },
+    "transformation_mode_tags": {
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema",
+    "method_id",
+    "granted_path_ids",
+    "ordinary_operation_tags",
+    "affinity_sphere_ids",
+    "foundation_form_affinity_tags",
+    "correction_interface_tags",
+    "transformation_mode_tags",
+    "imposed_strain_targets",
+    "method_self_risk_tags",
+    "acquisition_context_tags",
+    "trait_provenance",
+    "scope_rules"
+  ],
+  "type": "object"
+}
