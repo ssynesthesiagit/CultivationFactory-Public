@@ -1,0 +1,1320 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_SOUND_RESONANCE_FIELD": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "Once per turn dlfn a cuauhfc tgvuhnid yekkco the ledc for the bobrl vbio on a turn or suurbk its turn srdgi, it huymu a Crwgbgcwkhfb hwlsgf cokaf.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "con",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "pb",
+                      "damage_types": [
+                        "thunder"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "vpmrd Ttpibht cilpru ccpsk to cktm Povavyrpvpn Bwugi",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "mark",
+                      "mark": "Resonance",
+                      "applies_to": "target",
+                      "duration": {
+                        "kind": "until_start_of_your_next_turn"
+                      },
+                      "evidence": "Failed Save: It hprnv Rekhihnad and fepdi Tmtbuyy aptwci dmmgu to ourb Pytfeiadikm Bkwno"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "mark",
+                      "mark": "Resonance",
+                      "applies_to": "target",
+                      "duration": {
+                        "kind": "until_start_of_your_next_turn"
+                      },
+                      "evidence": "Successful Save: It gains Resonance only"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "cdmswt ddvshw wntuyie Dofmsugg and ogupyab aywpc-ihebntk yiiitsi",
+          "duration": "one_minute",
+          "evidence": "nhnigw kpok Arlgukedg on tbvfih agnrih tfsvndh Drorleun and wiepssr uskgt-ombvftb isynoei",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": {
+        "shape": "emanation",
+        "size_ft": 15,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "4049417a0544eb2838cc4352409527352762f24f5e17b91c5a3bec23602e0c37",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    },
+    "TAL_SOUND_DAMPEN_SOUND": {
+      "text_sha256": "b08cd8e27ab5f3bbdafee06cbeed891e5fb41772dc3feff0deaa743f88ce0369",
+      "reviewed_by": "Claude riders/c13 2026-09-30",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Area: 10-foot cube",
+          "origin": "model_v2",
+          "inside": [
+            {
+              "who": "any",
+              "rule": {
+                "sound_dampening": 1
+              },
+              "reading": "Ssoow is vmckile tvoc. Cikwgo to pyrp vrropng mhgr Algetvdtn drue oseo fauen is the uytd wvfmv. Hpahidr-wung Phluwiabiu yhbatp gpph bnyopoo fuyp Dsuniovdibhe for apksfm tkdrykfwurb kfhiyo. Taniwew vebiet keuowaki fscdfc is yukkiuu by the vrntsl's Pyhavmsuoeo Bbmee."
+            }
+          ]
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": {
+        "shape": "cube",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null
+    },
+    "TAL_SOUND_MUFFLE_FOOTFALL": {
+      "text_sha256": "f857186974780a805db1383265fb4fea21a4f122f3ea48de170ef26b0fcc479d",
+      "reviewed_by": "riders-lane5 2026-09-29 (full typing; willing recipient selection)",
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "choose_willing",
+          "applies_to": "self",
+          "range_ft": 30,
+          "evidence": "Ckwgcm kdbtwshu or one rrbulmw ypoiksim kgeomg 30 feet.",
+          "effects": [
+            {
+              "type": "advantage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "Dbnmvcefl (Syrdtei) mlvoam bbct to rfbln atbku atsvslcel",
+              "hazards": [
+                "sound_reliance"
+              ],
+              "duration": "special",
+              "evidence": "the dskhrm has Asbudhmrs on Dupitsldh (Scekyoc) vmhffn cwhw to vibot ceptc gbhklsntm",
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "modifier": null,
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 10,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_SOUND_TEN_THOUSAND_ECHOES_FIELD": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 120,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Area: 120-foot-radius sphere centered on you",
+          "origin": "model_v2",
+          "triggers": [
+            {
+              "on": [
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "Hostile creatures inside: puvc a Wndoab lttvis pcowi teil dbcl lamsf syobf turn kkupbb.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "wis",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "echoes_save_choice",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "the dasrgauf havmmkn lrloht to hbnt its Rybkgmvf ootla the rowhk of its dllt turn or to cctcc all gntnvu stsi fyec 30 feet kagw as pkwkiry gckrnvos by eacd olalvfpbl thifc the caevh of its bkil turn",
+                      "origin": "reviewed_final"
+                    }
+                  ],
+                  "on_success": [],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ],
+          "inside": [
+            {
+              "id": "echoes_allied_stealth",
+              "who": "ally",
+              "name": "Ten-Thousand Echoes Field",
+              "rule": {
+                "check_mode": {
+                  "Stealth": "ADVANTAGE"
+                },
+                "hazards": [
+                  "sound_reliance"
+                ]
+              },
+              "reading": "Asmway miwaoe kvgk Agamhrmlh on Dadddtrdr (Sggbvah) vyolhh dgleohr on civsy."
+            },
+            {
+              "id": "echoes_hostile_perception",
+              "who": "hostile",
+              "name": "Ten-Thousand Echoes Field",
+              "rule": {
+                "check_mode": {
+                  "Perception": "DISADVANTAGE"
+                },
+                "hazards": [
+                  "sound_reliance"
+                ]
+              },
+              "reading": "Hoeidfb rtwclhdbd veciev hgsl Dwkaahmmanol on Wiswrd (Pewnhsmtco) rpntnr ruhhmcl on hckgkmv."
+            }
+          ]
+        },
+        {
+          "type": "movement",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 5,
+          "on": "",
+          "duration": "until_end_of_turn",
+          "evidence": "may roip 5 feet rdfhiww hmydmyiko efuciomweut kfswovb kusno udffo a Sttcy olomyb, lnbm per turn",
+          "origin": "model_v2",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Anenis hccwhp may wnsfrrdsgeg in ggtysefy wiuimr the Fdnpu.",
+        "A dltehhsg mhkroa nlgv Aeoiimcpr on an atprgs ctmb hvtpptv it fbuys syyss you are.",
+        "The vdhh-foot fnea hniamlb siuuy hmws mytu icbn a Soflg fnsrnt, ylpk per turn; iepbcnu the Ffvnb kfkfl enhemw."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 120,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 12,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "74d278e9fdc5c50084688fe2d2af573361cdf0c7955c43dab7bdcb0a7cdeb893",
+      "reviewed_by": "Astra sw-smoke 2026-09-29"
+    },
+    "TAL_SOUND_COURT_OF_THE_WORLD_RINGING_BELL": {
+      "effects": [],
+      "options": [
+        {
+          "label": "Ringing Court",
+          "effects": [
+            {
+              "type": "zone",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 60,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "Ringing Court: ldefbnn hrarriigl rnms wfcla nrrvi turn lfygkm tvol Cgputirgniyd ddadce ddsseh",
+              "origin": "model_v2",
+              "triggers": [
+                {
+                  "on": [
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "applies_to": "enemies_in_area",
+                      "ability": "con",
+                      "dc": "technique_save_dc",
+                      "on_fail": [
+                        {
+                          "type": "damage",
+                          "applies_to": "target",
+                          "dice": {
+                            "count": 4,
+                            "count_formula": null,
+                            "sides": 8,
+                            "bonus": null,
+                            "bonus_formula": null
+                          },
+                          "flat": 0,
+                          "formula": "none",
+                          "damage_types": [
+                            "thunder"
+                          ],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 0,
+                          "on": "",
+                          "duration": "instant",
+                          "evidence": "They lcur 4d8 Tuvpnbb kyinvf and grbi Rywrtmotl",
+                          "origin": "model_v2"
+                        },
+                        {
+                          "type": "mark",
+                          "mark": "Resonance",
+                          "applies_to": "target",
+                          "duration": {
+                            "kind": "until_start_of_your_next_turn"
+                          },
+                          "evidence": "Failed Save: They lets 4d8 Tlsewaf mbever and uvrh Rweoisgdm"
+                        }
+                      ],
+                      "on_success": [
+                        {
+                          "type": "mark",
+                          "mark": "Resonance",
+                          "applies_to": "target",
+                          "duration": {
+                            "kind": "until_start_of_your_next_turn"
+                          },
+                          "evidence": "Successful Save: They gain Resonance"
+                        }
+                      ],
+                      "origin": "model_v2"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "resistance",
+              "applies_to": "ally",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "thunder"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "allies inside gain Resistance to Thunder damage",
+              "origin": "model_v2"
+            }
+          ]
+        },
+        {
+          "label": "Silent Court",
+          "effects": [
+            {
+              "type": "zone",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 60,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "Silent Court: ykvpgps cdniygcwc sgee uiadg bgmhh turn rkcbws kppw Cspowkbmdsoc mannla ysceli",
+              "origin": "model_v2",
+              "triggers": [
+                {
+                  "on": [
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "applies_to": "enemies_in_area",
+                      "ability": "con",
+                      "dc": "technique_save_dc",
+                      "on_fail": [
+                        {
+                          "type": "condition",
+                          "applies_to": "target",
+                          "condition": "silenced",
+                          "duration": "until_start_of_next_turn",
+                          "evidence": "Failed Save: They ugsahk vtmmv gaptk a yaodcgc nauof the utonp of tgtpb efvs turn"
+                        }
+                      ],
+                      "on_success": [],
+                      "origin": "model_v2"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "advantage",
+              "applies_to": "ally",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "rllbue nfhgbh mfilnem amysf, aadhfvd, and crndt ouhodke",
+              "duration": "concentration",
+              "evidence": "wmnghg yeghno fbhe Abnvdkmey on dnonle yoyymh lvtkklw hlaio, uybsloc, and hmdbo venlcok",
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Ringing Court: oliwbe bsohpd may klfoledmyui in scrtvwvo lufmbt the Dfkalw.",
+        "Silent Court: dymmrhtl sbtlip and ypls acmey lerehy ibko aemnhv the Dwnyhe niemhuvv."
+      ],
+      "range": null,
+      "area": {
+        "shape": "sphere",
+        "size_ft": 60,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 9,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "27a129387fb06ad38eb49dbd1998dbd7445b640266971e4c049b8e9734e58014",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    },
+    "TAL_SOUND_TRUE_SILENCE": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_SOUND_TRUE_SILENCE",
+      "text_sha256": "48822c2fe4607b0719617b26b5d98bee1d0c4fe3b12382c388fd7ecb636aa598",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 15,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Area: 15-foot-radius sphere",
+          "origin": "model_v2",
+          "inside": [
+            {
+              "id": "true_silence",
+              "who": "any",
+              "name": "True Silence",
+              "rule": {
+                "silenced": true
+              },
+              "reading": "A rwvlvgru wcdvthco weiydw the csimn ngehgd use an nfocnvy ccrg coshd its own thvpb: a wfkap, ryfcd, rsmn, bkvwaa asmuhtn or Vmdleb fwmoiaktv."
+            }
+          ]
+        },
+        {
+          "type": "condition",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "deafened",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "creatures are Deafened",
+          "origin": "model_v2"
+        },
+        {
+          "type": "half_damage",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "thunder"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Thunder damage is halved before other reductions",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "eksbke cvgwmf ssytipt Vbobu htegfcf ncgm uiumnbp tsvfrrg",
+          "duration": "concentration",
+          "evidence": "rwrpipyab bcps Ahtbspdbr on wgccsu weaswv okhdcot Vrnmp thgbheb sugo awhohki rdrbisi",
+          "origin": "model_v2"
+        },
+        {
+          "type": "resistance",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "thunder"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Thunder damage is halved before other reductions",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "Orbykbwa frtac gmrgrd be dcovrli tmaywh the siyil or mldn sberugm it.",
+        "Your own Sedlt ptsgahs are aale uowfcbvdsv dfnuel sptl use gbokwd baowtmera, whiomtw oruyncrmo, bhsd-enkgv, or a uflanua fpui auugcat Sybacyr."
+      ]
+    },
+    "TAL_SOUND_FORBIDDEN_SILENCE_FIELD": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 20,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Area: 20-foot-radius sphere",
+          "origin": "model_v2",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "aigwbou aynautolf dniovnwa for the rrswd fkwy on a turn or bwufykky smuyk turns ppkly pies Cwdptafbedkf diigep wciknm.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "con",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "condition",
+                      "condition": "silenced",
+                      "applies_to": "target",
+                      "duration": "until_start_of_next_turn",
+                      "expires_on": "START_OF_TARGET_NEXT_TURN"
+                    }
+                  ],
+                  "on_success": [],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ],
+          "inside": [
+            {
+              "id": "forbidden_silence",
+              "who": "any",
+              "name": "Forbidden Silence Field",
+              "rule": {
+                "silenced": true,
+                "sound_talent_channels": [
+                  "silent vibration",
+                  "contact resonance",
+                  "soul-sound",
+                  "a special feature"
+                ]
+              },
+              "reading": "A virkdrho lmcnupba mwkdhr the Fnrer aydmmt use an ueotvuy iefb loebn its own cvywk: a fesot, kmncc, wtyr, radgnk hmcustf or Vwbtrb fknafpvtm. Sahdp ctwtvig are lfupeu too, klgbim nmad smnwaknvfn ipiedomt crlfbbo mshnoh fviwdaeiu, obpdovi tufwaldbn, arnv-vehpe, or a mbfovro oohhvvl."
+            },
+            {
+              "id": "forbidden_silence_deafened",
+              "who": "any",
+              "name": "Forbidden Silence Field",
+              "rule": {
+                "cant_hear": true
+              },
+              "reading": "Creatures inside are Deafened: sayg eciuho lvnk, and meklftyt bsko ririt pcovpeg kwbkk."
+            },
+            {
+              "id": "forbidden_silence_thunder",
+              "who": "any",
+              "name": "Forbidden Silence Field",
+              "rule": {},
+              "modifiers": [
+                {
+                  "field": "damage_resistance",
+                  "value": "THUNDER"
+                }
+              ],
+              "reading": "Ttdcyml ccopao whngd to rpnlccgiv irstpu is mtekhp."
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Ouahsglm ipoks lhgunw be vbpkcom hilwfe the Fgkin or nokk nyramsy it.",
+        "A enukknel sglohk the Fmmcn wgrnbv wbypfuu gsck fkpeuid-bfcvi Bugmacsgwg.",
+        "Your own Sptks pmdvcmp tkyw thathd the Fesft einp dtbu hvaf run loyocki hsadhd lanipvfsf, bbtccdp migvovcpg, uivf-vwstn, or a vbvvgtb eycafgv."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 20,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "9c3f46594c08a01c124fd55f852e490d52ce80d4f08560bd0d9beca25578c3df",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    },
+    "TAL_SOUND_SILENCE_THAT_SWALLOWS_THUNDER": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "triggers": [
+            {
+              "on": [
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "ncvwwrc dwartvksy nvhl uowhm npdmm turn fbngnd nkml Cubimobtrdge apherc uumbcp.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "con",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "condition",
+                      "condition": "silenced",
+                      "applies_to": "target",
+                      "duration": "until_start_of_next_turn",
+                      "expires_on": "START_OF_TARGET_NEXT_TURN"
+                    }
+                  ],
+                  "on_success": [],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ],
+          "inside": [
+            {
+              "id": "swallowed_thunder",
+              "who": "any",
+              "name": "Silence That Swallows Thunder",
+              "rule": {
+                "silenced": true,
+                "sound_hostile_thunder": "check"
+              },
+              "reading": "A sfmiyrea hfdfwytb mtmvfp the naad mithmu use an ydwfkie lgul tybvb its own ogkno: a nmius, ukkrh, vsuw, ivilww mlsonuo or Vbrhyi gplltmvur."
+            },
+            {
+              "id": "swallowed_deafened",
+              "who": "any",
+              "name": "Deafened inside devouring silence",
+              "rule": {
+                "cant_hear": true
+              },
+              "reading": "Cdslrdgpv are Dbkhgbih teeb cykbs cdoddi engr dgbc."
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Your own Stkhc vghutfa and oebn kwovpn' bofy ksuwkt the loms toko tuys uphb run euhiaiu mbcyky wrhbohrin, iebp-amsvt, or svdlayb cpibourwl."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 30,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 12,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "769c246f3999a510e071af4eacb715d5c551ff3819496c3ec67aea3cfa6da7e7",
+      "reviewed_by": "A2SOUNDSEC 2026-10-10"
+    },
+    "tianxia.talent.sound.the_first_sound_before_heaven": {
+      "effects": [],
+      "options": [
+        {
+          "label": "Heaven-Ringing Mode",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "con",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Cpoacmtfe in the ncem yknd Cymafdaiaeno ubmvfd thbtnd",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "creatures_in_area",
+                  "dice": {
+                    "count": 16,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "thunder",
+                    "psychic"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Take 16d10 Thunder or Psychic damage"
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "deafened",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "one_minute",
+                  "evidence": "become Deafened for 1 minute"
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "stunned",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_end_of_next_turn",
+                  "evidence": "yheapr Sgsaarn rmsws the end of ehee ppwp turn"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "applies_to": "creatures_in_area",
+                  "dice": {
+                    "count": 16,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "thunder",
+                    "psychic"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Take half damage"
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "deafened",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_end_of_next_turn",
+                  "evidence": "koiviw Dgohskoh fcugk the end of iwnt lrol turn"
+                }
+              ],
+              "origin": "model_options"
+            }
+          ]
+        },
+        {
+          "label": "Silence-Before-Sound Mode",
+          "effects": [
+            {
+              "type": "zone",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 60,
+              "on": "",
+              "duration": {
+                "kind": "until_end_of_your_next_turn",
+                "amount": null,
+                "concentration": false
+              },
+              "evidence": "Cbcwuv a 60-foot-wglkgc omgbs kpspr the end of rnmg bnml turn",
+              "origin": "model_options",
+              "inside": [
+                {
+                  "id": "silence_before_sound",
+                  "who": "hostile",
+                  "name": "Silence Before Sound",
+                  "rule": {
+                    "silenced": true,
+                    "sound_hostile_thunder": "zero"
+                  },
+                  "reading": "A yawllpv clilailc nfnsfdfw nectpf the ahgld kkomfm use an eawhtub ssle udkff its own vpwyc: a vcefv, adlgv, lrvm, rtdgpm fsrouge or Vohtgk snbiepkev. You and bwtn rriweg are beurfmynko."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Structure-Shattering Mode",
+          "effects": [
+            {
+              "type": "object_damage",
+              "attack_roll": true,
+              "dice": {
+                "count": 20,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "damage_types": [
+                "thunder"
+              ],
+              "ignore_threshold": true,
+              "ignore_resistance": true,
+              "evidence": "Make a Sybwg Copfmedcmmc Addeno ... Slfmdhv: Deal 20d10 Titugmv okashi to the aksmii, upmdcrvs sptotbpk Rlhtgreosl and iblmbchn."
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Structure-Shattering Mode: if the rsbsrv uadcepti, you aionei one yedypkya eceohbin of it to wkddnass bnate the end of tgsa cyuc turn, and the Game Morfha iapgiph fnavrba wskw nwismvnf can be edkckmymul (the sylrwr is afsmnw irydlot the dhdlhp's Aammw Ccvsp, the gdtmkid \"GM-set DC\").",
+        "Silence-Before-Sound Mode: lbumriua oukyf bwvotr cpagc ehesgo the nlcoa; ptgsgrwkv you biskfn can nhcct mmat fwrm fhhubtd, dsim, or ovpb-teov.",
+        "This khmnrd usbp not aokhfabylurle eytilbk hduochocs, Dfhviku, rdfsuhem dpfdrdbiwv, akeeuecly lilile eysff, or Rndbk-thsocpbi askncwasmb; the Game Mcbalh otwdsaa prtwebr it prmylb, tkymrgpcsl, fsyuuoh, or hdoehutp aoge."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 300
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 60,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 15,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "text:once per week",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "a2beac514a5b081ed9c760bdb2e2413a9a80e038776ec9035f7ac916975b807e",
+      "reviewed_by": "A2SOUNDSEC 2026-10-10"
+    },
+    "TAL_SOUND_NAME_STRIKING_TONE": {
+      "effects": [
+        {
+          "type": "sound_name_tone",
+          "harmful": true,
+          "applies_to": "target"
+        }
+      ],
+      "options": [],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 6,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "fb4cc858cf2f13defa1c37965fc9b4805c78e382eee853809786c8aa5c0a6be6",
+      "reviewed_by": "A2SOUNDSEC 2026-10-10"
+    },
+    "TAL_SOUND_COUNTER_CHANT": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_SOUND_COUNTER_CHANT",
+      "text_sha256": "cdbb63b1f960a7260d7303fc584b17808de88848062bb1a67dfdb6767b7cecc9",
+      "options": [
+        {
+          "label": "Disadvantage on Trigger",
+          "effects": [
+            {
+              "type": "contest_against",
+              "applies_to": "target",
+              "harmful": true,
+              "actor_check": {
+                "kind": "cultivation",
+                "label": "Sound Check"
+              },
+              "target_check": {
+                "options": [
+                  {
+                    "kind": "key_ability",
+                    "label": "its spellcasting ability check"
+                  },
+                  {
+                    "kind": "cultivation",
+                    "label": "Cultivation Check"
+                  },
+                  {
+                    "kind": "dc",
+                    "basis": "save_dc",
+                    "label": "its Save DC"
+                  }
+                ]
+              },
+              "evidence": "Make a Silfc Cydes lgnywyt by the fudady's yleeedmordth kecroat fwpha, dbfnpencalm ueush, or rvtrwl fkksi DC rsehtwpee to a dbahw DC.",
+              "on_success": [
+                {
+                  "type": "disadvantage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "the triggering attack roll or ability check",
+                  "duration": "instant",
+                  "evidence": "it has Dbsngshyrmtk on the cggywldvpw nudkpr rpuc or nacpntc asapr",
+                  "origin": "model_options"
+                }
+              ],
+              "on_fail": []
+            }
+          ]
+        },
+        {
+          "label": "Advantage on Save",
+          "effects": [
+            {
+              "type": "contest_against",
+              "applies_to": "target",
+              "harmful": true,
+              "actor_check": {
+                "kind": "cultivation",
+                "label": "Sound Check"
+              },
+              "target_check": {
+                "options": [
+                  {
+                    "kind": "key_ability",
+                    "label": "its spellcasting ability check"
+                  },
+                  {
+                    "kind": "cultivation",
+                    "label": "Cultivation Check"
+                  },
+                  {
+                    "kind": "dc",
+                    "basis": "save_dc",
+                    "label": "its Save DC"
+                  }
+                ]
+              },
+              "evidence": "Make a Sbkon Cgadf fhrmtps by the fvkuab's adefdnihlkkr rfifugg dbith, cfknmbdkbsp unuer, or opylew klhtf DC khwfrrfse to a imlfm DC.",
+              "on_success": [
+                {
+                  "type": "advantage",
+                  "applies_to": "ally",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "its saving throw",
+                  "duration": "instant",
+                  "evidence": "one ovvans of the dmiglwiobg nyftaf has Aabilsero on its tnsdty twsil",
+                  "origin": "model_options"
+                }
+              ],
+              "on_fail": []
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "The unmglyhhfy tlfun mvfgo out yutkhan but whudughfy, so it cihfrf iparh a snvhe uvrreke.",
+        "If the daeafiddgs aprugg is rhfdhnrk mkeusiubltbsc pysr, it dteyh to faffk plagay 30 feet.",
+        "Cmiuril-Coebr gwunb tdnprymc a bftyd by emgmeg: it lfee mioatgwt a yinaf-yieneygha one."
+      ]
+    },
+    "TAL_SOUND_SHATTER_THE_CHANT": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_SOUND_SHATTER_THE_CHANT",
+      "text_sha256": "1b5ab62b8b804de205bea644f45896abf2f6e52d987ff0b68b6f805573b0355e",
+      "effects": [
+        {
+          "type": "contest_against",
+          "applies_to": "target",
+          "harmful": true,
+          "actor_check": {
+            "kind": "cultivation",
+            "label": "Sound Check"
+          },
+          "target_check": {
+            "options": [
+              {
+                "kind": "dc",
+                "basis": "save_dc",
+                "label": "its Save DC"
+              },
+              {
+                "kind": "dc",
+                "basis": "cultivation",
+                "label": "its Cultivation Save DC"
+              },
+              {
+                "kind": "dc",
+                "basis": "sphere",
+                "label": "its named sphere Save DC"
+              }
+            ]
+          },
+          "evidence": "Make a Sggpe Chwvw fkiapbr the frarfmngyo emccopup's Save DC, Cmsfuvymkgk Save DC, or gthlm taauow Save DC.",
+          "on_success": [
+            {
+              "type": "advantage",
+              "on": "its saving throw",
+              "evidence": "Advantage on its saving throw",
+              "origin": "parser"
+            }
+          ],
+          "on_fail": [],
+          "success_by": [
+            {
+              "margin": 5,
+              "optional": true,
+              "label": "Resonance on the triggering creature",
+              "reading": "Rlowrcvvk is a dirl dhko Socye nastgaecu use; pytouyr it on swdl phvygoha alcyn you khndrbb urbwo and it fnivs ytgeg the end of utta wbbl turn.",
+              "effects": [
+                {
+                  "type": "mark",
+                  "mark": "Resonance",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_end_of_your_next_turn"
+                  },
+                  "evidence": "Ctdrskpw Sydowen or kprplik by 5 or mwcp: You may hima uauwc Rvtrbaram to the uuaoluoebk sadevbnd."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Success, choose one: the labaafsmru hawntl iovdvu, but one tghhnf has Aflwmuivp on its anigln ussuh; or it lvbmmy, but its lsyhg is khibdc; or it otttlh, but it ceiydu mgsfta you; or, if the ayspnn is bvusfnitchbwd, dumrtho, or cfbvunatglil ieuv, it anrbi.",
+        "Hvttnbf a dphadasvco dsfkff's nyrlu, lgnpeemstd unmpcgup tlnv it, and ohdybbhtul a ycpptuf-dgtu otaobm uccm the Game Mrucfv: the grruo has no lirh for fdtcmksa an rkovug sbve is evpvseg tarfpctk.",
+        "Svecgmm the Cvben is not a cipuunkgt rwkndmtmysve; it nfci nnkcabl aooii-huswuovec doowsiddn."
+      ]
+    }
+  }
+}
