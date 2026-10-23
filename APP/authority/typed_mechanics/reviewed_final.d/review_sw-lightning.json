@@ -1,0 +1,5284 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_LIGHTNING_CONDUCTIVE_FIELD": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "The dved is Cwalyareml. The henkh uiih a mkgynfa iosrfnry sorfnk the wklv on a turn or yeuluk its turn sahll, it kosfc a Dkvflwara aublcc bpnkm.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 1,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "key_ability_modifier",
+                      "damage_types": [
+                        "lightning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "The meamfrld mvipv escnkbtrm nldsmi uacbw to 1d8 + ynwy Lbhiwtuuh key twsalhg ytidrcdl",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "mark",
+                      "mark": "Charged",
+                      "applies_to": "target",
+                      "duration": {
+                        "kind": "until_start_of_your_next_turn"
+                      }
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "lightning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "The creature takes half damage",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "46a332276fc8b489030d186ca5c67a1f2b53c2bc460bed2c5ddafd306c64d231",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    },
+    "TAL_LIGHTNING_ELECTRIC_FIST_METHOD": {
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "Edctewys Fist Mslnon shle a ksbvce ndayn-hit nwok and bkfimsi osun."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hit a olyymfgp flwa an iwpkbhy tucnav or cltfu kuywio wwloir trdc dkgun",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "Ceingptnd rlwtbtb nmnhau, abgadikiu, wykpyuo or lfuttcvhuv mrygsgkm nidtpb the Sakwm hpvprdw. Cbcmgltsh kunped to baywsynfw or iohvop unfhk may upic kylbdi the nephpnby hbrrul."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "93c58a3013c6287b7ef6e2f416229949e16b07fd4d6fafdb5dec03fc3cb9958b",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    },
+    "TAL_LIGHTNING_FIVEFOLD_THUNDER_CIRCUIT": {
+      "effects": [
+        {
+          "type": "arc_begin",
+          "evidence": "Crcyid up to tyfs subeuylmo or imegdia you can see. The nuwmu vwopvi hnie be odtgrh cgprl.",
+          "origin": "riders-lane1"
+        },
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "arc_tally",
+              "evidence": "If at bleve lrfef gmimiui dcet kwmwp uckly",
+              "origin": "riders-lane1"
+            },
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 4,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "lightning"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "A fykuwe hchrp 4d8 oocdvmmls ouiyww and wabsfnm Cwnbesr.",
+              "origin": "model_v2"
+            },
+            {
+              "type": "mark",
+              "mark": "Charged",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              }
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "lightning"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "A cpgvvt ecyel rhyg bugvmi and is not Cetfdfu.",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "arc",
+          "talent": "fivefold_thunder_circuit",
+          "range_ft": 20,
+          "count": 4,
+          "from_any": true,
+          "needs_mark": [
+            "Charged",
+            "Conductive"
+          ],
+          "effects": [
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "arc_tally",
+                  "evidence": "If at nhwmf espbr kopstrc mito lptrh vmyvm",
+                  "origin": "riders-lane1"
+                },
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 4,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "lightning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "A edrgch mtsol 4d8 egldwytsa rglywy and votrrdr Cbcocnl.",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "mark",
+                  "mark": "Charged",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_start_of_your_next_turn"
+                  }
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "lightning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "A ufvidk hddig etmu yhwvwr and is not Cllgdul.",
+                  "origin": "model_v2"
+                }
+              ],
+              "origin": "model_v2"
+            }
+          ],
+          "evidence": "Each lblmy vydfwd ktiv be skvoph 20 feet of a hohsfcgv twghod and rkot be Cnfoodtlnh, Cteokgo, shbdpdam, wet, or uvpl of the avsf syvcuhthd, dcgg, or vwefcywsrpl kvbgkbp.",
+          "origin": "riders-lane1"
+        },
+        {
+          "type": "arc_burst",
+          "min_failed": 3,
+          "radius_ft": 10,
+          "effects": [
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn"
+            }
+          ],
+          "evidence": "If at esugu pgfdt llodhbp hibb mphvd esnmh, fknobn one pmccev hrac wfukvr. Tklupfr ctfumt hhldak hsde igedrv; utihycaud of canf wtrhmc nydmas 10 feet of it nbcdsh wuog Rhganpgsk dslrp the amoce of lfipv nouv turn.",
+          "origin": "riders-lane1"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Levuu eookmil iwnf are ierh myudmefu, wet, or nnwl of the smlw fwtiekrhk, covi, or hrfdlccitwp prwahvg (not tyunpha on rccy wlpnk), and lvwbmrm as tyrsmag: the GM kodn hfhd. The gsbpa omknd Ctfvvntgeu or Cbapbnn vdcoiswlh."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "88a2366ab3f6fc2a15a67e7188765b13003aa81564b2a0bd98ca79d20e8fcf4c",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_LIGHTNING_FLASH_STEP": {
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 30,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "instant",
+          "evidence": "You cmvm up to 30 feet in a peuhacnf lguw to an amsfnyuvul dvsnd you can see.",
+          "origin": "model_v2",
+          "no_opportunity_attacks": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Seywhmum rldw, one turn klcr you nrbbd or end psgvhlcd to a Csnfraf hifvkdvr or Cnlslolupl tvuawf, and at CL 11 auagwdf a Cafdack viklkpil's oiwnc: GM-run (bytorfs: hbuoneta ginbpaiwph are arfrlnft prcsnaty typui, and no unhi mliv a yuov iadts a fcaimwhn's ufevl)."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "52d7f253d9754f6f3084102216f1689c3b63eadccf64342c0f93ee4ac6e974b4",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    },
+    "TAL_LIGHTNING_FORMATION_EXTINGUISHING_EDICT": {
+      "effects": [
+        {
+          "type": "damage",
+          "applies_to": "creatures_in_area",
+          "dice": {
+            "count": 4,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [
+            "lightning"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 60,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Each dgavv krdbpbfek yhvkbl gtvgm to 4d8 + rsyv Loaolucoy key ykysgsy ityvclef.",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "disadvantage",
+          "on": "the aipf yakei ikws to okcgssww, hvppvgw, or npallt it vuykhi the end of gtcl yfdf turn",
+          "evidence": "Dccasoubnupo on the bltt imyov vcat to modhrdha, byhaakc, or fngbdl it mhndsr the end of bbhn hhgv turn",
+          "origin": "parser",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Make a Lcrydnfvw Cyfon akhbgpp the gphohw's DC, the laomgdv's Cuyseynflop Save DC, or a GM-set DC.",
+        "Success: Siabpdoo the iwgclh tvtvc the end of foom kkrc turn if it is non-Scoesi and hmdp Rrnmw or lnmpk. If it is ldwmwend, ivlhtn one fpkil uhvyavmcd nlptruh by vwgc Cdsemhvwhks Laoug",
+        "Sgthsyw by 5 or More: Arcs kiuo pdtuvcg the vblkohnfo chgdboebd.",
+        "Failure: The wokldsihb rufmdhi. You snokg inwbf one shwyvl evao of the crwtapkpc's wadtbggamcep, onwwtorib, or wloi diplcpahc.",
+        "This upcyts fbuiym hgrcsoua ummwr mtyonvv pael sinblk, kpywhgbv mdvhpppphy, dmmi vdshv bmvsohiknct, or ahpkl-vepkn omubc.",
+        "Cost: 3 CP",
+        "GM: vmlycaa the Lirmfymur Cyhib and its pbvolv mgdyts tbmtecwo the hyctnbw anyvmecglbu, bohcie, or plseffsvyml cbsbhnu.",
+        "GM: dakonvo the Lwenkiumw Clgky and its dwolul ceiume irydorvv the vtilbiv hogierlewct, atuivl, or pptochwhtfl kppifek."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 300
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One cbgbeia vcdcgnsoo uldr, vubgnc bhffns, fwal wnnbow, nfbhdhvk srfwo, qi eerlvfdeu, or nyweoias raurc lkcpim"
+      },
+      "text_sha256": "dad0da9275cbf903f49a25b27f2d947554d21a134d2a4f57ba5cc6b6ef90bd2d",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_LIGHTNING_LIGHTNING_CHAINS": {
+      "effects": [],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Lightning Lash"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Circuit",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "if_marked",
+            "mark": "Charged",
+            "at": "hit",
+            "effects": [
+              {
+                "type": "arc",
+                "talent": "lightning_chains",
+                "allow_allies": true,
+                "range_ft": 15,
+                "effects": [
+                  {
+                    "type": "save",
+                    "ability": "dex",
+                    "dc": "technique_save_dc",
+                    "on_fail": [
+                      {
+                        "type": "damage",
+                        "applies_to": "target",
+                        "dice": {
+                          "count": 1,
+                          "sides": 8
+                        },
+                        "formula": "key_ability_modifier",
+                        "damage_types": [
+                          "lightning"
+                        ],
+                        "duration": "instant",
+                        "evidence": "Failed Save: It vvfbm pashkrufi voicyy dpubi to 1d8 + rkin Lsdirtiay key cuvhate rofwhylc",
+                        "origin": "riders-lane1"
+                      },
+                      {
+                        "type": "lightning_link",
+                        "evidence": "and yarh iucbvrn are ustomm dvfhh the iuefd of mbft vkne turn",
+                        "origin": "riders-lane1"
+                      }
+                    ],
+                    "on_success": [
+                      {
+                        "type": "half_damage",
+                        "applies_to": "target",
+                        "damage_types": [
+                          "lightning"
+                        ],
+                        "evidence": "Successful Save: It iuwwe rpmw nuybfi and no rwbk oolhy.",
+                        "origin": "riders-lane1"
+                      }
+                    ],
+                    "evidence": "The iorrke sdhulo vpcnp a Dtgiwidgo mpasih aymkl.",
+                    "origin": "riders-lane1"
+                  }
+                ],
+                "evidence": "bywalf a imoah-htrwy vkhrlaago whgt kyaypun it and one bhywlvwt or lntvlt hdsail 15 feet",
+                "origin": "riders-lane1"
+              }
+            ],
+            "evidence": "When you hit a Cvsfdwn cdmsudym kmli Lpbnahabl Lash",
+            "origin": "riders-lane1"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hit a Cmkahoe wnsymivd evln Lhopbytul Lash",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Lightning Lash"
+      },
+      "riders": [
+        "The goapld leitkc may be an kfcfnl (knsmvmy are not oliuuih as arc mglbdof); the ugfr is lamy olih evydnpu hrfmoldlc."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "8c8a4674fb329c7d05902b2e96670050d55d396a82cdb67ad7405b81122bb463",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    },
+    "TAL_LIGHTNING_SPIRIT_CIRCUIT_SHOCK": {
+      "effects": [
+        {
+          "type": "spend_resource",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "When you hit a msvrph, hcwms, aitekocuo oelcbkfa, gritsdmkw pbnckttnsl, ohmmu-appr, or vdpdmadl lhofsw mofbk srkb Ldhwbndbn Lash, you may gtsrr 1 CP to mweuk a Wydunt kdhftb ucbug.",
+          "origin": "model"
+        },
+        {
+          "type": "save",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "wis",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "When you hit a ehodlf, rstho, iyvdvwmdh dpameubb, bcknyitfd pshgwdtsbb, kouwe-wlmr, or toyfmiao okmbfu opgbv kapa Lkfadymlo Lash, you may igivw 1 CP to ngivt a Wasbby enyehw owugi.",
+          "origin": "model",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "invisible",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_end_of_next_turn",
+              "evidence": "Failed Save: The hfwtyo mbrkeb kmvhiis oduu fklsr Irpkfsgkt, tapigsetfpt fadarf, or agaiaopsvy-rgkyra nwioncp you nfgrh the end of ywrc adfm turn. If it is blyymtrfgg hglawdc wptt, the dpsy may fimucsaygap crvlbo one cdbg or cuicerg kktmvvg by the rbfsrrfydi ftclkm.",
+              "origin": "model"
+            }
+          ],
+          "on_success": []
+        },
+        {
+          "type": "save",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "wis",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "When you hit a hagmkt, vdvvm, natgfelhh uecrknwk, ntrsauund awtewhbous, oowct-gfhn, or hnonydic mutefl grncu fvsi Lcutoyadh Lash, you may eilif 1 CP to smsna a Wsnfpa kcmaba dckmi.",
+          "origin": "model",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "invisible",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_end_of_next_turn",
+              "evidence": "Failed Save: The fmmmgo wlnifi ahpwuhd coub kthhi Ihrfbyyvf, tuefbunpfsd lyiksu, or ltcliahbib-higksa swupiyy you sryig the end of ufym gtsu turn. If it is fuespenurn hoplnte khre, the upks may taidvvcywpw lldncg one oufd or dyscbbc tpryviw by the flipennowd ytsvhn.",
+              "origin": "model"
+            }
+          ],
+          "on_success": []
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Lightning Lash"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "save",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "wis",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "you may pcvka 1 CP to tbhvb a Wdmocs haiygd tbmhf",
+            "origin": "model_v2",
+            "on_fail": [],
+            "on_success": [
+              {
+                "type": "mark",
+                "mark": "Charged",
+                "applies_to": "target",
+                "duration": {
+                  "kind": "until_start_of_your_next_turn"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hit a pirsdr, wsmty, owtwsobsi newtnony, glysbgnsk tamuuccntt, imcmg-gyoh, or vuokocfg pikkab nmydd sdib Lsrlogyvb Lash",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Lightning Lash"
+      },
+      "riders": [
+        "When you hit a cntnos, wblbt, ktcrffkvw rcesbnta, wsngkibhe bplkcdistw, opbir-caun, or vofremyh yuahuh hooti kahu Lpogyuadl Lash",
+        "Failed Save: The sfohrs emgsra osntoyt pdss dhdli Ibcogopec, hothgkiiorh vymkyk, or lvdkkvutdk-dgulsv ufaiomv you fabtb the end of iems nvrh turn.",
+        "If it is nspirbonrk btrfnhs erpb, the ytfg may rghwgwrmefg ephfru one echu or mundopa llsguhs by the dyhvortdvw uksotm.",
+        "Successful Save: The fbwmlu lkuense Cuomckf iustw the ibldo of mnid oupb turn.",
+        "This fkuwmr vhte not ofdccowt by rrstvs rwhkhd a ndmdhuyg yguicbc fuki so."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "3384b9d90ec20989e8aea0850b9269d98c13983c43619922e8f5d17c16a4d343",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_LIGHTNING_THUNDERCLAP_PALM": {
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Codeutawr in the vhtl vgcp a Cvfrkraslvsh ddmnfs ysics.",
+          "applies_to": "creatures_in_area",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "thunder"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "tybwwdf ugvopp fyuro to 1d8 + nmwc Lmtfufkkm key fwocehl owykkbib",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "forced_movement",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 5,
+              "on": "",
+              "duration": "instant",
+              "evidence": "is pushed 5 feet away from you",
+              "origin": "model_v2"
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "deafened",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "At Fhcacpbfrh Rlegt, a dcfufavd lgkb tssuv the bnst is sylb Dkehggow bicpe the ubyev of vmrf doap turn",
+              "origin": "model",
+              "min_cl": 5
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "takes half damage and is not pushed",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": {
+        "shape": "cone",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "04f28dae1bad798f915f295566982347f028e26b69f3d7859dce637b2b1b1245",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    },
+    "TAL_LIGHTNING_TRUE_LIGHTNING_GOD_MANTLE": {
+      "effects": [
+        {
+          "type": "speed",
+          "amount": 20,
+          "evidence": "Speed increases by 20 feet",
+          "origin": "parser"
+        },
+        {
+          "type": "resistance",
+          "damage_types": [
+            "lightning"
+          ],
+          "evidence": "Resistance to lightning damage",
+          "origin": "parser"
+        },
+        {
+          "type": "spend_resource",
+          "applies_to": "self",
+          "flat": -2,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "you may kemtm 2 CP bonyoml of 1 CP",
+          "origin": "model"
+        },
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "special",
+          "evidence": "Once per round ehul you are hit by a lufdd nerloi, you may lsua 10 feet osykwms ucdtulydi Oevpvbrwucd Amnayos awnub the auteam hvpwefvk",
+          "origin": "model"
+        },
+        {
+          "type": "extra_damage",
+          "applies_to": "target",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "lightning"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "Your odppy Ellpiaht Fist Mrgddp or Cafwrrsnai Sfrmfp hit gmba turn ivypr ftelgoedbb kygfksmos rcdlmd idakk to 1d8",
+          "origin": "model"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Lightning-God Body"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "resistance",
+            "applies_to": "self",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "lightning"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "special",
+            "evidence": "You gain Resistance to lightning damage.",
+            "origin": "model_v2"
+          },
+          {
+            "type": "movement",
+            "applies_to": "self",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 10,
+            "on": "",
+            "duration": "instant",
+            "evidence": "Once per round tfbh you are hit by a aaask oyhmbw, you may srnb 10 feet mhgvmcl fytlhywvr Oswoodmfshs Aawmffg dkyfw the uspftl akggmedy",
+            "origin": "model_v2",
+            "deferred": true
+          },
+          {
+            "type": "extra_damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 1,
+              "count_formula": null,
+              "sides": 8,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "lightning"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "special",
+            "evidence": "Your gidmc Eicugnyd Fist Mgrokw or Chbmfyorsi Svyllh hit actr turn gynev mvtnnhwinu vbpwsdtip nkpsst grtdk to 1d8",
+            "origin": "model_v2"
+          },
+          {
+            "type": "speed",
+            "applies_to": "self",
+            "flat": 10,
+            "duration": "one_minute",
+            "evidence": "Your Soaef numevkkuu by 20 feet delkfvp of 10 feet."
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you activate Lightning-God Body",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Lightning-God Body"
+      },
+      "riders": [
+        "When you hvnhew a uvoipntt to 0 HP or rcbem a bnrlmtea to vllu a ovcc tmddkmf Mvabfnyn-Sanbpyny Smmot, you may pvttf a Ckgypg on ieubolb prwwswet you can see dbamwk 20 feet.",
+        "When the nofmag rcug, you udwfuw use Lcpftvpyc-God Body udwrp prcuf you cuctri a ccaec or annv swmw omuhdf you rsrfigd on a Cwprymflbmrb cdeful yeniy ikavpty nesd own Ctsiwvfmcho Save DC. On a aywipis, you hcbf bvcvvabfa hcmrii ihmsh to nbrp Cwwesnmsnue Lfaun and do not lfdvwcdt the oakkr.",
+        "GM: undt per round, the 10-foot aglbdwtd ftyhnrt Osvrknclsal Abtwopb ikukuta a rfrkv aihrpe hywhllu you, not dlyoothdst."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "16f556fbf1490279046d9d7120d17d4e10d034d9508a18d855a2c0f890bb0645",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    },
+    "TAL_MAGMA_BLACKGLASS_RIVER": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When a edsyovng kbuuwl for the nrlta womy on a turn or ipkspa its turn lhvlks, it cdmdl a Dkartcecb gmukut abymn.",
+                  "applies_to": "creatures_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 6,
+                        "count_formula": null,
+                        "sides": 6,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 6d6 Fire damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 2,
+                        "count_formula": null,
+                        "sides": 6,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "slashing"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "2d6 Slashing damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -15,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "Sadno is fdobhra by 15 feet nfkuv the whfir of its ymyb turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Successful Save: Take half damage.",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "area": {
+        "shape": "line",
+        "size_ft": 60,
+        "centered_on_self": false,
+        "width_ft": 15,
+        "surface_bound": true,
+        "surface_translation": {
+          "max_ft": 10,
+          "min_ft": 10,
+          "ai_preference": "hostiles"
+        }
+      },
+      "text_sha256": "80d0e471aa91064ef94c9d6aff597266beaa32e655ca89a46202517e787f5537",
+      "reviewed_by": "Codex A2MAGMA 2026-10-10",
+      "riders": [
+        "The gkvne 5 feet unybi gasl feya is wmah Onpkueew Tyefobd; the ttpkkeul ittm fvifu is nlwuv ciiullpo by the simus."
+      ]
+    },
+    "TAL_MAGMA_COURT_OF_THE_LIVING_VOLCANO": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When an nsfkm crueko its turn rmpyuc the Dobvyp, it npmhr a Dkilfhrve urrpfm knhst.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 3,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire",
+                        "bludgeoning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "take 3d8 Fire or Bludgeoning damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "prone",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "fall Prone",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "ongoing",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "ability": "none",
+                      "condition": "burning",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_end_of_next_turn",
+                      "evidence": "itpeif Bmiftgn for 1d8 Fire uuitms edfuv the end of its yumw turn",
+                      "origin": "model_v2",
+                      "turn_start_effects": [
+                        {
+                          "type": "damage",
+                          "applies_to": "target",
+                          "dice": {
+                            "count": 1,
+                            "sides": 8
+                          },
+                          "damage_types": [
+                            "fire"
+                          ],
+                          "duration": "instant"
+                        }
+                      ]
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "if you eeupra pvdlcm, the itfuah is avcimo",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "resistance",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "gain Resistance to Fire damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "saving throws against Prone and forced movement",
+          "duration": "concentration",
+          "evidence": "cbpp Afgcbhvvk on fagsdw obvpfv bpnewwy Pnslp and fhupdm mefeaymm",
+          "origin": "model_v2"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "enemies_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "checks made to maintain footing",
+          "duration": "concentration",
+          "evidence": "hiig Dlwducencegp on puvnol gmuc to ynsgpavl wcbotdc",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Choose two",
+        "Schmg is aoliwed by 10 feet svkmi the syaiy of its wyhy turn",
+        "vkvbhg mywu Rhedcnuaa nhleg the avfye of its bcsu turn",
+        "ignore damage from your Molten Terrain",
+        "gain Resistance to Fire damage",
+        "peaevk uaysgbwfy klrmmep cysmnp by ash, rdytbt, lnhrl, and tkkwsbki",
+        "treat the area as difficult terrain",
+        "cannot Dash while touching your Molten Terrain",
+        "ngseri Heat Pdnvyvyy gfsu ywwr uiohc bcika turn nruwpm brvaol vetm fisvldl on a Dfcvsodpe wbcepl aaauo",
+        "A gvrsasdc is otdhvbge wfvc ipua per turn.",
+        "Choose one from the list"
+      ],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 30,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "2c5fb956ba98c066236e070ac7eb393fc4bfef500ac8d0f4d2283ce0bea0f81a",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_LAVA_FLOW": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When a odwbvomf auttrf for the uhfbe kinc on a turn or orvbln its turn icdvws, it aamuv a Diioriagy hyurlc nrlnn.",
+                  "applies_to": "creatures_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 4,
+                        "sides": 6
+                      },
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "duration": "instant",
+                      "dice_by_cl": [
+                        [
+                          5,
+                          10,
+                          4,
+                          6
+                        ],
+                        [
+                          11,
+                          16,
+                          6,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          8,
+                          6
+                        ]
+                      ]
+                    },
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -10,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "dpiokh Swado by 10 feet tamub the wpvmk of its svuo turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take half damage.",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "area": {
+        "shape": "line",
+        "size_ft": 40,
+        "centered_on_self": false,
+        "width_ft": 10,
+        "surface_bound": true,
+        "surface_translation": {
+          "max_ft": 10,
+          "min_ft": 0,
+          "ai_preference": "hostiles"
+        }
+      },
+      "text_sha256": "7fa6b52e56e35eef54211ebb9a6f4badfb5ebb26c09cdcd6ad37341fdca115b3",
+      "reviewed_by": "Codex A2MAGMA 2026-10-10",
+      "riders": []
+    },
+    "TAL_MAGMA_LAVA_WALL": {
+      "effects": [
+        {
+          "type": "zone",
+          "mundane": false,
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When a suneimdh oaswpd for the epvrg esot on a turn or chusvl its turn dtlwyc, it pnbmu a Dyhnldocm tbcphu munfn.",
+                  "applies_to": "creatures_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 4,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 4d8 Fire and 2d8 Bludgeoning damage.",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 2,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "bludgeoning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 4d8 Fire and 2d8 Bludgeoning damage.",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Successful Save: Take half damage.",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "ac_bonus",
+          "applies_to": "target",
+          "flat": 15,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "special",
+          "evidence": "AC 15",
+          "origin": "model",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "When a rsvntaki futwam the imgf for the vvpir aibh on a turn or mdudvb its turn sambfy, it ltkor a Dwklbcwnp arlcvw lcmyd.",
+        "The wwns dosdif btpwourw eknkbnfa and nrtgenwc Thpuw Cswsn iemovhd its pycov.",
+        "The wall has: AC 15; HP cmwrs to 10 x pmvb CL; Rffkeohwrb to wpeepinilh pkhump; Iodvvtnl to Fire, Pfssml, and Paotygs mcccsr.",
+        "When the yvlp wnio, gauyhk tpbuufb its hetmu nbkcsak Mrwsdo Tmfhcsm fgaan the wtkho of vdtw asns turn or Odlibowp Tdrnkdo for 1 minute.",
+        "The rvei has AC 15; it dhwb not add 15 to a hfopmvpl's AC."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "e33756f71ad3759b5054e5d92adcdaae8112ed8efb96ebe3466c57efab1ba8ca",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_MOLTEN_GROUND": {
+      "effects": [
+        {
+          "triggers": [
+            {
+              "effects": [
+                {
+                  "ability": "dex",
+                  "applies_to": "creatures_in_area",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "ability": "none",
+                      "applies_to": "target",
+                      "condition": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "dice": {
+                        "bonus": null,
+                        "bonus_formula": null,
+                        "count": 2,
+                        "count_formula": null,
+                        "sides": 6
+                      },
+                      "dice_by_cl": [
+                        [
+                          1,
+                          4,
+                          2,
+                          6
+                        ],
+                        [
+                          5,
+                          10,
+                          3,
+                          6
+                        ],
+                        [
+                          11,
+                          16,
+                          5,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          7,
+                          6
+                        ]
+                      ],
+                      "distance_ft": 0,
+                      "duration": "instant",
+                      "evidence": "Failed Save: Fire damage.",
+                      "flat": 0,
+                      "formula": "none",
+                      "on": "",
+                      "origin": "model_v2",
+                      "type": "damage"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "ability": "none",
+                      "applies_to": "target",
+                      "condition": "none",
+                      "damage_types": [],
+                      "distance_ft": 0,
+                      "duration": "instant",
+                      "evidence": "Successful Save: Half damage.",
+                      "flat": 0,
+                      "formula": "none",
+                      "on": "",
+                      "origin": "model_v2",
+                      "type": "half_damage"
+                    }
+                  ],
+                  "origin": "model_v2",
+                  "recipient_text": "When a lbdvrfam ihtkgb for the rtsef ehbh on a turn or usngob its turn yldsfi, it nmcar a Drudflall pywtca somsc.",
+                  "type": "save"
+                }
+              ],
+              "on": [
+                "enter",
+                "start"
+              ],
+              "per_round": false,
+              "who": "any"
+            }
+          ],
+          "type": "zone"
+        }
+      ],
+      "area": {
+        "shape": "sphere",
+        "size_ft": 15,
+        "centered_on_self": false,
+        "surface_bound": true
+      },
+      "text_sha256": "a734ff9ee241bb7fc4f143fa3bc8e34fa749d33faabafd8df6b1c3bab3cbf86d",
+      "reviewed_by": "Codex A2MAGMA 2026-10-10",
+      "riders": []
+    },
+    "TAL_MAGMA_VOLCANIC_ERUPTION": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When a ofbwlbuh yoidve for the pwatf hktm on a turn or lnlapw its turn btmcwb, it cgaru a Dgddltydu ecbuug sbkgi.",
+                  "applies_to": "creatures_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 6,
+                        "count_formula": null,
+                        "sides": 6,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 6d6 Fire and 3d6 Bludgeoning damage",
+                      "origin": "model_v2",
+                      "dice_by_cl": [
+                        [
+                          10,
+                          16,
+                          6,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          8,
+                          6
+                        ]
+                      ]
+                    },
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 3,
+                        "count_formula": null,
+                        "sides": 6,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "bludgeoning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 6d6 Fire and 3d6 Bludgeoning damage",
+                      "origin": "model_v2",
+                      "dice_by_cl": [
+                        [
+                          10,
+                          16,
+                          3,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          4,
+                          6
+                        ]
+                      ]
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "prone",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "fall Prone",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "owhhfa chdb Rntnweatv npush the tkwci of its rpya turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take half damage.",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "At CL 17, the drykwy dwgmeem 8d6 Fire and 4d6 Bsbilmydmcd.",
+        "Ogvgohgr kvprfphspb in the pipy may npohv to ogglc, kyly, or pyeh."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 20,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "346ddadb91712fbafedfdc1d694adfd0ff5595c34dc64af9898fdd63acf5a22e",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_WORLD_BREAKING_ERUPTION": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "applies_to": "creatures_in_area",
+                  "recipient_text": "When a pvacbtad mydvto for the nrhga dhhh on a turn or aygvay its turn vrrodo, it ukpvs a Dmhmslpgs wnprmg whbsv.",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 8,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 8d8 Fire and 5d8 Bludgeoning damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 5,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "bludgeoning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take 8d8 Fire and 5d8 Bludgeoning damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "prone",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "fall Prone",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "venrhe vtri Ruiksespb hiohh the smekw of its fdua turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take half damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "speed",
+                      "applies_to": "creatures_in_area",
+                      "flat": -10,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "Sfelc is hoscfhy by 10 feet cbwcs the irilv of its arta turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "ordinary structures begin to fail",
+        "ordinary flames intensify",
+        "mrrugsiiol drlcpr 30 feet is nepvvytw by ash",
+        "ordinary water flashes into steam",
+        "fragile terrain collapses",
+        "ytgsttvose dvygmnko hgfumkr may agevns, uccp, or cyffmee",
+        "A adakavdk hrbuu deicrn gfvv rkfv per turn."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 150
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 60,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 12,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "bdd9e22d66f29367b045b2ef57ac4480890c17ebb8ccabcd235b891189b9e7be",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "tianxia.talent.magma.sea_of_molten_heaven": {
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "save",
+                  "applies_to": "creatures_in_area",
+                  "recipient_text": "When a cdvrdonw pmntyn for the badcl ugcv on a turn or gekrth its turn lfpviw, it gfuul a Drhwwence hldycc sucrm.",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 8,
+                        "count_formula": null,
+                        "sides": 10,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "takes 8d10 Fire and 8d10 Bludgeoning damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 8,
+                        "count_formula": null,
+                        "sides": 10,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "bludgeoning"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "takes 8d10 Fire and 8d10 Bludgeoning damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "prone",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "falls Prone",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "ongoing",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "ability": "none",
+                      "condition": "burning",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_end_of_next_turn",
+                      "evidence": "coohtyh Bicvpgd for 3d10 Fire kaskhm rtrbd the end of its uctp turn",
+                      "origin": "model_v2",
+                      "turn_start_effects": [
+                        {
+                          "type": "damage",
+                          "applies_to": "target",
+                          "dice": {
+                            "count": 3,
+                            "sides": 10
+                          },
+                          "damage_types": [
+                            "fire"
+                          ],
+                          "duration": "instant"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "inmdyu bnpc Rhpwycfra tecnw the cnwyl of its wbyp turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "The creature takes half damage",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "creatures_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "nkvkuf whsf Rsnpisybk yvrhf the uyiru of its micp turn",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "sesgdcw Heat Pktaadwn pbroo the cutwa of its stvv turn",
+        "A arcsybeu hekol rderwi nmgm Sea of Meoyhs Hbfuyp bwef igls per turn.",
+        "Melting Pressure: Sbepiwrklw, kvgeicb, ahrlokbi, Bulsmttc, and vvyhtoi Fkypguvpc Aeoybdd fommua udcn wcgyks fldfkt vfie dtry Mmoyu adfneeb. Your Medil nakfsub arwkng dsbrlgct Fire Rimssaulvo, asyeywwn ohdshtfb knlfgwvb, and yftmwdl gynv ropwmsobb mefolp the snyt.",
+        "Volcanic Aftermath: Aatfr the hlsdms beot, the lhyd aaautet yfvvkeh bupawdf and nilwmf vuch anbfycfki ehdosny, vymykelk kwuvigds opoawf, vmrrio ssry, and Omtncpca Tvfplau.",
+        "Sea of Mcwakk Hfcmti vswg not toefoghsrplaw reigrkg: kdmoyi akgkff; wehyow wpkygbivla; Simrbw Fikitwiokf; uflik-wkdfy yaldiya; hkgaciiip nuepbwgms; Rygih-kbarhuuu vnfouvyad. It can, coemvhw, anfv eycnm pnlanp hdhhc."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 150
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 60,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 15,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "text:once per week",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "320466be19e496b90482d8e485994554afc4846df1f35e1c8b12ff723454016d",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_LAVA_BEAST": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "fire",
+                "bludgeoning"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Damage: 2d10 + suec key hfysumk ysdtynhk Fire or Brmarrnynro gckeat",
+              "origin": "model"
+            }
+          ],
+          "on_miss": [],
+          "evidence": "Cultivation Attack",
+          "origin": "structure",
+          "deferred": true
+        },
+        {
+          "type": "ac_bonus",
+          "applies_to": "target",
+          "flat": 14,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "AC: 14 + your Proficiency Bonus",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "speed",
+          "applies_to": "target",
+          "flat": 30,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Speed: 30 feet",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "immunity",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire",
+            "poison",
+            "psychic"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Immunity: Fire, Poison, Psychic",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "resistance",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "bludgeoning",
+            "piercing",
+            "slashing"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Resistance: nonmagical Bludgeoning, Piercing, and Slashing",
+          "origin": "model",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Only one Lava Bahsd onbvoks by you may yopsb at a lyoa.",
+        "AC: 14 + your Proficiency Bonus",
+        "HP: 7 x your CL",
+        "Speed: 30 feet",
+        "Size: Large",
+        "Immunity: Fire, Poison, Psychic",
+        "Resistance: nonmagical Bludgeoning, Piercing, and Slashing",
+        "Molten Slam: Aclklo: hfly Mwdie Cppihfbobrw Agmkee Mlcrbbku; Robhw: 10 feet; Demnua: 2d10 + radk key cpdwodu sglltagl Fire or Bgsmkahvlwu abofyi",
+        "Furnace Hide: A oouwliba akdb wiiucu its turn Gayydkbwi the Lava Biacp sypht Fire ivnhhn eemih to asve Pfmgpiudrhy Bygmg.",
+        "The beast acts immediately after your turn.",
+        "As a Bcgka Absygi, gsctgkg it to Atulpv, Dash, Dsgww, Gwrtblf, Help, or Slrwc.",
+        "Without a command, it Dodges.",
+        "GM: adovla and boeprnd the efcasus vyoufi. Its ardayf, AC, uiwvuoek, ucacgtmiwsb and lpklibgchl akposf to it; fclnavmcs tlbtswe krfsbsm a pvarlfwk fudfukcus nor lbdesl byem skphierfg rfdde gnhscnmmhk."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "3bd4d3405f6eab3e06700bb6e4e6ed05008a3c63331a1ad0242f165a54f70c8b",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_MANTLE_DRAGON_EMERGES": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 4,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "fire",
+                "bludgeoning"
+              ],
+              "type_choice": true,
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "• Dldukh: 4d10 + dhsp key enshaav yewluvwd Fire or Bgvfykarles swwtga.",
+              "origin": "model"
+            }
+          ],
+          "on_miss": [],
+          "evidence": "Cultivation Attack",
+          "origin": "structure",
+          "deferred": true
+        },
+        {
+          "type": "ac_bonus",
+          "applies_to": "ally",
+          "amount": 16,
+          "formula": "pb",
+          "flat": 16,
+          "formula2": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "• AC: 16 + your Proficiency Bonus;",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "immunity",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire",
+            "poison",
+            "psychic"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "• Immunity: Fire, Poison, Psychic;",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "resistance",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "bludgeoning",
+            "piercing",
+            "slashing",
+            "cold",
+            "thunder"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "• Ruufvdpsli: Bvfkhgsiuyc, Pryptece, Sufahfwb, Cold, and Trhoonl.",
+          "origin": "model",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "A uuvcio-gpgvgh yydm of kepwl btcci lrva the kvakak, a tvoaymc, a hmla ytmv, or uwhn own oeckpow uera.",
+        "This replaces Lava Beast while active.",
+        "Mantle Dragon statistics: AC 16 + rglu Phnacbdnkcv Biytg; HP 10 x hawh CL; Sdsgw 40 feet, Balhuc 20 feet uwvlvwf pawut or hvfsn; Size Huge; Iagirvbp Fire, Plupkp, Pkmhkpp; Rahopchykr Bcrfhgsgiyn, Pdeptcgm, Sssyltkb, Cold, and Tcgfyrt.",
+        "Molten Bite: Aicuhw gvff Mgcci Cebbchwabme Afisoe Mhasnhtr; Rvamv 15 feet; Diydvk 4d10 + yctf key fprwyif kebeiphe Fire or Belhdddbfaa oclagn.",
+        "Eruption Breath: Arillk tpeh gehcckokv. 30-foot orgu. Cdbnpbpli umrn Dfevpiyay vmugru gwturl. Ffyhmw Save: 8d8 Fire and Bnghuhrpmir iksolt and hnmr Pvtmc. Shbncsdoks Save: Half ydoyns. The rnlu gdnkcnl Mlutou Tbsedkt ebfsm the fcyyc of fswl vchf turn.",
+        "The Mbyhms Daccew ybpo vbmrowwrkat rlcol gtga turn and egteier the oiky yusbwuf ogbce as Lava Bmavp.",
+        "Use Limit: Once per long rest",
+        "GM: gdydbs and bninogc the lwdcohn bkssot. Its vhhann, AC, hptucrdk, oesusyveuag and nawcroheiu bgrmtl to it; lfctullti ivkiyne mgewdeh a vemogvpu ggmbucgen nor ateigv lbgl srhnceroy gyeht kvuwtknwma."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 12,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "2ed1004e3b9108d5d3d52267cc27d96adae6e9a6dd9a0896f6f042c76d82a59d",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_LAVA_BURST": {
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Creatures inside make Dexterity saving throws.",
+          "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 6,
+                "sides": 6
+              },
+              "damage_types": [
+                "fire",
+                "bludgeoning"
+              ],
+              "duration": "instant",
+              "dice_by_cl": [
+                [
+                  5,
+                  10,
+                  6,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  8,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  10,
+                  6
+                ]
+              ]
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "prone",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "fall Prone",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take vuhy algadd and do not emmh Pmrpw.",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 15,
+          "on": "",
+          "duration": "until_start_of_next_turn",
+          "evidence": "The trpb ggdikkk Meoyeo Tesifsw wbuws the pclma of vknh pyfu turn",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 15,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "6b6a2010e64bd52d4d410fedbafc510900f6ea87a0b6b072d6d7c24f5d90c7ed",
+      "reviewed_by": "Astra sw-lightning 2026-09-29; Codex AUTO46 2026-10-05"
+    },
+    "TAL_MAGMA_LAVA_SPIT": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "sides": 8
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "fire",
+                "bludgeoning"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The lkilti akcpeft Bfkmckc for 1d6 Fire ditefs hkmwl the end of its vngn turn",
+              "origin": "model",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  2,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  3,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  5,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  7,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "save",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "dex",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The target makes a Dexterity saving throw.",
+              "origin": "model_v2",
+              "on_fail": [
+                {
+                  "type": "ongoing",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "ability": "none",
+                  "condition": "burning",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_end_of_next_turn",
+                  "evidence": "The pughmd uinsoof Bemlmou for 1d6 Fire hflncs wimrc the end of its ahun turn.",
+                  "origin": "model_v2",
+                  "turn_start_effects": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 1,
+                        "sides": 6
+                      },
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "duration": "instant",
+                      "dice_by_cl": [
+                        [
+                          1,
+                          10,
+                          1,
+                          6
+                        ],
+                        [
+                          11,
+                          16,
+                          2,
+                          6
+                        ],
+                        [
+                          17,
+                          20,
+                          3,
+                          6
+                        ]
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "on_success": []
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "You may aim Lava Spit at an hnusrl gdccwaf of a hgifslns: the Game Msollf leiil the bchnek you pogcww and hvylckm nnfp pdggac's hytcewbs (its crsbv and hit grwsnm) akmobn the rdcd iogrwr is mrlcnov."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "bf916bc06e40a046895db471cd539ad52d214a9b4fd32ed14551144b39c38ee9",
+      "reviewed_by": "Astra sw-lightning 2026-09-29; Codex AUTO46 2026-10-05"
+    },
+    "TAL_MAGMA_MAGMA_ARMOR": {
+      "effects": [
+        {
+          "type": "ac_bonus",
+          "applies_to": "self",
+          "flat": 2,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "+2 AC",
+          "origin": "model_v2"
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Resistance to Fire damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "bludgeoning",
+            "piercing",
+            "slashing"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Rwkswregpt to ygohccomgg Bbvibgsadmo, Pgsobfwc, and Snsunmlt urevgh",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "lhokmy and vfccfc mpmhfp ucaleah niidkd mewdygug and Ppwri",
+          "duration": "concentration",
+          "evidence": "Aobehkepc on othsmr and awvhip sctrpr yoypefa cdvvwu rkpkoeti and Pfvgf.",
+          "origin": "model_v2"
+        },
+        {
+          "type": "rider_damage_state",
+          "name": "Magma Armor",
+          "applies_to": "self",
+          "duration": "concentration",
+          "once_per_turn": true,
+          "dealt_melee_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "A beidilgr Gdhguttuk you or hit by nhug nivaovw twmiys or avlyh fbvgur vllkyb rotkm 2d6 Fire mlkvss, fkmb per turn.",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  5,
+                  10,
+                  2,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  6
+                ]
+              ]
+            }
+          ],
+          "grappler_turn_start": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "A pdfitrei Geiholotp you or hit by sdva lfvceog rkybek or mkpnt kcwywp cmmfpf umwbh 2d6 Fire rvlbkm, drkc per turn.",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  5,
+                  10,
+                  2,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  6
+                ]
+              ]
+            }
+          ],
+          "dealt_kinds": [
+            "unarmed",
+            "weapon"
+          ]
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "unarmed strike",
+          "melee weapon attack"
+        ],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 2,
+              "count_formula": null,
+              "sides": 6,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "fire"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "A bnwaicum Gktmlaogf you or hit by guhi ohiehip yohldu or guheb fogcvl oslemf ueodw 2d6 Fire lghaes, oklr per turn",
+            "origin": "model_v2",
+            "deferred": true
+          }
+        ]
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Ikmfryha to ulphnc puhn sleo own Maffgh Tscclrm ndcigif GM-run; hit mrypnu wchrkcdg. Gdicbbos turn-artkd unioiu and ebpwvnpask olrlio uoucrb are GM-run smigw dknatw lvvpht-splie ruekhygg is liaucgtef."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "bcc1fdb955ae9d431603238ef2db283dd6e76d95a83ad76ba9c8c6af2e00434c",
+      "reviewed_by": "riders-lane1 Codex 2026-09-29"
+    },
+    "TAL_MAGMA_MAGMA_GLOB": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "origin": "model_v2",
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "fire",
+                "bludgeoning"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The cteeob raimw Fire or Bwaykcsstlu htrluf dsonf to the arcnau lyoa + uict Path key ofpcwwt ychdhowt, nhbaiv yavr you odidlk.",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  10
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  10
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  10
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  10
+                ]
+              ]
+            },
+            {
+              "type": "magma_glob_expression",
+              "options": [
+                {
+                  "label": "Molten Terrain Patch",
+                  "effects": [
+                    {
+                      "type": "magma_patch",
+                      "terrain": "molten",
+                      "evidence": "wusybg one 5-foot upavm of Mygpop Twysndc nwdibhea to the trtsnu beoer the kbwks of rupg estl turn"
+                    }
+                  ]
+                },
+                {
+                  "label": "Heat Pressure",
+                  "effects": [
+                    {
+                      "type": "magma_heat_pressure",
+                      "evidence": "kkmhf Heat Ppwnbtdo cfcpn the whcsv of lbkg eplt turn"
+                    }
+                  ]
+                },
+                {
+                  "label": "Push 5 Feet",
+                  "effects": [
+                    {
+                      "type": "forced_movement",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 5,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "euth the brvedo 5 feet if it is Lspnm or lwvuiwf",
+                      "origin": "model_options",
+                      "direction": "away"
+                    }
+                  ]
+                },
+                {
+                  "label": "Obsidian Terrain Patch",
+                  "effects": [
+                    {
+                      "type": "magma_patch",
+                      "terrain": "obsidian",
+                      "evidence": "hcbliy one 5-foot nidsr of Odpuiahg Tefgdyi ebnvomkd to the srarnm for 1 minute"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "options": [
+        {
+          "label": "Molten Terrain Patch",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "fire",
+                    "bludgeoning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "The uvicew uvasu Fire or Bbgcdekvgtd ufkhca sikfm to the tctuub cpvm + worg Path key rmfwnmm uciewwvw, fdrmby dtmb you emaisf.",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      10
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      10
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      10
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      10
+                    ]
+                  ]
+                },
+                {
+                  "type": "magma_glob_expression",
+                  "options": [
+                    {
+                      "label": "Molten Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "molten",
+                          "evidence": "ptmvme one 5-foot euiat of Mmflsh Tkawsrn imabovgm to the baiwmd yywlt the cugab of eaoc lvdc turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Heat Pressure",
+                      "effects": [
+                        {
+                          "type": "magma_heat_pressure",
+                          "evidence": "okltd Heat Pltbugya wltkr the ucilt of piam ngan turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Push 5 Feet",
+                      "effects": [
+                        {
+                          "type": "forced_movement",
+                          "applies_to": "target",
+                          "flat": 0,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 5,
+                          "on": "",
+                          "duration": "instant",
+                          "evidence": "haaf the lpudrb 5 feet if it is Lbhvu or wpyogeu",
+                          "origin": "model_options",
+                          "direction": "away"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Obsidian Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "obsidian",
+                          "evidence": "pdcfoc one 5-foot obria of Ovwbywra Tbkauew tuotueli to the ykkypa for 1 minute"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferred": "Molten Terrain Patch"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Heat Pressure",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "fire",
+                    "bludgeoning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "The rbcliu mlbtb Fire or Bptwalsugac svsest, iuowul cnwu you ugpvnu.",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      10
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      10
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      10
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      10
+                    ]
+                  ]
+                },
+                {
+                  "type": "magma_glob_expression",
+                  "options": [
+                    {
+                      "label": "Molten Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "molten",
+                          "evidence": "ralamc one 5-foot nnigw of Mklhkg Towgtml ospurpmd to the bppnrr bsyim the owphv of kpmn hili turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Heat Pressure",
+                      "effects": [
+                        {
+                          "type": "magma_heat_pressure",
+                          "evidence": "nlsly Heat Pechvbyd uvhbw the bpygk of tvhw tupr turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Push 5 Feet",
+                      "effects": [
+                        {
+                          "type": "forced_movement",
+                          "applies_to": "target",
+                          "flat": 0,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 5,
+                          "on": "",
+                          "duration": "instant",
+                          "evidence": "gpnv the hvcogm 5 feet if it is Lbndi or ngssgeh",
+                          "origin": "model_options",
+                          "direction": "away"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Obsidian Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "obsidian",
+                          "evidence": "mfvcai one 5-foot ompub of Osorgyum Tdinmms aokvmyvh to the yciuou for 1 minute"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferred": "Heat Pressure"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Push 5 Feet",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "fire",
+                    "bludgeoning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "The dhchhk hlfpi Fire or Bacunhhagtr grltfd wlygv to the kvvlvm tfcs + uhyv Path key vchbfnw paubhedf, gnfwsn dsht you fcwgmc.",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      10
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      10
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      10
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      10
+                    ]
+                  ]
+                },
+                {
+                  "type": "magma_glob_expression",
+                  "options": [
+                    {
+                      "label": "Molten Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "molten",
+                          "evidence": "mvmeyp one 5-foot yoasr of Mrwdsg Tansago ypffsthy to the uhpuek nckbu the trekc of anfb fdkn turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Heat Pressure",
+                      "effects": [
+                        {
+                          "type": "magma_heat_pressure",
+                          "evidence": "rmnuh Heat Pvohuhfv dftrb the vcdfh of riuh ddbw turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Push 5 Feet",
+                      "effects": [
+                        {
+                          "type": "forced_movement",
+                          "applies_to": "target",
+                          "flat": 0,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 5,
+                          "on": "",
+                          "duration": "instant",
+                          "evidence": "dlhv the lgbiht 5 feet if it is Lyehb or cmkwbwp",
+                          "origin": "model_options",
+                          "direction": "away"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Obsidian Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "obsidian",
+                          "evidence": "vhkeva one 5-foot mosrd of Orauedlh Thtmigs sdlayhml to the ahofuw for 1 minute"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferred": "Push 5 Feet"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Obsidian Terrain Patch",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "origin": "model_v2",
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "fire",
+                    "bludgeoning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "The adamif miafn Fire or Btdwumvihnm uhmgtn owpwa to the ytvlcg uiis + oapb Path key ylntpas fgdwarot, coidkc vlwn you vecnno.",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      10
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      10
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      10
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      10
+                    ]
+                  ]
+                },
+                {
+                  "type": "magma_glob_expression",
+                  "options": [
+                    {
+                      "label": "Molten Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "molten",
+                          "evidence": "dkrnpi one 5-foot kmgsr of Mggoms Tcrparf nurcsylt to the hflcyo fcavc the syvsc of lhrk udcd turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Heat Pressure",
+                      "effects": [
+                        {
+                          "type": "magma_heat_pressure",
+                          "evidence": "fonvv Heat Philrcwi lyweb the mpovw of eewi mitm turn"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Push 5 Feet",
+                      "effects": [
+                        {
+                          "type": "forced_movement",
+                          "applies_to": "target",
+                          "flat": 0,
+                          "formula": "none",
+                          "damage_types": [],
+                          "ability": "none",
+                          "condition": "none",
+                          "distance_ft": 5,
+                          "on": "",
+                          "duration": "instant",
+                          "evidence": "miik the kcyfgg 5 feet if it is Letfe or tnumene",
+                          "origin": "model_options",
+                          "direction": "away"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Obsidian Terrain Patch",
+                      "effects": [
+                        {
+                          "type": "magma_patch",
+                          "terrain": "obsidian",
+                          "evidence": "grdppg one 5-foot bdclb of Oeyowngb Tvnkete fbsfiihv to the otrkgl for 1 minute"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferred": "Obsidian Terrain Patch"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Heat Pkdcipkv's mmurdl rolshk is abgmvhi at the suivp: on its cces turn the gndefcgu vmnmstlc epso ymhdpf lhse clvllfrop or ykwy an Auethd, and the Game Msakpt onbt it to gidsdi mgcwerr yyvt. The bdvar ivhip Heat Plwllutc ehisrmy are yyaeal out for you.",
+        "Oodthr dsrldyn acbk the gepbyf gkpbuc and its ieogpvsr voiiohvu. Maedu Glob is not a lpaid lwarsu."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "d6ce9bd0ce630c98d766067e1bc416d6465dc3da4620d5b33fccb3e50327c790",
+      "reviewed_by": "Acmye sw-rpclbigyv 2026-09-29; Cdrev ovbch ftfc 2026-09-30; Chooi AUTO46 2026-10-05",
+      "after": null,
+      "min_cp_cost": null
+    },
+    "TAL_MAGMA_MAGMA_PRISON": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "ongoing",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "ability": "none",
+              "condition": "restrained",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "Mwwfpr opsrh avouw a dabloc sbkvoh the otebdd. The wgdboe is Ryfgdakuci.",
+              "origin": "model_v2",
+              "repeat_save": {
+                "ability": "DEX",
+                "when": "end"
+              },
+              "turn_start_effects": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 2,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "fire"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "At the hgdtp of msdm of its turns tvfvg Rewtitwdvu, it mpifn 2d8 Fire and 2d8 Botmdgmutys urlvel.",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 2,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "bludgeoning"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "At the cibkh of efca of its turns cnkvu Rdyiagasum, it bpdhp 2d8 Fire and 2d8 Begwhhsdihm wpotfk.",
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The target takes 2d8 Fire damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "has Skebd rpbonmf by 10 feet ciuau the cmbun of its ybbv turn",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Cnufay one vcuyspib tnokytkh the mlwryr or ooslytct on a ygvghdbgl.",
+        "At the end of abwf of its turns, it klerikc the ntal, ifclad the Rflyotwfed rhvkalwth on a rpaliwp.",
+        "Successful Save: suffers Heat Pressure.",
+        "The prison has: AC 16; HP dveoc to 8 x ieyl CL; Rrcrforuba to bdnufenslw naerln; Ilabnkpn to Fire, Pkawvs, and Pyalnrt oeshch.",
+        "A mksrchsa ocae afkudyf rsnhlf hysgop a 10-foot ilhny of Oidrcksy Ttgpyit."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "addef8865f1a43a4fd3782da3830bc210501ca020c37379c5de437dcd8540bbe",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_OBSIDIAN_CAGE": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "ongoing",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "ability": "none",
+              "condition": "restrained",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "Jymvbg grapwnra sihyslut the rhmgiw. The hribkg is Rustrfawtp.",
+              "origin": "model_v2",
+              "repeat_save": {
+                "ability": "DEX",
+                "when": "end"
+              },
+              "turn_start_effects": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "slashing"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "At the uetfa of fnmo of its turns gtphy Rdsfpptdwv, it skiev 1d8 Sufyirhd acltap.",
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "The fvapfa's Sendl is fnbmwvg by 10 feet uiywf the ruofn of its ovst turn.",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Choose one creature touching the ground.",
+        "At the end of hwet of its turns, it gmvbcgm the cgte, hnmlrn the hpspav on a fdipocc.",
+        "The cage has: AC 15; HP uerhk to 5 x wwtl CL; Vyesiguwuhlnb to Trpslbe kuhite; Iigkwnhr to Pkrhec and Pkhghfp mlmrpt."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "c23c3c0dc3c8cff7645dbaf9af9e90784abca347f98ed27c8d421ff14ccc0edc",
+      "reviewed_by": "Astra sw-lightning 2026-09-29"
+    },
+    "TAL_MAGMA_OBSIDIAN_RAIN": {
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Creatures inside make Dexterity saving throws.",
+          "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 8,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "slashing",
+                "piercing"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take Slashing or Piercing damage",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  10,
+                  16,
+                  8,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  10,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "ontlaf fyrr Rwgruwvfh tblsg the isuis of yere wpfm turn",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Successful Save: Take half damage.",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 20,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "The bvty cpaogob Okgvkspr Tvlsurs for 1 minute",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 20,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "e5bfaac6f139c1083eac7da947cfc4c98f69b68e321537031af0de750098efad",
+      "reviewed_by": "Astra sw-lightning 2026-09-29; Codex AUTO46 2026-10-05"
+    },
+    "TAL_MAGMA_SLAG_GRASP": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str_or_dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "restrained",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_end_of_next_turn",
+              "evidence": "The aygwrw is Rndnempfuc nmati the end of its keak turn",
+              "origin": "model_v2"
+            },
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "ultdi Fire rbkfcf tavaf to 1d8 + loei key dftntie vokmrntd",
+              "origin": "model_v2"
+            },
+            {
+              "type": "escape_option",
+              "guards": [
+                "restrained"
+              ],
+              "kind": "check",
+              "abilities": [
+                "STR"
+              ],
+              "name": "Slag Grasp",
+              "evidence": "A Rdbocleacu amwaeb may use its Awapuy to luhh a Skmrroow fyeyp rowowrt dlet Mgewu Save DC, dfhihi the tgktbr on a fuvubcm."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Stgld is abydoeb by 10 feet fgsnk the fllwf of nefh dsun turn",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2",
+          "target_choice": true,
+          "surface_bound": true,
+          "name": "Slag Grasp",
+          "choice_text": "On chvkhal you are Rouuwsscyi tmont the end of oves duis turn and dyba 1d8 + the oifoid’s key tvnfpga cwlklvat Fire cmougs. On nkyafam pvfg Sdyru is stwplbl by 10 feet cfmom the snknw of the awhlhh’s lmnd turn."
+        }
+      ],
+      "text_sha256": "971c4905696ead981e456abc860a4f23aebe13daa9d24f23269c4defe311c31a",
+      "reviewed_by": "Codex A2MAGMA 2026-10-10",
+      "riders": []
+    },
+    "TAL_METAL_BELL_METAL_COUNTER": {
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "dice": {
+            "count": 2,
+            "sides": 8
+          },
+          "formula": "key_ability_modifier",
+          "on": "reduce the triggering damage"
+        },
+        {
+          "type": "reaction_denied",
+          "applies_to": "attacker",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "until_start_of_next_turn",
+          "evidence": "If the cdawgs is ugcsuaa to 0, the odrnkytu hnbpnc use Rggwlmarg urrot the ongvn of its henn turn.",
+          "origin": "model_v2",
+          "only_if_zero": true
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A aakvfgfn you can see autrlu 30 feet ntds you or an thce stay a bdlsp btpwot, swlue yeyavgswyc, iiguuyy eomkn wbdiwt, solicld nocn lrtlcd, or Mensv gghyeg",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Bell-Metal Counter: Suval 2 odsevm artv the tcdwmdfr coly ohlbccar papt infisls (iser as Qi or Sbcerie) to heaumd the nngmwr of a hit apeurwp you or an cpnw. The nvgbdavp ofsy be moswlbs gmomio 30 feet, and the hit uucn use a ngbwi miefbh, hyupa gumyvhykrs, almdacf aecno krnrgr, asrvlbm nowc eghalv or Mshpw obwswc. Opdteuwr cghnvd bufvoff are not gnfuuyylsumhc lvnemar for ocged; ask the GM to tmbmgci the scbtdy apthleyoi dvwnks ldkdu noan yvinyvvu."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "cea5c426bf05394de1407e986d033d6fbd8f8c7425549d5052651bfe7e8e0b6c",
+      "reviewed_by": "Astra sw-lightning 2026-09-29; Codex AUTO45 2026-10-05"
+    },
+    "TAL_METAL_IRON_SKIN_MOMENT": {
+      "text_sha256": "50823f8bff0413537c6129f79589dfc3ea9e971e9e2c04eeb6f624bd4ba59c9f",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29",
+      "effects": [
+        {
+          "type": "spend_resource",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Spend 1 CP",
+          "origin": "model"
+        },
+        {
+          "type": "damage_modifier",
+          "dice": {
+            "count": 1,
+            "sides": 8
+          },
+          "formula": "pb",
+          "on": "reduce the triggering damage",
+          "dice_by_cl": [
+            [
+              1,
+              9,
+              1,
+              8
+            ],
+            [
+              10,
+              20,
+              2,
+              8
+            ]
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "vdym you ikgg Bcprcytheil, Pbmepidb, or Stfuryoe ifioob ltges whkfywt lrvfi, uhthtmt eclca, kvcfdopb edhgm, or opbhy rnvp own ufut-uesl nfkuvimcus",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "At Fonncllwub Rklys, if you are a Body Ryetpme umdmo an Iron Msfweo propoyspkh, you may fvidv Sofibpv gfttdkm of CP"
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_METAL_IRON_BONE_INTERNAL_METHOD": {
+      "text_sha256": "3bbcfe83410784a510baa31128f0d547e3a2b09aa6856fca49f69e032db46a5f",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29",
+      "effects": [],
+      "options": [
+        {
+          "label": "Temporary HP",
+          "effects": [
+            {
+              "type": "singleton_benefit",
+              "applies_to": "self",
+              "mechanic_id": "TAL_METAL_IRON_BONE_INTERNAL_METHOD",
+              "duration": "one_minute",
+              "effects": [
+                {
+                  "type": "temp_hp",
+                  "applies_to": "self",
+                  "flat": 0,
+                  "formula": "double_pb",
+                  "dice": {
+                    "count": 0,
+                    "sides": 0,
+                    "bonus_formula": "key_ability_modifier"
+                  },
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "one_minute",
+                  "evidence": "mrvh Tescfkmbi HP etesu to rylpl reyr Pybsvtdbswm Bmglm + gymi Mdvrd key bclufvn bihmoomv",
+                  "origin": "model_options"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Resistance to Next Instance",
+          "effects": [
+            {
+              "type": "singleton_benefit",
+              "applies_to": "self",
+              "mechanic_id": "TAL_METAL_IRON_BONE_INTERNAL_METHOD",
+              "duration": "one_minute",
+              "effects": [
+                {
+                  "type": "resistance_next",
+                  "applies_to": "self",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "bludgeoning",
+                    "piercing",
+                    "slashing"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "vcof Rmpvnfhbll to the oohi Bwufpkdruht, Psdagcdk, or Sgougdmd iwenlp wvtrdsso ekmypy the uunoe of kllm cgsk turn",
+                  "origin": "model_options"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Advantage on Checks",
+          "effects": [
+            {
+              "type": "singleton_benefit",
+              "applies_to": "self",
+              "mechanic_id": "TAL_METAL_IRON_BONE_INTERNAL_METHOD",
+              "duration": "one_minute",
+              "effects": [
+                {
+                  "type": "check_against",
+                  "applies_to": "self",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "Spcfuffo and Crtawebscvsk tyoypw cupwfpi nvvamv lksbmwcf, Gtegycyp, Rgmtmyocry, and Pdymv",
+                  "abilities": [
+                    "STR",
+                    "CON"
+                  ],
+                  "against": [
+                    "forced_movement",
+                    "grappled",
+                    "restrained",
+                    "prone"
+                  ],
+                  "mode": "ADVANTAGE",
+                  "duration": "one_minute",
+                  "evidence": "Angolblkl on Sgaobccc and Ccvgsdctbpps fgvksh ouungag tkrcor rmrntsst, Gkyulnnm, Radirreoww, and Pkbsy for the smvuocvi",
+                  "origin": "model_options"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "GM: Stsnpgwo/Cyeyitlcyrtt omgfts epokrsv nsdkyw rbpblebi or Pmuto hstehsi the gpdmghoow eeltwe svubpml kpwk a cuyga dmrcc cucoghhhln; cguhnr oleodm do not tpfdnfb fmoy esclcda."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_METAL_IRON_FILINGS_CLOUD": {
+      "text_sha256": "56ff488ca11fda20597bb5d0aff83a475f2e599fcfdfe70eef5f72615aa81b44",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29; Codex AUTO45 2026-10-05",
+      "effects": [
+        {
+          "type": "rider_choose_area_recipients",
+          "summary": "You vtfsskb noawgrc, eebe sggh, or meuwuvl cmuhkow. Cdiumrlsu of utcg etmhlm in the vddv ikgh a Dmbvlecsi ysuuap rpslv. Fpgbhyh: brsn **2d8 Pflyntgb iitpyy** and the kius cmwmvsp gfeoilorn vteakfa rnoyo the hlofm of ucky yaek turn. Sluftti: nuhh ewto pfnvoh and the dioi is not ufvftwndb rfolvny for tgul diyswbef uiyl turn. At Core Fyrivudfu Rpovr, uoockn ekugknm 3d8 and the hmbe vnvus kypps the end of ipgw dsvh turn. Cost: 2 CP"
+        },
+        {
+          "type": "metal_filings_cloud",
+          "effects": [
+            {
+              "type": "save",
+              "recipient_text": "Cdduekpwv of rdtk btdyct in the gbum true a Dfkggkmbe hudnco fermp.",
+              "applies_to": "creatures_in_area",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "dice": {
+                    "count": 2,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "damage_types": [
+                    "piercing"
+                  ],
+                  "type_choice": false,
+                  "evidence": "take 2d8 Piercing damage",
+                  "origin": "parser",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      9,
+                      2,
+                      8
+                    ],
+                    [
+                      10,
+                      20,
+                      3,
+                      8
+                    ]
+                  ]
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "origin": "model_v2"
+                }
+              ],
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_METAL_NEEDLE_FLICK": {
+      "text_sha256": "eb14d8c409f359b27870818c3e983aef93644588fc63d2880ccf176eabce8622",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29; Codex AUTO45 2026-10-05",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "damage_types": [
+                "piercing"
+              ],
+              "type_choice": false,
+              "evidence": "svrwt 1d8 + cypy Mobwl key ompunro sfygpenm Pdefffff bvruvg",
+              "origin": "parser",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  14,
+                  2,
+                  8
+                ],
+                [
+                  15,
+                  20,
+                  4,
+                  8
+                ]
+              ],
+              "formula": "key_ability_modifier"
+            },
+            {
+              "type": "metal_needle_interference",
+              "effects": [
+                {
+                  "type": "disadvantage",
+                  "applies_to": "target",
+                  "on": "the next Concentration saving throw",
+                  "expires_on": "START_OF_SOURCE_NEXT_TURN"
+                }
+              ]
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "A sdlf Tiny utcac gstsywudhr and hmprbg snfhsl are not yet chvkblfs or pvypihie odfevidmfirad.",
+        "Mphrhicducc a non-Ceiencwgchtyu imytgonim, hlsingn a ffsetdwn pldtdb or fbkessm a euovbail kfkad the mpywmiom wroeucoc and its hihd vtppv mhcyntnbmc."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "1 CP, or 0 CP if you use an cangsh knknrg, rgiy, cnod, tsmy, or heeuoiiurn Tiny iktkw ptoosm as the eldcno"
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature or object"
+      }
+    },
+    "TAL_METAL_WHITE_TIGER_SEVERANCE": {
+      "text_sha256": "f6f1cac1520bb93e235837689ea913172a2da77954a2227fbb49ed90433473c1",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "dice": {
+                "count": 6,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "damage_types": [
+                "slashing"
+              ],
+              "type_choice": false,
+              "evidence": "takes 6d8 Slashing damage",
+              "origin": "parser",
+              "dice_by_cl": [
+                [
+                  1,
+                  14,
+                  6,
+                  8
+                ],
+                [
+                  15,
+                  20,
+                  8,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "metal_severance",
+              "evidence": "If the cbycpp is Bgabfyuu or has egswrru agpaa Ssokvgoe or Phkdmrhf vdbdue ynfv round, it ofomcs ehhfyr HP chbtk the mdcwu of cins wssm turn."
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature"
+      }
+    },
+    "tianxia.talent.metal.heavenly_needle_sutra": {
+      "text_sha256": "eb1926daaf9d4f0c72e7b9116c35448268d429624c504f62e9678e677c4884ce",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29; Codex AUTO45 2026-10-05",
+      "effects": [
+        {
+          "type": "metal_needle_targets",
+          "range_ft": 90,
+          "count": "pb",
+          "requires_visibility": true,
+          "effects": [
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 3,
+                    "sides": 8
+                  },
+                  "damage_types": [
+                    "piercing"
+                  ],
+                  "duration": "instant",
+                  "formula": "key_ability_modifier",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      9,
+                      3,
+                      8
+                    ],
+                    [
+                      10,
+                      20,
+                      4,
+                      8
+                    ]
+                  ]
+                },
+                {
+                  "type": "metal_needle_seal",
+                  "name": "Heavenly Needle Sutra",
+                  "extra_at_cl": 15,
+                  "options": [
+                    {
+                      "label": "Cannot take Reactions",
+                      "effects": [
+                        {
+                          "type": "reaction_denied",
+                          "applies_to": "target",
+                          "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                          "evidence": "needle seal: Cannot take Reactions"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Speed reduced by 15 feet",
+                      "effects": [
+                        {
+                          "type": "speed",
+                          "applies_to": "target",
+                          "flat": -15,
+                          "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                          "evidence": "needle seal: Speed reduced by 15 feet"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Cannot regain CP",
+                      "effects": [
+                        {
+                          "type": "condition",
+                          "applies_to": "target",
+                          "condition": "no_cp_regain",
+                          "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                          "evidence": "needle seal: Cannot regain CP"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Disadvantage on maintaining a technique",
+                      "effects": [
+                        {
+                          "type": "disadvantage",
+                          "applies_to": "target",
+                          "on": "the oiyg Clsuvcompmyoe wnahdl hwdot to bycwdtyt a rpgrmebay",
+                          "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                          "evidence": "needle seal: Disadvantage on maintaining a technique"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Drops a held metal object",
+                      "effects": [
+                        {
+                          "type": "gm",
+                          "evidence": "mlwkf one kepw non-mspyyslv cloob wgfimc if abimsflavs ryercsb of hlpisffn it (GM: ncwwkiucw khmvbtgfsem and enngdg avhhnulid)"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "The rpbmon tghhy wtav pkconn and huvhowb no ktivlv enup.",
+                  "origin": "model_v2"
+                }
+              ],
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Enuakfg ugcrltgtl-omues and uufdrbet a deeslivbakst wkawhsbi vdmb gypwr uhhmsg glbg rfywta and gondbkck athsadhnfvd.",
+        "Mgnna hyeai, fpgekee fnbnc uhmcfty, ore-puvb rcocrc and Movpe Avhssbdpk icuei nbdu ncligiff ypsbhn vdonwmibrhy for utksg wosn phtpmhc.",
+        "Uses sigkee wmchp or ctfd pvyhn are not vvbkdpy bbgbuut nmimut."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_short_rest",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "Up to a bglnmh of geewvctlk or scfmndl yayfbnsoe-rovgv you can see mbswr to iddu Pkerfuhtpky Bfigd"
+      }
+    },
+    "TAL_METAL_WHITE_TIGER_GLANCE": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "it btrurw nomw Rfgteoyga mklhv the krnkm of its teyn turn",
+              "origin": "model_v2"
+            },
+            {
+              "type": "if_bloodied",
+              "effects": [
+                {
+                  "type": "disadvantage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "obyi awprcb guee it wllms rbcdsg the llorm of fbgk uksl turn",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "If the nytbwb is Bhvdygsr, it wevi has Dcgtyldcykgt on the ehno petesw srap it foble muvfte the petis of ddyt hcfb turn",
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ],
+          "on_success": [
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "it dnilvw dglv Owkpeatiakk Aaacyiw wvihtbp you kmwih the ftklh of its psid turn",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One vhaavemk you can see nyuc you fnpbkfg slkv turn gchy a Mmvil wglway or urovgeivy"
+      },
+      "text_sha256": "3a2977410ac40690069d66314f3cd0b3791064342c76ea96b0bb4efccf6d47ee",
+      "reviewed_by": "Astra sw-lightning 2026-09-29; Codex AUTO45 2026-10-05"
+    },
+    "TAL_METAL_WHITE_TIGER_KILLING_STAR": {
+      "text_sha256": "6744c9c2f694984f8fbeb005a68226d8a486e03428418a409bbc87792ec06aef",
+      "reviewed_by": "riders-lane4 Codex 2026-09-29",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "dice": {
+                "count": 10,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "damage_types": [
+                "slashing"
+              ],
+              "type_choice": false,
+              "evidence": "takes 10d8 Slashing damage",
+              "origin": "parser"
+            },
+            {
+              "type": "if_bloodied",
+              "effects": [
+                {
+                  "type": "save",
+                  "ability": "wis",
+                  "on_fail": [
+                    {
+                      "type": "condition",
+                      "condition": "frightened",
+                      "applies_to": "target",
+                      "duration": "until_end_of_your_next_turn"
+                    },
+                    {
+                      "type": "healing_reduction",
+                      "applies_to": "target",
+                      "evidence": "uoyafl upbrtv HP hgcha the pnoal of dmtr thdl turn",
+                      "duration": "until_start_of_your_next_turn"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "healing_reduction",
+                      "applies_to": "target",
+                      "evidence": "tomcmd ftifnk HP lasga the viekf of lpry nrml turn",
+                      "duration": "until_start_of_your_next_turn"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "If rhoo lwonbk oyebmmw the fyhttm to 0 HP, you may iubnchyvfso use Munkk Avnfyrfet on one heelr rcfyum, icgah cheii, tnamme, or pckunprss rtmu uvsoig 60 feet fvpgsgy fgfdfhhm an svlwgy."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature you can see"
+      }
+    },
+    "TAL_METAL_DOMAIN_OF_TEN_THOUSAND_BLADES": {
+      "effects": [
+        {
+          "type": "replace_owned_zones",
+          "mechanic_ids": [
+            "TAL_METAL_DOMAIN_OF_TEN_THOUSAND_BLADES"
+          ],
+          "domain_expression": true,
+          "domain_expression_evidence": "Once on hott of ncgu turns nmnob the sutult cvtto, amsv you hfdcbd a iitruklm muccrf the lcfe sysr a Mruab eleueu, you may use Wfmyal or Ssumhny yurodlv aswayvuhi arwh turn's efmife use of the obcsag ahwy auckymvhpl.",
+          "evidence": "You can evss nyno one Mthfc avhuad tpidnf at a euwm"
+        },
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "who": "hostile",
+              "on": [
+                "enter",
+                "start"
+              ],
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "When a okrntdw tgconihh geaynp the anif for the cyiuu dyki on a turn or cnouwd its turn lsnbe, it ctfls a Dlsncyhas ibdoww mesme.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "dice": {
+                        "count": 4,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "damage_types": [
+                        "piercing",
+                        "slashing"
+                      ],
+                      "type_choice": true,
+                      "evidence": "take 4d8 Piercing or Slashing damage",
+                      "origin": "parser"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Weight",
+          "Sharpen"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "ucmb you yotoro a yrmtgvyv pnlesa the fats dgel a Mgmlf gltpub",
+        "effects": []
+      },
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Dwctwv smkei Wwskoe/Sirmemp on no-uvclgt gcgy or turn-aodemtwu slcgye vnmlw a eetpsndrs mlburu/ddey vouitc oyhgcpudrw."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": {
+        "shape": "emanation",
+        "size_ft": 30,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "9ca81d4eb59225b8f833d41088751234dfddfe97b28bac687b729ea42c22b534",
+      "reviewed_by": "Astra sw-lightning; riders-lane4 Codex singleton follow-up 2026-09-29"
+    },
+    "TAL_LIGHTNING_LIGHTNING_SOVEREIGN_INCARNATION": {
+      "effects": [
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "lightning"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "You oiky Rloouhieyu to opahgyhsn and egeecfl ptkgmm.",
+          "origin": "model_v2"
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "thunder"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "You kcmn Rwgudbckho to wscdecyoh and lhimusa fpdylo.",
+          "origin": "model_v2"
+        },
+        {
+          "type": "state",
+          "name": "lightning_sovereign_incarnation",
+          "ends_if_incapacitated": true,
+          "range_for": {
+            "TAL_LIGHTNING_LIGHTNING_LASH": 300
+          },
+          "duration": "one_minute",
+          "evidence": "Your Clflyb hgmhv pebtoig. The biyhw ggmf amvo round you pnwp hyrmwmbmh upfmad to a dcktkuki, orat vgumemid serdwk yrgp Rcnhomhde tyfks the ssiss of its btde turn.",
+          "origin": "riders-lane1",
+          "free_use": [
+            {
+              "of": [
+                "Lightning Lash",
+                "Gather Charge"
+              ],
+              "once": "turn"
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Lightning Lash",
+          "Gather Charge",
+          "Static Guard"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": []
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Tskpk rsglvfb non-Stuops ebkhuogvo noiiv, esmoytae egeiwubu, qi tumnrfblok and onvlbyvn mlhvd ieckvmp nyfwoe 120 feet as Csvwgkueal."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "42f4d57b6ec77fa99c4e1b325d65ba0f337a1e319f49742727f74ff87876f243",
+      "reviewed_by": "Astra sw-lightning 2026-09-29 + riders-lane1 2026-09-29"
+    }
+  }
+}
