@@ -1,0 +1,84 @@
+{
+  "features": {
+    "foundation.sword_bones_v0_2B.generate_severance_edge": {
+      "block": "generate",
+      "resource": "foundation",
+      "on": [
+        "severance_hit"
+      ],
+      "max": 1,
+      "per_round": 1,
+      "expires": "end_of_next_turn",
+      "refresh": true
+    },
+    "foundation.true_blackblood_physique_v0_2C.generate_blackblood_pressure": {
+      "block": "generate",
+      "resource": "foundation",
+      "on": [
+        "blackblood_damaged"
+      ],
+      "max": 1,
+      "per_round": 1,
+      "expires": "end_of_next_turn",
+      "refresh": true
+    },
+    "foundation.weak_reed_tendons_v0_2B.generate_reed_flex": {
+      "block": "generate",
+      "resource": "foundation",
+      "on": [
+        "reed_missed"
+      ],
+      "max": 1,
+      "per_round": 1,
+      "expires": "end_of_next_turn",
+      "refresh": true
+    },
+    "foundation.sword_bones_v0_2B.sword_bone_cut": {
+      "block": "foundations4",
+      "resource": "foundation",
+      "kind": "cut"
+    },
+    "foundation.true_blackblood_physique_v0_2C.blackblood_return": {
+      "block": "foundations4",
+      "resource": "foundation",
+      "kind": "return"
+    },
+    "foundation.sword_bones_v0_2B.sheath_bone_guard": {
+      "block": "foundations4",
+      "resource": "foundation",
+      "kind": "sheath"
+    },
+    "foundation.true_blackblood_physique_v0_2C.blackblood_guard": {
+      "block": "foundations4",
+      "resource": "foundation",
+      "kind": "blackblood_guard",
+      "refined_expression": "foundation.true_blackblood_physique_v0_2C.refined_clotted_iron_blood"
+    },
+    "foundation.weak_reed_tendons_v0_2B.bend_without_breaking_guard": {
+      "block": "foundations4",
+      "resource": "foundation",
+      "kind": "reed_guard"
+    },
+    "foundation.weak_reed_tendons_v0_2B.reed_sway_frame": {
+      "block": "motion",
+      "rules": [
+        {
+          "kind": "speed_bonus",
+          "ft": 5
+        }
+      ]
+    },
+    "foundation.sword_bones_v0_2B.severing_clarity": {
+      "block": "d20_rewrite",
+      "kind": "foundations4_severing_clarity"
+    },
+    "foundation.true_blackblood_physique_v0_2C.blackblood_refusal": {
+      "block": "d20_rewrite",
+      "kind": "foundations4_blackblood_refusal"
+    },
+    "foundation.weak_reed_tendons_v0_2B.reed_recovery": {
+      "block": "d20_rewrite",
+      "kind": "foundations4_reed_recovery"
+    }
+  }
+}
