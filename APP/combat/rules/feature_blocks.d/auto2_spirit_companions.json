@@ -1,0 +1,23 @@
+{
+ "schema": "TianxiaFoundry.FeatureBlocks.v1",
+ "note": "A2 Spirit Companions (lane SOL206, branch auto2/spirit-companions): second-pass automation of the sphere's remaining combat rows.",
+ "features": {
+  "insight.shared-breath-guardian": {
+   "block": "damage_sharing",
+   "kind": "shared_breath",
+   "label": "Shared Breath Guardian",
+   "text_sha256": "eef1c8513523158f440fe1b8cabecd4c2d0ce2e6542078bdde04304836beb131",
+   "range_ft": 30,
+   "rounding": "down",
+   "subject": "own_summon",
+   "allow_self_source": true,
+   "subject_groups": [
+    "bonded_spirit",
+    "hosted_vessel",
+    "spirit_shrine"
+   ],
+   "why": "Shared Breath Guardian: Reaction, a spirit joined to you within 30 feet would take damage: the damage is split before any of the spirit's own defenses; you take the smaller half (rounded down), keeping its type and source, through your own Resistance, Immunity and Vulnerability; the spirit takes the rest through its own; your share cannot be transferred again. combat/ext/damage_sharing.py (subject own_summon, timing before_defenses via pre_defense_transfer). The printed PB reduction for a spirit Hosted inside you has no table creature to apply to.",
+   "timing": "before_defenses"
+  }
+ }
+}
