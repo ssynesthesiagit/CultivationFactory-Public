@@ -1,0 +1,606 @@
+{
+  "schema": "TianxiaFoundry.ObjectRules.v1",
+  "source": "Owner's Sphere Compendium (LocalSources/04_spheres_talents/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md: glossary line 377 and 'If an object needs AC, hit points, damage thresholds, or break DCs, use the 2024 object ... guidance') defers to the 2024 Dungeon Master's Guide 'Objects' rules; the numbers below are that table. Spheres 5e and the owner's texts add no default object numbers.",
+  "materials": {
+    "cloth": 11,
+    "paper": 11,
+    "rope": 11,
+    "crystal": 13,
+    "glass": 13,
+    "ice": 13,
+    "wood": 15,
+    "bone": 15,
+    "stone": 17,
+    "iron": 19,
+    "steel": 19,
+    "mithral": 21,
+    "adamantine": 23
+  },
+  "materials_note": "D&D 2024 DMG, Object Armor Class table (cloth, paper, rope 11; crystal, glass, ice 13; wood, bone 15; stone 17; iron, steel 19; mithral 21; adamantine 23).",
+  "sizes": {
+    "tiny": {
+      "fragile": 2,
+      "resilient": 5
+    },
+    "small": {
+      "fragile": 3,
+      "resilient": 10
+    },
+    "medium": {
+      "fragile": 4,
+      "resilient": 18
+    },
+    "large": {
+      "fragile": 5,
+      "resilient": 27
+    }
+  },
+  "sizes_note": "D&D 2024 DMG, Object Hit Points table (average of Tiny 1d4/2d4, Small 1d6/3d6, Medium 1d8/4d8, Large 1d10/5d10). A Huge or Gargantuan object is a collection of Large or smaller sections, each with its own hit points: place one object per section.",
+  "footprint_fill": {
+    "tiny": 1,
+    "small": 2,
+    "medium": 4,
+    "large": 4
+  },
+  "square_capacity": 4,
+  "footprint_note": "[text redacted: 38a8c5d7f062]",
+  "immune": [
+    "POISON",
+    "PSYCHIC"
+  ],
+  "immune_note": "D&D 2024 DMG: objects are immune to Poison and Psychic damage.",
+  "threshold_note": "Damage Threshold (2024 glossary, which the owner's compendium adopts): immunity to all damage unless one attack or effect deals at least the threshold; then it takes the damage as normal. The 2024 rules print no default threshold, so an object has one only when its preset (see presets_note; 2026-10-08 catalog) or its placement gives it one; a placement's own number overrides its preset's.",
+  "flammable": [
+    "cloth",
+    "paper",
+    "rope",
+    "wood",
+    "bone"
+  ],
+  "flammable_note": "Materials that burn (flavour only: the fight has no burning rule for placed objects).",
+  "presets": {
+    "door": {
+      "name": "Wooden door",
+      "material": "wood",
+      "size": "medium",
+      "resilient": true,
+      "blocks": true,
+      "structure": true,
+      "description": "A hinged wooden door set in a frame; swings open and shut.",
+      "group": "structure",
+      "occluder": "cell"
+    },
+    "gate": {
+      "name": "Iron gate",
+      "material": "iron",
+      "size": "large",
+      "resilient": true,
+      "blocks": true,
+      "structure": true,
+      "description": "A barred iron gate wide enough for a cart to pass through.",
+      "group": "structure",
+      "occluder": "cell"
+    },
+    "barricade": {
+      "name": "Wooden barricade",
+      "material": "wood",
+      "size": "large",
+      "resilient": true,
+      "blocks": true,
+      "structure": true,
+      "description": "Sharpened stakes lashed to a crossbeam, driven into the ground to stop a charge.",
+      "group": "structure"
+    },
+    "wall_section": {
+      "name": "Stone wall section",
+      "material": "stone",
+      "size": "large",
+      "resilient": true,
+      "blocks": true,
+      "structure": true,
+      "description": "A course of dressed masonry filling its square.",
+      "group": "structure",
+      "occluder": "cell"
+    },
+    "pillar": {
+      "name": "Stone pillar",
+      "material": "stone",
+      "size": "large",
+      "resilient": true,
+      "blocks": true,
+      "structure": true,
+      "description": "A tall fluted stone column holding up a roof or roofline.",
+      "group": "structure"
+    },
+    "statue": {
+      "name": "Stone statue",
+      "material": "stone",
+      "size": "medium",
+      "resilient": true,
+      "blocks": true,
+      "description": "A carved stone figure on a plinth.",
+      "group": "decor"
+    },
+    "ice_block": {
+      "name": "Ice block",
+      "material": "ice",
+      "size": "large",
+      "resilient": true,
+      "blocks": true,
+      "vulnerable": [
+        "FIRE"
+      ],
+      "description": "A faceted block of clear ice, melted fast by fire.",
+      "group": "decor"
+    },
+    "crate": {
+      "name": "Crate",
+      "material": "wood",
+      "size": "small",
+      "resilient": false,
+      "description": "A planked wooden shipping crate.",
+      "group": "container"
+    },
+    "barrel": {
+      "name": "Barrel",
+      "material": "wood",
+      "size": "medium",
+      "resilient": false,
+      "description": "A bound wooden cask, standing on end.",
+      "group": "container",
+      "footprint": "small"
+    },
+    "chest": {
+      "name": "Iron-bound chest",
+      "material": "wood",
+      "size": "small",
+      "resilient": true,
+      "description": "A domed wooden chest banded in iron.",
+      "group": "container"
+    },
+    "cart": {
+      "name": "Cart",
+      "material": "wood",
+      "size": "large",
+      "resilient": false,
+      "blocks": true,
+      "description": "A two-wheeled hand cart.",
+      "group": "container"
+    },
+    "banner": {
+      "name": "Banner pole",
+      "material": "wood",
+      "size": "medium",
+      "resilient": false,
+      "description": "A lacquered banner pole flying a war standard.",
+      "group": "decor",
+      "footprint": "small"
+    },
+    "rope": {
+      "name": "Rope",
+      "material": "rope",
+      "size": "small",
+      "resilient": false,
+      "description": "A coil of rope lying on the ground.",
+      "group": "decor",
+      "footprint": "tiny"
+    },
+    "vine": {
+      "name": "Vine",
+      "material": "wood",
+      "size": "small",
+      "resilient": false,
+      "description": "Creeping ivy across the ground.",
+      "group": "decor"
+    },
+    "window": {
+      "name": "Glass window",
+      "material": "glass",
+      "size": "large",
+      "resilient": false,
+      "description": "A glass window in a wall.",
+      "group": "structure"
+    },
+    "bell": {
+      "name": "Bronze bell",
+      "material": "iron",
+      "size": "medium",
+      "resilient": true,
+      "description": "A temple bell hanging from a wooden beam.",
+      "group": "decor"
+    },
+    "custom": {
+      "name": "Object",
+      "material": "wood",
+      "size": "medium",
+      "resilient": true,
+      "description": "An unlisted object; a marker post stands in for it.",
+      "group": "decor"
+    },
+    "incense_burner": {
+      "name": "Bronze incense burner",
+      "material": "iron",
+      "size": "small",
+      "resilient": true,
+      "description": "A squat bronze censer on three short legs, coiled ash and a burnt stick of incense inside. Standing furniture: it does not fill its square.",
+      "group": "temple"
+    },
+    "prayer_wheel": {
+      "name": "Prayer wheel",
+      "material": "wood",
+      "size": "medium",
+      "resilient": true,
+      "description": "A painted wooden drum spins on an iron spindle atop a waist-high post, engraved mantras running round its side.",
+      "group": "temple"
+    },
+    "bronze_ding": {
+      "name": "Bronze ding cauldron",
+      "material": "iron",
+      "size": "large",
+      "resilient": true,
+      "blocks": true,
+      "threshold": 5,
+      "description": "A three-legged ritual bronze vessel wide enough to fill the square it stands in; its thick cast walls shrug off anything but a solid blow.",
+      "group": "temple"
+    },
+    "stone_guardian_lion": {
+      "name": "Stone guardian lion",
+      "material": "stone",
+      "size": "medium",
+      "resilient": true,
+      "blocks": true,
+      "threshold": 5,
+      "description": "A carved stone lion on a low plinth, guarding a threshold; too solid to walk through and tough enough to laugh off a glancing hit.",
+      "group": "temple"
+    },
+    "sutra_shelf": {
+      "name": "Sutra shelf",
+      "material": "wood",
+      "size": "medium",
+      "resilient": false,
+      "description": "An open wooden shelf stacked with bound sutra scrolls and prayer slips.",
+      "group": "temple"
+    },
+    "meditation_cushion": {
+      "name": "Meditation cushion",
+      "material": "cloth",
+      "size": "tiny",
+      "resilient": false,
+      "description": "A round cloth cushion stuffed with kapok, set on the floor for seated meditation.",
+      "group": "temple"
+    },
+    "temple_gong": {
+      "name": "Temple gong",
+      "material": "iron",
+      "size": "medium",
+      "resilient": true,
+      "description": "A broad bronze gong hangs from a lacquered wooden frame, struck to mark the hour.",
+      "group": "temple"
+    },
+    "offering_table": {
+      "name": "Offering altar table",
+      "material": "wood",
+      "size": "medium",
+      "resilient": false,
+      "description": "A low altar table bearing fruit, incense and a cup of wine for the ancestors.",
+      "group": "temple"
+    },
+    "stone_lantern": {
+      "name": "Stone lantern",
+      "material": "stone",
+      "size": "small",
+      "resilient": true,
+      "description": "A carved stone lantern on a post, its little window glowing with a candle inside.",
+      "group": "temple"
+    },
+    "market_stall": {
+      "name": "Market stall",
+      "material": "wood",
+      "size": "large",
+      "resilient": false,
+      "blocks": true,
+      "description": "A wooden vendor's stall with a cloth awning, loaded with wares; it fills its square until knocked down.",
+      "group": "village"
+    },
+    "produce_cart": {
+      "name": "Vendor's cart",
+      "material": "wood",
+      "size": "medium",
+      "resilient": false,
+      "blocks": true,
+      "description": "A two-wheeled hand cart heaped with vegetables and baskets, blocking the square it is left in.",
+      "group": "village"
+    },
+    "woven_basket": {
+      "name": "Woven basket",
+      "material": "wood",
+      "size": "small",
+      "resilient": false,
+      "description": "A tall wicker basket, lid askew, stuffed with cloth bundles.",
+      "group": "village",
+      "footprint": "tiny"
+    },
+    "grain_sack": {
+      "name": "Grain sack",
+      "material": "cloth",
+      "size": "small",
+      "resilient": false,
+      "description": "A burlap sack slumped against the wall, heavy with grain.",
+      "group": "village",
+      "footprint": "tiny"
+    },
+    "water_barrel": {
+      "name": "Water barrel",
+      "material": "wood",
+      "size": "medium",
+      "resilient": false,
+      "description": "An open-topped rain barrel, rope-handled, kept full for washing and fires.",
+      "group": "village"
+    },
+    "village_well": {
+      "name": "Stone well",
+      "material": "stone",
+      "size": "large",
+      "resilient": true,
+      "blocks": true,
+      "threshold": 3,
+      "description": "A round stone well with a peaked roof and a winch; its thick stone fills the square and shrugs off anything but a solid blow.",
+      "group": "village"
+    },
+    "haystack": {
+      "name": "Haystack",
+      "material": "cloth",
+      "size": "large",
+      "resilient": false,
+      "blocks": true,
+      "description": "A tall stack of loose hay, high enough to block sight and movement until it is scattered.",
+      "group": "village"
+    },
+    "fence_section": {
+      "name": "Fence section",
+      "material": "wood",
+      "size": "medium",
+      "resilient": false,
+      "blocks": true,
+      "structure": true,
+      "description": "A length of post-and-rail farm fencing, filling its square like a simple barrier.",
+      "group": "village",
+      "occluder": "cell"
+    },
+    "weapon_rack": {
+      "name": "Weapon rack",
+      "material": "wood",
+      "size": "medium",
+      "resilient": false,
+      "description": "A wooden rack holding spears, blades and spare shields for a watch post.",
+      "group": "fortress"
+    },
+    "war_brazier": {
+      "name": "Iron brazier",
+      "material": "iron",
+      "size": "medium",
+      "resilient": true,
+      "threshold": 2,
+      "description": "A standing iron bowl heaped with glowing coals, its cast walls shrugging off anything but a solid hit.",
+      "group": "fortress",
+      "footprint": "small"
+    },
+    "palisade_section": {
+      "name": "Palisade section",
+      "material": "wood",
+      "size": "large",
+      "resilient": true,
+      "blocks": true,
+      "structure": true,
+      "description": "A row of sharpened logs driven upright and lashed together, filling its square like a barricade.",
+      "group": "fortress",
+      "occluder": "cell"
+    },
+    "sandbag_wall": {
+      "name": "Sandbag wall",
+      "material": "stone",
+      "size": "large",
+      "resilient": true,
+      "blocks": true,
+      "structure": true,
+      "threshold": 3,
+      "description": "Sacks of earth and rubble stacked into a low rampart; packed fill swallows anything but a solid blow.",
+      "group": "fortress",
+      "occluder": "cell"
+    },
+    "ballista": {
+      "name": "Ballista",
+      "material": "wood",
+      "size": "large",
+      "resilient": true,
+      "blocks": true,
+      "description": "A siege crossbow bolted to its timber frame, filling the square it is wheeled into.",
+      "group": "fortress"
+    },
+    "camp_banner": {
+      "name": "Camp banner",
+      "material": "wood",
+      "size": "medium",
+      "resilient": false,
+      "description": "A plain cloth standard planted on a bare wooden pole to mark a camp or rally point.",
+      "group": "fortress",
+      "footprint": "small"
+    },
+    "army_tent": {
+      "name": "Army tent",
+      "material": "cloth",
+      "size": "large",
+      "resilient": false,
+      "blocks": true,
+      "description": "A canvas command tent pegged over its frame, filling its square until torn down.",
+      "group": "fortress"
+    },
+    "ammo_crate": {
+      "name": "Ammunition crate",
+      "material": "wood",
+      "size": "small",
+      "resilient": false,
+      "description": "A wooden crate of arrows and crossbow bolts, lid pried half off.",
+      "group": "fortress"
+    },
+    "alchemy_furnace": {
+      "name": "Alchemy furnace",
+      "material": "stone",
+      "size": "medium",
+      "resilient": true,
+      "blocks": true,
+      "threshold": 2,
+      "description": "A clay-lined stone furnace for smelting ore or refining pills, its firebox glowing within; too solid to see or walk through and tough against a glancing blow.",
+      "group": "workshop"
+    },
+    "pill_cabinet": {
+      "name": "Pill cabinet",
+      "material": "wood",
+      "size": "medium",
+      "resilient": false,
+      "description": "A wooden apothecary cabinet of tiny labelled drawers, each holding a different pill or herb.",
+      "group": "workshop"
+    },
+    "workbench": {
+      "name": "Workbench",
+      "material": "wood",
+      "size": "medium",
+      "resilient": true,
+      "description": "A sturdy, scarred wooden workbench built for heavy use, fitted with a vice and a row of tools.",
+      "group": "workshop"
+    },
+    "blacksmith_anvil": {
+      "name": "Blacksmith's anvil",
+      "material": "iron",
+      "size": "small",
+      "resilient": true,
+      "blocks": true,
+      "threshold": 3,
+      "description": "A solid iron anvil bedded into a thick stump; small, but too heavy and solid to walk through.",
+      "group": "workshop"
+    },
+    "herb_drying_rack": {
+      "name": "Herb drying rack",
+      "material": "wood",
+      "size": "medium",
+      "resilient": false,
+      "description": "A wooden frame hung with bundles of drying roots and herbs.",
+      "group": "workshop"
+    },
+    "fallen_log": {
+      "name": "Fallen log",
+      "material": "wood",
+      "size": "large",
+      "resilient": true,
+      "blocks": true,
+      "description": "A great fallen trunk lying across the ground, solid enough to fill its square until it is chopped through.",
+      "group": "nature"
+    },
+    "tree_stump": {
+      "name": "Tree stump",
+      "material": "wood",
+      "size": "medium",
+      "resilient": true,
+      "description": "A wide, weathered tree stump, its cut top ringed with growth lines.",
+      "group": "nature"
+    },
+    "boulder_pile": {
+      "name": "Boulder pile",
+      "material": "stone",
+      "size": "large",
+      "resilient": true,
+      "blocks": true,
+      "threshold": 2,
+      "description": "A jumble of broken boulders and scree, filling its square; a glancing hit barely chips it.",
+      "group": "nature"
+    },
+    "rowboat": {
+      "name": "Rowboat",
+      "material": "wood",
+      "size": "large",
+      "resilient": false,
+      "blocks": true,
+      "description": "A wooden rowboat, oars shipped, filling the square it rests in until its hull is staved in.",
+      "group": "water"
+    },
+    "dock_section": {
+      "name": "Dock section",
+      "material": "wood",
+      "size": "medium",
+      "resilient": false,
+      "description": "A plank section of a wooden pier, walkable but breakable underfoot.",
+      "group": "water"
+    },
+    "dining_table": {
+      "name": "Dining table",
+      "material": "wood",
+      "size": "large",
+      "resilient": false,
+      "description": "A long wooden dining table, set for a meal.",
+      "group": "interior"
+    },
+    "wooden_bed": {
+      "name": "Bed",
+      "material": "wood",
+      "size": "large",
+      "resilient": false,
+      "description": "A simple wood-framed bed with a stuffed mattress and folded blanket.",
+      "group": "interior"
+    },
+    "folding_screen": {
+      "name": "Folding screen",
+      "material": "wood",
+      "size": "medium",
+      "resilient": false,
+      "blocks": true,
+      "description": "A tall folding screen of painted panels, standing open enough to block the sight-line across it.",
+      "group": "interior"
+    },
+    "bookcase": {
+      "name": "Bookcase",
+      "material": "wood",
+      "size": "large",
+      "resilient": false,
+      "blocks": true,
+      "description": "A tall wooden bookcase crowded with scrolls and bound volumes, filling its square against the wall.",
+      "group": "interior"
+    },
+    "carved_throne": {
+      "name": "Carved throne",
+      "material": "wood",
+      "size": "medium",
+      "resilient": true,
+      "description": "An ornate, high-backed wooden throne, carved and gilded for a seated lord.",
+      "group": "interior"
+    },
+    "steamer_trunk": {
+      "name": "Steamer trunk",
+      "material": "wood",
+      "size": "small",
+      "resilient": true,
+      "description": "A flat-topped travel trunk bound in leather straps and iron corners.",
+      "group": "interior"
+    },
+    "lacquer_chest": {
+      "name": "Lacquer chest",
+      "material": "wood",
+      "size": "medium",
+      "resilient": true,
+      "description": "A red-lacquered treasury chest with brass fittings, bigger and sturdier than a simple chest.",
+      "group": "interior"
+    }
+  },
+  "presets_note": "[text redacted: 2d3a3427cf44]",
+  "groups": {
+    "structure": "Structures",
+    "container": "Containers",
+    "decor": "Decor & markers",
+    "temple": "Temple & sect",
+    "village": "Village & market",
+    "fortress": "Fortress & battlefield",
+    "workshop": "Alchemy & workshop",
+    "nature": "Nature",
+    "water": "Water",
+    "interior": "Interior"
+  }
+}
