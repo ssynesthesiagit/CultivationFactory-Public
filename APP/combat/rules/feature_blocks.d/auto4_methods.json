@@ -1,0 +1,20 @@
+{
+  "features": {
+    "SHIELD_BASE_ACTIVE_DEFENSE": {
+      "block": "reaction_economy",
+      "grant": "focus_instead",
+      "pay": {"resource_id": "resource:core.martial_focus", "amount": 1},
+      "covers": {"features": ["SHIELD_BASE_ACTIVE_DEFENSE"]},
+      "name": "Active Defense",
+      "why": "auto/methods 2026-10-04: \"You may expend Martial Focus to use Active Defense without spending a Reaction\" (Shield, Base Ability 1). Before this the table could only spend the Reaction, so the printed option was a GM ruling; combat/ext/reaction_economy.py's focus_instead grant spends the Martial Focus instead and keeps the Reaction. The printed sentence adds no limit of its own, so no per-round counter is kept for it."
+    },
+    "TAL_DRUNKEN_STYLE_SWAYING_GUARD": {
+      "block": "reaction_economy",
+      "grant": "focus_instead",
+      "pay": {"resource_id": "resource:core.martial_focus", "amount": 1, "until_owner_turn": true},
+      "covers": {"features": ["TAL_DRUNKEN_STYLE_SWAYING_GUARD"]},
+      "name": "Swaying Guard",
+      "why": "Owner text: You may expend Martial Focus to use Swaying Guard without spending your Reaction. Once you do so, you cannot use Swaying Guard again until the start of your next turn. Paying Focus blocks all subsequent uses until the owner's turn starts."
+    }
+  }
+}
