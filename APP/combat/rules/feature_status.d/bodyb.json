@@ -1,0 +1,64 @@
+{
+ "features": {
+  "ATHLETICS_BASE_ATHLETIC_TRAINING": {
+   "status": "build",
+   "why": "A skill-proficiency choice made when you learn the Athletics sphere (or a bonus talent if already proficient in both), fixed at build time -- not something a fight activates."
+  },
+  "TAL_FLOWING_RIVER_FLOWING_RIVER_TRAINING": {
+   "status": "build",
+   "why": "Same shape as Athletic Training: a skill-proficiency choice made when you learn Flowing River (or a bonus Mortal Realm talent), plus automatically learning Flowing Response and Gather the Current (already compiled separately as their own records) -- a build-time grant, not a fight mechanic."
+  },
+  "tianxia.talent.music.song_carried_across_mountains": {
+   "status": "outside",
+   "why": "A 10-minute Ritual Procedure over a city district, valley, sect compound or marching army (its own printed Canonical Action Type is \"Ritual Procedure\", Factory Routing \"procedure_ledger_not_combat_action\") -- downtime/social utility performed well outside the scope of a fight."
+  },
+  "TAL_ATHLETICS_BODY_BEYOND_DISTANCE": {
+   "status": "outside",
+   "why": "Automated outside combat by athletics_travel and CombatService's persisted journey map: Action and Martial Focus payment, Long Rest use, exact hour/stop clocks, tenfold pace, ordinary travel exhaustion, willing companion and mapped terrain support. Entering combat ends the travel state; it does not increase combat Speed."
+  },
+  "TAL_ATHLETICS_MIGHTY_CONDITIONING": {
+   "status": "table",
+   "why": "Lets you use Strength or Dexterity interchangeably for Strength (Athletics)/Dexterity (Acrobatics) checks and for jump distance/height. This table has no generic \"substitute one ability score for another on a named check\" mechanism (only Advantage/Disadvantage-on-checks and fixed ability-tagged saves/attacks are typed), and jump distance/height are not tracked on this grid at all."
+  },
+  "TAL_ATHLETICS_AIR_STUNT": {
+   "status": "applied",
+   "why": "With Wall Stunt, choose a climbing route through the air. Air counts as a difficult wall, using 2 feet of movement per foot unless you ignore difficult terrain. At your turn's end, you fall unless another ability or a real surface supports you. This grants no Fly Speed."
+  },
+  "TAL_ATHLETICS_HEAVEN_TREADING_BODY": {
+   "status": "table",
+   "why": "Grants a Fly Speed equal to land Speed, Hover, moving across water/fragile surfaces/open air as stable terrain, and reducing falling damage to 0. This table's grid has no elevation, Fly/Swim/Climb speed, or falling/water/wall-terrain-type system at all (confirmed: no fly_speed/climb_speed/swim_speed/elevation handling exists anywhere in combat/gate2_grid.py, combat/gate4_engine.py or combat/gate2_runtime_models.py) -- a printed movement-MODE grant like this one has nothing to attach to."
+  },
+  "TAL_ATHLETICS_SPARROW_S_PATH": {
+   "status": "applied",
+   "why": "Gain a Fly Speed equal to half your base land Speed. The table's flight, climbing and falling rules run it, so you can fly at that speed; walls and ceilings still block the route, and the talent does not make the flight silent."
+  },
+  "TAL_ATHLETICS_SHARK_SWIM": {
+   "status": "applied",
+   "why": "Gain a Swim Speed equal to your land Speed, so mapped water costs you no extra movement. If you also have Strong Lungs, hold your breath for hours equal to your Constitution modifier, minimum one hour, instead of the ordinary duration."
+  },
+  "TAL_ATHLETICS_SPIDER_S_TOUCH": {
+   "status": "applied",
+   "why": "Your Climb Speed equals your land Speed. With Sure Grip, choose routes up vertical surfaces or across sealed ceilings while keeping at least one hand free. Climbing uses your shared movement for the turn; difficult walls may still require an Athletics check with Advantage from Sure Grip."
+  },
+  "TAL_ATHLETICS_POWERFUL_WINGS": {
+   "status": "applied",
+   "why": "If your Fly Speed comes from your own physical wings, you may Hover (stay in the air without moving). The table checks that the flight comes from your own winged anatomy; a temporary flight grant without physical wings does not qualify."
+  },
+  "TAL_ATHLETICS_TERRAIN_GLIDE": {
+   "status": "applied",
+   "why": "Swim through mapped soil, snow, loose earth and sand as difficult terrain. Material-aware route admission, prices, support and endpoint checks preserve stone, metal, sealed barriers, sight and breath."
+  },
+  "TAL_ATHLETICS_ROPE_SWING_ADEPT": {
+   "status": "table",
+   "why": "Attaching a Rope Swing item, swinging with a temporary Fly Speed while attached, and climbing up to the anchor point -- needs an anchor-point/attachment and Fly Speed system this grid does not have. This table's grid has no elevation, Fly/Swim/Climb speed, or falling/water/wall-terrain-type system at all (confirmed: no fly_speed/climb_speed/swim_speed/elevation handling exists anywhere in combat/gate2_grid.py, combat/gate4_engine.py or combat/gate2_runtime_models.py) -- a printed movement-MODE grant like this one has nothing to attach to."
+  },
+  "TAL_ATHLETICS_HELICOPTER_DESCENT": {
+   "status": "table",
+   "why": "Controlling a fall while wielding an appropriate polearm/rope/chain/whip/tether (fall speed, no falling damage, landing on your feet) -- falling and elevation are not modeled on this grid. This table's grid has no elevation, Fly/Swim/Climb speed, or falling/water/wall-terrain-type system at all (confirmed: no fly_speed/climb_speed/swim_speed/elevation handling exists anywhere in combat/gate2_grid.py, combat/gate4_engine.py or combat/gate2_runtime_models.py) -- a printed movement-MODE grant like this one has nothing to attach to."
+  },
+  "TAL_ATHLETICS_POLEARM_VAULTER": {
+   "status": "applied",
+   "why": "Hold a pole or polearm on a supported square. Spend Martial Focus and a Bonus Action to choose +10 feet of horizontal jump distance or +5 feet of jump height for your next pole vault this turn. Choose the destination on the map; the increase costs no movement and needs no Strength or Dexterity. The vault itself costs no Action or check."
+  }
+ }
+}
