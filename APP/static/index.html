@@ -1,0 +1,1552 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tianxia Character Foundry — Dynamic Content</title>
+<link rel="stylesheet" href="/static/themes.css?v=ui1">
+<script src="/static/appearance-boot.js?v=ui1"></script>
+<link rel="stylesheet" href="/static/styles.css?v=live-mp1">
+</head>
+<body>
+<a class="skip-link" href="#ownerWorkspace">Skip to the active character-creation workspace</a>
+<header class="app-header">
+  <div class="brand-lockup">
+    <div class="brand-mark" aria-hidden="true">天</div>
+    <div>
+      <p class="eyebrow">Tianxia Character Factory</p>
+      <h1>Tianxia Character Foundry</h1>
+      <p class="header-subtitle">A local, server-validated character workspace.</p>
+    </div>
+  </div>
+  <nav class="product-nav" aria-label="Product areas">
+    <button data-screen="builder" data-builder-mode="quick" class="active">Create a Character</button>
+    <button data-screen="quickbuild">Quick Build</button>
+    <button data-screen="items">Items</button>
+    <button data-screen="projects">Character Sheets</button>
+    <button data-screen="combat">Combat</button>
+    <button data-screen="catalog">Browse Rules</button>
+    <button data-screen="settings">Settings</button>
+    <a class="product-nav-link" href="/tabletop" target="_blank" rel="noopener" title="The combat table: grid, fog of war, action buttons, dice (opens in a new tab)">Table ↗</a>
+  </nav>
+  <div class="header-actions">
+    <a class="button-link" href="/opening">Open Mortal Opening</a>
+    <span id="ownerSaveState" class="save-state" role="status"><span class="status-dot"></span>Ready — changes use the Factory service</span>
+    <details id="advancedProductMenu" class="advanced-product-menu">
+      <summary>Advanced / Developer</summary>
+      <div class="advanced-product-actions" role="group" aria-label="Advanced and developer areas">
+        <button data-screen="packs" type="button">Manage Content</button>
+        <button data-screen="status" type="button">Advanced Details</button>
+        <button id="diagnosticsToggle" type="button" aria-pressed="false" aria-controls="diagnosticsDrawer">Developer / Diagnostics</button>
+        <button id="refreshAll" type="button">Refresh all data</button>
+      </div>
+    </details>
+  </div>
+</header>
+<main>
+  <section id="screen-builder" class="screen active">
+    <div id="ownerWorkspace" class="owner-builder-shell" tabindex="-1">
+    <div class="welcome">
+      <p class="eyebrow">Character builder</p>
+      <h2>Shape a cultivator</h2>
+      <p>Build your character one step at a time. You can review every choice before anything is saved.</p>
+      <p class="save-assurance" role="note"><strong>Safe to explore:</strong> nothing is saved until you review and finish.</p>
+    </div>
+
+    <section id="guidedStartupRecovery" class="builder-persistence startup-recovery" aria-live="polite" hidden>
+      <div><strong id="guidedStartupRecoveryLabel">Saved character available</strong><span id="guidedStartupRecoveryExplanation">Your saved work is still here. Choose when to continue.</span></div>
+      <div class="button-row">
+        <button id="guidedStartupContinue" class="primary-action" type="button">Continue saved character</button>
+        <button id="guidedStartupNew" type="button">Start a new character</button>
+      </div>
+    </section>
+
+    <nav id="ownerStepNav" class="owner-step-nav" aria-label="Character creation screens">
+      <div class="owner-step-nav-heading"><strong id="ownerBuilderName">New character</strong><span id="ownerBuilderState" class="draft-pill">Draft</span></div>
+      <ol>
+        <li><button type="button" class="owner-step is-active" data-owner-step="1" aria-current="step"><span>1</span><strong>Character brief</strong><small>Identity and intent</small></button></li>
+        <li><button type="button" class="owner-step" data-owner-step="2"><span>2</span><strong>Paths, Method &amp; priorities</strong><small>Insights, Spheres and Talents to aim for</small></button></li>
+        <li><button type="button" class="owner-step" data-owner-step="3"><span>3</span><strong>Choose how to build</strong><small>Manual, local, or API</small></button></li>
+        <li><button type="button" class="owner-step" data-owner-step="4"><span>4</span><strong>Your character</strong><small>Review and finalize</small></button></li>
+      </ol>
+    </nav>
+
+    <ol class="progress legacy-progress" aria-label="Legacy character creation progress">
+      <li class="current clickable-step" id="builderProgress1" role="button" tabindex="0" title="Start a new character">1. Describe</li>
+      <li id="builderProgress2">2. Choose Build Mode</li>
+      <li id="builderProgress3">3. Review Complete Character</li>
+      <li id="builderProgress4">4. Finalize</li>
+    </ol>
+
+    <section id="guidedPersistencePanel" class="builder-persistence" aria-live="polite" hidden>
+      <div><strong id="guidedPersistenceLabel">Temporary</strong><span id="guidedPersistenceExplanation">Disappears if abandoned.</span></div>
+      <button id="guidedSaveDraft" type="button">Save Draft</button>
+    </section>
+
+    <section class="builder-card builder-intake owner-step-panel" id="builderDescribe" data-owner-panel="1">
+      <div class="builder-card-heading">
+        <div>
+          <p class="sheet-kicker">Character intake</p>
+          <h3>Who are we making?</h3>
+            <p>Describe the character. Leave Name or Concept blank and the AI will propose wording for your review; mechanical choices remain Auto unless you customize them.</p>
+        </div>
+        <div class="creation-mode" role="group" aria-label="Character intake detail">
+          <button id="builderModeQuick" type="button" class="active" aria-pressed="true">Auto</button>
+          <button id="builderModeDetailed" type="button" aria-pressed="false">Customize Manually</button>
+        </div>
+      </div>
+      <form id="guidedCreate" class="friendly-form">
+        <div class="identity-banner">
+          <label>Character name <span class="optional">(optional — the AI will propose one)</span>
+            <input id="guidedName" maxlength="240" placeholder="For example: Lin Mei">
+          </label>
+          <div class="name-dice-row" role="group" aria-label="Draw an ancient-style name">
+            <select id="guidedNameDao" aria-label="Dao of the name"><option value="">Any Dao</option><option value="qian">Heaven (Qian)</option><option value="dui">Lake (Dui)</option><option value="li">Fire (Li)</option><option value="zhen">Thunder (Zhen)</option><option value="xun">Wind (Xun)</option><option value="kan">Water (Kan)</option><option value="gen">Mountain (Gen)</option><option value="kun">Earth (Kun)</option></select>
+            <input id="guidedNameSeed" maxlength="64" placeholder="Seed (optional)" aria-label="Name seed">
+            <button id="guidedNameDice" type="button" class="secondary-action" title="Draw six ancient-style names; the same seed and Dao always draw the same ones">🎲 Names</button>
+          </div>
+          <div id="guidedNameChoices" class="name-choices" aria-live="polite"></div>
+          <div class="friendly-grid">
+            <label>Intended level
+              <input id="guidedLevel" type="number" min="1" max="20" value="15" required>
+            </label>
+            <label>Power style
+              <select id="guidedPower">
+                <option value="heroic">Heroic player character</option>
+                <option value="rival/boss" selected>Powerful rival or boss</option>
+                <option value="supporting">Supporting character</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <label>Character concept <span class="optional">(optional — the AI will propose one)</span>
+          <textarea id="guidedConcept" rows="5" placeholder="Describe their cultivation path, fighting style, personality, signature abilities, and anything you definitely want. Leave blank to delegate the concept."></textarea>
+        </label>
+        <label>Seed <span class="optional">(optional — fill this and the seed makes every choice instead of the AI; the same seed rebuilds the same character)</span>
+          <span class="seed-input-row">
+            <input id="guidedSeed" maxlength="64" pattern="[A-Za-z0-9._:\-]{1,64}" placeholder="Leave blank for the AI" autocomplete="off" spellcheck="false">
+            <button id="guidedSeedRoll" type="button" title="Roll a new seed">🎲 Roll</button>
+          </span>
+        </label>
+        <label>Preferred weapons and armour <span class="optional">(optional — up to 6; Ctrl-click to pick several)</span>
+          <select id="guidedGear" multiple size="6" aria-describedby="guidedGearHint"></select>
+          <small id="guidedGearHint" class="optional">The starting kit uses these when it offers them; otherwise its coin buys them (Option B) while the coin lasts.</small>
+        </label>
+         <label>Source or inspiration <span class="optional">(optional)</span>
+           <input id="guidedSource" placeholder="A book, image, existing character, or leave blank">
+         </label>
+
+         <section id="ownerCustomizationSection" class="owner-detail-section" aria-labelledby="ownerCustomizationHeading">
+           <div class="owner-detail-heading">
+             <div>
+               <p class="sheet-kicker">Detail / Auto-choice scope</p>
+               <h3 id="ownerCustomizationHeading">Customize only what matters</h3>
+               <p>Auto leaves the Factory in charge of open choices. Customize Manually exposes the real point-buy controls and owner planning preferences; these values are locked into the request when you create the project.</p>
+             </div>
+             <span id="ownerDetailModeSummary" class="owner-status-pill">Auto choices</span>
+           </div>
+           <div class="owner-lock-summary" aria-label="Owner lock summary">
+             <div><span>Paths</span><strong id="ownerDetailPathSummary">0 of 3 locked</strong></div>
+             <div><span>Insights</span><strong id="ownerDetailInsightSummary">0 priorities</strong></div>
+             <div><span>Spheres</span><strong id="ownerDetailSphereSummary">0 priorities</strong></div>
+             <div><span>Factory lock</span><strong id="ownerDetailFreezeSummary">Editable before project creation</strong></div>
+           </div>
+           <p id="planningFreezeReason" class="planning-freeze-note" role="status" hidden>Edit Brief / Create New Request is required to change this frozen planning envelope.</p>
+           <details id="ownerCustomizationDetails" open>
+             <summary>Ability point-buy and owner planning details</summary>
+             <div id="ownerDetailHost"></div>
+           </details>
+         </section>
+
+         <section id="characterSheetPanel" class="character-sheet" hidden aria-labelledby="characterSheetTitle">
+          <div class="sheet-titlebar">
+            <div>
+              <p class="sheet-kicker">Tianxia cultivation record</p>
+              <h4 id="characterSheetTitle">Character Sheet</h4>
+            </div>
+            <p>Leave any field on <strong>Auto</strong>. The Factory keeps your exact cultivation choices; Sphere and talent selections below are planning preferences only.</p>
+          </div>
+
+          <section class="sheet-section ability-section" aria-labelledby="abilityHeading">
+            <div class="sheet-section-heading">
+              <div><p class="sheet-number">01</p><h5 id="abilityHeading">Ability Scores</h5></div>
+              <div class="point-buy-meter" aria-live="polite">
+                <span id="pointBuySummary">0 of 27 points reserved</span>
+                <div class="point-buy-track"><span id="pointBuyBar"></span></div>
+              </div>
+            </div>
+            <p class="section-help">Choose only the scores that matter to the concept. Auto abilities will be completed within the same 27-point-buy budget.</p>
+            <div class="ability-grid">
+              <label class="ability-card"><span>STR</span><small>Strength</small><select id="abilitySTR" data-ability="STR" disabled><option value="" selected disabled>Loading verified choices…</option></select></label>
+              <label class="ability-card"><span>DEX</span><small>Dexterity</small><select id="abilityDEX" data-ability="DEX" disabled><option value="" selected disabled>Loading verified choices…</option></select></label>
+              <label class="ability-card"><span>CON</span><small>Constitution</small><select id="abilityCON" data-ability="CON" disabled><option value="" selected disabled>Loading verified choices…</option></select></label>
+              <label class="ability-card"><span>INT</span><small>Intelligence</small><select id="abilityINT" data-ability="INT" disabled><option value="" selected disabled>Loading verified choices…</option></select></label>
+              <label class="ability-card"><span>WIS</span><small>Wisdom</small><select id="abilityWIS" data-ability="WIS" disabled><option value="" selected disabled>Loading verified choices…</option></select></label>
+              <label class="ability-card"><span>CHA</span><small>Charisma</small><select id="abilityCHA" data-ability="CHA" disabled><option value="" selected disabled>Loading verified choices…</option></select></label>
+            </div>
+          </section>
+
+          <section class="sheet-section" aria-labelledby="cultivationHeading">
+            <div class="sheet-section-heading"><div><p class="sheet-number">02</p><h5 id="cultivationHeading">Cultivation Core</h5></div></div>
+            <p class="section-help">The Factory keeps the exact choices you make here and checks that they work together.</p>
+            <div class="sheet-field-grid">
+              <fieldset class="path-choice-field"><legend>Path locks (0–3)</legend>
+                <p class="field-help">Lock zero, one, two, or three advancing Paths. Zero means the legal Method route may choose them; locked Paths must be supported by the selected Method. All three Path tracks still exist at level zero.</p>
+                <div id="sheetPaths" class="path-choice-list"></div>
+                <small id="sheetPathAuthorityNotice" class="availability-note" role="status"></small>
+                <div class="path-level-zero-tracks" aria-label="Level-zero Path tracks">
+                  <article class="path-track-card"><strong>Body Refining</strong><span>Level 0 · Dormant until a validated Method grants AP</span></article>
+                  <article class="path-track-card"><strong>Qi Cultivation</strong><span>Level 0 · Dormant until a validated Method grants AP</span></article>
+                  <article class="path-track-card"><strong>Spirit Awakening</strong><span>Level 0 · Dormant until a validated Method grants AP</span></article>
+                </div>
+              </fieldset>
+               <fieldset class="subpath-choice-field"><legend>Subpaths or Traditions (one per selected Path)</legend>
+                 <p class="field-help">Choose at most one Subpath or Tradition for each selected Path. Every selected row keeps its exact owning Path binding.</p>
+                 <select id="sheetSubpath" data-sheet-slot="subpath_choice" multiple size="6" aria-label="Subpaths or Traditions"></select>
+                 <small id="sheetSubpathAuthorityNotice" class="availability-note" role="status"></small>
+               </fieldset>
+              <label>Background<select id="sheetBackground" data-sheet-slot="background_choice"></select></label>
+              <label>Background Sphere<select id="sheetBackgroundSphere" data-sheet-slot="background_sphere_choice"></select></label>
+              <label>Background Talent<select id="sheetBackgroundTalent" data-sheet-slot="background_talent_choice"></select></label>
+              <label>Background / Origin Insight<select id="sheetOriginInsight" data-sheet-slot="origin_insight_choice"></select></label>
+              <label>Foundation<select id="sheetFoundation" data-sheet-slot="foundation_choice"></select></label>
+              <small id="sheetFoundationNotice" class="availability-note" role="status"></small>
+              <fieldset class="method-planning-field"><legend>Cultivation Method</legend>
+                <div class="method-mode-choices" id="sheetMethodMode">
+                  <label><input type="radio" name="sheetMethodMode" value="AUTO" checked><span><strong>Choose for me</strong><small>The Factory picks a fitting Method.</small></span></label>
+                  <label><input type="radio" name="sheetMethodMode" value="PREFERENCE"><span><strong>I prefer this Method</strong><small>A planning preference, not a guarantee.</small></span></label>
+                  <label><input type="radio" name="sheetMethodMode" value="EXACT"><span><strong>Use this Method</strong><small>Make the selected Method part of this character.</small></span></label>
+                </div>
+                <label id="sheetMethodChoiceField" hidden>Method<select id="sheetMethod" data-sheet-slot="method_choice"></select></label>
+                <p id="sheetMethodAuthority" class="availability-note" role="status">The Factory will choose a fitting Method.</p>
+                <div id="sheetMethodAccessPlan" class="method-learning-question" hidden>
+                  <label>How did this character learn this Method?<select id="sheetMethodRouteChoice"></select></label>
+                  <label><span id="sheetMethodLearningNoteLabel">Optional note</span><textarea id="sheetMethodLearningNote" rows="2" placeholder="Add story context if you want."></textarea></label>
+                </div>
+                <p id="sheetMethodAccessStatus" class="availability-note" role="status" hidden></p>
+              </fieldset>
+            </div>
+          </section>
+
+          <section class="sheet-section" aria-labelledby="growthHeading">
+            <div class="sheet-section-heading"><div><p class="sheet-number">03</p><h5 id="growthHeading">Growth Priorities</h5></div></div>
+            <div class="choice-collection-grid">
+              <article class="choice-collection sphere-talent-collection">
+                <div class="sphere-talent-heading">
+                  <div><h6>Sphere and Talent Planning Preferences</h6><p>Priorities guide the complete plan when legal. They do not acquire a Sphere, consume a free grant, or use an ordinary talent slot.</p></div>
+                  <small id="sheetSphereHelp" class="availability-note"></small>
+                </div>
+                <div class="sphere-talent-workspace">
+                   <section class="sphere-selector-pane" aria-labelledby="sheetSpherePaneTitle">
+                     <h6 id="sheetSpherePaneTitle">Sphere Priorities</h6>
+                     <div id="sheetSphereList" class="sphere-card-list" data-chip-host="sphere_priorities" aria-live="polite"></div>
+                     <div class="choice-adder"><select id="sheetSphereAdd" data-multi-slot="sphere_priorities" aria-label="Sphere to add"></select><button type="button" data-add-slot="sphere_priorities">Add Sphere</button></div>
+                     <label class="sphere-search-label" for="sheetSphereSearch">Search installed Spheres
+                       <input id="sheetSphereSearch" type="search" autocomplete="off" placeholder="Filter by Sphere name">
+                     </label>
+                     <div id="sheetSphereBrowserCount" class="catalog-browser-count" role="status" aria-live="polite">Loading Sphere cards…</div>
+                     <div id="sheetSphereCatalog" class="sphere-card-browser" aria-live="polite" aria-label="Installed Sphere cards"></div>
+                  </section>
+                  <section class="talent-selector-pane" aria-labelledby="sheetTalentPanelTitle">
+                    <h6 id="sheetTalentPanelTitle">Talents</h6>
+                    <p id="sheetTalentPanelMessage" class="talent-panel-message">Select a Sphere first.</p>
+                    <div class="selected-talents-heading"><strong>Talent Priorities</strong><span id="sheetTalentSelectionCount">0 selected</span></div>
+                    <div id="sheetTalentList" class="talent-selected-list" aria-live="polite"></div>
+                    <label class="talent-search-label" for="sheetTalentSearch">Search this Sphere's Talents
+                      <input id="sheetTalentSearch" type="search" autocomplete="off" placeholder="Filter by name or description" disabled>
+                    </label>
+                    <div id="sheetTalentOptions" class="talent-option-list" role="list" aria-live="polite"></div>
+                    <small id="sheetTalentHelp" class="availability-note"></small>
+                  </section>
+                </div>
+                <details id="sheetUnassignedTalentDetails" class="unassigned-talents">
+                  <summary>Advanced: Unassigned / needs authority <span id="sheetUnassignedTalentCount">0</span></summary>
+                  <p>Authoritative Talent records without a safe Sphere assignment remain visible here and are never silently discarded.</p>
+                  <label for="sheetUnassignedTalentSearch">Search unassigned Talents
+                    <input id="sheetUnassignedTalentSearch" type="search" autocomplete="off" placeholder="Filter unassigned records">
+                  </label>
+                  <div id="sheetUnassignedTalentOptions" class="talent-option-list" role="list"></div>
+                </details>
+                <p id="sheetSphereTalentNotice" class="availability-note" role="status"></p>
+              </article>
+              <article class="choice-collection">
+                <h6>Insight priorities (set before the build)</h6><p>Choose from the 542 ordinary Insights you want the Factory to consider; the AI picks its Insight occurrences from these. Background-Origin Insights are separate and are chosen above with the Background route.</p>
+                 <div class="insight-browser-filters">
+                   <label>Category<select id="sheetInsightAuthorityFilter"><option value="">All ordinary categories</option><option value="general_cultivation_insights">General</option><option value="path_insights">Path</option><option value="sphere_insights">Sphere</option><option value="technique_forging_insights">Technique-Forging</option><option value="metatechnique_insights">Metatechnique</option><option value="companion_insights">Companion</option><option value="narrative_secret_insights">Narrative / Secret</option></select></label>
+                   <label id="sheetInsightHierarchyFilterWrap" hidden>Path group<select id="sheetInsightHierarchyFilter"><option value="">All Path groups</option></select></label>
+                   <label id="sheetInsightSphereFilterWrap" hidden>Sphere facet<select id="sheetInsightSphereFilter"><option value="">All Sphere facets</option></select></label>
+                   <label>Search Insights<input id="sheetInsightSearch" type="search" autocomplete="off" placeholder="Search by name or description"></label>
+                 </div>
+                 <div id="sheetInsightBrowserCount" class="catalog-browser-count" role="status" aria-live="polite">Loading ordinary Insight cards…</div>
+                 <div id="sheetInsightCards" class="insight-card-browser" aria-live="polite" aria-label="Ordinary Insight cards"></div>
+                 <div class="choice-adder"><select id="sheetInsightAdd" data-multi-slot="insight_priorities"></select><button type="button" data-add-slot="insight_priorities">Add</button></div>
+                <p id="sheetInsightAuthorityDetail" class="availability-note" role="status">Choose an Insight to see its category and requirements.</p>
+                <div id="sheetInsightList" class="choice-chips" data-chip-host="insight_priorities"></div>
+                <small id="sheetInsightHelp" class="availability-note"></small>
+              </article>
+              <article class="choice-collection">
+                <h6>Items and Treasures</h6><p>Equipment that matters to the concept. Leave blank when the item catalog is not installed.</p>
+                <div class="choice-adder"><select id="sheetItemAdd" data-multi-slot="item_priorities"></select><button type="button" data-add-slot="item_priorities">Add</button></div>
+                <div id="sheetItemList" class="choice-chips" data-chip-host="item_priorities"></div>
+                <small id="sheetItemHelp" class="availability-note"></small>
+              </article>
+            </div>
+          </section>
+
+          <div class="sheet-footer-note">
+            <strong>How Auto works</strong>
+            <p>The complete-character request includes your exact choices and preferences. The planner fills the open choices; two isolated local builds validate every mechanical result before review.</p>
+          </div>
+          <p id="sheetOptionsStatus" class="availability-note" role="status">Loading installed character choices…</p>
+        </section>
+
+       <button id="guidedBriefContinue" class="primary-action large-owner-action" type="button">Continue to Paths &amp; Method <span aria-hidden="true">→</span></button>
+      </form>
+      <p class="plain-note">You do not need to choose content packs, rule IDs, or file versions. The Factory handles that setup.</p>
+    </section>
+
+     <section id="builderPaths" class="builder-card owner-step-panel owner-plan-panel" data-owner-panel="2" hidden>
+       <div class="owner-screen-heading"><div><p class="sheet-kicker">Step 2 of 4</p><h2>Choose the Paths this Method must advance</h2><p>All three tracks are visible at level 0. Select zero, one, two, or three requirements; the legal Method route chooses advancement when none are locked.</p></div><span id="ownerPathRequirementSummary" class="owner-status-pill">0–3 requirements</span></div>
+       <p class="planning-freeze-note" data-planning-freeze-note role="status" hidden>Edit Brief / Create New Request is required to change this frozen planning envelope.</p>
+       <div id="ownerPathCards" class="owner-path-card-grid" aria-label="Level-zero Path tracks"></div>
+       <div class="owner-plan-method-grid">
+         <div id="ownerCultivationHost"></div>
+        <aside class="owner-method-confirmation panel">
+          <p class="sheet-kicker">Validator-owned result</p>
+          <h3>Compatible Methods</h3>
+          <p>Only confirmed Method results appear here. Changing a Path requirement makes the previous result stale immediately.</p>
+          <button id="checkMethodCompatibility" class="secondary-action" type="button">Check Method compatibility</button>
+          <p id="ownerMethodCompatibilityStatus" class="friendly-status" role="status">Compatibility has not been checked.</p>
+          <details id="ownerCompatibleMethodsDetails" class="owner-compatible-methods-details">
+            <summary id="ownerCompatibleMethodsSummary">Compatible Methods — not checked yet</summary>
+            <div id="ownerCompatibleMethods" class="owner-compatible-methods" aria-live="polite"></div>
+          </details>
+        </aside>
+       </div>
+        <section id="ownerEarlySpherePlan" class="owner-early-sphere-plan" data-planning-phase="pre-request-freeze" aria-labelledby="ownerEarlySphereHeading">
+         <div class="owner-screen-heading"><div><p class="sheet-kicker">Before request freeze</p><h3 id="ownerEarlySphereHeading">Sphere planning</h3><p>Set Sphere and Talent priorities here before the project request is created. No priority cap: choose any number of valid priorities. These are planning preferences only; validated acquisition remains Factory-derived.</p></div></div>
+          <div id="ownerSphereHost" data-planning-surface="sphere-and-talent-priorities"></div>
+       </section>
+       <p id="guidedBuildButtonReason" class="disabled-reason" role="status" aria-live="polite">Complete the required planning choices before creating the project.</p>
+      <button id="guidedBuildButton" class="primary-action large-owner-action" aria-describedby="guidedBuildButtonReason" form="guidedCreate" type="submit">Create project and choose AI route <span aria-hidden="true">→</span></button>
+      <button id="ownerPathsBack" class="text-action" type="button">← Back to brief</button>
+    </section>
+
+     <section id="builderInsights" class="builder-card owner-step-panel owner-catalog-panel" data-owner-panel="5" hidden aria-hidden="true"></section>
+
+     <section id="builderSpheres" class="builder-card owner-step-panel owner-catalog-panel" data-owner-panel="6" hidden aria-hidden="true"></section>
+
+    <section class="builder-card owner-step-panel" id="builderAI" data-owner-panel="3" hidden aria-labelledby="guidedModeHeading">
+       <p class="sheet-kicker">Step 3 of 4</p>
+      <h3 id="guidedModeHeading">Choose how to build the complete character</h3>
+      <p>Local AI is the default private route; API Provider is a separate cloud-capable route. Both use the same accepted complete-character request, two isolated local builds, and the same authority gates.</p>
+       <div class="build-mode-options" id="guidedModeChoices" role="tablist" aria-label="AI routes">
+         <button id="guidedLocalRouteTab" class="build-mode-card" type="button" role="tab" aria-selected="true" aria-controls="guidedLocalSetup" data-guided-route="LOCAL_AI" tabindex="0"><strong>Local AI — private and ready on this computer</strong><small>Detect a running loopback model on this computer. No cloud key or data-sharing acknowledgement is required.</small></button>
+         <button id="guidedProviderRouteTab" class="build-mode-card" type="button" role="tab" aria-selected="false" aria-controls="guidedProviderSetup" data-guided-route="STANDARD_API" tabindex="-1"><strong>API Provider — build a complete preview, then I approve</strong><small>Use the configured OpenAI-compatible Chat Completions API once, then stop for Finalize, Revise, or Cancel.</small></button>
+       </div>
+       <div class="route-mode-state" aria-hidden="true"><input id="guidedLocalRouteInput" type="radio" name="guidedExecutionMode" value="LOCAL_AI" checked hidden><input id="guidedProviderRouteInput" type="radio" name="guidedExecutionMode" value="STANDARD_API" hidden><input id="guidedManualRouteInput" type="radio" name="guidedExecutionMode" value="MANUAL_CHAT" hidden></div>
+      <section id="guidedLocalSetup" class="local-ai-setup sheet-section" aria-labelledby="guidedLocalHeading">
+        <div class="sheet-section-heading local-ai-heading"><div><h4 id="guidedLocalHeading">Local AI setup</h4><p>Only loopback OpenAI-compatible servers on bounded known ports are checked. Detection never starts or downloads anything.</p><p>The selected local model can fill a blank name and concept and make the high-level choices from the frozen request. Frozen server scripts expand and validate mechanics provider-free; any actual second model request is an explicit owner action. It saves only after a clean candidate; a genuine blocker stops for review.</p></div></div>
+        <fieldset id="guidedLocalBuildChoice" class="build-mode-options" aria-describedby="guidedLocalBuildChoiceHelp">
+          <legend>How should Local AI finish this build?</legend>
+          <label class="build-mode-card"><input type="radio" name="guidedLocalBuildMode" value="LOCAL_AUTO" checked><span><strong>Build &amp; save automatically (Recommended)</strong><small>Local AI fills the open identity and legal choices, then saves only after the Factory reports a clean candidate. This build requires one explicit consent below.</small></span></label>
+          <label class="build-mode-card"><input type="radio" name="guidedLocalBuildMode" value="LOCAL_PREVIEW"><span><strong>Build a preview for review</strong><small>Local AI builds the candidate and stops for your review. You choose Finalize Character; no automatic save is requested.</small></span></label>
+        </fieldset>
+        <p id="guidedLocalBuildChoiceHelp" class="availability-note">Both choices use the same frozen request, strict validator, two isolated builds, and bounded recovery behavior.</p>
+        <label id="guidedLegacyPromptPanel" class="auto-finalize-consent">
+          <input id="guidedLegacyFullPlanOptOut" type="checkbox">
+          <span><strong>Advanced: use the legacy full-plan prompt</strong><small>Off by default. The guided controller walks the legal choices one bounded step at a time and shows progress below. The legacy route sends one large prompt and asks the model for the whole plan at once.</small></span>
+        </label>
+        <label id="guidedLocalAutoConsentPanel" class="auto-finalize-consent" hidden>
+          <input id="guidedLocalAutoFinalizeConsent" type="checkbox">
+          <span><strong>Allow Local AI to save this build after a clean candidate</strong><small>Required for this build only. It is not a permanent permission and does not bypass review or authority gates.</small></span>
+        </label>
+        <div class="button-row"><button id="guidedDetectLocalAI" class="primary-action" type="button">Find running local models</button></div>
+        <p class="availability-note">Lists the models your own local servers are already serving on the known loopback ports. Nothing is started or downloaded. If your server is on another port or host, add its endpoint below.</p>
+        <div id="guidedLocalCandidates" class="local-ai-candidates" aria-live="polite"></div>
+        <details id="guidedCustomEndpointDetails" class="owner-advanced-disclosure">
+          <summary><span>Add a local endpoint</span><small>Any host or port serving an OpenAI-compatible /v1</small></summary>
+          <div class="sheet-field-grid">
+            <label class="span-2">Endpoint base URL<input id="guidedCustomEndpointUrl" autocomplete="off" placeholder="http://127.0.0.1:11442/v1"></label>
+          </div>
+          <div class="button-row"><button id="guidedCustomEndpointProbe" class="primary-action" type="button">List its models</button></div>
+          <p id="guidedCustomEndpointStatus" class="availability-note" role="status" aria-live="polite">Enter the base URL of a running OpenAI-compatible server, for example http://127.0.0.1:11442/v1</p>
+          <div id="guidedCustomEndpointModels" class="local-ai-candidates" aria-live="polite"></div>
+        </details>
+        <details id="guidedBundledRuntimeDetails" class="owner-advanced-disclosure">
+          <summary><span>Bundled runtime (not installed)</span><small>Lemonade plus its Qwen3-4B-GGUF model, when you have downloaded it</small></summary>
+          <p id="guidedBundledRuntimeState" class="availability-note" role="status" aria-live="polite">Checking the bundled runtime…</p>
+          <div class="button-row"><button id="guidedManagedSelect" type="button">Select bundled model</button><button id="guidedManagedPrepare" type="button">Download and start bundled runtime</button></div>
+          <p id="guidedManagedProgress" class="availability-note" role="status" aria-live="polite" hidden></p>
+        </details>
+        <p id="guidedLocalStatus" class="availability-note" role="status" aria-live="polite">Local AI status not loaded.</p>
+      </section>
+      <details id="guidedAdvancedAIOptions" class="owner-advanced-disclosure guided-ai-options">
+        <summary><span>Advanced AI options</span><small>Provider setup and auto-finalize</small></summary>
+        <label class="auto-finalize-capability"><input id="guidedAutoFinalizeCapability" type="checkbox"><span><strong>Allow one-build Auto-Finalize after a clean candidate</strong><small>Optional capability, off by default. It is not a third route; Standard API remains the selected provider route.</small></span></label>
+        <section id="guidedProviderSetup" class="sheet-section" aria-labelledby="guidedProviderHeading" hidden>
+        <div class="sheet-section-heading"><div><h4 id="guidedProviderHeading">API Provider setup — OpenAI-compatible Chat Completions API</h4></div></div>
+        <p>Manual Chat remains available without a key. Choose a provider profile, save it, and run one explicit test. The protected key handling and local validation gates remain unchanged.</p>
+        <div class="sheet-field-grid">
+          <details class="provider-advanced-disclosure span-2"><summary>Advanced provider routing</summary>
+          <div class="provider-advanced-grid">
+          <label>Provider profile<select id="guidedProviderProfile"><option value="openai">OpenAI</option><option value="deepseek">DeepSeek (optional)</option><option value="custom">Custom OpenAI-compatible</option><option value="agent">Agent bridge (harness-held agent, no key)</option></select></label>
+          <label class="guided-provider-advanced">Endpoint<input id="guidedProviderEndpoint" readonly aria-readonly="true" value="https://api.openai.com/v1/chat/completions"></label>
+          <label class="guided-provider-advanced">Model<input id="guidedProviderModel" value="gpt-4o-mini" autocomplete="off"></label>
+          <label class="guided-provider-advanced">Agent wait seconds<input id="guidedProviderAgentWait" type="number" min="10" max="3600" step="10" value="300" autocomplete="off"></label>
+          </div></details>
+          <label><input id="guidedProviderEnabled" type="checkbox"> Enable API Provider</label>
+          <label>Acknowledged by<input id="guidedProviderActor" autocomplete="off" placeholder="Owner name"></label>
+        </div>
+        <label><input id="guidedProviderAcknowledged" type="checkbox"> I understand the complete-character prompt will be sent to the selected API Provider and may incur charges.</label>
+        <label class="guided-provider-key-control">API key<input id="guidedProviderKey" type="password" autocomplete="new-password" placeholder="Stored locally; never returned"></label>
+        <div class="button-row"><button id="guidedProviderSave" class="primary-action" type="button">Save and test</button><button id="guidedProviderTest" type="button">Test saved connection</button><button id="guidedProviderDeleteKey" class="guided-provider-key-control" type="button">Remove protected key</button></div>
+        <div id="guidedAgentBridgePanel" class="button-row" hidden>
+          <span id="guidedAgentBridgeState" class="availability-note" role="status">No agent request is waiting.</span>
+          <label>Answering agent<input id="guidedAgentId" autocomplete="off" placeholder="agent id"></label>
+          <label>Agent model<input id="guidedAgentModel" autocomplete="off" placeholder="agent model"></label>
+          <button id="guidedAgentCopyPrompt" type="button">Copy prompt</button>
+          <textarea id="guidedAgentAnswerBox" rows="3" placeholder="Paste one JSON answer here"></textarea>
+          <button id="guidedAgentSubmitAnswer" type="button">Paste answer</button>
+          <input id="guidedAgentBoundRequest" type="hidden" value="">
+          <input id="guidedAgentBoundRequestSha" type="hidden" value="">
+        </div>
+        <p id="guidedProviderStatus" class="availability-note" role="status">Provider status not loaded.</p>
+        </section>
+        <label id="guidedAutoConsentPanel" class="auto-finalize-consent" hidden>
+          <input id="guidedAutoFinalizeConsent" type="checkbox">
+          <span><strong>Enable Auto-Finalize for this build only</strong><small>Off by default. A durable receipt is recorded only after a clean candidate exists.</small></span>
+        </label>
+      </details>
+      <div class="button-row"><button id="guidedStartBuild" class="primary-action" type="button">Build Character</button><button id="guidedBack" type="button">Start Over</button></div>
+
+      <p id="guidedProviderFallbackWarning" class="friendly-status warning" role="alert" hidden></p>
+      <details id="guidedManualFallbackDetails" class="owner-advanced-disclosure manual-fallback-disclosure">
+        <summary><span>Emergency fallback / Manual Chat</span><small>Use only when Local AI and API Provider cannot be used</small></summary>
+        <p class="friendly-status warning">Manual Chat is an emergency fallback for when local or API routes are unavailable. It requires downloading a complete request and importing the returned response; no canonical mutation occurs until the normal review gates pass.</p>
+        <button id="guidedManualRouteTab" class="build-mode-card" type="button" role="tab" aria-selected="false" aria-controls="guidedManualTransfer" data-guided-route="MANUAL_CHAT" tabindex="-1"><strong>Use Manual Chat</strong><small>Transfer one complete request ZIP to a compatible receiving chat, then load its complete response ZIP or JSON.</small></button>
+      <section id="guidedManualTransfer" class="manual-complete-transfer" hidden aria-labelledby="guidedManualHeading">
+        <h4 id="guidedManualHeading">Manual Chat complete-character transfer</h4>
+        <div class="numbered-action"><span>1</span><div><strong>Download the complete CG1 request ZIP.</strong><p>This is not the old Stage 1 blueprint request.</p></div></div>
+        <button id="guidedDownloadCompleteRequest" class="primary-action" type="button" disabled>Download Complete Request ZIP</button>
+        <p id="guidedDownloadCompleteRequestStatus" class="availability-note" role="status" aria-live="polite"></p>
+        <button id="guidedDownloadAICorrection" class="primary-action" type="button" hidden disabled>Download AI Correction Packet</button>
+        <div class="numbered-action"><span>2</span><div><strong>Attach it to a compatible receiving chat.</strong><p>ChatGPT, ChatGPT Work, Codex, or another compatible chat may follow the enclosed response schema and return one complete response ZIP or JSON.</p></div></div>
+         <div class="numbered-action"><span>3</span><div><strong>Load the complete response.</strong><p>The Factory binds it to this exact request and runs two isolated scratch builds.</p></div></div>
+         <div id="guidedImportTabs" class="production-import-tabs" role="tablist" aria-label="Response import method"><button id="guidedFileTab" type="button" role="tab" aria-selected="true" aria-controls="guidedFileImport">Choose file or drop</button><button id="guidedPasteTab" type="button" role="tab" aria-selected="false" aria-controls="guidedPasteImport">Paste JSON fallback</button></div>
+          <div id="guidedFileImport">
+          <div id="guidedCompleteReplyDrop" class="reply-drop-zone" tabindex="0" role="button" aria-label="Drop complete character response ZIP or JSON here">
+          <strong>Drop complete response ZIP or JSON here</strong><span>or choose a .zip, .json, .md, or .txt file</span>
+          <button id="guidedChooseCompleteReply" type="button">Choose response file</button>
+          <input id="guidedCompleteReplyFile" type="file" accept=".zip,.json,.md,.txt" hidden>
+          </div>
+          </div>
+         <p id="guidedCompleteReplyStatus" class="availability-note" aria-live="polite"></p>
+         <div id="guidedPasteImport">
+         <label class="friendly-label" for="guidedCompleteResponseText">Or paste the complete response JSON</label>
+         <textarea id="guidedCompleteResponseText" rows="10" spellcheck="false" placeholder="Paste one TianxiaFoundry.CharacterCreationPlan.v2 JSON object"></textarea>
+         </div>
+               <div class="response-source-controls" aria-label="Manual response source controls">
+          <button id="guidedReplaceCompleteReply" type="button">Replace response source</button>
+          <button id="guidedRemoveCompleteReply" type="button">Remove response source</button>
+        </div>
+        <p id="guidedResponseSourceState" class="response-source-state" role="status" aria-live="polite">Response source: none. Choose a file or paste a response.</p>
+        <section id="guidedResponseProcessing" class="response-processing-panel" aria-labelledby="guidedResponseProcessingHeading">
+          <div class="response-processing-heading"><div><p class="sheet-kicker">Import status</p><h5 id="guidedResponseProcessingHeading">What the Factory is doing</h5></div><span id="guidedResponseProcessingState" class="owner-status-pill">Waiting for a source</span></div>
+          <ol id="guidedResponseProcessingList" class="response-processing-list" aria-live="polite"></ol>
+        </section>
+        <button id="guidedSubmitCompleteResponse" class="primary-action" type="button" disabled>Build Complete Candidate</button>
+      </section>
+      </details>
+       <div id="guidedControllerProgress" class="owner-readable-log" aria-live="polite" hidden></div>
+       <div id="guidedBuildProgress" class="owner-readable-log" aria-live="polite">No complete-character build started.</div>
+      <details id="guidedDeveloperDiagnostics" class="developer-diagnostics"><summary>Developer / Diagnostics</summary><pre id="guidedDiagnosticsDetail">No technical diagnostics recorded.</pre></details>
+    </section>
+
+    <section class="builder-card owner-step-panel" id="builderReview" data-owner-panel="4" hidden aria-labelledby="guidedReviewHeading">
+       <p class="sheet-kicker">Step 4 of 4</p>
+      <h3 id="guidedReviewHeading">Your character</h3>
+      <p id="ownerReviewIntro">No canonical mutation has occurred until you press Finalize. Everything about this character is on this page.</p>
+      <div id="ownerReviewStatus" class="owner-review-status" aria-live="polite">
+        <span id="ownerReviewStatusPill" class="owner-status-pill" data-state="pending">Waiting</span>
+        <p id="ownerReviewStatusHeadline">No complete-character build has started yet.</p>
+      </div>
+      <div id="ownerPrimaryActions" class="owner-primary-actions" role="group" aria-label="Character actions"></div>
+      <div id="guidedCandidateSummary" class="candidate-review-summary" aria-live="polite"></div>
+      <details id="guidedReviewValidationDetails" class="owner-advanced-disclosure review-validation-details">
+        <summary><span>Advanced: validation and proposal sources</span><small>Determinism, quality gates, and provenance</small></summary>
+        <div id="guidedCandidateTechnicalSummary" class="candidate-review-summary" aria-live="polite"></div>
+      </details>
+      <details id="ownerReviewGroupsSection" class="owner-advanced-disclosure owner-review-section">
+        <summary><span>Abilities, statistics and acquisition detail</span><small>Everything the compiled candidate records, grouped by kind</small></summary>
+        <div id="ownerReviewGroups" class="owner-review-groups" aria-live="polite"></div>
+      </details>
+      <section id="guidedDescriptiveFields" class="descriptive-review-panel" aria-labelledby="guidedDescriptiveHeading">
+        <h4 id="guidedDescriptiveHeading">Character identity wording</h4>
+        <p><strong>AI proposed</strong> wording is display/story content only and is optional. Edit it here if you want; it is used as shown otherwise, and it never changes Paths, Method, Foundation, target CL, or catalog authority.</p>
+        <div class="descriptive-fields-grid">
+          <label>Name<input id="guidedProposedName" maxlength="240" autocomplete="off"></label>
+          <label>Title<input id="guidedProposedTitle" maxlength="120" autocomplete="off"></label>
+          <label>Concept<textarea id="guidedProposedConcept" rows="5" maxlength="12000"></textarea></label>
+        </div>
+        <div class="button-row">
+          <button id="guidedSaveDescriptiveFields" type="button">Save identity wording (optional)</button>
+          <span id="guidedDescriptiveFieldsStatus" class="availability-note" role="status"></span>
+        </div>
+      </section>
+      <section id="guidedCandidateGMAuthoring" class="descriptive-review-panel candidate-gm-authoring-panel" aria-labelledby="guidedCandidateGMAuthoringHeading" hidden>
+        <div class="manual-lineage-heading">
+          <div>
+            <p class="sheet-kicker">Candidate GM review</p>
+            <h4 id="guidedCandidateGMAuthoringHeading">Review the staged GM guidance</h4>
+            <p>GM guidance is the Factory's write-up of how a Game Master runs this character at the table. Your Local AI writes it from the finished build, you review it, then you issue a challenge and approve it. It never changes the character.</p>
+          </div>
+          <span id="guidedCandidateGMAuthoringStatusPill" class="owner-status-pill">Not authored</span>
+        </div>
+        <p id="guidedCandidateGMAuthoringStatus" class="friendly-status" role="status" aria-live="polite">No staged GM candidate is available for this build.</p>
+        <div class="button-row">
+          <button id="guidedCandidateGMAuthor" type="button">Author GM candidate</button>
+          <button id="guidedCandidateGMBuild" type="button">Build review from saved receipt</button>
+          <button id="guidedCandidateGMIssueApproval" class="primary-action" type="button">Issue approval challenge</button>
+        </div>
+        <label class="manual-lineage-confirmation" for="guidedCandidateGMApprovalConfirm"><input id="guidedCandidateGMApprovalConfirm" type="checkbox"> I reviewed the staged GM guidance and its source-bound details and explicitly approve this candidate for the normal retry path.</label>
+        <div class="button-row">
+          <button id="guidedCandidateGMApprove" class="primary-action" type="button" disabled>Approve staged GM candidate</button>
+        </div>
+        <details class="owner-advanced-disclosure">
+          <summary><span>Candidate GM evidence</span><small>Receipt, source, profile, challenge, and approval identity</small></summary>
+          <pre id="guidedCandidateGMDetails">No staged GM evidence loaded.</pre>
+        </details>
+      </section>
+      <p id="guidedNextAction" class="next-legal-action" aria-live="polite">Next legal action will appear after the candidate is reviewed.</p>
+      <section id="guidedRecoveryActions" class="recovery-action-panel" aria-labelledby="guidedRecoveryHeading">
+        <div>
+          <p class="sheet-kicker">Build recovery</p>
+          <h4 id="guidedRecoveryHeading">Choose one explicit next action</h4>
+          <p id="guidedRecoveryExplanation">These actions preserve the current request and attempt history unless you deliberately create a new brief.</p>
+        </div>
+        <div class="button-row recovery-action-buttons">
+          <button id="guidedResumeControllerWalk" class="primary-action" type="button" hidden>Resume Guided Build</button>
+          <button id="guidedRetryLocalAICorrection" class="primary-action" type="button" hidden>Fix with Local AI</button>
+          <button id="guidedReviewDownloadAICorrection" class="primary-action" type="button" hidden>Download AI Correction Packet</button>
+          <button id="guidedReplaceResponse" type="button">Replace Response</button>
+          <button id="guidedEditBrief" type="button">Edit Brief / Create New Request</button>
+          <button id="guidedCancel" type="button">Cancel Build</button>
+        </div>
+      </section>
+      <section id="guidedManualLineageResolver" class="manual-lineage-resolver" aria-labelledby="guidedManualLineageHeading" hidden>
+        <div class="manual-lineage-heading">
+          <div>
+            <p class="sheet-kicker">Named owner decision</p>
+            <h4 id="guidedManualLineageHeading">Choose a training source for Manual Lineage</h4>
+            <p id="guidedManualLineageRequirement">The Factory needs one source-backed training source before this character can be finalized. No route is selected automatically.</p>
+          </div>
+          <span id="guidedManualLineageStatusPill" class="owner-status-pill">Choice required</span>
+        </div>
+        <div id="guidedManualLineageRoutes" class="manual-lineage-route-grid" role="list" aria-label="Manual Lineage resolution routes"></div>
+        <p id="guidedManualLineageStatus" class="friendly-status" role="status" aria-live="polite">Load the exact server-owned choice contract to continue.</p>
+        <form id="guidedManualLineageOwnerForm" class="manual-lineage-owner-form" hidden>
+          <div class="manual-lineage-phase-heading">
+            <span class="manual-lineage-phase-number">1</span>
+            <div><h5>Prepare exact approval</h5><p>Owner-supplied is the only route currently actionable. This step creates a reviewable challenge and seals nothing.</p></div>
+          </div>
+          <div class="manual-lineage-fields">
+            <label>Owner confirmation<input id="guidedManualLineageOwnerConfirmation" required maxlength="200" autocomplete="off" placeholder="Your confirmation name or ID"></label>
+            <label>Display name<input id="guidedManualLineageDisplayName" required maxlength="300" autocomplete="off"></label>
+            <label class="span-2">Summary<textarea id="guidedManualLineageSummary" required maxlength="8000" rows="3"></textarea></label>
+            <label class="span-2">Exact source text<textarea id="guidedManualLineageSourceText" required maxlength="65536" rows="7"></textarea></label>
+            <label>Source anchor<input id="guidedManualLineageSourceAnchor" required maxlength="512" autocomplete="off"></label>
+            <label>Access mode<input id="guidedManualLineageAccessMode" required maxlength="200" autocomplete="off" placeholder="Owner-confirmed study"></label>
+            <label class="span-2">Training types<select id="guidedManualLineageTrainingTypes" multiple size="3" required aria-describedby="guidedManualLineageTargetHelp"><option value="new_sphere">New Sphere</option><option value="known_sphere_talent">Known Sphere Talent</option><option value="recorded_art">Recorded Art</option></select></label>
+          </div>
+          <fieldset class="manual-lineage-target-picker" aria-describedby="guidedManualLineageTargetHelp">
+            <legend>Legal targets</legend>
+            <p id="guidedManualLineageTargetHelp">Search the authenticated project lock, then choose one or more displayed targets. Target IDs are never entered manually.</p>
+            <div class="manual-lineage-target-search">
+              <label for="guidedManualLineageTargetQuery">Search legal targets</label>
+              <input id="guidedManualLineageTargetQuery" type="search" maxlength="200" autocomplete="off" placeholder="Search by name">
+              <button id="guidedManualLineageTargetSearch" type="button">Search targets</button>
+            </div>
+            <p id="guidedManualLineageTargetStatus" class="availability-note" role="status" aria-live="polite">Choose a training type to load authenticated targets.</p>
+            <select id="guidedManualLineageTargetOptions" class="manual-lineage-target-options" multiple size="8" aria-label="Authenticated legal training targets"></select>
+          </fieldset>
+          <div class="manual-lineage-phase-actions">
+            <button id="guidedManualLineagePrepare" class="primary-action" type="submit">Prepare exact approval</button>
+          </div>
+        </form>
+        <section id="guidedManualLineagePreview" class="manual-lineage-preview" aria-labelledby="guidedManualLineagePreviewHeading" hidden>
+          <div class="manual-lineage-phase-heading">
+            <span class="manual-lineage-phase-number">2</span>
+            <div><h5 id="guidedManualLineagePreviewHeading">Review and approve exact source</h5><p>Review the exact source bytes and server bindings below. Approval is a separate explicit action.</p></div>
+          </div>
+          <div id="guidedManualLineagePreviewFields" class="manual-lineage-preview-fields"></div>
+          <label class="manual-lineage-confirmation"><input id="guidedManualLineageApprovalConfirm" type="checkbox"> I reviewed the exact source, target identities, and hashes above and explicitly approve sealing this source.</label>
+          <div class="manual-lineage-phase-actions">
+            <button id="guidedManualLineageApprove" class="primary-action" type="button" disabled>Approve exact source</button>
+          </div>
+          <p id="guidedManualLineagePostApproval" class="friendly-status success" role="status" hidden>The exact source is sealed. A new candidate revision and regenerated candidate/binding review are required before Finalize.</p>
+          <details id="guidedManualLineageAdvanced" class="owner-advanced-disclosure">
+            <summary><span>Advanced approval details</span><small>One-time challenge credentials and technical binding</small></summary>
+            <pre id="guidedManualLineageAdvancedDetails"></pre>
+          </details>
+        </section>
+      </section>
+      <details id="ownerSheetPreviewSection" class="owner-advanced-disclosure owner-review-section">
+        <summary><span>Full sheet preview</span><small id="ownerSheetPreviewSummary">The compiled character sheet, exactly as it will be saved</small></summary>
+        <div class="owner-screen-heading"><div><p class="sheet-kicker" id="ownerSheetStateLabel">Step 4 of 4 · proposal preview</p><h3 id="ownerSheetPreviewHeading">Character sheet</h3><p id="ownerSheetPreviewIntro">Before Finalize, this is a noncanonical proposal preview derived from the server candidate.</p></div><span id="ownerSheetState" class="owner-status-pill">Pending compile</span></div>
+        <div id="ownerProductionSheet" class="owner-production-sheet" aria-live="polite"><p class="pending-copy">The Factory will show the proposal after a response is accepted.</p></div>
+      </details>
+
+      <section id="ownerCompiledInsights" class="compiled-owner-stage owner-review-section" aria-labelledby="ownerCompiledInsightsHeading">
+        <div class="compiled-stage-heading"><div><p id="ownerCompiledInsightsLabel" class="sheet-kicker">Awaiting response</p><h3 id="ownerCompiledInsightsHeading">Insights and progression</h3><p id="ownerCompiledInsightsIntro">The Factory will show source-backed Insights and their progression level here.</p></div><span id="ownerCompiledInsightSummary" class="owner-status-pill"></span></div>
+        <div id="ownerCompiledInsightsBody" class="compiled-stage-body" aria-live="polite"></div>
+      </section>
+      <div id="ownerInsightHost" data-owner-planning-host="insights"></div>
+      <p class="catalog-integrity-note">Ordinary Insight authority remains separate from Background-Origin authority. Once the request freezes, planning changes require a new request.</p>
+
+      <section id="ownerCompiledSpheres" class="compiled-owner-stage owner-review-section" aria-labelledby="ownerCompiledSpheresHeading">
+        <div class="compiled-stage-heading"><div><p id="ownerCompiledSpheresLabel" class="sheet-kicker">Awaiting response</p><h3 id="ownerCompiledSpheresHeading">Spheres, Talents, and abilities</h3><p id="ownerCompiledSpheresIntro">The Factory will show the source-backed Sphere, Talent, and automatic ability relationship here.</p></div><span id="ownerCompiledSphereSummary" class="owner-status-pill"></span></div>
+        <div id="ownerCompiledSpheresBody" class="compiled-stage-body" aria-live="polite"></div>
+      </section>
+
+      <article id="ownerNextActionCard" class="owner-next-action-card owner-review-section"><div class="next-action-number">1</div><div><p class="sheet-kicker">Next legal action</p><h3 id="ownerNextActionTitle">Describe a character first</h3><p id="ownerNextActionText">The next action will come from the active server lifecycle.</p><section id="ownerNextActionBlocker" class="owner-next-action-blocker" aria-live="polite" hidden><p class="sheet-kicker">Current blocker</p><strong id="ownerNextActionBlockerCode"></strong><p id="ownerNextActionBlockerRecord" hidden></p><p id="ownerNextActionBlockerMessage"></p><p id="ownerNextActionBlockerRecovery"></p></section><button id="ownerNextActionButton" class="primary-action" type="button">Return to active screen <span aria-hidden="true">→</span></button></div></article>
+
+      <details id="ownerSheetPreviewHostSection" class="owner-advanced-disclosure owner-review-section">
+        <summary><span>Saved character sheet</span><small>Open the persisted sheet after Finalize</small></summary>
+        <div class="owner-screen-footer"><button id="ownerPreviewOpenCharacters" class="secondary-action" type="button">Open in Character Sheets</button></div>
+        <div id="ownerSheetPreviewHost" class="owner-sheet-preview-host owner-character-sheet" aria-live="polite"></div>
+      </details>
+
+      <details id="ownerExportSection" class="owner-advanced-disclosure owner-review-section">
+        <summary><span>Exports and GM readiness</span><small>Backups, completed Character ZIP, GM package, and evidence</small></summary>
+        <div class="owner-export-grid"><button type="button" data-owner-export-kind="project_backup">Save project backup</button><button type="button" data-owner-export-kind="completed_character" disabled aria-describedby="ownerCompletedExportReason">Save completed Character ZIP</button><button type="button" data-owner-export-kind="gm_character" disabled aria-describedby="ownerGMExportReason">Save GM package</button><button type="button" data-owner-export-kind="chat_request">Save Chat request ZIP</button></div><p id="ownerCompletedExportReason" class="disabled-reason">Available only after validated Finalize.</p><p id="ownerGMExportReason" class="disabled-reason">Available only after the real GM export gate.</p><p id="ownerExportStatus" class="friendly-status" role="status">No export operation run.</p>
+        <div class="owner-screen-footer"><button id="ownerExportOpenSheets" class="secondary-action" type="button">Open Character Sheets</button></div>
+      </details>
+
+      <details id="guidedAdvancedRecovery" class="owner-advanced-disclosure guided-advanced-recovery">
+        <summary><span>Advanced: validation, provenance, retry and history</span><small>Technical recovery tools and build records</small></summary>
+        <div class="button-row"><button id="guidedRetryLocalBuild" type="button">Retry Local Build (no provider)</button></div>
+        <details id="guidedAttemptHistoryDetails" class="attempt-history-details">
+          <summary>Attempt history</summary>
+          <div id="guidedAttemptHistory" class="attempt-history-list"></div>
+        </details>
+        <details class="developer-diagnostics"><summary>Developer / Diagnostics: complete candidate and gate evidence</summary><pre id="guidedReviewDetail"></pre></details>
+        <div class="provenance-legend" aria-label="Proposal provenance legend"><span>Owner</span><span>AI proposed</span><span>Automatic</span><span>Needs owner decision</span></div>
+        <label class="friendly-label" for="guidedRevisionNotes">Revision notes <span class="optional">(optional)</span></label>
+        <textarea id="guidedRevisionNotes" rows="4" placeholder="Describe what should change in the next complete-character request."></textarea>
+        <div class="button-row">
+          <button id="guidedCopyErrorSummary" type="button">Copy error summary</button>
+          <button id="guidedDownloadEvidence" type="button">Download build evidence JSON</button>
+        </div>
+      </details>
+      <div class="button-row owner-finalize-row">
+        <button id="guidedFinalize" class="primary-action" type="button">Finalize Character</button>
+      </div>
+      <div id="ownerPrimaryActionsBottom" class="owner-primary-actions owner-primary-actions-bottom" role="group" aria-label="Character actions (bottom)"></div>
+      <div class="owner-screen-footer review-flow-footer"><button class="text-action owner-step-back" data-owner-target="3" type="button">← Back to build route</button></div>
+    </section>
+
+    <section id="builderSheet" class="builder-card owner-step-panel owner-sheet-preview-panel" data-owner-panel="7" hidden aria-hidden="true"></section>
+
+    <section id="builderExport" class="builder-card owner-step-panel owner-export-panel" data-owner-panel="8" hidden aria-hidden="true"></section>
+
+    <section class="builder-card" id="builderDone" hidden aria-labelledby="guidedDoneHeading">
+      <p class="sheet-kicker">Step 4</p>
+      <h3 id="guidedDoneHeading">Character finalized</h3>
+      <p>The accepted server-derived local principal approved the canonical commit. The completed Character Sheet, ordinary Character ZIP, and GM-compatible output are available through the normal character surfaces.</p>
+      <div id="guidedFinalSummary" class="candidate-review-summary" aria-live="polite"></div>
+      <button id="guidedOpenCharacter" class="primary-action" type="button">Open My Character</button>
+      <button id="guidedNewCharacter" type="button">Create Another Character</button>
+    </section>
+
+      <section id="guidedResultPanel" class="builder-result-panel" hidden aria-live="polite">
+        <h4 id="guidedResultHeading">Character plan result</h4><p id="guidedResultSummary"></p><ul id="guidedResultDetails"></ul>
+        <div class="button-row"><button id="guidedResultViewSheet" type="button" hidden>View Character Sheet</button><button id="guidedResultContinue" type="button" hidden>Continue Building</button></div>
+      </section>
+
+    <p id="guidedStatus" class="friendly-status" role="status"></p>
+    </div>
+  </section>
+
+  <section id="screen-combat" class="screen" aria-labelledby="combatHeading">
+    <div id="combatScreenIntro" class="combat-header">
+      <div>
+        <p class="eyebrow">Fight setup</p>
+        <h2 id="combatHeading">Combat</h2>
+        <p>Choose a battlefield and two teams, then let the app run the fight.</p>
+      </div>
+      <div id="combatServiceStatus" class="readiness-badge" role="status" hidden>Loading combat…</div>
+    </div>
+
+    <section id="combatSetup" class="combat-panel combat-owner-setup">
+      <div class="combat-subnav" role="tablist" aria-label="Combat setup views">
+        <button id="combatFriendlySetupTab" class="active" type="button" role="tab" aria-selected="true" aria-controls="combatFriendlySetup">Fight Setup</button>
+        <button id="combatAdvancedSetupTab" class="secondary-tab" type="button" role="tab" aria-selected="false" aria-controls="combatAdvancedSetup">Advanced</button>
+      </div>
+
+      <div id="combatFriendlySetup" role="tabpanel" aria-labelledby="combatFriendlySetupTab">
+        <!-- Owner 2026-09-25: the new combat table and its map editor, easy to find. -->
+        <section class="table-callout" aria-label="Combat table">
+          <div><strong>The combat table</strong><span>Grid, fog of war, your own maps and backgrounds, action buttons, pop-out sheets and 3D dice.</span></div>
+          <div class="button-row">
+            <a class="button-link table-callout-primary" href="/tabletop" target="_blank" rel="noopener">Open the table ↗</a>
+            <a class="button-link" href="/tabletop/maps" target="_blank" rel="noopener">Maps &amp; backgrounds ↗</a>
+          </div>
+        </section>
+        <section class="saved-fights" aria-labelledby="savedFightsHeading">
+          <h3 id="savedFightsHeading">Saved fights</h3>
+          <p class="action-meta">Open a fight, then press Run Auto to watch it on the grid (One Turn steps, Pause stops).</p>
+          <div id="combatMatchList" class="match-list" aria-label="Saved fights"></div>
+        </section>
+
+        <section class="saved-fights factory-fight" aria-labelledby="factoryFightHeading">
+          <h3 id="factoryFightHeading">New fight with your characters</h3>
+          <p class="action-meta">Choose who fights on each side (up to 3 each), then Create Fight. Every fighter is run by the Local AI, following their own Dao and fighting with their own talents, typed from the rules. Edits to talents or rules apply to the next fight.</p>
+          <div id="combatFactoryPanel" class="fight-builder" aria-label="New fight with your characters"></div>
+        </section>
+        <p id="combatSetupStatus" class="friendly-status" role="status"></p>
+
+        <!-- Historical sample actors remain available only inside their saved fights. -->
+        <details class="owner-advanced-disclosure combat-legacy-setup">
+          <summary>Practice fighters and installed characters</summary>
+        <section id="combatCandidateSection" class="combat-candidate-panel" aria-labelledby="combatCandidateHeading">
+          <div class="combat-candidate-heading">
+            <div>
+              <p class="eyebrow">Your characters</p>
+              <h3 id="combatCandidateHeading">Choose who will fight</h3>
+              <p>Pick from your saved, combat-ready characters. Nothing changes until you create the fight.</p>
+            </div>
+            <span class="readiness-badge">Preview only</span>
+          </div>
+          <div id="combatCandidateLibrary" class="combat-candidate-library" aria-live="polite"></div>
+          <p id="combatCandidateStatus" class="friendly-status" role="status">Loading your characters…</p>
+          <div id="combatPreEncounterDraftResult" class="combat-draft-result" aria-live="polite"></div>
+        </section>
+
+        <div class="combat-demo-boundary">
+          <div><strong>Practice duel</strong><span>An Eui faces Bai Meizhen and her companion Cui.</span></div>
+          <button id="combatOpenAcceptedDemo" type="button">Check Practice Duel</button>
+          <details class="combat-demo-technical owner-advanced-disclosure">
+            <summary>Advanced: sample fight details</summary>
+            <pre id="combatAcceptedDemoPreflight" class="compact-technical">No preflight run.</pre>
+          </details>
+        </div>
+
+        <div class="friendly-combat-intro">
+          <div>
+            <h3>Create a two-team encounter</h3>
+            <p>Select any installed <strong>Combat Ready</strong> primary combatants. Bai Meizhen automatically includes Cui through the accepted companion representation. Manual is the default controller.</p>
+          </div>
+          <label class="combat-name-field">Fight name
+            <input id="combatDisplayName" maxlength="240" placeholder="Practice duel">
+          </label>
+          <label class="combat-name-field">Team 1 name<input id="combatTeam1Name" maxlength="120" value="Team 1"></label>
+          <label class="combat-name-field">Team 2 name<input id="combatTeam2Name" maxlength="120" value="Team 2"></label>
+        </div>
+
+        <section class="visual-upload-card battlefield-upload" aria-labelledby="combatBackgroundHeading">
+          <div class="visual-preview-frame battlefield-preview-frame">
+            <img id="combatBackgroundPreview" alt="Current battlefield background preview">
+          </div>
+          <div class="visual-upload-copy">
+            <h4 id="combatBackgroundHeading">Battlefield background</h4>
+            <p>Upload a PNG, JPEG, or WebP image up to 12 MiB. The grid and terrain rules do not change.</p>
+            <label class="combat-map-calibration-choice" for="combatBackgroundCalibrationMode">Map alignment
+              <select id="combatBackgroundCalibrationMode">
+                <option value="EXACT_PLAYABLE_RECT">Exact gridless map — full image matches battlefield ratio</option>
+                <option value="COVER_DECORATIVE" selected>Decorative cover — cropping allowed</option>
+                <option value="CONTAIN_DECORATIVE">Decorative contain — margins allowed</option>
+              </select>
+            </label>
+            <p class="field-note">Use Exact only for gridless art exported to the battlefield aspect ratio. Painted walls or cover never create mechanics.</p>
+            <div class="button-row">
+              <label class="button-link upload-button" for="combatBackgroundUpload">Choose Background</label>
+              <input id="combatBackgroundUpload" class="visually-hidden-file" type="file" accept="image/png,image/jpeg,image/webp">
+            <button id="combatBackgroundReset" type="button">Use Built-In Arena</button>
+          </div>
+            <p id="combatBackgroundStatus" class="friendly-status" role="status">No built-in artwork is published. Using the accessible CSS grid.</p>
+          </div>
+        </section>
+
+        <div class="team-setup-heading">
+          <div>
+            <h3>Fixed teams and supported setup</h3>
+            <p>Participants and teams are read-only. You may edit legal current resources, authoritative placements, existing token choices, and supported controller modes.</p>
+          </div>
+          <div id="combatAPIStatus" class="api-ready-summary">Checking API option…</div>
+        </div>
+        <div id="combatTeamSetup" class="combat-team-grid" aria-label="Teams and fighter controls"></div>
+
+        <section class="auto-combat-explainer">
+          <h3>Automatic combat</h3>
+          <p><strong>Manual</strong> is the normal default. <strong>Local AI</strong> is available offline for remaining turns after owner-reviewed decisions. <strong>API AI</strong> uses the optional configured provider for primary decisions; the local deterministic runtime still validates every decision and resolves reactions safely.</p>
+          <button id="combatConfigureAPI" type="button">Configure API Provider</button>
+        </section>
+
+        <div class="button-row combat-create-row">
+          <button id="combatCreateMatch" class="primary-action large-action" type="button">Review &amp; Create Fight</button>
+          <button id="combatRefreshMatches" type="button">Refresh Saved Fights</button>
+        </div>
+        </details>
+
+      </div>
+
+      <div id="combatAdvancedSetup" role="tabpanel" aria-labelledby="combatAdvancedSetupTab" hidden>
+        <h3>Advanced setup and readiness</h3>
+        <p>This view contains deterministic identifiers, source readiness, and deferred manual-control options. It does not change the friendly setup above.</p>
+        <div class="combat-setup-grid">
+          <label>Accepted encounter
+            <select id="combatEncounter" aria-describedby="combatKnownLimitations"></select>
+          </label>
+          <label>Deterministic seed
+            <input id="combatSeed" maxlength="200" placeholder="Generated safely when blank">
+          </label>
+        </div>
+        <div id="combatReadinessList" class="readiness-grid" aria-label="Combat readiness"></div>
+        <div id="combatControlSetup" class="control-mode-grid" aria-label="Technical control-mode summary"></div>
+        <p id="combatKnownLimitations" class="honest-limit"></p>
+      </div>
+    </section>
+
+    <section id="combatWorkspace" class="combat-workspace r667-combat-shell" hidden>
+      <header class="combat-command-header" aria-label="Combat command bar">
+        <div class="combat-match-identity">
+          <p class="combat-brand">TIANXIA COMBAT</p>
+          <h3 id="combatMatchTitle">Combat match</h3>
+        </div>
+        <div class="combat-turn-identity">
+          <strong id="combatTurnSummary">Loading current turn…</strong>
+          <span id="combatControllerSummary">Live · validated combat authority</span>
+        </div>
+        <section id="combatAutoPanel" class="combat-auto-commandbar combat-live-panel" aria-labelledby="autoFightHeading">
+          <h4 id="autoFightHeading" class="visually-hidden">Automatic combat controls</h4>
+          <button id="combatLocalRun" class="primary-action" type="button">Run Auto</button>
+          <button id="combatLocalStep" type="button">One Turn</button>
+          <button id="combatPause" type="button">Pause</button>
+          <button id="combatResume" type="button">Resume</button>
+          <button id="combatLocalStop" type="button">Stop</button>
+          <button id="combatTechnicalView" type="button">Advanced</button>
+          <span id="combatAutoStatus" class="combat-auto-status" role="status">Ready.</span>
+        </section>
+      </header>
+
+      <div class="combat-view-switches">
+        <button id="combatReturnSetup" type="button">Fight Setup</button>
+        <button id="combatOwnerView" class="active" type="button">Fight View</button>
+        <a id="combatExport" class="button-link" href="#">Export / Download</a>
+      </div>
+
+      <div id="combatOwnerWorkspace" class="combat-owner-workspace" data-mobile-tab="map">
+        <aside class="combat-team-rail" data-mobile-panel="teams" aria-labelledby="combatantsHeading">
+          <h3 id="combatantsHeading">Teams</h3>
+          <div id="combatActorCards" class="actor-card-list"></div>
+        </aside>
+
+        <section class="combat-battlefield-column" data-mobile-panel="map" aria-labelledby="battlefieldHeading">
+          <div class="combat-map-toolbar" role="toolbar" aria-label="Battlefield view controls">
+            <h3 id="battlefieldHeading">Sect Training Court</h3>
+            <div class="combat-map-tools">
+              <button id="combatZoomOut" type="button" aria-label="Zoom out">−</button>
+              <button id="combatZoomFit" type="button">Fit</button>
+              <button id="combatZoomIn" type="button" aria-label="Zoom in">+</button>
+              <button id="combatCenterTurn" type="button">Center Turn</button>
+              <button id="combatPanMode" type="button" aria-pressed="false">Pan</button>
+              <button id="combatToggleNameplates" type="button" aria-pressed="true">Nameplates</button>
+              <button id="combatToggleGeometry" type="button" aria-pressed="true">Geometry</button>
+            </div>
+            <div class="combat-map-status-stack"><span id="combatBoardLegend">20 × 14 squares · 5 ft each</span><span id="combatCalibrationStatus" role="status">Map calibration pending</span></div>
+          </div>
+          <div id="combatHistoricalBanner" class="historical-banner" role="status" hidden>Viewing authoritative history. Execution is disabled until Return to Live.</div>
+          <div id="combatPresentationFindingBanner" class="combat-presentation-finding-banner" role="alert" hidden></div>
+          <section id="combatInteractionBar" class="combat-interaction-bar" aria-labelledby="combatInteractionTitle" hidden>
+            <div class="combat-interaction-copy">
+              <strong id="combatInteractionTitle">Map selection</strong>
+              <span id="combatInteractionGuidance" role="status" aria-live="polite">Choose only an engine-generated legal candidate.</span>
+            </div>
+            <label class="combat-interaction-choice-label" for="combatInteractionChoice">Exact legal choice
+              <select id="combatInteractionChoice"></select>
+            </label>
+            <div class="combat-interaction-actions">
+              <button id="combatInteractionUse" class="primary-action" type="button">Use Selected Choice</button>
+              <button id="combatInteractionCancel" type="button">Cancel Map Choice</button>
+            </div>
+          </section>
+          <div id="combatBattlefieldViewport" class="combat-battlefield-viewport" tabindex="0" aria-label="Scrollable battlefield viewport">
+            <div id="combatBoard" class="combat-board" role="grid" aria-label="Combat battlefield"></div>
+            <div id="combatSheetConnector" class="combat-sheet-connector" aria-hidden="true"></div>
+            <article id="combatFloatingSheet" class="combat-sheet combat-sheet-floating" aria-live="polite" hidden></article>
+          </div>
+
+          <section id="combatHistoryPanel" class="combat-history-panel" data-mobile-panel="history" aria-labelledby="combatHistoryHeading">
+            <div class="history-heading-row">
+              <div>
+                <h4 id="combatHistoryHeading">Battle History</h4>
+                <p id="combatHistoryStatus" role="status" aria-live="polite" aria-atomic="true">Loading the authoritative journal…</p>
+              </div>
+              <button id="combatReturnLive" class="primary-action" type="button" hidden>Return to Live</button>
+            </div>
+            <label class="visually-hidden" for="combatHistorySlider">Replay timeline</label>
+            <div class="combat-history-controls-row">
+              <button id="combatHistoryPrevious" type="button" disabled>Previous</button>
+              <input id="combatHistorySlider" type="range" min="0" max="0" value="0" step="1" disabled aria-describedby="combatHistoryStatus">
+              <button id="combatHistoryNext" type="button" disabled>Next</button>
+            </div>
+            <label class="combat-history-jump" for="combatHistoryJump">Jump to round / turn
+              <select id="combatHistoryJump" disabled></select>
+            </label>
+          </section>
+        </section>
+
+        <aside class="combat-right-rail" data-mobile-panel="feed">
+          <section id="combatCurrentTurnPanel" class="combat-rail-card combat-current-turn" aria-labelledby="combatCurrentTurnHeading">
+            <p class="combat-brand">CURRENT TURN</p>
+            <h3 id="combatCurrentTurnHeading">—</h3>
+            <p id="combatCurrentTurnDetail">Loading validated combat state…</p>
+            <div id="combatCurrentTurnStats" class="combat-turn-stats"></div>
+          </section>
+          <section class="combat-rail-card" aria-labelledby="initiativeHeading">
+            <h3 id="initiativeHeading">Initiative</h3>
+            <ol id="combatInitiative" class="initiative-list"></ol>
+          </section>
+          <section id="combatPinnedSheetPanel" class="combat-sheet combat-sheet-pinned" aria-label="Pinned Combat Sheet" hidden></section>
+          <section class="combat-rail-card combat-feed-card" aria-labelledby="eventFeedHeading">
+            <h3 id="eventFeedHeading">What happened</h3>
+            <p class="feed-note">Committed journal events only.</p>
+            <div id="combatEventFeed" class="event-feed" aria-live="polite"></div>
+            <details id="combatHistoryRawDetails">
+              <summary>Advanced: selected boundary records</summary>
+              <pre id="combatHistoryRaw">No boundary selected.</pre>
+            </details>
+          </section>
+        </aside>
+      </div>
+
+      <nav id="combatMobileTabs" class="combat-mobile-tabs" aria-label="Combat workspace views">
+        <button type="button" class="active" data-combat-mobile-tab="map">Map</button>
+        <button type="button" data-combat-mobile-tab="teams">Teams</button>
+        <button type="button" data-combat-mobile-tab="feed">Feed</button>
+        <button type="button" data-combat-mobile-tab="history">History</button>
+      </nav>
+
+      <section id="combatAdvancedWorkspace" hidden>
+        <div class="combat-panel">
+          <div class="panel-heading-row">
+            <h3>Advanced persistence and verification</h3>
+            <div class="button-row">
+              <button id="combatSnapshot" type="button">Snapshot / Save</button>
+              <button id="combatVerify" type="button">Verify</button>
+              <button id="combatReplay" type="button">Replay Summary</button>
+              <button id="combatCharacterAuthorityDetails" type="button" disabled>Character Authority Details</button>
+            </div>
+          </div>
+          <pre id="combatDiagnostics">No diagnostics.</pre>
+        </div>
+
+        <section id="combatDecisionPanel" class="combat-panel combat-live-panel" aria-labelledby="actionHeading">
+          <div class="panel-heading-row">
+            <h3 id="actionHeading">Deferred manual decision controls — advanced diagnostics</h3>
+            <button id="combatRefreshDecision" type="button">Refresh Decision</button>
+          </div>
+          <p id="combatDecisionStatus">Load a match to see legal actions.</p>
+          <div id="combatActionGroups" class="action-groups"></div>
+        </section>
+
+        <section id="combatControllerPanel" class="combat-panel combat-live-panel" aria-labelledby="controllerHeading">
+          <div class="panel-heading-row">
+            <h3 id="controllerHeading">Controller diagnostics</h3>
+            <button id="combatSuggest" type="button">Suggest Action</button>
+          </div>
+          <div id="combatSuggestion" class="suggestion-box">No suggestion requested.</div>
+          <pre id="combatControllerTechnical"></pre>
+        </section>
+
+        <section id="combatAIBridgePanel" class="combat-panel combat-live-panel" aria-labelledby="aiBridgeHeading">
+          <h3 id="aiBridgeHeading">Manual AI clipboard bridge</h3>
+          <p>This retained technical bridge is separate from automatic Local AI and API AI.</p>
+          <div class="button-row">
+            <button id="combatCopyAIFrame" type="button">Copy Decision Request</button>
+            <button id="combatCheckAIIntent" type="button">Check Decision</button>
+            <button id="combatExecuteAIIntent" class="primary-action" type="button" disabled>Execute Checked Decision</button>
+          </div>
+          <label for="combatAIFrame">Decision request</label>
+          <textarea id="combatAIFrame" rows="10" readonly></textarea>
+          <label for="combatAIIntent">Paste AI decision JSON</label>
+          <textarea id="combatAIIntent" rows="10" spellcheck="false" placeholder='{"schema":"TianxiaFactoryCombatAIIntent.v1","action_intent":{...},"rationale":"..."}'></textarea>
+          <pre id="combatAIResult">No AI bridge operation run.</pre>
+        </section>
+      </section>
+
+      <dialog id="combatIntentReviewDialog" class="combat-character-dialog combat-intent-review-dialog" aria-labelledby="combatIntentReviewTitle">
+        <div class="combat-character-dialog-header">
+          <div>
+            <p class="combat-brand">MANUAL ACTION REVIEW</p>
+            <h3 id="combatIntentReviewTitle">Review action</h3>
+          </div>
+          <button id="combatIntentReviewClose" type="button" aria-label="Cancel manual action">×</button>
+        </div>
+        <p id="combatIntentReviewSummary" class="honest-limit">Previewing the exact typed intent…</p>
+        <div id="combatIntentReviewBody" class="combat-intent-review-body"></div>
+        <div class="combat-intent-review-actions">
+          <button id="combatIntentCancel" type="button">Cancel</button>
+          <button id="combatIntentCommit" class="primary-action" type="button">Commit Action</button>
+        </div>
+      </dialog>
+
+      <dialog id="combatReactionDialog" class="combat-character-dialog combat-reaction-dialog" aria-labelledby="combatReactionDialogTitle">
+        <div class="combat-character-dialog-header">
+          <div>
+            <p class="combat-brand">REACTION WINDOW</p>
+            <h3 id="combatReactionDialogTitle">Reaction decision</h3>
+          </div>
+          <button id="combatReactionDialogClose" type="button" aria-label="Cancel pending manual action">×</button>
+        </div>
+        <div id="combatReactionPrompt" class="reaction-prompt" hidden>
+          <p id="combatReactionSummary"></p>
+          <label id="combatReactionSpendLabel" hidden>Spend
+            <select id="combatReactionSpend"></select>
+          </label>
+          <fieldset id="combatReactionOptions" class="combat-reaction-options" hidden><legend>Exact reaction options</legend></fieldset>
+          <div class="button-row">
+            <button id="combatReactionUse" class="primary-action" type="button">Use Reaction</button>
+            <button id="combatReactionDecline" type="button">Decline</button>
+          </div>
+          <details><summary>Local suggestion</summary><pre id="combatReactionSuggestion"></pre></details>
+        </div>
+      </dialog>
+
+      <dialog id="combatCharacterDialog" class="combat-character-dialog" aria-labelledby="combatCharacterDialogTitle">
+        <div class="combat-character-dialog-header">
+          <div>
+            <p class="combat-brand">CHARACTER AUTHORITY DETAILS</p>
+            <h3 id="combatCharacterDialogTitle">Character</h3>
+          </div>
+          <button id="combatCharacterDialogClose" type="button" aria-label="Close character authority details">×</button>
+        </div>
+        <p id="combatCharacterDialogNote" class="honest-limit"></p>
+        <div id="combatCharacterDialogBody"></div>
+      </dialog>
+    </section>
+  </section>
+
+  <section id="screen-quickbuild" class="screen quick-build-screen" aria-labelledby="quickBuildHeading">
+    <p class="eyebrow">Many characters at once</p>
+    <h2 id="quickBuildHeading">Quick Build</h2>
+    <p>Each row is one character. A <strong>seed</strong> makes every choice itself, with no AI, and is fast; the same seed always rebuilds the same character. <strong>Local AI</strong> rows let the local model choose instead. Finished characters appear in Character Sheets and in Combat's test fights.</p>
+    <form id="quickBuildForm" class="friendly-form">
+      <div class="friendly-grid">
+        <label>How many <input id="quickBuildCount" type="number" min="1" max="12" value="6" required></label>
+        <label>Level <input id="quickBuildLevel" type="number" min="1" max="20" value="5" required></label>
+        <label>Power style
+          <select id="quickBuildPower">
+            <option value="heroic">Heroic player character</option>
+            <option value="rival/boss" selected>Powerful rival or boss</option>
+            <option value="supporting">Supporting character</option>
+          </select>
+        </label>
+      </div>
+      <label class="quick-build-finalize"><input id="quickBuildFinalize" type="checkbox" checked> Finalize and install each character (about 10 minutes each, one at a time)</label>
+      <table class="quick-build-rows">
+        <thead><tr><th>#</th><th>Seed</th><th>Built by</th></tr></thead>
+        <tbody id="quickBuildRows"></tbody>
+      </table>
+      <div class="quick-build-actions">
+        <button id="quickBuildRollAll" type="button">🎲 Roll all seeds</button>
+        <button id="quickBuildSubmit" class="primary-action" type="submit">Build all</button>
+      </div>
+      <p id="quickBuildStatus" class="screen-state" role="status" aria-live="polite"></p>
+    </form>
+    <h3>Recent quick builds</h3>
+    <div id="quickBuildBatches" class="quick-build-batches" aria-live="polite"></div>
+  </section>
+
+  <section id="screen-items" class="screen items-screen" aria-labelledby="itemsHeading">
+    <p class="eyebrow">Treasures and gear</p>
+    <h2 id="itemsHeading">Items</h2>
+    <p>Make a weapon, armour or other treasure and give it to a character, finished or still being built. Given items show on the character sheet and in combat, and you can remove them at any time. The grade sets the +N and how many enchantments fit; only enchantments that suit the item are offered.</p>
+    <div class="items-layout">
+      <section class="items-make" aria-labelledby="itemsMakeHeading">
+        <h3 id="itemsMakeHeading">Make an item</h3>
+        <div id="itemsKind" class="items-kind" role="radiogroup" aria-label="Item kind">
+          <label><input type="radio" name="itemsKind" value="weapon" checked> Weapon</label>
+          <label><input type="radio" name="itemsKind" value="armour"> Armour</label>
+          <label><input type="radio" name="itemsKind" value="wondrous"> Wondrous item</label>
+          <label><input type="radio" name="itemsKind" value="consumable"> Consumable</label>
+        </div>
+        <div id="itemsForm" class="items-form"></div>
+        <div id="itemsPreview" class="items-preview" aria-live="polite"></div>
+        <label class="items-target">Give to <select id="itemsCharacter" aria-label="Character"></select></label>
+        <div class="items-actions"><button id="itemsGive" class="primary-action" type="button">Give item</button></div>
+        <p id="itemsStatus" class="screen-state" role="status" aria-live="polite"></p>
+      </section>
+      <section class="items-owned" aria-labelledby="itemsOwnedHeading">
+        <h3 id="itemsOwnedHeading">Given items</h3>
+        <div id="itemsOwnedList" class="items-owned-list"></div>
+      </section>
+    </div>
+    <details class="items-import">
+      <summary>Import items (from an AI GM or a file)</summary>
+      <p>Paste JSON for new wondrous items or consumables. They join <strong>Your items</strong> and can then be given to any character. "Copy AI instructions" copies a short prompt with the exact format for whatever AI is GMing.</p>
+      <textarea id="itemsImportText" rows="8" spellcheck="false" placeholder='{"schema": "TianxiaFoundry.CustomItem.v1", "items": [ ... ]}'></textarea>
+      <div class="items-actions">
+        <button id="itemsImport" class="primary-action" type="button">Import</button>
+        <button id="itemsCopyInstructions" type="button">Copy AI instructions</button>
+      </div>
+      <p id="itemsImportStatus" class="screen-state" role="status" aria-live="polite"></p>
+    </details>
+    <details class="items-browse">
+      <summary>Browse all treasures</summary>
+      <input id="itemsBrowseSearch" type="search" placeholder="Search weapons, armour, enchantments, materials, wondrous items, consumables" aria-label="Search treasures">
+      <div id="itemsBrowseList" class="items-browse-list"></div>
+    </details>
+  </section>
+
+  <section id="screen-status" class="screen">
+    <h2>Advanced Status</h2>
+    <div id="statusScreenState" class="screen-state" role="status">Loading application status…</div>
+    <div id="statusCards" class="grid"></div>
+    <h3>Recent errors</h3>
+    <pre id="recentErrors">None</pre>
+  </section>
+
+  <section id="screen-catalog" class="screen catalog-owner-screen" aria-labelledby="catalogHeading">
+    <div class="catalog-owner-header">
+      <p class="eyebrow">Rules library</p>
+      <h2 id="catalogHeading">Browse Rules</h2>
+      <p>Search by name or description, then choose a rule to read it.</p>
+    </div>
+    <div id="catalogScreenState" class="screen-state" role="status">Loading rules…</div>
+    <form id="catalogSearch" class="catalog-owner-search">
+      <label class="catalog-primary-field"><span>Search rules</span><input id="catalogQuery" placeholder="Name, theme, or rules text"></label>
+      <label><span>Rule type</span><input id="catalogType" placeholder="All types"></label>
+      <button class="primary-action" type="submit">Search</button>
+      <details class="catalog-advanced-filters owner-advanced-disclosure">
+        <summary>Advanced filters</summary>
+        <div class="catalog-advanced-filter-fields">
+          <label><span>Content authority</span><select id="catalogAuthority">
+            <option value="">Any authority</option>
+            <option>canonical</option><option>published-extension</option><option>reference-only</option>
+            <option>unresolved</option><option>test-only</option><option>deprecated</option>
+          </select></label>
+          <label class="catalog-check-field"><input type="checkbox" id="includeTest"> Include test content</label>
+        </div>
+      </details>
+    </form>
+    <div class="catalog-owner-layout">
+      <section class="catalog-results-panel" aria-labelledby="catalogResultsHeading">
+        <div class="catalog-results-heading"><h3 id="catalogResultsHeading">Rules</h3><span id="catalogResultSummary">Loading…</span></div>
+        <div id="catalogRows" class="catalog-result-list" role="list"></div>
+      </section>
+      <aside class="catalog-detail-panel" aria-labelledby="catalogDetailHeading">
+        <p class="eyebrow">Rule details</p>
+        <div id="catalogDetail"><h3 id="catalogDetailHeading">Choose a rule</h3><p>Select a rule from the list to read it here.</p></div>
+        <details id="catalogDeveloperDetail" class="catalog-developer-detail owner-advanced-disclosure">
+          <summary>Developer details</summary>
+          <pre id="catalogRawDetail">No rule selected.</pre>
+        </details>
+      </aside>
+    </div>
+  </section>
+
+  <section id="screen-packs" class="screen">
+    <h2>Manage Content</h2>
+    <div id="packsScreenState" class="screen-state" role="status">Loading installed content…</div>
+    <p>Optional content packs can be validated and installed from the application data directory's <code>inbox</code> folder. Validation never installs it. Unsigned local packs require an explicit exact-archive trust decision before they can be selected by a new project.</p>
+    <form id="packAction" class="toolbar">
+      <input id="packFilename" placeholder="pack.zip">
+      <button type="button" id="validatePack">Validate</button>
+      <button type="button" id="installPack" disabled>Install Validated Signed Pack</button>
+      <input id="packApprover" value="local-user" aria-label="Local trust approver">
+      <button type="button" id="installTrustedPack" disabled>Trust Exact Validated ZIP &amp; Install</button>
+    </form>
+    <section class="stage-panel">
+      <h3>Foundation 46 handoff converter</h3>
+      <p>This converts the pinned Foundation Factory-App handoff into a deterministic native Content Pack. It preserves the raw authority files and requires the pinned core catalog so all 30 legacy Foundations can be replaced only for projects that lock the new pack.</p>
+      <form id="foundationHandoffAction" class="stack">
+        <input id="foundationHandoffFilename" value="Tianxia_Foundation_FactoryApp_Handoff_v1_0.zip" aria-label="Bundled Foundation handoff filename">
+        <input id="foundationPackOutput" value="Tianxia_Foundation46_RC2_ContentPack_v1_0_0.zip" aria-label="Output Content Pack filename">
+        <label><input type="checkbox" id="authorizeFoundationRepairs"> Authorize the audited nine cumulative stage-snapshot repairs derived from each mechanic's <code>available_at</code> field</label>
+        <button type="submit">Prepare Deterministic Foundation Content Pack</button>
+      </form>
+    </section>
+    <pre id="packResult">No operation run.</pre>
+    <div class="toolbar">
+      <button type="button" id="useSelectedPacks">Use selected packs for a new project</button>
+      <span>Existing projects keep their immutable exact locks. A replacement pack affects only a new project that explicitly selects it with its required core dependency.</span>
+    </div>
+    <table><thead><tr><th>Use</th><th>Pack</th><th>Version</th><th>State</th><th>Authority</th><th>Trust</th><th>Selectable</th><th>Records</th><th>Dependent projects</th></tr></thead><tbody id="packRows"></tbody></table>
+  </section>
+
+  <section id="screen-projects" class="screen" aria-labelledby="charactersHeading">
+    <div class="characters-header"><div><p class="eyebrow">Your characters</p><h2 id="charactersHeading">Character Sheets</h2><p>Open a saved character or continue one that is still in progress.</p></div><button id="refreshCharacters" type="button">Refresh</button></div>
+    <section id="activeBuildRecovery" class="active-build-recovery" hidden aria-live="polite"></section>
+    <details class="character-import-disclosure owner-advanced-disclosure">
+      <summary><span>Import a character</span><small>From a saved Character ZIP</small></summary>
+    <section id="characterZipImportPanel" class="character-import-panel" aria-labelledby="characterZipImportHeading">
+      <div class="character-import-heading"><div><p class="sheet-kicker">Portable completed character</p><h3 id="characterZipImportHeading">Import Character ZIP</h3><p>Choose or drop a Tianxia portable Character ZIP from anywhere on this computer. Preview validates the package without changing your characters.</p></div></div>
+      <div id="characterZipDropZone" class="character-zip-drop-zone" role="button" tabindex="0" aria-describedby="characterZipAccepted">
+        <strong>Drop Character ZIP here</strong><span>or use Choose ZIP</span>
+        <input id="characterZipFile" type="file" accept=".zip,application/zip" hidden>
+        <button id="chooseCharacterZip" type="button">Choose ZIP</button>
+      </div>
+      <p id="characterZipAccepted" class="field-help">Choose one Character ZIP, up to 128 MB. You can preview it before importing.</p>
+      <p id="characterZipSelection" class="character-import-selection">No ZIP selected.</p>
+      <div class="button-row"><button id="previewCharacterZip" type="button" disabled>Preview</button><button id="importCharacterZip" class="primary-action" type="button" disabled>Import Character</button><button id="replaceCharacterZip" type="button">Replace ZIP</button><button id="removeCharacterZip" type="button">Remove ZIP</button></div>
+      <div id="characterZipProgress" class="character-import-progress" role="status" aria-live="polite">Select a package to begin.</div>
+      <div id="characterZipPreview" class="character-import-preview" hidden></div>
+      <details id="characterZipDetails" hidden><summary>Advanced details</summary><pre id="characterZipTechnical"></pre></details>
+    </section>
+    </details>
+    <div class="character-search" role="search"><label for="characterSearchInput">Search characters</label><div class="character-search-controls"><input id="characterSearchInput" type="search" autocomplete="off" aria-describedby="characterSearchCount"><button id="clearCharacterSearch" type="button" aria-label="Clear character search" hidden>×</button></div><p id="characterSearchCount" class="field-help" role="status" aria-live="polite">0 of 0 characters</p></div>
+    <button id="showArchivedCharacters" type="button" aria-pressed="false">Show archived and hidden characters</button>
+    <div class="character-library-layout"><aside><div id="characterCardList" class="character-card-list" aria-live="polite"></div></aside><section id="ownerCharacterSheet" class="owner-character-sheet" aria-live="polite"><div class="empty-sheet gm-empty-state"><h3>Select a character</h3><p>Your saved characters appear here as readable, GM-style sheets: identity, at-a-glance stats, combat, cultivation, and abilities.</p><p class="gm-muted">Pick a character card to open its sheet. Technical IDs and raw records stay tucked under Advanced / Developer.</p></div></section></div>
+    <section id="nonSphereAuthorityPanel" class="non-sphere-authority-panel" aria-labelledby="nonSphereHeading" hidden>
+      <div class="non-sphere-heading"><div><p class="sheet-kicker">Cultivation progress</p><h3 id="nonSphereHeading">Paths, Method, Foundation, and Resources</h3><p>Manage this character's cultivation choices and progression.</p></div><button id="refreshNonSphereAuthority" type="button">Refresh</button></div>
+      <p class="field-help">Each character keeps three Path tracks. The Primary Method guides future advancement.</p>
+      <div class="non-sphere-controls">
+        <label>Primary Method<select id="nonSpherePrimaryMethod"><option value="">Select a character first</option></select></label>
+        <button id="setNonSpherePrimaryMethod" type="button" disabled>Set Primary Method</button>
+        <label>Orthodox Foundation<select id="nonSphereFoundation"><option value="">None selected</option></select></label>
+        <button id="setNonSphereFoundation" type="button" disabled>Set Foundation</button>
+      </div>
+      <section id="nonSphereAdvancement" class="non-sphere-advancement" aria-labelledby="nonSphereAdvancementHeading">
+        <h4 id="nonSphereAdvancementHeading">Advancement</h4>
+        <p>Advance through the current Primary Method. The correct cost is applied automatically.</p>
+        <div id="nonSphereAdvancementControls"></div>
+      </section>
+      <div id="nonSpherePathTracks" class="non-sphere-path-tracks"><p>Select a character to inspect its persistent Path tracks.</p></div>
+      <div id="nonSphereReadiness" class="non-sphere-readiness" aria-live="polite"></div>
+      <details id="nonSphereAuthorityAdvanced" class="owner-advanced-disclosure non-sphere-authority-advanced">
+        <summary><span>Advanced rules and evidence</span><small>Access sources, migrations, and diagnostics</small></summary>
+        <p id="nonSphereAuthorityStatus" class="technical-authority-status">Authority status is loading.</p>
+        <div class="non-sphere-evidence-controls">
+          <label>Committed access/completion evidence<select id="nonSphereAccessSources" multiple size="5"><option value="">No committed evidence available</option></select></label>
+          <button id="setNonSphereAccessSources" type="button">Save Selected Evidence</button>
+        </div>
+        <details class="developer-diagnostics"><summary>Developer / Diagnostics: authority and migration details</summary><pre id="nonSphereTechnical">No character selected.</pre></details>
+      </details>
+    </section>
+    <section id="ownerWorkflowPanel" class="owner-workflow-panel" aria-labelledby="ownerWorkflowHeading" hidden>
+      <div class="owner-workflow-heading"><div><p class="eyebrow">Files and exports</p><h3 id="ownerWorkflowHeading">Save or export this character</h3><p>Create backups or specialist packages when you need them.</p></div></div>
+      <section id="finalCharacterReviewPanel" class="final-character-review-panel" aria-labelledby="finalCharacterReviewHeading" hidden>
+        <div class="final-character-review-heading">
+          <div>
+            <p class="eyebrow">Factory + GM readiness</p>
+            <h3 id="finalCharacterReviewHeading">Final Character review</h3>
+            <p>Review the exact current Factory inputs before the separate approval and materialization steps. This preview never calls a provider or changes the character.</p>
+          </div>
+          <span id="finalCharacterReviewStatus" class="final-character-review-status" role="status" aria-live="polite">Checking exact readiness…</span>
+        </div>
+        <div id="finalCharacterReviewPreview" class="final-character-review-preview" aria-live="polite"></div>
+        <div class="final-character-review-stages" aria-label="Final Character review stages">
+          <section class="final-character-review-stage" data-final-review-stage="challenge" aria-labelledby="finalCharacterReviewChallengeHeading">
+            <div class="final-character-review-stage-number" aria-hidden="true">1</div>
+            <div>
+              <h4 id="finalCharacterReviewChallengeHeading">Issue a short-lived review challenge</h4>
+              <p>When the preview is ready, issue a server-bound challenge valid for five minutes. This does not approve or materialize anything.</p>
+              <button id="finalCharacterReviewIssueChallenge" class="secondary-action" type="button" disabled>Issue 5-minute review challenge</button>
+              <p id="finalCharacterReviewChallengeStatus" class="friendly-status" role="status" aria-live="polite"></p>
+            </div>
+          </section>
+          <section id="finalCharacterReviewApprovalStage" class="final-character-review-stage" data-final-review-stage="approve" aria-labelledby="finalCharacterReviewApprovalHeading" hidden>
+            <div class="final-character-review-stage-number" aria-hidden="true">2</div>
+            <div>
+              <h4 id="finalCharacterReviewApprovalHeading">Approve the exact reviewed binding</h4>
+              <p>Check the exact-review confirmation, then click Approve separately. The one-time challenge stays in memory and is never editable.</p>
+              <label class="final-character-review-checkbox" for="finalCharacterReviewApprovalConfirm"><input id="finalCharacterReviewApprovalConfirm" type="checkbox" disabled> I reviewed the exact binding and all three component receipts.</label>
+              <button id="finalCharacterReviewApprove" class="primary-action" type="button" disabled>Approve reviewed Final Character</button>
+              <p id="finalCharacterReviewApprovalStatus" class="friendly-status" role="status" aria-live="polite"></p>
+            </div>
+          </section>
+          <section id="finalCharacterReviewMaterializeStage" class="final-character-review-stage" data-final-review-stage="materialize" aria-labelledby="finalCharacterReviewMaterializeHeading" hidden>
+            <div class="final-character-review-stage-number" aria-hidden="true">3</div>
+            <div>
+              <h4 id="finalCharacterReviewMaterializeHeading">Materialize the approved result</h4>
+              <p>After approval, check the materialization confirmation and click Materialize separately. Only the approved review record is submitted.</p>
+              <label class="final-character-review-checkbox" for="finalCharacterReviewMaterializeConfirm"><input id="finalCharacterReviewMaterializeConfirm" type="checkbox" disabled> I understand this writes the approved Final Character result.</label>
+              <button id="finalCharacterReviewMaterialize" class="primary-action" type="button" disabled>Materialize approved Final Character</button>
+              <p id="finalCharacterReviewMaterializeStatus" class="friendly-status" role="status" aria-live="polite"></p>
+            </div>
+          </section>
+        </div>
+        <details id="finalCharacterReviewAdvanced" class="owner-advanced-disclosure final-character-review-advanced" hidden>
+          <summary><span>Advanced / technical review details</span><small>Read-only IDs, hashes, and receipt evidence</small></summary>
+          <pre id="finalCharacterReviewTechnical"></pre>
+        </details>
+      </section>
+      <details id="advancedExports" class="advanced-exports">
+        <summary>Advanced exports</summary>
+        <p>Create the correct artifact with the existing Factory services, then save it to a native path. This does not depend on browser downloads.</p>
+        <div class="advanced-exports-toolbar"><button id="ownerDeveloperMode" type="button" aria-pressed="false">Developer / Diagnostics mode: Off</button></div>
+        <div class="artifact-grid">
+          <button type="button" data-artifact-kind="chat_request">Stage Chat Request ZIP</button>
+          <button type="button" data-artifact-kind="project_backup">Stage Factory Project Backup</button>
+          <button type="button" data-artifact-kind="completed_character">Stage Completed Character ZIP</button>
+          <button type="button" data-artifact-kind="gm_character">Stage GM-Compatible Character ZIP</button>
+          <button type="button" data-artifact-kind="combat_package">Stage Legal Combat Package</button>
+        </div>
+        <div class="save-as-row"><label>Native Save As path<input id="ownerSaveAsPath" placeholder="Documents/Character.zip"></label><button id="ownerSaveAs" type="button" disabled>Save As</button></div>
+        <pre id="ownerArtifactResult" class="compact-technical">No artifact staged.</pre>
+        <section id="xiangContinuation" class="continuation-panel">
+          <h4 id="stage1ContinuationHeading">Selected character — Stage 1 status</h4>
+          <p id="stage1ContinuationSummary"><strong>Select a character.</strong> The Factory will resolve that exact project and revision before preparing, reusing, or continuing a Stage 1 request.</p>
+          <ol><li>Prepare advancement request</li><li>Manual Chat or configured API</li><li>Import and validate response</li><li>Owner approval</li><li>Compile advancement</li><li>Build Character Sheet</li><li>Prepare GM model</li><li>Export Completed Character ZIP</li></ol>
+          <button id="xiangPrepareAdvancement" type="button">Prepare Advancement Request</button>
+          <p id="xiangContinuationStatus" class="friendly-status">Select a character project to continue.</p>
+        </section>
+        <section id="gmExportPanel" class="gm-export-panel" hidden><h3>Factory and GM readiness</h3><p id="factoryWorkspaceExplanation"></p><div class="button-row"><button id="prepareFactoryWorkspace" class="secondary-action" type="button">Prepare Command 1–4 Workspace</button><button id="authorGmTactical" class="secondary-action" type="button">Author GM guidance with Local AI</button><button id="issueGmRatificationChallenge" class="secondary-action" type="button">Prepare owner ratification</button><button id="ratifyGmAuthoring" class="secondary-action" type="button" disabled>Ratify current GM guidance</button></div><pre id="factoryWorkspaceResult" class="compact-technical">GM tactical authoring has not been prepared.</pre><h4>GM Screen export</h4><p id="gmExportExplanation"></p><div class="button-row"><button id="gmExportCharacter" class="primary-action" type="button">Export Character ZIP for GM Screen</button><a id="gmExportDownload" class="button-link" hidden>Download Exported ZIP</a></div><pre id="gmExportResult" class="compact-technical">No GM Screen export run.</pre></section>
+      </details>
+    </section>
+    <details class="advanced-project-tools developer-only" hidden><summary>Advanced project tools</summary><p>Technical controls for troubleshooting and advanced Factory work. Most owners do not need these.</p>
+    <form id="createProject" class="toolbar">
+      <input id="projectName" placeholder="Working name" required>
+      <input id="projectLocks" placeholder="pack_id@version, pack_id@version" required>
+      <button type="submit">Create project</button>
+    </form>
+    <div class="split">
+      <div><table><thead><tr><th>Name</th><th>Revision</th><th>Status</th></tr></thead><tbody id="projectRows"></tbody></table></div>
+      <div>
+        <pre id="projectDetail">Select a project.</pre>
+        <h3>Append test/draft event</h3>
+        <form id="draftEvent" class="stack">
+          <input id="eventRecordId" placeholder="Stable rule ID">
+          <input id="eventChannel" placeholder="Acquisition channel">
+          <input id="eventCL" type="number" min="0" placeholder="Effective CL">
+          <button type="submit">Append, validate, approve, and commit</button>
+        </form>
+        <div class="toolbar">
+          <button id="replayProject" type="button">Replay</button>
+          <button id="buildProjection" type="button">Build deterministic projection</button>
+          <button id="projectionStatus" type="button">Projection status</button>
+          <button id="exportProject" type="button">Export</button>
+        </div>
+        <div id="projectionDownloads" class="toolbar"></div>
+        <pre id="projectActionResult">No project operation run.</pre>
+
+
+        <section class="stage-panel legacy-retired" id="characterCreationModesPanel" hidden aria-hidden="true">
+          <h3>Build Character</h3>
+          <p>Choose how the same validated character plan is transported. All modes use one shared validation, preview, quality gate, and final commit pipeline.</p>
+          <label>Execution mode
+            <select id="characterCreationMode">
+              <option value="MANUAL_CHAT">Manual Chat — no API key required</option>
+              <option value="STANDARD_API">Standard API — build a complete preview, then I approve</option>
+              <option value="AUTO_FINALIZE_WHEN_CLEAN">Auto-Finalize When Clean — finalize only when every gate is clean</option>
+            </select>
+          </label>
+          <div class="toolbar">
+            <button id="cgBuild" type="button">Build Character</button>
+            <button id="cgFinalize" type="button" disabled>Finalize Character</button>
+            <button id="cgRevise" type="button" disabled>Revise Plan</button>
+            <button id="cgCancel" type="button" disabled>Cancel</button>
+            <button id="cgDownloadRequest" type="button" disabled>Save Complete Request ZIP</button>
+            <button id="cgDownloadCorrection" type="button" hidden disabled>Download AI Correction Packet</button>
+            <button id="cgAutoOptIn" type="button" disabled>Explicitly Enable Auto-Finalize</button>
+          </div>
+          <label id="cgManualLabel">Manual Chat response JSON
+            <textarea id="cgManualResponse" rows="8" spellcheck="false" placeholder="Paste the structured response returned by ChatGPT"></textarea>
+          </label>
+          <label>Revision notes <input id="cgRevisionNotes" maxlength="4000" placeholder="Explain what should change"></label>
+          <p id="cgProgress" class="friendly-status">Select a project, then build a character.</p>
+          <pre id="cgCandidateSummary">No compiled candidate yet.</pre>
+          <details><summary>Advanced Details / Diagnostics</summary><pre id="cgResult">No character build run.</pre></details>
+        </section>
+
+        <section class="stage-panel" id="stage1Panel">
+          <h3>Stage 1 — Blueprint Intent Clipboard Bridge</h3>
+          <p class="honest-limit"><strong>Blueprint-only / advanced.</strong> This legacy Stage 1 tool records planning intent only and cannot produce or finalize a complete character.</p>
+          <p id="stage1ProjectRevision">Select a project.</p>
+          <label>Immutable user locks (JSON array; append-only before prompt generation)</label>
+          <textarea id="stage1Locks" rows="6" spellcheck="false">[
+  {"field":"concept","value":""},
+  {"field":"source_reference","value":""},
+  {"field":"target_cl","value":13},
+  {"field":"power_band","value":"rival/boss"}
+]</textarea>
+          <div class="toolbar">
+            <button id="saveStage1Locks" type="button">Append User Locks</button>
+            <button id="generateStage1Prompt" type="button">Generate Deterministic Prompt</button>
+            <button id="copyStage1Prompt" type="button">Copy Prompt</button>
+          </div>
+          <label>Prompt preview and manual-copy fallback</label>
+          <textarea id="stage1Prompt" rows="12" readonly spellcheck="false"></textarea>
+          <section class="provider-panel" aria-labelledby="deepSeekHeading">
+            <h4 id="deepSeekHeading">Optional DeepSeek Stage 1 transport</h4>
+            <p><strong>Off by default.</strong> Enabling this sends the exact prompt above to DeepSeek and may incur charges on your DeepSeek account. The key is protected with Windows DPAPI and is never placed in the project, database, prompt, logs, or export. The returned JSON still has no mechanical authority and still requires the same local validation and named human approval.</p>
+            <div class="provider-grid">
+              <label><input type="checkbox" id="aiProviderEnabled"> Enable optional provider</label>
+              <label>Model <input id="aiProviderModel" value="deepseek-v4-flash" autocomplete="off"></label>
+              <label>Thinking
+                <select id="aiProviderThinking"><option value="disabled">Disabled (lower cost)</option><option value="enabled">Enabled</option></select>
+              </label>
+              <label>Maximum output tokens <input id="aiProviderMaxTokens" type="number" min="512" max="32768" value="16384"></label>
+              <label>Timeout seconds <input id="aiProviderTimeout" type="number" min="10" max="300" value="120"></label>
+              <label>Named acknowledgement <input id="aiProviderActor" value="local-user" maxlength="200"></label>
+            </div>
+            <label><input type="checkbox" id="aiProviderAcknowledged"> I understand that the exact Stage 1 prompt will leave this computer and be processed by DeepSeek.</label>
+            <div class="toolbar">
+              <button id="saveAIProviderConfig" type="button">Save Provider Settings</button>
+              <input id="aiProviderKey" type="password" placeholder="DeepSeek API key" autocomplete="new-password" aria-label="DeepSeek API key">
+              <button id="saveAIProviderKey" type="button">Protect &amp; Save Key</button>
+              <button id="deleteAIProviderKey" type="button">Remove Saved Key</button>
+              <button id="runAIProvider" type="button" disabled>Send This Prompt Once</button>
+            </div>
+            <pre id="aiProviderStatus">Provider status not loaded.</pre>
+          </section>
+          <label>Paste AI response JSON</label>
+          <textarea id="stage1Response" rows="14" spellcheck="false"></textarea>
+          <div class="toolbar">
+            <button id="validateStage1Response" type="button">Validate Response</button>
+            <input id="stage1Approver" value="local-user" aria-label="Approval actor">
+            <button id="approveCommitStage1" type="button" disabled>Approve Blueprint Intent</button>
+          </div>
+          <h4>Diagnostics, evidence, decision diff, and non-mechanical intent projection</h4>
+          <pre id="stage1Result">No Stage 1 operation run.</pre>
+          <div id="stage1ProjectionDownloads" class="toolbar"></div>
+        </section>
+
+        <section class="stage-panel" id="stage2Panel">
+          <h3>Stage 2 — Rules-Causal Advancement Ledger / advanced</h3>
+          <p><strong>Deterministic core only.</strong> This panel accepts Stage2AdvancementProposal.v2 JSON. It does not call an AI provider and cannot author formulas, statistics, rules, or results. Every mechanical choice must resolve to a published ID in the project's immutable content lock; the application computes training, PB, HP, resources, capacity, and cumulative state.</p>
+          <label>Target CL <input id="stage2TargetCL" type="number" min="1" max="20" value="1"></label>
+          <label>Typed event choices JSON array</label>
+          <textarea id="stage2Choices" rows="18" spellcheck="false">[
+  {
+    "kind": "starting_state",
+    "effective_cl": 0,
+    "record_id": "",
+    "acquisition_channel": "starting-state",
+    "parameters": {"ability_scores":{"STR":10,"DEX":10,"CON":10,"INT":10,"WIS":10,"CHA":10}}
+  }
+]</textarea>
+          <div class="toolbar">
+            <button id="createStage2Proposal" type="button">Create Proposal</button>
+            <button id="validateStage2Proposal" type="button" disabled>Validate</button>
+            <input id="stage2Approver" value="local-user" aria-label="Stage 2 approval actor">
+            <button id="approveStage2Proposal" type="button" disabled>Approve</button>
+            <button id="commitStage2Proposal" type="button" disabled>Atomic Commit</button>
+            <button id="rebuildStage2Ledger" type="button">Rebuild Ledger</button>
+            <button id="refreshStage2Status" type="button">Status</button>
+          </div>
+          <pre id="stage2Result">No Stage 2 operation run.</pre>
+          <div id="stage2Downloads" class="toolbar"></div>
+        </section>
+      </div>
+    </div>
+    </details>
+  </section>
+
+  <section id="screen-settings" class="screen settings-screen" aria-labelledby="settingsHeading">
+    <div class="settings-layout">
+      <nav class="settings-nav" aria-label="Settings sections">
+        <a href="#appearanceSettings" class="active" aria-current="page">Appearance</a>
+      </nav>
+
+      <div id="appearanceSettings" class="settings-main">
+        <div class="settings-heading">
+          <h2 id="settingsHeading">Appearance</h2>
+          <p>Pick a style, then fine-tune any colour. Changes show at once; <strong>Save appearance</strong> keeps them on this device (this browser only).</p>
+        </div>
+
+        <section class="settings-group" aria-labelledby="appearanceStyleLabel">
+          <h3 id="appearanceStyleLabel" class="settings-label">Style</h3>
+          <div class="style-card-grid" role="radiogroup" aria-labelledby="appearanceStyleLabel">
+            <button type="button" class="style-card" role="radio" aria-checked="false" data-style="lacquer">
+              <span class="style-card-swatch" data-theme-preview="lacquer" aria-hidden="true"><i class="dot-accent"></i><i class="dot-text"></i></span>
+              <b class="style-card-name" data-theme-preview="lacquer">Night Lacquer</b>
+              <span class="style-card-note">Black lacquer and vermilion</span>
+            </button>
+            <button type="button" class="style-card" role="radio" aria-checked="false" data-style="celestial">
+              <span class="style-card-swatch" data-theme-preview="celestial" aria-hidden="true"><i class="dot-accent"></i><i class="dot-text"></i></span>
+              <b class="style-card-name" data-theme-preview="celestial">Celestial Court</b>
+              <span class="style-card-note">Midnight and gold</span>
+            </button>
+            <button type="button" class="style-card" role="radio" aria-checked="false" data-style="ember">
+              <span class="style-card-swatch" data-theme-preview="ember" aria-hidden="true"><i class="dot-accent"></i><i class="dot-text"></i></span>
+              <b class="style-card-name" data-theme-preview="ember">Ember Forge</b>
+              <span class="style-card-note">Charred and orange</span>
+            </button>
+            <button type="button" class="style-card" role="radio" aria-checked="false" data-style="classic">
+              <span class="style-card-swatch" data-theme-preview="classic" aria-hidden="true"><i class="dot-accent"></i><i class="dot-text"></i></span>
+              <b class="style-card-name" data-theme-preview="classic">Classic light</b>
+              <span class="style-card-note">The earlier cream and jade look</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="settings-group" aria-labelledby="appearanceColoursLabel">
+          <div class="settings-label-row">
+            <h3 id="appearanceColoursLabel" class="settings-label">Custom colours</h3>
+            <button id="appearanceResetColours" type="button" class="text-action">Reset to style</button>
+          </div>
+          <div class="colour-field-grid">
+            <label class="colour-field"><input type="color" data-colour="accent"><span><b>Accent</b><small>Main buttons and selections</small></span></label>
+            <label class="colour-field"><input type="color" data-colour="bg"><span><b>Background</b><small>Behind everything</small></span></label>
+            <label class="colour-field"><input type="color" data-colour="panel"><span><b>Panels</b><small>Cards, bars and menus</small></span></label>
+            <label class="colour-field"><input type="color" data-colour="text"><span><b>Text</b><small>Main reading colour</small></span></label>
+            <label class="colour-field"><input type="color" data-colour="debuff"><span><b>Debuffs</b><small>Harmful conditions, such as Poisoned</small></span></label>
+            <label class="colour-field"><input type="color" data-colour="buff"><span><b>Buffs</b><small>Helpful effects, such as Blessed</small></span></label>
+          </div>
+        </section>
+
+        <section class="settings-group settings-options" aria-label="Fonts, size and motion">
+          <label class="settings-select">Heading font
+            <select id="appearanceHeadingFont">
+              <option value="">The style's own</option>
+              <option value="cinzel">Cinzel (carved capitals)</option>
+              <option value="cormorant">Cormorant (elegant serif)</option>
+              <option value="marcellus">Marcellus (crafted serif)</option>
+            </select>
+          </label>
+          <label class="settings-select">Text size
+            <select id="appearanceTextSize">
+              <option value="normal">Normal</option>
+              <option value="large">Large</option>
+              <option value="xlarge">Extra large</option>
+            </select>
+          </label>
+          <label class="settings-check"><input id="appearanceReduceMotion" type="checkbox"><span>Reduce motion <small>Turns off animations and sliding effects. On automatically if your system asks for it.</small></span></label>
+        </section>
+      </div>
+
+      <aside class="settings-preview" aria-labelledby="appearancePreviewLabel">
+        <h3 id="appearancePreviewLabel" class="settings-label">Live preview</h3>
+        <div class="preview-card" aria-hidden="true">
+          <b class="preview-name">Tabik Damu</b>
+          <span class="preview-sub">Level 10 · Shadow monk</span>
+          <div class="preview-pills"><span class="preview-pill is-debuff">Poisoned</span><span class="preview-pill is-buff">Blessed</span></div>
+          <span class="preview-button is-primary">Continue</span>
+          <span class="preview-button">Back</span>
+          <span class="preview-link">A link to the rules</span>
+        </div>
+        <div id="appearanceContrast" class="contrast-report" role="status" aria-live="polite"></div>
+        <p class="settings-note">Settings are saved on this device. Colour choices that make text hard to read show a warning above.</p>
+        <p id="appearanceSaveState" class="settings-save-state" role="status" aria-live="polite"></p>
+        <div class="settings-actions">
+          <button id="appearanceSave" type="button" class="primary-action">Save appearance</button>
+          <button id="appearanceUndo" type="button" class="secondary-action">Undo changes</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+<aside id="diagnosticsDrawer" class="diagnostics-drawer" aria-hidden="true" aria-label="Developer and diagnostics panel" role="dialog" aria-modal="true" tabindex="-1">
+  <div class="drawer-head"><div><p class="eyebrow">Developer / Diagnostics</p><h2>Authority details</h2></div><button id="closeDiagnostics" class="icon-button" type="button" aria-label="Close diagnostics">×</button></div>
+  <p class="drawer-intro">Technical bindings, raw codes, source commitments, and lifecycle receipts stay here. Owner cards use the confirmed server projection.</p>
+  <div id="ownerDiagnosticsSummary" class="diagnostic-stack"><div><span>Current state</span><code id="diagnosticsLifecycleState">No active character run.</code></div><div><span>Method authority</span><code>Compatibility is returned by the Factory validator; the browser does not infer it.</code></div><div><span>Catalog authority</span><code id="diagnosticsCatalogState">Loading authenticated catalog state…</code></div><div><span>Technical details</span><code id="diagnosticsTechnicalState">Open Advanced Details on an existing product screen for raw receipts.</code></div></div>
+</aside>
+<div id="drawerScrim" class="drawer-scrim" hidden></div>
+<script src="/static/sphere_talent_logic.js?v=w5-p1r-primary-character-creation"></script>
+<link rel="stylesheet" href="/static/tabletop/hovercard.css?v=sol192">
+<script type="module">
+  import {bindTipTargets, createHoverCard} from "/static/tabletop/hovercard.js?v=tipdelay-1";
+  import {renderTipCard} from "/static/tabletop/rules.js?v=sol192";
+  window.TianxiaRenderTipCard = renderTipCard;
+  bindTipTargets(createHoverCard(), document, {selector: ".owner-rail-stats [data-tip]"});
+</script>
+<script src="/static/sheet_view_model.js?v=sol192"></script>
+<script src="/static/complete_request_save.js?v=rec1-p1cr5-browser-download-4"></script>
+<script src="/static/character_search.js?v=r24"></script>
+<script src="/static/app.js?v=p20261010-06"></script>
+<script src="/static/appearance-settings.js?v=ui1"></script>
+</body>
+</html>
