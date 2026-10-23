@@ -1,0 +1,678 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Leveling_Ledger_v1.schema.json",
+  "title": "Tianxia Foundry Event-Sourced Leveling Ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "project_revision",
+    "content_lock_hash",
+    "event_head_hash",
+    "target_cl",
+    "rows",
+    "final_state_hash",
+    "generated_at_rule"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "TianxiaFoundry.LevelingLedger.v1"
+    },
+    "project_id": {
+      "type": "string"
+    },
+    "project_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "content_lock_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "event_head_hash": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "target_cl": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+    },
+    "generated_at_rule": {
+      "const": "deterministic-no-wall-clock"
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "cl",
+          "pb",
+          "hp",
+          "resource_changes",
+          "resources_after_level",
+          "ability_score_effects",
+          "ability_scores_after_level",
+          "background",
+          "background_sphere",
+          "background_talent",
+          "origin_insight",
+          "path_acquisitions",
+          "paths_after_level",
+          "subpath_acquisitions",
+          "subpaths_after_level",
+          "method",
+          "foundation",
+          "free_level_talents",
+          "trained_choices",
+          "new_sphere_acquisition",
+          "known_spheres_after_level",
+          "known_talents_after_level",
+          "manual_acquisitions",
+          "manuals_after_level",
+          "forged_technique_acquisitions",
+          "forged_techniques_after_level",
+          "equipment_acquisitions",
+          "equipment_after_level",
+          "legality",
+          "event_ids",
+          "row_hash"
+        ],
+        "properties": {
+          "cl": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20
+          },
+          "pb": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 6
+          },
+          "hp": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "gain",
+              "formula",
+              "total"
+            ],
+            "properties": {
+              "gain": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "formula": {
+                "type": "object"
+              },
+              "total": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          },
+          "resource_changes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "gain",
+                "formula",
+                "total"
+              ],
+              "properties": {
+                "gain": {
+                  "type": "integer"
+                },
+                "formula": {
+                  "type": [
+                    "object",
+                    "null"
+                  ]
+                },
+                "total": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "resources_after_level": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "ability_score_effects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "event_id",
+                "kind",
+                "calculation_rule_id",
+                "outputs"
+              ],
+              "properties": {
+                "event_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "kind": {
+                  "enum": [
+                    "starting_state",
+                    "ability_score_change"
+                  ]
+                },
+                "calculation_rule_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "outputs": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "ability_scores_after_level": {
+            "type": "object",
+            "required": [
+              "STR",
+              "DEX",
+              "CON",
+              "INT",
+              "WIS",
+              "CHA"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "STR": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "DEX": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "CON": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "INT": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "WIS": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "CHA": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              }
+            }
+          },
+          "background": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "background_sphere": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "background_talent": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "origin_insight": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "path_acquisitions": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "paths_after_level": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "subpath_acquisitions": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "subpaths_after_level": {
+            "oneOf": [
+              {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "method": {
+            "type": "object"
+          },
+          "foundation": {
+            "type": "object"
+          },
+          "free_level_talents": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "capacity",
+              "used",
+              "record_ids"
+            ],
+            "properties": {
+              "capacity": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "used": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "record_ids": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "trained_choices": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "capacity",
+              "used",
+              "record_ids"
+            ],
+            "properties": {
+              "capacity": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "used": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "record_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "new_sphere_acquisition": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "reason_code",
+                  "reason",
+                  "source_backed"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  },
+                  "reason_code": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_backed": {
+                    "const": true
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "sphere_record_ids",
+                  "bonus_talent_record_ids",
+                  "sphere_event_ids",
+                  "bonus_talent_event_ids"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "acquired"
+                  },
+                  "sphere_record_ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "bonus_talent_record_ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "sphere_event_ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "bonus_talent_event_ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "known_spheres_after_level": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "known_talents_after_level": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "manual_acquisitions": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "manuals_after_level": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "forged_technique_acquisitions": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "forged_techniques_after_level": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "equipment_acquisitions": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "equipment_after_level": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "legality": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "status",
+              "blocker_count",
+              "event_count"
+            ],
+            "properties": {
+              "status": {
+                "const": "valid"
+              },
+              "blocker_count": {
+                "const": 0
+              },
+              "event_count": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          },
+          "event_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "row_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "final_state_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}
