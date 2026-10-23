@@ -1,0 +1,461 @@
+{
+ "access": {
+  "minimum_cl": 5,
+  "note": "Technique Forging normally becomes available at Foundation, CL 5. Mortal-Realm forging needs GM permission and is not a normal character option; the Factory never constructs it.",
+  "rule_id": "tianxia.forging.access.r1"
+ },
+ "augment_rules": {
+  "action_economy": "Action-economy upgrades are expensive, usually require Core Formation or higher, and require GM approval.",
+  "hostile_conditions_require_saves": "Hostile conditions require saving throws against the Cultivation Save DC.",
+  "repeat_saves": "Conditions lasting longer than one round normally allow repeat saves at the end of the affected creature's turns."
+ },
+ "augments": [
+  {
+   "augment_id": "increased_damage",
+   "complexity": 1,
+   "cp": 1,
+   "display_name": "Increased Damage",
+   "minimum_realm": "Mortal",
+   "tier": "basic"
+  },
+  {
+   "augment_id": "extended_range",
+   "complexity": 1,
+   "cp": 1,
+   "display_name": "Extended Range",
+   "minimum_realm": "Mortal",
+   "tier": "basic"
+  },
+  {
+   "augment_id": "expanded_area",
+   "complexity": 1,
+   "cp": 1,
+   "display_name": "Expanded Area",
+   "minimum_realm": "Mortal",
+   "tier": "basic"
+  },
+  {
+   "augment_id": "additional_target",
+   "complexity": 1,
+   "cp": 1,
+   "display_name": "Additional Target",
+   "minimum_realm": "Mortal",
+   "tier": "basic"
+  },
+  {
+   "augment_id": "forced_movement",
+   "complexity": 1,
+   "cp": 1,
+   "display_name": "Forced Movement",
+   "minimum_realm": "Mortal",
+   "tier": "basic"
+  },
+  {
+   "augment_id": "minor_hindrance",
+   "complexity": 1,
+   "cp": 1,
+   "display_name": "Minor Hindrance",
+   "minimum_realm": "Mortal",
+   "tier": "basic"
+  },
+  {
+   "augment_id": "lingering_effect",
+   "complexity": 1,
+   "cp": 1,
+   "display_name": "Lingering Effect",
+   "minimum_realm": "Mortal",
+   "tier": "basic"
+  },
+  {
+   "augment_id": "mobility_rider",
+   "complexity": 1,
+   "cp": 1,
+   "display_name": "Mobility Rider",
+   "minimum_realm": "Mortal",
+   "tier": "basic"
+  },
+  {
+   "augment_id": "major_condition",
+   "complexity": 2,
+   "cp": 2,
+   "display_name": "Major Condition",
+   "minimum_realm": "Foundation",
+   "tier": "advanced"
+  },
+  {
+   "augment_id": "persistent_zone",
+   "complexity": 2,
+   "cp": 2,
+   "display_name": "Persistent Zone",
+   "minimum_realm": "Foundation",
+   "tier": "advanced"
+  },
+  {
+   "augment_id": "ignore_resistance",
+   "complexity": 2,
+   "cp": 2,
+   "display_name": "Ignore Resistance",
+   "minimum_realm": "Core Formation",
+   "tier": "advanced"
+  },
+  {
+   "augment_id": "reaction_activation",
+   "complexity": 2,
+   "cp": 2,
+   "display_name": "Reaction Activation",
+   "minimum_realm": "Core Formation",
+   "tier": "advanced"
+  },
+  {
+   "augment_id": "bonus_action_activation",
+   "complexity": 2,
+   "cp": 3,
+   "display_name": "Bonus-Action Activation",
+   "minimum_realm": "Core Formation",
+   "tier": "advanced"
+  },
+  {
+   "augment_id": "severe_hindrance",
+   "complexity": 2,
+   "cp": 2,
+   "display_name": "Severe Hindrance",
+   "minimum_realm": "Core Formation",
+   "tier": "advanced"
+  },
+  {
+   "augment_id": "domain_effect",
+   "complexity": 3,
+   "cp": 3,
+   "display_name": "Domain Effect",
+   "minimum_realm": "Nascent Soul",
+   "tier": "advanced"
+  },
+  {
+   "augment_id": "conceptual_effect",
+   "complexity": 3,
+   "cp": 4,
+   "display_name": "Conceptual Effect",
+   "minimum_realm": "Nascent Soul",
+   "tier": "advanced"
+  }
+ ],
+ "authority_classification": "AUTHENTICATED_CANONICAL_SOURCE",
+ "backlash": {
+  "default_effects": [
+   "lose 1 CP after the technique resolves",
+   "take damage equal to Complexity + PB",
+   "brief CP strain",
+   "fall prone",
+   "lose focus",
+   "reveal position"
+  ],
+  "default_triggers": [
+   "user fails the technique's attack roll or check by 5 or more",
+   "target succeeds on its save by 5 or more",
+   "technique is countered, interrupted, or disrupted",
+   "technique is used in an unstable condition named when created"
+  ],
+  "not_exhaustion_by_default": true
+ },
+ "base_forms": [
+  {
+   "complexity": 1,
+   "display_name": "Strike",
+   "form_id": "strike",
+   "starting_cp": 1,
+   "use": "weapon or unarmed delivery"
+  },
+  {
+   "complexity": 1,
+   "display_name": "Projection",
+   "form_id": "projection",
+   "starting_cp": 1,
+   "use": "beam, bolt, slash, psychic attack, elemental blast, or similar projection"
+  },
+  {
+   "complexity": 1,
+   "display_name": "Movement",
+   "form_id": "movement",
+   "starting_cp": 1,
+   "use": "leap, teleport, dash, brief flight, or repositioning"
+  },
+  {
+   "complexity": 2,
+   "display_name": "Burst",
+   "form_id": "burst",
+   "starting_cp": 2,
+   "use": "area centered on self or visible point"
+  },
+  {
+   "complexity": 2,
+   "display_name": "Cone",
+   "form_id": "cone",
+   "starting_cp": 2,
+   "use": "cone from self"
+  },
+  {
+   "complexity": 2,
+   "display_name": "Line",
+   "form_id": "line",
+   "starting_cp": 2,
+   "use": "straight line"
+  },
+  {
+   "complexity": 2,
+   "display_name": "Ward",
+   "form_id": "ward",
+   "starting_cp": 2,
+   "use": "defensive effect on self or ally"
+  },
+  {
+   "complexity": 3,
+   "display_name": "Aura",
+   "form_id": "aura",
+   "starting_cp": 3,
+   "use": "persistent self-centered effect"
+  },
+  {
+   "complexity": 3,
+   "display_name": "Zone",
+   "form_id": "zone",
+   "starting_cp": 3,
+   "use": "persistent battlefield area"
+  },
+  {
+   "complexity": 3,
+   "display_name": "Counter",
+   "form_id": "counter",
+   "starting_cp": 3,
+   "use": "reaction against a trigger"
+  },
+  {
+   "complexity": 1,
+   "display_name": "Ritual",
+   "form_id": "ritual",
+   "starting_cp": null,
+   "use": "slow noncombat or preparation effect"
+  }
+ ],
+ "drawback_rules": {
+  "maximum_reduction": "pb",
+  "minimum_final_cp": 1,
+  "reduce_cp_not_complexity": true,
+  "reject_meaningless": "Reject Drawbacks that do not meaningfully restrict the technique."
+ },
+ "drawbacks": [
+  {
+   "cp_reduction": 1,
+   "display_name": "Concentration",
+   "drawback_id": "concentration",
+   "restriction": "requires Concentration"
+  },
+  {
+   "cp_reduction": 1,
+   "display_name": "Preparation",
+   "drawback_id": "preparation",
+   "restriction": "requires preparation before use"
+  },
+  {
+   "cp_reduction": 1,
+   "display_name": "Long Invocation",
+   "drawback_id": "long_invocation",
+   "restriction": "requires a long invocation"
+  },
+  {
+   "cp_reduction": 1,
+   "display_name": "Self-Damage",
+   "drawback_id": "self_damage",
+   "restriction": "damages the user"
+  },
+  {
+   "cp_reduction": 1,
+   "display_name": "Restricted Environment",
+   "drawback_id": "restricted_environment",
+   "restriction": "usable only in a named environment"
+  },
+  {
+   "cp_reduction": 1,
+   "display_name": "Material Focus",
+   "drawback_id": "material_focus",
+   "restriction": "requires a carried material focus"
+  },
+  {
+   "cp_reduction": 1,
+   "display_name": "Once per Short Rest",
+   "drawback_id": "once_per_short_rest",
+   "restriction": "usable once per Short Rest"
+  },
+  {
+   "cp_reduction": 2,
+   "display_name": "Once per Long Rest",
+   "drawback_id": "once_per_long_rest",
+   "restriction": "usable once per Long Rest"
+  },
+  {
+   "cp_reduction": 2,
+   "display_name": "Exhausting",
+   "drawback_id": "exhausting",
+   "restriction": "gives 1 level of Exhaustion after the technique resolves"
+  },
+  {
+   "cp_reduction": 1,
+   "display_name": "Backlash",
+   "drawback_id": "backlash",
+   "restriction": "a defined trigger causes a defined consequence"
+  }
+ ],
+ "evolution_states": [
+  "base",
+  "evolved",
+  "unstable",
+  "sealed",
+  "suppressed",
+  "transformed"
+ ],
+ "forging_check": {
+  "check": "Cultivation Check: d20 + Proficiency Bonus + the key ability modifier of the Path powering the feature",
+  "dc": {
+   "base": 10,
+   "per_complexity": 1,
+   "per_sphere": 1
+  },
+  "dc_formula": "10 + final Complexity + number of Spheres used",
+  "material_cost_gp": {
+   "per_complexity_squared": 100
+  },
+  "research_days": {
+   "minimum": 3,
+   "per_complexity": 3
+  },
+  "rule_id": "tianxia.forging.check.r1"
+ },
+ "hard_limits": [
+  "create or multiply CP",
+  "bypass full cultivation-session limits",
+  "convert temporary CP into permanent CP",
+  "grant additional full turns",
+  "create permanent effects by default",
+  "impose hostile conditions without saves",
+  "replace talents the character does not know",
+  "ignore Realm requirements",
+  "ignore Path restrictions",
+  "ignore action economy without paying for that power",
+  "ignore Source Rule limits"
+ ],
+ "known_limit": {
+  "maximum_known": "pb",
+  "recorded_arts_count": false,
+  "rule_id": "tianxia.forging.known_limit.r1"
+ },
+ "no_retraining": "A learned Forged Technique cannot be freely replaced, refunded, swapped, or retrained.",
+ "pack_id": "tianxia.forged_technique_authority.r1",
+ "realm_complexity_limits": [
+  {
+   "cl_max": 4,
+   "cl_min": 1,
+   "exceptional_only": true,
+   "maximum_complexity": 2,
+   "realm": "Mortal"
+  },
+  {
+   "cl_max": 9,
+   "cl_min": 5,
+   "exceptional_only": false,
+   "maximum_complexity": 4,
+   "realm": "Foundation"
+  },
+  {
+   "cl_max": 14,
+   "cl_min": 10,
+   "exceptional_only": false,
+   "maximum_complexity": 6,
+   "realm": "Core Formation"
+  },
+  {
+   "cl_max": 19,
+   "cl_min": 15,
+   "exceptional_only": false,
+   "maximum_complexity": 8,
+   "realm": "Nascent Soul"
+  },
+  {
+   "cl_max": 20,
+   "cl_min": 20,
+   "exceptional_only": false,
+   "maximum_complexity": 10,
+   "realm": "Immortal"
+  }
+ ],
+ "recommended_maximum_spheres": [
+  {
+   "maximum_spheres": 1,
+   "realm": "Mortal"
+  },
+  {
+   "maximum_spheres": 2,
+   "realm": "Foundation"
+  },
+  {
+   "maximum_spheres": 3,
+   "realm": "Core Formation"
+  },
+  {
+   "maximum_spheres": 4,
+   "realm": "Nascent Soul"
+  },
+  {
+   "maximum_spheres": 4,
+   "note": "GM discretion; the Factory holds the Nascent Soul figure.",
+   "realm": "Immortal"
+  }
+ ],
+ "record_fields": [
+  "name",
+  "owner",
+  "cl_and_realm_at_creation",
+  "base_form",
+  "primary_sphere_effect",
+  "secondary_sphere_effects",
+  "augments",
+  "drawbacks",
+  "action_type",
+  "cp_cost",
+  "target_range_area",
+  "attack_save_check",
+  "effect",
+  "duration",
+  "limits",
+  "complexity",
+  "spheres_used",
+  "technique_forging_dc",
+  "research_time",
+  "material_cost",
+  "source_notes"
+ ],
+ "schema_version": "TianxiaFoundry.ForgedTechniqueAuthority.v1",
+ "seal_sha256": "9998e4b8c14ed749d1c7350c2de0f9e9e70154b417574cb63f329968caa38bf6",
+ "secondary_sphere_effect": {
+  "complexity_per_additional_sphere": 1,
+  "note": "may increase CP cost; the Factory adds no CP for a secondary effect"
+ },
+ "sources": {
+  "core_rules": {
+   "anchor": "section:11:lines:3085-3343",
+   "path": "Tianxia_Core_Rules_Reference_v0_2C.md",
+   "source_hash": "07dc678e2c686e191f7da34b959964cfe535c6368019ffaf37227eb39d87ad10",
+   "source_id": "source.core_rules_reference.v0_2c"
+  },
+  "gm_guide_record_format": {
+   "anchor": "section:2.8:lines:1021-1068",
+   "path": "Tianxia_GM_Guide_v0_1_Polished_Manuscript.md",
+   "source_hash": "ab83a99b1d516db26af87ee997cec45efa482ac52c3e627042eacc3ee25f6713",
+   "source_id": "source.gm_guide.v0_1"
+  },
+  "phb_chapter_18": {
+   "anchor": "chapter:18:lines:10613-10943",
+   "path": "09_RULES/Source_Text/PHB/Tianxia_PHB_Manuscript_v0_7_Subpaths_Inserted.md",
+   "source_hash": "f2bb2eeba55a4b8b8630e02fbcb35d21ac80d2efb7ad4a9e91642522f82d7fe7",
+   "source_id": "source.phb_manuscript.v0_7"
+  }
+ }
+}
