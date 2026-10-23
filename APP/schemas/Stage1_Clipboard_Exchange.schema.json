@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Stage1_Clipboard_Exchange.schema.json",
+  "title": "Tianxia Foundry Stage 1 Clipboard Exchange Audit Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "attempt_id",
+    "prompt_id",
+    "project_id",
+    "project_revision",
+    "prompt_sha256",
+    "exact_response_sha256",
+    "parsing_status",
+    "validation"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "TianxiaFoundry.Stage1ClipboardExchange.v1"
+    },
+    "attempt_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "prompt_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "project_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "prompt_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "exact_response_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "parsing_status": {
+      "enum": [
+        "parsed",
+        "malformed_json"
+      ]
+    },
+    "validation": {
+      "type": "object"
+    },
+    "response_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "response_payload_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "drafts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ordinal",
+          "slot_id",
+          "choice_id",
+          "draft_id"
+        ],
+        "properties": {
+          "ordinal": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "slot_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "choice_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "draft_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        }
+      }
+    },
+    "approval": {
+      "type": "object"
+    },
+    "commit": {
+      "type": "object"
+    }
+  }
+}
