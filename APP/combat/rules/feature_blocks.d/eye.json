@@ -1,0 +1,69 @@
+{
+  "features": {
+    "TAL_THE_HIDDEN_EYE_DEADLY_STRIKE": {
+      "block": "hidden_eye",
+      "kind": "deadly_strike",
+      "why": "While hidden, melee and ranged attacks deal +Proficiency Bonus damage; a free toggle spends Martial Focus on the first hidden hit of the turn for 1d6/PB instead (combat/ext/eye_damage.py)."
+    },
+    "TAL_THE_HIDDEN_EYE_ASSASSINATE": {
+      "block": "hidden_eye",
+      "kind": "assassinate",
+      "why": "An attack roll that reduces a creature to 0 HP while hidden does not end the hidden state by itself; compare the recorded Stealth check to each creature's Passive Perception afterward (combat/ext/eye_assassinate.py)."
+    },
+    "TAL_THE_HIDDEN_EYE_EXPLOIT_WEAKNESS": {
+      "block": "hidden_eye",
+      "kind": "exploit_weakness",
+      "why": "Once per turn, a weapon-attack hit against a creature Analyzed by you forces a Constitution save (your Cultivation Save DC) or an extra 1d10 damage of the weapon's type (combat/ext/eye_damage.py)."
+    },
+    "TAL_THE_HIDDEN_EYE_REFLEXIVE_STEALTH": {
+      "block": "hidden_eye",
+      "kind": "reflexive_stealth",
+      "why": "A Reaction to attempt to Hide, ignoring the normal cover/obscurement requirement, after succeeding on a Dexterity save against an area effect; ends at the end of your next turn if you still do not meet the normal Hide requirements by then (combat/ext/eye_reflexive_stealth.py)."
+    },
+    "tianxia.talent.the_hidden_eye.stealth_surge": {
+      "block": "hidden_eye",
+      "kind": "stealth_surge",
+      "why": "While you are hidden, a creature Analyzed by you has Disadvantage on the Search check it makes to find you (combat/ext/eye_stealth_surge.py, a new stealth.py search-mode hook)."
+    },
+    "TAL_THE_HIDDEN_EYE_ADROIT_FOCUS": {
+      "block": "hidden_eye",
+      "kind": "adroit_focus",
+      "why": "When a creature Analyzed by you (by anyone's hand, not just your own attack) is reduced to 0 HP, offers a free Bonus Action to regain Martial Focus (combat/ext/eye_focus.py); the Reaction alternative is a GM-only rider (this table's reaction-candidate system is built around answering an attack, not an arbitrary kill anywhere on the field)."
+    },
+    "TAL_THE_HIDDEN_EYE_COOPERATIVE_STEALTH": {
+      "block": "hidden_eye",
+      "kind": "cooperative_stealth",
+      "why": "A successful Hide tags up to Proficiency-Bonus-many allies (doubled while you hold Martial Focus) within 60 feet; the next time a tagged ally takes the Hide action before your next turn, its check total is replaced by your recorded one (combat/ext/eye_coordination.py, a new stealth.py hide-check-override hook)."
+    },
+    "TAL_THE_HIDDEN_EYE_ADVISORY_STALKER": {
+      "block": "hidden_eye",
+      "kind": "advisory_stalker",
+      "why": "When a tagged ally's Hide actually uses your recorded check through Cooperative Stealth, a GM-only rider: choose one Stalker talent you know for that ally to gain while it stays hidden through that use. Which Stalker talents a given character knows varies per sheet, so the specific benefit is a GM/player pick, not a generic effect this table can resolve alone."
+    },
+    "tianxia.talent.the_hidden_eye.meridian_seeking_ledger": {
+      "block": "hidden_eye",
+      "kind": "meridian_seeking_ledger",
+      "why": "A successful Analyze records a ledger on its target (capacity = Path key ability modifier, minimum 1); a free Advise action spends one ledger to grant a chosen ally one of the three listed benefits against that target (combat/ext/eye_coordination.py)."
+    },
+    "TAL_THE_HIDDEN_EYE_EMPIRICAL_TRACKER": {
+      "block": "hidden_eye",
+      "kind": "empirical_tracker",
+      "why": "Analyze may use Wisdom (Survival) as a third option alongside Investigation and Perception (mind_hidden_eye.py analyze_check, smallest edit); targeting evidence instead of the creature so no line of sight is needed is a GM-only rider (this table's Analyze always targets a perceived creature)."
+    },
+    "TAL_THE_HIDDEN_EYE_HEAVEN_KEEPS_NO_SECRET_FROM_THE_PATIENT_EYE": {
+      "block": "hidden_eye",
+      "kind": "patient_eye",
+      "why": "An Action opens the target's revealed record for one minute: it becomes Analyzed by you (even a normally protected target), it cannot benefit from being Hidden or Invisible against you alone, and on your damage to it you may once per your own turn suppress one of its Damage Resistances until the start of your next turn and once per record treat one of its Damage Immunities as Resistance (combat/ext/eye_patient_eye.py)."
+    },
+    "TAL_THE_HIDDEN_EYE_MAGICAL_COGNIZANCE": {
+      "block": "hidden_eye",
+      "kind": "magical_cognizance",
+      "why": "A Search also detects an ongoing magical effect within 10 feet against that effect's save DC, else its creator's, else DC 15, reporting only that an effect is active and roughly where (combat/ext/eye_awareness.py, the documented after_search seam)."
+    },
+    "TAL_THE_HIDDEN_EYE_SPIRIT_TRACE_PURSUIT": {
+      "block": "hidden_eye",
+      "kind": "spirit_trace_pursuit",
+      "why": "A successful Analyze also records the compass bearing the trace continued on; it records no position and leaves no mark (combat/ext/eye_awareness.py, the documented analyze_checked seam)."
+    }
+  }
+}
