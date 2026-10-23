@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "TianxiaCombatPendingIntentDraft.v1",
+  "title": "Tianxia Pending Manual Intent Draft",
+  "description": "Cancelable owner-interface draft pinned to one live combat decision. It is never combat truth and cannot be committed without a matching deterministic preview seal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "intent", "reaction_decisions", "reaction_trace", "created_for_match_id",
+    "created_for_decision_id", "created_for_state_version", "created_for_actor_id",
+    "created_for_controller_mode", "preview"
+  ],
+  "properties": {
+    "schema": {"const": "TianxiaCombatPendingIntentDraft.v1"},
+    "intent": {"type": "object"},
+    "reaction_decisions": {"type": "array", "items": {"type": "object"}},
+    "reaction_trace": {"type": "array", "items": {"type": "object"}},
+    "created_for_match_id": {"type": "string", "minLength": 1},
+    "created_for_decision_id": {"type": "string", "minLength": 1},
+    "created_for_state_version": {"type": "integer", "minimum": 0},
+    "created_for_actor_id": {"type": "string", "minLength": 1},
+    "created_for_controller_mode": {"enum": ["MANUAL", "SUGGESTED", "MANUAL_AI_BRIDGE"]},
+    "preview": {"type": ["object", "null"]},
+    "reaction_context": {"type": "object"},
+    "reaction_context_fingerprint": {"type": ["string", "null"]},
+    "resolved_reactions_before_prompt": {"type": "array", "items": {"type": "object"}}
+  }
+}
