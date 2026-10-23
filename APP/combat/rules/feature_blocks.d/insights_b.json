@@ -1,0 +1,96 @@
+{
+  "schema": "TianxiaFoundry.FeatureBlocks.v1",
+  "features": {
+    "insight.heart-demon-vanquisher": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "save_advantage",
+          "abilities": [],
+          "against": [
+            "charmed",
+            "frightened"
+          ]
+        }
+      ],
+      "text_sha256": "a04854d205a0ea99b9f42eb6332c4a63d88254a8b230291dc87d0f2ad3e569fd",
+      "why": "Charmed and Frightened save Advantage stays in this defense row; insights3 seals the other printed categories and the paid Reaction reroll."
+    },
+    "insight.legacy-iron-bones": {
+      "block": "insights_five",
+      "text_sha256": "42aad8e33bc0d9b1245e41cea34595c53f8777c9598864831819e65a087db228",
+      "outcome": "Resistance to Bludgeoning damage; when another source also gives you Bludgeoning Resistance, each time you take Bludgeoning damage reduce it by your Proficiency Bonus"
+    },
+    "insight.legacy-soul-ward": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "PSYCHIC"
+          ]
+        }
+      ],
+      "text_sha256": "d7111d345183c1587fac3ba4b6866ec5211e52c8ff3ded668c28cdb9a17caaf7",
+      "why": "Only the explicit reviewed clauses are automated. Other printed clauses remain visible riders."
+    },
+    "insight.lightning-scarred-meridians": {
+      "block": "insights_five",
+      "text_sha256": "b0769b718c02159d5629a6b0ce6f0948a4aff247974207f48df1ae9445424941",
+      "outcome": "Resistance to Lightning damage; once per round regain 1 Qi after hostile Lightning damage, or, when another source also gives you Lightning Resistance, reduce the first Lightning damage you take each round by your Proficiency Bonus instead"
+    },
+    "insight.legacy-tempered-organs": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "POISON"
+          ]
+        },
+        {
+          "kind": "save_advantage",
+          "abilities": [],
+          "against": [
+            "poisoned"
+          ]
+        }
+      ],
+      "text_sha256": "f29b5b4d8bcd0a16a98acebb9abde7ec50e0544f1542f2a86df45b1e2a07282d",
+      "why": "Only the explicit reviewed clauses are automated. Other printed clauses remain visible riders."
+    },
+    "insight.legacy-bone-lock": {
+      "block": "passive_traits",
+      "passive_traits": [
+        {
+          "kind": "grapple_escape_mode",
+          "mode": "DISADVANTAGE",
+          "checks": true,
+          "saves": false
+        }
+      ],
+      "text_sha256": "6ced79fbc7f5e2f23eaf5b22fda8810877d116ce90a362d3e858ed8b5b73a37a",
+      "why": "Ability checks made to escape the owner\u2019s existing grapple have Disadvantage; saving throws are not changed. Other printed clauses remain GM riders."
+    },
+    "insight.legacy-titans-grip": {
+      "block": "passive_traits",
+      "passive_traits": [
+        {
+          "kind": "effective_size",
+          "steps": 1,
+          "roles": [
+            "act",
+            "resist"
+          ],
+          "purposes": [
+            "grapple",
+            "shove",
+            "forced"
+          ]
+        }
+      ],
+      "text_sha256": "1fe6e5b975d1fd054d4ed6d8d60038b62b414639f4c84005b2f994292acf370a",
+      "why": "Count as one additional functional size for Grapple, Shove, and forced-movement comparisons, without changing physical footprint. Other printed clauses remain GM riders."
+    }
+  }
+}
