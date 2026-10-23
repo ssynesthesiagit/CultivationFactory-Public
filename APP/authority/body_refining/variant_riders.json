@@ -1,0 +1,1952 @@
+{
+ "schema": "TianxiaBodyRefiningVariantRiders.v1",
+ "variants": {
+  "tianxia.brvariant.air.bellows-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "3": {
+    "automation": "restriction",
+    "reason": "a printed rule about where the technique must physically originate; the engine does not track a talent's delivery origin"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "the talent's range depends on the centre or target the player chooses at activation"
+   },
+   "5": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   },
+   "6": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "after": [
+       "attack",
+       "dash"
+      ],
+      "kind": "free_use",
+      "label": "Gather Current (during Attack or Dash)",
+      "of": [
+       "Gather Current"
+      ],
+      "once": "turn"
+     }
+    ]
+   },
+   "7": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "save_advantage",
+      "on": [
+       "forced_movement",
+       "prone",
+       "suffocation"
+      ],
+      "when": [
+       "zone:current:own"
+      ]
+     }
+    ]
+   }
+  },
+  "tianxia.brvariant.alchemy.body-as-cauldron": {
+   "3": {
+    "automation": "restriction",
+    "reason": "out-of-combat effect (crafting, rest, exploration or downtime)"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "out-of-combat effect (crafting, rest, exploration or downtime)"
+   }
+  },
+  "tianxia.brvariant.ash.ashen-body": {
+   "2": {
+    "automation": "flavor",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "3": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "amount": 1,
+      "kind": "ac",
+      "when": [
+       "zone:ash"
+      ]
+     }
+    ]
+   },
+   "4": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "check_advantage",
+      "on": [
+       "stealth"
+      ],
+      "when": [
+       "zone:ash"
+      ]
+     }
+    ]
+   },
+   "5": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "feet": 10,
+      "kind": "forced_movement_reduction",
+      "when": [
+       "zone:ash"
+      ]
+     }
+    ]
+   },
+   "6": {
+    "automation": "table",
+    "reason": "Stamina Guard to zero does create an engine event, but Remnants are a separate counter the engine does not model"
+   }
+  },
+  "tianxia.brvariant.athletics.tempered-motion": {
+   "0": {
+    "automation": "table",
+    "reason": "the engine does not emit a Coordinated Movement Martial-Focus regain event"
+   },
+   "1": {
+    "automation": "table",
+    "reason": "a timed benefit granted by a Martial-Focus regain the engine does not emit"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a timed benefit granted by a Martial-Focus regain the engine does not emit"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a Speed increase tied to spending Stamina in the same turn; no per-turn Stamina-spend seam is built here"
+   }
+  },
+  "tianxia.brvariant.axes.bone-axe-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "3": {
+    "automation": "restriction",
+    "reason": "a printed rule about where the technique must physically originate; the engine does not track a talent's delivery origin"
+   },
+   "5": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "feet": 10,
+      "kind": "hewing_athletics",
+      "mark": "Bite",
+      "skill": "Athletics"
+     }
+    ]
+   },
+   "6": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  },
+  "tianxia.brvariant.barrage.iron-rain-body": {
+   "0": {
+    "automation": "table",
+    "reason": "a projectile-weapon property; the engine does not read thrown-weapon range per attack"
+   },
+   "1": {
+    "automation": "table",
+    "reason": "a projectile-weapon property; the engine does not read thrown-weapon range per attack"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "ammunition drawing is not modelled"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a free ranged attack on a Stamina Guard zero; the guard event exists but a free attack choice is not built here"
+   }
+  },
+  "tianxia.brvariant.beastmastery.iron-saddle-body": {
+   "1": {
+    "automation": "table",
+    "reason": "the mounted state is not modelled"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "the mounted state is not modelled"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "falling damage is not tracked for this clause"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "Stamina Guard zero grants an ally Temporary HP and a Great Beast Charge damage bonus; that ally/talent join is not built here"
+   }
+  },
+  "tianxia.brvariant.berserker.unbreakable-frame": {
+   "1": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "effect": "regain_martial_focus",
+      "kind": "guard_zero",
+      "limit": "round"
+     }
+    ]
+   },
+   "2": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "effect": "regain_martial_focus",
+      "kind": "guard_zero",
+      "limit": "round"
+     }
+    ]
+   },
+   "3": {
+    "automation": "table",
+    "reason": "Advantage on the next Batter attack: the engine has no next-attack Advantage row for a guard event"
+   },
+   "4": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "feet": 5,
+      "kind": "forced_movement_reduction",
+      "when": [
+       "state:Adrenaline"
+      ]
+     }
+    ]
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a fragment of the preceding list; it grants no separate effect"
+   },
+   "6": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "feet": 10,
+      "kind": "forced_movement_reduction",
+      "min_cl": 10,
+      "when": [
+       "state:Adrenaline"
+      ]
+     }
+    ]
+   },
+   "7": {
+    "automation": "table",
+    "reason": "a fragment of the preceding list; it grants no separate effect"
+   }
+  },
+  "tianxia.brvariant.blacksmith.furnace-body-hammer-bone": {
+   "1": {
+    "automation": "flavor",
+    "reason": "a fragment of the preceding list; it grants no separate effect"
+   },
+   "2": {
+    "automation": "flavor",
+    "reason": "a fragment of the preceding list; it grants no separate effect"
+   },
+   "3": {
+    "automation": "flavor",
+    "reason": "a fragment of the preceding list; it grants no separate effect"
+   },
+   "4": {
+    "automation": "flavor",
+    "reason": "a fragment of the preceding list; it grants no separate effect"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "Exhaustion from crafting scenes is out of combat"
+   },
+   "6": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  },
+  "tianxia.brvariant.blood.iron-blood": {
+   "1": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a bonus to the Temporary HP of a named talent's activation; that damage-roll join is not built here"
+   },
+   "3": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "save_advantage",
+      "on": [
+       "strength"
+      ],
+      "when": [
+       "state:Blood Armor"
+      ]
+     }
+    ]
+   },
+   "4": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "effect": "regain_hp",
+      "kind": "guard_zero",
+      "limit": "round"
+     }
+    ]
+   }
+  },
+  "tianxia.brvariant.brute.mountain-rooted-frame": {
+   "1": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "effect": "regain_martial_focus",
+      "kind": "guard_zero",
+      "limit": "round"
+     }
+    ]
+   },
+   "2": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "effect": "regain_martial_focus",
+      "kind": "guard_zero",
+      "limit": "round"
+     }
+    ]
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a single next-Shove/Grapple/Overrun size increase; no timed size seam is built here"
+   },
+   "4": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "feet": 5,
+      "kind": "forced_movement_reduction",
+      "when": [
+       "focus"
+      ]
+     }
+    ]
+   }
+  },
+  "tianxia.brvariant.daemonic_cultivation.demon-body-furnace": {
+   "2": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "3": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "resistance",
+      "types": [
+       "poison"
+      ],
+      "when": [
+       "state:Demon Seed"
+      ]
+     }
+    ]
+   },
+   "4": {
+    "automation": "table",
+    "reason": "an equipment/weapon-category ruling, not a combat number"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "Devoured Essence is a separate counter the engine does not model"
+   },
+   "6": {
+    "automation": "table",
+    "reason": "an Overdraw Corruption replacement the engine does not model"
+   },
+   "7": {
+    "automation": "table",
+    "reason": "out-of-combat effect (crafting, rest, exploration or downtime)"
+   }
+  },
+  "tianxia.brvariant.dark.night-bound-body": {
+   "2": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "3": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "amount": 1,
+      "kind": "ac",
+      "when": [
+       "zone:darkness:own",
+       "light:dim"
+      ]
+     }
+    ]
+   },
+   "4": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "check_advantage",
+      "on": [
+       "stealth"
+      ],
+      "when": [
+       "zone:darkness:own",
+       "light:dim"
+      ]
+     }
+    ]
+   },
+   "5": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "save_advantage",
+      "on": [
+       "frightened"
+      ],
+      "when": [
+       "always"
+      ]
+     }
+    ]
+   }
+  },
+  "tianxia.brvariant.death.corpse-tempered-body": {
+   "0": {
+    "automation": "table",
+    "reason": "the printed access requirement is resolved at acquisition, not in combat"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "an optional Reaction with a player choice among several outcomes; no Reaction seam is built here"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a narrative or anatomical description of the body-bound version"
+   }
+  },
+  "tianxia.brvariant.disease.plague-bearing-body": {
+   "0": {
+    "automation": "table",
+    "reason": "the printed access requirement is resolved at acquisition, not in combat"
+   },
+   "2": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "resistance",
+      "types": [
+       "poison"
+      ],
+      "when": [
+       "always"
+      ]
+     },
+     {
+      "kind": "save_advantage",
+      "on": [
+       "disease"
+      ],
+      "when": [
+       "always"
+      ]
+     }
+    ]
+   },
+   "3": {
+    "automation": "table",
+    "reason": "Contagion Tokens are not modelled"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a Temporary HP reward on a Disease save; the trigger is not emitted"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "depends on a named talent's own trigger or state that this slice does not join"
+   },
+   "6": {
+    "automation": "restriction",
+    "reason": "a printed rule about where the technique must physically originate; the engine does not track a talent's delivery origin"
+   }
+  },
+  "tianxia.brvariant.dreams.lucid-dream-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a short rest or Dreamscape location; rest is out of combat and Dreamscape is not modelled"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "the AC bonus shares the short-rest/Dreamscape condition"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a timed Advantage on the next save; no next-save row is built here"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a once-per-turn Dream Needle damage bonus; that talent join is not built here"
+   }
+  },
+  "tianxia.brvariant.drunken_style.loose-body-unbroken-root": {
+   "1": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   }
+  },
+  "tianxia.brvariant.dual_wielding.split-meridian-coordination": {
+   "1": {
+    "automation": "table",
+    "reason": "a timed +1 AC after a Paired Rhythm Martial-Focus regain; that trigger is not emitted"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "ends early when the pair is dropped; no timed modifier is built here"
+   }
+  },
+  "tianxia.brvariant.earth.mountain-body-method": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "1": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "Earth foundation legality depends on talent text, not a combat number"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "Foundation Space legality depends on talent text, not a combat number"
+   },
+   "5": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   },
+   "6": {
+    "automation": "table",
+    "reason": "a once-per-short-rest Stamina regain on a named stance; the trigger is not emitted"
+   }
+  },
+  "tianxia.brvariant.fate.fortune-tempered-body": {
+   "2": {
+    "automation": "table",
+    "reason": "an optional Reaction with a player choice among several outcomes; no Reaction seam is built here"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a Stamina-cost reduction on self-only Fate talents; the payment seam does not price self-only talents"
+   }
+  },
+  "tianxia.brvariant.fire.furnace-body": {
+   "2": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "3": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "amount": 1,
+      "kind": "ac",
+      "when": [
+       "state:Burning",
+       "zone:fire",
+       "state:Blazing Armor"
+      ]
+     }
+    ]
+   },
+   "4": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "feet": 10,
+      "kind": "speed",
+      "when": [
+       "state:Burning",
+       "zone:fire",
+       "state:Blazing Armor"
+      ]
+     }
+    ]
+   },
+   "5": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "save_advantage",
+      "on": [
+       "cold",
+       "frightened"
+      ],
+      "when": [
+       "state:Burning",
+       "zone:fire",
+       "state:Blazing Armor"
+      ]
+     }
+    ]
+   },
+   "6": {
+    "automation": "table",
+    "reason": "applies Burn to a nearby creature on a guard zero; applying a named condition there is not built here"
+   }
+  },
+  "tianxia.brvariant.flowers.blooming-body": {
+   "2": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "formula": "pb",
+      "kind": "temp_hp",
+      "once": "fight",
+      "trigger": "turn_start",
+      "when": [
+       "below_half"
+      ]
+     }
+    ]
+   },
+   "3": {
+    "automation": "restriction",
+    "reason": "once per short rest; the fight marker enforces one grant per fight"
+   }
+  },
+  "tianxia.brvariant.flowing_river.iron-reed-body": {
+   "1": {
+    "automation": "table",
+    "reason": "a Temporary HP reward when Flowing Response succeeds; that trigger is not emitted"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "the same reward's once-per-round limit"
+   }
+  },
+  "tianxia.brvariant.force.force-tempered-body": {
+   "0": {
+    "automation": "table",
+    "reason": "the printed access requirement is resolved at acquisition, not in combat"
+   },
+   "1": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "3": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "amount": 1,
+      "kind": "ac",
+      "when": [
+       "state:Force Mantle",
+       "state:Pressure Anchor"
+      ]
+     }
+    ]
+   },
+   "4": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "save_advantage",
+      "on": [
+       "forced_movement",
+       "prone"
+      ],
+      "when": [
+       "state:Force Mantle",
+       "state:Pressure Anchor"
+      ]
+     }
+    ]
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "6": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "7": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "8": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "9": {
+    "automation": "table",
+    "reason": "the printed access requirement is resolved at acquisition, not in combat"
+   }
+  },
+  "tianxia.brvariant.glass.glass-bone-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a once-per-turn Glass Shard damage bonus; that talent join is not built here"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "depends on a named talent's own trigger or state that this slice does not join"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a CL 10 surface-category ruling for a named talent"
+   },
+   "6": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  },
+  "tianxia.brvariant.gravity.mountain-bearing-frame": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "1": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a talent-category ruling, not a combat number"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "Weight Arts are a talent family the payment seam does not price as a group"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a once-per-turn Stamina cost reduction; no per-turn price seam is built here"
+   },
+   "5": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "save_advantage",
+      "on": [
+       "constitution"
+      ],
+      "when": [
+       "state:Body Heavying"
+      ]
+     }
+    ]
+   },
+   "6": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "check_advantage",
+      "on": [
+       "acrobatics"
+      ],
+      "when": [
+       "state:Body Lightening"
+      ]
+     }
+    ]
+   },
+   "7": {
+    "automation": "table",
+    "reason": "joining a Body Heavying activation into the same Reaction as Stamina Guard is not built here"
+   }
+  },
+  "tianxia.brvariant.harvesting_gathering.hard-hand-gatherer": {
+   "2": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  },
+  "tianxia.brvariant.hunger.stomach-furnace-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a delivery-origin category, not a combat number"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a free Taste the Qi action; that talent join is not built here"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a one-check bonus after a named Mantle activation; the trigger is not emitted"
+   },
+   "6": {
+    "automation": "table",
+    "reason": "an Impurity counter the engine does not model"
+   },
+   "7": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   },
+   "8": {
+    "automation": "table",
+    "reason": "a talent-legality ruling, not a combat number"
+   }
+  },
+  "tianxia.brvariant.ice.cold-marrow-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "a narrative or anatomical description of the body-bound version"
+   },
+   "3": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  },
+  "tianxia.brvariant.imbuement.vessel-body-imbuement": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "1": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "the talent's range depends on the centre or target the player chooses at activation"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a body-as-armor category the equipment model does not read"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "depends on a named talent's own trigger or state that this slice does not join"
+   },
+   "6": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   },
+   "7": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   }
+  },
+  "tianxia.brvariant.ink.inked-body": {
+   "1": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "6": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "7": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "8": {
+    "automation": "table",
+    "reason": "out-of-combat effect (crafting, rest, exploration or downtime)"
+   },
+   "9": {
+    "automation": "table",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  },
+  "tianxia.brvariant.iron_fist.iron-body-scripture": {
+   "0": {
+    "automation": "table",
+    "reason": "the key ability is recorded by the variant's own compiled rule"
+   },
+   "1": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "effect": "regain_martial_focus",
+      "kind": "guard_zero",
+      "limit": "round"
+     }
+    ]
+   },
+   "2": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "effect": "regain_martial_focus",
+      "kind": "guard_zero",
+      "limit": "round"
+     }
+    ]
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a free Unarmed Strike on a guard zero; a free attack choice is not built here"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a free 5-foot move on a guard zero; a free move choice is not built here"
+   }
+  },
+  "tianxia.brvariant.jester.acrobat-of-the-crooked-step": {
+   "0": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "stand_cost_zero",
+      "when": [
+       "focus"
+      ]
+     }
+    ]
+   },
+   "1": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "stand_cost_zero",
+      "when": [
+       "focus"
+      ]
+     }
+    ]
+   },
+   "2": {
+    "automation": "table",
+    "reason": "falling damage is not tracked for this clause"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "depends on a named talent's own trigger or state that this slice does not join"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "depends on a named talent's own trigger or state that this slice does not join"
+   }
+  },
+  "tianxia.brvariant.karma.karmic-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "1": {
+    "automation": "table",
+    "reason": "the printed access requirement is resolved at acquisition, not in combat"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "Debt Imprints are a separate counter the engine does not model"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "Grace Imprints are a separate counter the engine does not model"
+   },
+   "4": {
+    "automation": "restriction",
+    "reason": "a printed rule about where the technique must physically originate; the engine does not track a talent's delivery origin"
+   }
+  },
+  "tianxia.brvariant.life.vitality-refining-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "a narrative or anatomical description of the body-bound version"
+   },
+   "3": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  },
+  "tianxia.brvariant.lightning.nerve-thunder-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "3": {
+    "automation": "restriction",
+    "reason": "a printed rule about where the technique must physically originate; the engine does not track a talent's delivery origin"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "the talent's range depends on the centre or target the player chooses at activation"
+   },
+   "5": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   },
+   "6": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "after": [
+       "attack",
+       "dash"
+      ],
+      "kind": "free_use",
+      "label": "Gather Charge (during Attack or Dash)",
+      "of": [
+       "Gather Charge"
+      ],
+      "once": "turn"
+     }
+    ]
+   },
+   "7": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "save_advantage",
+      "on": [
+       "paralysis",
+       "prone",
+       "speed"
+      ],
+      "when": [
+       "state:Charged"
+      ]
+     }
+    ]
+   }
+  },
+  "tianxia.brvariant.magma.volcanic-body": {
+   "1": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "2": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "amount": 1,
+      "kind": "ac",
+      "when": [
+       "state:Obsidian Skin",
+       "state:Furnace Mantle",
+       "state:Magma Armor"
+      ]
+     }
+    ]
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a Constitution bonus to contested checks; the engine's contested-check seam is not joined here"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "Fire damage to a creature grappling you once per turn; that trigger is not emitted"
+   },
+   "6": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  },
+  "tianxia.brvariant.metal.iron-marrow-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "11": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "13": {
+    "automation": "table",
+    "reason": "a free Metal Appraisal; that talent join is not built here"
+   },
+   "14": {
+    "automation": "table",
+    "reason": "a once-per-short-rest Proficiency Bonus on a Metal reaction; that reaction join is not built here"
+   },
+   "15": {
+    "automation": "restriction",
+    "reason": "a printed rule about where the technique must physically originate; the engine does not track a talent's delivery origin"
+   },
+   "2": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "3": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a once-per-turn Sharpen damage-type choice on a named talent"
+   },
+   "6": {
+    "automation": "table",
+    "reason": "a once-per-short-rest Constitution bonus on a Metal reaction; that reaction join is not built here"
+   },
+   "7": {
+    "automation": "restriction",
+    "reason": "a printed rule about where the technique must physically originate; the engine does not track a talent's delivery origin"
+   },
+   "8": {
+    "automation": "table",
+    "reason": "a talent-legality ruling, not a combat number"
+   },
+   "9": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   }
+  },
+  "tianxia.brvariant.monkey_style.iron-ape-frame": {
+   "0": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "1": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "amount": 1,
+      "kind": "ac",
+      "when": [
+       "state:Capering Footwork"
+      ]
+     }
+    ]
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a Constitution bonus replacing the key ability on named checks; the engine lacks that check seam here"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "Vaulting Strike extra damage; that talent join is not built here"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a Monkey Link damage bonus; that talent join is not built here"
+   }
+  },
+  "tianxia.brvariant.music.battle-cadence-body": {
+   "1": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "10": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "11": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "13": {
+    "automation": "table",
+    "reason": "the talent's range depends on the centre or target the player chooses at activation"
+   },
+   "14": {
+    "automation": "table",
+    "reason": "an optional Reaction with a player choice among several outcomes; no Reaction seam is built here"
+   },
+   "15": {
+    "automation": "table",
+    "reason": "a Constitution modifier to Initiative while a named state runs; no Initiative seam is built here"
+   },
+   "16": {
+    "automation": "table",
+    "reason": "a once-per-turn damage bonus after movement; that trigger is not emitted"
+   },
+   "17": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "3": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "4": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "5": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "6": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "7": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "8": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "9": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   }
+  },
+  "tianxia.brvariant.poison.venom-body": {
+   "2": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "resistance",
+      "types": [
+       "poison"
+      ],
+      "when": [
+       "always"
+      ]
+     }
+    ]
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a timed Poison/Acid damage bonus after a save; that trigger is not emitted"
+   },
+   "4": {
+    "automation": "restriction",
+    "reason": "a printed rule about where the technique must physically originate; the engine does not track a talent's delivery origin"
+   }
+  },
+  "tianxia.brvariant.protection.living-bulwark-body": {
+   "2": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "3": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "amount": 1,
+      "kind": "ac",
+      "when": [
+       "state:Aegis"
+      ]
+     }
+    ]
+   },
+   "4": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "save_advantage",
+      "on": [
+       "forced_movement",
+       "shove",
+       "prone"
+      ],
+      "when": [
+       "state:Aegis"
+      ]
+     }
+    ]
+   },
+   "5": {
+    "automation": "table",
+    "reason": "recover 1 Stamina on a guard zero; the guard event exists but a resource refund is not built here"
+   }
+  },
+  "tianxia.brvariant.puppetry.muscle-thread-body": {
+   "1": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "2": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "save_advantage",
+      "on": [
+       "forced_movement"
+      ],
+      "when": [
+       "state:Self-Marionette Method"
+      ]
+     }
+    ]
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a Tension Mark damage reduction; that trigger is not emitted"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "an optional Reaction with a player choice among several outcomes; no Reaction seam is built here"
+   },
+   "5": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  },
+  "tianxia.brvariant.radiance.diamond-light-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "1": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "the KEY rule already re-keys the sphere; this bullet repeats it in prose"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "free description; it changes no number"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "an optional Reaction damage reduction with a retaliation rider; no Reaction seam is built here"
+   }
+  },
+  "tianxia.brvariant.retribution.rooted-answer-scripture": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "1": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a timed Advantage after a Counterstrike hit; that trigger is not emitted"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a timed Advantage after a Counterstrike hit; that trigger is not emitted"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a timed Advantage after a Counterstrike hit; that trigger is not emitted"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a magical-damage category ruling for a named talent"
+   }
+  },
+  "tianxia.brvariant.sabers.shoulder-and-bone-dao": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "3": {
+    "automation": "restriction",
+    "reason": "a printed rule about where the technique must physically originate; the engine does not track a talent's delivery origin"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a once-per-short-rest Temporary HP reward after moving; that trigger is not emitted"
+   },
+   "6": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   },
+   "7": {
+    "automation": "table",
+    "reason": "a talent-category definition, not a combat number"
+   },
+   "8": {
+    "automation": "table",
+    "reason": "a once-per-short-rest Stamina regain on a named talent result; that trigger is not emitted"
+   }
+  },
+  "tianxia.brvariant.sand.desert-hardened-frame": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "1": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "2": {
+    "automation": "restriction",
+    "reason": "Speed cannot be reduced by Sand Terrain; the engine does not apply a Sand-terrain Speed penalty to remove"
+   },
+   "3": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "save_advantage",
+      "on": [
+       "strength",
+       "forced_movement",
+       "prone"
+      ],
+      "when": [
+       "zone:sand:own"
+      ]
+     }
+    ]
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a once-per-turn Temporary HP reward on Scouring damage; that trigger is not emitted"
+   }
+  },
+  "tianxia.brvariant.sect_stewardship.labor-tempering": {
+   "0": {
+    "automation": "flavor",
+    "reason": "out-of-combat effect (crafting, rest, exploration or downtime)"
+   },
+   "2": {
+    "automation": "restriction",
+    "reason": "out-of-combat effect (crafting, rest, exploration or downtime)"
+   }
+  },
+  "tianxia.brvariant.shadow.shadow-bound-body": {
+   "2": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "3": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "amount": 1,
+      "kind": "ac",
+      "when": [
+       "state:Silhouette Veil",
+       "state:Shadow Mantle",
+       "state:Shadow-Sovereign Incarnation"
+      ]
+     }
+    ]
+   },
+   "4": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "feet": 10,
+      "kind": "speed",
+      "when": [
+       "state:Silhouette Veil",
+       "state:Shadow Mantle",
+       "state:Shadow-Sovereign Incarnation"
+      ]
+     }
+    ]
+   },
+   "5": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "check_advantage",
+      "on": [
+       "stealth"
+      ],
+      "when": [
+       "state:Silhouette Veil",
+       "state:Shadow Mantle",
+       "state:Shadow-Sovereign Incarnation"
+      ]
+     }
+    ]
+   }
+  },
+  "tianxia.brvariant.smoke.smoke-lung-body": {
+   "1": {
+    "automation": "table",
+    "reason": "breath-holding is not modelled"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "Smoke Traces are a separate counter the engine does not model"
+   }
+  },
+  "tianxia.brvariant.sniper.bone-still-archer": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "6": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   }
+  },
+  "tianxia.brvariant.sound.bell-bone-circulation": {
+   "2": {
+    "automation": "table",
+    "reason": "a save-or-Resonance pulse on a Stamina Guard zero; the guard event exists but a save pulse is not built here"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "depends on a named talent's own trigger or state that this slice does not join"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "depends on a named talent's own trigger or state that this slice does not join"
+   }
+  },
+  "tianxia.brvariant.source.stone-bone-source-body": {
+   "1": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a printed rule about where the technique must physically originate; the engine does not track a talent's delivery origin"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "an exploration or sensory effect outside the combat model"
+   },
+   "6": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   },
+   "7": {
+    "automation": "table",
+    "reason": "a once-per-short-rest Stamina regain on a named reaction; that trigger is not emitted"
+   }
+  },
+  "tianxia.brvariant.space.spatial-meridian-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "4": {
+    "automation": "restriction",
+    "reason": "the talent's range depends on the centre or target the player chooses at activation"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "difficult terrain after a Fold Step; a timed exemption join is not built here"
+   },
+   "6": {
+    "automation": "table",
+    "reason": "carrying a creature through Fold Step at CL 10; that teleport join is not built here"
+   }
+  },
+  "tianxia.brvariant.spear.spear-body-circulation": {
+   "0": {
+    "automation": "table",
+    "reason": "the printed list mixes key ability, payment, reach, Speed and guard riders; this slice re-keys and pays through the variant data only"
+   }
+  },
+  "tianxia.brvariant.stars.star-blooded-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "1": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a Sky Reference category, not a combat number"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a talent-category ruling, not a combat number"
+   },
+   "6": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   },
+   "7": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   },
+   "8": {
+    "automation": "table",
+    "reason": "Open Sky and Star Anchor placement are not modelled; the clause also adds a per-turn damage bonus"
+   }
+  },
+  "tianxia.brvariant.sword.iron-sword-body": {
+   "1": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "Disarm is not modelled"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "Sword Intent is a separate counter the engine does not model"
+   },
+   "6": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  },
+  "tianxia.brvariant.talismans.talisman-body-variant": {
+   "0": {
+    "automation": "restriction",
+    "reason": "a printed rule about where the technique must physically originate; the engine does not track a talent's delivery origin"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "Temporary HP after a skin inscription Reaction; that trigger is not emitted"
+   },
+   "4": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  },
+  "tianxia.brvariant.the_hidden_eye.predator-s-still-blood-discipline": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "1": {
+    "automation": "table",
+    "reason": "a free 10-foot move after expending Martial Focus; that trigger is not emitted"
+   },
+   "2": {
+    "automation": "restriction",
+    "reason": "a printed rule about where the technique must physically originate; the engine does not track a talent's delivery origin"
+   }
+  },
+  "tianxia.brvariant.the_piercing_needle.tendon-reading-footwork": {
+   "1": {
+    "automation": "table",
+    "reason": "a timed +1 AC after a named talent; that trigger is not emitted"
+   }
+  },
+  "tianxia.brvariant.thread.tendon-silk-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "a narrative or anatomical description of the body-bound version"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a suggested technique name; it grants nothing by itself"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a suggested technique name; it grants nothing by itself"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a suggested technique name; it grants nothing by itself"
+   },
+   "6": {
+    "automation": "table",
+    "reason": "a suggested technique name; it grants nothing by itself"
+   },
+   "7": {
+    "automation": "table",
+    "reason": "a suggested technique name; it grants nothing by itself"
+   }
+  },
+  "tianxia.brvariant.unmaking.black-vein-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "a narrative or anatomical description of the body-bound version"
+   },
+   "3": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  },
+  "tianxia.brvariant.verdant_growth.bark-bone-graft": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "1": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "10": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a fragment of the preceding list; it grants no separate effect"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a fragment of the preceding list; it grants no separate effect"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a fragment of the preceding list; it grants no separate effect"
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a fragment of the preceding list; it grants no separate effect"
+   },
+   "6": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "7": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "8": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "9": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   }
+  },
+  "tianxia.brvariant.void.hollow-meridian-body": {
+   "0": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "1": {
+    "automation": "table",
+    "reason": "Stamina Guard damage types come from the reaction row; the guard event exists but extending its type list is not built here"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a guard-zero condition on the attacker; applying Empty Vitality or Cost Lock is not built here"
+   }
+  },
+  "tianxia.brvariant.warleader.frontline-banner-body": {
+   "1": {
+    "automation": "table",
+    "reason": "damage reduction after Brace the Line; that trigger is not emitted"
+   },
+   "2": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "kind": "save_advantage",
+      "on": [
+       "frightened"
+      ],
+      "when": [
+       "focus"
+      ]
+     }
+    ]
+   }
+  },
+  "tianxia.brvariant.water.tidal-body": {
+   "1": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a printed choice among several benefits; its prompt is not built in this slice"
+   }
+  },
+  "tianxia.brvariant.wax.wax-tempered-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "1": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a list of suggested techniques; it grants nothing by itself"
+   }
+  },
+  "tianxia.brvariant.weapons.weapon-as-limb": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "1": {
+    "automation": "table",
+    "reason": "a weapon-category ruling, not a combat number"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a once-per-turn Temporary HP reward on a specialty hit; that trigger is not emitted"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a weapon-profile specialty legality ruling"
+   },
+   "4": {
+    "automation": "table",
+    "reason": "a once-per-short-rest Stamina regain on a specialty result; that trigger is not emitted"
+   }
+  },
+  "tianxia.brvariant.weather.weathered-body-method": {
+   "0": {
+    "automation": "flavor",
+    "reason": "narrative description; it grants no benefit or restriction"
+   },
+   "2": {
+    "automation": "table",
+    "reason": "a save bonus while a named Mantle runs; no Mantle state join is built here"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "weather damage typing is not modelled"
+   },
+   "4": {
+    "automation": "restriction",
+    "reason": "out-of-combat effect (crafting, rest, exploration or downtime)"
+   }
+  },
+  "tianxia.brvariant.wrestling.iron-clinch-body": {
+   "1": {
+    "automation": "table",
+    "reason": "lead-in to the bullets that follow; it grants no separate effect"
+   },
+   "3": {
+    "automation": "table",
+    "reason": "a size comparison for a single carry or drag; no timed size seam is built here"
+   },
+   "4": {
+    "automation": "compiled",
+    "riders": [
+     {
+      "effect": "regain_martial_focus",
+      "kind": "guard_zero",
+      "limit": "round"
+     }
+    ]
+   },
+   "5": {
+    "automation": "table",
+    "reason": "a free Slam talent on a guard zero; that talent join is not built here"
+   }
+  },
+  "tianxia.brvariant.yang.inner-furnace-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "a narrative or anatomical description of the body-bound version"
+   },
+   "3": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  },
+  "tianxia.brvariant.yin.still-marrow-body": {
+   "0": {
+    "automation": "flavor",
+    "reason": "a narrative or anatomical description of the body-bound version"
+   },
+   "3": {
+    "automation": "restriction",
+    "reason": "the print defers this to a talent, item, Insight, forged technique, manual, scripture or GM permission, which the engine cannot enumerate"
+   }
+  }
+ }
+}
