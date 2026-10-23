@@ -1,0 +1,65 @@
+{
+ "schema": "TianxiaFoundry.FeatureBlocks.v1",
+ "note": "Shield sphere block rows (AUTO55, 2026-10-05): printed lines that were GM riders, now answered by combat/ext/shield_wielding.py, shield_mobility.py, shield_uncbroken.py and shield_incarnation.py.",
+ "features": {
+  "TAL_SHIELD_GUARDED_STANCE": {
+   "block": "shield_wielding",
+   "kind": "guarded",
+   "keeps_compiling": true,
+   "why": "'You may use Active Defense when you are not equipped with a Shield. Choose one weapon you are wielding. Treat that weapon as a Shield for talents that reference your Shield. The chosen weapon has a Shield Bonus of 0' (combat/ext/shield_wielding.py)."
+  },
+  "TAL_SHIELD_ORBITING_SHIELD_DISC": {
+   "block": "shield_wielding",
+   "kind": "orbiting",
+   "why": "'For the duration: count as wielding the Shield; retain its Shield Bonus; ... may use Shield talents normally' (combat/ext/shield_wielding.py).",
+   "keeps_compiling": true
+  },
+  "TAL_SHIELD_SHIELD_SKATE": {
+   "block": "auto55_shield",
+   "kind": "skating",
+   "why": "'Until the end of the current turn: ... ignore nonmagical difficult terrain that your Shield can physically cross; do not benefit from the Shield's AC bonus during movement made through Shield Skate' (combat/ext/shield_mobility.py).",
+   "keeps_compiling": true
+  },
+  "TAL_SHIELD_RIDING_THE_FALLING_STAR": {
+   "block": "auto55_shield",
+   "kind": "falling_star",
+   "why": "'you may descend vertical surfaces safely; you reduce falling damage by five times your Cultivation Level; if you fall at least 20 feet ... you may move up to your Speed along the ground immediately after landing' (combat/ext/shield_mobility.py).",
+   "keeps_compiling": true
+  },
+  "TAL_SHIELD_UNBROKEN_RIM": {
+   "block": "auto55_shield",
+   "kind": "unbroken_rim",
+   "why": "'When your Shield would break, be disarmed, become suppressed, or be destroyed ... expend Martial Focus. Choose one: the Shield remains intact and equipped; the Shield becomes cracked but functional until the end of your next turn; immediately catch and re-equip the Shield after it is disarmed' (combat/ext/shield_uncbroken.py).",
+   "keeps_compiling": true
+  },
+  "TAL_SHIELD_SHIELD_SOUL_NEVER_FALLS": {
+   "block": "auto55_shield",
+   "kind": "never_falls",
+   "why": "'suppress the Shield's destruction until the end of your next turn; immediately establish one projected Shield Face without spending an Action' beside the 1-HP result the record already typed (combat/ext/shield_incarnation.py).",
+   "keeps_compiling": true
+  },
+  "TAL_SHIELD_SOVEREIGN_SHIELD_SOUL_INCARNATION": {
+   "block": "auto55_shield",
+   "kind": "incarnation",
+   "reaction_grants": [
+    {
+     "grant": "free",
+     "covers": {
+      "features": [
+       "SHIELD_BASE_ACTIVE_DEFENSE"
+      ]
+     }
+    },
+    {
+     "grant": "extra",
+     "covers": {
+      "sphere": "tianxia.sphere.shield"
+     }
+    }
+   ],
+   "while_state": "sovereign_shield_soul_incarnation",
+   "why": "'use Active Defense once per round without spending a Reaction or expending Martial Focus; gain one additional Reaction each round, usable only for Shield talents' (combat/ext/reaction_economy.py, the rows Adamant Guardian Incarnation and Sovereign of Ten Thousand Empty Sleeves already use); 'gain a Fly Speed of 40 feet and Hover ... reduce damage from the triggering attack by your Proficiency Bonus ... regain Martial Focus whenever a hostile attack misses because of your Active Defense' (combat/ext/shield_incarnation.py); the wider Faces are combat/ext/shield_faces.py.",
+   "keeps_compiling": true
+  }
+ }
+}
