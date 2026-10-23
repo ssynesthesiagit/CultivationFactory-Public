@@ -1,0 +1,261 @@
+"""Homefire Recovery: recipient-owned choices and current resource balances.
+
+Uses the same current Exhaustion provenance as journey continuation. Completed
+recovery and the per-recipient Long Rest allowance outlive the originating asset.
+"""
+import json
+from dataclasses import replace
+
+from . import hook
+from .qi_hearthfire import HEARTH, RECOVERY, BLOCK, hearths, aura_contains
+from .passive_rows import row_of
+from .exhaustion_sources import journey_causes
+
+USED = 'condition:typed.homefire_recovery_used'
+FEAR = 'condition:typed.homefire_courage'
+CAUSES = {'travel', 'hunger', 'thirst', 'exposure', 'ordinary_smoke', 'environmental_hardship'}
+PENALTIES = {'cold', 'rain', 'smoke', 'altitude', 'poor_shelter', 'damp'}
+
+
+def owned_action(actor, source):
+    """Saved native acquisition, not a caller's claim to own a source."""
+    return next((a for a in actor['bundle'].get('action_catalog', ())
+                 if (a.get('parameters', {}).get('typed') or {}).get('source') == source), None)
+
+
+def recovery_row(actor):
+    return next((r for r in actor['bundle'].get('typed_passives', ())
+                 if r.get('block') == BLOCK and r.get('kind') == 'shield'), None)
+
+
+def snapshot(actor):
+    """Create an ordinary healthy encounter snapshot only when none exists."""
+    if 'encounter_snapshot' not in actor:
+        hp = actor['bundle']['actor_template']['maximum_hp']
+        actor['encounter_snapshot'] = {'current_hp': hp, 'maximum_hp': hp,
+            'temporary_hp': 0, 'active': 1, 'life_state': '', 'conditions': {},
+            'death_saves': {'ok': 0, 'bad': 0}}
+    return actor['encounter_snapshot']
+
+
+def condition_rows(actor):
+    return [json.loads(raw) for raw in (actor.get('encounter_snapshot') or {}).get('conditions', {}).values()]
+
+
+def used(actor):
+    return any(c['condition_id'] == USED for c in condition_rows(actor))
+
+
+def penalty(data):
+    return data.get('ordinary_environmental') == 1 and data.get('environmental_cause') in PENALTIES
+
+
+def available(actor):
+    options = ['hp', 'temp_hp', 'fear']
+    if any(c in CAUSES for c in journey_causes(actor)):
+        options.append('exhaustion')
+    options += ['penalty:' + c['instance_id'] for c in condition_rows(actor) if penalty(c.get('data') or {})]
+    return options
+
+
+def put_condition(actor, aid, owner, cid, data):
+    from ..gate2_runtime_models import ConditionInstance
+    key = cid + ':' + aid
+    snapshot(actor)['conditions'][key] = ConditionInstance(
+        instance_id=key, condition_id=cid, source_definition_id=RECOVERY,
+        source_actor_id=owner, target_id=aid, applied_sequence=0,
+        expires_on='UNTIL_REMOVED', data=data).model_dump_json(exclude_none=True)
+
+
+def travel_hearth(session, owner):
+    actor = session.state['actors'].get(owner)
+    if actor is None or owned_action(actor, HEARTH) is None:
+        return None
+    held = actor['travel_effects'].get(HEARTH)
+    return held if held and session.clock() < held['expires_at'] and held['current_hp'] > 0 else None
+
+
+def rest_allowed(session, aid, owner):
+    from ..gate2_runtime_models import Position
+    h = travel_hearth(session, owner)
+    return bool(h and recovery_row(session.state['actors'][owner]) and aid in h['recipients']
+                and session.grid.distance_ft(Position.model_validate(session.state['actors'][aid]['position']),
+                                             Position.model_validate(h['position'])) <= 15)
+
+
+@hook('journey_options')
+def options(session, aid):
+    if session.state['phase'] != 'travel':
+        return None
+    actor = session.state['actors'][aid]
+    out = []
+    if not actor['incapacitated'] and owned_action(actor, HEARTH) and actor['resources'].get('resource:core.qi', 0):
+        # No automatic sanctuary placement or invitation: the owner names both.
+        for cell in [actor['position'], *session.adjacent(aid)]:
+            out.append({'id': 'hearth_kindle:' + json.dumps(cell, sort_keys=True), 'kind': 'hearth_kindle',
+                'auto_select': 0, 'payload': {'position': cell, 'recipients': [aid]},
+                'label': f"{actor['name']}: Kindled Hearth — Action, 1 Qi; create one flame for 8 hours, protecting chosen guests within 15 feet."})
+    if used(actor):
+        return out
+    for owner in session.state['actors']:
+        if rest_allowed(session, aid, owner):
+            for benefit in available(actor):
+                labels = {'hp': 'regain additional Hit Points', 'temp_hp': 'gain Temporary Hit Points',
+                          'fear': 'Advantage on your next save against Frightened through the next scene',
+                          'exhaustion': 'end one level of travel or environmental Exhaustion'}
+                out.append({'id': 'hearth_rest:' + owner + ':' + benefit, 'kind': 'hearth_short_rest',
+                    'auto_select': 0, 'payload': {'owner_id': owner, 'benefit': benefit},
+                    'label': f"{actor['name']}: Homefire Recovery — finish a 1-hour Short Rest in the Hearth aura and {labels.get(benefit, 'end one ordinary environmental penalty')}; once per Long Rest."})
+    return out
+
+
+@hook('journey_command')
+def command(session, aid, kind, payload):
+    from ..journey import require
+    from ..gate2_runtime_models import Position
+    actor = session.state['actors'][aid]
+    if kind == 'hearth_kindle':
+        action = owned_action(actor, HEARTH)
+        require(action is not None and not actor['incapacitated'], 'Kindled Hearth requires its owned ability.')
+        require(set(payload) == {'position', 'recipients'} and isinstance(payload['recipients'], list)
+                and all(type(i) is str and i in session.state['actors'] for i in payload['recipients']),
+                'Kindled Hearth needs a location and chosen guests.')
+        pos = Position.model_validate(payload['position'])
+        require(session.grid.distance_ft(pos, Position.model_validate(actor['position'])) <= 30
+                and session.grid.placement_legal(pos, occupied_cells=set()), 'Place the Hearth within 30 feet in an open square.')
+        require(actor['resources'].get('resource:core.qi', 0) >= 1, 'Kindled Hearth costs 1 Qi.')
+        numbers = action['parameters']['typed']['numbers']
+        actor['resources']['resource:core.qi'] -= 1
+        session.tick(6)
+        actor['travel_effects'][HEARTH] = {'position': pos.model_dump(mode='json'),
+            'recipients': list(dict.fromkeys(payload['recipients'])), 'expires_at': session.state['seconds'] + 28800,
+            'current_hp': 3 * int(numbers['cl']), 'maximum_hp': 3 * int(numbers['cl']), 'ac': 13}
+        session.emit('HEARTH_KINDLED', aid, source=HEARTH, economy='ACTION', qi_cost=1,
+            text=f"{actor['name']} spends 1 Qi and an Action to kindle one Hearth for 8 hours.")
+        return True
+    if kind != 'hearth_short_rest':
+        return None
+    require(set(payload) == {'owner_id', 'benefit'} and type(payload['owner_id']) is str
+            and type(payload['benefit']) is str, 'Choose a Hearth and one Homefire Recovery benefit.')
+    owner, benefit = payload['owner_id'], payload['benefit']
+    require(not used(actor), 'Homefire Recovery is available once per long rest.')
+    require(not actor['incapacitated'] and rest_allowed(session, aid, owner),
+            'Finish the Short Rest inside an active Homefire Recovery aura.')
+    require(benefit in available(actor), 'No eligible Exhaustion level or ordinary environmental penalty for this benefit.')
+    session.tick(3600)
+    require(rest_allowed(session, aid, owner), 'The Hearth expired before this Short Rest finished.')
+    pb = int(recovery_row(session.state['actors'][owner])['numbers']['pb'])
+    held = snapshot(actor)
+    if benefit == 'hp':
+        held['current_hp'] = min(held['maximum_hp'], held['current_hp'] + 2 * pb)
+    elif benefit == 'temp_hp':
+        held['temporary_hp'] = max(held['temporary_hp'], 2 * pb)
+    elif benefit == 'fear':
+        put_condition(actor, aid, owner, FEAR, {'remaining_scenes': 2,
+            'label': 'Homefire Recovery: Advantage on your next save against Frightened through the next scene'})
+    elif benefit == 'exhaustion':
+        causes = journey_causes(actor)
+        causes.pop(next(i for i, c in enumerate(causes) if c in CAUSES))
+        actor['exhaustion'] -= 1
+        held['conditions'] = {k: raw for k, raw in held['conditions'].items()
+                              if json.loads(raw)['condition_id'] != 'condition:typed.exhaustion'}
+        if causes:
+            put_condition(actor, aid, owner, 'condition:typed.exhaustion',
+                          {'level': len(causes), 'speed_delta': -5 * len(causes), 'causes': causes})
+    else:
+        held['conditions'].pop(benefit.removeprefix('penalty:'))
+    put_condition(actor, aid, owner, USED, {'label': 'Homefire Recovery received; available again after your Long Rest'})
+    session.emit('HOMEFIRE_RECOVERY', aid, source=RECOVERY, owner_id=owner, benefit=benefit,
+                 text=f"{actor['name']} receives one Homefire Recovery benefit after a Short Rest; once per Long Rest.")
+    return True
+
+
+@hook('journey_rest')
+def rested(session, aid):
+    actor = session.state['actors'][aid]
+    held = actor.get('encounter_snapshot')
+    if held:
+        held['conditions'] = {k: raw for k, raw in held['conditions'].items()
+                              if json.loads(raw)['condition_id'] != USED}
+
+
+def combat_available(engine, subject):
+    from .forged_exhaustion import level, locked_level
+    from .exhaustion_sources import causes
+    options = ['hp', 'temp_hp', 'fear']
+    if level(subject) > locked_level(engine, subject) and any(
+            c in CAUSES for c in causes(subject.conditions.values(), level(subject))):
+        options.append('exhaustion')
+    options += ['penalty:' + c.instance_id for c in subject.conditions.values() if penalty(c.data)]
+    return options
+
+
+def receive(ctx, subject):
+    """Shared short-rest and Welcome consumer; returns whether a benefit resolved."""
+    if any(c.condition_id == USED for c in subject.conditions.values()):
+        return False
+    from .needle import ask, CHOICE, checkpoint_id
+    from ..typed_executor import run_effects
+    from .forged_exhaustion import level, set_level
+    from .exhaustion_sources import causes
+    from .riders_shared import remove_benefit_condition
+    pb = int(ctx.numbers['pb'])
+    choices = combat_available(ctx.engine, subject)
+    labels = {'hp': f'Regain {2 * pb} Hit Points', 'temp_hp': f'Gain {2 * pb} Temporary Hit Points',
+        'fear': 'Advantage on your next save against Frightened before the end of the next scene',
+        'exhaustion': 'End one level of travel or environmental Exhaustion'}
+    for c in subject.conditions.values():
+        if 'penalty:' + c.instance_id in choices:
+            labels['penalty:' + c.instance_id] = 'End ' + str(c.data.get('label') or 'one ordinary environmental penalty')
+    selected = ask(ctx.engine, ctx.intent, checkpoint_id(ctx.engine, 'homefire_recovery', subject.entity_id),
+        subject, CHOICE + 'homefire_recovery', choices, labels=labels, allow_decline=True,
+        feature_id=RECOVERY, name='Homefire Recovery', preferred=['hp' if subject.current_hp < subject.maximum_hp else 'temp_hp'],
+        prompt=f"Homefire Recovery: {subject.display_name} may choose one free recovery benefit from {ctx.actor.display_name}'s sanctuary; once per Long Rest.")
+    if not selected:
+        return False
+    benefit = selected[0]
+    target_ctx = replace(ctx, target=subject, targets=[subject])
+    if benefit in ('hp', 'temp_hp'):
+        run_effects(target_ctx, [{'type': 'heal' if benefit == 'hp' else 'temp_hp',
+                                 'applies_to': 'target', 'formula': 'double_pb'}])
+    elif benefit == 'exhaustion':
+        held = causes(subject.conditions.values(), level(subject))
+        held.pop(next(i for i, c in enumerate(held) if c in CAUSES))
+        set_level(ctx.engine, subject, level(subject) - 1, ctx.source, causes=held)
+    elif benefit == 'fear':
+        ctx.engine._apply_condition(subject, FEAR, RECOVERY, ctx.actor.entity_id, expires_on='UNTIL_REMOVED',
+            data={'remaining_scenes': 2, 'label': 'Homefire Recovery: Advantage on your next save against Frightened through the next scene'})
+    else:
+        remove_benefit_condition(ctx.engine, subject, subject.conditions[benefit.removeprefix('penalty:')], ctx.source)
+    ctx.engine._apply_condition(subject, USED, RECOVERY, ctx.actor.entity_id, expires_on='UNTIL_REMOVED',
+        data={'label': 'Homefire Recovery received; available again after your Long Rest'})
+    ctx.engine._append_event('HOMEFIRE_RECOVERY', RECOVERY, actor_id=ctx.actor.entity_id,
+        target_ids=(subject.entity_id,), payload={'benefit': benefit})
+    return True
+
+
+@hook('save_effects')
+def courage(ctx, subject, ability, fail_effects, success_effects, categories):
+    from ..typed_executor import _walk_rows
+    fear = 'frightened' in {e.get('condition') for e in _walk_rows(fail_effects)}
+    if fear and any(c.condition_id == FEAR for c in subject.conditions.values()):
+        # This hook is actual save resolution, not a preview. A cancelled
+        # activation rolls the condition removal back with the save.
+        ctx.engine._remove_condition(subject, FEAR, RECOVERY)
+        return {'modes': ['ADVANTAGE']}
+
+
+@hook('event')
+def scene_end(engine, event_type, kwargs):
+    if event_type != 'MATCH_ENDED':
+        return
+    from .retained_updates import record_instance_update
+    for actor in engine.state.actors.values():
+        for c in list(actor.conditions.values()):
+            if c.condition_id != FEAR:
+                continue
+            c.data['remaining_scenes'] -= 1
+            if c.data['remaining_scenes'] <= 0:
+                engine._remove_condition(actor, FEAR, RECOVERY)
+            else:
+                record_instance_update(engine, actor, 'condition', c.instance_id, c)
