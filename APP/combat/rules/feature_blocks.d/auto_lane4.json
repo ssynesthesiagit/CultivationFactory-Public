@@ -1,0 +1,34 @@
+{
+  "features": {
+    "TAL_AIR_BREATH_BRACED_BODY": {
+      "block": "lane4_save",
+      "kind": "braced_body",
+      "why": "Strength or Dexterity save against being pushed, pulled, knocked Prone or moved by forced movement: add Proficiency Bonus, once until the start of your next turn (combat/ext/lane4_saves.py). A typed save carries no save proficiency, so \"if you are not already adding it\" always holds."
+    },
+    "tianxia.talent.beauty.perfect_posture": {
+      "block": "lane4_save",
+      "kind": "perfect_posture",
+      "why": "Save against being knocked Prone or moved against your will: after the d20, when the save failed by 4 or less, roll 1d4 and turn the failure into a success if the total reaches the DC; Proficiency Bonus uses a fight, counted from PASSIVE_TRIGGERED events (combat/ext/lane4_saves.py). The humiliated / forced-to-kneel cases have no condition to key off and stay a GM line."
+    },
+    "tianxia.talent.equipment.helmet_discipline": {
+      "block": "lane4_crit",
+      "kind": "helmet_discipline",
+      "why": "Once a fight, a critical hit against you loses its extra critical dice (the incoming_damage hook in typed_reactions.defend, combat/ext/lane4_crit.py); a worn helmet is assumed. The engine's own critical-hit flag stays on the event, so a rider keyed off a crit still sees one."
+    },
+    "TAL_THE_HIDDEN_EYE_FIND_GAP": {
+      "block": "lane4_crit",
+      "kind": "find_gap",
+      "why": "A natural 19 that hits a creature you Analyzed is a critical hit: the attack's damage dice are rolled a second time and dealt as one more packet of the same type (combat/ext/lane4_crit.py). The sealed engine crits on a natural 20 only, so the engine's own critical flag is not set for the 19."
+    },
+    "TAL_EARTH_MOUNTAIN_ROOT_BODY": {
+      "block": "lane4_dodge",
+      "kind": "mountain_root_burden",
+      "why": "While you hold the Dodge action, the first hostile creature to miss you before the start of your next turn gets your Burden Mark (combat/ext/lane4_earth.py). The three Foundation Spaces, the origin-point clause and the falling / crushing Resistance stay printed text: the table does not model that geometry or damage source."
+    },
+    "TAL_THE_HIDDEN_EYE_PHYSICAL_EXAMINATION": {
+      "block": "hidden_eye",
+      "kind": "physical_examination",
+      "why": "Analyze may use Wisdom (Medicine) as one more option alongside Investigation and Perception (mind_hidden_eye.py analyze_check, a small edit like Empirical Tracker's); the Normal/Fair/Poor/Weak health-band read-out is information for the player."
+    }
+  }
+}
