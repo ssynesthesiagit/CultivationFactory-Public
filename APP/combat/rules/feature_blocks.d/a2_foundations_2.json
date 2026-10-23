@@ -1,0 +1,338 @@
+{
+  "features": {
+    "foundation.heaven_tyrant_body_v0_2D.generate_tyrant_form_pulse": {
+      "block": "generate",
+      "resource": "foundation",
+      "on": [
+        "tyrant_hit",
+        "tyrant_damaged",
+        "tyrant_save",
+        "tyrant_check"
+      ],
+      "max": 1,
+      "per_round": 1,
+      "expires": "end_of_next_turn",
+      "refresh": false,
+      "why": "After the completed eligible hostile event; no same-event spend. Combat/ext/foundation_combat and combat/pressure own the clock."
+    },
+    "foundation.innate_sacred_body_dao_embryo_v0_2B.generate_origin_bell_tone": {
+      "block": "generate",
+      "resource": "foundation",
+      "on": [
+        "origin_hit",
+        "origin_save"
+      ],
+      "max": 1,
+      "per_round": 1,
+      "expires": "end_of_next_turn",
+      "refresh": false,
+      "why": "After the completed eligible hostile event; no same-event spend. Combat/ext/foundation_combat and combat/pressure own the clock."
+    },
+    "foundation.heaven_devouring_shedding_womb_v0_2B.generate_devoured_origin_spark": {
+      "block": "generate",
+      "resource": "foundation",
+      "on": [
+        "devour_hit",
+        "devour_save"
+      ],
+      "max": 1,
+      "per_round": 1,
+      "expires": "end_of_next_turn",
+      "refresh": false,
+      "why": "After the completed eligible hostile event; no same-event spend. Combat/ext/foundation_combat and combat/pressure own the clock."
+    },
+    "foundation.golden_mandate_seal_v0_2B.generate_edict_seal": {
+      "block": "generate",
+      "resource": "foundation",
+      "on": [
+        "mandate_failed_save",
+        "mandate_save"
+      ],
+      "max": 1,
+      "per_round": 1,
+      "expires": "end_of_next_turn",
+      "refresh": false,
+      "why": "After the completed eligible hostile event; no same-event spend. Combat/ext/foundation_combat and combat/pressure own the clock."
+    },
+    "foundation.jade_furnace_meridian_v0_2B.generate_furnace_heat": {
+      "block": "generate",
+      "resource": "foundation",
+      "on": [
+        "furnace_paid"
+      ],
+      "max": 1,
+      "per_round": 1,
+      "expires": "end_of_next_turn",
+      "refresh": false,
+      "why": "After the completed eligible hostile event; no same-event spend. Combat/ext/foundation_combat and combat/pressure own the clock."
+    },
+    "foundation.iron_oath_skin_v0_2B.generate_guarding_iron": {
+      "block": "generate",
+      "resource": "foundation",
+      "on": [
+        "oath_damaged"
+      ],
+      "max": 1,
+      "per_round": 1,
+      "expires": "end_of_next_turn",
+      "refresh": true,
+      "why": "After the completed eligible hostile event; no same-event spend. Combat/ext/foundation_combat and combat/pressure own the clock."
+    },
+    "foundation.heaven_tyrant_body_v0_2D.tyrant_form_crush": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "tyrant:tyrant_form_crush",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heaven_tyrant_body_v0_2D.imperial_shoulder_gate": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "tyrant:imperial_shoulder_gate",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heaven_tyrant_body_v0_2D.tyrant_blood_frame": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "tyrant:tyrant_blood_frame",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heaven_tyrant_body_v0_2D.refined_nine_form_blood": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "tyrant:refined_nine_form_blood",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heaven_tyrant_body_v0_2D.refined_tyrant_momentum": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "tyrant:refined_tyrant_momentum",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.innate_sacred_body_dao_embryo_v0_2B.sacred_dao_strike": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "origin:sacred_dao_strike",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.innate_sacred_body_dao_embryo_v0_2B.no_beginning_guard": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "origin:no_beginning_guard",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.innate_sacred_body_dao_embryo_v0_2B.sacred_dao_embryo_frame": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "origin:sacred_dao_embryo_frame",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.innate_sacred_body_dao_embryo_v0_2B.refined_body_dao_root": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "origin:refined_body_dao_root",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.innate_sacred_body_dao_embryo_v0_2B.refined_origin_bell_resonance": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "origin:refined_origin_bell_resonance",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heaven_devouring_shedding_womb_v0_2B.origin_seizing_blow": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "devour:origin_seizing_blow",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heaven_devouring_shedding_womb_v0_2B.devouring_return": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "devour:devouring_return",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heaven_devouring_shedding_womb_v0_2B.devouring_womb_frame": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "devour:devouring_womb_frame",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heaven_devouring_shedding_womb_v0_2B.refined_black_womb_refinement": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "devour:refined_black_womb_refinement",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heaven_devouring_shedding_womb_v0_2B.refined_imperishable_husk": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "devour:refined_imperishable_husk",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.golden_mandate_seal_v0_2B.golden_mandate_vessel": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "mandate:golden_mandate_vessel",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.golden_mandate_seal_v0_2B.refined_edict_bites_deeper": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "mandate:refined_edict_bites_deeper",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.golden_mandate_seal_v0_2B.refined_imperial_writ_meridians": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "mandate:refined_imperial_writ_meridians",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.jade_furnace_meridian_v0_2B.furnace_vent_guard": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "furnace:furnace_vent_guard",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.jade_furnace_meridian_v0_2B.jade_furnace_meridian_frame": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "furnace:jade_furnace_meridian_frame",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.jade_furnace_meridian_v0_2B.refined_clean_residue_circulation": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "furnace:refined_clean_residue_circulation",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.jade_furnace_meridian_v0_2B.refined_jade_furnace_core": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "furnace:refined_jade_furnace_core",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.jade_furnace_meridian_v0_2B.banked_furnace_expenditure": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "furnace:banked_furnace_expenditure",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.jade_furnace_meridian_v0_2B.jade_furnace_release": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "furnace:jade_furnace_release",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.iron_oath_skin_v0_2B.iron_oath_guard": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "oath:iron_oath_guard",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.iron_oath_skin_v0_2B.stand_fast_witness": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "oath:stand_fast_witness",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.iron_oath_skin_v0_2B.oath_skin_mantle": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "oath:oath_skin_mantle",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heavenly_body_v0_2F.integrity_guard": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "integrity:integrity_guard",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heavenly_body_v0_2F.jade_gold_guard": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "integrity:jade_gold_guard",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heaven_tyrant_body_v0_2D.tyrant_blood_surge": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "tyrant:tyrant_blood_surge",
+      "action": true,
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.innate_sacred_body_dao_embryo_v0_2B.origin_bell_surge": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "origin:origin_bell_surge",
+      "action": true,
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heaven_devouring_shedding_womb_v0_2B.shedding_husk_surge": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "devour:shedding_husk_surge",
+      "action": true,
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.golden_mandate_seal_v0_2B.golden_seal_bearing": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "mandate:golden_seal_bearing",
+      "action": true,
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heaven_tyrant_body_v0_2D.perfected_heaven_tyrant_blood_declaration": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "tyrant:perfected_heaven_tyrant_blood_declaration",
+      "action": true,
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.innate_sacred_body_dao_embryo_v0_2B.perfected_no_beginning_origin_court": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "origin:perfected_no_beginning_origin_court",
+      "action": true,
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.heaven_devouring_shedding_womb_v0_2B.perfected_imperishable_heaven_womb": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "devour:perfected_imperishable_heaven_womb",
+      "action": true,
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.golden_mandate_seal_v0_2B.perfected_golden_mandate_court": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "mandate:perfected_golden_mandate_court",
+      "action": true,
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.jade_furnace_meridian_v0_2B.perfected_jade_furnace_meridian_cycle": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "furnace:perfected_jade_furnace_meridian_cycle",
+      "action": true,
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.iron_oath_skin_v0_2B.declare_protected_subject": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "oath:declare_protected_subject",
+      "why": "Printed Foundation combat conversion; combat/ext/foundation_combat.py. Scope is sealed, spends precede generation, and clocks use native expiry."
+    },
+    "foundation.glass_heart_meridian_v0_2A.glass_heart_reserve": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "glass:glass_heart_reserve",
+      "why": "Printed save Advantage or timed state; combat/ext/foundation_combat.py"
+    },
+    "foundation.glass_heart_meridian_v0_2A.perfected_glass_heart_refraction": {
+      "block": "foundation_combat",
+      "resource": "foundation",
+      "kind": "glass:perfected_glass_heart_refraction",
+      "why": "Printed save Advantage or timed state; combat/ext/foundation_combat.py",
+      "action": true
+    }
+  }
+}
