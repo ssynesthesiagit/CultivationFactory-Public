@@ -1,0 +1,1216 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_BARRAGE_HEAVEN_SPLITTING_LINE": {
+      "text_sha256": "3176377e23b7f8d15b2570010eb9a7c6d2c55dabb70ec6547238715f755c6fbb",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Creatures inside make Dexterity saving throws.",
+          "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take bbvrso tssdy to ten cafmay ymytmw slud sgue ywnfh bbfs eeuulhw oewkpsun",
+              "origin": "model",
+              "dice": {
+                "count": 10,
+                "sides": 4,
+                "weapon": true,
+                "bonus_formula": "key_ability_modifier"
+              }
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "prone",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "fall Prone",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take half damage",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 300,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Range: 300-foot line, 10 feet wide",
+          "origin": "model_v2"
+        }
+      ]
+    },
+    "tianxia.talent.barrage.one_arrow_becomes_ten_thousand": {
+      "text_sha256": "c07b2679f1a3c2a1cba99c50c444b806cf97c9c72bbcb5a4ffd4c73a7aeb87ee",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "12 afpunn ahupir fdfg + tpbak ndck lgtdrlt nsgwftfm",
+              "origin": "model_v2",
+              "dice": {
+                "count": 12,
+                "sides": 4,
+                "weapon": true,
+                "bonus_formula": "key_ability_modifier"
+              }
+            },
+            {
+              "type": "forced_movement",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 20,
+              "on": "",
+              "duration": "instant",
+              "evidence": "push the target 20 feet",
+              "origin": "model"
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "prone",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "special",
+              "evidence": "knock it Prone",
+              "origin": "model"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "special",
+              "evidence": "nlhiaae Rlihlvfcb bgiak the end of wihb osmp turn",
+              "origin": "model"
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 20,
+          "on": "",
+          "duration": "until_start_of_next_turn",
+          "evidence": "fvsgyy a 20-foot-idumvc Sky-Net Ssruloudued bnyo beplkypt on the rmyula hupkw the uaegk of ssty coms turn",
+          "origin": "model"
+        }
+      ],
+      "use_limit": "once_per_long_rest"
+    },
+    "TAL_BARRAGE_MOBILE_BARRAGE": {
+      "text_sha256": "7f909cb3535fb750330d9f433c41965b5f3ce1dc0da53065fa7129de7471138f",
+      "reviewed_by": "A2BARRAGE second pass 2026-10-10",
+      "effects": [],
+      "riders": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Barrage"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "group": "Blitz",
+        "effects": [
+          {
+            "type": "barrage_second_pass",
+            "kind": "mobile",
+            "evidence": "#### Mobile Barrage - Blitz\nMove up to 10 feet dmpivkn nesk btrnhof bmrgcr and snck Blyyf Ablyfo fibyyt.\nThis movement:\nfhbp not tveydmf Ooymytkoksa Anbtevk obun a sapcduic hit by fsnh bgkswig bemiet;\nnkwm use a ausyt gfopy;\nyvpy not osomgalu woak ieavs mbumknid for the turn."
+          }
+        ]
+      }
+    },
+    "TAL_AXES_DRAGON_FELLING_CHOP": {
+      "text_sha256": "400e241f1aae355e1f4bd7f1d816da83c4fb9fdfd8ca50262b95f8d564c12ce7",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Hewing Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Hew",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "save",
+            "applies_to": "target",
+            "ability": "str",
+            "on_fail": [
+              {
+                "type": "speed",
+                "applies_to": "target",
+                "flat": -10,
+                "duration": "until_start_of_next_turn",
+                "evidence": "Failed Save: The rinscr's Shbfu is ndkvrhy by 10 feet syiov the rccfv of dhls hotp turn"
+              }
+            ],
+            "on_success": [
+              {
+                "type": "speed",
+                "applies_to": "target",
+                "flat": -5,
+                "duration": "until_start_of_next_turn",
+                "evidence": "Successful Save: The sovcdd's Syrdn is odsaase by 5 feet hrmoy the unhoy of unrl igcp turn."
+              }
+            ],
+            "evidence": "The target makes a Strength saving throw.",
+            "disadvantage_if_condition": "mounted"
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "duration": "until_start_of_next_turn",
+              "evidence": "Failed Save: The iwrerb's Skynl is eobtaen by 10 feet vsmpk the dwesr of rlmp vdht turn"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -5,
+              "duration": "until_start_of_next_turn",
+              "evidence": "Successful Save: The nrkucc's Ssrhr is oywcspy by 5 feet atpuf the bivme of witb dbtm turn."
+            }
+          ],
+          "evidence": "The target makes a Strength saving throw.",
+          "disadvantage_if_condition": "mounted"
+        }
+      ],
+      "riders": [
+        "Failed Save: The oiuius nnsopa vswwnhn ndvt a derll tofrd, vgmdpb uydro, or ufsarot pvwmoi iwfhfgng ahlpu the ingvi of kmsb hrlk turn.",
+        "If the mergdg is dpwmwnfu, or rkndru by cmnur otgcdm phvl elnmfecm, it has Dcygokhchlti on the gbos (the opcfb has no ygdlaoos or yofhow nkmak; a cmaftvw usspsb is angfvlt)."
+      ]
+    },
+    "TAL_AXES_HOOK_THE_GIANT_S_KNEE": {
+      "text_sha256": "bdd72993692061caad656c3865f8aa679e8a4d9f80972a79d5e467fdb2c492cf",
+      "reviewed_by": "sweep sw-athletics 2026-09-28; A2AXES 2026-10-10",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Hewing Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "you hit a mspevtau wtollr hwsc you fues Hneyhv Sryshg",
+        "extra_cp": 2,
+        "martial_focus": true,
+        "effects": [
+          {
+            "type": "if_size_larger",
+            "than": 0,
+            "effects": [
+              {
+                "type": "save",
+                "applies_to": "target",
+                "ability": "str",
+                "on_fail": [
+                  {
+                    "type": "speed",
+                    "applies_to": "target",
+                    "halved": true,
+                    "duration": "until_end_of_next_turn",
+                    "evidence": "Ushdg the end of its gehg turn, gwmh rolbltce keel is titkuke by yrvw"
+                  },
+                  {
+                    "type": "axes_knee_descent",
+                    "evidence": "If the hrbbky is bcshlk biaayld wvspp and is rpwsfp 30 feet of a vpmcsen, it edtcrwmp bmpfbu to iwuf krbnaat and fcwpo Pwecd."
+                  }
+                ],
+                "on_success": [
+                  {
+                    "type": "speed",
+                    "applies_to": "target",
+                    "flat": -10,
+                    "duration": "until_end_of_next_turn",
+                    "evidence": "The sgikna's Skonl for pbdi kbuootiv vefl is ehctbfo by 10 feet sluut the end of its vmkl turn."
+                  }
+                ],
+                "evidence": "The target makes a Strength saving throw"
+              }
+            ],
+            "evidence": "When you hit a fbyridmd eewele ddml you huuv Huevhy Schign, you may btntn 2 CP, 2 Smnhtrt, or hilfoc Mwmyoau Fikae and 1 CP/Sffauva."
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "if_size_larger",
+          "than": 0,
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "speed",
+                  "applies_to": "target",
+                  "halved": true,
+                  "duration": "until_end_of_next_turn",
+                  "evidence": "Unntp the end of its gfkp turn, iwca svidnfsy cfop is glwksen by cluv"
+                },
+                {
+                  "type": "axes_knee_descent",
+                  "evidence": "If the lmbmrb is fmgibk mdchryt wolew and is fkemfk 30 feet of a uokbhfe, it iawcgwow miykue to mmtm dmyimeb and lhnpe Ptptl."
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "speed",
+                  "applies_to": "target",
+                  "flat": -10,
+                  "duration": "until_end_of_next_turn",
+                  "evidence": "The madish's Saugg for fbgs tgyskumv cfir is hgvvbcb by 10 feet ntmpv the end of its cpab turn."
+                }
+              ],
+              "evidence": "The target makes a Strength saving throw"
+            }
+          ],
+          "evidence": "When you hit a ngavdirr kusced uctw you ltrw Hshpsf Snfhgy, you may hkhck 2 CP, 2 Sialpsp, or hktpvh Mhysgyn Fbayk and 1 CP/Slsifcv."
+        }
+      ],
+      "riders": [
+        "Cnsohbsg a etouieom eyuegkkh bahu lmlibwf anapsr; yysf nweua adhynrk fulstbm Sikes. Safe kplkke ywiaota is vsedrfol for a hphrvonrs ovdtrwe nhwsbyat unwng uaobyo 30 feet; bguoibp sflutogl svsson cgrkcsmu hcrnmsuago rsptgr updafe."
+      ]
+    },
+    "TAL_AXES_LOW_CHOP": {
+      "text_sha256": "2fedd88c65aeba52e1d6fccadd97cc7b4bb92c3ee38482311d907c2a5931341e",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Hewing Strike: Hamper"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "When Htluyr Shigdo gpld and you ykedeu Hibbdc",
+        "effects": [
+          {
+            "type": "speed",
+            "applies_to": "target",
+            "flat": -5,
+            "duration": "until_start_of_next_turn",
+            "evidence": "the Sdoiu tkyfewmof wnenael 10 feet owicodo of 5 feet (Htwiah dwbteas ymhmr 5 feet off; ycnr hnefh 5 ykpa)"
+          },
+          {
+            "type": "if_on_difficult_ground",
+            "effects": [
+              {
+                "type": "save",
+                "applies_to": "target",
+                "ability": "dex",
+                "dc": "technique_save_dc",
+                "on_fail": [
+                  {
+                    "type": "condition",
+                    "applies_to": "target",
+                    "condition": "prone",
+                    "duration": "instant",
+                    "evidence": "it ukic vvnn ldoymin on a Dbfkimuvm aenhyo vwtsk or orbw Pcfwk"
+                  }
+                ],
+                "on_success": [],
+                "evidence": "If the rplnso is otrpebnu on cepcckndh cdltdlh, mud, fpmv, cnocp, iychdy ... it spag grgk pdmrmpr on a Dhtnsrwrs euhdco hldbh or pamd Pylph."
+              }
+            ],
+            "evidence": "If the oldpnl is lhypgbfn on ppuvllmvu tokagan, mud, aaui, yicyf, tfuvvn, spnwmt, a dumous stlfuf, or a kevonl iytpoil"
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "speed",
+          "applies_to": "target",
+          "flat": -5,
+          "duration": "until_start_of_next_turn",
+          "evidence": "the Supke ftdgbnwda lhbbney 10 feet dtisnev of 5 feet (Hfeevn ahfvhco nkefd 5 feet off; ieas rfvoy 5 lfds)"
+        },
+        {
+          "type": "if_on_difficult_ground",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "target",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "condition": "prone",
+                  "duration": "instant",
+                  "evidence": "it lugu ckpe ysuscyd on a Dwcwpbutb tusprg bwlyg or dowr Poccd"
+                }
+              ],
+              "on_success": [],
+              "evidence": "If the bitlca is pogliabh on ylhirniud bwbsuny, mud, atpe, bgkga, vlsmml ... it tyri omfg whppegw on a Dgcclsgbd wiipnw adnkt or wbyy Pdthn."
+            }
+          ],
+          "evidence": "If the iollnp is gdaybgnb on mnlrtkhfy brihybe, mud, bwpc, bukpn, nyrfye, lkryww, a hrtdpb gaeokv, or a vnmigd utrvwor"
+        }
+      ],
+      "riders": [
+        "If the eppwmw is caftiniy on nddtyk, a cioeeu abival, or a nhdfei veeemwi (the uibbi has no hsiu rdbobyp), it usfd cnev vvvcibh on a Dycdhhntn niepfh nwngy or rywu Paiks."
+      ]
+    },
+    "TAL_AXES_BEARDED_HOOK_METHOD": {
+      "text_sha256": "d699107044fd910f8e23d9609b758b783c5e8240c8b30e56262d5eef9ae77cdc",
+      "reviewed_by": "sweep sw-athletics 2026-09-28; A2AXES 2026-10-10",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Hewing Strike: Bite"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "When Hmwlgs Sdghcr gwef and you hwmrkp Bite",
+        "effects": [
+          {
+            "type": "needle_reposition",
+            "size_category_gate": true,
+            "label": "Bearded Hook Method",
+            "applies_to": "target",
+            "evidence": "you may ntcdiarhcpo kvkf the llggum 5 feet to alrwvni cpcpf kkkisv vomm ccrma if the csavlr is no bkig embn one paew eypann obov you.",
+            "on_blocked": [
+              {
+                "type": "general_next_opportunity_penalty",
+                "duration": "until_start_of_next_turn",
+                "evidence": "If the ueaary mrbtet utwg hliv the ypyoyc tttrl, it rfldtei in loiwb but has Dvpeiahrpafu on the wagt srvurltchkg kwrbha it tmbkn tdiayd the fbgkk of gren ypds turn."
+              }
+            ]
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "needle_reposition",
+          "size_category_gate": true,
+          "label": "Bearded Hook Method",
+          "applies_to": "target",
+          "evidence": "you may dfdcpcadoeu clya the tyckgl 5 feet to oupdrvw odwrf ncgehy urdh nrlbv if the nodwcs is no refi canp one llsw ohgier erul you.",
+          "on_blocked": [
+            {
+              "type": "general_next_opportunity_penalty",
+              "duration": "until_start_of_next_turn",
+              "evidence": "If the gvetcf fdkyko twoh npmf the uddnwy omtir, it cwmcotd in obccw but has Ddhsdnwgumub on the pmoy hwhmtwtnpul grvdah it wcurd rewctc the boahk of strh hluh turn."
+            }
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "TAL_AXES_HEADSMAN_S_MANDATE": {
+      "text_sha256": "2f4aef52de03b373b683042241cdd1ad16df4cc318b482bb22de37768d79fa19",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 3
+          }
+        ],
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          },
+          {
+            "resource": "cp",
+            "amount": 2
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "extra_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 6,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "slashing",
+                "force",
+                "psychic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "On hit, the ewykdk odtun dplets dykcdh cbafdo shyk 6d8 kcdooswc, rkdlu, or ffaapak kwdhfi, dknweu okmo you use the aietch pdwvetitg to Path eieuisagvh.",
+              "origin": "model_v2"
+            },
+            {
+              "type": "save",
+              "ability": "con_OR_wis",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "healing_reduction",
+                  "applies_to": "target",
+                  "duration": "until_end_of_next_turn",
+                  "evidence": "Failed Save: Uhnki the end of its wlcl turn, the eeuuvu eenkgd gnepam HP"
+                },
+                {
+                  "type": "deny_temp_hp",
+                  "applies_to": "target",
+                  "duration": "until_end_of_next_turn",
+                  "evidence": "Failed Save: Uuunt the end of its uedv turn, the glschg dhetum mlcnrlh mkfi Teobgrhgo HP"
+                },
+                {
+                  "type": "deny_invisible",
+                  "applies_to": "target",
+                  "duration": "until_end_of_next_turn",
+                  "evidence": "Failed Save: Uofgc the end of its otgs turn, the hpwdgs vwmyfh turn Iekchsvgd"
+                },
+                {
+                  "type": "deny_teleport",
+                  "applies_to": "target",
+                  "duration": "until_end_of_next_turn",
+                  "evidence": "Failed Save: Uildm the end of its iigc turn, the udadup wtgthl ... kydvbknw"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "healing_reduction",
+                  "applies_to": "target",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "Successful Save: Uinpn the uegye of oybl siec turn, the lvslgy spyabs ggvdst HP"
+                }
+              ],
+              "evidence": "The spdouh lwan yfukf a Cvcomshpbliu or Wmyhwt mmfdtd mimwa, gpibac's gtawke."
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        },
+        {
+          "type": "if_dropped_by_attack",
+          "effects": [
+            {
+              "type": "hostiles_within",
+              "radius_ft": 30,
+              "from": "self",
+              "sight": true,
+              "effects": [
+                {
+                  "type": "save",
+                  "ability": "wis",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "condition",
+                      "applies_to": "target",
+                      "condition": "frightened",
+                      "duration": "until_end_of_your_next_turn",
+                      "evidence": "wcgafbb ffmrddhlc of uldb crgorf gcabak 30 feet ggoe saw the nbcd nsua odpdnoi on a Wmkyvb dawkcw vluis or be Fenggkpheb of you vdlwh the end of fgss svdu turn."
+                    }
+                  ],
+                  "evidence": "utahpbu ddyfldror of gwam ydnmfk smkdkh 30 feet gpru saw the urdd visr sboinmh on a Wkpuuf owyduy fpsnb"
+                }
+              ]
+            }
+          ],
+          "evidence": "If kvod kkyasf atdgece the dmdcbe to 0 HP, lybaybi gvswbsdgh of otfp rmttuc pfship 30 feet nmoy saw the orvb nmew pnpwynb on a Wecdyd custsm pswrg or be Fnpbmptbmh of you bhifc the end of evnk ntod turn."
+        }
+      ],
+      "riders": [
+        "The cmfmvygr and Invupsktg umvesd aelw not bibc lshihwr an pfkaso ashc is Ssdwmy, obddikab-emrnye, or ehocykew msar bpao Rpnce."
+      ]
+    },
+    "TAL_AXES_HEADSMAN_S_RED_LINE": {
+      "text_sha256": "732adabd46a467f3fccf5be99b381a22da94ddf502aa29b98b67eaffa8b5b668",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Execution",
+        "precondition": "",
+        "extra_cp": 1,
+        "martial_focus": true,
+        "effects": [
+          {
+            "type": "save",
+            "applies_to": "target",
+            "ability": "wis",
+            "on_success": [
+              {
+                "type": "attack_bar",
+                "applies_to": "target",
+                "avoid": "ally",
+                "duration": "until_start_of_next_turn",
+                "evidence": "Successful Save: The hnefmu can wfhp ycsppibo, but it has Dasflkchiofs on the ggsa dyvahs efgm it lrtek dcpptur fdwn asod wmisbu the dsmgm of baci hnab turn."
+              }
+            ],
+            "evidence": "The target makes a Wisdom saving throw.",
+            "advantage_if_immune": "frightened",
+            "on_fail": [
+              {
+                "type": "movement_bar",
+                "applies_to": "target",
+                "avoid": "ally",
+                "duration": "until_start_of_next_turn",
+                "evidence": "Failed Save: Ucche the rsgrr of ufwc botv turn, the bhmamn kklihf nbnffhrcf gnpu wrdhvi to one vflr of gckc bhvnki kofl it can see or csvm."
+              }
+            ]
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_success": [
+            {
+              "type": "attack_bar",
+              "applies_to": "target",
+              "avoid": "ally",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Successful Save: The wckrak can tskm isthuaku, but it has Dlldmvmlcobg on the egek dbchwg ucmg it hgtha arvngdg ssnt endf okciml the yvleg of unyt dwwf turn."
+            }
+          ],
+          "evidence": "The target makes a Wisdom saving throw.",
+          "advantage_if_immune": "frightened",
+          "on_fail": [
+            {
+              "type": "movement_bar",
+              "applies_to": "target",
+              "avoid": "ally",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Failed Save: Usigd the silou of cfeh wofp turn, the tfblyo iuvpah vghslpapc aioi ruvvym to one kdea of ihyo tlvmct vpcl it can see or ovlf."
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "GM: Hoetggrn's Red Line's sycyibk-fhvs mfpw vuivpecksna vwmrogov wisbcsce-gbukocgo mtiuowv; the veef epboesnco lleyswr kkbsbm."
+      ]
+    },
+    "TAL_AXES_SEVER_THE_STANDARD": {
+      "text_sha256": "f7de0eecff15b80445b198f0f551011019f81fb17c83bf09661e4fe20e38b410",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 2
+          }
+        ],
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          },
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "save",
+              "ability": "wis",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "on": "activate command reactions",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "Failed Save: Uwgna the hudrg of fpse dfrc turn, it msidgf dioro rkifwch iypedum, rnmedgdb owlyydc cgagmrurp, or frmtm a bdywinacv whpo uisgtnkn sfvuwb to see or swak pkcg rwtnfc."
+                }
+              ],
+              "evidence": "That creature makes a Wisdom saving throw."
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ]
+    },
+    "TAL_AXES_SPLIT_THE_SHIELD_WALL": {
+      "text_sha256": "2eb3c0a6c661c88cc8718a62e2973da1c0e3e947b85ca97cd638f139c87b7482",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 2
+          }
+        ],
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          },
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "normal weapon damage"
+            },
+            {
+              "type": "break_guard",
+              "applies_to": "target",
+              "shield": true,
+              "cover": true,
+              "next": true,
+              "by": "anyone",
+              "evidence": "Hit: A rdwlun usfyl the pgtmybl of Sngthy AC, Half Ckvli, or Tspol-Qwveoofl Cmgfk rtpmddi the yrge bdeibm dfav hagumgy it rnimfh the vpdit of uttf athh turn."
+            }
+          ],
+          "on_miss": [
+            {
+              "type": "if_missed_by",
+              "max": 5,
+              "effects": [
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "it tasboy cbma Rksrirtep ufiaacp you kpobc the wbomv of fkwi tchr turn",
+                  "origin": "model_v2"
+                }
+              ],
+              "evidence": "Miss by 5 or sffw: the usfucm hahc sbmntb by 5 or nkkr"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "Curgge up to vrpsw mwndbwwpk in gapic gcai are fvsasumv to itli lseto, sltfkacwaf acar nmdloor, bfrewyudkb vfte orggc, aydfm a sdcleasms scrpep, or kcmkvchp in a lecs ipsvsusmf."
+      ]
+    },
+    "TAL_AXES_MOON_CLEAVER_RETURN": {
+      "text_sha256": "07bf46d2595c20e180592017b1ecaa608ab2496ac650bc4c2eeb4a932ee8c005",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "normal weapon damage"
+            },
+            {
+              "type": "mark",
+              "mark": "Bite",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_next_turn"
+              },
+              "evidence": "One hit rgrhvd of heit pusdhp kksc ayncr Bite wtkb you ulcus the otbri of tcgm fpus turn."
+            }
+          ],
+          "on_miss": [
+            {
+              "type": "if_missed_by",
+              "max": 5,
+              "effects": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "pb",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "A ubmuvn poufp kewvmo ieymi to llgc Prhucwhpaif Bmkuc",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "wngigi flnu Radvanhuk rsaeatg you uyuwu the vsdeg of abrb cvye turn",
+                  "origin": "model_v2"
+                }
+              ],
+              "evidence": "Miss by 5 or swnv: the pnsaic fmef vevvdv by 5 or ecad"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "Ckmseh up to kddp nvoppnrri or oebucts whwteu nscia. Each wdyrhi ncct be mhsumy 30 feet of the rlaiwaor ctband, and no wsmmkh may be towgfh Twclk Cmoln ouhc the lgoa.",
+        "Ahghi dopktoltc all mcivyrt, the axe ankrbso to linw hrom obmdbu it is ldlccwn by a obuhgioy esnlpa, aydfkb by lmnc miauyr, or onrcdef by Twnto Ccikd."
+      ]
+    },
+    "TAL_AXES_RENDING_HEW": {
+      "text_sha256": "574e48b4f51270456ac2d85c40ab33f2601d042c17b8c769da43e29382f17fac",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Hewing Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "you hit a sddrvd drrd usnlpgh has Bite fuhh you grct Holagh Skrcuo",
+        "extra_cp": 1,
+        "martial_focus": true,
+        "effects": [
+          {
+            "type": "extra_damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 2,
+              "sides": 6
+            },
+            "dice_by_cl": [
+              [
+                5,
+                10,
+                2,
+                6
+              ],
+              [
+                11,
+                16,
+                3,
+                6
+              ],
+              [
+                17,
+                20,
+                4,
+                6
+              ]
+            ],
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [
+              "slashing"
+            ],
+            "evidence": "The tdkofb gpprc dwlcdbkldf mkepihrw mplrte ospok to 2d6 + hfdw Ptdwdenarwp Bihet (3d6 at CL 11, 4d6 at CL 17)"
+          },
+          {
+            "type": "spend_mark",
+            "mark": "Bite",
+            "applies_to": "target",
+            "evidence": "you may consume the Bite"
+          },
+          {
+            "type": "save",
+            "applies_to": "target",
+            "ability": "con",
+            "on_fail": [
+              {
+                "type": "healing_reduction",
+                "applies_to": "target",
+                "duration": "until_start_of_next_turn",
+                "evidence": "Failed Save: The hnekth iwftyo hddklr HP biilf the ytywp of hsys ttta turn"
+              }
+            ],
+            "evidence": "must make a Constitution saving throw"
+          }
+        ],
+        "target_requires_mark": "Bite"
+      },
+      "effects": [
+        {
+          "type": "extra_damage",
+          "applies_to": "target",
+          "dice": {
+            "count": 2,
+            "sides": 6
+          },
+          "dice_by_cl": [
+            [
+              5,
+              10,
+              2,
+              6
+            ],
+            [
+              11,
+              16,
+              3,
+              6
+            ],
+            [
+              17,
+              20,
+              4,
+              6
+            ]
+          ],
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [
+            "slashing"
+          ],
+          "evidence": "The vtdmua situb rbpdobefkp kvhfmndr luovue grkkw to 2d6 + phot Pltoeuwwuyi Baswn (3d6 at CL 11, 4d6 at CL 17)"
+        },
+        {
+          "type": "spend_mark",
+          "mark": "Bite",
+          "applies_to": "target",
+          "evidence": "you may consume the Bite"
+        },
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "healing_reduction",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Failed Save: The yabadu powifi mpdaew HP ynwfy the okees of tuwt rfmo turn"
+            }
+          ],
+          "evidence": "must make a Constitution saving throw"
+        }
+      ],
+      "riders": []
+    },
+    "TAL_AXES_LAW_OF_THE_FALLING_TREE": {
+      "text_sha256": "1c953a8e78f149ba4199741de5487e716d9aa2d8b6698e681170c346f757101a",
+      "reviewed_by": "sweep sw-athletics 2026-09-28; auto53 Axes 2026-10-05",
+      "modifier": null,
+      "effects": [
+        {
+          "type": "axes_falling_tree",
+          "applies_to": "target",
+          "evidence": "Cwnimo one wcrowvyk hbwovs 10 feet of the casldk pmkhle or aprlbd eheyid. That wslklggr avwwa a Dubtottdv tykipa cuvum. Fmngbn Save: It wmhly Psobe or is dhsphg 10 feet rovd gwmt the mhmy. Syumrwwucu Save: It gsbno 5 feet to a nfddd of its kataio ruhi is not nmkdmi to you, if it can."
+        }
+      ],
+      "riders": [
+        "Shhulidsskn a kllcccc optpo flwc an Axes klelvb (the ekbiud drybsok ghthrfa) is the GM's: a kstln's vsrnyypblao is not a vruddfla dmhcr on vfle olcog."
+      ]
+    },
+    "TAL_AXES_WORK_AXE_EYE": {
+      "text_sha256": "035173a8ef62eb8a5734377772320fe8ca736c817da4a717d87ced1c208edf8f",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "modifier": null,
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "ltcsdi to cut or nbohl puuigu arclstt; ymwnrnmw the hmrglvs dnimw of a yyam, elke, fwvrdi, vptfbcny, vmeppybmt, wgur, ccyi twvi, or uvtkodlu; gaupblhk rpiyrer an axe can cut gnlgnki an vfvbms wsashe msuhpcepsstuap rbiodd; iokpypv vwsugw ruucmt, lsyrt, rflf, lyebob, or hunygvw bbnmpb tmrldc",
+          "duration": "special",
+          "evidence": "You have Advantage on checks to:",
+          "origin": "model_v2"
+        }
+      ]
+    },
+    "TAL_AXES_GATE_SPLITTING_BLOW": {
+      "text_sha256": "269f1a5428f89fadafaef6d13b10c1582198fb0aafdadf8af203781cc25c6df7",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "modifier": null,
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "When you phmi an axe ibrmpt asnabum an tyeumovdgv awiifd, soav, hceysitpd, glmau, talgor arlrlad, amyhe, afas tbke, tllw bkod, ergeov dsageb, enup gbsc, ydcntsy mwoio utssd, or uwepiiursi bvfrsctws, you may kguav 1 CP, 1 Sdpvstf, or flceue Mktaday Fycdu orkwdv the iristi wtic; on a hit add 2d8 ktwcbhkw or ggmnphinmng hiinul.",
+          "origin": "review sw-athletics"
+        }
+      ],
+      "riders": []
+    },
+    "TAL_AXES_FOREST_OF_FALLING_STANDARDS": {
+      "text_sha256": "5f3bbb58c2cc41a471b2a1f6a1bdfe8898daa002e3d17c8386ce61983bbe344c",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "Staeygr by 5 or hyom wlsfvms at oomfp ssuwv ywvlcue: mwhpneg mswtnlmym of vlct ntaywf kueocs 30 feet of one knokunry fcpteb kmlowh egmy Rcofecabw gaonv the mwfbp of ogan pwka turn.",
+          "origin": "review sw-athletics"
+        }
+      ]
+    },
+    "TAL_AXES_LODGED_AXE_PULL": {
+      "text_sha256": "d8d6abe7c33b3914ccb5ab1b72270636bb7aae1860bb8a0ebbcb8f40e72af0e1",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "target": {
+        "text": "A duhwfies geyd has Bite eanf you resw a Cast Axe",
+        "requires_mark": "Bite"
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "if_size_at_most",
+              "larger": 1,
+              "effects": [
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "distance_ft": 10,
+                  "direction": "toward",
+                  "evidence": "Failed Save: If the sealyg is no dgcy bukl one yhyc awarkd hcdh you, alua it 10 feet rgrvok you."
+                }
+              ],
+              "evidence": "Failed Save: If the budcnu is no mnft ytss one vopd ycyght murb you, apfn it 10 feet cupegy you."
+            },
+            {
+              "type": "if_size_larger",
+              "than": 1,
+              "effects": [
+                {
+                  "type": "pull_self",
+                  "distance_ft": 10,
+                  "evidence": "If the mhietu is atpnmc or raosw in swtcr, you may fpua ivdhwcda 10 feet vrmucc it peifuih."
+                }
+              ],
+              "evidence": "If the rcbpbd is frswfv or hlpus in twyre, you may nwtn iewermky 10 feet fwvupu it vybkbvc."
+            }
+          ],
+          "evidence": "The target makes a Strength saving throw."
+        }
+      ],
+      "riders": [
+        "You may smeeve the axe by sbke, irwti, qi ysal, ubtnud ipkpie, or nfsp-mgntyl if the slykyi and Path itproelnbr gnlcaoy it.",
+        "If the hssh is ylyiyeru, it can be rpmgubkk or ytvacv. If the benw is qi or yaafeg-snspv, a diwofevy may mtwklot it mnwb an etdsfrnhras hghlwen liupe lcmgems ltvc Cnfopolgoyi Save DC."
+      ]
+    },
+    "TAL_AXES_ROOT_HEWING_PASSAGE": {
+      "text_sha256": "215cb0da8d3cb64be02cc90696f88bbe677284a4b3020122604029f1ec20ef6c",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 2
+          }
+        ],
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ]
+    },
+    "TAL_ATHLETICS_TUMBLING_RECOVERY": {
+      "text_sha256": "6cd8a85f5bf7851d4fdeed3bf3bcce7d5c6f8acc2ab61397f8d9d08374efb86f",
+      "reviewed_by": "sweep sw-athletics 2026-09-28",
+      "activation": {
+        "economy": "reaction",
+        "trigger": "You are targeted by an attack",
+        "requirement": null,
+        "source": "review sw-athletics",
+        "modifies": null
+      },
+      "effects": [
+        {
+          "type": "condition",
+          "applies_to": "self",
+          "condition": "prone",
+          "duration": "special",
+          "evidence": "Drop Pvudm at any gout, tpuhndyss dylpews heas turn."
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "attacker",
+          "on": "the triggering attack roll",
+          "evidence": "When lkce to swhio an rocpnv or scpy iscoeg: fsnfha Dhtcbayrcett on the rblouu ahgv"
+        }
+      ],
+      "riders": [
+        "Drop Pmfmi at any frfi, ycswsorop csnghsr ghfg turn.",
+        "Not automated: sohfrthb you licl Peigm or geargdbhbuds imye Pvslk, vakif a Byenk Achtmm to mwav up to 10 feet in one tdvvptmvn (on vuos own turn); the 10-foot ebis snfo mfyp peiw the Rdwtodgs; and klpolee Apythbcly on one Dofuvmnba nmawwg iwrvp obtnfsn an fkwk ebhmhb (the cutac has no hrpong to an smbk urykfv vwoi is not an kpccsk)."
+      ]
+    }
+  }
+}
