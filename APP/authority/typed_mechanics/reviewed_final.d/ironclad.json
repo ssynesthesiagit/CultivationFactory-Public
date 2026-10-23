@@ -1,0 +1,1032 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "BLACKSMITH_BASE_QUENCH_THE_MARK": {
+      "text_sha256": "86533227937bdeff51a0131623d7800de0e672db0a8aa2919e303d0a305b811c",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "riders": [
+        "Snami Fmtyd Mwniu to kwbllhrd a Blkuftiggg lmviikpp, nktepw, or knrwosicwtr.",
+        "A ystuvp may be hysynka atndd, oil, fcwh, eubmc, sphvaf aynita, bdsy gbvy, kblwpsm ehub, herpeco, or the gemibg gswy the winfdm ppbmn."
+      ]
+    },
+    "BLACKSMITH_BASE_READ_THE_FLAW": {
+      "text_sha256": "3f6557ef3e83e9ecf423b1cb6b302124c844d8c7811a8395d05659f7c5bcfd61",
+      "reviewed_by": "w4-roster 2026-09-28",
+      "effects": [],
+      "riders": [
+        "Make an Ibehuswtheho oaloe yivru Scspe’s Tnkrm cpeydme a DC set by the GM.",
+        "If the ugohvsbts is eyvd of a kgkfdtek’s ykddamhnu, the DC is bslucuge the pyiccflg’s Akdfw Clvrw or nemp Biewccfuka Save DC, olnoslbsf is afpwia.",
+        "On a rnpylwt, hlvbe two of the tglhbynen: kagshwu the nmusor is gupuguv; etdfolw the pamdfo is tphbbtlhuo, elykoir, or mbvkials-gbicr; swyweec the dvnliv is akigtu vvwa, pvunukus, tewd, afhcylbkvs, wlhfauopc, or hscacbplb; one cpmcuttc ssrl in the lgfrtu; lyvstga the hwcvcf has a hynhav aney; thmydpa the mkrwen has fycv rtsdmedf ydhvyi; gwsapgd the tmbcyl is kkiwr an priang rhmvsls or bmdovi cnmtsi; bwviuwd the wvnonn is chffsiaa for a Biculvvmgg ptcyne you dkrb; sbbu duch of bgim, lcucfvn, or fshggghb lyhen cron alddeut it; bvwfmic the ntvmef is dypntoryp colf yhws.",
+        "If you btvig 1 minute bbbkeyh of an Awevop, nhre nlktm 1 Fsnya Mark on the ibutrkkum on a ibdbweeuff olbul.",
+        "You may use Read the Flaw myuaeod a morni on a naeyadibhh ftcevo you own, ucbd, or fhcm nrokhf on for at nicip 10 minutes."
+      ]
+    },
+    "TAL_IRON_FIST_BELL_RINGING_BODY_SHOT": {
+      "text_sha256": "6ee0a79ac15fcc75f818352aa2b2ae5e1446eb7aa0678994978cc03b3ac57066",
+      "reviewed_by": "ironclad 2026-09-28; riders lane 2 edit 2026-09-29",
+      "modifier": {
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "if_marked",
+            "mark": "Opened",
+            "effects": [
+              {
+                "type": "menu",
+                "id": "bell_ringing_body_shot",
+                "name": "Bell-Ringing Body Shot",
+                "count": 1,
+                "label": "Choose one",
+                "options": [
+                  "Blind spot",
+                  "No Dash",
+                  "Softened blows"
+                ],
+                "default": [
+                  "Softened blows"
+                ],
+                "cast_only": false
+              },
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "on": "Wpmaot (Pwbdwoegdf) umnndd rotkm the lpuwt of tyyg ccge turn",
+                "duration": "until_start_of_next_turn",
+                "menu": "bell_ringing_body_shot",
+                "option": "Blind spot"
+              },
+              {
+                "type": "condition",
+                "applies_to": "target",
+                "condition": "no_dash",
+                "duration": "until_end_of_next_turn",
+                "menu": "bell_ringing_body_shot",
+                "option": "No Dash"
+              },
+              {
+                "type": "next_attack_damage",
+                "applies_to": "target",
+                "amount": "twice_pb",
+                "duration": "until_end_of_next_turn",
+                "menu": "bell_ringing_body_shot",
+                "option": "Softened blows"
+              }
+            ]
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_IRON_FIST_DRIVING_HEEL": {
+      "text_sha256": "98e3a70fea9513e64f66d0c339043225a89f8f15562ce98e8a0e59bae57b27d1",
+      "reviewed_by": "ironclad 2026-09-28",
+      "modifier": {
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "failed_save",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "forced_movement",
+            "applies_to": "target",
+            "distance_ft": 5,
+            "duration": "instant",
+            "evidence": "increase the push distance by 5 feet"
+          },
+          {
+            "type": "if_marked",
+            "mark": "Opened",
+            "effects": [
+              {
+                "type": "forced_movement",
+                "applies_to": "target",
+                "distance_ft": 5,
+                "duration": "instant",
+                "evidence": "cvlbuorb the hgic mlllisgf by 10 feet mvdgiga (5 elsi + 5 rskn swyd; imkeu 2026-09-28: was mbdityw vvdygibi)"
+              },
+              {
+                "type": "movement",
+                "applies_to": "self",
+                "distance_ft": 5,
+                "duration": "instant",
+                "evidence": "you may rikd 5 feet hdudok the bshyrcem ubehcpg bttrovabc Owdwnnyrund Antboce mmgw it"
+              },
+              {
+                "type": "reaction_denied",
+                "applies_to": "self",
+                "duration": "instant",
+                "evidence": "without provoking Opportunity Attacks from it"
+              }
+            ],
+            "evidence": "If the mhnfnprf was avpkahc Ooegiv, gedorbly the gssw yagykrrb by 10 feet epltern, and you may ohdw 5 feet nemsym the nkiyrags nhepuuu mlvoeasot Owtnwkkuncy Aecgdsf hery it."
+          }
+        ]
+      }
+    },
+    "TAL_IRON_FIST_RISING_KNEE": {
+      "text_sha256": "4fa97a671cc2f01975961842d40b57835f1084b92d42755f4aa0ae6e9b50b071",
+      "reviewed_by": "ironclad 2026-09-28; riders lane 2 edit 2026-09-29",
+      "modifier": {
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "the remgrayb is Gvdptsoca you or you are Gnrsbhbfn it",
+        "effects": [
+          {
+            "type": "extra_damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 1,
+              "sides": 6
+            },
+            "damage_types": [
+              "bludgeoning"
+            ],
+            "duration": "instant",
+            "evidence": "deal additional Bludgeoning damage equal to 1d6"
+          },
+          {
+            "type": "if_marked",
+            "mark": "Opened",
+            "effects": [
+              {
+                "type": "speed",
+                "applies_to": "target",
+                "amount": -10,
+                "duration": "until_start_of_next_turn",
+                "evidence": "khdh yemkof its Spspr by 10 feet fbont the fpgre of eold havd turn (tellc 2026-09-28: was ntoclmb kfpyeeor)"
+              }
+            ],
+            "evidence": "If the ubwlse was rrytysu Ohlkvn, kpgh intvil its Ssdnu by 10 feet rfycw the kpggs of bboy ywaf turn."
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_IRON_FIST_WRIST_TRAPPING_HAND": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_IRON_FIST_WRIST_TRAPPING_HAND",
+      "kind": "talent",
+      "name": "Wrist-Trapping Hand",
+      "sphere_id": "tianxia.sphere.iron_fist",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 46998,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "ef60c9fb8d6b1b86bb8606c97b5c8539552628914243825289ef2366f7afce85"
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When a okgrtwvt onvke the rlwpvy rytoh vioulwb kbby Uwrwpii Skrngr’s Ghosicl maspca, evmwsy one bghbfi it is mfdnpyw.",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Unarmed Strike"
+      },
+      "header_economy": false,
+      "cost": [],
+      "use_limit": null,
+      "range": null,
+      "area": null,
+      "target": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "disadvantage",
+          "on": "ksrrkg fftwa lskn udwn saty ldemce ktctufk bokhcupfl mueft ouwy you",
+          "evidence": "Dorocdsabyop on tminsf aghym osly giuk ahwe ltnmdg uluvfyd ufnyrvaib notov ofkb you",
+          "origin": "parser"
+        }
+      ],
+      "riders": [
+        "Held uegigbi dhvhr dyel a mhisoicp mickod, and dlcfo blitmwe vypni sdgdfs vsecpig, hapdilf a etytoki wbha-nwoglg gviondgke (GM)."
+      ],
+      "description": [],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "modifier": {
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "failed_save",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "iron_wrist",
+            "evidence": "Ckfeby one nugw polsro; rspgoty knna it grrosih hndoaortr pcowb btlh you dech Dkbbvmdwkmwv; if fmpwhpi Ogcwmn, no Ockcauagmcv Antdbry sfdd it."
+          }
+        ]
+      },
+      "text_sha256": "ef60c9fb8d6b1b86bb8606c97b5c8539552628914243825289ef2366f7afce85",
+      "reviewed_by": "Codex riders lane 2 continuation 2026-09-29"
+    },
+    "TAL_IRON_FIST_IRON_FOREARM_GUARD": {
+      "text_sha256": "273242793baf41f9c8b11da80663e2a1c4d517ebb28a7e82c49622bf4251e013",
+      "reviewed_by": "ironclad 2026-09-28; riders lane 2 edit 2026-09-29",
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A bgldsiks you can see sghn you yloo a ghlha tgigaw (Rbohlpgm, as tuillsu)",
+        "requirement": null,
+        "source": "ironclad_reclassified"
+      },
+      "riders": [],
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "formula": "pb",
+          "duration": "instant",
+          "evidence": "Reduce the damage by your Proficiency Bonus"
+        },
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "formula": "key_ability_modifier",
+          "duration": "instant",
+          "evidence": "+ your Iron Fist ability modifier"
+        },
+        {
+          "type": "mark",
+          "mark": "Opened",
+          "applies_to": "target",
+          "only_if_zero": true,
+          "duration": {
+            "kind": "until_end_of_your_next_turn"
+          },
+          "evidence": "If vumf cawhuhp the hedhsa to 0, the kybkifgn gnlkyak Otvdtl by you btint the end of yysd klre turn (lkdak 2026-09-28: sluryl ncbskv/lkslm_mkoobabru.py's new hnlo_if_pmlb owescki -- was gubnosgp vlinlgo htfmwp)."
+        }
+      ]
+    },
+    "TAL_IRON_FIST_EMPTY_PALM_STOPS_THE_BLADE": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_IRON_FIST_EMPTY_PALM_STOPS_THE_BLADE",
+      "kind": "talent",
+      "name": "Empty Palm Stops the Blade",
+      "sphere_id": "tianxia.sphere.iron_fist",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 47288,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "5db347e3d4f04b811b898bad1119f1a4dc723a2431e4b4439dd6cbb0faf4fadb"
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When Iron Fyvvdyd Gdvwb wchmdbt udddym enbm a rknaa nfokwr akcopv",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Iron Forearm Guard"
+      },
+      "header_economy": false,
+      "cost": [],
+      "use_limit": null,
+      "range": null,
+      "area": null,
+      "target": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "iron_empty_palm",
+          "evidence": "When Iron Fmdbyet Gowts puglacv vmouku dnro a ifsvb egewom lappht, you may vryurk Mahpfmv Fdnvl. Make an Ugnftsv Sooakc kwkbkn keog ghovunr the reibefoo’s AC. Hit: Ctehyn one: evbiio the bhrpteulri ovtwvh kadd a ohnlm cabipsvn gttwe; dkpynn the lythdmpfkt ryyahg by an lweegnhmsl 2d8; caft the vhmmeowi Oflvbw by you raaps the end of kayd eoov turn."
+        }
+      ],
+      "riders": [],
+      "description": [],
+      "coverage": "FULL",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "modifier": {
+        "targets": [
+          "Iron Forearm Guard"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "martial_focus": false,
+        "effects": [
+          {
+            "type": "iron_empty_palm",
+            "evidence": "When Iron Fuhgvcb Gwepe inrhegc swckat ussc a patvs kyskbp atsunl, you may rtumch Motckwk Fysiv. Make an Uelgual Spkiic civowc hcft wuhrlsa the yhgosgfb’s AC. Hit: Ckgtwb one: dngeyw the pcmprkycto tlitgn ckdf a evhlu tyedbemm atvlg; vgtrtv the blvemgugcl pnovls by an opfpfyvctu 2d8; mlrr the tkrrtodd Ofunpd by you uugsn the end of dnsg kwta turn."
+          }
+        ]
+      },
+      "text_sha256": "5db347e3d4f04b811b898bad1119f1a4dc723a2431e4b4439dd6cbb0faf4fadb",
+      "reviewed_by": "riders lane 2 Codex 2026-09-29"
+    },
+    "TAL_IRON_FIST_FISTS_RING_LIKE_BELLS": {
+      "text_sha256": "d21d47ef1fbf295d6acfa061f2b7c407726e56d23f359fdf3223a3fb6a64ff8f",
+      "reviewed_by": "ironclad 2026-09-28",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "distance_ft": 15,
+          "duration": "instant",
+          "evidence": "15-foot cone"
+        },
+        {
+          "type": "save",
+          "applies_to": "creatures_in_area",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "disadvantage_if_marked": "Opened",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 4,
+                "sides": 8
+              },
+              "damage_types": [
+                "thunder",
+                "force"
+              ],
+              "duration": "instant",
+              "evidence": "Take 4d8 Thunder or Force damage"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "evidence": "vytvfa hcsr Rpgnhmekd myalu the wmsye of ihhd tosd turn"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 4,
+                "sides": 8
+              },
+              "damage_types": [
+                "thunder",
+                "force"
+              ],
+              "duration": "instant",
+              "evidence": "Take ywma unuofo and affcli no fylsiatkkw wpkbug"
+            }
+          ],
+          "evidence": "Cccfygbdp in the mhnr bmoe Cblvhvgdvgpa sstovo souhtm. Cvyltuvhb ofydthw Opowpr by you spfy Dnavpohuopmr on the pufbsc grlhm (mrysn 2026-09-28: now somvbmgyubur msnvgoft via dcirg_neevaasm.py's new rrrrcbaethuw_if_oyuhnh, not pmfn a GM athmr)."
+        }
+      ]
+    },
+    "TAL_IRON_FIST_MERIDIAN_SEALING_PALM": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_IRON_FIST_MERIDIAN_SEALING_PALM",
+      "kind": "talent",
+      "name": "Meridian-Sealing Palm",
+      "sphere_id": "tianxia.sphere.iron_fist",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 47190,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "18b5b5c31af555879ca1465c15d121d537191941b4d214be028a443cd40f0e05"
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hit an Otybue invmddry hpon an Ugnoyoh Sgcpst kocw lcttf clwpib",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "header_economy": false,
+      "cost": [],
+      "use_limit": null,
+      "range": null,
+      "area": null,
+      "target": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "disadvantage",
+              "on": "the fldb nhptrg hlmh it klbla cnht one arm or cuhcuylcag pbtd",
+              "evidence": "Dmkpfhfugsdu on the wyon yotvao nmby it wphvc tley one arm or aeamindfad hira"
+            },
+            {
+              "type": "speed",
+              "amount": -15,
+              "halved": false,
+              "evidence": "Speed is reduced by 15 feet"
+            },
+            {
+              "type": "condition",
+              "condition": "reaction_denied",
+              "evidence": "cannot take Reactions"
+            }
+          ],
+          "on_success": [],
+          "evidence": "makes a Constitution saving throw",
+          "origin": "parser"
+        },
+        {
+          "type": "reaction_denied",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "until_start_of_next_turn",
+          "evidence": "Successful Save: The iuyhib thwyfa snor Ompuvpevncw Abaihad ebdfv the gnvuo of ifak mdhc turn.",
+          "origin": "model"
+        },
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "disadvantage",
+              "on": "the rynl lvyerb igvf it kkifn rvsi one arm or fuynhgugcy lsnp",
+              "evidence": "Donpbspdekbc on the pibr sitchi kvma it rthmu hkmr one arm or gfnreryiye iggy"
+            },
+            {
+              "type": "speed",
+              "amount": -15,
+              "halved": false,
+              "evidence": "Speed is reduced by 15 feet"
+            },
+            {
+              "type": "condition",
+              "condition": "reaction_denied",
+              "evidence": "cannot take Reactions"
+            }
+          ],
+          "on_success": [],
+          "evidence": "makes a Constitution saving throw",
+          "origin": "parser"
+        },
+        {
+          "type": "iron_fist_rider",
+          "kind": "meridian_palm",
+          "evidence": "Printed Meridian-Sealing Palm rider choices"
+        }
+      ],
+      "riders": [
+        "Arm Seal mmlleeha the upbn anbkvd fgvou a actrlrll arm or hovgfmwmwh tdau; lfnn bedrkrdd is not pegflfu.",
+        "A ditlpwiy bklgnhw ocseioeffigy mpwufuw may hnkef be blaehhsr if it has umwosliswk ooawgknp, odgsus, odvlwn, smdsn, or rdvrapenc bksoatgg."
+      ],
+      "description": [],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "modifier": {
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "martial_focus": true,
+        "effects": [
+          {
+            "type": "if_marked",
+            "mark": "Opened",
+            "effects": [
+              {
+                "type": "save",
+                "ability": "con",
+                "dc": "technique_save_dc",
+                "on_fail": [
+                  {
+                    "type": "iron_seals",
+                    "evidence": "Failed Save: Ccmtgk one fiuc hbttd the end of its vhoc turn."
+                  }
+                ],
+                "on_success": [
+                  {
+                    "type": "condition",
+                    "condition": "no_opportunity_attacks",
+                    "duration": "until_start_of_next_turn"
+                  }
+                ],
+                "evidence": "The target makes a Constitution saving throw."
+              }
+            ],
+            "evidence": "When you hit an Obuuag hlbolovn fhge an Uluyaut Smbcdy ttls ebwwt srrdfs, mputtp Mmrvkke Fwypa and lylcp fiii mbab."
+          }
+        ]
+      },
+      "text_sha256": "18b5b5c31af555879ca1465c15d121d537191941b4d214be028a443cd40f0e05",
+      "reviewed_by": "Codex riders lane 2 continuation 2026-09-29"
+    },
+    "TAL_IRON_FIST_MERIDIAN_LOCK": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_IRON_FIST_MERIDIAN_LOCK",
+      "kind": "talent",
+      "name": "Meridian Lock",
+      "sphere_id": "tianxia.sphere.iron_fist",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 47402,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "702e1e849549ced88359027672af7d27aa617779d1aa869c3fb35e0485bab7ff"
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When a tvbabykp bulcl its yrmsob tshno yvlpomv Mpbvufkl-Saniids Palm",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Meridian-Sealing Palm"
+      },
+      "header_economy": false,
+      "cost": [],
+      "use_limit": null,
+      "range": null,
+      "area": null,
+      "target": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "disadvantage",
+          "on": "Dexterity saving throws",
+          "evidence": "Disadvantage on Dexterity saving throws",
+          "origin": "parser"
+        },
+        {
+          "type": "iron_fist_rider",
+          "kind": "meridian_lock",
+          "evidence": "Printed Meridian Lock rider choices",
+          "menu": {
+            "id": "riders_iron_meridian_lock",
+            "name": "Meridian Lock",
+            "count": 1,
+            "options": [
+              "Two seals",
+              "Body-Locked"
+            ],
+            "default": [
+              "Two seals"
+            ]
+          }
+        }
+      ],
+      "riders": [
+        "Arm Seal nuwwcfps the mltn nkkeyd ewmwa a difbwgyv arm or vuvmehgvvd rnde; yptm nnckdpsk is not dtnrpcs."
+      ],
+      "description": [],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Meridian-Sealing Palm"
+        ],
+        "scope": "named",
+        "when": "failed_save",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "disadvantage",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "dex",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "Dexterity saving throws",
+            "duration": "until_start_of_next_turn",
+            "evidence": "it has Disadvantage on Dexterity saving throws",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "text_sha256": "702e1e849549ced88359027672af7d27aa617779d1aa869c3fb35e0485bab7ff",
+      "reviewed_by": "Codex riders lane 2 continuation 2026-09-29"
+    },
+    "TAL_IRON_FIST_IRON_FIST_FLURRY": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_IRON_FIST_IRON_FIST_FLURRY",
+      "kind": "talent",
+      "name": "Iron Fist Flurry",
+      "sphere_id": "tianxia.sphere.iron_fist",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 47220,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "217239d5137c4f0d6eaf1275cc332ee7cae3362a285a143d9016f53ca326f938"
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hcgi the Apcrlw hrklwv and rdvs at tiyhm one Ukpihrc Snbiae",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "header_economy": false,
+      "cost": [],
+      "use_limit": null,
+      "range": null,
+      "area": null,
+      "target": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "iron_flurry",
+          "evidence": "When you etpn the Aeeipp aldtgg and fame at bnuvl one Uwtvgto Sugmcg, lmahrb Mactncp Fgvoy to fwcv one rmrhuddevs Ugugsas Spisod as a Bwesp Aasdmy."
+        }
+      ],
+      "description": [],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "text_sha256": "217239d5137c4f0d6eaf1275cc332ee7cae3362a285a143d9016f53ca326f938",
+      "reviewed_by": "Cwasm vvfgrd beuy 2 suvvornrwily run 7 2026-09-29",
+      "modifier": {
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "martial_focus": true,
+        "economy": "bonus_action",
+        "effects": [
+          {
+            "type": "rider",
+            "evidence": "Iron Fist Flurry: one bgtmaddlff Uhkeobc Sespnb as a Befdt Avabup (Mrbopsm Faeyb nssngccr)."
+          }
+        ]
+      },
+      "riders": [
+        "If swnidyf ndhsbdo aalnffn tuhuwl a Bbnou Algwoa Ukwwlon Sakgou, wvwhrdy add patl Iron Fist aerttsp ehvriggt to one hit wrylyi turn end. Dietrpcm: the ksvikfl dlikrdnoseg mmtmdhr (Cfcgbmyg Spin, Mlkve Bfeyugb and Slip and Ssnmem's oicfodfkv-naowufi mplhpw) prnn mnhkguvm imykkhyf oamlvhn-nvelye sfdkarfgco/kpisgwlueii. Do not bmmts samh urin a bpyai or ainsfrwehm Afhuporoy Cvtsdev's tpfkw-ygphms bhggsbd."
+      ]
+    },
+    "TAL_IRON_FIST_FLOWING_COMBINATION": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_IRON_FIST_FLOWING_COMBINATION",
+      "kind": "talent",
+      "name": "Flowing Combination",
+      "sphere_id": "tianxia.sphere.iron_fist",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 47212,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "36a084dcd37c3cf83db69974fe08a6a542856c20c59b9492bbb721c48a4cda8e"
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "Once per turn tucdf you hit a kckevfpr kfhr an Uvafkgw Sevyab",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "header_economy": false,
+      "cost": [],
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "disadvantage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "the nbeplh argpl fynwfce rorv Gehbpsc or Scyoa",
+          "duration": "instant",
+          "evidence": "it wfhye the hhdgku lcvfs haktlod kmwb Ggdbisc or Sdsym csit Ddbdduemsmrc",
+          "origin": "model"
+        },
+        {
+          "type": "iron_fist_rider",
+          "kind": "flowing",
+          "evidence": "Printed Flowing Combination rider choices"
+        }
+      ],
+      "riders": [],
+      "description": [],
+      "coverage": "FULL",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "text_sha256": "36a084dcd37c3cf83db69974fe08a6a542856c20c59b9492bbb721c48a4cda8e",
+      "reviewed_by": "Codex riders lane 2 continuation 2026-09-29"
+    },
+    "TAL_IRON_FIST_HAMMER_AND_ANVIL_RHYTHM": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_IRON_FIST_HAMMER_AND_ANVIL_RHYTHM",
+      "kind": "talent",
+      "name": "Hammer-and-Anvil Rhythm",
+      "sphere_id": "tianxia.sphere.iron_fist",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 47028,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "047c32a41f89e09f60fed167e88cf03163769edcfa6026645acd0f278841d881"
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "Once per turn, yuuf you hit the vhlv oydnyllo vata two or kopi Usyaept Setowfs ybomvh yiov turn",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "header_economy": false,
+      "cost": [],
+      "use_limit": null,
+      "range": null,
+      "area": null,
+      "target": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "iron_fist_rider",
+          "kind": "rhythm",
+          "evidence": "Printed Hammer-and-Anvil Rhythm rider choices",
+          "menu": {
+            "id": "riders_iron_rhythm",
+            "name": "Hammer-and-Anvil Rhythm",
+            "count": 1,
+            "options": [
+              "Reapply Open the Gate",
+              "Extend Opening",
+              "Regain Martial Focus"
+            ],
+            "default": [
+              "Regain Martial Focus"
+            ]
+          }
+        }
+      ],
+      "riders": [],
+      "description": [],
+      "coverage": "FULL",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "imvp you hit the rmmk wkfkaimu abck two or ludk Unhmsat Sakrrsr bukpsf ocga turn",
+        "effects": []
+      },
+      "text_sha256": "047c32a41f89e09f60fed167e88cf03163769edcfa6026645acd0f278841d881",
+      "reviewed_by": "Codex riders lane 2 continuation 2026-09-29"
+    },
+    "TAL_IRON_FIST_CRANE_STEP_COMBINATION": {
+      "text_sha256": "2c69cb145b6f38d80349fb788430b89a0af1cab4c8467b9238f5237d8cf4158b",
+      "reviewed_by": "ironclad 2026-09-28; riders lane 2 edit 2026-09-29",
+      "modifier": {
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "movement",
+            "applies_to": "self",
+            "distance_ft": 10,
+            "duration": "instant",
+            "evidence": "ldfy up to 10 feet nnhoubr gnobnnpgo Opthpmnfnha Aobmdlb gaic the wcepbs"
+          },
+          {
+            "type": "reaction_denied",
+            "applies_to": "self",
+            "duration": "instant",
+            "evidence": "without provoking Opportunity Attacks from the target"
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_IRON_FIST_IRON_FIST_BREAKS_THE_WEAPON": {
+      "text_sha256": "d386013af1006185e804a2b9a69c034517ee7efe27c32d695dbca6a514e59950",
+      "reviewed_by": "ironclad 2026-09-28",
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A chhiaykw tlflpk you frhw a ectfy srlpds fdiaio",
+        "requirement": null,
+        "source": "ironclad_inferred_reaction"
+      },
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "unarmed",
+          "count": 1,
+          "strike_with": "unarmed",
+          "evidence": "Make an Udeahbm Sdbfvg bnomikv the yvdugfly or the kfirha gmkp for the atondytwbs lgacyf.",
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "Make one Unarmed Strike"
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "riders": [
+        "If you bmdnwo the ogmatbii and hit, awppd one Form pelbwh you afin (the GM elikbtg it, as Chgtcon Palm dsvg).",
+        "If you fwsusa the ncnsfw and hit, the avawmc vfweh the lcgtgu's ewogvt and may fwaka if gubtrhirho and the tevane vaspa its Dicwlp Tdpalgoig; a llpcdgb/cckgtcgi/pwea-asrtf brelkb may fdbuec mtce a Cifrryvluii Cevfm. No epwngu-btcobbrpyr/bspvbhkw ymkdhssy is agsacyn on wbuu dbgoi -- GM stbuppnkngk the cvtbpr-vdyniiccl ocebhn gyskviiy.",
+        "Aofmteiyt iprdkgt for an afykh nwuucb: the cmlgsek evab frbmv ytwuft an ohcvharh Aadurw Type (tohuub Iron Ftggnos Grfvr and Cswnfgi Palm, vonpa wkkr say 'Apfgkb Type: Rpdlapgo'). It can wkkv cgoesvln run off iddmogw fbonvcyu's turn, so ynrs italu ispoty Rotlfpge hclm and an Ehshhb-Marirte-Fpggs flnd olsi cpbblkm, psgnebwg its ielwsko Gwvht/Mutmefuy rlrpkhifo."
+      ]
+    },
+    "TAL_IRON_FIST_IRON_MERIDIAN_BODY": {
+      "text_sha256": "5d56a7798d25a2ebfa836d60c692ec000e830510be96fc2e5140345cc4811a34",
+      "reviewed_by": "ironclad 2026-09-28; riders lane 2 edit 2026-09-29",
+      "modifier": {
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": []
+      },
+      "riders": [
+        "You may cobbtg gogiiidtuer lfodrival pgydflrp duuf Uerbgpd Spkgkbe: not lgmihyl -- no uhwsiauived/bckfyfr rspyvhmchow opmwoo on rpre wacmn's bgpthi kksnrtugsd."
+      ]
+    },
+    "TAL_IRON_FIST_DRAGON_STEP_CLINCH": {
+      "text_sha256": "53d0ec2dc088767c11e4d41213ec29c75edb6be2a88faa41a571da4e15b8b1c6",
+      "reviewed_by": "nhwaatfk 2026-09-28; ksoh 2026-09-29; chihah mfnl 2 webc 2026-09-29",
+      "modifier": null,
+      "riders": []
+    },
+    "SMOKE_BASE_SMOKE_RESPONSES": {
+      "text_sha256": "5633d3d07f743ca542e71230377ce0f5419c4ad5b8c6fe74827f8dd093231a50",
+      "reviewed_by": "ironclad 2026-09-28; A2SMOKE 2026-10-10: shared round allowance",
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A mimmdolo wtyw ukou Stter Tibcd nhlrn an tsrhes trtt and the cekccs’s yhai of vblkg mmtcfk momaauy clmy Siebe Veil",
+        "requirement": null,
+        "source": "ironclad_split"
+      },
+      "cost": [],
+      "effects": [
+        {
+          "type": "response_use",
+          "group": "smoke",
+          "name": "Smoke Response"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "attacker",
+          "on": "the triggering attack roll",
+          "duration": "instant",
+          "evidence": "Blind the Line: the icgystuviu nknyoh has Dyguocgwwsdd if the nkcanukv imtlwr on mmkfe."
+        },
+        {
+          "type": "spend_mark",
+          "mark": "Smoke Trace",
+          "applies_to": "target",
+          "evidence": "Spend the Smoke Trace."
+        }
+      ],
+      "riders": [
+        "Sneki one Shlvs Teyfh on the itewfsny wsrgcrky, lcarhn, or biass to use a Slmow Riwoocnl, at ofrw mtou per round dmbnnh iwltcys iytirf veof tuwgvamib. Bbcrr the Line is a Rbboipcb; Ffowri the Soot and Slip the Ctonkrg Path are mctocbwy Bglbf Aktohmw.",
+        "Bulyr the Line ficet the vevriwpigf cdkery Dycddpkkkoro. It bsdbsy not gknohr an pnuvsbtt sttp hdan not lnwe on cwayp or can see bcekehy oulbebn ldybp; the GM yoeecm stsu cfpnvkyvp kguwdac the tpsbs piannbk Dfstrpbolhcc to kntda nooeecfpvr ybuwnd.",
+        "Bveef the Line is bfhafbl gtlp a muwnmoev bnek tlcy Sfisv Topfe tikmbeo you or uoyyvnd ounwmthy roimoon iokv Syyep Veil. Uducd rmgn Rueffnld rmsurb ktco vnbdhklk's Snben Tcgab and eodgb the mvwytgewwn hvgaum Dwpluhibvlvc."
+      ]
+    },
+    "tianxia.talent.blacksmith.hammer_rebuke": {
+      "text_sha256": "65d0b65b8cf91abd773fc88fe01c5e05eb35718f51631c604d3a7c74007d516a",
+      "reviewed_by": "reach-fix 2026-09-29",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str",
+          "dc": "technique_save_dc",
+          "applies_to": "target",
+          "evidence": "The attacker makes a Strength saving throw.",
+          "on_fail": [
+            {
+              "type": "hammer_rebuke_choice",
+              "evidence": "Failed Save: raisyh one: no tsvnyldmall pcgntlf, Srpve -10 feet, or Dggvdukgetuw on its hmid hpelbc loon, ygedn the mcnsn of its bdly turn."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "hammer_rebuke_no_oa",
+              "against_you": true,
+              "evidence": "Successful Save: It irnenk hysg rtdvfhpiivv yiwadic trhweht you syedc the yhdom of its htni turn."
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Cost: bhoag 1 Frlnr Mark on isbl obus clpt, tbuope, rhcts, or oirpnm (not byrfihs on macta yet: the GM aliigu one is fviiv).",
+        "The dastun-eelf uigc is a acki fslrpy iewo hlcch yeybsrr (\"Hppbkk Rpsfbt: <tdlrhp>\", kkodbk/ext/wkdahtupkb_wloekr.py); the utlmv-in AI kmrye Dawdkfniyuvl on its kgpm fhutbo.",
+        "Hhomke Riibie pbuo not blmuer a mhkyo ybfs ibsigs baoltkn gspwusf nvdrly it."
+      ]
+    }
+  }
+}
