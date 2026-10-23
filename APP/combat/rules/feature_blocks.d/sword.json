@@ -1,0 +1,45 @@
+{
+  "schema": "TianxiaFoundry.FeatureBlocks.v1",
+  "note": "Automation lane OCF8 (round 25, 2026-10-04): the Sword sphere's core rules. Owner playtest: \"it looks like we are still lacking automation on various attacks. Sword Beyond Hand looks to be not automated\", with four \"GM should resolve\" reminders on every use. One row per owned feature, read by combat/ext/sword_core.py; every hook returns early for a creature that does not own its row, so other spheres, other characters and fights saved before this change are unchanged. 'covers' names the printed lines the table resolves, read by combat/factory_compiler.py _gm_lines.",
+  "features": {
+    "SWORD_BASE_SWORD_BEYOND_HAND": {
+      "covers": [
+        "Make a ranged Cultivation Attack.",
+        "Cultivation Level 1-4: 1d10, 5-10: 2d10, 11-16: 3d10, and 17-20: 4d10 damage.",
+        "Choose the damage type when making the attack."
+      ],
+      "why": "The table makes the printed ranged Cultivation Attack: one attack at 60 feet (attack_kind cultivation_ranged), the Cultivation Level dice 1d10 / 2d10 / 3d10 / 4d10 as typed by reviewed_final.d's dice_by_cl, plus your Path key ability modifier, as Slashing or Force damage, and it applies Sword Intent until the start of your next turn. Choosing between the two damage types is the owner's 2026-09-26 ruling, already resolved by combat/typed_executor.py choose_damage_type (the type that lands hardest on the target). The authority rows are the ones reviewed in authority/typed_mechanics/reviewed_final.d/review_sw-spirit_companions.json; nothing is added here."
+    },
+    "SWORD_BASE_SWORD_IN_HAND": {
+      "covers": [
+        "Replace one attack with one Sword weapon attack.",
+        "Deal normal weapon damage plus:",
+        "1d8 Slashing or Force damage",
+        "Apply Sword Intent until the start of your next turn.",
+        "Choose the damage type when making the attack."
+      ],
+      "why": "Same printed clauses as Sword Beyond Hand, on the melee form, and every one of them is on the compiled row rather than on this list: the button IS the wielded Sword's own weapon attack (combat/factory_compiler.py binds it to the delivering weapon action through typed.delivered_by, so 'Replace one attack with one Sword weapon attack' IS that attack, not a copy of it), its hit deals the weapon's own damage plus the typed 1d8 Slashing or Force, applies Sword Intent until the start of your next turn, and the damage type is chosen by the owner's 2026-09-26 ruling in combat/typed_executor.py choose_damage_type (the type that lands hardest on the target). The authority rows are the ones reviewed in authority/typed_mechanics/reviewed_final.d/review_sw-spirit_companions.json; nothing is added here."
+    },
+    "SWORD_BASE_SWORD_TRAINING": {
+      "block": "sword",
+      "kind": "training",
+      "flat": 2,
+      "already_proficient": false,
+      "why": "'if already proficient with all three, gain +2 to attack rolls made with approved Sword weapons' is added to the wielder's own attack roll by combat/ext/sword_core.py (attack_bonus), under two printed limits. Scope: only an attack made with an approved Sword weapon -- the sword proficiency group in combat/rules/weapon_specials.json, read through the shared in_group helper -- never a weaponless Sword technique such as Sword Beyond Hand's wave of Sword Qi. Eligibility: the printed 'if already proficient with all three' is a statement about what the fighter already had BEFORE Sword Training, and nothing in this system records that (no character sheet, authority record or creator field records a weapon proficiency held before a sphere's training grant; the group's own grant is what makes a Sword fighter proficient). already_proficient is therefore the explicit place the build affirms the precondition, and it is off by default: owning Sword Training alone does not pay the +2. Set it to true when a character creator records the fighter was already proficient with shortswords, longswords and greatswords, or on an owner ruling that every Sword fighter gets it. Before this row existed the +2 compiled as an attack_modifier effect that combat/typed_executor.py block_rider printed as a GM reminder on every Sword attack, so the wielder rolled two short against the same Armor Class; the printed 'does not stack with another Sword-sphere feature granting the same benefit' holds because one row pays the +2 once."
+    },
+    "TAL_SWORD_IRON_SWORD_BODY": {
+      "block": "sword",
+      "kind": "iron_body",
+      "why": "'While wielding a Sword: use Constitution for Sword attack and damage rolls if higher' and 'use Constitution as your Sword key ability' are applied once by combat/ext/sword_sphere.py's roll hooks, which skip already compiled Constitution variants. Its alternative-payment hook offers 'spend Stamina instead of CP on Sword talents' even when Constitution is lower. The standing '+1 AC' is applied by combat/ext/sword_core.py. All benefits require an approved Sword in hand through the shared readied-grip query: a stowed sword grants none, while historical catalogs keep their original weapon policy. Ownership is read from this passive block or the historical saved modifier. 'Iron Sword Body does not grant Sword Beyond Hand by itself' is a build note. 'Advantage on saving throws against forced Disarm effects' has nothing to defend: no printed ability on this table makes a Disarm saving throw (the Disarm effects carry no save), so that row is not compiled and its printed text stays on the character sheet."
+    },
+    "TAL_SWORD_LIFE_SEVERING_SWORD": {
+      "block": "sword",
+      "kind": "life_severing",
+      "keeps_compiling": true,
+      "covers": [
+        "If the target bears your Sword Intent, choose one additional effect: healing it receives is halved instead, it has Disadvantage on its next Concentration saving throw, or it cannot benefit from ordinary regeneration, until the start of your next turn."
+      ],
+      "why": "The talent's trigger, cost, once-per-turn limit, healing reduction by the Proficiency Bonus and Temporary HP denial are its own compiled modifier on the Sword attacks it changes, so keeps_compiling keeps them. The one clause with no typed row -- 'If the target bears your Sword Intent, choose one additional effect' -- is asked and applied by combat/ext/sword_core.py (attack_damage_final, inside the printed once-per-turn limit). All three clauses last until the start of ITS USER'S next turn, as the printed sentence says for the whole choice: healing received is halved INSTEAD of being reduced by the Proficiency Bonus (that strike's own reduction is replaced, so at Proficiency Bonus 4 a 20-point heal is 10), or the target has Disadvantage on its next Concentration saving throw (used up by that save), or it cannot benefit from ordinary regeneration until the start of its user's next turn (the shared effect combat/ext/regeneration.py suppression, which refuses a regeneration healing row on that creature while it lasts)."
+    }
+  }
+}
