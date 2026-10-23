@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/themes.css?v=ui1">
+  <script src="/static/appearance-boot.js?v=ui1"></script>
+  <link rel="stylesheet" href="/static/tabletop/newcomer.css?v=n4-1">
+  <!-- The shared hover card (owner 2026-10-03). Before tabletop.css, so the cards' own looks win on top of it. -->
+  <link rel="stylesheet" href="/static/tabletop/hovercard.css?v=sol192">
+  <title>Tianxia Table</title>
+  <link rel="stylesheet" href="/static/tabletop/tabletop.css?v=foggrey3-bloodsense-delivery-3">
+  <link rel="stylesheet" href="/static/tabletop/ruler.css?v=ruler1">
+</head>
+<body class="tt-app is-viewer-pending">
+  <header class="tt-top">
+    <a class="tt-brand" href="/" title="Back to the Factory"><span aria-hidden="true">天</span> Table</a>
+    <div class="tt-title">
+      <strong id="ttMatchName">No fight open</strong>
+      <span id="ttRound" class="tt-sub"></span>
+      <span id="ttViewerStatus" class="tt-sub" role="status">Viewing as: Choose your fighters</span>
+    </div>
+    <ol id="ttInitiative" class="tt-initiative" aria-label="Initiative order"></ol>
+    <div class="tt-top-tools">
+      <button id="ttViewerChange" type="button" class="tt-tool" disabled>My fighters</button>
+      <button id="ttViewerAnother" type="button" class="tt-tool" disabled>Open another player view</button>
+      <label class="tt-select-label" title="Fog of war: how much of the map you can see. Hover the Fog box for what each choice shows.">Fog
+        <select id="ttFog" disabled>
+          <option value="own" title="You see only through the fighters chosen in My fighters and their summoned creatures while you play them manually. Squares you have already looked at stay dimly visible as memory; what only an ally can see stays hidden. While all of your fighters are down, you look through your allies' eyes.">My character's view</option>
+          <option value="team" title="You see everything your whole side can see: your fighter's sight and your allies' sight combined, so the map opens up wherever an ally is looking.">Allies' view (shared)</option>
+          <option value="selected" title="You see only through tokens you choose. Pick a fighter in the Fighters list or on the map, or Shift-click to add more. This does not change My fighters or which roofs open for you.">Chosen tokens</option>
+          <option value="off" title="No fog of war: you see the whole map, including what foes are doing out of sight. Use this to run the fight as the Game Master.">Off (Game Master view)</option>
+        </select>
+      </label>
+      <button id="ttDiceToggle" type="button" class="tt-tool is-on" aria-pressed="true" title="3D dice on or off">🎲 Dice</button>
+      <button id="ttNames" type="button" class="tt-tool" title="Always show names over tokens">Names</button>
+      <button id="ttRoofs" type="button" class="tt-tool" aria-pressed="true" hidden disabled title="Game Master view: show translucent tiled roofs, or hide them to see inside. Player views hide only roofs entered by their own creatures.">GM roofs</button>
+      <button id="ttRulesOverlay" type="button" class="tt-tool" aria-pressed="false" title="Show zone rules with frames, movement marks and names (Shift+R)">Show rules on map</button>
+      <div class="tt-zoom" role="group" aria-label="Zoom">
+        <button id="ttZoomOut" type="button" class="tt-tool" aria-label="Zoom out">−</button>
+        <button id="ttFit" type="button" class="tt-tool">Fit</button>
+        <button id="ttZoomIn" type="button" class="tt-tool" aria-label="Zoom in">+</button>
+      </div>
+      <button id="ttFullscreen" type="button" class="tt-tool" title="Full screen (F)">⛶ Full screen</button>
+      <button id="ttPip" type="button" class="tt-tool" title="A small always-on-top window with your fighter's buttons (stays above other windows)">📌 On top</button>
+      <button id="ttPanels" type="button" class="tt-tool" title="Hide or show the side panels (Tab)">Panels</button>
+      <a class="tt-tool" href="/tabletop/maps" target="_blank" rel="noopener" title="Draw maps: size, background and walls">Maps</a>
+      <button id="ttCharacters" type="button" class="tt-tool" title="Open a character sheet — pick any saved character">Characters</button>
+      <button id="ttLobbyOpen" type="button" class="tt-tool tt-primary">Fights</button>
+      <select id="ttTheme" class="tt-theme" aria-label="App style (also changes the Factory and sheets)" title="App style: the same choice as Settings > Appearance in the Factory">
+        <option value="lacquer">Night Lacquer</option>
+        <option value="celestial">Celestial Court</option>
+        <option value="ember">Ember Forge</option>
+        <option value="classic">Classic light</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="tt-main">
+    <aside class="tt-left" aria-label="Fighters">
+      <section id="ttInspector" class="tt-card tt-inspector" aria-live="polite">
+        <p class="tt-muted">Click a token to see its mini sheet.</p>
+      </section>
+      <section id="ttInformation" class="tt-card" aria-live="polite" hidden></section>
+      <section class="tt-card">
+        <h2 class="tt-card-title">Fighters</h2>
+        <div id="ttRoster" class="tt-roster"></div>
+      </section>
+    </aside>
+
+    <section class="tt-stage" aria-label="Battle map">
+      <div id="ttViewport"></div>
+      <div id="ttViewerGate" class="tt-viewer-gate" role="status">
+        <p id="ttViewerGateText">Open a fight to choose your view.</p>
+        <button id="ttViewerGateChoose" type="button" class="tt-tool tt-primary">My fighters</button>
+        <button id="ttViewerRetry" type="button" class="tt-tool" hidden>Check controls again</button>
+      </div>
+      <div id="ttHint" class="tt-hint" role="status" hidden></div>
+      <div id="ttToasts" class="tt-toasts" aria-live="assertive"></div>
+    </section>
+
+    <aside class="tt-right" aria-label="Combat log">
+      <div class="tt-card tt-feed-card">
+        <div class="tt-feed-head">
+          <h2 class="tt-card-title">Combat log</h2>
+          <label class="tt-check"><input id="ttFeedDetail" type="checkbox"> All events</label>
+        </div>
+        <ol id="ttFeed" class="tt-feed"></ol>
+        <button id="ttFeedJump" class="tt-feed-jump" type="button" hidden title="Back to the newest entries">↓ New entries</button>
+      </div>
+    </aside>
+  </main>
+
+  <footer id="ttActionBar" class="tt-actionbar" aria-label="Actions"></footer>
+
+  <dialog id="ttLobby" class="tt-dialog" aria-labelledby="ttLobbyTitle">
+    <form method="dialog" class="tt-dialog-close"><button class="tt-tool" aria-label="Close">✕</button></form>
+    <h2 id="ttLobbyTitle">Fights</h2>
+    <div class="tt-lobby">
+      <section>
+        <h3>New fight</h3>
+        <p class="tt-muted">Pick who fights on each side and who plays them: <strong>You</strong> (you choose every move with the action buttons) or <strong>AI</strong> (the Local AI follows the character's Dao). Click a fighter slot or <strong>+ Add fighter</strong> to choose from cards you can search and sort.</p>
+        <div id="ttBuilder" class="tt-builder"></div>
+      </section>
+      <section>
+        <h3>Saved fights</h3>
+        <div id="ttSaved" class="tt-saved"></div>
+      </section>
+    </div>
+  </dialog>
+
+  <dialog id="ttSummary" class="tt-dialog tt-summary" aria-labelledby="ttSummaryTitle">
+    <form method="dialog" class="tt-dialog-close"><button class="tt-tool" aria-label="Close">✕</button></form>
+    <h2 id="ttSummaryTitle">Fight summary</h2>
+    <div id="ttSummaryBody"></div>
+  </dialog>
+
+  <dialog id="ttViewerPicker" class="tt-dialog tt-viewer-picker" aria-labelledby="ttViewerPickerTitle">
+    <form method="dialog" class="tt-dialog-close"><button class="tt-tool" aria-label="Close">✕</button></form>
+    <h2 id="ttViewerPickerTitle">Which fighters do you play on this screen?</h2>
+    <p>Choose your fighters to see through their eyes. When one of your creatures enters a building, its roof opens on this screen.</p>
+    <fieldset class="tt-viewer-fieldset">
+      <legend>My fighters</legend>
+      <div id="ttViewerChoices" class="tt-viewer-choices"></div>
+    </fieldset>
+    <p id="ttViewerPickerNote" class="tt-muted"></p>
+    <p class="tt-muted">This choice is remembered for this tab and fight. It changes your view; the separate <strong>Played by</strong> buttons choose who takes a fighter's turns.</p>
+    <div class="tt-viewer-actions">
+      <button id="ttViewerApply" type="button" class="tt-tool tt-primary">Use these fighters</button>
+      <button id="ttViewerGM" type="button" class="tt-tool">Open Game Master view</button>
+    </div>
+    <p class="tt-sub">Game Master view shows the whole map and every creature.</p>
+  </dialog>
+
+  <dialog id="ttSeat" class="tt-dialog tt-seat" aria-labelledby="ttSeatTitle">
+    <form method="dialog" class="tt-dialog-close"><button class="tt-tool" aria-label="Close">✕</button></form>
+    <h2 id="ttSeatTitle">Who plays this fighter?</h2>
+    <p class="tt-muted">A model plays this fighter's turns and reactions on the server, using only what this fighter can see. If it is slow or gives a bad answer, the built-in AI makes that choice instead.</p>
+    <div id="ttSeatProviders" class="tt-seat-providers"></div>
+    <div id="ttSeatStyle" class="tt-seat-providers"></div>
+    <div class="tt-seat-actions"><button class="tt-tool tt-primary" type="button" data-seat-apply>Let this model play</button></div>
+  </dialog>
+
+  <dialog id="ttSeatLog" class="tt-dialog tt-seat" aria-labelledby="ttSeatLogTitle">
+    <form method="dialog" class="tt-dialog-close"><button class="tt-tool" aria-label="Close">✕</button></form>
+    <h2 id="ttSeatLogTitle">What the model decided</h2>
+    <div id="ttSeatLogBody"></div>
+  </dialog>
+
+  <dialog id="ttReaction" class="tt-dialog tt-reaction" aria-labelledby="ttReactionTitle">
+    <h2 id="ttReactionTitle">Reaction</h2>
+    <div id="ttReactionText"></div>
+    <div class="tt-reaction-buttons">
+      <button type="button" class="tt-tool" data-answer="USE">Use</button>
+      <button type="button" class="tt-tool" data-answer="DECLINE">Pass</button>
+      <button type="button" class="tt-tool" data-cancel-ability hidden>Cancel ability</button>
+    </div>
+  </dialog>
+
+  <script type="module" src="/static/tabletop/tabletop.js?v=routernl1-route-newlines-ruler3"></script>
+</body>
+</html>
