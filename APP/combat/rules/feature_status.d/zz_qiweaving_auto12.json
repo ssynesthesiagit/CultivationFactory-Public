@@ -1,0 +1,57 @@
+{
+ "schema": "TianxiaFoundry.FeatureStatus.v1",
+ "features": {
+  "TAL_QIWEAVING_DRAW_CURRENT": {
+   "status": "applied",
+   "why": "The Bond talent is an Action the Qiweaver applies to a bonded creature (combat/ext/qiweaving_bond.py): the target makes a Constitution saving throw, and on a failure it loses 1 Cultivation Point (no more than your Proficiency Bonus per long rest) which you gain as a Temporary Cultivation Point."
+  },
+  "TAL_QIWEAVING_FEED_CURRENT": {
+   "status": "applied",
+   "why": "The Bond talent is an Action the Qiweaver applies to a willing bonded creature (combat/ext/qiweaving_bond.py): you choose and spend 1 to your Proficiency Bonus Cultivation Points and the creature gains the same number as Temporary Cultivation Points. Once per short rest."
+  },
+  "TAL_QIWEAVING_THROTTLE_CURRENT": {
+   "status": "applied",
+   "why": "The Bond talent is an Action the Qiweaver applies to a bonded creature (combat/ext/qiweaving_bond.py): on a failed Constitution save the creature's next Cultivation Point technique before the start of your next turn costs 1 more, and the creature is asked whether it will pay; if it will not, the technique fails and its Cultivation Points come back. Once per round per caster."
+  },
+  "TAL_QIWEAVING_CIRCUIT_LOCK": {
+   "status": "applied",
+   "why": "The intensification of Throttle Current (combat/ext/qiweaving_bond.py): on a failed Constitution save the target cannot spend more Cultivation Points on one technique than your Proficiency Bonus until the end of your next turn, so a technique priced above that is not offered to it; a successful save falls back to Throttle Current. It never holds back a Secret Inheritance, which the printed talent exempts, and where two casters have locked the same creature the strongest limit (the lowest number) is the one that holds. Partly manual: a technique whose Cultivation Point cost is chosen as you play, or one that starts as a Reaction, is not priced by the menu and is not held back — the table says so on the creature's status and in the log when the lock lands."
+  },
+  "TAL_QIWEAVING_READ_CURRENT": {
+   "status": "applied",
+   "why": "The Bond talent is an Action the Qiweaver applies to a bonded creature (combat/ext/qiweaving_bond.py): you choose two of six printed facts to learn about it, and the fight answers each of them in words."
+  },
+  "TAL_QIWEAVING_SHARED_RESERVOIR": {
+   "status": "applied",
+   "why": "The Bond talent is an Action the Qiweaver spends (combat/ext/qiweaving_bond.py): Cultivation Points move between the bonded pair; the creature giving them is asked every time, even when only one point is on offer, and may give nothing at all (up to your Proficiency Bonus). No direction exceeds the recipient's maximum, and a creature may receive through it once per long rest."
+  },
+  "TAL_QIWEAVING_VICIOUS_UNWEAVE": {
+   "status": "applied",
+   "why": "The +1 CP Unweaving augment (combat/ext/qiweaving_unweave.py): when Unweave Pattern ends an Active Qi Pattern, the Qiweaver chooses which creature bearing, maintaining or creating it takes Force damage by Cultivation Level, at most once per turn each."
+  },
+  "TAL_QIWEAVING_DAZING_UNWEAVE": {
+   "status": "table",
+   "why": "Fires only when you successfully counter another creature's technique. At this table a counter is a Reaction row (combat/typed_reactions.on_technique_start) and only the typed counter_technique effect stops the pending technique, while Unweave Pattern is an Action and so is never offered inside another creature's turn; nothing observable records who countered with what. Resolve it at the table: counter, then the Intelligence save and its printed failure."
+  },
+  "TAL_QIWEAVING_FALSE_COMPLETION": {
+   "status": "table",
+   "why": "Fires only when you successfully counter another creature's technique. At this table a counter is a Reaction row (combat/typed_reactions.on_technique_start) and only the typed counter_technique effect stops the pending technique, while Unweave Pattern is an Action and so is never offered inside another creature's turn; nothing observable records who countered with what. Resolve it at the table: counter, then the Intelligence save and its printed failure."
+  },
+  "TAL_QIWEAVING_GRAND_UNWEAVING": {
+   "status": "applied",
+   "why": "The sphere technique (combat/ext/qiweaving_unweave.py): every perceived Active Qi Pattern on every creature in the 20-foot sphere, allies and self included, with one Qiweaving Check compared against each chosen pattern's own DC."
+  },
+  "TAL_QIWEAVING_WORLD_CIRCUIT_SEVERANCE": {
+   "status": "applied",
+   "why": "The 120-foot technique (combat/ext/qiweaving_unweave.py): up to your Proficiency Bonus perceived Active Qi Patterns, one Qiweaving Check at Advantage compared against each chosen pattern's own DC; a pattern that survives is suppressed until the start of your next turn. Once per long rest."
+  },
+  "TAL_QIWEAVING_SEIZE_PATTERN": {
+   "status": "table",
+   "why": "Seize Pattern (Qiweaving): reassigning a countered technique's targets, and taking over its Concentration, needs a general target-rewrite seam the table does not model; nothing partial is automated (auto12 2026-10-04)."
+  },
+  "TAL_QIWEAVING_CONDUCTIVE_TOUCH": {
+   "status": "table",
+   "why": "Conductive Touch (Qiweaving): spending 1 Cultivation Point on an Unarmed Strike, natural weapon or light melee weapon hit needs a paid melee-hit rider that any weapon or unarmed attack can carry, and the light-melee test; the typed row only reaches this Sphere's own Cultivation Attacks, so nothing is automated (auto12 2026-10-04)."
+  }
+ }
+}
