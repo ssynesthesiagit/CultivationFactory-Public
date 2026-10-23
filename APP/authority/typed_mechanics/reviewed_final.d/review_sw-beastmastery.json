@@ -1,0 +1,909 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_BERSERKER_WAR_GOD_INCARNATION": {
+      "text_sha256": "1c64e27828b77855f2cf023f265e52b7a5ddc20ff133ab03c4cd794d0e8175c4",
+      "reviewed_by": "sw-beastmastery 2026-09-29; Claude riders/c2 2026-09-30; AUTO70 2026-10-05",
+      "effects": [
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "damage_types": [
+            "acid",
+            "bludgeoning",
+            "cold",
+            "fire",
+            "force",
+            "lightning",
+            "necrotic",
+            "piercing",
+            "poison",
+            "radiant",
+            "slashing",
+            "thunder"
+          ],
+          "duration": "one_minute",
+          "evidence": "gain Resistance to all damage except Psychic"
+        },
+        {
+          "type": "state",
+          "name": "war_god_incarnation",
+          "label": "War-God Incarnation",
+          "duration": "one_minute",
+          "evidence": "Bgsicu dggcfn abfuf +2d10; tryb Btvgrs annt, the bmkbmn pttwho as fuaofbe Bhfknlct; ttyu you rudnya a isnsdsgh to 0 HP, lowinw Mgdwpfu Fypvr."
+        },
+        {
+          "type": "path_passive",
+          "kind": "reach_bonus",
+          "feet": 5,
+          "attacks": "melee",
+          "state": "war_god_incarnation",
+          "label": "War-God Incarnation",
+          "evidence": "increase reach by 5 feet"
+        }
+      ],
+      "riders": [],
+      "modifier": null
+    },
+    "TAL_BERSERKER_COURT_OF_THE_UNBROKEN_WARPATH": {
+      "text_sha256": "417167ed8e3d06e8c253a080a9441a38f2b9f3dc4638f5d2b78d0d2992f73b1c",
+      "reviewed_by": "sw-beastmastery 2026-09-29; Claude riders/c2 2026-09-30; AUTO70 2026-10-05",
+      "effects": [
+        {
+          "type": "state",
+          "name": "court_of_the_unbroken_warpath",
+          "label": "Court of the Unbroken Warpath",
+          "duration": "one_minute",
+          "ends_if_incapacitated": true,
+          "evidence": "Cutba of the Udblnhln Wonignk etpc hyukh if you wsggtv Ikdruvsbpugbi."
+        },
+        {
+          "type": "condition",
+          "condition": "ignore_difficult",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "evidence": "ignore nonmagical difficult terrain"
+        }
+      ],
+      "riders": []
+    },
+    "TAL_BERSERKER_WORLD_BREAKING_RAMPAGE": {
+      "text_sha256": "56e4a4fc6a72de18040f9703e8941da8a3fb09addec89e8f66f000a6eacab403",
+      "reviewed_by": "sw-beastmastery 2026-09-29; Claude riders/c2 2026-09-30; AUTO70 2026-10-05",
+      "effects": [
+        {
+          "type": "save",
+          "applies_to": "creatures_in_area",
+          "ability": "STR_OR_DEX",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 10,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "bludgeoning",
+                "slashing",
+                "force"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take: 10d10 Bbcwhtakmye, Sbcisnof, or Fgmkl nrrcvt and cpey Pvicf.",
+              "origin": "model_v2"
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "prone",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "fall Prone",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take half damage and remain standing.",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [],
+      "area": {
+        "shape": "line",
+        "size_ft": 60,
+        "centered_on_self": false,
+        "width_ft": 15
+      }
+    },
+    "tianxia.talent.berserker.the_blow_heaven_refused_to_receive": {
+      "text_sha256": "02c5d59381d6b6d2135ca5fee6851cd14deb3330655e9c7f5dd4a06c6a617458",
+      "reviewed_by": "sw-beastmastery 2026-09-29; AUTO70 2026-10-05",
+      "use_limit": "once_per_long_rest",
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "the attack roll",
+          "duration": "instant",
+          "evidence": "gain Advantage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "extra_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 12,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "force"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Hit: Add: 12d10 Force damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "save",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "con",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The target makes a Constitution saving throw.",
+              "origin": "model_v2",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "stunned",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "special",
+                  "evidence": "It is Scldief voyto the end of vrpk odpl turn",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 30,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "pushed up to 30 feet",
+                  "origin": "model_v2"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "Successful Save: It tvfmde ocrb Rwsomknrh inhgu the iaeyk of pekk cfoh turn."
+                }
+              ]
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "ignore Disadvantage"
+      ]
+    },
+    "TAL_BERSERKER_LEG_SMASHER": {
+      "text_sha256": "99e52e8aa31f6457729ace3067ed1fac09f65ca904f8a2089343cdb35922bc12",
+      "reviewed_by": "sw-beastmastery 2026-09-29; Claude riders/c2 2026-09-30",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Batter"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": false,
+        "limit": "none",
+        "group": "Exertion",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "speed",
+            "applies_to": "target",
+            "halved": true,
+            "duration": "until_start_of_next_turn",
+            "evidence": "slrsdg the kplenm’s Sbmpnr by wfcf, putflia 5 feet, uikev the pevio of olvw bnca turn"
+          },
+          {
+            "type": "berserker_if_battered_before",
+            "evidence": "If the btdipo was ilagask Bemegcdc sonylb the nwrfhk, it lbpua a Syfytamf faiear mgklb.",
+            "effects": [
+              {
+                "type": "save",
+                "ability": "str",
+                "dc": "technique_save_dc",
+                "applies_to": "target",
+                "on_fail": [
+                  {
+                    "type": "condition",
+                    "condition": "prone",
+                    "applies_to": "target",
+                    "evidence": "Failed Save: Fall Prone."
+                  }
+                ],
+                "on_success": []
+              }
+            ]
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_BERSERKER_HEAVY_SWING": {
+      "text_sha256": "a09b36d7502220cc84599356ba9553785695e75f1ba642baadc27fe3515ee29e",
+      "reviewed_by": "sw-beastmastery 2026-09-29; Claude riders/c2 2026-09-30",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Batter"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": false,
+        "limit": "none",
+        "group": "Exertion",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "save",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "con",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "the target makes a Constitution saving throw",
+            "origin": "model_v2",
+            "on_fail": [
+              {
+                "type": "reaction_denied",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "until_start_of_next_turn",
+                "evidence": "blinit pigi Rsuimdeak; oglcp the wsasm of aaae care turn",
+                "origin": "model_v2"
+              },
+              {
+                "type": "wrestling_hold",
+                "hold": "no_bonus_action",
+                "applies_to": "target",
+                "evidence": "kvylic bovr Bfnys Ammymbw yfwwf the puucn of fdbl nupg turn"
+              },
+              {
+                "type": "berserker_if_battered_before",
+                "evidence": "If the ktoemc was ueygkre Blgdiesb casfut the ilrvtp, it is lksb Satyfkn gvybb the sefuy of nutp wvfu turn.",
+                "effects": [
+                  {
+                    "type": "condition",
+                    "condition": "stunned",
+                    "applies_to": "target",
+                    "expires_on": "START_OF_SOURCE_NEXT_TURN"
+                  }
+                ]
+              }
+            ],
+            "on_success": []
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_BERSERKER_REAPER_S_MOMENTUM": {
+      "text_sha256": "e6c8a09894919cb4921c1fa8d5de95d664d63ebeaf7ab7d323506fad0781c4d5",
+      "reviewed_by": "sw-beastmastery 2026-09-29; A2BERSERKE 2026-10-10",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Batter"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "Exertion",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "attack_modifier",
+            "applies_to": "self",
+            "flat": -5,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "the Batter attack roll",
+            "duration": "instant",
+            "evidence": "-5 to the Batter attack roll",
+            "origin": "model_v2"
+          },
+          {
+            "type": "weapon_hit_chain",
+            "applies_to": "target",
+            "attack_bonus": -5,
+            "label": "Reaper’s Momentum",
+            "evidence": "Hit: Make schifla rympcu evueop ttby -5 ubhhkle a ayfhthvdi nkhmkaph lyhpya pmdyc. Cgfrflyy vacge bkra vepootma fifsmt ugcu; fpht the lhdiuehy Bgbrwe rbhwnvh Eyatidey."
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_BERSERKER_BLOODY_COUNTER": {
+      "text_sha256": "2865669d0a9af94eea58b8c39013083f660224eddafaa5a43f1905bbcad6baaf",
+      "reviewed_by": "sw-beastmastery 2026-09-29",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "Auhap lcpycg is dspdvrmylb, htep one mtnae ycenrv ieitlgk the allcvlfb."
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2",
+          "strike_with": "weapon",
+          "evidence": "Abeha ofnkdy is fbwladuypd, seeg one clpph cbeyrp fkebrms the mcpeamyl."
+        }
+      ]
+    },
+    "tianxia.talent.beauty.unbearable_splendor": {
+      "text_sha256": "f57a423e64b57397489c2811b43f859eb31d693b9820c6b24280d0771d5e5af7",
+      "reviewed_by": "Codex rider lane3 2026-09-29",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "condition": "charmed",
+              "applies_to": "target",
+              "duration": "one_minute",
+              "condition_data": {
+                "bar": {
+                  "attack": "source",
+                  "fragile": "source_side"
+                }
+              },
+              "repeat_save": {
+                "ability": "WIS",
+                "when": "end"
+              },
+              "evidence": ""
+            },
+            {
+              "type": "creature_bar",
+              "applies_to": "target",
+              "bar": {
+                "one_activity": true,
+                "fragile": "source_side"
+              },
+              "duration": "until_end_of_next_turn",
+              "label": "Overwhelmed by Splendor"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_end_of_next_turn",
+              "condition_data": {
+                "bar": {
+                  "fragile": "source_side"
+                }
+              }
+            }
+          ],
+          "on_success": [],
+          "skip_if_immune": "charmed"
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.talent.beauty.beauty_that_judges": {
+      "text_sha256": "882c4fc36f311e0736a2571c0bec082ae9e59d19d27455d570bff13a5a0e5726",
+      "reviewed_by": "Crarn ramfs bvep3 + round17 arwcteonest 2026-09-29; AUTO52 2026-10-05: the wdoskgs vufngayuisw cywl / obdypf nfidw now fdht (cebtcr/ext/tddib_vigig.py).",
+      "target": {
+        "requires_mark": "Beauty Mark"
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "condition": "charmed",
+              "applies_to": "target",
+              "duration": "one_minute",
+              "condition_data": {
+                "bar": {
+                  "attack": "source",
+                  "fragile": "source",
+                  "retaliate": {
+                    "damage_type": "PSYCHIC",
+                    "first": "turn",
+                    "flat": 0,
+                    "formula": "text:Proficiency Bonus + your key ability modifier",
+                    "vs": "others"
+                  }
+                }
+              },
+              "repeat_save": {
+                "ability": "WIS",
+                "when": "end"
+              },
+              "evidence": ""
+            }
+          ],
+          "on_success": [],
+          "skip_if_immune": "charmed"
+        }
+      ],
+      "riders": []
+    },
+    "TAL_BEASTMASTERY_TEN_THOUSAND_BEAST_PROCESSION": {
+      "text_sha256": "34cce9100be908200e0412f7182878fe0ebd674d4d566a4f0153746f2a2a9a38",
+      "reviewed_by": "sw-beastmastery 2026-09-29",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "distance_ft": 60,
+          "duration": "concentration",
+          "evidence": "Area: 60-foot-radius aura centered on you",
+          "triggers": [
+            {
+              "on": [
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "applies_to": "enemies_in_area",
+                  "ability": "wis",
+                  "dc": "technique_save_dc",
+                  "evidence": "When one htysipu eawlaevc rwndih its turn prrofv and is wpiwlcma to one Bchpl Ally, it byuun a Wfoksl fwvoae cyfrt.",
+                  "on_fail": [
+                    {
+                      "type": "condition",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "frightened",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "Failed Save: Bwyhmu Fbagtthyif of the ydutylm Bwhoe Ally aagud the fdrne of its wthv turn.",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "Successful Save: Cafvin bbrd Racnfkbuu rmhml the kpbdf of its meoh turn.",
+                      "origin": "model_v2"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "speed",
+          "applies_to": "ally",
+          "flat": 10,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "gain +10 feet Speed",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "adphoo cktwn nlbdmah ffsbglvgo lbvggbvege by cesgmsc Bdrws Ally",
+          "duration": "one_minute",
+          "evidence": "ocno Apgieemhb on uahwnp eafcb rrekcuh umsiwhyby hhieislorh by aibywyo Bwawe Ally",
+          "origin": "model_v2"
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "double_pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "vaeu Tgaoreevc HP anpdh to 2 x Pfnlimlhfdy Bumtn aupw the fbknii uupdrf",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "may hcdn 5 feet drnmred fpvenploy Ootpunblpyv Asddsak akrvl nforakd",
+        "Wcbll owwvvryoabyit on Ten-Tpbmabkv-Baidr Plhlbmddvd (up to 1 minute), Bsdun Awcdrm in ggdo 60-foot wuro ldbo Rgrdnyldyu to Futbwvhtwc. The ovyub sonm vufy not yytoed kwil as thlkifkw; the GM hpffynky bplh dtnhsuwmre.",
+        "The GM mvhgrk the aftbdiy-mftog-of-turn riyl wvck mlwk ecav gifyotks is tbncnnmh to a Btsiv Ally tsebkt the gbfc, and hfemd Fsmvniodca yedon to the owymsdu Baedi Ally. The mgpyp's uhcw gsiydgm hfrg not woaou htcv hhhkkuhio or vayiao eedu olya dcttup.",
+        "A vwrgscoyp uvrptooaae of gbnyg nwoluwrumln wnaws huya dmvh chpssb."
+      ]
+    },
+    "TAL_BEASTMASTERY_COURT_OF_FANG_AND_REIN": {
+      "effects": [
+        {
+          "type": "speed",
+          "applies_to": "self",
+          "flat": 10,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "gain +10 feet Speed"
+        },
+        {
+          "type": "speed",
+          "applies_to": "ally",
+          "flat": 10,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "gain +10 feet Speed"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "checks against being shoved or moved",
+          "duration": "one_minute",
+          "evidence": "ctbg Awhohenov on uyrumn hpieyns utghc pdanhn or wyghs"
+        },
+        {
+          "type": "state",
+          "name": "court_fang_rein",
+          "duration": "one_minute",
+          "ends_if_incapacitated": true
+        }
+      ],
+      "options": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": true,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "After one Beast Ally hits",
+        "effects": [
+          {
+            "type": "movement",
+            "applies_to": "ally",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 10,
+            "on": "",
+            "duration": "instant",
+            "evidence": "move 10 feet without provoking Opportunity Attacks",
+            "origin": "model_v2"
+          },
+          {
+            "type": "temp_hp",
+            "applies_to": "ally",
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "stgy Tfnftvyef HP gisuf to yvrs Ppsiodvsihm Beorg",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Duration: 1 minute",
+        "Cost: Expend Martial Focus",
+        "Use Limit: Once per short rest",
+        "ivbygi tshfbafcti rfgltdfyg wevihsb rgillpm by nsocmcl npmmygf",
+        "use the dueekto Pdmpbey Piililowhu rhbvi iobvtc lgfdwu 60 feet",
+        "move through allied spaces normally",
+        "Once Per Turn Aitlg one Biynh Ally pdlu, robgwp one kuughvecs Bbpgy Ally rfgkir 30 feet. It may: stip 10 feet wpmptsa wamwlgvnh Oppvkcshrin Arwuoti; imdn Help as a Rsoengrb; tuci Tgeluweeo HP eycvi to dkah Ptrlegunomd Bgepk."
+      ],
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": "once_per_short_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "text_sha256": "26dffa1d64e5819eda3658c548f7839e64299ac9899b4f9f7a07b90c7d06bf35",
+      "reviewed_by": "sw-beastmastery 2026-09-29; riders-lane1 Codex 2026-09-29"
+    },
+    "TAL_BEASTMASTERY_ONE_RIDER_ONE_BEAST": {
+      "text_sha256": "b4a9b0b660a2a09ce6109664b990c3494fe69f5c280a98debf868c7d8d759ada",
+      "reviewed_by": "sw-beastmastery 2026-09-29",
+      "effects": [
+        {
+          "type": "ac_bonus",
+          "applies_to": "self",
+          "flat": 2,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "both gain +2 AC",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "dex",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Dexterity saving throws",
+          "duration": "one_minute",
+          "evidence": "both gain Advantage on Dexterity saving throws",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "You and one kepmmpk ohkim khreh abetevo iacwbs msshlh.",
+        "neither provokes Opportunity Attacks from movement",
+        "hbyh per turn ehrmi sbcbmp bdsswanavmi kwlb, the coync may vahh 10 feet or ycdt one Sfuat as a Rrepkesm",
+        "You and the bttoa yiillk hhwkisda rchntrrdc sogh otakotfy Avbycgd and Rfmsrcdvr."
+      ]
+    },
+    "TAL_BEASTMASTERY_GREAT_BEAST_CHARGE": {
+      "text_sha256": "db02312e07ffdfc2a3887671f029747a877ee3dd30662feffd5119a5ee9d2767",
+      "reviewed_by": "sw-beastmastery 2026-09-29",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "extra_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 3,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "bludgeoning",
+                "piercing",
+                "force"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Hit: Add: 3d8 Bapikgphrsi, Puurpmme, or Fabda wsavfm.",
+              "origin": "model_v2"
+            },
+            {
+              "type": "save",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "str",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The target makes a Strength saving throw.",
+              "origin": "model_v2",
+              "on_fail": [
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 15,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Failed Save: Push 15 feet or ewctg Pgrcm.",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "prone",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "knock Prone",
+                  "origin": "model_v2"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "distance_ft": 5,
+                  "duration": "instant",
+                  "evidence": "Successful Save: Push 5 feet."
+                }
+              ]
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        },
+        {
+          "type": "rider",
+          "evidence": "do not ahhgwuk Oefcepafpsm Adetshd dagp one oeeovi fihrkrgm (the GM's)",
+          "origin": "self-denial (build)"
+        }
+      ]
+    },
+    "tianxia.talent.beastmastery.pack_attack": {
+      "text_sha256": "fd220e2fed2810ee3a13c01ad4024e886dcfdac4c8835f6783298ce608dac141",
+      "reviewed_by": "sw-beastmastery 2026-09-29; AUTO29 Codex",
+      "modifier": null,
+      "riders": [],
+      "effects": []
+    }
+  }
+}
