@@ -1,0 +1,206 @@
+"""Borrowed Golden Form: table transactions, cold reload, the unperfected rule.
+
+A character who has recorded no Form holds no Form (Stable is never assumed), so the
+tests below record the Forms they need on the sheet (owner_golden) or pick the printed
+choices (Circulating, Reservoir) the sheet offers."""
+import pytest
+from combat.ext import borrowed_golden_form as borrowed
+from combat.ext import qi_path
+from tests.worker2_support import fixture, candidate, settle, reload, turn, OWNER, ALLY, FOE
+
+Q = 'tianxia.path.qi_cultivation.feature.'
+INSIGHT = 'insight.borrowed-golden-form'
+FORM = 'condition:typed.golden_core_form'
+QI = 'resource:core.qi'
+
+
+def use(combat, table, mid, name, **kw):
+    row = candidate(combat, mid, name, target=kw.pop('target', None), at=kw.pop('at', None))
+    return settle(table, mid, row.candidate_id, **kw)
+
+
+def by_name(engine, title):
+    return [c for c in engine.legal_candidates()
+            if engine.action_catalog.get(c.source_definition_id)
+            and engine.action_catalog[c.source_definition_id].display_name == title]
+
+
+def borrowed_condition(actor):
+    return next((c for c in actor.conditions.values()
+                 if c.condition_id == FORM and (c.data or {}).get('borrowed')), None)
+
+
+def setup(tmp_path, *, cl=16, insights=(INSIGHT,), features=(Q + 'golden_core_form',),
+          extra=(), **layout):
+    """**layout is forwarded to the fight fixture; pass owner_golden=(...) to record the Form(s) on the sheet.
+
+    FD-7: the Golden Core Form is a fixed build choice, so a character holds it as
+    ``golden_core_forms`` on the sheet instead of picking it as an in-fight row."""
+    return fixture(tmp_path, list(features) + list(extra), cl=cl,
+                   owner_insights=list(insights), seed=f'BORROW-{cl}', **layout)
+
+
+def test_borrow_records_an_unpossessed_form_and_pays_4_qi(tmp_path):
+    combat, table, mid = setup(tmp_path)
+    engine = reload(tmp_path, mid)
+    owner = engine.state.actors[OWNER]
+    # no recorded Form: the character holds none, and no default Stable condition is written
+    assert qi_path.forms(owner) == ()
+    assert not [c for c in owner.conditions.values() if c.condition_id == FORM]
+    assert qi_path.form(owner) is None
+    assert borrowed_condition(owner) is None
+    offered = by_name(engine, 'Borrowed Golden Form')
+    assert offered, 'the Bonus Action is offered while a Form remains unpossessed'
+    before = owner.resources[QI]
+    prompts = use(combat, table, mid, 'Borrowed Golden Form',
+        choices={'choice:needle.borrowed_golden_form': 'circulating'})
+    prompt = next(p for p in prompts if p['context']['reaction_source_id'] == 'choice:needle.borrowed_golden_form')
+    assert 'unperfected benefits' in prompt['moment'] and '4 Qi' in prompt['moment']
+    engine = reload(tmp_path, mid)
+    owner = engine.state.actors[OWNER]
+    assert qi_path.forms(owner) == ('circulating',)  # no default Stable: only the borrowed Form is held
+    held = borrowed_condition(owner)
+    assert held is not None and held.data['form'] == 'circulating'
+    assert held.data['perfected'] is False
+    assert owner.resources[QI] == before - 4
+    # once per scene: the Bonus Action is gone after the borrow
+    assert not by_name(engine, 'Borrowed Golden Form')
+
+
+def test_declining_the_borrow_spends_nothing(tmp_path):
+    combat, table, mid = setup(tmp_path)
+    engine = reload(tmp_path, mid)
+    owner = engine.state.actors[OWNER]
+    before = owner.resources[QI]
+    use(combat, table, mid, 'Borrowed Golden Form',
+        choices={'choice:needle.borrowed_golden_form': None})
+    engine = reload(tmp_path, mid)
+    owner = engine.state.actors[OWNER]
+    assert owner.resources[QI] == before
+    assert borrowed_condition(owner) is None
+    assert qi_path.forms(owner) == ()  # no recorded Form and no default condition: nothing was spent or gained
+    # the scene did not spend its one borrow: a later turn offers it again
+    turn(table, mid, FOE)
+    turn(table, mid, OWNER)
+    engine = reload(tmp_path, mid)
+    assert by_name(engine, 'Borrowed Golden Form')
+
+
+def test_a_borrowed_form_stays_unperfected_at_cl17(tmp_path):
+    combat, table, mid = setup(tmp_path, cl=17, extra=[Q + 'domain_armament'], owner_golden=('stable',))
+    use(combat, table, mid, 'Borrowed Golden Form',
+        choices={'choice:needle.borrowed_golden_form': 'circulating'})
+    engine = reload(tmp_path, mid)
+    owner = engine.state.actors[OWNER]
+    # the recorded Stable Form is Perfected at CL17; the borrowed Circulating is not
+    assert qi_path.form_state(engine, owner, 'stable') is True
+    assert qi_path.form_state(engine, owner, 'circulating') is False
+    # next turn: a resolved Qi spend triggers the borrowed Circulating
+    turn(table, mid, FOE)
+    turn(table, mid, OWNER)
+    prompts = use(combat, table, mid, 'Domain Armament: Manifest', at=(2, 6),
+                  choices={'choice:needle.golden_benefits': ['temp_hp']})
+    asked = [p for p in prompts if p['context']['reaction_source_id'] == 'choice:needle.golden_benefits']
+    assert asked and asked[0]['choice']['minimum'] == 1 and asked[0]['choice']['maximum'] == 1
+    engine = reload(tmp_path, mid)
+    owner = engine.state.actors[OWNER]
+    assert owner.temporary_hp == int(owner.proficiency_bonus)
+
+
+def test_cl20_two_perfected_forms_grant_the_perfected_state(tmp_path):
+    # FD-7: both Forms are recorded on the sheet (a fixed build choice), not picked in the fight.
+    combat, table, mid = setup(tmp_path, cl=20,
+                               features=(Q + 'golden_core_form', Q + 'second_golden_core_form'),
+                               extra=[Q + 'domain_armament'],
+                               owner_golden=('circulating', 'reservoir'))
+    prompts = use(combat, table, mid, 'Borrowed Golden Form',
+        choices={'choice:needle.borrowed_golden_form': 'stable'})
+    prompt = next(p for p in prompts if p['context']['reaction_source_id'] == 'choice:needle.borrowed_golden_form')
+    assert 'Perfected benefits' in prompt['moment'] and 'unperfected benefits' not in prompt['moment']
+    engine = reload(tmp_path, mid)
+    owner = engine.state.actors[OWNER]
+    # two permanent Perfected Forms: the third may be granted Perfected for the scene
+    assert qi_path.form_state(engine, owner, 'circulating') is True
+    assert qi_path.form_state(engine, owner, 'reservoir') is True
+    assert qi_path.form_state(engine, owner, 'stable') is True
+    held = borrowed_condition(owner)
+    assert held is not None and held.data['form'] == 'stable' and held.data['perfected'] is True
+    # next turn: the Perfected borrowed Circulating chooses two benefits
+    turn(table, mid, FOE)
+    turn(table, mid, OWNER)
+    prompts = use(combat, table, mid, 'Domain Armament: Manifest', at=(2, 6),
+                  choices={'choice:needle.golden_benefits': ['temp_hp', 'move']})
+    asked = [p for p in prompts if p['context']['reaction_source_id'] == 'choice:needle.golden_benefits']
+    assert asked and asked[0]['choice']['minimum'] == 2 and asked[0]['choice']['maximum'] == 2
+    engine = reload(tmp_path, mid)
+    owner = engine.state.actors[OWNER]
+    assert owner.temporary_hp == 2 * int(owner.proficiency_bonus)
+
+
+def test_a_borrowed_reservoir_begins_unused(tmp_path):
+    combat, table, mid = setup(tmp_path)
+    use(combat, table, mid, 'Borrowed Golden Form',
+        choices={'choice:needle.borrowed_golden_form': 'reservoir'})
+    engine = reload(tmp_path, mid)
+    owner = engine.state.actors[OWNER]
+    assert qi_path.form_state(engine, owner, 'reservoir') is False
+    # the borrowed Reservoir grants the Reservoir Bonus Action, beginning unused
+    # (the borrow spent the turn's Bonus Action, so the reservoir waits a turn)
+    turn(table, mid, FOE)
+    turn(table, mid, OWNER)
+    engine = reload(tmp_path, mid)
+    assert by_name(engine, 'Golden Core Reservoir')
+    owner = engine.state.actors[OWNER]
+    before = owner.resources[QI]
+    use(combat, table, mid, 'Golden Core Reservoir')
+    engine = reload(tmp_path, mid)
+    owner = engine.state.actors[OWNER]
+    assert owner.resources[QI] == before + int(owner.proficiency_bonus)
+    # its once-per-scene use is spent while the borrowed Form lasts
+    assert not by_name(engine, 'Golden Core Reservoir')
+
+
+def test_the_borrow_needs_an_unpossessed_form(tmp_path):
+    # FD-7: both permanent Forms are recorded on the sheet; Stable is left for the scene borrow.
+    combat, table, mid = setup(tmp_path, cl=20,
+                               features=(Q + 'golden_core_form', Q + 'second_golden_core_form'),
+                               owner_golden=('circulating', 'reservoir'))
+    use(combat, table, mid, 'Borrowed Golden Form',
+        choices={'choice:needle.borrowed_golden_form': 'stable'})
+    engine = reload(tmp_path, mid)
+    # all three Forms are recorded: no borrow remains and the action is gone
+    assert len(qi_path.forms(engine.state.actors[OWNER])) == 3
+    assert not by_name(engine, 'Borrowed Golden Form')
+
+
+def test_a_recorded_form_cannot_be_borrowed_again(tmp_path):
+    # FD7GCF17R Blocking 3: the permanent/borrowed overlap of one Form is unreachable, because borrow() offers only Forms
+    # the character does not hold. Pin it: with Stable recorded at CL17, asking for Stable grants no borrowed Stable.
+    from combat.gate5_service import CombatServiceError
+    combat, table, mid = setup(tmp_path, cl=17, extra=[Q + 'domain_armament'], owner_golden=('stable',))
+    with pytest.raises(CombatServiceError):  # the recorded Stable is not among the offered Forms
+        use(combat, table, mid, 'Borrowed Golden Form',
+            choices={'choice:needle.borrowed_golden_form': 'stable'})
+    owner = reload(tmp_path, mid).state.actors[OWNER]
+    assert borrowed_condition(owner) is None
+    assert list(qi_path.forms(owner)).count('stable') == 1
+
+
+def test_the_borrow_is_not_offered_without_the_insight(tmp_path):
+    combat, table, mid = setup(tmp_path, insights=())
+    engine = reload(tmp_path, mid)
+    assert not by_name(engine, 'Borrowed Golden Form')
+
+
+def test_the_borrowed_form_survives_a_cold_reload(tmp_path):
+    combat, table, mid = setup(tmp_path)
+    use(combat, table, mid, 'Borrowed Golden Form',
+        choices={'choice:needle.borrowed_golden_form': 'circulating'})
+    engine = reload(tmp_path, mid)
+    owner = engine.state.actors[OWNER]
+    held = borrowed_condition(owner)
+    assert held is not None
+    assert held.data['form'] == 'circulating'
+    assert held.data['perfected'] is False
+    assert held.data['borrowed'] is True
+    assert 'Borrowed Circulating Golden Core' in held.data['label']
