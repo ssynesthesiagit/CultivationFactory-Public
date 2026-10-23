@@ -1,0 +1,73 @@
+{
+  "features": {
+    "TAL_AXES_LAW_OF_THE_FALLING_TREE": {
+      "block": "axes_falling_tree",
+      "kind": "falling_tree",
+      "costs": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 1
+          }
+        ],
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "save": {
+        "ability": "dex",
+        "dc": "technique_save_dc",
+        "evidence": "Choose one creature within 10 feet of the fallen target or broken object. That creature makes a Dexterity saving throw.",
+        "on_fail": [
+          {
+            "type": "axes_falling_tree_fall",
+            "evidence": "Failed Save: It falls Prone or is pushed 10 feet away from the fall.",
+            "options": [
+              {
+                "key": "prone",
+                "label": "falls Prone",
+                "effects": [
+                  {
+                    "type": "condition",
+                    "applies_to": "target",
+                    "condition": "prone",
+                    "evidence": "it falls Prone"
+                  }
+                ]
+              },
+              {
+                "key": "push",
+                "label": "is pushed 10 feet away from the fall",
+                "effects": [
+                  {
+                    "type": "axes_falling_tree_push",
+                    "applies_to": "target",
+                    "distance_ft": 10,
+                    "evidence": "pushed 10 feet away from the fall"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "on_success": [
+          {
+            "type": "axes_falling_tree_withdraw",
+            "distance_ft": 5,
+            "evidence": "Successful Save: It moves 5 feet to a space of its choice that is not closer to you, if it can."
+          }
+        ]
+      },
+      "why": "\"When you knock a creature Prone, reduce a creature to 0 HP, destroy a significant object, or suppress a barrier panel with an Axes talent, you may spend 1 CP, 1 Stamina, or expend Martial Focus. Choose one creature within 10 feet of the fallen target or broken object. That creature makes a Dexterity saving throw. Failed Save: It falls Prone or is pushed 10 feet away from the fall. Successful Save: It moves 5 feet to a space of its choice that is not closer to you, if it can.\" The save and both outcome branches run at the moment of the fall (combat/ext/axes_falling_tree.py). \"Reduce to 0 HP\" is a change of state, so it needs the creature to have been above 0 and to be at 0 now. The push is away from the fall itself rather than away from the wielder, and the withdrawal is the creature's own move, paid from its own movement allowance: \"if it can\" is that allowance, so a creature that has already spent its movement stays where it is. Suppressing a barrier panel has no suppression record on this table and stays with the GM."
+    }
+  }
+}
