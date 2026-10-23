@@ -1,0 +1,8 @@
+{
+  "features": {
+    "foundation.white_crane_cloud_step_v0_2B.cloud_step_crane_vessel": {
+      "block": "cloud_knees_vessel",
+      "why": "The Vessel's always-active Speed contribution (its own typed speed effect, +5 feet) compiles through combat/ext/mgr_t14_cloud_knees.py: the printed footwork condition (\"while you are not wearing armor or restraints that prevent light footwork\") is gated at compile time by the compiler's worn-armor fact, and restraints that prevent light footwork already make Speed 0 natively (grappled/restrained). Refined: Open-Cloud Knees replaces this one contribution with +10 feet through the same plug-in's compile_passives transform, driven by that record's own modifier data. The Vessel's maximum-Hit-Points projection is already folded into the sheet at character creation and is never added a second time in combat; its Advantage-on-balance-checks clause stays a GM clause."
+    }
+  }
+}
