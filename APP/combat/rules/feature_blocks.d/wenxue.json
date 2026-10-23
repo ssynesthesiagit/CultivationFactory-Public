@@ -1,0 +1,25 @@
+{
+ "features": {
+  "SABERS_BASE_SABER_LINE_PRESSURE": {
+   "block": "saber_line_pressure",
+   "why": "Marks the character as having the Sabers base ability so combat/ext/wenxue_sabers.py's after_hit hook knows to run the once-a-turn 'choose one' on a qualifying saber hit (gain Edge Momentum, by default, or Guard Pressure the target if the player toggled that preference). The reviewed_final override removes the narrow auto-generated modifier variant this replaces."
+  },
+  "tianxia.talent.sabers.saber_scare": {
+   "block": "saber_scare",
+   "why": "Marks the character as knowing Saber Scare so combat/ext/wenxue_sabers.py's after_hit hook can run its 'reduce a creature to 0 HP with a Sabers talent, or score a critical hit with a saber' trigger. Choosing WHICH hostile within 30 feet when several qualify uses nearest-then-lowest-id as a stand-in for the player's free choice."
+  },
+  "foundation.FOUNDATION_03_EMPTY_BOWL_SOUL_ANCHOR.gather_empty_bowl_mark": {
+   "block": "generate",
+   "resource": "foundation",
+   "on": ["wenxue_empty_bowl_support"],
+   "max": 1,
+   "per_round": 1,
+   "expires": "end_of_next_turn",
+   "why": "Gain 1 Empty Bowl Mark (max 1, once a round) after Wen Xue's own Healing Hymn, Dawn Ward, Rhythmic Guard, Harmonizing Breath or Mercy of Morning resolves on an ally or herself -- combat/ext/wenxue_foundation.py's technique_used hook calls combat/pressure.py's generate() with the 'wenxue_empty_bowl_support' reason at that moment, standing in for the printed 'feeds, heals, stabilizes, protects, comforts, or answers real need' trigger, which is otherwise a GM narrative call. Not automated: a Mark from succeeding a hunger/deprivation/fear/scarcity resistance check or save (Resist the Shortcut), since Wen Xue has no such check on her sheet."
+  },
+  "tianxia.talent.radiance.dawnmark_scripture": {
+   "block": "radiance_dawnmark_scripture",
+   "why": "Marks the character as knowing Dawnmark Scripture so combat/ext/radiance_dawnmark.py's attack_resolved and turn_start hooks know to extend her real Dawnmark's duration to until the end of her next turn and to flare it (deny Reactions) when a bearer's turn starts."
+  }
+ }
+}

@@ -1,0 +1,70 @@
+{
+ "features": {
+  "TAL_BEASTMASTERY_DEFENSIVE_RIDER": {
+   "block": "redirect",
+   "kind": "defensive_rider",
+   "why": "An attack that targets your mount targets you instead: no Action, you must be riding it and remain a legal target (combat/ext/mount_guard.py through the retarget_attack hook; not while Meat Shield is up)."
+  },
+  "TAL_BEASTMASTERY_MEAT_SHIELD": {
+   "block": "redirect",
+   "kind": "meat_shield",
+   "keeps_compiling": true,
+   "why": "The Bonus Action stays a compiled action (edge choice); the mount's Total Cover, Reactive Cover and the free End Meat Shield are combat/ext/mount_guard.py through the retarget_attack hook."
+  },
+  "TAL_RETRIBUTION_HEAVEN_READING_STILLNESS": {
+   "block": "counterstrike",
+   "kind": "heaven_reading",
+   "why": "Adds one trigger to Counterstrike: a hostile creature within your reach begins any hostile action (combat/ext/counterstrike.py)."
+  },
+  "TAL_RETRIBUTION_TWO_ANSWERS_WITHIN_ONE_BREATH": {
+   "block": "counterstrike",
+   "kind": "two_answers",
+   "why": "Two Counterstrikes a round, never two in one creature's turn, while Court of the Awaiting Blade is up (combat/ext/counterstrike.py)."
+  },
+  "TAL_RETRIBUTION_COURT_OF_THE_AWAITING_BLADE": {
+   "block": "counterstrike",
+   "kind": "court",
+   "keeps_compiling": true,
+   "why": "The Domain stays a compiled Bonus Action (its aura zone); what it changes about Counterstrike is combat/ext/counterstrike.py: one additional trigger, regain Martial Focus once a round on a hit, the target cannot take Reactions."
+  },
+  "TAL_RETRIBUTION_INTERCEPTING_STRIKE": {
+   "block": "counterstrike",
+   "kind": "intercepting_strike",
+   "keeps_compiling": true,
+   "why": "Prepared: an interception is one of Counterstrike's choices (combat/ext/counterstrike.py). Its compiled Reaction stays: Reactive Interception, for Martial Focus."
+  },
+  "TAL_RETRIBUTION_PATIENT_BREATH": {
+   "block": "counterstrike",
+   "kind": "patient_breath",
+   "why": "A prepared Counterstrike that expires at the start of your turn without being used gives back Martial Focus (combat/ext/counterstrike.py)."
+  },
+  "TAL_SNIPER_INTERCEPTING_SHOT": {
+   "block": "intercepting_shot",
+   "kind": "intercepting_shot",
+   "keeps_compiling": true,
+   "why": "Ready: Intercepting Shot per ranged weapon (combat/ext/intercepting_shot.py, the lock round's prepared hooks); the compiled Reaction stays as the Martial Focus use."
+  },
+  "TAL_SCOUNDREL_MISDIRECTED_ATTACK": {
+   "block": "redirect",
+   "kind": "misdirected_attack",
+   "keeps_compiling": true,
+   "why": "A successful Dirty Trick turns the Opportunity Attack on another legal target in the attacker's reach (combat/ext/redirect_reactions.py, the retarget_attack hook); the compiled reaction stays for the case with no other target."
+  },
+  "tianxia.subpath.body.jujutsu.feature.harmonious_body": {
+   "block": "redirect",
+   "kind": "harmonious_body",
+   "keeps_compiling": true,
+   "why": "The whole Reaction is played at the attack's declaration by combat/ext/redirect_reactions.py (the retarget_attack hook): save, then redirect / move / Prone on a failure, the damage reduction on a success. The compiled reaction row stays for its costs and numbers but never answers."
+  },
+  "TAL_SHIELD_REDIRECTING_SHIELD": {
+   "block": "redirect",
+   "kind": "redirecting_shield",
+   "why": "When a weapon attack misses you while your Active Defense is up against it, expend Martial Focus: the same roll against a new legal target in its reach or range, with the attack's own damage and effects (combat/ext/redirect_reactions.py, the after_miss hook)."
+  },
+  "TAL_SHIELD_PERFECT_REDIRECTION": {
+   "block": "redirect",
+   "kind": "perfect_redirection",
+   "why": "Redirecting Shield also against spell attacks and Cultivation Attack rolls (combat/ext/redirect_reactions.py)."
+  }
+ }
+}
