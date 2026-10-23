@@ -1,0 +1,50 @@
+{
+  "schema": "TianxiaFoundry.FeatureBlocks.v1",
+  "features": {
+    "insight.winter-tempered-body": {
+      "block": "ice_insights",
+      "covers": [
+        "**Prerequisite:** Ice Sphere and either Body Refining or Constitution 13+\n\n**Ability Increase (Level Selection):** Increase your Constitution, Wisdom, or Intelligence score by 1, to the maximum allowed by your current Realm.\n\n**Source CL:** Ice Source CL for Ice effects; Body Refining Source CL for Sure Foot on Winter.\n\nWhenever an Ice feature grants you Temporary Hit Points, increase that grant by your Proficiency Bonus. Apply this increase once per activation, not once per target or round.\n\n**Sure Foot on Winter \u2014 Once per scene:** When you would be knocked Prone while standing on ice, snow, or your Frost Lattice, choose not to become Prone. This does not prevent forced movement or damage unless those effects depend entirely on becoming Prone."
+      ],
+      "why": "Printed Ice combat clauses resolved by sealed ice_second_pass hooks; ability-score selection stays in the character build.",
+      "text_sha256": "5a5653cd251e00159d19929cff9bb73e151a759d02435064ee22e61fdbdbc67f"
+    },
+    "insight.shatter-without-waste": {
+      "block": "ice_insights",
+      "covers": [
+        "**Prerequisite:** Ice sphere, Foundation Realm\n\n**Ability Increase (Level Selection):** Increase your Wisdom, Intelligence, or Constitution score by 1, to the maximum allowed by your current Realm.\n\nOnce per turn, when one of your Lattice Spaces would end because you used Shatter Space or Shatter Bloom, you may instead set its remaining duration to the end of your next turn. If it would already end at or before that time, this Insight has no effect.\n\nRazor Rime Scripture can benefit only when the affected Lattice Space was created by a non-Secret Ice feature whose Source CL is no higher than yours."
+      ],
+      "why": "Printed Ice combat clauses resolved by sealed ice_second_pass hooks; ability-score selection stays in the character build.",
+      "text_sha256": "564352f2f3492a8e0ac2ed7f1a4c54374ed592dfafb915f0ef3c2eefd83f9e52"
+    },
+    "insight.ice-sure-footwork": {
+      "block": "ice_insights",
+      "covers": [
+        "**Prerequisite:** Ice sphere\n\n**Ability Increase (Level Selection):** Increase your Wisdom, Intelligence, or Constitution score by 1, to the maximum allowed by your current Realm.\n\nYou ignore difficult terrain caused by mundane ice and snow. If you already have Sure-Footed Disciple, you may also stand from Prone while on one of your Lattice Spaces by spending only 5 feet of movement."
+      ],
+      "why": "Printed Ice combat clauses resolved by sealed ice_second_pass hooks; ability-score selection stays in the character build.",
+      "text_sha256": "cc473c209ad803384a94c8417714a44e169f556c54045eb55529695eb253d7b9"
+    },
+    "insight.lattice-scholar": {
+      "block": "ice_insights",
+      "covers": [
+        "**Prerequisite:** Ice sphere, Qi Cultivation or Intelligence 13+\n\n**Ability Increase (Level Selection):** Increase your Wisdom, Intelligence, or Constitution score by 1, to the maximum allowed by your current Realm.\n\nWhen you use Crystallize Path, you may create one additional Lattice Space, but that additional space lasts only until the end of your next turn.\n\nYou also have Advantage on Intelligence (Arcana or Investigation) checks made to understand magical terrain, ice structures, crystalline formations, or battlefield arrays that use lines, angles, or repeating patterns."
+      ],
+      "why": "Printed Ice combat clauses resolved by sealed ice_second_pass hooks; ability-score selection stays in the character build.",
+      "text_sha256": "a15a766efcedde3d0a296e8b59f801c57c4d6c764113380c3fec3fe3b8e62955"
+    },
+    "TAL_ICE_SURE_FOOTED_DISCIPLE": {
+      "block": "ice_insights",
+      "keeps_compiling": true,
+      "covers": [],
+      "why": "Presence for Ice Sure Footwork standing clause; existing Sure-Footed Disciple terrain and safe-creature gaps remain."
+    },
+    "TAL_ICE_PALACE_WHERE_FOOTSTEPS_BECOME_WALLS": {
+      "block": "ice_insights",
+      "covers": [
+        "#### Palace Where Footsteps Become Walls\nPrerequisite: Nascent Soul Realm, Ice Domain: Palace of Written Winter\nAction Type: No Action\nTrigger: A hostile creature in your Ice Domain moves at least 10 feet\nCost: 2 CP\nAfter the movement resolves, create a number of Glacier Wall panels equal to your Proficiency Bonus along spaces the creature moved through or adjacent to those spaces. These panels last until the start of your next turn and do not cost additional CP.\nThe panels cannot appear in occupied spaces, but they may split groups, block retreat, seal doors, divide lines of sight, or create cover."
+      ],
+      "why": "Post-movement hostile Domain trigger; optional 2 CP, PB native defended panels with start-of-next-turn expiry."
+    }
+  }
+}
