@@ -1,0 +1,59 @@
+{
+ "features": {
+  "insight.brutal-momentum": {
+   "block": "brutal_momentum",
+   "kind": "brutal_momentum",
+   "text_sha256": "65d150e196cf242114f573e1fc59e3a7c11d113960de91d0c0ca26e54e59a903",
+   "outcome": "Brutal Momentum: once per turn after your qualifying completed event, move up to 10 feet without provoking Opportunity Attacks, using a legal destination and route.",
+   "why": "Sealed ownership row consumed by combat/ext/brutal_momentum.py through completed-event receipts. No row means no movement, prompt or turn flag."
+  },
+  "insight.alchemical-constitution": {
+   "block": "defense",
+   "text_sha256": "b5a9ce9e4860c56e57ee6d6a3dc23b3503512dd48160b12597028608ff6c9682",
+   "defenses": [
+    {
+     "kind": "save_advantage",
+     "abilities": [],
+     "against": [
+      "poisoned",
+      "damage:poison",
+      "category:poison",
+      "category:poisoned",
+      "category:damage:poison",
+      "alchemical_backlash",
+      "category:alchemical_backlash"
+     ]
+    }
+   ],
+   "why": "Printed Advantage on saving throws against Poison and alchemical backlash, compiled through the generic defense block: pressure.save_advantage reads it for every typed save against the Poisoned condition, fixed Poison damage, or a save a producer classifies with save_categories -- the consumer the typed authority's path_passive save_advantage row already names (insights_b.json's legacy-tempered-organs is the same shape). Alchemical backlash is a failed-Alchemy-Check crafting hazard (Sphere Compendium: 'Natural 1. The ingredients are lost and you suffer backlash. Take 1d6 Fire, Poison, Acid, or Force damage per rarity tier'), rolled between Full Cultivation Sessions; no combat save producer classifies one, so the clause is provenance-complete and inert until a producer tags it, and no save is broadened. combat/ext/alchemy_constitution.py carries the same advantage to a condition's repeat save through the documented save_mode hook. Extra Assimilation (one additional Cultivation or Enhancement pill beyond the Pill Saturation allowance, once between Full Cultivation Sessions, still paying 1 Pill Impurity and every other cost) is pill preparation outside the fight; it remains a printed rider."
+  },
+  "insight.borrowed-golden-form": {
+   "block": "borrowed_golden_form",
+   "kind": "borrowed_golden_form",
+   "text_sha256": "c40575e1825a4e5ab62ad2deaec60a3806de26bbc46818f509570432cf9f5a7c",
+   "outcome": "Borrowed Golden Form: a Bonus Action that costs 4 Qi, once per scene, lets you choose one Golden Core Form you do not possess and gain its unperfected benefits until the scene ends.",
+   "why": "Sealed Insight combat clauses; combat/ext/borrowed_golden_form.py records the borrowed Form on the shared Golden Core Form condition (combat/ext/qi_path.py form_state), so every Golden Core benefit reader grants the unperfected amounts."
+  },
+  "insight.bone-general": {
+   "block": "bone_general",
+   "kind": "bone_general",
+   "text_sha256": "124cccbc3234721d87f70e107919d0b035f4ada8fc46ed0af5c26884c64e8e73",
+   "outcome": "Bone General: your Death Control Limit is 1 higher for Corpse Servants and Lesser Corpse Servants only, and one commanded Death servant may move up to 10 feet before taking its action when you command Death servants.",
+   "why": "Sealed Insight combat clauses; combat/ext/bone_general.py answers the general control_limit_extra seam (combat/summons.py) and the general command_resolved seam (combat/typed_executor.py)."
+  },
+  "insight.battle-musician": {
+   "block": "battle_musician",
+   "kind": "battle_musician",
+   "text_sha256": "2712bfcce5c8637292c901b7e1084dd64c4f48aaca295811c5bb7ca8d50e92cc",
+   "outcome": "Battle Musician: Constitution is your Music key ability for Cadence talents; you may spend Stamina instead of Cultivation Points for Music talents performed entirely through voice, breath, heartbeat, footwork, weapon impact, body percussion or movement; and Opening Phrase is free once per turn after you take the Attack action while Keeping the Measure.",
+   "why": "Sealed Insight combat clauses; combat/ext/battle_musician.py re-keys the Cadence talents' compiled numbers (compile_action), offers the Stamina payment for the other embodied Music talents (payment_substitution), and publishes the free Opening Phrase variants (compile_actions, candidate_allowed, action_completed). The Source CL and embodied-maintenance clauses are already automated by the engine (one Cultivation Level per character; Keep the Measure is method-agnostic)."
+  },
+  "insight.body-as-center": {
+   "block": "body_as_center",
+   "kind": "body_as_center",
+   "text_sha256": "cdb2445034963966ac5df9d0e07dc04e9259b43d61668c46f818f837c083b893",
+   "outcome": "Body as Center: when you use Gravitic Pull, Gravity Well, Crushing Field or Flight Suppression, you may center the effect on your body, reducing the Stamina actually paid by 1 (minimum 1); the area moves with you only until the start of your next turn, then remains at its current location for the rest of its duration.",
+   "why": "Sealed Insight combat clauses; combat/ext/body_as_center.py publishes centered variants of the four talents (compile_actions) and answers the general zone_follows seam (combat/zones.py follows_now) so a centered area rides its owner only until the start of the owner's next turn."
+  }
+ }
+}
