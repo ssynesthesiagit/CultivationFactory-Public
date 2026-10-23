@@ -1,0 +1,216 @@
+{
+ "features": {
+  "TAL_UNMAKING_MERIDIAN_RUIN_SHOCK": {
+   "block": "unmaking",
+   "kind": "meridian_ruin_shock",
+   "why": "On a Ruin Channel hit through an Internal Channel (an unarmed strike) or a Ruin Needle, you may spend 1 CP: the target makes a Constitution save -- failed: until the end of its next turn it cannot regain CP, has Disadvantage on Concentration saves and cannot take Reactions; successful: no Reactions until the start of your next turn. Then you gain 1 Black Vein Strain (combat/unmaking.py)."
+  },
+  "TAL_UNMAKING_RUIN_NEEDLE": {
+   "block": "unmaking",
+   "kind": "ruin_needle",
+   "why": "A Ruin Channel hit through a needle, dart, hairpin or spike weapon: choose one -- no Reactions, or no CP regained, until the start of your next turn, or Disadvantage on its next Concentration save before the end of its next turn; the needle gains 1 Crack (combat/unmaking.py)."
+  },
+  "TAL_UNMAKING_RUIN_SHEATH_METHOD": {
+   "block": "unmaking",
+   "kind": "ruin_sheath_method",
+   "why": "Your Ruin Channel lasts until the end of your next turn; if it runs out without a hit you choose the Proficiency Bonus self-damage, 1 Crack on a weapon, or 1 Black Vein Strain (combat/ext/unmaking_forms.py, combat/unmaking.py)."
+  },
+  "TAL_UNMAKING_SHRED_THE_TEMPORARY_SHAPE": {
+   "block": "unmaking",
+   "kind": "shred_the_temporary_shape",
+   "why": "When an Unmaking talent damages a summoned or bound creature you may spend 1 CP for 3d8 + Proficiency Bonus more Ruin damage; if that drops it to 0 HP you regain 1 CP (once per turn) (combat/unmaking.py)."
+  },
+  "TAL_UNMAKING_WEAPON_PAYS_FIRST": {
+   "block": "unmaking",
+   "kind": "weapon_pays_first",
+   "why": "Once per turn, when an Unmaking talent would give one of your weapons Crack, you may take twice your Proficiency Bonus in Ruin damage instead (combat/ext/unmaking_channels.py)."
+  },
+  "TAL_UNMAKING_BLACK_TRACE": {
+   "block": "object_damage",
+   "on": "direct",
+   "add_pb": true,
+   "after_effects": [
+    "unmaking_cost"
+   ],
+   "label": "Black Trace",
+   "why": "Aimed at a map object, Black Trace rolls its attack against the object's AC and deals its Realm damage plus the Crack effect's Proficiency Bonus; an Unbound Trace still asks for its price afterwards (combat/ext/objects.py)."
+  },
+  "TAL_UNMAKING_RUIN_WAVE": {
+   "block": "object_damage",
+   "on": "technique",
+   "label": "Ruin Wave",
+   "why": "Objects in the line take the wave's damage automatically, no saving throw (combat/ext/objects.py)."
+  },
+  "TAL_UNMAKING_THIRD_RUIN_FORM_SEVERING_WAVE": {
+   "block": "object_damage",
+   "on": "technique",
+   "dice": {
+    "count": 12,
+    "sides": 8
+   },
+   "label": "Third Ruin Form: Severing Wave",
+   "why": "Objects in the line take 12d8 Ruin damage automatically (combat/ext/objects.py)."
+  },
+  "TAL_UNMAKING_SIXTH_RUIN_FORM_STAR_SUNDERING_CUT": {
+   "block": "object_damage",
+   "on": "technique",
+   "dice": {
+    "count": 24,
+    "sides": 10
+   },
+   "label": "Sixth Ruin Form: Star-Sundering Cut",
+   "why": "Objects, doors and structures in the line take 24d10 Ruin damage automatically (combat/ext/objects.py)."
+  },
+  "IMBUEMENT_BASE_PLACE_MANDATE": {
+   "block": "imbuement_mandate",
+   "kind": "base",
+   "why": "One \"Place Mandate: <option>\" Action per Imbue option you know (30 feet, Concentration up to 10 minutes); placing more Mandates than your Mandate Load ends your oldest (combat/ext/imbuement_mandates.py)."
+  },
+  "IMBUEMENT_BASE_FRAY_MANDATE": {
+   "block": "imbuement_mandate",
+   "kind": "base",
+   "why": "One \"Fray Mandate: <option>\" Action per Fray option you know: a Wisdom save, and on a failure the option lands, repeating the save at the end of each of the target's turns (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.clarify_and_cloud": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Clarify: Advantage on checks with one mental ability; Cloud: Disadvantage on mental checks and a Concentrating target's next Concentration save. A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.physique_and_weakness": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Physique: Advantage on checks with one physical ability; Weakness: Disadvantage on physical checks. A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.fortify_and_expose": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Fortify: +Proficiency Bonus to one saving throw; Expose: Disadvantage on the next save of one kind. A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.quicken_and_slow": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Quicken: +10/15/20/25 feet of Speed by CL; Slow: Speed halved (augment: no Disengage). A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.harden_and_brittle": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Harden on armor: Temporary HP each turn; the 2 CP augments on a creature: Resistance, or losing one / +PB from the next hit. A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.lighten_and_burden": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Burden: Speed -10 feet, no Dash, Disadvantage against being knocked Prone or moved. A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.sharpen_and_dull": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Sharpen: +PB once per turn with the chosen weapon; Dull: -PB once per turn from it. A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.tempered_equipment": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Temper: +half PB to attack and damage with a weapon, or to AC with armor. A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.elemental_mantle": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Once per turn +1d6 (2d6/3d6/4d6 by CL) of the chosen element with the chosen weapon. A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.guided_vessel": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Treacherous Shot: Disadvantage on attacks with the chosen ranged weapon. A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.reflex_edict": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Lagging Reflex: the target cannot make Opportunity Attacks. A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.quiet_and_resound": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Quiet: Advantage on Stealth checks; Resound: Disadvantage on Stealth checks. A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.suppress_function": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Still Tongue: Silenced; Seal Sense: Blinded or Deafened. A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.rebel_vessel": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "The chosen weapon imposes Disadvantage on its bearer's attacks (a Dexterity save). A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.true_tempering_command": {
+   "block": "imbuement_mandate",
+   "kind": "mandate",
+   "why": "Temper with Hungry Edge (+key modifier once per turn) or Guardian Shell (-PB from incoming damage once per round). A Place/Fray Mandate option (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.layered_mandate": {
+   "block": "imbuement_mandate",
+   "kind": "layered",
+   "load": 1,
+   "why": "Mandate Load +1, and \"Place Mandate: Layered Mandate (1 CP)\": two different Imbue options you know on one willing target with the same Action, no saving throw (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.qi_written_mandate": {
+   "block": "imbuement_mandate",
+   "kind": "load",
+   "load": 1,
+   "why": "Mandate Load +1 (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.sovereign_of_the_true_name_of_things": {
+   "block": "imbuement_mandate",
+   "kind": "sovereign",
+   "load": "pb",
+   "why": "Mandate Load + Proficiency Bonus; Place and Fray Mandate reach 120 feet (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.twin_fray": {
+   "block": "imbuement_mandate",
+   "kind": "twin_fray",
+   "why": "\"Fray Mandate: Twin Fray (2 CP)\": two different Fray options you know on one creature, one saving throw decides both (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.imbuement.touch_carried_mandate": {
+   "block": "imbuement_mandate",
+   "kind": "touch_carried",
+   "why": "On a hit, you may spend 1 CP to put one Fray option you know on the target as part of the attack (its own saving throw, with Disadvantage when the weapon bears your Imbue Mandate) (combat/ext/imbuement_mandates.py)."
+  },
+  "IMBUEMENT_BASE_COUNTER_MANDATE": {
+   "block": "imbuement_mandate",
+   "kind": "counter",
+   "why": "\"Counter-Mandate: free an ally\" / \"strip a foe\" (1 CP), offered against another cultivator's Mandate on the creature: an Imbuement Check against its DC (a Fray's save DC, an Imbue's 10 + its creator's PB + key modifier); a success ends it (combat/ext/imbuement_mandates.py)."
+  },
+  "tianxia.talent.sabers.short_saber_infighting": {
+   "block": "sabers_rider",
+   "kind": "short_saber_infighting",
+   "why": "After a hit with a duan dao, butterfly saber or other short saber on a creature within 5 feet, you may shove it as part of the same Action; a shoved creature is Guard Pressured until the start of your next turn (combat/ext/sabers_riders.py)."
+  },
+  "tianxia.talent.blood.bloodletting_strike": {
+   "block": "blood_rider",
+   "kind": "bloodletting_strike",
+   "why": "When you hit with a melee attack or Blood Thread you may spend 1 CP: +1d6 Necrotic, and the target makes a Constitution save or takes Necrotic damage equal to your PB at the start of its next turn (combat/ext/blood_riders.py)."
+  },
+  "tianxia.talent.blood.crimson_feast": {
+   "block": "blood_rider",
+   "kind": "crimson_feast",
+   "why": "Once per turn, when you damage a Bloodied creature bearing your Blood Thread, you may spend 2 CP: 2d6/3d6/4d6 Necrotic by CL, and you regain HP equal to your PB, never above half your maximum HP (combat/ext/blood_riders.py)."
+  },
+  "TAL_DAEMONIC_CULTIVATION_BLOODLESS_DEVOURING": {
+   "block": "bloodless_devouring",
+   "a2_packets": true,
+   "auto63": true,
+   "kind": "bloodless_devouring",
+   "why": "Once per turn, when you deal damage to a creature below half its maximum HP, you may spend 1 Devoured Essence to choose a printed benefit (combat/ext/bloodless_devouring.py)."
+  },
+  "TAL_DAEMONIC_CULTIVATION_THOUSAND_HUNGER_ADAPTATION": {
+   "block": "thousand_hunger_adaptation",
+   "auto103": true,
+   "kind": "thousand_hunger_adaptation",
+   "why": "When you take one of ten printed damage types while Demon Seed is active, you may spend 1 Devoured Essence to gain Resistance to that type until the start of your next turn (until the end of it at CL 11); at CL 17 your next damage roll with any Daemonic talent deals additional damage OF THAT ADAPTED TYPE equal to your Proficiency Bonus (combat/ext/thousand_hunger.py)."
+  },
+  "tianxia.talent.blood.crimson_mark": {
+   "block": "blood_rider",
+   "kind": "crimson_mark",
+   "why": "When Blood Thread hits, you may spend 1 CP: the target makes a Constitution save or your Blood Thread on it lasts 1 hour (combat/ext/blood_riders.py)."
+  }
+ }
+}
