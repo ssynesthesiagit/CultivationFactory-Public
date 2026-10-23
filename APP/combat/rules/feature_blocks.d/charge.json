@@ -1,0 +1,13 @@
+{
+  "features": {
+    "TAL_LIGHTNING_FIRST_CIRCUIT_METHOD": {
+      "block": "mark_caps",
+      "caps": {"charged": "pb"},
+      "why": "Base Lightning sphere rule (Charge section): 'You can maintain a number of Charges at one time equal to your Proficiency Bonus.' Anchored on First Circuit Method (an econ=passive base ability every Lightning character has, like elements_marks.py's own GLASS_BASE_FAULTLINE_MARKS/TAL_YIN_MARK_LIMIT anchors) rather than Gather Charge itself: any feature_blocks entry marks its mechanic id 'automated' (combat/typed_reactions.py compile_blocks), which combat/factory_compiler.py's action-building loop then SKIPS entirely -- putting it on Gather Charge (a real bonus_action) silently dropped Gather Charge from the action catalog altogether (caught by tests/test_auto_elements.py's own regression test failing). Realm Evolutions/domains that raise this further (Current Beyond the Skin, Court of Charged Paths, Lightning Sovereign Incarnation) are GM-tracked riders on those records -- combat/ext/charge_marks.py's module docstring explains why."
+    },
+    "TAL_LIGHTNING_STORM_HEART_ENGINE": {
+      "block": "storm_heart_engine",
+      "why": "Marks the character as owning Storm-Heart Engine so combat/ext/charge_marks.py's mark_spent hook knows to react 'once per turn when you consume a Charge to empower a Lightning talent'."
+    }
+  }
+}
