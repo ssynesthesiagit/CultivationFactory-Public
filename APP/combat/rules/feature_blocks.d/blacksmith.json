@@ -1,0 +1,52 @@
+{
+  "features": {
+    "tianxia.talent.blacksmith.furnace_discipline": {
+      "block": "blacksmith_forge",
+      "kind": "furnace_discipline",
+      "why": "Conditional Fire Resistance while the smith's current equipment holds a Forge Mark or the player declares an actually held Blacksmith tool. AI does not invent tool access. The controlled crafting flame remains a noncombat procedure."
+    },
+    "tianxia.talent.blacksmith.two_beat_temper": {
+      "block": "blacksmith_forge",
+      "kind": "two_beat_temper",
+      "why": "Hammer the Mark asks whether to place two marks, charges the printed scene/workshop price, and locks further placement on that holder until the smith's next turn. Workshop access is an explicit factual declaration, never assumed by AI. Scene payment and workshop round are evented and survive cold reload."
+    },
+    "BLACKSMITH_BASE_HAMMER_THE_MARK": {
+      "why": "The Forge Mark chassis (combat/ext/blacksmith_forge.py): the sphere's Forge Marks section prints 'a workpiece can hold a number of Forge Marks from you equal to your Proficiency Bonus' and 'a Forge Mark lasts for 1 minute during action scenes'. Nothing enforced either: typed_executor.block_mark keys one condition instance per mark name, so the second Hammer the Mark refreshed that instance and changed nothing, and marks never expired. That module recognises a Blacksmith by this ability's own compiled catalog row (a compile_block row here would make the compiler skip the ability and delete the button).",
+      "covers": [
+        "A workpiece cannot exceed your normal Forge Mark limit."
+      ]
+    },
+    "BLACKSMITH_BASE_SET_THE_WORKPIECE": {
+      "why": "'you cannot have more than one current workpiece unless a talent says otherwise' and 'the old one stops being current but keeps any Forge Marks already on it until those marks expire' are the Forge Mark chassis' own bookkeeping (combat/ext/blacksmith_forge.py): this table keeps a smith's Forge Marks on the smith, which is the workpiece the Blacksmith abilities work, so there is never a second workpiece to hold or drop, and choosing again never costs a mark."
+    },
+    "tianxia.talent.blacksmith.tempering_sequence": {
+      "block": "blacksmith_forge",
+      "kind": "tempering_sequence",
+      "why": "Tempering Sequence is a real Action in combat/ext/blacksmith_forge.py: it is offered only while three Forge Marks stand ('When a workpiece has at least 3 Forge Marks from you'), spends all of them, and applies the printed Hardening (+1 AC and +1 to attack rolls, a Temporary Temper), Softening (Advantage on the next check to repair, craft, modify or disarm it) or Awakening (Advantage on one roll) result. Purifying Sequence reduces an impurity on the object, which this table has no state for, and stays a GM line."
+    },
+    "tianxia.talent.blacksmith.field_repair": {
+      "block": "blacksmith_forge",
+      "kind": "field_repair",
+      "why": "Field Repair is a real Reaction in combat/ext/blacksmith_forge.py: it places 1 Forge Mark on a creature's damaged equipment and is a second, priced button at CL 5+ for the printed Close-the-Crack extension. The printed trigger itself (an object 'damaged by an attack, hazard, or failed check') and Close the Crack's object Hit Points are the GM's, because this table keeps no damage state for an object."
+    },
+    "tianxia.talent.blacksmith.quench_in_breath": {
+      "block": "blacksmith_forge",
+      "kind": "quench_in_breath",
+      "why": "Quench in Breath fires on spending a Forge Mark (combat/ext/blacksmith_forge.py reads the mark_spent hook, which exists since the Charge worker's 2026-09-28 seam): the next Fire, Cold, Lightning or Acid damage before the start of your next turn is reduced by your Proficiency Bonus, and at CL 5+ the wearer or holder of a marked suit of armour, shield or tool receives it instead."
+    },
+    "tianxia.talent.blacksmith.seven_hammer_revision": {
+      "block": "blacksmith_forge",
+      "kind": "seven_hammer_revision",
+      "why": "Seven-Hammer Revision spends 1 Forge Mark to reroll up to your Proficiency Bonus damage dice of a typed damage packet and use the new rolls (the general damage_dice_reroll seam in combat/typed_executor.py's _damage_roll), and adds your Intelligence modifier to the same packet. A basic Attack action's damage is rolled inside the sealed resolver and cannot be rerolled from a plug-in: see the AUTO17 report's lock-round list."
+    },
+    "tianxia.talent.blacksmith.forge_fitted_weapon": {
+      "why": "Forge-Fitted Weapon upgrades Set Edge (combat/ext/ironclad_blacksmith.py builds that action): the printed 'spend 1 CP to extend the Temporary Temper to 1 minute' is a priced second Set Edge button, and the four printed benefits ('+1 to attack rolls', '+1 to damage rolls', 'counts as magical for overcoming resistance and immunity to nonmagical attacks', 'once during the duration, the wielder may reroll one damage die and use the new roll') are one chosen benefit of that Temporary Temper, applied by that module's hooks while it lasts."
+    },
+    "tianxia.talent.blacksmith.forge_fitted_armor": {
+      "why": "Forge-Fitted Armor extends Fit Armor in combat/ext/ironclad_blacksmith.py. Basic benefits last until the smith's next turn; the priced one-minute action applies the selected benefit. Extended reduction applies to one qualified nonmagical Bludgeoning, Piercing, or Slashing attack each round, and extended forced-movement protection ignores 5 feet once each round. New armor tempers preserve weapon tempers and replace only their own armor benefit and AC modifier. Item-specific and ally/workpiece binding remain incomplete."
+    },
+    "tianxia.talent.blacksmith.armor_knows_its_owner": {
+      "why": "Armor Knows Its Owner's three printed results are Fit Armor options built by combat/ext/ironclad_blacksmith.py, and all three are live: 'Fit Armor: Stand from Prone' runs the recorded stand transition without spending movement, 'Fit Armor: End a Grappled state' ends one ordinary physical grapple caused by equipment, terrain or a mundane restraint (a magical, Formation or spiritual hold stays, and only one hold ends), and 'Fit Armor: Advantage on the next Strength or Dexterity saving throw' applies Advantage to that one save before the start of the smith's next turn. Both one-off results happen outright instead of leaving a lasting temper behind. Unfinished printed half: the trigger is Fit Armor 'for a willing creature', so these results are meant for an ally, but the Fit Armor buttons still target only the smith."
+    }
+  }
+}
