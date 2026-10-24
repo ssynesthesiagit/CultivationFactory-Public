@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Stage1_Clipboard_Response_v2.schema.json",
+  "title": "Tianxia Foundry Stage 1 Blueprint Intent Clipboard Response",
+  "type": "object", "additionalProperties": false,
+  "required": ["protocol_version", "response_id", "prompt_id", "prompt_sha256", "project_id", "expected_project_revision", "catalog_build_id", "content_lock_hash", "stage_id", "response_payload"],
+  "properties": {
+    "protocol_version": {"const": "TianxiaFoundry.AIClipboard.Stage1.v2"},
+    "response_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+    "prompt_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+    "prompt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "project_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+    "expected_project_revision": {"type": "integer", "minimum": 0},
+    "catalog_build_id": {"type": "string", "minLength": 1},
+    "content_lock_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "stage_id": {"const": "stage_1_source_blueprint"},
+    "response_payload": {
+      "type": "object", "additionalProperties": false,
+      "required": ["decisions", "authored_notes", "planner_rationale"],
+      "properties": {
+        "decisions": {
+          "type": "array", "minItems": 1, "maxItems": 30,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["slot_id", "state", "choice_ids"],
+            "properties": {
+              "slot_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+              "state": {"enum": ["selected", "explicit_none", "blocked_missing_authority", "deferred_with_reason"]},
+              "choice_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"}},
+              "reason_code": {"type": ["string", "null"]},
+              "reason": {"type": ["string", "null"], "maxLength": 1200}
+            }
+          }
+        },
+        "authored_notes": {"type": "array", "maxItems": 30, "items": {"type": "object", "additionalProperties": false, "required": ["field_id", "value"], "properties": {"field_id": {"type": "string"}, "value": {"type": "string", "maxLength": 12000}}}},
+        "planner_rationale": {"type": "string", "maxLength": 8000}
+      }
+    },
+    "response_payload_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}
