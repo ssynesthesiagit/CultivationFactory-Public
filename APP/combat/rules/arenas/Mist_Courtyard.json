@@ -1,0 +1,836 @@
+{
+ "retired": true,
+ "note": "Built-in example tabletop map (owner 2026-09-25): stone shrines and a well block sight and movement, mist banks and a paper screen block sight only, curved garden walls, cover and difficult ground. Generated with combat/tabletop.py (to_battlefield); copy it in the map editor (Map -> Copy of Mist Courtyard) to make your own version.",
+ "battlefield_version": "1.0.0",
+ "display_name": "Mist Courtyard",
+ "stable_id": "battlefield:factory_mist_courtyard",
+ "kind": "BATTLEFIELD",
+ "source": "Tabletop map (owner-drawn)",
+ "information_model": "FULLY_VISIBLE",
+ "victory_boundary": "NONLETHAL_WARDED_COURT",
+ "square_size_ft": 5,
+ "width_squares": 26,
+ "height_squares": 18,
+ "starting_positions": {
+  "team1_1": {
+   "x": 1,
+   "y": 8
+  },
+  "team1_2": {
+   "x": 1,
+   "y": 10
+  },
+  "team1_3": {
+   "x": 2,
+   "y": 6
+  },
+  "team1_4": {
+   "x": 2,
+   "y": 12
+  },
+  "team2_1": {
+   "x": 24,
+   "y": 8
+  },
+  "team2_2": {
+   "x": 24,
+   "y": 10
+  },
+  "team2_3": {
+   "x": 23,
+   "y": 6
+  },
+  "team2_4": {
+   "x": 23,
+   "y": 12
+  }
+ },
+ "team_starts": {
+  "team1": [
+   {
+    "x": 1,
+    "y": 8
+   },
+   {
+    "x": 1,
+    "y": 10
+   },
+   {
+    "x": 2,
+    "y": 6
+   },
+   {
+    "x": 2,
+    "y": 12
+   }
+  ],
+  "team2": [
+   {
+    "x": 24,
+    "y": 8
+   },
+   {
+    "x": 24,
+    "y": 10
+   },
+   {
+    "x": 23,
+    "y": 6
+   },
+   {
+    "x": 23,
+    "y": 12
+   }
+  ]
+ },
+ "terrain_regions": [
+  {
+   "region_id": "walls.solid",
+   "terrain_type": "BLOCKED",
+   "movement_cost": 0,
+   "description": "Wall: cannot be entered and blocks line of sight.",
+   "cells": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 17
+    },
+    {
+     "x": 1,
+     "y": 0
+    },
+    {
+     "x": 1,
+     "y": 17
+    },
+    {
+     "x": 2,
+     "y": 0
+    },
+    {
+     "x": 2,
+     "y": 17
+    },
+    {
+     "x": 3,
+     "y": 0
+    },
+    {
+     "x": 3,
+     "y": 3
+    },
+    {
+     "x": 3,
+     "y": 4
+    },
+    {
+     "x": 3,
+     "y": 9
+    },
+    {
+     "x": 3,
+     "y": 10
+    },
+    {
+     "x": 3,
+     "y": 17
+    },
+    {
+     "x": 4,
+     "y": 0
+    },
+    {
+     "x": 4,
+     "y": 4
+    },
+    {
+     "x": 4,
+     "y": 5
+    },
+    {
+     "x": 4,
+     "y": 6
+    },
+    {
+     "x": 4,
+     "y": 7
+    },
+    {
+     "x": 4,
+     "y": 8
+    },
+    {
+     "x": 4,
+     "y": 9
+    },
+    {
+     "x": 4,
+     "y": 17
+    },
+    {
+     "x": 5,
+     "y": 0
+    },
+    {
+     "x": 5,
+     "y": 17
+    },
+    {
+     "x": 6,
+     "y": 0
+    },
+    {
+     "x": 6,
+     "y": 17
+    },
+    {
+     "x": 7,
+     "y": 0
+    },
+    {
+     "x": 7,
+     "y": 17
+    },
+    {
+     "x": 8,
+     "y": 0
+    },
+    {
+     "x": 8,
+     "y": 4
+    },
+    {
+     "x": 8,
+     "y": 5
+    },
+    {
+     "x": 8,
+     "y": 6
+    },
+    {
+     "x": 8,
+     "y": 17
+    },
+    {
+     "x": 9,
+     "y": 0
+    },
+    {
+     "x": 9,
+     "y": 4
+    },
+    {
+     "x": 9,
+     "y": 5
+    },
+    {
+     "x": 9,
+     "y": 6
+    },
+    {
+     "x": 9,
+     "y": 17
+    },
+    {
+     "x": 10,
+     "y": 4
+    },
+    {
+     "x": 10,
+     "y": 5
+    },
+    {
+     "x": 10,
+     "y": 6
+    },
+    {
+     "x": 12,
+     "y": 8
+    },
+    {
+     "x": 12,
+     "y": 9
+    },
+    {
+     "x": 13,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 9
+    },
+    {
+     "x": 15,
+     "y": 11
+    },
+    {
+     "x": 15,
+     "y": 12
+    },
+    {
+     "x": 15,
+     "y": 13
+    },
+    {
+     "x": 16,
+     "y": 0
+    },
+    {
+     "x": 16,
+     "y": 11
+    },
+    {
+     "x": 16,
+     "y": 12
+    },
+    {
+     "x": 16,
+     "y": 13
+    },
+    {
+     "x": 16,
+     "y": 17
+    },
+    {
+     "x": 17,
+     "y": 0
+    },
+    {
+     "x": 17,
+     "y": 11
+    },
+    {
+     "x": 17,
+     "y": 12
+    },
+    {
+     "x": 17,
+     "y": 13
+    },
+    {
+     "x": 17,
+     "y": 17
+    },
+    {
+     "x": 18,
+     "y": 0
+    },
+    {
+     "x": 18,
+     "y": 17
+    },
+    {
+     "x": 19,
+     "y": 0
+    },
+    {
+     "x": 19,
+     "y": 17
+    },
+    {
+     "x": 20,
+     "y": 0
+    },
+    {
+     "x": 20,
+     "y": 17
+    },
+    {
+     "x": 21,
+     "y": 0
+    },
+    {
+     "x": 21,
+     "y": 9
+    },
+    {
+     "x": 21,
+     "y": 10
+    },
+    {
+     "x": 21,
+     "y": 17
+    },
+    {
+     "x": 22,
+     "y": 0
+    },
+    {
+     "x": 22,
+     "y": 7
+    },
+    {
+     "x": 22,
+     "y": 8
+    },
+    {
+     "x": 22,
+     "y": 11
+    },
+    {
+     "x": 22,
+     "y": 12
+    },
+    {
+     "x": 22,
+     "y": 13
+    },
+    {
+     "x": 22,
+     "y": 17
+    },
+    {
+     "x": 23,
+     "y": 0
+    },
+    {
+     "x": 23,
+     "y": 17
+    },
+    {
+     "x": 24,
+     "y": 0
+    },
+    {
+     "x": 24,
+     "y": 17
+    },
+    {
+     "x": 25,
+     "y": 0
+    },
+    {
+     "x": 25,
+     "y": 17
+    }
+   ]
+  },
+  {
+   "region_id": "walls.sight",
+   "terrain_type": "SIGHT_BLOCKED",
+   "movement_cost": 1,
+   "description": "Screen: blocks line of sight but can be walked through.",
+   "cells": [
+    {
+     "x": 4,
+     "y": 11
+    },
+    {
+     "x": 4,
+     "y": 12
+    },
+    {
+     "x": 4,
+     "y": 13
+    },
+    {
+     "x": 4,
+     "y": 14
+    },
+    {
+     "x": 5,
+     "y": 11
+    },
+    {
+     "x": 5,
+     "y": 12
+    },
+    {
+     "x": 5,
+     "y": 13
+    },
+    {
+     "x": 5,
+     "y": 14
+    },
+    {
+     "x": 6,
+     "y": 11
+    },
+    {
+     "x": 6,
+     "y": 12
+    },
+    {
+     "x": 6,
+     "y": 13
+    },
+    {
+     "x": 6,
+     "y": 14
+    },
+    {
+     "x": 7,
+     "y": 11
+    },
+    {
+     "x": 7,
+     "y": 12
+    },
+    {
+     "x": 7,
+     "y": 13
+    },
+    {
+     "x": 7,
+     "y": 14
+    },
+    {
+     "x": 12,
+     "y": 2
+    },
+    {
+     "x": 12,
+     "y": 3
+    },
+    {
+     "x": 12,
+     "y": 4
+    },
+    {
+     "x": 12,
+     "y": 5
+    },
+    {
+     "x": 18,
+     "y": 3
+    },
+    {
+     "x": 18,
+     "y": 4
+    },
+    {
+     "x": 18,
+     "y": 5
+    },
+    {
+     "x": 18,
+     "y": 6
+    },
+    {
+     "x": 19,
+     "y": 3
+    },
+    {
+     "x": 19,
+     "y": 4
+    },
+    {
+     "x": 19,
+     "y": 5
+    },
+    {
+     "x": 19,
+     "y": 6
+    },
+    {
+     "x": 20,
+     "y": 3
+    },
+    {
+     "x": 20,
+     "y": 4
+    },
+    {
+     "x": 20,
+     "y": 5
+    },
+    {
+     "x": 20,
+     "y": 6
+    },
+    {
+     "x": 21,
+     "y": 3
+    },
+    {
+     "x": 21,
+     "y": 4
+    },
+    {
+     "x": 21,
+     "y": 5
+    },
+    {
+     "x": 21,
+     "y": 6
+    }
+   ]
+  },
+  {
+   "region_id": "terrain.1",
+   "terrain_type": "SIMPLE_COVER",
+   "movement_cost": 1,
+   "description": "Simple Cover",
+   "cells": [
+    {
+     "x": 10,
+     "y": 12
+    },
+    {
+     "x": 11,
+     "y": 12
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 5
+    }
+   ]
+  },
+  {
+   "region_id": "terrain.2",
+   "terrain_type": "OPEN",
+   "movement_cost": 2,
+   "description": "Difficult",
+   "cells": [
+    {
+     "x": 12,
+     "y": 13
+    },
+    {
+     "x": 12,
+     "y": 14
+    },
+    {
+     "x": 13,
+     "y": 13
+    },
+    {
+     "x": 13,
+     "y": 14
+    }
+   ]
+  }
+ ],
+ "tabletop": {
+  "map_id": null,
+  "scale": 100,
+  "walls": [
+   {
+    "id": "wall-1",
+    "shape": "line",
+    "points": [
+     [
+      50,
+      50
+     ],
+     [
+      950,
+      50
+     ]
+    ],
+    "filled": false,
+    "blocks": "sight_and_movement"
+   },
+   {
+    "id": "wall-2",
+    "shape": "line",
+    "points": [
+     [
+      1650,
+      50
+     ],
+     [
+      2550,
+      50
+     ]
+    ],
+    "filled": false,
+    "blocks": "sight_and_movement"
+   },
+   {
+    "id": "wall-3",
+    "shape": "line",
+    "points": [
+     [
+      50,
+      1750
+     ],
+     [
+      950,
+      1750
+     ]
+    ],
+    "filled": false,
+    "blocks": "sight_and_movement"
+   },
+   {
+    "id": "wall-4",
+    "shape": "line",
+    "points": [
+     [
+      1650,
+      1750
+     ],
+     [
+      2550,
+      1750
+     ]
+    ],
+    "filled": false,
+    "blocks": "sight_and_movement"
+   },
+   {
+    "id": "wall-5",
+    "shape": "rect",
+    "points": [
+     [
+      800,
+      400
+     ],
+     [
+      1100,
+      700
+     ]
+    ],
+    "filled": true,
+    "blocks": "sight_and_movement"
+   },
+   {
+    "id": "wall-6",
+    "shape": "rect",
+    "points": [
+     [
+      1500,
+      1100
+     ],
+     [
+      1800,
+      1400
+     ]
+    ],
+    "filled": true,
+    "blocks": "sight_and_movement"
+   },
+   {
+    "id": "wall-7",
+    "shape": "circle",
+    "points": [
+     [
+      1300,
+      900
+     ],
+     [
+      1420,
+      900
+     ]
+    ],
+    "filled": true,
+    "blocks": "sight_and_movement"
+   },
+   {
+    "id": "wall-8",
+    "shape": "circle",
+    "points": [
+     [
+      600,
+      1300
+     ],
+     [
+      820,
+      1300
+     ]
+    ],
+    "filled": true,
+    "blocks": "sight"
+   },
+   {
+    "id": "wall-9",
+    "shape": "circle",
+    "points": [
+     [
+      2000,
+      500
+     ],
+     [
+      2220,
+      500
+     ]
+    ],
+    "filled": true,
+    "blocks": "sight"
+   },
+   {
+    "id": "wall-10",
+    "shape": "line",
+    "points": [
+     [
+      1250,
+      250
+     ],
+     [
+      1250,
+      550
+     ]
+    ],
+    "filled": false,
+    "blocks": "sight"
+   },
+   {
+    "id": "wall-11",
+    "shape": "line",
+    "points": [
+     [
+      350,
+      350
+     ],
+     [
+      450,
+      600
+     ],
+     [
+      420,
+      850
+     ],
+     [
+      350,
+      1050
+     ]
+    ],
+    "filled": false,
+    "blocks": "sight_and_movement"
+   },
+   {
+    "id": "wall-12",
+    "shape": "line",
+    "points": [
+     [
+      2250,
+      750
+     ],
+     [
+      2180,
+      950
+     ],
+     [
+      2210,
+      1180
+     ],
+     [
+      2280,
+      1350
+     ]
+    ],
+    "filled": false,
+    "blocks": "sight_and_movement"
+   }
+  ],
+  "background": {
+   "asset": null,
+   "opacity_pct": 100,
+   "fit": "cover"
+  },
+  "display": {
+   "grid_opacity_pct": 30,
+   "detail_pct": 100,
+   "grid_color": "#d8c9a3"
+  }
+ }
+}
