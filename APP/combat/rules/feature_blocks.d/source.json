@@ -1,0 +1,44 @@
+{
+  "features": {
+    "tianxia.talent.source.quarry_walker": {
+      "block": "source_ward",
+      "kind": "quarry_walker",
+      "why": "Nonmagical difficult ground the map names as loose stone, scree, rubble, gravel, broken tile, mine spoil or worked stone costs this walker nothing extra (the difficult_zone_exempt hook in combat/ext/source_sphere.py, asked about one area at a time by combat/zones.py difficult_cells). Mud, ice, water, plant growth, crowding and restraints keep their cost, and difficult terrain an ability creates keeps costing, as the printed text says. Because the exemption is per area, a magical stone area laid over stony ground still costs."
+    },
+    "tianxia.talent.source.source_skin": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "save_advantage",
+          "abilities": [],
+          "against": [
+            "petrified"
+          ]
+        }
+      ],
+      "why": "Source Skin's standing clause 'You have Advantage on saving throws against being Petrified', on the generic defense block combat/pressure.py save_advantage already reads (an empty abilities list is any save; the same shape Golden Mandate Vessel uses in feature_blocks.d/paths.json). No new code."
+    },
+    "tianxia.talent.source.old_mine_shelter_scripture": {
+      "block": "source_shelter",
+      "range_ft": 5,
+      "evidence": "That creature also gains Resistance to the same triggering damage.",
+      "damage_types": [
+        "acid",
+        "bludgeoning",
+        "cold",
+        "fire",
+        "force",
+        "lightning",
+        "necrotic",
+        "piercing",
+        "poison",
+        "psychic",
+        "radiant",
+        "slashing",
+        "thunder",
+        "untyped"
+      ],
+      "why": "'When you use Mine-Shelter Reflex, you may choose one willing creature within 5 feet of you. That creature also gains Resistance to the same triggering damage.' One generic ally_damaged row (combat/ext/source_sphere.py) so the shared Resistance is weighed while that creature's own damage is resolved. The row is free because the printed 2 CP and the one Reaction belong to Mine-Shelter Reflex, which is charged once -- and ally_row_allowed only lets the row answer after that talent has actually been used and paid for, for the same delivery and for the first creature it reaches."
+    }
+  }
+}
