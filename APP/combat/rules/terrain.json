@@ -1,0 +1,515 @@
+{
+ "schema": "TianxiaFoundry.TerrainRules.v1",
+ "note": "Owner-editable ground effects (owner 2026-09-27: 'We need a visual layer to show terrain effects that show what youre doing to the ground'). An ability that leaves an area behind (Ashfall's 'The area becomes Ash Terrain') places a zone on the map for its duration; a named terrain's rules come from here. difficult: 'hostile' (only the creator's foes) or 'all'; obscured: 'light' or 'heavy' (shown on the table, applied by the GM); move_through: a save a hostile makes the first time on a turn it moves more than min_ft through the zone; color: the overlay's tint. The words 'difficult terrain', 'lightly obscured' and 'heavily obscured' in an area ability's own text apply without a named terrain. enter_start: a save a creature makes on entering the zone for the first time on a turn or starting its turn there (who: hostile or any); from_ability: that save is against the creating ability's own damage (Molten Terrain's 'the damage listed by the talent'). move_through.effects without an ability happen with no save (Shattered Glass).",
+ "terrains": {
+  "mundane ice": {
+   "difficult": "all", "material": "ice", "color": "#cceaff",
+   "evidence": "Printed Ice Sure Footwork distinguishes mundane ice from ability-created terrain. Painted difficult ice; no damage or save."
+  },
+  "mundane snow": {
+   "difficult": "all", "material": "snow", "color": "#f1f6ff",
+   "evidence": "Printed Ice Sure Footwork ignores difficult terrain caused by mundane snow. Painted difficult snow; no damage or save."
+  },
+  "courtyard mist": {
+   "obscured": "light",
+   "color": "#b7ccd0",
+   "material": "smoke",
+   "evidence": "Owner 2026-10-01, ARENA1: Mist Courtyard's mist uses the existing obscurement terrain. Natural map scenery, lightly obscured for everyone throughout the fight; no damage, cost, or automatic Hidden status. Mist Veil's printed rules also describe mist as Lightly Obscured."
+  },
+  "mountain mist": {
+   "obscured": "light",
+   "color": "#b7ccd0",
+   "material": "smoke",
+   "evidence": "Owner 2026-10-01, ARENA3: Mountain Pass mist is natural map scenery, lightly obscured for everyone throughout the fight; no damage, cost, or automatic Hidden status."
+  },
+  "loose rubble": {
+   "difficult": "all",
+   "color": "#9a9081",
+   "material": "rubble",
+   "evidence": "Owner 2026-10-01, ARENA1: difficult rubble patches painted with the map tools. Natural ground, difficult terrain for everyone throughout the fight; no damage or cost."
+  },
+  "ash terrain": {
+   "sphere": "Ash",
+   "obscured": "light",
+   "difficult": "hostile",
+   "color": "#9a8f86",
+   "move_through": {
+    "min_ft": 10,
+    "ability": "CON",
+    "on_fail": [
+     {
+      "type": "condition",
+      "condition": "reaction_denied",
+      "applies_to": "target"
+     }
+    ]
+   },
+   "evidence": "Ash Terrain: Lightly Obscured; difficult terrain for hostile creatures; a hostile creature moving more than 10 feet through it for the first time on a turn makes a Constitution saving throw, and on a failure cannot take Reactions until the start of its next turn",
+   "material": "ash"
+  },
+  "fire terrain": {
+   "sphere": "Fire",
+   "obscured": "light",
+   "color": "#e0662e",
+   "material": "fire",
+   "enter_start": {
+    "who": "hostile",
+    "ability": "DEX",
+    "on_fail": [
+     {
+      "type": "damage",
+      "applies_to": "target",
+      "flat": 0,
+      "formula": "pb",
+      "damage_types": [
+       "fire"
+      ]
+     },
+     {
+      "type": "condition",
+      "condition": "burning",
+      "applies_to": "target"
+     }
+    ],
+    "on_success": [
+     {
+      "type": "condition",
+      "condition": "kindled",
+      "applies_to": "target",
+      "expires_on": "START_OF_SOURCE_NEXT_TURN"
+     }
+    ]
+   },
+   "evidence": "Fire Terrain: Lightly Obscured by heat shimmer and sparks; a hostile creature entering it for the first time on a turn or starting its turn there makes a Dexterity saving throw -- failed: Fire damage equal to your Proficiency Bonus and Burning; successful: Kindled until the start of your next turn; once per turn"
+  },
+  "molten terrain": {
+   "sphere": "Magma",
+   "difficult": "all",
+   "color": "#d9481c",
+   "material": "lava",
+   "enter_start": {
+    "who": "any",
+    "ability": "DEX",
+    "from_ability": true,
+    "half": true
+   },
+   "evidence": "Molten Terrain: difficult terrain; a creature entering it for the first time on a turn or starting its turn inside makes a Dexterity saving throw -- the talent's damage on a failure, half on a success; once per turn"
+  },
+  "obsidian terrain": {
+   "sphere": "Magma",
+   "difficult": "hostile",
+   "color": "#2b2530",
+   "material": "rubble",
+   "move_through": {
+    "min_ft": 10,
+    "ability": "DEX",
+    "on_fail": [
+     {
+      "type": "damage",
+      "applies_to": "target",
+      "flat": 0,
+      "formula": "pb",
+      "damage_types": [
+       "slashing"
+      ]
+     }
+    ]
+   },
+   "evidence": "Obsidian Terrain: difficult terrain for hostile creatures; a hostile creature moving more than 10 feet through it during one turn makes a Dexterity saving throw -- failed: Slashing damage equal to your Proficiency Bonus (and -5 ft Speed until the end of the turn, GM)"
+  },
+  "sand terrain": {
+   "sphere": "Sand",
+   "difficult": "hostile",
+   "color": "#d8b56a",
+   "material": "sand",
+   "evidence": "Sand Terrain: difficult terrain for hostile creatures of your choice"
+  },
+  "shallow sand terrain": {
+   "sphere": "Sand",
+   "difficult": "hostile",
+   "color": "#d8b56a",
+   "material": "sand",
+   "evidence": "Sand Terrain: difficult terrain for hostile creatures of your choice"
+  },
+  "deep sand terrain": {
+   "sphere": "Sand",
+   "difficult": "hostile",
+   "color": "#d8b56a",
+   "material": "sand",
+   "evidence": "Sand Terrain: difficult terrain for hostile creatures of your choice; a hostile creature in it cannot Dash (GM)"
+  },
+  "storming sand terrain": {
+   "sphere": "Sand",
+   "difficult": "hostile",
+   "color": "#d8b56a",
+   "material": "sand",
+   "obscured": "light",
+   "evidence": "Sand Terrain: difficult terrain for hostile creatures of your choice; lightly obscured"
+  },
+  "shattered glass terrain": {
+   "sphere": "Glass",
+   "difficult": "all",
+   "color": "#bcd8e6",
+   "material": "glass",
+   "move_through": {
+    "min_ft": 0,
+    "effects": [
+     {
+      "type": "damage",
+      "applies_to": "target",
+      "flat": 0,
+      "formula": "pb",
+      "damage_types": [
+       "slashing"
+      ]
+     }
+    ]
+   },
+   "evidence": "Shattered Glass Terrain: difficult terrain; the first time a creature willingly moves through it on a turn, Slashing damage equal to your Proficiency Bonus (moving at half speed avoids it, GM)"
+  },
+  "adorned terrain": {
+   "sphere": "Beauty",
+   "color": "#e7a8c9",
+   "material": "radiance",
+   "evidence": "Adorned Terrain: creatures of your choice have Advantage on Performance and Acrobatics checks and on Wisdom saves against Frightened (GM)"
+  },
+  "glass terrain": {
+   "sphere": "Glass",
+   "difficult": "all",
+   "color": "#d6e6ea",
+   "material": "glass",
+   "evidence": "Glass Desert Judgment: Glass Terrain is Difficult Terrain"
+  },
+  "bamboo thicket": {
+   "difficult": "all",
+   "obscured": "light",
+   "color": "#5d7d3a",
+   "material": "bamboo",
+   "evidence": "Map terrain (owner 2026-09-28: 'trees as an option both bamboo patches and larger trees'): a dense stand of bamboo -- difficult terrain, lightly obscured. A default, not a rulebook entry; change it here."
+  },
+  "wax smoke": {
+   "sphere": "Wax",
+   "obscured": "light",
+   "color": "#b8b0a0",
+   "material": "smoke",
+   "evidence": "Kindle Wax, Smoke Puff: 'The wax releases thick smoke ... The area is Lightly Obscured'; Smoke Wick's second stage: 'then becomes Lightly Obscured until the end of your next turn'."
+  },
+  "dense wax smoke": {
+   "sphere": "Wax",
+   "obscured": "heavy",
+   "color": "#8a8478",
+   "material": "smoke",
+   "evidence": "Smoke Wick: 'The area is Heavily Obscured until the start of your next turn'."
+  }
+ },
+ "default_color": "#7fb3d5",
+ "walls_note": "Walls (owner 2026-09-27: 'walls ... should be able to be placed and block los when applicable as well as movement'; 'We might have to flesh them out if they arent'). A wall named here rises across the line from its user through the chosen square. blocks_movement: no one walks through, and nothing is targeted through it (line of effect); see_through: that solid wall does not hide what is behind it on the table (Force Wall). obscures 'all' / 'hostile': it hides what is behind it (for everyone / for its creator's foes) and attacks through it have Disadvantage; it can be walked through. cover: attacks through it get Half Cover (+2 AC), or Three-Quarters Cover (+5 AC) where the text says so (Dune Wall, Wind Wall; Gate4ControllerEngine._cover_bonus_actor_to_actor). move_cost: movement through it costs that many times as much; difficult 'hostile': difficult terrain for its creator's foes. enter: the ability's own effects happen to a creature entering it (on/who). leaves: ground it leaves when it ends. breach: an Action beside it with a check against its creator's save DC -- 'collapse' removes that 5-foot section, 'opening' opens it until the start of the creature's next turn; min_size limits who may try. length_by_cl: [[CL, feet], ...]. PROPOSED RULINGS (the texts are silent): Glacier Wall is clear ice (see-through); Puzzle Wall's Puzzle Method is an Intelligence (Investigation) check; Lava Wall leaves Obsidian Terrain (the caster's choice of Molten is the GM's); Wall of Darkness and Monsoon give Disadvantage to attacks through them like Wall of Smoke. object: a solid wall's AC and hit points from its text -- per 5-foot section ('Each section/panel has') or for the whole wall ('The wall has'); a creature may attack a section with a weapon (\"Attack a wall section\", combat/ext/docket_walls.py); a destroyed section opens, a destroyed wall ends. Formulas use its creator's pb, cl and save_dc.",
+ "walls": {
+  "lava wall": {
+   "length_ft": 40,
+   "thick_ft": 5,
+   "blocks_movement": true,
+   "material": "lava",
+   "evidence": "a wall of molten stone up to 40 feet long, 10 feet high, and 5 feet thick; blocks ordinary movement and provides Total Cover",
+   "leaves": {
+    "terrain": "obsidian terrain",
+    "duration": {
+     "kind": "minutes",
+     "amount": 1
+    }
+   },
+   "object": {
+    "ac": "15",
+    "hp": "10*cl",
+    "scope": "wall",
+    "immune": [
+     "FIRE",
+     "POISON",
+     "PSYCHIC"
+    ],
+    "resist_mundane": [
+     "ALL"
+    ],
+    "evidence": "The wall has: AC 15; HP equal to 10 x your CL; Resistance to nonmagical damage; Immunity to Fire, Poison, and Psychic damage."
+   }
+  },
+  "dune wall": {
+   "length_ft": 30,
+   "thick_ft": 5,
+   "cover": "three_quarters",
+   "move_cost": 4,
+   "material": "sand",
+   "evidence": "Three-Quarters Cover through it; 4 feet of movement for every 1 foot moved",
+   "breach": {
+    "ability": "STR",
+    "skill": "Athletics",
+    "min_size": "LARGE",
+    "result": "collapse",
+    "evidence": "A Large or larger creature may force through a 5-foot section by using an Action and succeeding on a Strength (Athletics) check against your Cultivation Save DC"
+   },
+   "object": {
+    "ac": null,
+    "hp": "10+cl",
+    "scope": "section",
+    "evidence": "A section also collapses if it takes damage equal to 10 + your CL. (No AC is printed: attack rolls against a section are the GM's.)"
+   }
+  },
+  "glacier wall": {
+   "length_ft": 30,
+   "thick_ft": 5,
+   "blocks_movement": true,
+   "material": "ice",
+   "evidence": "each panel is an object ... blocks line of effect through its space",
+   "see_through": true,
+   "object": {
+    "ac": "12+pb",
+    "hp": "10+2*cl",
+    "scope": "section",
+    "immune": [
+     "POISON",
+     "PSYCHIC"
+    ],
+    "vulnerable": [
+     "FIRE"
+    ],
+    "evidence": "Each panel is an object with AC 12 + your Proficiency Bonus, Hit Points equal to 10 + twice your Cultivation Level, Immunity to Poison and Psychic damage, and Vulnerability to Fire damage."
+   }
+  },
+  "blackglass rampart": {
+   "length_ft": 20,
+   "thick_ft": 1,
+   "height_ft": 10,
+   "cover": true,
+   "material": "obsidian",
+   "enter": {
+    "on": ["enter"],
+    "who": "hostile"
+   },
+   "object": {
+    "ac": "16",
+    "hp": "5*cl",
+    "scope": "section",
+    "vulnerable": ["THUNDER"],
+    "immune": ["POISON", "PSYCHIC"],
+    "evidence": "Each panel has AC 16; HP equal to 5 x your CL; Vulnerability to Thunder damage; Immunity to Poison and Psychic damage."
+   },
+   "evidence": "Create up to four connected 5-foot panels, 10 feet high, 1 foot thick; Panels provide Cover normally; a hostile creature that climbs or moves across a panel takes Slashing damage equal to your Proficiency Bonus once per turn (owner 2026-09-28: elements review -- the panels are object-bearing wall sections: AC 16, HP 5xCL, Vulnerability to Thunder, Immunity to Poison and Psychic, 10 feet high)."
+  },
+  "force wall": {
+   "length_ft": 30,
+   "thick_ft": 5,
+   "blocks_movement": true,
+   "material": "glass",
+   "evidence": "contiguous 5-foot panels, 30 feet long, 10 feet high",
+   "see_through": true,
+   "object": {
+    "ac": "15+pb",
+    "hp": "3*cl",
+    "scope": "section",
+    "immune": [
+     "POISON",
+     "PSYCHIC"
+    ],
+    "resist": [
+     "BLUDGEONING",
+     "PIERCING",
+     "SLASHING"
+    ],
+    "evidence": "Each panel has AC 15 + Proficiency Bonus, HP 3 x CL, Resistances Bludgeoning, Piercing, Slashing, Damage Immunities Poison, Psychic. A panel may be damaged and destroyed independently."
+   }
+  },
+  "wind wall": {
+   "length_ft": 30,
+   "thick_ft": 5,
+   "cover": "three_quarters",
+   "material": "wind",
+   "evidence": "Three-Quarters Cover against ordinary ranged weapon attacks that pass through it",
+   "enter": {
+    "on": [
+     "enter"
+    ],
+    "who": "any"
+   }
+  },
+  "monsoon wall": {
+   "length_ft": 30,
+   "thick_ft": 5,
+   "obscures": "hostile",
+   "difficult": "hostile",
+   "enter": {
+    "on": [
+     "enter"
+    ],
+    "who": "hostile"
+   },
+   "material": "water",
+   "evidence": "Heavily Obscured to hostile creatures looking through it, does not block line of effect ... difficult terrain for hostile movement"
+  },
+  "humble wall": {
+   "length_ft": 10,
+   "thick_ft": 5,
+   "cover": true,
+   "move_cost": 2,
+   "material": "stone",
+   "evidence": "a 5-foot section, 3 feet high: cover, climbed over",
+   "length_by_cl": [
+    [
+     1,
+     10
+    ],
+    [
+     5,
+     15
+    ],
+    [
+     11,
+     20
+    ],
+    [
+     17,
+     25
+    ]
+   ],
+   "object": {
+    "ac": "12",
+    "hp": "10+cl",
+    "scope": "section",
+    "immune": [
+     "POISON",
+     "PSYCHIC"
+    ],
+    "evidence": "Each wall section ... has AC 12 and Hit Points equal to 10 + your Cultivation Level. It is immune to Poison and Psychic damage."
+   }
+  },
+  "raise the load-bearing wall": {
+   "length_ft": 30,
+   "thick_ft": 5,
+   "blocks_movement": true,
+   "material": "stone",
+   "evidence": "up to six connected 5-foot wall sections; Total Cover through its space and blocks movement",
+   "object": {
+    "ac": "15",
+    "hp": "20+2*cl",
+    "scope": "section",
+    "immune": [
+     "POISON",
+     "PSYCHIC"
+    ],
+    "evidence": "Each section has AC 15, Hit Points equal to 20 + twice your Cultivation Level, and immunity to Poison and Psychic damage."
+   }
+  },
+  "scripture wall": {
+   "length_ft": 20,
+   "thick_ft": 5,
+   "blocks_movement": true,
+   "material": "glyphs",
+   "evidence": "up to 20 feet long ... a barrier against movement",
+   "object": {
+    "ac": "14",
+    "hp": "10*pb",
+    "scope": "wall",
+    "immune": [
+     "POISON",
+     "PSYCHIC"
+    ],
+    "evidence": "The wall has AC 14, HP equal to 10 x your Proficiency Bonus, and immunity to Poison and Psychic damage."
+   }
+  },
+  "talisman wall": {
+   "length_ft": 30,
+   "thick_ft": 5,
+   "blocks_movement": true,
+   "material": "glyphs",
+   "evidence": "up to 30 feet long; Total Cover while intact",
+   "object": {
+    "ac": "15",
+    "hp": "10*talismans",
+    "scope": "wall",
+    "evidence": "For each talisman consumed, the wall gains 10 hit points. The wall has AC 15. (combat/ext/talismans.py asks how many prepared talismans go into it.)"
+   }
+  },
+  "puzzle wall": {
+   "length_ft": 30,
+   "thick_ft": 5,
+   "blocks_movement": true,
+   "material": "stone",
+   "evidence": "a wall up to 30 feet long, 15 feet high",
+   "breach": {
+    "ability": "INT",
+    "skill": "Investigation",
+    "result": "opening",
+    "evidence": "A creature adjacent to the Wall may use an Action and a Puzzle Method. Success: It creates a 5-foot opening until the start of its next turn"
+   },
+   "object": {
+    "ac": "save_dc",
+    "hp": "8*cl",
+    "scope": "wall",
+    "immune": [
+     "POISON",
+     "PSYCHIC"
+    ],
+    "resist_mundane": [
+     "BLUDGEONING",
+     "PIERCING",
+     "SLASHING"
+    ],
+    "evidence": "AC: Your Cultivation Save DC; Hit Points: 8 x your CL; Resistance: Bludgeoning, Piercing, and Slashing from noncultivated attacks; Immunity: Poison and Psychic damage."
+   }
+  },
+  "wall of darkness": {
+   "length_formula": "pb*20",
+   "thick_ft": 10,
+   "material": "darkness",
+   "evidence": "your Darkness as contiguous 10-foot cubes, twice your Proficiency Bonus",
+   "obscures": "all"
+  },
+  "wall of smoke": {
+   "length_ft": 30,
+   "thick_ft": 10,
+   "material": "smoke",
+   "evidence": "a wall of Dense smoke cubes",
+   "obscures": "all"
+  },
+  "loom of the narrow gate": {
+   "length_ft": 30,
+   "thick_ft": 5,
+   "material": "thread",
+   "difficult": "hostile",
+   "evidence": "Loom of the Narrow Gate (rider lane C11): up to six connected 5-foot squares, arranged as lines or arcs -- the table lays six squares in a line; hostile creatures treat them as Difficult Terrain"
+  },
+  "wax rampart: half cover": {
+   "length_ft": 10,
+   "thick_ft": 5,
+   "cover": true,
+   "move_cost": 2,
+   "material": "wax",
+   "length_by_cl": [[1, 10], [5, 20], [10, 30], [15, 40]],
+   "evidence": "Wax Rampart (rider lane C11): Set Shape as a sturdier rampart -- 'creatures behind it may use it as half cover'; Set Shape fits two / four / six / eight contiguous 5-foot cubes at CL 1 / 5 / 10 / 15; climbed over like a low wall (as Humble Wall)",
+   "object": {
+    "ac": "12+pb",
+    "hp": "5+3*cl",
+    "scope": "section",
+    "immune": ["POISON", "PSYCHIC"],
+    "vulnerable": ["FIRE"],
+    "evidence": "Set Wax: 'each 5-foot section of Set Wax has AC 12 + your Proficiency Bonus and hit points equal to 5 + twice your Cultivation Level. It is immune to poison and psychic damage. It has vulnerability to fire damage unless you have a Temper talent'; Wax Rampart: 'The Set Wax gains additional hit points equal to your Cultivation Level'"
+   }
+  },
+  "wax rampart: three-quarters cover": {
+   "length_ft": 5,
+   "thick_ft": 5,
+   "cover": "three_quarters",
+   "move_cost": 2,
+   "material": "wax",
+   "length_by_cl": [[1, 5], [5, 10], [10, 15], [15, 20]],
+   "evidence": "Wax Rampart (rider lane C11): 'At CL 5, a rampart can instead provide three-quarters cover to a creature directly behind it, but each 5-foot section used this way counts as two sections of your Set Shape' -- half the length",
+   "object": {
+    "ac": "12+pb",
+    "hp": "5+3*cl",
+    "scope": "section",
+    "immune": ["POISON", "PSYCHIC"],
+    "vulnerable": ["FIRE"],
+    "evidence": "Set Wax: 'each 5-foot section of Set Wax has AC 12 + your Proficiency Bonus and hit points equal to 5 + twice your Cultivation Level. It is immune to poison and psychic damage. It has vulnerability to fire damage unless you have a Temper talent'; Wax Rampart: 'The Set Wax gains additional hit points equal to your Cultivation Level'"
+   }
+  }
+ }
+}
