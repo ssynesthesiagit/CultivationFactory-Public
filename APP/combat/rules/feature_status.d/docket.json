@@ -1,0 +1,41 @@
+{
+ "schema": "TianxiaFoundry.FeatureStatus.v1",
+ "features": {
+  "TAL_DARK_DARKVISION": {
+   "status": "applied",
+   "why": "A Meld: while it is one of its user's active Melds (several at once: the owner struck the printed one-Meld limit on 2026-09-29) -- the first Meld a fight starts with, or \"Meld: Darkvision\" -- Darkvision 60 feet (+30 if it already has Darkvision): it sees through plain Darkness within range, 5 feet inside Pure Darkness (combat/senses.py). The 2 CP augment to 120 feet is the GM's."
+  },
+  "BLOOD_BASE_BLOODSENSE": {
+   "status": "applied",
+   "why": "Bloodsense's live range gates observer-only direction, visible injury, one-hour exposed spill, authored likely corpse cause and studied-sample comparison (combat/ext/bloodsense.py). Missing provenance remains unknown; Invisible requires freshly spilled same-source blood or another qualifying sense. No targeting sight or team knowledge is granted."
+  },
+  "TAL_THE_HIDDEN_EYE_TRUE_SIGHT": {
+   "status": "applied",
+   "why": "While it holds Martial Focus: Truesight 120 feet -- it sees through magical darkness and sees hidden and invisible creatures within range, not through walls (combat/senses.py)."
+  },
+  "TAL_DARK_RAPID_MELD": {
+   "status": "outside",
+   "why": "This former augment has no separate effect now that Meld takes one Action; the owner edit strikes it from the printed text."
+  },
+  "TAL_DARK_PERSISTENT_MELD": {
+   "status": "applied",
+   "why": "\"Meld: <talent> (Persistent)\" costs 2 CP more and holds no Concentration (combat/ext/docket_senses.py)."
+  },
+  "TAL_GLASS_CLEAN_BREAK": {
+   "status": "table",
+   "why": "Only when it reduces a Glass Surface, fragile object, mirror, window, crystal or mundane glass item to 0 HP: the table has no glass objects to break (the GM applies the choice)."
+  },
+  "TAL_FLOWERS_LAYERED_BOUQUET": {
+   "status": "applied",
+   "why": "\"Shape Fragrance: <talent> + <talent>\" offers every pair of two different Fragrance talents it knows; the next Fragrance carries both, paying both talents' costs and Layered Bouquet's 2 CP (combat/factory_compiler.py _zone_shapes, combat/zones.py _shaped)."
+  },
+  "TAL_FENCING_SKEWER": {
+   "status": "applied",
+   "why": "\"Skewer: also <Exploit>\" names a second Exploit; when an Exploit lands and the second differs, Martial Focus is expended and it lands too (combat/ext/needle.py apply_exploit; the toggles are combat/ext/docket_allowances.py). Without a standing pick the character is asked which two, when it holds Martial Focus."
+  },
+  "TAL_SCOUNDREL_DOUBLE_DIP": {
+   "status": "applied",
+   "why": "\"Double Dip: also <effect>\" names a second Dirty Trick effect; a successful Dirty Trick with a different one expends Martial Focus and adds it (combat/ext/docket_allowances.py)."
+  }
+ }
+}
