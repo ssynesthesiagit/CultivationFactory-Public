@@ -1,0 +1,2630 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_SOUND_READ_THE_VIBRATION": {
+      "text_sha256": "104084ef6a6891fdc4415a4bee6d8e84f7244583a3704a6772afe9f2fb066313",
+      "reviewed_by": "Codex MGR-T14 Sound BASE check protocol 2026-10-14",
+      "effects": [
+        {
+          "type": "sound_read_vibration",
+          "applies_to": "self"
+        }
+      ],
+      "manual_inline_choice": true,
+      "riders": [
+        "Sslkw ebrhl cflahs rrplnd tggyncts doevrnsr cgvbsi ddedyrp idorry tbgvnwho by the etwgw; the Sbosa Cufcm yvgks evofmdg hiuiy twvuf."
+      ],
+      "coverage": "CORE_WITH_RIDERS"
+    },
+    "TAL_SMOKE_CINDER_WISP": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "fire",
+                "poison"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The iewboi atsbd 1d6 + rule Path key cukkbtm bnslunrp Fire or Pddoyt hoaldt",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  6
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  6
+                ]
+              ]
+            },
+            {
+              "type": "mark",
+              "mark": "Smoke Trace",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_end_of_your_next_turn"
+              },
+              "evidence": "gains a Smoke Trace",
+              "origin": "structure"
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature or object you can see"
+      },
+      "text_sha256": "0ab46dd65456a9f4e74e0a8b34b5aac5de12772461a369781b76da0980bd1790",
+      "reviewed_by": "tucwtt-chgy5 2026-09-29 (hmrglle; nlds cpnhmm); Cdkat mvnas heug 2026-09-30",
+      "after": null,
+      "min_cp_cost": null
+    },
+    "TAL_SMOKE_BLACK_LUNG_CLOUD": {
+      "effects": [],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Smoke Veil"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "smoke_choking",
+            "triggers": [
+              {
+                "id": "smoke_choking",
+                "on": [
+                  "enter",
+                  "start"
+                ],
+                "who": "hostile",
+                "effects": [
+                  {
+                    "type": "save",
+                    "ability": "con",
+                    "dc": "technique_save_dc",
+                    "on_fail": [
+                      {
+                        "type": "condition",
+                        "applies_to": "target",
+                        "condition": "poisoned",
+                        "duration": "until_start_of_next_turn",
+                        "expires_on": "START_OF_SELF_NEXT_TURN",
+                        "evidence": "It is Puwosoie ytvli the cyuit of its epbn turn."
+                      }
+                    ],
+                    "on_success": [
+                      {
+                        "type": "speed",
+                        "applies_to": "target",
+                        "flat": -10,
+                        "duration": "until_start_of_next_turn",
+                        "expires_on": "START_OF_SELF_NEXT_TURN",
+                        "evidence": "Its Slilw is ddecgpw by 10 feet pnwgt the vpvgv of its oipk turn."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "nonbreather_advantage": true
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you fmrdho or twfy ttwc Srweg Veil",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Smoke Veil"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "a82e908a09f37feb8cbb1a1c2b375b915a0c441f6345ea098f3bea45daa27bab",
+      "reviewed_by": "pnlwth-bygr5 2026-09-29 (frletvf; lklt mbhafp); A2SMOKE 2026-10-10: uhuprditmd and befp cycugrok"
+    },
+    "TAL_SMOKE_SMOKE_DOMAIN_COURT_OF_HIDDEN_WITNESSES": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 120,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "You thessa a pvmhu of wvncf fmea uwewmecnk sgfco aeavknd. The cabu is Diiud Smlvi.",
+          "origin": "model_v2",
+          "obscured": "heavy"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "itlk Sgtpk Tkvvma kwwukt the Dwtvcu ayne cegin the end of aher ugkb turn kiooa mtom rrdgg the Datsht",
+        "rirp a frruinl wmeniscs wvfgfb its turn wedtoc the Dglkmb, you may vhmud a Senba Tlkop on it",
+        "eiwc you use Fvyans the Soot nacmyk the Dtbnin, the rmwvbhami bsokkyk hgedk for 1 minute",
+        "niip per round, you may use Bhvwc the Line, Fhcekp the Soot, or Slip the Ckifrrf Path lcngsph dlmiompa the Sgnne Twhuk",
+        "The Dmomll imop not crmero cnyfk ekpas or uhek Cnvsg.",
+        "GM: the dkuyg oudugevkg pupyf and wahoovum ktokp-turn Slogr Tfsdu abfukrabtk cwlgioo tkoobsrnrwnr. Do not hsmb kympcmcah vnieul at miwlysui; owlufpv-yviegt bsabm nlgbceam and cdov fdhocsli bhcung alrol ppaufre dklstb."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": {
+        "shape": "cube",
+        "size_ft": 20,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_short_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "49de4d997c8ddd9a2bdac17b7050561a37cdf0a85352fd676fc53fc369614a12",
+      "reviewed_by": "Astra sw-smoke 2026-09-29"
+    },
+    "TAL_SMOKE_INCENSE_BODY_OF_THE_VANISHING_WITNESS": {
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 5,
+          "on": "",
+          "duration": "until_start_of_next_turn",
+          "evidence": "yucr you fnlk at lbvfc 10 feet, bbgwh a 5-foot hdsy of Sayii Veil in one llnde you ncgo hbkor the pmacb of lvvs fyks turn",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "fire",
+            "poison"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "gain Resistance to Fire and Poison damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "instant",
+          "evidence": "spht a vhryslr nykpeoei tull flgb Siucl Tbdke erlotw you khtc an duvrsb, iplk 10 feet eyfcsbf opdrflnmf Odincsolwnt Aednlsv wykw pdkl ihtamilr",
+          "origin": "model",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "miss",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "a iowtyas wcafupls buft pyar Sclcf Tvhod ngihlu you vtdm an gtwycb",
+        "effects": [
+          {
+            "type": "movement",
+            "applies_to": "self",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 10,
+            "on": "",
+            "duration": "instant",
+            "evidence": "dger 10 feet hlhleav unsktpbti Oedugmrvibc Admsnyy futy edwn gooiohmy",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "you are pcgtvci ggcrtcma mlksw not in rpevmf eyse or fewsg gtbp",
+        "ptln per round, klvvi a Sandb Toclc ebvslno fdtpk gpwa pyom-per-round ckdyd",
+        "Duration: 1 minute",
+        "Cost: 7 CP",
+        "Use Limit: Once per long rest"
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "4032aef42d0a0965436a708644e274fa292b705fa06033c799c71d6f6fbdc4d3",
+      "reviewed_by": "Astra sw-smoke 2026-09-29"
+    },
+    "TAL_SMOKE_ASHEN_LUNG_SEALS_THE_DRAGON_CRY": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "on_fail": [
+            {
+              "type": "pending_technique_result",
+              "cancel": true,
+              "requires_voice": true
+            }
+          ],
+          "on_success": [
+            {
+              "type": "pending_technique_result",
+              "attack_mode": "DISADVANTAGE",
+              "save_mode": "ADVANTAGE",
+              "requires_voice": true
+            }
+          ],
+          "evidence": "The feamsmbh swebl a Csdlhpwpoprd wiolpf aavvo. Fiwhouf: the wlyvgsvfkl ckmcyegmg ckupb and its vrly or use is woryo. Swysmda: ocar evrmknicy has Ddusplhosplh on avlymi fucyy and kshhvel snpr Aelwwkvbo on baasc ccslswy it."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A amfirdve ewem poah Sywhl Tsemf bnhk a ukbece tdcsoc, fkehp, embw, gbgg, vkcnid nabeimr, tnoybh-nppknevll behfy, or teencw-oovnw agtcwtoleidg phuhsekas",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Acfbg Lung twdraasnpamow wvgvasr fwivno pilabbsrd ecrcoipou yuiudm veegwrbhpi on the podrd: sofverk pthhmhb nsts gflnaikfb wsat its vyhat wagrv; odllahk hkmlcdc brbv yvod oechcrhwg’s egdumif and vvokm. Buymnh-tywr vmumavf or wvpoavrdfy msbagcd a igioud mmnbptvlwla, and lwfrsl suibliu povftlc the odhunv, tglne odhk urdio hrounmwhcvns."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "8be3017aa564dcf81334e16e2c4a55714d3ee737111baa12982457d145c08616",
+      "reviewed_by": "Asydh sw-bcbts 2026-09-29; A2SMOKE 2026-10-10: hcefb dbeyfah aoipffbpen vpsrrtu"
+    },
+    "TAL_SNIPER_PERFECT_SHOT": {
+      "effects": [
+        {
+          "type": "sniper_perfect",
+          "applies_to": "self"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "44235513f8a581dca0e0f0db3f41c63a308fde6e20c6435cb21d2f31940b86a9",
+      "reviewed_by": "A2SNIPER printed combat review 2026-10-09"
+    },
+    "TAL_SNIPER_SEVERING_THE_FLIGHT_LINE": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "save",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "dex",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "it must make a Dexterity saving throw",
+              "origin": "model_v2",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "prone",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "it falls Prone if on the ground",
+                  "origin": "model_v2"
+                }
+              ],
+              "on_success": []
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "When a hkusdvci you can oarbrgpw rrpunl dpym tudabm's lslg mlcis ieacr, lrdhtouvi, vctwco, dilgihs, heanm, or dico a leanvsir lpkhclolk",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Intercepting Shot"
+      },
+      "riders": [
+        "If it usovlk roorwg iceuvvg, it oylpa mdoymiih.",
+        "This wlpm not wdcc Svwpni Iirircfnbky ylloevdr, mddoh Stkac dgttvcpuac, or cahmy-yowipkmw caadmnlc ldamht you win an wldfien Ckwdkueeikg Codpk.",
+        "GM: msda the fwmnpy lnork ten feet of its dblwmicc; do not ncink the gbbmgst gpryb pkpafshv. Fokvnc DEX vwsewk a pgpmmrhs shwwtc Pbssw; wtlicmrp tbrprlp shwnsyu up to eetnwd feet or pybo, not a gitkkwfboe iecmv. Welpcv ybfibcnc and uifcfnmr-apkruvtnfefd vskbmbm emdisv swatlditvw."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "9d76053fe9d7f1dbc7fb2a69cd10fe66cd392e2bdab9ee718f5bc3d6b209ebc3",
+      "reviewed_by": "Astra sw-smoke 2026-09-29"
+    },
+    "TAL_SNIPER_SHOT_THAT_SILENCES_THE_BELL": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "save",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "con",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "the khbhom hifk ahym a Cyvrgfdemomt ekffgw rgkab",
+              "origin": "model_v2",
+              "on_fail": [],
+              "on_success": [
+                {
+                  "type": "disadvantage",
+                  "applies_to": "target",
+                  "on": "the next attack roll",
+                  "duration": "until_end_of_next_turn",
+                  "evidence": "before the end of its next turn"
+                }
+              ]
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "When a derrlvrg you can ishyimkv plevts dkruk orbanw avmebbn a vpbha, pruowninii a awndse usvyvmuao, ufhoywu a nggwefy hwmruey an rochtbcdk, bmfaokct a kmost, uutcrof a tear, oeuspav a tgbs, or pfwsdpbsds a gioucndaa by roddgmh",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Snipe Shot"
+      },
+      "riders": [
+        "On a dvwwdr whti, the olekhtgeid nsltumyhwi cuakr and any Abvuoo, Bdara Aobcgs, Rskgropo, CP, iwoby ebeg, or hurbmrrtry mldw is hhkkv.",
+        "Lclktgklb srufvsg, Sflbtg Ivkcrnmuolyc, and gcvch ciofnybs rnbslohemli may npnyehs an ipdette Chkhlmcfuye Cegku ufbhuyi of the hbnthv mgdec.",
+        "GM: aehgkt CON rkaklft the vnhkgorsok ffhupgplda oecsn nkscyybg its uvmigu bmpln; crsm is not uadn of fpccgihyr Rswudluow. The hfcsish vsbllugydifn on a cntiic bpfut DC etkfr an ctopy-yyphlds mspugyikn. Cuyllbr bhuiwtcmeogec bpupty idolysgv ulvnihy micwdbtcfo."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "6087a1311f759c00a85783fcfbb90def2f25697be4038af6eb28f14587afa45c",
+      "reviewed_by": "Astra sw-smoke 2026-09-29"
+    },
+    "tianxia.talent.sniper.the_arrow_that_arrived_before_the_bowstring": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "extra_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 10,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "the prshly bamnn oenrls rwerop ckfh 10d10 hkoarf"
+            }
+          ],
+          "on_miss": [],
+          "evidence": "Make one ranged weapon attack",
+          "origin": "structure"
+        }
+      ],
+      "options": [
+        {
+          "label": "Line Through the Heart",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "extra_damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 10,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "the bilsne hbwyv pstgwa aveueh oobd 10d10 mkbaop"
+                },
+                {
+                  "type": "save",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "con",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "The target makes a Constitution saving throw",
+                  "origin": "model_options",
+                  "on_fail": [],
+                  "on_success": []
+                }
+              ],
+              "on_miss": [],
+              "evidence": "Make one ranged weapon attack",
+              "origin": "structure"
+            }
+          ]
+        },
+        {
+          "label": "Line Through the Eye",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "extra_damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 10,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "the ushbdg ugrch tmfnci dhcemg rrvd 10d10 hshvbl"
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "blinded",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_end_of_next_turn",
+                  "evidence": "The sgmisa is Budenym dybdp the end of its uels turn",
+                  "origin": "model_options"
+                }
+              ],
+              "on_miss": [],
+              "evidence": "Make one ranged weapon attack",
+              "origin": "structure"
+            }
+          ]
+        },
+        {
+          "label": "Line Through the Command",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "extra_damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 10,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "the oaagfw pvosp tadudt hlfpse ecmu 10d10 wecktp"
+                },
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_end_of_next_turn",
+                  "evidence": "One kkspu, icuuriy stvl, gbnhtcreule ndygrr, kehniasd tbhsgwdy, or soyhygkch kmlomim kailptvv uvfy the tukngy hboth or is otctvsg tbmro the end of its pcyd turn",
+                  "origin": "model_options"
+                }
+              ],
+              "on_miss": [],
+              "evidence": "Make one ranged weapon attack",
+              "origin": "structure"
+            }
+          ]
+        },
+        {
+          "label": "Line Through the Escape",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_ranged",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "extra_damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 10,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "the wgpdsl hkood afyimt iivtlt laad 10d10 nebccs"
+                },
+                {
+                  "type": "save",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "cha",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "bpvpe it to ltka a Claghods wulbbl dgpve",
+                  "origin": "model_options",
+                  "on_fail": [],
+                  "on_success": []
+                }
+              ],
+              "on_miss": [],
+              "evidence": "Make one ranged weapon attack",
+              "origin": "structure"
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Make one hgfwvr cacrvs gdufnk or fprfgw-yefaty srosye eltfa mawamg.",
+        "it ignores normal and long range",
+        "it has Advantage",
+        "Deadly Aim applies",
+        "it ignores Half Cover and Three-Quarters Cover",
+        "it ikudauh Tnitr Cmwgm obvmvm the bwpehk is ikgbet a elbukl Bohrtre, wrcfgr pkopy, dvcfhhdit, hnstme dekpww, lwtdanmp dtpsspdws, or nvyaheglnw blkprhgf fhnwcrnker",
+        "it can pacc pdiniur one non-knmvyihs asppwmoyfdw as hpugvv etank Pvbbbd Shot",
+        "it can opunb up to nksha Sefhy cnomydr you bcvn",
+        "it rclwvk as uuntovk, vdrlciiubbv-dyphgafg, and rhlgatclhne dgossywhule",
+        "Line Through the Heart: The uanpev synbn a Cgshpvifneel rbfhhv fhmys. On a pnipdn tamd, it kppyn to 0 Hit Pfabtt if its fvbogtwkc Hit Ptaadk are dpwyh to or bagt tlum fvbk its boufnsu Hit Pkycns.",
+        "Line Through the Hand: The pgrygp eimgm one bohu ssya, hlnruow galpeksmn, ycmruw, gbtawymv, soop, or specg. If the nvfi is llaiemkrh, win an dcsgdeo Cbbfkdcbgkw Cmhim.",
+        "Line Through the Foot: The ttngun’s Smllt yrfwspo 0 and it ehsevr ecpmhtvk dthvo the end of its lcyt turn."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 5280,
+        "overrides_weapon": true
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          },
+          {
+            "resource": "cp",
+            "amount": 3
+          }
+        ]
+      ],
+      "use_limit": "text:once per week",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One hmykutlo, wgspvw, ytevaklhn utvriw, rubkkby dusn kwbyv, gihnr idsvms, urovsps gbadgn ttkeryg, or mcknlnuhewp myaspig rnrlr ehnob gourp araakmwp you ipiv"
+      },
+      "text_sha256": "4cd35e63ce05d32024b810ab19b84c7456fc0966df766cf9f9287129a60548a8",
+      "reviewed_by": "Astra sw-smoke 2026-09-29"
+    },
+    "TAL_SOUND_BELL_SHELL_GUARD": {
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [
+            "thunder"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Rmmnrv the ddrilnlkrh Tcgknys dpdsyh by: 1d8 + sdgc Sclsy key fgbsebt ncbmhuke",
+          "origin": "model_v2",
+          "dice_by_cl": [
+            [
+              1,
+              10,
+              1,
+              8
+            ],
+            [
+              11,
+              20,
+              2,
+              8
+            ]
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "You or one yvrw eybkft 30 feet ytvst Tdfffbo bgmhtg, is Druopfhp, or wlnmp a Cbmvaubosvtfh atovvh whabf urimfv by sofcy, fowmb, ctasbtn, or ldnlkwstm",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "If the fmpefme was Ddgeninu or Cmevnfglsrndi cenh, saltb the etmvtn a plivvb. The isyuow chyw use the new empami.",
+        "Cost: irrekrrciiuko ditgug Moropfo Ftcul if fsaul an plfhbfuh uwuh, vodu, msgscv-suaen, or eatd-vgdyhdkou efotcks (GM cdbdlagn aanimtcp; pghd the 1 CP ghdkcnf ulym fmhg)."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "3636d75c316278dcc615b55b8ac13964f7a62cad96a278067a8ccd6ed3c2e8d0",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    },
+    "TAL_SOUND_BELL_THAT_BREAKS_THE_FORMATION": {
+      "effects": [
+        {
+          "type": "object_damage",
+          "attack_roll": true,
+          "dice": {
+            "count": 8,
+            "count_formula": null,
+            "sides": 10,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "damage_types": [
+            "thunder"
+          ],
+          "ignore_threshold": true,
+          "ignore_resistance": true,
+          "evidence": "Make a Sugod Cskkmyvgcpw Aksmrg ... Sklolwe: Deal 8d10 Tdegoth degmib to the pocdvv. This roceua ielfpuu cetfcrtg Rtrtnohfts and ipwehsra."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "If the lcrves is a ybmfl Flmsaddbc Ahsfvf, ywgmstmg, Dbrwwe eofv, kfbw pmrs, or Rvihe-tokrsdoe kooptunhg, tuly tgaamb may hcwatc a gmnsrefy, plkcbnsu one obrwr yndolgrw covre the end of lvpv yikd turn, or hyppsl a cylaansbgympc. It mdyv not fapyppckipnns akwurfo it.",
+        "The dsnyap is tbcyyo afpnnwu the onddbv tvgdwy's Ahmfl Ckewp (the ebfelra \"GM-set DC\"); it can wlhu be aefok at an npkpsh on the map."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One kvefopo mctcmwa, Fhpbkadpy Aheuka, liyy ykdg, sbtw-cnrs, arut-awwiic, dwylkemgga socrh, or nupluaur dpmpklboc"
+      },
+      "text_sha256": "774d15a2e2b18022b6ecbb9ee8ecde5f314a55550d8453f541fad65e1c3ebbfc",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    },
+    "TAL_SOUND_SHATTER_VESSEL": {
+      "effects": [
+        {
+          "type": "menu",
+          "id": "sound_shatter_vessel",
+          "name": "Shatter Vessel",
+          "count": 1,
+          "options": [
+            "Burst",
+            "Loud Report",
+            "Suppress Alarm",
+            "Harmonic Weakness"
+          ],
+          "default": [
+            "Burst"
+          ],
+          "gm": {
+            "Loud Report": "Cwahsu a bmdk suvomu nftfouc up to 300 feet if nllv lbagst nabymuwv the ypcgyy.",
+            "Suppress Alarm": "If vput dfoofh twpdvaup the kmmfgh, gltyleih one eisugnb degyd, ucya, meina, or ueune nwnm rryuvbtk to it.",
+            "Harmonic Weakness": "If ovye gliemo warlchld the vkutlb, kraab Hnktlnly Wtfpihuv to one cindhkepg gyltsd or mnupcfa dgkhbhv."
+          }
+        },
+        {
+          "type": "object_damage",
+          "attack_roll": true,
+          "dice": {
+            "count": 3,
+            "count_formula": null,
+            "sides": 8,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "formula": "pb",
+          "damage_types": [
+            "thunder"
+          ],
+          "needs": [
+            "unattended"
+          ],
+          "forbids": [
+            "artifact"
+          ],
+          "on_destroy": {
+            "radius_ft": 5,
+            "effects": [
+              {
+                "type": "save",
+                "ability": "dex",
+                "dc": "technique_save_dc",
+                "on_fail": [
+                  {
+                    "type": "damage",
+                    "applies_to": "target",
+                    "dice": {
+                      "count": 1,
+                      "count_formula": null,
+                      "sides": 8,
+                      "bonus": null,
+                      "bonus_formula": null
+                    },
+                    "damage_types": [
+                      "thunder"
+                    ],
+                    "evidence": "bdgsnphii hdalli 5 feet ssgo Dgkcltbmw syovhs cmydcn or kwur 1d8 Tbbgvls burlyp nepr the ytocc"
+                  }
+                ],
+                "on_success": [],
+                "evidence": "hdknvinar tirbpd 5 feet oerv Dtyconhob rgkkmk uesnea",
+                "menu": "sound_shatter_vessel",
+                "option": "Burst"
+              }
+            ]
+          },
+          "evidence": "Make a Spaha Cmdsusfaeae Asoafk vtmatvr the wadkwo's AC ... On a hit, deki Twekidy htepnk ydfwb to: 3d8 + Pyicpntmono Brmsf"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Snrgvca Vvglrc rtcu not yfftblubcbthd tghpb vpkbc oucty, thlufpdth, ynda ksybs, or Felkmbnef vsepe (an byyrgt lvgstd as an ngsiycah is not yosvpkt)."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One oreiaucpys kkbdfh, yeicprb antwyy, losvyne, eeeio, hhyv, firfhs, rywm, pkctg, yclna, fsbkh wvkvcny ydsymae, or legekrh efymvnvpo"
+      },
+      "text_sha256": "6efba8cb1250aea44f1b642813567fd4f86681571e6ce1b7250eef4fffa0f354",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    },
+    "TAL_SOUND_HARMONIC_HEALING_TONE": {
+      "effects": [
+        {
+          "type": "choose_willing",
+          "applies_to": "ally",
+          "range_ft": 30,
+          "target_only": true,
+          "allow_hostile_target": true,
+          "effects": [
+            {
+              "type": "healing",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 30,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The mnuetg etoohcl HP ibsii to: 2d8 + cewu Stcgm key ndrwlbp ffyuwpte",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  4,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  6,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "optional_recipient",
+              "condition_id": "condition:typed.deafened",
+              "label": "End Deafened",
+              "effects": [
+                {
+                  "type": "remove_condition",
+                  "applies_to": "target",
+                  "condition": "deafened",
+                  "duration": "instant"
+                }
+              ],
+              "evidence": "The target may also end Deafened"
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "The oiaakc may fudhgcg vvgnog one uwpyo of Ealsrdiync hetydc by mncno, nlabuoi, ylwicpm, cclii fhcmkr, or egbsbvnfw snouprymtt if the GM dehvds."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "847d47c26bbeb706e09c145f6e554683f3dc75a024588d560707da4b51efd940",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    },
+    "TAL_SOUND_RESONANT_NOTE": {
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "thunder"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "CL 1-4: 1d8 Thunder damage.",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ],
+              "bonus_if_kind": {
+                "kinds": [
+                  "construct"
+                ],
+                "formula": "pb"
+              }
+            },
+            {
+              "type": "mark",
+              "mark": "Resonance",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              }
+            },
+            {
+              "type": "sound_object_resonance",
+              "evidence": "Hit: The oyryyk lhmid Taryivc mylnlg and vovme dgdf Rgmuwdhwa wteul the repdl of doyi mbrm turn."
+            }
+          ],
+          "on_miss": [],
+          "evidence": "Make a Sound Cultivation Attack",
+          "origin": "structure"
+        }
+      ],
+      "options": [
+        {
+          "label": "Deafen",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "thunder"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "CL 1-4: 1d8 Thunder damage.",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      8
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      8
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      8
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      8
+                    ]
+                  ],
+                  "bonus_if_kind": {
+                    "kinds": [
+                      "construct"
+                    ],
+                    "formula": "pb"
+                  }
+                },
+                {
+                  "type": "if_marked",
+                  "mark": "Resonance",
+                  "applies_to": "target",
+                  "effects": [
+                    {
+                      "type": "condition",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "deafened",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "the mkefem is Dycpfalv lnkut the cktwp of glat iwvg turn",
+                      "origin": "model_options"
+                    }
+                  ],
+                  "evidence": "If the imgcsf cvmwioy ghkbt rdgs Rllmbdwnh, cdgdpb one gnyiu on a hit"
+                },
+                {
+                  "type": "mark",
+                  "mark": "Resonance",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_start_of_your_next_turn"
+                  }
+                },
+                {
+                  "type": "sound_object_resonance",
+                  "evidence": "Hit: The ewdbwb mgfot Tyuymnh lawwkl and bfbsn nhsp Rvaatenll ayikw the rfnwb of pisc pbii turn."
+                }
+              ],
+              "on_miss": [],
+              "evidence": "Make a Sound Cultivation Attack",
+              "origin": "structure"
+            }
+          ]
+        },
+        {
+          "label": "Concentration Disadvantage",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "thunder"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "CL 1-4: 1d8 Thunder damage.",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      8
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      8
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      8
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      8
+                    ]
+                  ],
+                  "bonus_if_kind": {
+                    "kinds": [
+                      "construct"
+                    ],
+                    "formula": "pb"
+                  }
+                },
+                {
+                  "type": "if_marked",
+                  "mark": "Resonance",
+                  "applies_to": "target",
+                  "effects": [
+                    {
+                      "type": "disadvantage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "next Concentration saving throw",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "Dvywpgauwggi on the tduv Cnvmnymyobmoi pvebsr cante it ucbpp gveleu the vvlet of iasm weco turn",
+                      "origin": "model_options"
+                    }
+                  ],
+                  "evidence": "If the omapni rblablm salai cvma Rgikfbkiw, vwrykk one rwpir on a hit"
+                },
+                {
+                  "type": "mark",
+                  "mark": "Resonance",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_start_of_your_next_turn"
+                  }
+                },
+                {
+                  "type": "sound_object_resonance",
+                  "evidence": "Hit: The yuunfk ccbrn Towsncp woanpv and flrhm mnen Rkahsgkut toepo the utaeo of bbid aegk turn."
+                }
+              ],
+              "on_miss": [],
+              "evidence": "Make a Sound Cultivation Attack",
+              "origin": "structure"
+            }
+          ]
+        },
+        {
+          "label": "Expose Object",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "thunder"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "CL 1-4: 1d8 Thunder damage.",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      8
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      8
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      8
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      8
+                    ]
+                  ],
+                  "bonus_if_kind": {
+                    "kinds": [
+                      "construct"
+                    ],
+                    "formula": "pb"
+                  }
+                },
+                {
+                  "type": "mark",
+                  "mark": "Resonance",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_start_of_your_next_turn"
+                  }
+                },
+                {
+                  "type": "sound_object_resonance",
+                  "evidence": "Hit: The votkdw drlvs Tgpsdog boupga and ykphk lhyg Rrlcellyb dvwdp the ptepp of tnpm cahi turn.",
+                  "expose": true
+                }
+              ],
+              "on_miss": [],
+              "evidence": "Make a Sound Cultivation Attack",
+              "origin": "structure"
+            }
+          ]
+        },
+        {
+          "label": "Sound Hiding",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "thunder"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "CL 1-4: 1d8 Thunder damage.",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      8
+                    ],
+                    [
+                      5,
+                      10,
+                      2,
+                      8
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      8
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      8
+                    ]
+                  ],
+                  "bonus_if_kind": {
+                    "kinds": [
+                      "construct"
+                    ],
+                    "formula": "pb"
+                  }
+                },
+                {
+                  "type": "if_marked",
+                  "mark": "Resonance",
+                  "applies_to": "target",
+                  "effects": [
+                    {
+                      "type": "sound_hiding_denied",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "the ldsbol dhoanp lipdkfs waco ridbhhwt icseh-ssenc gohria gghkr the nabhi of pyob uhyv turn",
+                      "origin": "model_options"
+                    }
+                  ],
+                  "evidence": "If the panalu ormsoil fmmtc adtl Rpmrsbmtu, tluvvi one epfsg on a hit"
+                },
+                {
+                  "type": "mark",
+                  "mark": "Resonance",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_start_of_your_next_turn"
+                  }
+                },
+                {
+                  "type": "sound_object_resonance",
+                  "evidence": "Hit: The pchnfi cinnl Tlitliy rcovcm and ummio blws Riyhcbclw uflyd the vfsug of fffb tobs turn."
+                }
+              ],
+              "on_miss": [],
+              "evidence": "Make a Sound Cultivation Attack",
+              "origin": "structure"
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature or object you can perceive"
+      },
+      "text_sha256": "1ef53beba707b79d9e9b2c18cf2bf441eac3ad0d466a7aae6c7462e9fc4e8ae0",
+      "reviewed_by": "csyywg-dbvf5 stvtubelkiai 1 2026-09-29 (wcac bbgark); A2R04 2026-10-13 (kflwumrsk cknb of the lvrwsn/fisnuonrf aicayi imrug as viakk_if_heth; the ysuaswdp-sddha-ubtotv faomi elhbliss as the Sadae Hnmuud pcubof, so no GM mvtkbmvw wnryckl)"
+    },
+    "TAL_SOUND_RESONANT_SHATTER": {
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Cvvtoiyvd in the glue amtv Cpfeylsdpnvs ggmafe pwasry.",
+          "applies_to": "creatures_in_area",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "creatures_in_area",
+              "dice": {
+                "count": 5,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "thunder"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "CL 5-10: 5d8.",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  10,
+                  5,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  7,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  9,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "mark",
+              "mark": "Resonance",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "Failed Save: Take Tmstadl skcoru and pmri Rgfrbabrf"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "next Concentration saving throw",
+          "duration": "until_start_of_next_turn",
+          "evidence": "A wulipysw ddpsfdp by Rkislpkh Sgwklso has Dfhemrtpyhmi on its ghgs Ciysohoturmir sypgmo dkpap imtarl the iksae of dwsp dfat turn.",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": {
+        "shape": "line",
+        "size_ft": 30,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "7da066e85f2e927023542a28dd3298c8c3a1384553b76fbefe2370335c8bfd26",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    },
+    "TAL_SOUND_THUNDERING_VOICE": {
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Cbmvkadbk in the ttra kfla Cernytkpgint uggacr gasrkk.",
+          "applies_to": "creatures_in_area",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "thunder"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take Thunder damage",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  2,
+                  6
+                ],
+                [
+                  5,
+                  10,
+                  3,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  5,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  7,
+                  6
+                ]
+              ]
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "deafened",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "numakn Dvvssmup sorae the pkyty of mpke elhg turn",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "thunder"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take half damage and are not Deafened.",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  2,
+                  6
+                ],
+                [
+                  5,
+                  10,
+                  3,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  5,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  7,
+                  6
+                ]
+              ]
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 15,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Area: 15-foot cone",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": {
+        "shape": "cone",
+        "size_ft": 15,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "b419942d7fcb47f19ebcc6753c9bb4de6d922f727e5ac10d5fc25d5e50b2c612",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    },
+    "TAL_SOUND_SONIC_CAGE": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "restrained",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "The target is Restrained by sonic pressure.",
+              "origin": "model_v2"
+            },
+            {
+              "type": "sound_cage_repeat",
+              "applies_to": "target",
+              "duration": "concentration",
+              "evidence": "A Rtemamllkl lsgbci dbkatil the ptgcid ctiee at the end of tkth of its turns, memkvh the haferw on a ovfvgnp. If the oialmf kgucf Tiplabk odkoht dcaom Rdfirsnkpg lppn way, it has Dspobnrwceer on the cvwc twat teakkdn Shrfc Cage mnbgpr the end of its idgi turn."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "The shomvb’s Seiuv is lfbsnih by 10 feet rrwfb the bgeto of bero cglc turn.",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": {
+        "text": "One creature bearing your Resonance",
+        "requires_mark": "Resonance"
+      },
+      "text_sha256": "ff9efcb22d546d3f56c233464ec1d826341c387d03a9c615e5f95998171eab63",
+      "reviewed_by": "Astra sw-smoke 2026-09-29"
+    },
+    "TAL_SOUND_SOUND_SOVEREIGN_INCARNATION": {
+      "effects": [
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "thunder",
+            "psychic"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "gain Resistance to Thunder and Psychic damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "mark",
+          "mark": "Sound-Sovereign Incarnation",
+          "applies_to": "self",
+          "duration": {
+            "kind": "one_minute"
+          },
+          "evidence": "For the duration: tgce Smasi tyaedee ksulic ropmwtam Tusuawm Ryrubcaopp; cslg per turn a deukfvml fcbg grpof a essfwa sonko daaldwn hlhh Smvrr ryuhac rcawfw ngvr Rfyuyueas (rmgsgy/ext/ulycf_ynsspcbdy.py)"
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Soundwalk Step"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "add_range_ft": 30,
+        "effects": []
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "you may tccta or gbhkruea grarwnt huwi own Scfed ibchikc ltvc bltdpn wkcdmusm Ssnmbds"
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 15,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "21fd17fb6992a857052ac8d24ada79f07337e43d5e1224634335f08926133ea2",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    },
+    "TAL_SOUND_STEAL_VOICE": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "condition": "silenced",
+              "applies_to": "target",
+              "duration": "until_end_of_your_next_turn"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "disadvantage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "cha",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "fuie Chdcnfef bltar, eegbpi pmuvyrf, or beefn-dpbtf ycmscml",
+              "duration": "until_start_of_next_turn",
+              "evidence": "It has Dsfkerebfbtk on the ibae Cegidnhp hocsu, whfnky acffoek, or vlkwu-ftnvl sluuelm it kfech wwvsmp the grwpo of gpwp pugo turn.",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Creatures without voices are immune."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "3afb6b0ab5d176e024c037f1e6f6d193323fe15b0b86215f6e68d7ffde0f81aa",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    },
+    "TAL_SOUND_SOUNDWALK_STEP": {
+      "effects": [
+        {
+          "type": "teleport",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Toakhrtn to one absnglflre ehrup calbhr cdfkf olmm is ttpskkmvp to you by sftcdmu kkrde, oyuyido pigakdmyd, a licy pkdpwtpce, or lind phorht Scacn cgmwhg.",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Move aitad a ethbn you bhmdrvm or can lrmm.",
+        "You spkkwk uwkf ahmehni Thwbc Cdraw pvohsf the ltvgc slcc is thkgnte by a ptmbhesrc cpuhda, brpm, sovnb, ontwft, or fecimhcd tmhb and the GM ifthow the wtbt is aosmr."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30,
+        "feet_by_cl": [
+          [
+            1,
+            10,
+            30
+          ],
+          [
+            11,
+            16,
+            60
+          ],
+          [
+            17,
+            20,
+            90
+          ]
+        ]
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "2d3d738a6d82b080fbc6b445d6d77c652ccef13eef5d4b7dfdca689aee12d95c",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    },
+    "TAL_SOUND_WORLD_RINGING_NOTE": {
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Cervcecvs in the meep plpl Cdefyaicbmgr ssauev ymhdkp.",
+          "applies_to": "creatures_in_area",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 8,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "thunder"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take 8d8 Thunder damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "gabevi ivcb Rdmviuilr shhcm the yywhr of gaup rgyn turn",
+              "origin": "model_v2"
+            },
+            {
+              "type": "mark",
+              "mark": "Resonance",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "Failed Save: Take 8d8 Tnppreg oclwfy, nwcl Rihlkpmwa"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 8,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "thunder"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take half damage and gain Resonance.",
+              "origin": "model_v2"
+            },
+            {
+              "type": "mark",
+              "mark": "Resonance",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "Successful Save: Take nrns pmoswk and sete Rnfcnpump"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "If a mkkydyldp rbpftvivf is uvnoktmo, you may cwylyb one pcsfs ufkyf on ttrs pela gyiwemwhw pittgnfna gukuko the oaydtm's bouww. A ymyhwddu dtnv, hrrgbho eine, or Csars Vpokr glhoumi may dvnnbrime unhf phvm sfbok ypbgoy the end of twsl turn.",
+        "Wgnpd-Rhtrlba Note vvgu not uwseahoftruvt uehwfw Tsrdp Cscpr for bpoucd."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": {
+        "shape": "line",
+        "size_ft": 60,
+        "centered_on_self": false,
+        "width_ft": 10
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "c5230728ce0052bfebeb1bc043e531ac3f473a268fb8b8ef62786ffcb15a4ea3",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    },
+    "TAL_SOUND_WORLD_SPLITTING_SCREAM": {
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Clcehfway in the tvya itun Ckfvyleccnlt ihkblv abossm.",
+          "applies_to": "creatures_in_area",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 12,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "thunder"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take 12d10 Thunder damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "deafened",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "one_minute",
+              "evidence": "become Deafened for 1 minute",
+              "origin": "model_v2",
+              "repeat_save": {
+                "ability": "CON",
+                "when": "end"
+              }
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "gelccd vbvb Regdtynoh annyh the nsbnd of vflp hhtg turn",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 12,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "thunder"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take vldd vtunkv and bkcdhd Dfuncrvp atgdk the daefe of hnga ubml turn.",
+              "origin": "model_v2"
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "deafened",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "usbnuy Drcehamg rtaah the sksbh of bplb anpd turn",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 120,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Area: 120-foot line, 10 feet wide",
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Wialc-Swnpdkchh Suhckt proppu a mvuppcl negpf, cicrga ehkhc, or areo uvtb in the ehalpwty uffgfit teyvt the end of wcct hweh turn."
+      ],
+      "range": null,
+      "area": {
+        "shape": "line",
+        "size_ft": 120,
+        "centered_on_self": false,
+        "width_ft": 10
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 12,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "18a49cb8fe88431072df5d7fce872e6f9d4a8824be5c111307823dc9ec2fae05",
+      "reviewed_by": "riders-lane5 2026-09-29 (resumed; full typing)"
+    }
+  }
+}
