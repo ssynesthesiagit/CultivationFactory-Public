@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The app style (Settings > Appearance) is applied before first paint, so the sheet never flashes the wrong look. -->
+  <link rel="stylesheet" href="/static/themes.css?v=ui1">
+  <script src="/static/appearance-boot.js?v=ui1"></script>
+  <link rel="stylesheet" href="/static/tabletop/newcomer.css?v=n4-1">
+  <!-- The shared hover card (owner 2026-10-03), the same one the map uses. Before sheet.css, so the looks win. -->
+  <link rel="stylesheet" href="/static/tabletop/hovercard.css?v=sol192">
+  <meta name="color-scheme" content="dark light">
+  <title>Character Sheet · Tianxia Character Foundry</title>
+  <link rel="stylesheet" href="/static/tabletop/sheet.css?v=rel6-2">
+  <script type="module" src="/static/tabletop/sheet.js?v=charlist1"></script>
+</head>
+<body>
+  <a class="skip-link" href="#tab-panels">Skip to actions</a>
+
+  <div class="sheet" id="sheet" aria-busy="true">
+    <header class="hdr frame">
+      <div class="portrait" id="portrait" role="button" tabindex="0" title="Drop a picture here, or click to change the token"
+           aria-label="Character token: drop a picture here, or press to change it"><span id="portrait-text">·</span>
+        <button type="button" class="portrait-gen" id="portrait-gen" title="Make a token with Anima Studio" aria-label="Make a token with Anima Studio">✨</button>
+      </div>
+      <div class="ident">
+        <h1 class="ident-name" id="char-name">Loading…</h1>
+        <button type="button" class="btn rename-btn" id="rename-btn" title="Rename this character at the table and in fights">✎ Rename</button>
+        <p class="ident-sub" id="char-sub"></p>
+        <p class="ident-meta" id="char-meta"></p>
+      </div>
+      <div class="hdr-tools">
+        <span class="link-pill" id="link-pill" data-state="waiting" role="status" aria-live="polite">
+          <span class="link-dot" aria-hidden="true"></span><span id="link-text">Looking for the table…</span>
+        </span>
+        <label class="theme-pick">
+          <span class="theme-pick-label">Style</span>
+          <select id="theme-select" aria-label="App style (also changes the Factory and the table)" title="App style: the same choice as Settings > Appearance in the Factory">
+            <option value="lacquer">Night Lacquer</option>
+            <option value="celestial">Celestial Court</option>
+            <option value="ember">Ember Forge</option>
+            <option value="classic">Classic light</option>
+          </select>
+        </label>
+        <button type="button" class="btn btn-accent" id="edit-buttons">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17.25V20h2.75L17.8 8.94l-2.75-2.75L4 17.25zm15.7-9.04a1 1 0 0 0 0-1.41l-2.5-2.5a1 1 0 0 0-1.41 0l-1.83 1.83 3.91 3.91 1.83-1.83z"/></svg>
+          Edit buttons
+        </button>
+      </div>
+    </header>
+
+    <div class="banner banner-turn" id="turn-banner" hidden>
+      <span class="banner-title" id="turn-title">Your turn</span>
+      <span class="economy" id="turn-economy"></span>
+      <span class="banner-pending" id="turn-pending" hidden></span>
+      <button type="button" class="btn btn-end-turn" id="end-turn" data-button-id="turn:end">End turn</button>
+    </div>
+    <div class="banner banner-offline" id="conn-banner" role="status" hidden>
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+      <span>Table not connected — combat buttons need an open fight. Checks, saves and skills still roll here.</span>
+    </div>
+
+    <nav class="quickbar" id="quickbar" aria-label="Pinned buttons" hidden></nav>
+
+    <section class="stats" id="stats" aria-label="Core statistics">
+      <div class="abilities" id="abilities"></div>
+      <div class="vitals" id="vitals"></div>
+    </section>
+
+    <main class="body" id="body">
+      <aside class="col col-left" aria-label="Saves, senses and conditions">
+        <section class="panel frame" aria-labelledby="h-saves">
+          <h2 class="panel-title" id="h-saves">Saving Throws</h2>
+          <div class="saves" id="saves"></div>
+        </section>
+        <section class="panel frame" aria-labelledby="h-senses">
+          <h2 class="panel-title" id="h-senses">Passive Senses</h2>
+          <div class="senses" id="senses"></div>
+        </section>
+        <section class="panel frame" aria-labelledby="h-defenses">
+          <h2 class="panel-title" id="h-defenses">Defenses &amp; Conditions</h2>
+          <div id="defenses"></div>
+        </section>
+        <section class="panel frame panel-log" aria-labelledby="h-log">
+          <h2 class="panel-title" id="h-log">Roll Log</h2>
+          <ol class="roll-log" id="roll-log" aria-live="polite"></ol>
+        </section>
+      </aside>
+
+      <section class="col col-mid panel frame" aria-labelledby="h-skills">
+        <h2 class="panel-title" id="h-skills">Skills</h2>
+        <div class="skills-head" aria-hidden="true"><span></span><span>Mod</span><span>Skill</span><span>Bonus</span></div>
+        <div class="skills" id="skills"></div>
+      </section>
+
+      <section class="col col-right panel frame tabs-panel" aria-label="Actions, features and custom buttons">
+        <div class="tabs" role="tablist" aria-label="Sheet sections" id="tablist">
+          <button type="button" role="tab" class="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="true" data-tab="actions">Actions</button>
+          <button type="button" role="tab" class="tab" id="tab-library" aria-controls="panel-library" aria-selected="false" tabindex="-1" data-tab="library">Abilities</button>
+          <button type="button" role="tab" class="tab" id="tab-features" aria-controls="panel-features" aria-selected="false" tabindex="-1" data-tab="features">Features</button>
+          <button type="button" role="tab" class="tab" id="tab-custom" aria-controls="panel-custom" aria-selected="false" tabindex="-1" data-tab="custom">Custom</button>
+          <button type="button" role="tab" class="tab" id="tab-items" aria-controls="panel-items" aria-selected="false" tabindex="-1" data-tab="items" title="What the character carries, and what it leaves behind for fights">Items</button>
+          <button type="button" role="tab" class="tab" id="tab-grow" aria-controls="panel-grow" aria-selected="false" tabindex="-1" data-tab="grow" title="Learn Spheres and talents, forge techniques">Grow</button>
+        </div>
+        <div class="tab-panels" id="tab-panels" tabindex="-1">
+          <div class="tab-panel" role="tabpanel" id="panel-actions" aria-labelledby="tab-actions">
+            <div class="filters" role="group" aria-label="Filter actions" id="action-filters"></div>
+            <div class="technique-line" id="technique-line"></div>
+            <div id="powering-panel"></div>
+            <div id="reactions-panel"></div>
+            <div id="companions-panel"></div>
+            <div id="action-list"></div>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="panel-library" aria-labelledby="tab-library" hidden>
+            <div class="lib-tools">
+              <input type="search" class="input lib-search" id="lib-search" placeholder="Search your spheres, talents, features, techniques…" aria-label="Search abilities">
+              <span class="lib-count muted" id="lib-count" aria-live="polite"></span>
+            </div>
+            <div class="filters" role="group" aria-label="Show a section" id="lib-groups"></div>
+            <div class="filters lib-status" role="group" aria-label="Show by how the table handles it" id="lib-status"></div>
+            <div id="lib-list"></div>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="panel-features" aria-labelledby="tab-features" hidden>
+            <div class="feature-tools">
+              <input type="search" class="input" id="feature-search" placeholder="Filter features…" aria-label="Filter features">
+              <span class="feature-legend"><span class="badge badge-auto">Auto</span> resolved by the rules engine <span class="badge badge-gm">Not yet</span> not automated yet (the fight skips it)</span>
+            </div>
+            <div id="feature-list"></div>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="panel-custom" aria-labelledby="tab-custom" hidden>
+            <div class="custom-tools">
+              <p class="muted">Combos run their steps in order on the table. Roll steps are rolled by the table too.</p>
+              <button type="button" class="btn btn-accent" id="new-combo">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                New combo
+              </button>
+            </div>
+            <div id="custom-list"></div>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="panel-items" aria-labelledby="tab-items" hidden>
+            <div id="items-root"></div>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="panel-grow" aria-labelledby="tab-grow" hidden>
+            <div id="grow-root"><p class="muted">Loading what this character can learn…</p></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <dialog class="editor frame" id="editor" aria-labelledby="editor-title">
+    <form method="dialog" class="editor-form" id="editor-form" novalidate>
+      <header class="editor-head">
+        <h2 id="editor-title">Edit buttons</h2>
+        <div class="editor-tabs" role="tablist" aria-label="Editor sections">
+          <button type="button" role="tab" class="tab" id="etab-combos" aria-selected="true" aria-controls="epanel-combos" data-etab="combos">Combos</button>
+          <button type="button" role="tab" class="tab" id="etab-layout" aria-selected="false" aria-controls="epanel-layout" tabindex="-1" data-etab="layout">Show, hide &amp; pin</button>
+        </div>
+        <button type="button" class="icon-btn" id="editor-close" aria-label="Close editor">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </header>
+
+      <div class="editor-body">
+        <section class="epanel epanel-combos" id="epanel-combos" role="tabpanel" aria-labelledby="etab-combos">
+          <div class="combo-index">
+            <div class="combo-index-list" id="combo-index" role="listbox" aria-label="Combos"></div>
+            <button type="button" class="btn" id="combo-add">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              New combo
+            </button>
+          </div>
+          <div class="combo-form" id="combo-form">
+            <div class="field-row">
+              <label class="field field-grow">
+                <span class="field-label">Name</span>
+                <input class="input" id="combo-name" maxlength="40" placeholder="e.g. Thunder Opening" autocomplete="off">
+              </label>
+              <button type="button" class="btn btn-danger" id="combo-delete">Delete combo</button>
+            </div>
+            <div class="field">
+              <span class="field-label" id="swatch-label">Colour</span>
+              <div class="swatches" id="swatches" role="radiogroup" aria-labelledby="swatch-label"></div>
+            </div>
+            <div class="field">
+              <span class="field-label">Steps <span class="muted" id="step-count"></span></span>
+              <ol class="steps" id="steps"></ol>
+            </div>
+            <div class="step-adders">
+              <div class="adder">
+                <span class="field-label">Add a sheet button</span>
+                <input type="search" class="input" id="step-search" placeholder="Search actions, attacks, skills…" aria-label="Search buttons to add as a step" autocomplete="off">
+                <div class="picker" id="step-picker" role="listbox" aria-label="Buttons"></div>
+              </div>
+              <div class="adder adder-dice">
+                <span class="field-label">Add a dice roll</span>
+                <label class="field"><span class="sr-only">Dice notation</span>
+                  <input class="input" id="dice-expr" placeholder="2d6+3" autocomplete="off" aria-describedby="dice-help"></label>
+                <label class="field"><span class="sr-only">Roll label</span>
+                  <input class="input" id="dice-label" placeholder="Label (optional)" maxlength="40" autocomplete="off"></label>
+                <button type="button" class="btn" id="dice-add">Add roll</button>
+                <p class="muted small" id="dice-help">Dice notation such as 1d20+5, 2d6+1d4-1, 1d20 adv.</p>
+              </div>
+            </div>
+          </div>
+          <div class="combo-empty muted" id="combo-empty" hidden>No combos yet. Choose <strong>New combo</strong> to chain actions and rolls into one button.</div>
+        </section>
+
+        <section class="epanel epanel-layout" id="epanel-layout" role="tabpanel" aria-labelledby="etab-layout" hidden>
+          <div class="layout-tools">
+            <input type="search" class="input" id="layout-search" placeholder="Search buttons…" aria-label="Search buttons" autocomplete="off">
+            <p class="muted small">Hidden buttons leave the Actions tab. Pinned buttons sit in the quick bar under the header.</p>
+          </div>
+          <table class="layout-table">
+            <thead><tr><th scope="col">Button</th><th scope="col">Group</th><th scope="col">Shown</th><th scope="col">Pinned</th></tr></thead>
+            <tbody id="layout-rows"></tbody>
+          </table>
+        </section>
+      </div>
+
+      <footer class="editor-foot">
+        <p class="editor-error" id="editor-error" role="alert"></p>
+        <button type="button" class="btn" id="editor-cancel">Cancel</button>
+        <button type="button" class="btn btn-accent" id="editor-save">Save</button>
+      </footer>
+    </form>
+  </dialog>
+</body>
+</html>
