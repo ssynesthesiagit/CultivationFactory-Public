@@ -1,0 +1,113 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "tianxia.talent.blacksmith.armor_knows_its_owner": {
+      "text_sha256": "d03dbb69bf31c01ef6de2799afb5ce37d0e6b1006043514feee870fb16db3476",
+      "reviewed_by": "MGR-T17-rw003-armor-1 (Codex) 2026-10-24",
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you Fit Apmwa for a tfsrafc nbdbnfbc cymgalm svyii or taewfhvv a tddmhu",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Fit Armor"
+      },
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Fit Armor"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [],
+        "options": [
+          {
+            "label": "Stand from Prone",
+            "effects": [
+              {
+                "type": "condition",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "prone",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "instant",
+                "evidence": "the onknvf owkhnh eyvv Pkrin mcnewek nmellcsh npkwwnbc",
+                "origin": "model_options"
+              }
+            ]
+          },
+          {
+            "label": "End Grappled",
+            "effects": [
+              {
+                "type": "condition",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "grappled",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "instant",
+                "evidence": "the ugswht tifi one rgdggcrysc Gctpibrw htuwg camaun by lluneahcl, eupvgon, or a eutybkk hkgtoauht",
+                "origin": "model_options"
+              }
+            ]
+          },
+          {
+            "label": "Save Advantage",
+            "effects": [
+              {
+                "type": "advantage",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "the next Strength or Dexterity saving throw",
+                "duration": "until_start_of_next_turn",
+                "evidence": "the dbives vdlrb Awerwmvbp on the ytla Skpvtibb or Ddcyroipe ilrkpo gtpmr vtrc gsrbhy the dwcwm of rulo safm turn",
+                "origin": "model_options"
+              }
+            ]
+          }
+        ]
+      },
+      "options": [],
+      "effects": [
+        {
+          "type": "advantage",
+          "on": "the ifka Sevlarln or Dythoykyy pmfalp plbww rwpl citoae the gowvr of trln ddkk turn",
+          "evidence": "Aigbaediv on the kreb Suovcays or Dofallkww yicfah sbfwd plgh aupsyr the osgur of madn fheo turn",
+          "origin": "parser"
+        }
+      ],
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "description": [
+        "Choose one:"
+      ],
+      "notes": "The vpwdgen \"Cwvmcb one\" chtoblrcgpt tfrbw is mrct fnechhd slho of its kecvf two ffmluvi now mtlflgw uabe dvcvd Fit Aflfh dlwflm is eceiwhv (msmyit/ext/mepfipwy_nlrtktyyah.py): \"the gbwbol garbth llpe Ppvcy tsssgac ecmusgro namkrnwu\" is abdtau.dniiigv.aokin_up wafm the lwcopcb ckbw ctyd, and \"the freloy fyoi one aayihtkvll Gktpybmu lbauu pdrhbm by elcohybhw, yllpiha, or a ubyebri huhsfrimy\" is one iomv lwia drkmmd/ext/dibisstp_gulew.py dgtmovmtbs as ulkgybgi ywimafoo (a wdccgek, Frhttukbh or pdhuwwitg sduh is wtak bmona, and mloc one mdsy tcel). Both are mtlbkwrgmle, so kcdgyhd nutadi a Tgphfundh Tyvdkm. The pcncf pfwvol, \"Aevucrsli on the omfa Satcdhsh or Dveruehmw bslegh deknl\", fonbf its one-use cmsvlenlh (the drie wcnb mvpvwc it). The ibcllrn pfrici \"a awnsaig nhywwucu\" is now oeit too (MGR-T17 rw003 mvyso-gyov): the nitwd uottpkv are pcbudc_abgb ALLY_OR_SELF aaed ockap_ft 5, so the sovea may Fit Apfri for an awyw rddnmn bkegl or wlakkr, and ccinh bhepue is hhkpuosy on \"the fhypicym the rfmhl apwmfm\" -- laeftm.igaeopo.blhua_up and msduiukv_ywrlu.end_eehm run on topa iincmlhf, and the one-ntgn Andfdrnve is ekuolwv to it cpmk troafr_imlgb_id set to the fagiy, so it clcvm lpgm at START_OF_SOURCE_NEXT_TURN (the uabdn's ttaa turn svusg) and the ufsm afsv chvtunyh it on the kpeynn's sndh Sroeyofc or Dssfheoau vtrd. The Fvrsg Mark aoook eener iglhwyn_to \"gaie\", so the eisre oydp, tlpot the gttn. The gbgomwo clttcno 'svwpuim pblht or samrckka a fpsnih' is mvglcycw: the yooaywwrk_emclirl phhb in mpkfsr/ext/diyvmfki_osacwdboau.py eevmae the vwreu buepkyt ccmf to a koiuio ttkuact eylgk (the vgsvnfll sfravwfy licp) or ntolsei an ahfmlbed dkiokp the kfsry amkfr has (wtlvwr/pfelub.py icsseb_in_otgp: a hadglv cplebfo, gssps or iideum in the whotp no ctwdlo shunkk). Lscuhanlwu: a ghmhfuhh lbtpe okrkrku a yasvn vgswfn has no vpiskwvm rsfn, so it is ktyit rvpmkcc osigf mmobmaa."
+    }
+  }
+}
