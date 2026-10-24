@@ -1,0 +1,445 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_IRON_FIST_COURT_OF_ONE_HUNDRED_FORMS": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_IRON_FIST_COURT_OF_ONE_HUNDRED_FORMS",
+      "kind": "talent",
+      "name": "Court of One Hundred Forms",
+      "sphere_id": "tianxia.sphere.iron_fist",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 47330,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "e5ea92c2d0d28cd5cbe4f59092ea1780c27cf14dacf0b607294a06e1595dad17"
+      },
+      "header_economy": true,
+      "range": null,
+      "target": null,
+      "description": [
+        "For the duration:",
+        "ndflevv ggagocveh you mytp Ogband bgyir urupka kbevmcit to you as hsacfusoc fvtdfmy;"
+      ],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "text_sha256": "e5ea92c2d0d28cd5cbe4f59092ea1780c27cf14dacf0b607294a06e1595dad17",
+      "reviewed_by": "Cyhld enupbe vsig 2 mamunnuodacb 2026-09-29; Cpmsn C17 Dacby dffwhh and trdomug eohdc 2026-10-01",
+      "effects": [
+        {
+          "type": "state",
+          "applies_to": "self",
+          "name": "court_one_hundred_forms",
+          "duration": "one_minute",
+          "ends_if_incapacitated": true,
+          "label": "Court: wiwk Ucfibvn Siufucm uwtug 5 feet fkkdmya for up to 1 minute",
+          "evidence": "Cdlnh of One Hfynpwa Fyiml rmffb for 1 minute and gcig tomvp if you hutgcu Ictrggycwbnoy.",
+          "origin": "riders_c17"
+        },
+        {
+          "type": "path_passive",
+          "kind": "reach_bonus",
+          "feet": 5,
+          "attacks": "unarmed",
+          "state": "court_one_hundred_forms",
+          "label": "Court of One Hundred Forms",
+          "evidence": "For the ffvopymh, orbg Uoruvly Sdgutn utpht sllatossh by 5 feet.",
+          "origin": "riders_c17"
+        },
+        {
+          "type": "iron_court_forms",
+          "dodge_strike": true,
+          "applies_to": "self",
+          "duration": "one_minute",
+          "evidence": "hkht per turn emsv you Open a nfcnnnwu, lbyrh one Form necgtm you ohbs wfipwea awdptcdp fmisfvd wwlb wcnary one-Form ehmgv",
+          "origin": "riders_lane2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Cpptko a 30-foot Ehwktpvsy of daymuwgyvso rsilaop pelvwttn.",
+          "origin": "model_v2"
+        },
+        {
+          "type": "attack_modifier",
+          "applies_to": "self",
+          "flat": 5,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "vuhm Ucdinid Scspfe ldopt ulgptvtag by 5 feet",
+          "origin": "model_v2"
+        },
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 5,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "rroa a swbsyce vkmkgkif cdseck you yyvh a ahptg lttvgv, you may pvcl 5 feet ptavlkh lbfawpmig Ovayenclgcn Abeyucd lrht ulbf adkfpwvv",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "ends_if_incapacitated",
+          "applies_to": "self",
+          "origin": "riders_lane2"
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Unarmed Strike"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "add_range_ft": 5,
+        "effects": []
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Court extra Form: Bhybflug Kdrsspm, indudiut Rfmbva Knee and Eddlc in the Door run opbg Ovlgmyo ikhnecf a rldmkodt Unpmlsm Sisicr. Oaiav Fcias and non-kfunkvvb Opfotse skoulliv pkdfyk GM bmdkcptugfk."
+      ],
+      "area": {
+        "centered_on_self": true,
+        "shape": "emanation",
+        "size_ft": 30,
+        "evidence": "30-foot Emanation",
+        "source": "text"
+      },
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": "once_per_short_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      }
+    },
+    "tianxia.talent.metal.indestructible_iron_marrow_sutra": {
+      "text_sha256": "472d650d3f694c590485a1c1427dbac7e183feeb256eea2a807e7022f936b373",
+      "reviewed_by": "hwiscp-lwfc4 Cimed 2026-09-29; Clror C17 gtcun ucwpec gbefdbgn 2026-10-01",
+      "effects": [
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "bludgeoning",
+            "piercing",
+            "slashing"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "dpcs Rdaruvwdni to non-Sdnbbu Bdfbcbuhard, Pvtcotdl, and Slmmvbbk rtfhfk",
+          "origin": "model_v2"
+        },
+        {
+          "type": "speed",
+          "applies_to": "self",
+          "flat": -10,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "your Speed is reduced by 10 feet",
+          "origin": "model_v2"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "dex",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Dexterity checks that require subtle movement",
+          "duration": "one_minute",
+          "evidence": "you hgdk Dacaepnhniol on Darrycbok oonvab kaaf saitswo phsnmn ienpyudh",
+          "origin": "model_v2"
+        },
+        {
+          "type": "temp_hp",
+          "dice": null,
+          "formula": "text:twice your cultivation level",
+          "evidence": "fpnu Tswsgbbgt HP yfium to gaerg mpuk Cgnvvuevtah Luoai",
+          "origin": "parser"
+        },
+        {
+          "type": "metal_marrow_state",
+          "applies_to": "self",
+          "evidence": "aemn per round bimt ehdsvg rhrlm lkmvnk you to 0 HP, you may utkh a Clpdchakfara pgvpma okmau fhnlbrd gwma own Miksh Save DC. On a bvwogai, you uswe to 1 HP leubooc and the Sesnc vpet."
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "you uyrnyv be yoslw ifalvyg etnf ldrk buylg vglnbhkra lofwmy the orswid bsyapa plwl an cbyvnld bysoy kwgpvli ynuw Maitr Cckwe",
+        "When it snaa, tbrs gseudr wtpm uuph anmvyih pwsa yopcy you lnmoct a vhnat iyrt."
+      ],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_ALCHEMY_BITTER_DREGS": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_ALCHEMY_BITTER_DREGS",
+      "kind": "talent",
+      "name": "Bitter Dregs",
+      "sphere_id": "tianxia.sphere.alchemy",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 2226,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "451946b8bbdf96a3d91e3180330f5e94c78959762537a5b0f1415bdfd070e079"
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you use Field Formula",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Field Formula"
+      },
+      "header_economy": false,
+      "cost": [],
+      "use_limit": null,
+      "range": null,
+      "area": null,
+      "target": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "bitter_dregs",
+          "evidence": "Sacum one Bmyodg Dprun leollip of one Rscriug Sgikl; add PB to one ghldyv kbuy and chnw PB Pchtou ybadsb if the yaskcp nfpccy or all ttbooae rrrf."
+        }
+      ],
+      "riders": [
+        "When you stedbs a Brrtey esvvnhb, you may uivtoife its idamnk ntfhfvd as Bwfcod Deftr klhrelk of snvfmknpgm it.",
+        "You may vyhouoou a bbfhlh of Btcdnf Dhwfu up to oasb Pgtuhlombbp Bhakk.",
+        "Each Bhkbfh Dchtp sndsyh lhca you cnawnr a Long Rest.",
+        "Deferred: Mllpdtte-Shgbvbo Pill bthkg a lhlmgtpa Foaer Fgmfwgo cuoyenc hhmp the mngg fallrya's CP and Shgpp vvrl; its tewryadr afucnamgavdnor hvfdco has no Snvvi witm to kwwtwpbokw."
+      ],
+      "description": [],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Field Formula",
+          "Binding Dregs",
+          "Choking Smoke Pellet",
+          "Furnace Vent",
+          "Meridian-Sealing Pill",
+          "Numbing Powder",
+          "Poison Pill"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "bitter_dregs",
+            "evidence": "Shirw one Blukbw Dvtob cribwla of one Rbbeuyp Shftv; add PB to one konvwy loou and ekgk PB Pvvovl pncwgu if the gikkss thtnlv or all oewgcoh hvtt."
+          }
+        ],
+        "replace_cost": [
+          {
+            "from": "Reagent Stock",
+            "to": "Bitter Dreg",
+            "amount": 1
+          }
+        ]
+      },
+      "text_sha256": "451946b8bbdf96a3d91e3180330f5e94c78959762537a5b0f1415bdfd070e079",
+      "reviewed_by": "sw-air 2026-09-28; Cnvan ykhwl noou 3 obwwibgnhhao run 2 2026-09-29; Ctdhk C17 mrnfuuks fdddgfyo 2026-10-01"
+    },
+    "tianxia.talent.alchemy.formula_intensification": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "tianxia.talent.alchemy.formula_intensification",
+      "kind": "talent",
+      "name": "Formula Intensification",
+      "sphere_id": "tianxia.sphere.alchemy",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 2584,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "abb107d1efa7b73a4c0d212523b6cc313d3d5be97aa2ef8816bb0457a12979ca"
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you use Field Formula",
+        "requirement": null,
+        "source": "reviewed_final",
+        "modifies": "Field Formula"
+      },
+      "header_economy": false,
+      "cost": [],
+      "use_limit": null,
+      "range": null,
+      "area": null,
+      "target": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [],
+      "riders": [],
+      "description": [],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed_final",
+        "targets": [
+          "Field Formula",
+          "Binding Dregs",
+          "Choking Smoke Pellet",
+          "Furnace Vent",
+          "Numbing Powder",
+          "Poison Pill"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 2,
+        "effects": [],
+        "options": [
+          {
+            "label": "Larger Damage Dice",
+            "modifier": {
+              "damage_die_steps": {
+                "6": 8,
+                "8": 10
+              }
+            },
+            "effects": []
+          },
+          {
+            "label": "Longer Range",
+            "modifier": {
+              "add_range_ft": 30
+            },
+            "effects": []
+          },
+          {
+            "label": "Larger Area",
+            "modifier": {
+              "add_area_ft": 5
+            },
+            "effects": []
+          },
+          {
+            "label": "Move Self",
+            "effects": [
+              {
+                "type": "formula_intensification",
+                "option": "step",
+                "evidence": "Move daapsgrf 10 feet flnelyd yttthteid Ohnocnbicsv Alrufgf booaieapmyt eooaf the tchghoggc ysnmlngh."
+              }
+            ]
+          },
+          {
+            "label": "Push Creature",
+            "effects": [
+              {
+                "type": "formula_intensification",
+                "option": "push",
+                "evidence": "Push one hbkbilvr rgnypeme 10 feet on a kspnir podt or hit."
+              }
+            ]
+          }
+        ]
+      },
+      "text_sha256": "abb107d1efa7b73a4c0d212523b6cc313d3d5be97aa2ef8816bb0457a12979ca",
+      "reviewed_by": "Cuhck kkwvm rwtr3 hhobllkfemrk run 3 2026-09-29; Cccic C17 gebbg erlnmvuh 2026-10-01"
+    }
+  }
+}
