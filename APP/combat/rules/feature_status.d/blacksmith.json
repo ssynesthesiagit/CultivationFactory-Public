@@ -1,0 +1,48 @@
+{
+  "features": {
+    "tianxia.talent.blacksmith.quench_in_breath": {
+      "status": "applied",
+      "why": "The earlier 'table' status said no hook existed for 'after I spend this specific resource'; combat/ext/__init__.py's mark_spent seam (added by the Charge worker, 2026-09-28) now reports exactly that. combat/ext/blacksmith_forge.py answers it: spending a Forge Mark reduces the next Fire, Cold, Lightning or Acid damage by the smith's Proficiency Bonus until the start of their next turn, and at CL 5+ the wearer or holder of the marked armour, shield or tool receives it instead. The printed 'if the workpiece is armor, a shield, or a tool prepared for heat' cannot be told apart on this table (the smith's Forge Marks stand for the workpiece itself), so the wearer or holder of the marked item is used whenever there is one."
+    },
+    "tianxia.talent.blacksmith.tempering_sequence": {
+      "status": "applied",
+      "why": "It compiled to nothing at all before (skipped passive, no action). combat/ext/blacksmith_forge.py builds one Action per printed sequence, offered only while three Forge Marks stand, spending all of them. Hardening grants the printed Temporary Temper (+1 AC and +1 to attack rolls, since the smith is the workpiece), Softening grants Advantage on the next check to repair, craft, modify or disarm it, Awakening grants Advantage on one roll, and the fourth printed choice is there too: Purifying Sequence spends the marks and states what the GM resolves, because the table keeps no state for an object's rust, rot, impurities or crafting complications. The Temporary Temper's printed 10 minutes and 'until the end of the next long rest' are shortened to the table's one-minute clock; see the AUTO17 report."
+    },
+    "tianxia.talent.blacksmith.field_repair": {
+      "status": "applied",
+      "why": "It was listed as 'outside' (a ritual) although its printed Action Type is a Reaction. combat/ext/blacksmith_forge.py builds the Reaction that places 1 Forge Mark on a creature's damaged equipment, plus the printed CL 5+ Close-the-Crack extension for 1 CP. The printed trigger ('damaged by an attack, hazard, or failed check') and Close the Crack's object Hit Points stay the GM's: this table keeps no damage state for an object."
+    },
+    "tianxia.talent.blacksmith.seven_hammer_revision": {
+      "status": "applied",
+      "why": "Its modifier reported 'no matching ability' and nothing ran. combat/ext/blacksmith_forge.py now spends 1 Forge Mark to reroll up to the smith's own Proficiency Bonus damage dice of a typed damage packet and use the new rolls (the general damage_dice_reroll seam), and adds the smith's Intelligence modifier to the same packet when the marked workpiece is one they personally forged or prepared today (a free setting, because the table keeps no record of who forged what). Only a printed 'weapon, tool, object, or construct attack' is revised; an unarmed strike or a technique's own damage is not. A basic Attack action's damage is rolled inside the sealed gate2 resolver, which a plug-in cannot reach: that one case is a lock-round item, listed in the AUTO17 report."
+    },
+    "tianxia.talent.blacksmith.forge_fitted_weapon": {
+      "status": "applied",
+      "why": "All four of its modifier rows reported 'no matching ability' and its 1-CP extension was a written gap. combat/ext/ironclad_blacksmith.py now builds Set Edge's priced one-minute upgrade and the four printed benefits as one chosen benefit of a Temporary Temper (a free setting, the shape Hammer Rebuke uses), applied by the attack_bonus / attack_damage_bonus / immunity_as_resistance / damage_dice_reroll seams. The reroll's die follows the same lock-round limit as Seven-Hammer Revision."
+    },
+    "tianxia.talent.blacksmith.forge_fitted_armor": {
+      "status": "applied",
+      "why": "All four of its modifier rows reported 'no matching ability', two of Fit Armor's three options were literal {\"type\": \"rider\"} effects that reduced nothing, and its own fourth choice ('Advantage on saving throws against being knocked Prone') was never built. combat/ext/ironclad_blacksmith.py now builds all four plus the priced one-minute upgrade, applied by the damage_reduction / forced_movement_reduction / save seams."
+    },
+    "tianxia.talent.blacksmith.armor_knows_its_owner": {
+      "status": "applied",
+      "why": "All three of its modifier rows reported 'no matching ability' because its printed target, Fit Armor, is built by a plug-in (combat/ext/ironclad_blacksmith.py), and the modifier pass runs before that. That module builds all three printed results as Fit Armor options and all three do what they say: 'Fit Armor: Stand from Prone' stands the wearer up for free (the recorded stand transition, no movement spent), 'Fit Armor: End a Grappled state' ends one ordinary physical grapple caused by equipment, terrain or a mundane restraint (a magical, Formation or spiritual hold stays), and 'Fit Armor: Advantage on the next Strength or Dexterity saving throw' grants Advantage on that one save until the start of the smith's next turn, on whichever creature the smith fitted. The printed 'for a willing creature' half is live as well: those three buttons offer an ally within 5 feet alongside the smith (target_kind ALLY_OR_SELF), the smith still pays the Forge Mark, and each result lands on the creature fitted; the four core Fit Armor buttons keep fitting the smith alone. The printed trigger 'wearing armor or carrying a shield' is enforced by the recipient_allowed hook in combat/ext/ironclad_blacksmith.py, which offers these three buttons to a creature only when its compiled carrying list holds worn armor or a shield. Limitation: a creature added without a typed bundle has no carrying list, so it is never offered them."
+    },
+    "tianxia.talent.blacksmith.edge_before_blood": {
+      "status": "applied",
+      "why": "Its modifier reported 'nothing typed to add'; the printed rule itself is applied by combat/ext/ironclad_blacksmith.py's resistance_ignored hook (the first hit with the weapon treats nonmagical Resistance to its damage type as normal damage). The printed 'Edge Before Blood does not affect magical resistance unless the GM approves the workpiece and materials' stays a GM call, which the hook's status text says."
+    },
+    "BLACKSMITH_BASE_HAMMER_THE_MARK": {
+      "status": "applied",
+      "why": "Its printed 'A workpiece cannot exceed your normal Forge Mark limit' now runs (combat/ext/blacksmith_forge.py: a workpiece holds at most your Proficiency Bonus Forge Marks from you), and the sphere's Forge Mark chassis prints 'a Forge Mark lasts for 1 minute during action scenes', which now expires too."
+    },
+    "tianxia.talent.blacksmith.two_beat_temper": {
+      "status": "applied",
+      "why": "Hammer the Mark asks whether to place two Forge Marks. The first scene use is free away from a workshop, later uses cost 1 CP, and declared workshop or Apprentice's Anvil access grants one free use each round. The selected holder cannot receive more marks from this smith until the start of their next turn. Choices, payment and locks are committed through the service journal and survive cold reload; AI does not invent workshop access."
+    },
+    "tianxia.talent.blacksmith.steady_hammer_breathing": {
+      "status": "applied",
+      "why": "Smith’s Tools proficiency and existing Expertise are read from explicit sealed skill ranks by blacksmith_second_pass. The optional once-short-rest Advantage uses a real roll prompt; bearer-specific Hammer movement remains incomplete."
+    }
+  }
+}
