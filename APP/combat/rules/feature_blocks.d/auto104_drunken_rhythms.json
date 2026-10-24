@@ -1,0 +1,24 @@
+{
+  "features": {
+    "tianxia.talent.drunken_style.laughing_feint": {
+      "block": "drunken_laughing_feint",
+      "kind": "laughing_feint",
+      "why": "Laughing Feint is a passive record with no modifier of its own, so the compiler skipped it and the fight recorded no ownership. Its printed choice is asked on the mark placement that made the creature Off-Rhythm (combat/ext/drunken_style.py)."
+    },
+    "TAL_DRUNKEN_STYLE_SLAPSTICK_ESCAPE": {
+      "block": "drunken_slapstick_escape",
+      "kind": "slapstick_escape",
+      "why": "Slapstick Escape changed no ability it could attach to ('no matching ability'), so its printed step ran nowhere. combat/ext/drunken_style.py offers the step on the melee miss instead."
+    },
+    "TAL_DRUNKEN_STYLE_STAGGERING_SHOVE": {
+      "block": "drunken_staggering_shove",
+      "kind": "staggering_shove",
+      "why": "Staggering Shove's typed modifier applied to every Unarmed Strike, Off-Rhythm or not. combat/ext/drunken_style.py scopes both printed halves to the Shove option against an Off-Rhythm creature."
+    },
+    "TAL_DRUNKEN_STYLE_LUCKY_LOOKING_MISS": {
+      "block": "drunken_lucky_looking_miss",
+      "kind": "lucky_looking_miss",
+      "why": "Lucky-Looking Miss's typed modifier granted the Advantage at once, before the False Opening's creature had attacked. combat/ext/drunken_style.py restores Martial Focus on the opening and grants the Advantage only after that creature misses."
+    }
+  }
+}
