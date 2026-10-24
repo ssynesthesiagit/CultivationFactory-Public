@@ -1,0 +1,250 @@
+{
+ "features": {
+  "foundation.heavenly_body_v0_2F.generate_heavenly_integrity": {
+   "block": "generate",
+   "resource": "foundation",
+   "on": [
+    "damaged"
+   ],
+   "max": 1,
+   "per_round": 1,
+   "expires": "end_of_next_turn",
+   "refresh": true,
+   "why": "Gain 1 Heavenly Integrity (max 1, once a round) after damage from a hostile attack or technique while you remain conscious; it fades at the end of your next turn and a second gain refreshes that clock instead of stacking (Foundation Catalog v0_4C, Heavenly Body). It is gained after the damage resolves, so it cannot pay for that damage: combat/pressure.py after_damage generates it."
+  },
+  "foundation.star_sovereign_core_imprint_v0_2B.generate_old_light": {
+   "block": "generate",
+   "resource": "foundation",
+   "on": [
+    "star_sovereign_scope"
+   ],
+   "max": 1,
+   "per_round": 1,
+   "expires": "end_of_next_turn",
+   "refresh": true,
+   "why": "Gain 1 Old Light (max 1, once a round, gone at the end of your next turn, refreshed rather than stacked) after you spend Path resource on a Fixed Star-Sovereign Scope technique, and create or refresh a Star Mark on a creature it involved. combat/ext/foundation_resources.py reads 'Fixed Scope' as a technique of one of the Foundation's affinity Spheres (Foundation_Runtime_Authority_v0_4C.json), a GM-judgment stand-in because no rule lists the Scope. Not automated: a point, omen or trace as the marked thing (a rider says so)."
+  },
+  "foundation.white_crane_cloud_step_v0_2B.generate_crane_breath": {
+   "block": "generate",
+   "resource": "foundation",
+   "on": [
+    "crane_moved",
+    "crane_missed",
+    "crane_saved"
+   ],
+   "max": 1,
+   "per_round": 1,
+   "expires": "end_of_next_turn",
+   "why": "Gain 1 Crane Breath (max 1, once a round, gone at the end of your next turn) after moving 15 or more feet on your turn without teleporting or forced movement (and not ending at Speed 0, Grappled, Restrained or Prone), after a hostile attack misses you after you moved on your last turn, or after a Dexterity save succeeds against Prone, Grappled, Restrained or forced movement. 'If you do not already have Crane Breath' -- so it never refreshes. combat/ext/foundation_resources.py. Not automated: a Dexterity/Acrobatics check to avoid falling (the engine rolls no such check)."
+  },
+  "foundation.glass_heart_meridian_v0_2A.generate_glass_reflection": {
+   "block": "generate",
+   "resource": "foundation",
+   "on": [
+    "glass_scope_spend",
+    "glass_reflection_save"
+   ],
+   "max": 1,
+   "per_round": 1,
+   "expires": "end_of_next_turn",
+   "refresh": true,
+   "why": "Gain 1 Glass Reflection (max 1, once a round, gone at the end of your next turn, refreshed rather than stacked) after a save resolves in your favor against a hostile charm, fear, illusion, gaze or beauty effect, or after you spend Path resource on a Fixed Glass Heart Scope technique (affinity Spheres, a GM-judgment reading). Not automated: checks against deception or emotional manipulation, and all the Glass Reflection spends (Shatter-Guard, Clear-Heart Rebuke, Transparent Witness, Refraction, Beauty Without Lie, Refracted Technique), which print no number."
+  },
+  "foundation.heavenly_body_v0_2F.integrity_rejection": {
+   "block": "save_rescue",
+   "resource": "foundation",
+   "abilities": [
+    "CON"
+   ],
+   "cost": 1,
+   "bonus": "pb",
+   "reaction": false,
+   "plus_if_owned": {
+    "feature": "foundation.heavenly_body_v0_2F.heaven_recognized_vessel",
+    "bonus": "pb"
+   },
+   "why": "Spend 1 pre-existing Heavenly Integrity after a Constitution save, before the outcome, for +PB (+PB more with Heaven-Recognized Vessel, once a round on the same spend; Heaven-Rejecting Marrow keeps the +PB and moves the timing to after the failure is declared, which is the engine's after-roll decision point). Not automated: a death save (no save_rescue hook there) and a non-Constitution save against an effect that would poison, sicken, exhaust, corrupt, seize, transform or internally disrupt the body."
+  },
+  "foundation.star_sovereign_core_imprint_v0_2B.sovereign_ray": {
+   "block": "foundation_spend",
+   "resource": "foundation",
+   "kind": "sovereign_ray",
+   "why": "After a Fixed Scope hit, or a failed save, against a Star-Marked target, spend 1 Old Light for +PB radiant, cold, force or psychic damage (combat/ext/foundation_resources.py: the first type the target does not resist)."
+  },
+  "foundation.star_sovereign_core_imprint_v0_2B.omen_witness": {
+   "block": "foundation_spend",
+   "resource": "foundation",
+   "kind": "omen_witness",
+   "why": "After a Fixed Scope save and before the outcome, spend 1 Old Light for +PB; the engine spends only when that turns a failure into a success. The check half is not automated: the engine rolls few skill checks."
+  },
+  "foundation.star_sovereign_core_imprint_v0_2B.omen_core": {
+   "block": "foundation_spend",
+   "resource": "foundation",
+   "kind": "omen_core",
+   "why": "Refined: when Omen Witness is spent on a Stars, Fate, Space, Hidden Eye or Dreams roll, add another PB (combat/ext/foundation_resources.py). Perception and long-distance-perception checks are not engine-rolled."
+  },
+  "foundation.heavenly_body_v0_2F.integrity_strike": {
+   "block": "foundation_spend",
+   "resource": "foundation",
+   "kind": "integrity_strike",
+   "why": "Spend 1 pre-existing Heavenly Integrity on a hit for +PB damage (combat/ext/foundation_resources.py after_hit)."
+  },
+  "foundation.heavenly_body_v0_2F.orthodox_answering_strike": {
+   "block": "foundation_spend",
+   "resource": "foundation",
+   "kind": "orthodox_answering_strike",
+   "why": "Refined: Integrity Strike deals +PB more when the target damaged you since the end of your last turn."
+  },
+  "foundation.heavenly_body_v0_2F.heaven_recognized_vessel": {
+   "block": "foundation_spend",
+   "resource": "foundation",
+   "kind": "heaven_recognized_vessel",
+   "why": "Perfected: once a round, +PB more on one Integrity Strike or Integrity Rejection spend. Not automated: the Integrity Guard and Jade-Gold Guard amounts (Guard has no after-roll hook in the typed reaction row)."
+  },
+  "foundation.white_crane_cloud_step_v0_2B.crane_wing_cut": {
+   "block": "foundation_spend",
+   "resource": "foundation",
+   "kind": "crane_wing_cut",
+   "why": "After moving 10 or more feet on your turn and hitting a hostile with a Foundation-aligned melee, thrown, Air, spear, sword or body-bound attack, spend 1 Crane Breath for +PB + your Path key modifier damage. The optional 5-foot follow-up move is a rider."
+  },
+  "foundation.white_crane_cloud_step_v0_2B.refined_wings_remember_ground": {
+   "block": "foundation_spend",
+   "resource": "foundation",
+   "kind": "wings_remember_ground",
+   "why": "Refined: when you spend Crane Breath on Crane-Wing Cut, add +PB to that spend. (Cloud-Step Deflection is not given the +PB; Light-Body Recovery is, in combat/ext/foundations4.py.)"
+  },
+  "foundation.heavenly_body_v0_2F.heaven_rejecting_marrow": {
+   "block": "foundation_spend",
+   "resource": "foundation",
+   "kind": "heaven_rejecting_marrow",
+   "why": "Refined: keeps Integrity Rejection's +PB and moves the spend to after the save is declared a failure. The engine's Rejection (a save_rescue row) already decides after the roll and before the outcome is applied -- the same moment -- so this feature adds nothing further."
+  },
+  "tianxia.talent.warleader.layered_orders": {
+   "block": "warleader_known",
+   "talent": "layered_orders",
+   "why": "Layered Orders: Set the Standard carries one secondary Standard (passive benefit only, no Momentum Marks or Command Responses). combat/ext/warleader.py asks the leader to pick it."
+  },
+  "tianxia.talent.warleader.ten_thousand_banners_doctrine": {
+   "block": "warleader_known",
+   "talent": "ten_thousand_banners_doctrine",
+   "why": "Ten Thousand Banners Doctrine: up to two secondary Standards, and Command Range 120 feet while holding Martial Focus. combat/ext/warleader.py."
+  },
+  "tianxia.talent.warleader.war_drum_cadence": {
+   "block": "warleader_known",
+   "talent": "war_drum_cadence",
+   "why": "War Drum Cadence: after a Shout, spend 1 Martial Focus for an echo at the start of your next turn (Temporary HP equal to PB, +10 feet Speed, or Advantage on the next save against Charmed or Frightened) for the allies that shape reaches. combat/ext/warleader_shouts.py."
+  },
+  "WARLEADER_BASE_COMMAND_RESPONSES": {
+   "block": "warleader_known",
+   "talent": "command_responses",
+   "why": "Command Responses: Step on My Count, Brace the Line and Strike on My Count (and the rerolls, Ordered Retreat's move and Legion Unending read who may answer). combat/ext/warleader_commands.py."
+  },
+  "tianxia.talent.warleader.master_s_presence": {
+   "block": "warleader_known",
+   "talent": "master_s_presence",
+   "why": "Master's Presence: a Commanded ally starting its turn within 5 feet gets Temporary HP, Advantage against Charmed/Frightened or its Frightened ended. combat/ext/warleader_commands.py."
+  },
+  "tianxia.talent.warleader.ordered_retreat": {
+   "block": "warleader_known",
+   "talent": "ordered_retreat",
+   "why": "Ordered Retreat: a Commanded ally Disengaging gives a Momentum Mark, and a Mark moves an adjacent Commanded ally 10 feet. combat/ext/warleader_commands.py."
+  },
+  "tianxia.talent.warleader.imperial_mandate_of_the_living_line": {
+   "block": "warleader_known",
+   "talent": "imperial_mandate_of_the_living_line",
+   "why": "Imperial Mandate: while the Court runs, Frightened immunity, a free Command Response on a failed save, longer Step and double Strike. combat/ext/warleader_commands.py."
+  },
+  "tianxia.talent.warleader.general_s_soul_standard": {
+   "block": "warleader_known",
+   "talent": "general_s_soul_standard",
+   "why": "General's Soul-Standard: at 0 Hit Points but not killed outright, spend 1 Martial Focus and every Momentum Mark and stay conscious until the end of your next turn. combat/ext/warleader_commands.py."
+  },
+  "tianxia.talent.warleader.reactive_position": {
+   "block": "warleader_known",
+   "talent": "reactive_position",
+   "why": "Reactive Position: two adjacent Commanded allies (the leader included) swap places for 1 Momentum Mark on an attack roll or forced movement, the swap provokes no Opportunity Attack, and the attack misses if its original target ends up out of reach or range. combat/ext/warleader_commands.py."
+  },
+  "tianxia.talent.warleader.battlefield_coordination": {
+   "block": "warleader_known",
+   "talent": "battlefield_coordination",
+   "why": "Battlefield Coordination: 1 Momentum Mark lets a Commanded ally ignore one named source of Disadvantage on that attack roll. combat/ext/warleader_commands.py."
+  },
+  "TAL_GUARDIAN_TAKE_THE_BLOW": {
+   "block": "damage_sharing",
+   "kind": "take_the_blow",
+   "range_ft": 30,
+   "rounding": "down",
+   "temp_hp": "pb",
+   "why": "Take the Blow: Reaction, an ally within 30 feet takes damage: you take half of it (rounded down) instead, keeping its type; your Resistance, Immunity and ordinary reductions apply; it cannot be transferred again; then you gain Temporary HP equal to your PB. combat/ext/damage_sharing.py (the generic ally_damaged row gave the Temporary HP without taking any damage)."
+  },
+  "tianxia.talent.karma.oath_of_mutual_defense": {
+   "block": "damage_sharing",
+   "kind": "mutual_defense",
+   "range_ft": 60,
+   "rite_cp": 3,
+   "why": "Oath of Mutual Defense: the 10-minute ritual (3 CP) binds up to PB willing creatures; once per round a bound creature within 60 feet of the one hit may use its Reaction to take half of the damage (rounded down). combat/ext/damage_sharing.py works the ritual at the fight's first turn (caster plus up to PB - 1 allies, nearest first). The Grace Imprint it allows is not automated (system C)."
+  },
+  "tianxia.tradition.spirit.mercy_flayer.feature.painless_martyr": {
+   "block": "damage_sharing",
+   "kind": "divide_the_blow",
+   "range_ft": 30,
+   "rounding": "down",
+   "floor": "pb",
+   "cost": [
+    {
+     "resource": "resonance",
+     "amount": 5
+    }
+   ],
+   "why": "Painless Martyr, Divide the Blow: 5 Resonance and a Reaction, an ally within 30 feet takes damage: you take half (rounded down) with its type kept, never reduced below PB unless the damage was already lower. combat/ext/damage_sharing.py. Carry the Failure, Catch the Wound and Martyr's Limit stay GM riders."
+  },
+  "tianxia.tradition.spirit.grief_eater.feature.shared_burden": {
+   "block": "damage_sharing",
+   "kind": "divide_the_pain",
+   "range_ft": 30,
+   "rounding": "up",
+   "unreduced": true,
+   "types": [
+    "PSYCHIC",
+    "NECROTIC",
+    "FORCE"
+   ],
+   "cost": [
+    {
+     "resource": "resonance",
+     "amount": 4
+    },
+    {
+     "resource": "sorrow burden",
+     "amount": 2
+    }
+   ],
+   "why": "Shared Burden, Divide the Pain: 4 Resonance or 2 Sorrow Burdens and a Reaction, an ally within 30 feet takes Psychic, Necrotic or Force damage: you take half (rounded up); your share cannot be reduced or redirected. combat/ext/damage_sharing.py. Carry the Echo, Hold the Door and Burden Scar stay GM riders."
+  },
+  "TAL_QIWEAVING_TURBULENT_BACKLASH": {
+   "block": "qi_turbulence",
+   "kind": "backlash",
+   "why": "When a hostile creature fails its save against your Turbulent Field, spend 1 CP: it takes PB + Key Ability modifier Force damage and has Disadvantage on its next Concentration saving throw before the start of its next turn. combat/ext/qi_instability.py (after_save)."
+  },
+  "TAL_QIWEAVING_QUIET_THE_FLAW": {
+   "block": "qi_turbulence",
+   "kind": "quiet",
+   "why": "Reaction and 1 CP: a willing creature inside your Turbulent Field has Advantage on its save against the Field (the printed fallback when there is no instability table). combat/ext/qi_instability.py (save)."
+  },
+  "TAL_QIWEAVING_FRIEND_IN_THE_STORM": {
+   "block": "qi_turbulence",
+   "kind": "friend",
+   "why": "When you create Turbulent Field, your nearest allies (up to your Key Ability modifier, minimum 1) are not affected by it. combat/ext/qi_instability.py (technique_used). Not automated: changing a chosen creature with a Bonus Action."
+  },
+  "TAL_KARMA_RECORD_THE_DEED": {
+   "block": "karma_ledger",
+   "kind": "record",
+   "why": "Record the Deed: a Reaction, 60 feet, once per round; you Witness a Cause (a creature you see, or one acting against you or your side) and place one Debt or Grace Imprint on it (up to PB Imprints per creature). combat/ext/karma_imprints.py records a hostile creature's damage or harmful condition against you or a teammate as Debt, and a teammate's healing or damage taken for another as Grace; oath-breaking, betrayal, theft, preventing damage and the like are GM-applied."
+  },
+  "tianxia.talent.karma.ledger_seal_scripture": {
+   "block": "karma_ledger",
+   "kind": "seal",
+   "why": "Ledger Seal Scripture: one more Imprint per creature; once per round, 1 CP places the Imprint without using your Reaction. combat/ext/karma_imprints.py (record)."
+  }
+ }
+}
