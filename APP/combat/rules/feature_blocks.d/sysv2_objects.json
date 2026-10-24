@@ -1,0 +1,181 @@
+{
+ "features": {
+  "TAL_AXES_WORK_AXE_EYE": {
+   "block": "object_damage",
+   "on": "attack",
+   "weapon": "axe",
+   "needs": ["unattended", "wooden"],
+   "add_pb": true,
+   "label": "Work-Axe Eye",
+   "why": "'When you deal damage to an unattended wooden object with an axe, add your Proficiency Bonus to the damage': the Attack an object action with an axe adds it (combat/ext/objects.py). The Advantage on checks to cut or break wooden objects and to read a structure's weak point are the GM's: no break check exists."
+  },
+  "TAL_AXES_GATE_SPLITTING_BLOW": {
+   "block": "object_damage",
+   "on": "attack",
+   "weapon": "axe",
+   "add_dice": {"count": 2, "sides": 8},
+   "reduce_threshold_pb": true,
+   "ways": [["cp", 1], ["stamina", 1], ["martial_focus", 1]],
+   "label": "Gate-Splitting Blow",
+   "why": "'Against an unattended object, door, barricade, wagon ... spend 1 CP, 1 Stamina, or expend Martial Focus before the attack roll; on hit add 2d8 slashing or bludgeoning damage; reduce the target's Damage Threshold by your Proficiency Bonus for this attack only': one Attack an object variant per way to pay it (combat/ext/objects.py); the 2d8 takes the axe's own damage type and the threshold cut applies to that attack's damage instance. The exclusions (Domains; Formations and Barriers unless the GM names a vulnerable anchor or panel) stay the GM's: map objects are never those."
+  },
+  "TAL_BERSERKER_GREAT_DESTROYER": {
+   "block": "object_damage",
+   "on": "attack",
+   "weapon": "melee",
+   "needs_focus": true,
+   "multiplier": 2,
+   "label": "Great Destroyer",
+   "covers": ["Great Destroyer: While holding Martial Focus"],
+   "why": "'While holding Martial Focus: deal double damage with melee weapon attacks against objects': Attack an object with a melee weapon deals double damage while Martial Focus is held, doubled once after the Damage Threshold, Immunity and Resistance (combat/ext/objects.py; Body Refining R8 order). The Advantage on checks made to break objects is the GM's: no break check exists."
+  },
+  "tianxia.talent.berserker.the_blow_heaven_refused_to_receive": {
+   "block": "object_damage",
+   "on": "direct",
+   "double": true,
+   "ignore_threshold": true,
+   "label": "The Blow Heaven Refused to Receive",
+   "covers": [
+    "ignore ordinary object Damage Thresholds",
+    "If the attack strikes an object, structure, or temporary Barrier, deal double total damage.",
+    "The Blow Heaven Refused to Receive does not automatically destroy: artifacts;",
+    "Formation cores;",
+    "Domains;",
+    "Secret Inheritances;",
+    "Realm-defining structures."
+   ],
+   "why": "'If the attack strikes an object, structure, or temporary Barrier, deal double total damage', with ordinary Damage Thresholds ignored: aimed at a map object or Barrier the attack resolves against its AC and deals double its own damage, ignoring the object's Damage Threshold (combat/ext/objects.py's direct row). The listed things it does not destroy are not map objects this table damages, so that line states the table's behaviour. The creature half of the ability (force damage, the Constitution save, its own Exertion talents, ignoring Resistance) is combat/ext/berserker.py."
+  },
+  "TAL_IRON_FIST_IRON_MERIDIAN_BODY": {
+   "block": "object_damage",
+   "on": "attack",
+   "weapon": "unarmed",
+   "needs": ["unattended"],
+   "add_pb": true,
+   "label": "Iron Meridian Body",
+   "why": "'When you use an Unarmed Strike to damage an unattended object, add your Proficiency Bonus to the damage': Attack an object with an Unarmed Strike adds it (combat/ext/objects.py). The rest of the talent (magical Unarmed Strikes, Force damage, incorporeal creatures) is compiled elsewhere."
+  },
+  "TAL_IRON_FIST_WORLD_TEMPERING_BODY": {
+   "block": "object_damage",
+   "on": "attack",
+   "weapon": "unarmed",
+   "needs_focus": true,
+   "ignore_threshold": true,
+   "label": "World-Tempering Body",
+   "why": "'While holding Martial Focus: your Unarmed Strikes can damage objects as though made with adamantine for the purpose of ignoring ordinary object Damage Thresholds': Attack an object with an Unarmed Strike ignores the object's Damage Threshold while Martial Focus is held (combat/ext/objects.py). The other benefits are compiled elsewhere."
+  },
+  "TAL_VOID_UNMAKE_BARRIER": {
+   "block": "object_damage",
+   "on": "direct",
+   "ignore_threshold": true,
+   "double_for": ["barrier"],
+   "label": "Unmake Barrier",
+   "why": "'Against a wall, structure section, Force object or summoned object: ranged Cultivation Attack; this damage ignores ordinary object Damage Thresholds and deals double damage to temporary supernatural Barriers': aimed at a map object it rolls the attack against the object's AC and deals its damage, ignoring the Damage Threshold (combat/ext/objects.py). Barriers are not map objects, so the double stays the Barrier system's; it does not ignore AC, HP or Immunity."
+  },
+  "TAL_VOID_HEAVEN_EMPTYING_LANCE": {
+   "block": "object_damage",
+   "on": "direct",
+   "ignore_threshold": true,
+   "double_for": ["barrier"],
+   "label": "Heaven-Emptying Lance",
+   "why": "'Against objects and Barriers, ignores ordinary object Damage Thresholds and deals double damage to temporary supernatural Barriers': aimed at a map object it rolls its Cultivation Attack against the object's AC and deals its damage, ignoring the Damage Threshold (combat/ext/objects.py). Barriers are not map objects, so the double stays the Barrier system's."
+  },
+  "RADIANCE_TAL_HEAVEN_OPENING_JUDGMENT": {
+   "block": "object_damage",
+   "on": "technique",
+   "double": true,
+   "double_for": ["structure", "unattended"],
+   "covers": ["Structures and unattended objects take double damage."],
+   "label": "Heaven-Opening Judgment",
+   "why": "'Structures and unattended objects take double damage': every such map object in the line takes the technique's damage roll, doubled once (an object makes no saving throw) (combat/ext/objects.py)."
+  },
+  "STARS_TAL_FALLING_STAR": {
+   "block": "object_damage",
+   "on": "technique",
+   "double": true,
+   "double_for": ["structure", "unattended"],
+   "covers": ["Structures and unattended objects take double damage."],
+   "label": "Falling Star",
+   "why": "'Structures and unattended objects take double damage': every such map object in the area takes the technique's damage roll, doubled once (combat/ext/objects.py)."
+  },
+  "STARS_TAL_HEAVEN_FALLING_STAR": {
+   "block": "object_damage",
+   "on": "technique",
+   "double": true,
+   "double_for": ["structure", "unattended"],
+   "covers": ["Structures and unattended objects take double damage."],
+   "label": "Heaven-Falling Star",
+   "why": "'Structures and unattended objects take double damage': every such map object in the area takes the technique's damage roll, doubled once (combat/ext/objects.py)."
+  },
+  "TAL_MAGMA_HEAVEN_FALLING_METEOR": {
+   "block": "object_damage",
+   "on": "technique",
+   "double": true,
+   "double_for": ["structure", "unattended", "cart"],
+   "label": "Heaven-Falling Meteor",
+   "why": "'Structures, unattended objects, vehicles, and temporary Barriers take double damage': every such map object (a cart is the vehicle) in the area takes the technique's damage roll, doubled once (combat/ext/objects.py). Barriers are not map objects."
+  },
+  "TAL_SOUND_WORLD_SPLITTING_SCREAM": {
+   "block": "object_damage",
+   "on": "technique",
+   "double": true,
+   "label": "World-Splitting Scream",
+   "why": "'Objects and ordinary barriers inside take double damage': every map object in the line takes the technique's damage roll, doubled once (combat/ext/objects.py). Barriers are not map objects."
+  },
+  "TAL_SOUND_MOUNTAIN_CRACKING_BELL": {
+   "block": "object_damage",
+   "on": "technique",
+   "double": true,
+   "label": "Mountain-Cracking Bell",
+   "why": "'Objects, structures, barriers, constructs, and brittle terrain inside take double damage': every map object in the area takes the technique's damage roll, doubled once (combat/ext/objects.py). Barriers and constructs are not map objects."
+  },
+  "TAL_SOUND_RESONANT_SHATTER": {
+   "block": "object_damage",
+   "on": "technique",
+   "extra_die": true,
+   "extra_die_for": ["unattended", "structure"],
+   "label": "Resonant Shatter",
+   "why": "'Objects, constructs, barriers, brittle structures, and Formation anchors inside take the same damage. Add one additional damage die against unattended objects and ordinary structures': every map object in the line takes the technique's damage roll plus one more die of it (combat/ext/objects.py). The rest (constructs, barriers, anchors) are not map objects."
+  },
+  "TAL_SOUND_WORLD_RINGING_NOTE": {
+   "block": "object_damage",
+   "on": "technique",
+   "label": "World-Ringing Note",
+   "why": "'Objects, barriers, constructs, and brittle structures take full damage': every map object in the line takes the technique's damage roll in full, with no saving throw to halve it (combat/ext/objects.py). Barriers and constructs are not map objects."
+  },
+  "TAL_SPEAR_WORLD_TRANSFIXING_POINT": {
+   "block": "object_damage",
+   "on": "technique",
+   "double": true,
+   "label": "World-Transfixing Point",
+   "why": "'Objects and temporary Barriers inside take double damage': every map object in the line takes the technique's damage roll, doubled once (combat/ext/objects.py). It does not destroy artifacts, Formation cores, Domains or Realm-defining structures: none is a map object."
+  },
+  "TAL_BERSERKER_WORLD_BREAKING_RAMPAGE": {
+   "block": "object_damage",
+   "on": "technique",
+   "double": true,
+   "double_for": ["unattended"],
+   "label": "World-Breaking Rampage",
+   "covers": [
+    "World-Breaking Rampage does not automatically destroy: artifacts;",
+    "Formation cores;",
+    "Domains;",
+    "Realm-defining structures."
+   ],
+   "why": "'Unattended objects and temporary Barriers take double damage': every unattended map object in the line takes the technique's damage roll, doubled once (combat/ext/objects.py). Barriers are not map objects."
+  },
+  "TAL_FORCE_HEAVEN_CRUSHING_PALM": {
+   "block": "object_damage",
+   "on": "technique",
+   "double": true,
+   "label": "Heaven-Crushing Palm",
+   "why": "'Objects, structures, and Barriers take double damage': every map object in the area takes the technique's damage roll, doubled once (combat/ext/objects.py). Damage Thresholds apply as printed; a major structure, artifact barrier or city wall is the GM's."
+  },
+  "TAL_WATER_HEAVEN_FALLING_TSUNAMI": {
+   "block": "object_damage",
+   "on": "technique",
+   "label": "Heaven-Falling Tsunami",
+   "why": "'Objects and unattended structures in the area take the damage': every map object in the line takes the technique's damage roll in full (combat/ext/objects.py). The Scouring Erosion it may cause is the GM's."
+  }
+ }
+}
