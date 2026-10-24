@@ -1,0 +1,29 @@
+{
+ "schema": "TianxiaFoundry.FeatureStatus.v1",
+ "features": {
+  "TAL_THE_HIDDEN_EYE_UNCANNY_STALKER": {
+   "status": "applied",
+   "why": "Reviewed lane14 rows gate the Bonus Action Analyze on Stalker concealment and Martial Focus. With Rapid Analysis, a dynamic optional Reaction Analyze runs before attacking or when a creature enters Analyze range; it pays Reaction and Focus and observes the target attempt limit. Outside-combat time reductions remain campaign rules."
+  },
+  "TAL_THE_HIDDEN_EYE_EXPEDITED_CUNNING": {
+   "status": "table",
+   "why": "Advantage on Initiative rolls while hidden: this table rolls initiative once at fight setup (Gate2Engine._roll, using a precomputed initiative_bonus) with no plug-in hook and before any Hidden condition could exist, and gate2_engine.py is off-limits to this task. The Normal-pace-Stealth-check clause is about overland travel pace, which is resolved between scenes, not inside a fight this table runs."
+  },
+  "TAL_THE_HIDDEN_EYE_DISCERN_ILLUSIONS": {
+   "status": "applied",
+   "why": "Reviewed lane14 rows apply Advantage to Illusion-tagged saves and source-owned Intelligence (Investigation) skill_check effects while focused, and offer a Bonus Action Focus expenditure to share both benefits with chosen allies for key-modifier rounds. Checks lacking originating Illusion-effect provenance and a standalone Study/disbelief action remain GM riders."
+  },
+  "TAL_THE_HIDDEN_EYE_COOPERATIVE_PERCEPTION": {
+   "status": "applied",
+   "why": "Reviewed lane14 rows capture a triggering Perception check, offer up to PB allies within 60 feet, pay Focus and retain the result for one hour. Qualified passive observations in Assassinate and Sneaky Trapper substitute that result only when both cultivators can perceive the observed creature. Unrepresented object/environment observations remain GM-qualified."
+  },
+  "TAL_THE_HIDDEN_EYE_ADVISORY_RESEARCHER": {
+   "status": "table",
+   "why": "Cooperative Perception now has a qualified runtime observation surface. Sharing exactly one chosen Research talent still needs a target-scoped temporary talent grant spanning passive rows and executable actions without marking the ally as generally Analyzed; that contract is not provided by existing hooks."
+  },
+  "TAL_THE_HIDDEN_EYE_ASSAULT_ANALYSIS": {
+   "status": "applied",
+   "why": "The compiler preserves the actual weapon ability component and properties. Reviewed lane14 attack and damage hooks replace only that component against a creature Analyzed by the attacker, preserving proficiency, refinement and offhand damage rules; the repeated talent expands eligible weapons."
+  }
+ }
+}
