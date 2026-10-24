@@ -1,0 +1,134 @@
+{
+ "features": {
+  "TAL_DARK_DARK_SLAUGHTER": {
+   "block": "dark_slaughter",
+   "dice_by_cl": [
+    [
+     1,
+     4,
+     1,
+     6
+    ],
+    [
+     5,
+     10,
+     1,
+     8
+    ],
+    [
+     11,
+     16,
+     1,
+     10
+    ],
+    [
+     17,
+     20,
+     1,
+     12
+    ]
+   ],
+   "why": "Dark Slaughter (Meld): while it stands inside its own Darkness, +1d6/1d8/1d10/1d12 by CL when it hits with Advantage or hits a creature that can't see it; doubled on a critical hit (combat/ext/tabik_dark.py)."
+  },
+  "TAL_SCOUNDREL_TWIST_THE_KNIFE": {
+   "block": "scoundrel_talent",
+   "kind": "twist",
+   "why": "Once per turn, a successful Dirty Trick or Steal against a creature within reach adds one melee weapon attack or Unarmed Strike against it (combat/ext/tabik_scoundrel.py)."
+  },
+  "TAL_SCOUNDREL_FOCUSING_THIEVERY": {
+   "block": "scoundrel_talent",
+   "kind": "focus",
+   "why": "After a successful Dirty Trick or Steal, the Bonus Action \"Focusing Thievery: regain Martial Focus\" is offered that turn."
+  },
+  "TAL_SCOUNDREL_CUT_AND_RUN": {
+   "block": "scoundrel_talent",
+   "kind": "cut_and_run",
+   "why": "While holding Martial Focus, a successful Dirty Trick or Steal made with its Action gives half its Speed of movement, and the target makes no Opportunity Attack on it that turn."
+  },
+  "TAL_SCOUNDREL_FILTHY_DISTRACTION": {
+   "block": "scoundrel_talent",
+   "kind": "filthy",
+   "why": "A successful Dirty Trick against a creature that could not see it: a real Disadvantage on Wisdom (Perception) checks and -5 Passive Perception until the end of that creature's next turn (combat/ext/scoundrel_riders.py filthy_distraction, filed as a condition and read by the table's own Perception and Passive Perception readers)."
+  },
+  "TAL_UNMAKING_BLACK_VEIN_PALM": {
+   "block": "unmaking",
+   "kind": "black_vein_palm",
+   "why": "A Ruin Channel charged hit with an unarmed strike (an Internal Channel) adds 1d8; on a hit, the chosen rider (Black-Vein Palm: No Reactions / No Healing / Constitution Save Disadvantage, a free choice kept until changed); then 1 Black Vein Strain (combat/unmaking.py)."
+  },
+  "TAL_UNMAKING_DEVOURING_DREGS": {
+   "block": "unmaking",
+   "kind": "devouring_dregs",
+   "why": "An Overdraw (or Execution Through the Fault) that reduces the target to 0 HP removes 1 Black Vein Strain; removing a Crack from the Channel instead is the GM's."
+  },
+  "TAL_FLOWING_RIVER_HAND_ON_THE_WRIST": {
+   "block": "flowing_river",
+   "kind": "response",
+   "why": "Response talent: when Flowing Response succeeds, the triggering creature cannot take Reactions until the start of its next turn (combat/ext/flowing_river.py)."
+  },
+  "TAL_FLOWING_RIVER_RIVER_TAKES_THE_SPEAR": {
+   "block": "flowing_river",
+   "kind": "response",
+   "why": "Response talent: against a melee weapon attack, a Strength save; no Opportunity Attacks with that weapon until the start of its next turn, and on a failure its next attack with that weapon has Disadvantage."
+  },
+  "TAL_FLOWING_RIVER_BEND_THE_BLADE": {
+   "block": "flowing_river",
+   "kind": "response",
+   "why": "Response talent: expend Martial Focus and resolve the same attack roll against another creature within the attacker's reach; a hit has the attack's ordinary hit effects."
+  },
+  "TAL_FLOWING_RIVER_RETURN_THE_MOUNTAIN_TO_THE_MOUNTAIN": {
+   "block": "flowing_river",
+   "kind": "response",
+   "why": "Response talent (prereq Bend the Blade): expend Martial Focus and resolve the same attack roll against a creature within 30 feet of you that the attack could physically reach along a clear path; a hit has the attack's ordinary hit effects, a miss deals Bludgeoning damage equal to your Proficiency Bonus (combat/ext/flowing_river.py)."
+  },
+  "TAL_FLOWING_RIVER_EMPTY_STEP": {
+   "block": "flowing_river",
+   "kind": "response",
+   "why": "Response talent: Flowing Response's step becomes 10 feet. (The Dodge clause, no Opportunity Attacks from any creature that missed, is the GM's.)"
+  },
+  "TAL_FLOWING_RIVER_EMPTY_BANK_EVASION": {
+   "block": "flowing_river",
+   "kind": "empty_bank_evasion",
+   "why": "On a Dexterity save against a damaging effect it can see, expend Martial Focus: no damage on a success, half on a failure; the 10-foot move after a success is the GM's."
+  },
+  "TAL_FLOWING_RIVER_REED_IN_STORM": {
+   "block": "flowing_river",
+   "kind": "reed_in_storm",
+   "why": "A melee miss against it while it benefits from the Dodge action regains Martial Focus (if absent)."
+  },
+  "tianxia.path.qi_cultivation.feature.golden_core_form": {
+   "block": "qi_path",
+   "kind": "golden_core",
+   "why": "Golden Core Form: the Form is a free choice at the start of a fight (Stable when none is chosen); Stable's Qi recovery, Circulating's Temporary HP after spending Qi, Reservoir's once-per-fight Bonus Action (combat/ext/qi_path.py)."
+  },
+  "tianxia.path.qi_cultivation.feature.domain_armament": {
+   "block": "qi_path",
+   "kind": "domain_armament",
+   "why": "Domain Armament: Manifest (Bonus Action, 1 Qi), Domain Armament Attack in Assault Mode (a creature within 35 feet), Guard Mode's +2 AC against ranged attacks (combat/ext/qi_path.py)."
+  },
+  "tianxia.subpath.qi.ninpo_adept.feature.hidden_strike": {
+   "block": "ninpo",
+   "kind": "hidden_strike",
+   "why": "Once per creature turn on a qualifying unseen hit or after Shadow Step: +2d6 (CL17 3d6) of the triggering damage type. Choose after damage: move 5 feet without provoking, deny Reactions until your next turn, Advantage on your next Stealth check this turn, push or pull 5 feet, or Smoke Mark until your next turn. No action or resource cost; manual owners choose, AI uses its preference (combat/ext/tabik_ninpo.py)."
+  },
+  "tianxia.subpath.body.shinobi.feature.pressure_point_strike": {
+   "block": "ninpo",
+   "kind": "pressure_point",
+   "why": "Once per turn on an unarmed-strike hit, 1 Stamina: a Constitution save; on a failure the chosen effect (\"Pressure-Point Strike: <choice>\", No Reactions by default, or off), on a success no Reactions until the start of its next turn (combat/ext/tabik_ninpo.py)."
+  },
+  "foundation.ancient_desolate_sacred_body_v0_2C.saint_body_rebuke": {
+   "block": "sacred_body",
+   "kind": "rebuke",
+   "why": "After an unarmed or melee weapon hit within 5 feet, 1 Golden Sea Pulse: + PB + CON modifier damage, then the chosen rider (\"Saint-Body Rebuke: <rider>\"; No Reactions by default, or off) (combat/ext/foundation_sacred_body.py)."
+  },
+  "tianxia.path.qi_cultivation.feature.golden_core_efficiency": {
+   "block": "qi_path",
+   "kind": "golden_core_efficiency",
+   "why": "Once per turn, a Qi-powered ability costing 2 Qi or more refunds 1 Qi as it resolves (combat/ext/qi_path.py)."
+  },
+  "tianxia.path.qi_cultivation.feature.domain_armament_link": {
+   "block": "qi_path",
+   "kind": "domain_armament_link",
+   "why": "Domain Armament Link: the Domain Armament Attack reaches a creature within 65 feet (control range 60, movement 30) at CL13 damage (combat/ext/qi_path.py); Remote Technique Origin is a GM line."
+  }
+ }
+}
