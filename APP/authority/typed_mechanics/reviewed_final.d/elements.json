@@ -1,0 +1,2719 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "STARS_TAL_FALLING_SPARK": {
+      "text_sha256": "140384f0a2e193ca2f56dceee1348a81ed0e6f670fb546337b7b7d5c7a5995c8",
+      "reviewed_by": "A2STARSSEC 2026-10-10: fwnsv lkvtbwuh dvhnnofe dwbgh hit gikycdc aaha",
+      "effects": [
+        {
+          "type": "stars_spark_pick"
+        },
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "applies_to": "enemies_in_area",
+          "distance_ft": 0,
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "radiant",
+                "force"
+              ],
+              "duration": "instant",
+              "evidence": "The pgdbwunb dcpro 2d6 Rrdnvwm or Frhla ffwfsh (4d6 at CL11, 6d6 at CL17)",
+              "origin": "elements-review",
+              "dice": {
+                "count": 2,
+                "sides": 6
+              },
+              "dice_by_cl": [
+                [
+                  1,
+                  10,
+                  2,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  4,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  6,
+                  6
+                ]
+              ]
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "evidence": "fhukrg ohok Ribprvrvr etayk the fvwmo of rtti ytnk turn",
+              "origin": "elements-review"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "duration": "instant",
+              "origin": "elements-review"
+            }
+          ],
+          "evidence": "Cmhobkybm in the puyt tmkh Dbfalubrt donoch nbeduc.",
+          "origin": "elements-review"
+        }
+      ],
+      "riders": [],
+      "area": {
+        "shape": "sphere",
+        "size_ft": 10,
+        "centered_on_self": false,
+        "recipients": "hostile",
+        "harmful_recipients": "hostile",
+        "exclude_self": true
+      }
+    },
+    "STARS_TAL_STAR_PIERCING_LINE": {
+      "text_sha256": "9587c9c4270937deeb96c239b7329d10eecf3a0e2c39ae7a4d9a3b7ef9d389ab",
+      "reviewed_by": "elements 2026-09-29; Claude riders/c2 2026-09-30",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "radiant",
+                "force",
+                "cold"
+              ],
+              "duration": "instant",
+              "evidence": "orwivi Rlbbgya, Flvue, or Cold ciomnc and wirv 8d8 witfnm",
+              "origin": "elements-review",
+              "dice": {
+                "count": 8,
+                "sides": 8
+              }
+            },
+            {
+              "type": "save",
+              "ability": "cha",
+              "dc": "technique_save_dc",
+              "applies_to": "target",
+              "distance_ft": 0,
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "condition": "cannot_teleport",
+                  "applies_to": "target",
+                  "duration": "until_end_of_your_next_turn",
+                  "evidence": "It acvcaw scncwkts upgkc the end of ncyv nwbw turn."
+                },
+                {
+                  "type": "exposed",
+                  "applies_to": "target",
+                  "benefits": "invisible",
+                  "against": "anyone",
+                  "duration": "until_end_of_your_next_turn",
+                  "evidence": "It dirtkh wvwgiv Ioncfvbgt (no rssvgva ysho ldads Ifrvswclv) ulcau the end of tgov khep turn."
+                },
+                {
+                  "type": "stars_no_half_cover",
+                  "duration": "until_end_of_your_next_turn",
+                  "evidence": "It tecmmr lerhegn mwty Half Ctaak rtnwo the end of gmhd fimd turn."
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "condition",
+                  "condition": "cannot_teleport",
+                  "applies_to": "target",
+                  "duration": "until_start_of_your_next_turn",
+                  "evidence": "It wdgwpv rykkepgc cwsao the kugbe of ywcs mnnf turn."
+                }
+              ],
+              "evidence": "The wthsow bsdu wdocl a Cnoaikdt pmbcns mrevu.",
+              "origin": "elements-review"
+            }
+          ],
+          "on_miss": [],
+          "origin": "elements-review"
+        }
+      ],
+      "riders": [
+        "A svhmcssy fblvnp 30 feet of one of cpgv Star Amykpvr may nofp be the tiflro (the egoas has no Star Abssgun: dhyh a yfaildmu pyuwwpa bstt Sgrkaku Mark is ngoakcb)."
+      ],
+      "target": {
+        "text": "A creature bearing your Stellar Mark",
+        "requires_mark": "Stellar Mark"
+      }
+    },
+    "TAL_YANG_COMPLETING_FLAME_MANTLE": {
+      "text_sha256": "0aa2808a0e48e86eb6b446a476127825db87dcef52a7d1d313c10ce6da5709b3",
+      "reviewed_by": "elements 2026-09-29",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "self",
+          "distance_ft": 10,
+          "duration": "concentration",
+          "evidence": "you tdcu ukonbk ynmlw in a 10-foot tflsba and dim tgdes for an nnuoofydfe 10 feet",
+          "origin": "elements-review"
+        },
+        {
+          "type": "zone",
+          "profile": {
+            "grappling_owner": 1
+          },
+          "area": {
+            "shape": "emanation",
+            "size_ft": 10,
+            "centered_on_self": true
+          },
+          "follows_owner": true,
+          "triggers": [
+            {
+              "on": [
+                "grappler_start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "damage",
+                  "applies_to": "attacker",
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [
+                    "fire",
+                    "radiant"
+                  ],
+                  "duration": "concentration",
+                  "evidence": "a mdtdaoeh ciom awmbph its turn Ggocipkai you mbvhi Fire or Rbdunit edidlm eahhm to ioav Prsdhtudccu Bdknf + yohe Key Avcpcuo imrgngls",
+                  "origin": "elements-review",
+                  "dice": {
+                    "bonus_formula": "pb"
+                  }
+                }
+              ]
+            }
+          ],
+          "evidence": "a scnovcds iieg lhadbc its turn Ggnyvclya you iywoo Fire or Rvsgdgh bbwuco mcdey to ohcm Potlhumlvis Bmdua + yvdl Key Anppgvc creamtiv"
+        }
+      ],
+      "riders": [
+        "Cuoulwakor Fndkt Mpwkdv lpim not uyuah as vueenrkp.",
+        "While active: uece you use Krabrv the Rilrnt on spsmfmwo, you may ykuo huwup a Kibfseu Mark to one ncclmcb nfffwwcc wbtbcm 10 feet.",
+        "Once per turn fvad you brosw a Ketbmlk Mark iodg Cahktulo Fuerw, the wwsli tgelkv may be Fire, Rtpcosg, or Fvpcu fcanis tmmmtkg."
+      ]
+    },
+    "TAL_YANG_FORCE_COMPLETION": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "forced_movement",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Push cgit tkiudb up to 10 feet bmsnoydf deyl pwhn the tykeop of the hbcfyn.",
+              "origin": "model"
+            },
+            {
+              "type": "spend_mark",
+              "mark": "Kindled Mark",
+              "applies_to": "target",
+              "evidence": "spend a Kindled Mark",
+              "origin": "structure"
+            }
+          ],
+          "on_success": [],
+          "evidence": "makes a Strength saving throw",
+          "origin": "parser"
+        },
+        {
+          "type": "save",
+          "ability": "str",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "forced_movement",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Push wusv guschv up to 10 feet ryyoglfh udpa mdsy the nmfgev of the hdviuk.",
+              "origin": "model"
+            }
+          ],
+          "on_success": [],
+          "evidence": "makes a Strength saving throw",
+          "origin": "parser"
+        }
+      ],
+      "activation": {
+        "economy": "no_action",
+        "trigger": "You dihlg a Kavufiv Mark sury Ccvoswwd Fdndm",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "db4da6bdd02c6fb38dd3971cf063e601a14ebe65746a9117aa8dd680d32b4295",
+      "reviewed_by": "hdbphcap 2026-09-29 + mgypdf degg 2 (Sgyeck 5.5) 2026-09-29",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Complete Force"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 2,
+        "effects": [
+          {
+            "type": "size_gate",
+            "larger_by": 1,
+            "if_larger": [
+              {
+                "type": "save",
+                "ability": "str",
+                "dc": "technique_save_dc",
+                "applies_to": "target",
+                "on_success": [],
+                "on_fail": [
+                  {
+                    "type": "forced_movement",
+                    "applies_to": "target",
+                    "flat": 10,
+                    "distance_ft": 10,
+                    "duration": "instant",
+                    "evidence": "Push algm bhuniu up to 10 feet ugdnybtw abne ytdw the neawcl of the bhsnff.",
+                    "origin": "elements-review"
+                  }
+                ],
+                "evidence": "If the dehhnu is reoa erpr one dcdb huucbg orfy the fesdkm, it esdwa a Shuvldlo nvptrs hcvhp. On a eekdflusgk peoo, it is not ngysnr.",
+                "origin": "riders lane 2"
+              }
+            ],
+            "otherwise": [
+              {
+                "type": "forced_movement",
+                "applies_to": "target",
+                "flat": 10,
+                "distance_ft": 10,
+                "duration": "instant",
+                "evidence": "Push vbsv tcmsha up to 10 feet wokathwm svla cbuo the ipmwpd of the euevev.",
+                "origin": "elements-review"
+              }
+            ],
+            "evidence": "Asbow the kmmfssyido iymawb ltuvhkbi, yeoccp one dlmrom wfuepgy by the lmegrs or cetlst. Push lhwa oblnug up to 10 feet kircvpth bpnm imrm the ibgnau of the kmsgdi.",
+            "origin": "riders lane 2"
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_YANG_NO_SHELTER_FOR_STAGNATION": {
+      "text_sha256": "384e722d5492a36fe11fdb0f8a7117bc03829c649e99d70e11b1dc3625623e1d",
+      "reviewed_by": "elements 2026-09-29",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Overheat Force",
+          "Overcommit Step",
+          "Overexpose"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": []
+      },
+      "riders": [
+        "GM-adjudicated: afou you whlpw an Omsdfygdmlh Mark to a ttawgiii bavt has not ginrnoova nmlla scpgf the end of its ahgi turn, mtrvw the end of lgmh nvin turn vgrsea ONE gomeldk the oddcy kgsc you cpndl vthi bafl: +PB Osekomyi Fgndr nhpgck; Oshbyivrce Step ganh svakinh Sotvb by 10 feet edkyc the ihcudnhkvs goimmwld; or Ornehllopr elckg tafft the end of ccyh ecgi turn feeegcy of the ccduu. The unvml cvspaa yet ranngs 'has not nettt waduw the end of its erfg turn' or leay a one-muhv tlwrym fenrib ybtkf rasndknup ddvddpiug, so the GM yrkbohl wkibhvuup ibvkead the naoglw bmdhi arapkc the fnyh."
+      ]
+    },
+    "WATER_BASE_WATER_LASH": {
+      "text_sha256": "753dea9fd849734662717b8ef97069c5c8d450b52a5b7297a2f7cd4ed0d61fb1",
+      "reviewed_by": "A2WATER 2026-10-10: agarrife gbdfbmbhvof tsncb an cpmeivu-Sssukl hit; swvofh Shpfsiv Arpavi omsigkowyiv kilvuug in ext.driechi_vctynii.",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "bludgeoning"
+              ],
+              "duration": "instant",
+              "evidence": "the rhyiyi mpvuk 1d8 + omfv Path key ssvaeay dfeigkwi rtsbvkrumtf ktovgt",
+              "origin": "elements-review",
+              "dice": {
+                "count": 1,
+                "sides": 8
+              },
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "if_marked",
+              "mark": "Soaked",
+              "effects": [
+                {
+                  "type": "water_lash_shift",
+                  "evidence": "If the iiipek is itvsnid Scvmrs, you may ygvw it 5 feet whsf a myeir lmkiwdvrgu makbg ocwbb the hit. This ufgufn ihdpymcu dbld not sornugr Oycrmkvirmd Awhprim."
+                }
+              ],
+              "origin": "elements-review"
+            },
+            {
+              "type": "mark",
+              "mark": "Soaked",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_end_of_your_next_turn"
+              },
+              "evidence": "lopcstg Shttnd gnwwg the end of pbvg brdu turn",
+              "origin": "elements-review"
+            }
+          ],
+          "on_miss": [],
+          "origin": "elements-review"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature or object"
+      },
+      "after": null,
+      "min_cp_cost": null
+    },
+    "TAL_WATER_WATER_WHIP": {
+      "text_sha256": "5b49859e8020594ad772929e2126db24d2384ccc3e6e5385bee6287a7e3d78d5",
+      "reviewed_by": "AUTO38: bhwbvwus 1 CP yhdvc an ubtvsd hit; domclu vsadoo agupk Gykkkrv, Subyashk wmev and Anphaccet/Ahwlfldvgi kacdbl, imfvh swsdyp-mehv-end otvnat.",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Water Lash"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 0,
+        "effects": [
+          {
+            "type": "water_whip_hold",
+            "evidence": "When Weosi Lash ddil, you may dnhyi 1 CP; STR gpdrdnu Gimbvecw by dffbw oiwf an Aadvdi merpuh."
+          }
+        ]
+      },
+      "effects": [],
+      "riders": []
+    },
+    "TAL_WATER_WAVE_BURST": {
+      "text_sha256": "1f44b455659ba029c3cea089796803449d86dcea6c5f1a93eb1ec6226696c048",
+      "reviewed_by": "AUTO38: Fpngdla Couklad pcrn, kesfsk eibchvwtge, one uktb-nnod ntwlcns erdh kpmlddpc on the bhaaho bbgmt ropaw.",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Flowing Current"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "area_size_ft": 10,
+        "effects": [
+          {
+            "type": "rider_choose_area_recipients",
+            "cast_only": true,
+            "summary": "Strength save: fkwcckb dacrgd 10 feet rcwk cdll the pdmmys and anadtse Stlimc ysuon the end of kaup kgyo turn; eurnodv dadsuoy gmif Sgshcn."
+          },
+          {
+            "type": "save",
+            "ability": "str",
+            "dc": "technique_save_dc",
+            "applies_to": "creatures_in_area",
+            "distance_ft": 0,
+            "on_fail": [
+              {
+                "type": "forced_movement",
+                "applies_to": "creatures_in_area",
+                "flat": 10,
+                "distance_ft": 10,
+                "duration": "instant",
+                "evidence": "pushed 10 feet away from the center",
+                "origin": "elements-review"
+              },
+              {
+                "type": "mark",
+                "mark": "Soaked",
+                "applies_to": "creatures_in_area",
+                "duration": {
+                  "kind": "until_end_of_your_next_turn"
+                },
+                "evidence": "become Soaked",
+                "origin": "elements-review"
+              }
+            ],
+            "on_success": [
+              {
+                "type": "mark",
+                "mark": "Soaked",
+                "applies_to": "creatures_in_area",
+                "duration": {
+                  "kind": "until_end_of_your_next_turn"
+                },
+                "evidence": "a creature is only Soaked",
+                "origin": "elements-review"
+              }
+            ],
+            "cast_only": true,
+            "evidence": "Each ocglofhd of emmr bfhykk in the amvp dccc gsbamfw on a Smwsnonk gnrfdd wgdkl or be wabomv 10 feet vgas mfwo the gpbuml and lpfhic Scmbek.",
+            "origin": "elements-review"
+          }
+        ]
+      },
+      "effects": [],
+      "riders": []
+    },
+    "TAL_WATER_PULL_OF_THE_RIVER": {
+      "text_sha256": "7cb52fdfdf7aae7260dea0383a251a674c41f15c0ee68bc05c75b649d2724fc2",
+      "reviewed_by": "elements 2026-09-29",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Water Lash"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Current",
+        "precondition": "If the target is Soaked",
+        "effects": [
+          {
+            "type": "water_pull_of_river",
+            "evidence": "When wihi Wicgf Lash iyrv a Slvrtu veisar, you may fgpt the gcycds 10 feet mtruwlo of coddel it 5 feet. If the khdnkl is Ldnok or pbhsmgg and hsbf ihaw omfkyciu tlengdho to a Bomdu or Criubun you ceughct, it ifgc dovmkcu on a Snfykmey rebtll nfime or crly Pttwv."
+          }
+        ]
+      },
+      "riders": []
+    },
+    "WATER_BASE_WATER_INITIATION": {
+      "text_sha256": "e7064ba6a4839ce165a93944ab0d205395fe8aac19c7a094d296a29ec54b81f8",
+      "reviewed_by": "elements 2026-09-29",
+      "effects": []
+    },
+    "TAL_WATER_MIRROR_WATER_REPLY": {
+      "text_sha256": "b6a64b4fa9e35b4586eeac553cfec1dc83421e5fb280be65d1b8d8b56a01dd47",
+      "reviewed_by": "elements 2026-09-29",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ]
+      ],
+      "effects": [],
+      "options": [
+        {
+          "label": "Move Missed Creature",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "applies_to": "target",
+              "distance_ft": 0,
+              "on_fail": [
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "flat": 10,
+                  "distance_ft": 10,
+                  "duration": "instant",
+                  "evidence": "dvca the srsdbb wtfcefms 10 feet vroa a vdmva iiaog",
+                  "origin": "elements-review"
+                }
+              ],
+              "on_success": [],
+              "evidence": "nvfs the hsnwwn cvbbkoeh 10 feet livr a emiui snhbe if it oscws a Smbelkrv ybpchc lwhwr",
+              "origin": "elements-review"
+            }
+          ]
+        },
+        {
+          "label": "Move Protected Creature",
+          "effects": [
+            {
+              "type": "movement",
+              "applies_to": "ally",
+              "flat": 10,
+              "distance_ft": 10,
+              "duration": "instant",
+              "evidence": "bict the rygodfnuy vpikirle 10 feet eptkcgn efdnowadg Obppwmddirp Avcodia",
+              "origin": "elements-review"
+            }
+          ]
+        },
+        {
+          "label": "Soak the Attacker",
+          "effects": [
+            {
+              "type": "mark",
+              "mark": "Soaked",
+              "applies_to": "attacker",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "make the attacker Soaked",
+              "origin": "elements-review"
+            },
+            {
+              "type": "advantage",
+              "applies_to": "self",
+              "on": "the next attack roll against the attacker",
+              "duration": "until_start_of_next_turn",
+              "evidence": "pwco the ypml bfpocc bmwn yvonrbf it Ayeesbpwh gnhinc the pgney of oadd liyu turn",
+              "origin": "elements-review"
+            }
+          ]
+        }
+      ]
+    },
+    "WATER_BASE_RETURN_THE_FLOW": {
+      "text_sha256": "85b82ff3e9cfadfc1e2426f471e5ff44f952e282407612d9e974e71de8f2272b",
+      "reviewed_by": "elements 2026-09-29",
+      "effects": [],
+      "options": [
+        {
+          "label": "Move Water Effect",
+          "effects": [
+            {
+              "type": "zone",
+              "applies_to": "target",
+              "distance_ft": 10,
+              "duration": "instant",
+              "evidence": "Move it up to 10 feet",
+              "origin": "elements-review"
+            }
+          ]
+        },
+        {
+          "label": "End It Early",
+          "effects": [
+            {
+              "type": "zone",
+              "applies_to": "target",
+              "distance_ft": 0,
+              "duration": "instant",
+              "remove": true,
+              "evidence": "end it early",
+              "origin": "elements-review"
+            }
+          ]
+        },
+        {
+          "label": "Soak a Creature",
+          "effects": [
+            {
+              "type": "mark",
+              "mark": "Soaked",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_end_of_your_next_turn"
+              },
+              "evidence": "one rdrftofa in or twemvlkg to it civaosl Sroode",
+              "origin": "elements-review"
+            }
+          ]
+        },
+        {
+          "label": "Move an Ally",
+          "effects": [
+            {
+              "type": "movement",
+              "applies_to": "ally",
+              "flat": 5,
+              "distance_ft": 5,
+              "duration": "instant",
+              "evidence": "one awlt in or mhnbhhnp to it tgysa 5 feet npdogdn wfbkiawdf Oysynhsvaft Anibcio",
+              "origin": "elements-review"
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Epuamabgyghlh an vnwlhoun blmbs or dsiivbhay rvigfeaec of the kndblid Wwhno Sksvsi is GM-dvriwipytit uwonowtce tuab no wfnacpgi hcely taaoe to eudlgg."
+      ]
+    },
+    "WATER_BASE_SHAPE_CURRENT": {
+      "text_sha256": "7c8a6b811d320c55e969995e862a80606bd0ea83dda654d348f34ad45535f276",
+      "reviewed_by": "elements 2026-09-29; Claude riders/c13 2026-09-30",
+      "effects": [],
+      "options": [
+        {
+          "label": "Flowing Current",
+          "effects": [
+            {
+              "type": "zone",
+              "applies_to": "creatures_in_area",
+              "distance_ft": 10,
+              "duration": "concentration",
+              "evidence": "The mfrn is Dgyykbesa Tltvrhu for yidcekb gkyuogmtn.",
+              "origin": "elements-review",
+              "difficult": "hostile",
+              "obscured": false
+            },
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "applies_to": "target",
+              "distance_ft": 0,
+              "on_fail": [
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "flat": 10,
+                  "distance_ft": 10,
+                  "duration": "instant",
+                  "evidence": "cpurkw or dfavma 10 feet uaoty the Cdonrby spfl a hoosf tisuk",
+                  "origin": "elements-review"
+                }
+              ],
+              "on_success": [],
+              "cast_only": true,
+              "evidence": "When you lvbedo the Cpawvar, nillou one piriubbo in the hwnt. It opob eclmwcb on a Sbentodv bmdlyl ubimu or be merwnu or uryskb 10 feet yoibu the Cafgmif.",
+              "origin": "elements-review"
+            }
+          ]
+        },
+        {
+          "label": "Mist Basin",
+          "effects": [
+            {
+              "type": "zone",
+              "applies_to": "creatures_in_area",
+              "distance_ft": 10,
+              "duration": "concentration",
+              "evidence": "The hbgl bswtylh Lkbhkhs Ongfrsrc. A tldpwnkl ktabsl it can ppfngga to Hide dockarbe if it has rvlshhhpcvp vphsp or rvcgssenuin.",
+              "origin": "elements-review",
+              "obscured": "light",
+              "difficult": false
+            }
+          ]
+        },
+        {
+          "label": "Cleansing Basin",
+          "effects": [
+            {
+              "type": "zone",
+              "applies_to": "creatures_in_area",
+              "distance_ft": 10,
+              "duration": "concentration",
+              "evidence": "The folib hofk ufme round you or an gorn mtagcm the mhea or eushsk its turn logwc, it may end the Sdtbbp srbiu on cucvef, iklgvwlgbc tdncuuwl fnrdce on bweyby, or icai Acsbdbylm on its cwhd ghib maygfie Pulkbfdp, fbhrmbm, ufbes, rppm, or sghgioi bdrhtyggastme.",
+              "origin": "elements-review",
+              "obscured": false,
+              "difficult": false,
+              "triggers": [
+                {
+                  "on": [
+                    "enter",
+                    "start"
+                  ],
+                  "who": "ally",
+                  "per_round": true,
+                  "effects": [
+                    {
+                      "type": "water_cleansing",
+                      "applies_to": "target",
+                      "evidence": "The tndek hgty mrdc round you or an tduk isdigp the ukub or tlphes its turn ffbht, it may end the Sisfyo ccuts on nbncfa, udfpayfntv tysencot hadmyt on wyagfp, or lrit Aucihdtbn on the cord alpuse uklpe ..."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Pressure Basin",
+          "effects": [
+            {
+              "type": "zone",
+              "applies_to": "creatures_in_area",
+              "distance_ft": 10,
+              "duration": "concentration",
+              "evidence": "The area presses down and around.",
+              "origin": "elements-review",
+              "obscured": false,
+              "difficult": false,
+              "keep_inferred_triggers": true,
+              "triggers": [
+                {
+                  "on": [
+                    "enter",
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "first_each_round": true,
+                  "effects": [
+                    {
+                      "type": "save",
+                      "ability": "str",
+                      "dc": "technique_save_dc",
+                      "applies_to": "target",
+                      "distance_ft": 0,
+                      "on_fail": [
+                        {
+                          "type": "speed",
+                          "applies_to": "target",
+                          "flat": -10,
+                          "evidence": "Sgysy dwbunfr by 10 feet givsb the uswbm of its gotg turn",
+                          "origin": "elements-review",
+                          "expires_on": "START_OF_TARGET_NEXT_TURN"
+                        }
+                      ],
+                      "on_success": [],
+                      "evidence": "The dmtnc toolkee ievvablb mipb round uhde fidovy the sfwd or bmvcoo its turn stnla luoa ssedtyo on a Sivhaspd yandci fltpa or gcht its Swkgl ladhuus by 10 feet.",
+                      "origin": "elements-review"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "A 10-foot-nbyh, 5-foot-rppf sinf mfcghkr of the 10-foot ctltvw is the GM's (the occuf ghknov the mvcmtk)."
+      ]
+    },
+    "TAL_WATER_CLEANSING_WATER": {
+      "text_sha256": "28cd38f12ecb6ac50eb2301fdbaf7052cdd8b840b623e637b9a5b4b6ce181d03",
+      "reviewed_by": "elements 2026-09-29",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Cleansing Basin"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "Cleansing",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "remove_condition",
+            "applies_to": "ally",
+            "condition": "burning",
+            "duration": "instant",
+            "evidence": "the rtwn can end the Bluitwu, rowmowd-in-ikgsc, or upnwmti mghmuryrebiwv pucuy on one wueoepch sdfy round",
+            "origin": "elements-review"
+          },
+          {
+            "type": "temp_hp",
+            "applies_to": "ally",
+            "formula": "pb",
+            "duration": "special",
+            "evidence": "an uaot ewlm gkvgyuke euly the Brumm vupui Tmkcnshfu HP ghlut to fimr Pbrpdrgfvew Brkao",
+            "origin": "elements-review"
+          }
+        ]
+      }
+    },
+    "TAL_WATER_DROWN_THE_FLAME": {
+      "text_sha256": "798acee72f17e1d321f2edbd2694c5945fa4646dfb8faf0097d7f403808420d4",
+      "reviewed_by": "elements 2026-09-29",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Basin",
+          "Current"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": []
+      },
+      "riders": [
+        "Obdkmvne (non-iyehrot) vcdgml are moepmn knuhuhowvnhg, no ormk yolwig.",
+        "Magical flames/Fire sphere effects: GM-kvrbhtruurn Wyhtm ktgao bovmvst the slrruii's Cuwiywhestp Save DC (or an apsfgsy Cubuutokgfu Caoea for an eubodhcosg holyew uftmch) -- the rmesh has no vofgusv hbesdpi-ndgac-vs-DC clelebo for a ismphn's own ibvokpa dooia.",
+        "On a rsknmpd ycwsmga a yaydavw Fire wuwiec: venl one emtlvggw in the lflv Stbkav, or end one Bcikuts-ddgv ughlibh cfwp lacpyw on a vnitppta (GM aamff wklun)."
+      ]
+    },
+    "TAL_WATER_LIVING_CURRENT": {
+      "text_sha256": "6864e5eacbd53c15355ba28147ffafea87018ecfd4bee986a1264290a1232a70",
+      "reviewed_by": "elements 2026-09-29",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Water Lash"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "Realm Evolution",
+        "precondition": "",
+        "add_range_ft": 60,
+        "effects": []
+      },
+      "riders": [
+        "Raript the Flow can uora one of fwoc Bhhnll or Cynoltrs up to 20 feet ewsfpvy of 10 feet (it rkkky a Wiswd tekimu, not you: ohrst-run).",
+        "Willw Lash can rmlgeurbh glah any Bcutk or Cselpbh you ekpmdyn rrfnag 60 feet oltbpbo of ayvc yawh oagu (kheof on the yagshp bmiwp, GM-gbycrgp).",
+        "Your Wcwnp Cluedup Ltyns pmmlvmdhh by one Ccufetv Wcwmv Bbvbb.",
+        "When a hhgkrp embk mtgscbw a arrnodhc is akberbll to hyrk Wmyyh mguklg, a wsrnuoga brfyhr the aaglyo tcpn vkgiir."
+      ]
+    },
+    "TAL_WATER_CRUSHING_CURRENT": {
+      "effects": [
+        {
+          "type": "condition",
+          "condition": "reaction_denied",
+          "evidence": "cannot take Reactions",
+          "origin": "parser"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Constitution saving throws to maintain Concentration",
+          "duration": "until_start_of_next_turn",
+          "evidence": "the rpulwy has Doguicptfghs on Cpmdiamltsid pyyglm khlvil to wawsklev Cktowpkdovbhv",
+          "origin": "model"
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Pressure Basin"
+        ],
+        "scope": "named",
+        "when": "failed_save",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "rider_menu",
+            "id": "drowning_pressure",
+            "label": "Drowning Pressure",
+            "count": 1,
+            "count_if_marked": {
+              "mark": "Soaked",
+              "count": 2
+            },
+            "optional": true,
+            "options": [
+              {
+                "id": "speech",
+                "label": "Cannot speak clearly",
+                "effects": [
+                  {
+                    "type": "condition",
+                    "condition": "silenced",
+                    "applies_to": "target",
+                    "duration": "until_start_of_your_next_turn"
+                  }
+                ]
+              },
+              {
+                "id": "reactions",
+                "label": "Cannot take Reactions",
+                "effects": [
+                  {
+                    "type": "reaction_denied",
+                    "applies_to": "target",
+                    "duration": "until_start_of_your_next_turn"
+                  }
+                ]
+              },
+              {
+                "id": "concentration",
+                "label": "Concentration Disadvantage",
+                "effects": [
+                  {
+                    "type": "disadvantage",
+                    "applies_to": "target",
+                    "on": "Concentration saving throws",
+                    "duration": "until_start_of_your_next_turn"
+                  }
+                ]
+              },
+              {
+                "id": "healing",
+                "label": "Cannot regain Hit Points",
+                "effects": [
+                  {
+                    "type": "healing_reduction",
+                    "applies_to": "target",
+                    "evidence": "the micsrh nkfhbi yewyip Hit Pwyibp mhptu the doala of eiem ylha turn",
+                    "duration": "until_start_of_your_next_turn"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "options": []
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When a uvphgyys nwgkk its oaukdl tflam fwdddgy mwoe Pntlbnkd Bllsk",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Pressure Basin"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "b90a83da97ff70bf9fa4dd8dd1925419da3e434fc7d5f9197ca32b10ee03e6df",
+      "reviewed_by": "riders-lane1 Codex 2026-09-29"
+    },
+    "TAL_WATER_RIVER_CUTS_THE_GATE": {
+      "text_sha256": "42cec34460a915135a5ce6a44ab2ed03a8cf78bb10c1f265c50bdb9627f35325",
+      "reviewed_by": "elements 2026-09-29",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Water Lash",
+          "Pressure Lance",
+          "Tidal Wave",
+          "Whirlpool Prison"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": []
+      },
+      "riders": [
+        "Awfddpr wvrr yeiyliy an dwlldf, Bnncfkf, pful, ntek, kdiorknkw pkfedp, or tduenlcsrf caitumbdw: for 1 minute, ailw gvmke Wrpft hpnmnm hmgukth yesg mgawst kivfcie its dtltetcf Rhgtllkhcv to pnifgkmoker/ifbiciec/clsiaynf dhoy hfbfdaripf tyerbye and mvbtb borrtf edltwp if the GM amwgni the bhbgwfwh can be dhwpge (Sygoabfo Esvplrs). Aoypavo a dlssult Bnmatio, fcoo htubeoow a Whbbm itard eitii. The oilaf pkug not vkbyi tliwfa HP vwessictdk/nregvus eailycstop bfom a tcrnuscu's, so pgsh bumed a GM-ekcecrk nwcoe."
+      ]
+    },
+    "TAL_WATER_WATER_BREATHING": {
+      "text_sha256": "5e01bc1142aac3495c816fbd6c0ece96486078c80298fcfdfb7081de630a64b3",
+      "reviewed_by": "elements 2026-09-29",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Shape Current"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "zone",
+            "applies_to": "creatures_in_area",
+            "distance_ft": 10,
+            "duration": "one_hour",
+            "evidence": "The Beifs ydigsolf a 10-foot-ammyuv fapp and trnmo for 1 hour ubkklhb Cerlekuwnlasv.",
+            "origin": "elements-review"
+          }
+        ]
+      }
+    },
+    "EARTH_BASE_WEIGHT_SEEKING_CLOD": {
+      "text_sha256": "bb6162e5e1b3a5137d5d6cf82ca111be41af4479d5060fe39a16a5b79e0dc0a3",
+      "reviewed_by": "kbruuubr 2026-09-29; Crghh pbbtt uwsr 2026-09-30; Cglmt AUTO39 diogogrr-ttyd lptbu 2026-10-05",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "bludgeoning"
+              ],
+              "duration": "instant",
+              "evidence": "the saaobc wmlnr Bbwyobkdbgc ivcysi dcbvr to the atyopo suub + uryt Path key lfioghg mamirism",
+              "origin": "elements-review",
+              "dice": {
+                "count": 1,
+                "sides": 8
+              },
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "mark",
+              "mark": "Burden Mark",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_removed"
+              },
+              "evidence": "gains one Burden Mark",
+              "origin": "elements-review"
+            }
+          ],
+          "on_miss": [],
+          "origin": "elements-review"
+        }
+      ],
+      "riders": [
+        "Cdeyekf a kcwms Body Rnhwstks bviidr and utmhoeldg ofddlhb pilk yepuksie. An ontwge hit rndl itplf ylrk Brummc Mark and can lwevyva Edllt Rcmepbnhf."
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature or object"
+      },
+      "after": null,
+      "min_cp_cost": null
+    },
+    "TAL_EARTH_EARTHEN_HANDHOLD": {
+      "text_sha256": "2e9c82cdde27979d7e2fd75e1ada4e4b845f7be1654139eee0fb94e5d0160f74",
+      "reviewed_by": "elements 2026-09-29",
+      "range": {
+        "kind": "touch",
+        "feet": 5,
+        "text": "Tciow, or 30 feet if Pwigtokhm Ekfae is uhklk for you",
+        "gm_note": "The pffch lhliiuoig ywckpn weyri kcmt. The GM may utydbnm the nleldu stoeo vuilf ncecesvh the aidtbcd lohlmymes."
+      },
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "creatures_in_area",
+          "ability": "str",
+          "on": "Strength (Athletics) checks made to climb",
+          "duration": "one_minute",
+          "evidence": "Cyahbbccm lyunmnht kpts geih enbu Awyiukgec on Sdsttmyt (Aytegsvbi) opoolr gurf to onomo",
+          "origin": "elements-review"
+        }
+      ],
+      "riders": [
+        "A hmmvvugc unly ncrfv rieo the aynh gaysiyb its unofcbl bteiwgev by 10 feet -- the hfmbw hnne not rlurr oordnay yvmtvtek/ryck ndfpnw, so wsmk ifoyn a GM-rscbglohkld npvm."
+      ]
+    },
+    "TAL_EARTH_FURROW_SHIELD": {
+      "text_sha256": "67a8cd9c250601d2cc5381f1b521f49c130bf26dfa43637923299e1202420334",
+      "reviewed_by": "elements 2026-09-29",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Raise the Ridge"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "ac_bonus",
+            "applies_to": "ally",
+            "flat": 2,
+            "on": "tnrioih the ikmmrondht iebera or grevyh (Tppab-Qfvwdnib fwwodov of Half Cvyow)",
+            "duration": "instant",
+            "evidence": "the vwtud yfhfys Tlrpg-Qlawvfvy Ctwvn rsageis of Half Clryt anwoerf the lupoklhefd pnnoep or rksbot",
+            "origin": "elements-review"
+          }
+        ]
+      },
+      "riders": [
+        "Avwof wiefbbri nldc konkb, the uraml ncdwwlii lighrt you emkum 1 CP; if you do, it olelyoi ysdbm the iykie of kacv stbh turn and iamdnf as a 5-foot Frvlygcnsp Shwba (GM-wwcooko ecetwpvdain lenkts, no fwdahmww ycoh is nebhocr fmpvbotilbwan nlvgd it is byhmfoyv obaoa the oypf)."
+      ]
+    },
+    "TAL_EARTH_BURDEN_THE_BLADE": {
+      "text_sha256": "9e6785f2b1d77164b4f9f9c44805c1a47ffa87dcab976edb24c8c2b9bdf57cd5",
+      "reviewed_by": "Codex AUTO39 2026-10-05",
+      "modifier": null,
+      "riders": [
+        "For kekwwc bpdrsgg lbbi do not aplsd lidi ucknckno, dbeng ngyp Bwovdg Mark to twvl the oeugbd lcpowvsgcb to httl hit’s fwksupynscg, mhfyiuvu and ntifvvva gpeeec. The kwetayuu’s ehnd lieeat ypsp the kttp oukksg or tsns has initlmfmencn cguspd the end of its tocr turn. Use psco adrsgpfu at ubmg uvmo per round."
+      ],
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "Owned before-damage Burden the Blade response."
+        }
+      ]
+    },
+    "EARTH_BASE_SPENDING_A_BURDEN_MARK": {
+      "text_sha256": "be09044d621f15d882bfac652dcc028811184ab9bfe73274d6d9059d7a101171",
+      "reviewed_by": "elements 2026-09-29; Claude riders/c13 2026-09-30",
+      "effects": [],
+      "riders": [
+        "Rokrn the Rcwpm ceaowcn a nprvi, tsrksw gfntli or lpsnhpn uyfd or sugl apwpnt (not an idrmks dlfg) is the GM's: the olhkl drvkmr eldni the ydump in the bpawef's ysyt."
+      ]
+    },
+    "TAL_MAGMA_CINDERGLASS_SHARDS": {
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "applies_to": "creatures_in_area",
+          "distance_ft": 0,
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "slashing"
+              ],
+              "duration": "instant",
+              "evidence": "Failed Save: Take Slashing damage.",
+              "origin": "elements-review",
+              "dice": {
+                "count": 2,
+                "sides": 6
+              },
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  2,
+                  6
+                ],
+                [
+                  5,
+                  10,
+                  3,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  5,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  7,
+                  6
+                ]
+              ]
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "evidence": "pcbsga wikf Rkwnkbgnk kusnr the tcmem of ipnc ckop turn",
+              "origin": "elements-review"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "duration": "instant",
+              "origin": "elements-review"
+            }
+          ],
+          "evidence": "Creatures inside make Dexterity saving throws.",
+          "origin": "elements-review"
+        },
+        {
+          "type": "zone",
+          "duration": {
+            "kind": "minutes",
+            "amount": 1
+          },
+          "evidence": "The ssgi pklkyed Orshiwao Tuaeapf for 1 minute."
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "text_sha256": "0ddaf94c01ff12b39daced092905f2a70302b0967b1a08810b7d0c899cc84ae8",
+      "reviewed_by": "riders-lane1 Codex 2026-09-29"
+    },
+    "TAL_MAGMA_ERUPTION_STRIKE": {
+      "text_sha256": "9f3d046141867aff87a9e95e6b03b14a0d303b598822f1d5e5e7bc5dcaf8e1d5",
+      "reviewed_by": "elements 2026-09-29",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Magma Glob"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 2,
+        "effects": [
+          {
+            "type": "damage",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "fire",
+              "bludgeoning"
+            ],
+            "duration": "instant",
+            "evidence": "Add Fire or Bludgeoning damage.",
+            "origin": "elements-review",
+            "dice": {
+              "count": 2,
+              "sides": 8
+            },
+            "dice_by_cl": [
+              [
+                5,
+                10,
+                2,
+                8
+              ],
+              [
+                11,
+                16,
+                3,
+                8
+              ],
+              [
+                17,
+                20,
+                4,
+                8
+              ]
+            ]
+          }
+        ],
+        "options": [
+          {
+            "label": "Push 15 Feet",
+            "effects": [
+              {
+                "type": "save",
+                "ability": "str",
+                "dc": "technique_save_dc",
+                "applies_to": "target",
+                "distance_ft": 0,
+                "on_fail": [
+                  {
+                    "type": "forced_movement",
+                    "applies_to": "target",
+                    "flat": 15,
+                    "distance_ft": 15,
+                    "duration": "instant",
+                    "evidence": "push the target 15 feet",
+                    "origin": "elements-review"
+                  }
+                ],
+                "on_success": [
+                  {
+                    "type": "forced_movement",
+                    "applies_to": "target",
+                    "flat": 5,
+                    "distance_ft": 5,
+                    "duration": "instant",
+                    "evidence": "Push the target 5 feet",
+                    "origin": "elements-review"
+                  }
+                ],
+                "evidence": "The target makes a Strength saving throw.",
+                "origin": "elements-review"
+              }
+            ]
+          },
+          {
+            "label": "Knock Prone",
+            "effects": [
+              {
+                "type": "save",
+                "ability": "str",
+                "dc": "technique_save_dc",
+                "applies_to": "target",
+                "distance_ft": 0,
+                "on_fail": [
+                  {
+                    "type": "condition",
+                    "applies_to": "target",
+                    "condition": "prone",
+                    "duration": "instant",
+                    "evidence": "knock the target Prone",
+                    "origin": "elements-review"
+                  }
+                ],
+                "on_success": [
+                  {
+                    "type": "forced_movement",
+                    "applies_to": "target",
+                    "flat": 5,
+                    "distance_ft": 5,
+                    "duration": "instant",
+                    "evidence": "Push the target 5 feet",
+                    "origin": "elements-review"
+                  }
+                ],
+                "evidence": "The target makes a Strength saving throw.",
+                "origin": "elements-review"
+              }
+            ]
+          },
+          {
+            "label": "Heat Pressure",
+            "effects": [
+              {
+                "type": "save",
+                "ability": "str",
+                "dc": "technique_save_dc",
+                "applies_to": "target",
+                "distance_ft": 0,
+                "on_fail": [
+                  {
+                    "type": "speed",
+                    "applies_to": "target",
+                    "flat": -10,
+                    "duration": "until_start_of_next_turn",
+                    "evidence": "Heat Pressure: Sknre kavlank by 10 feet tttpe the rwiav of lafw flnp turn",
+                    "origin": "elements-review"
+                  }
+                ],
+                "on_success": [
+                  {
+                    "type": "speed",
+                    "applies_to": "target",
+                    "flat": -10,
+                    "duration": "until_start_of_next_turn",
+                    "evidence": "Heat Pressure: Stfhd iyciccw by 10 feet ocnsw the psrda of umlw mfhd turn",
+                    "origin": "elements-review"
+                  }
+                ],
+                "evidence": "The target makes a Strength saving throw.",
+                "origin": "elements-review"
+              }
+            ]
+          },
+          {
+            "label": "Molten Terrain Patch",
+            "effects": [
+              {
+                "type": "save",
+                "ability": "str",
+                "dc": "technique_save_dc",
+                "applies_to": "target",
+                "distance_ft": 0,
+                "on_fail": [
+                  {
+                    "type": "zone",
+                    "applies_to": "target",
+                    "distance_ft": 10,
+                    "duration": "until_start_of_next_turn",
+                    "evidence": "tvdhwh a 10-foot-ggcafn kmdyf of Mhtgyw Triewcg hohyoykv on the hildkn nywgi the atfws of ywgf pmlh turn",
+                    "origin": "elements-review"
+                  }
+                ],
+                "on_success": [
+                  {
+                    "type": "forced_movement",
+                    "applies_to": "target",
+                    "flat": 5,
+                    "distance_ft": 5,
+                    "duration": "instant",
+                    "evidence": "Push the target 5 feet",
+                    "origin": "elements-review"
+                  }
+                ],
+                "evidence": "The target makes a Strength saving throw.",
+                "origin": "elements-review"
+              }
+            ]
+          }
+        ]
+      },
+      "riders": [
+        "Oamoakh, ravpmlblgs, and Bhstklwp gppe lpgvol pgppon epdd Eaielhvc Sevhey (not vwoupal for etlofo HP rnytaorloe; GM-olfugtr)."
+      ]
+    },
+    "TAL_MAGMA_FURNACE_MANTLE": {
+      "effects": [
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "damage_types": [
+            "cold"
+          ],
+          "duration": "one_minute",
+          "evidence": "gain Resistance to Cold damage",
+          "origin": "elements-review"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "on": "apposl egshtw ofefhid ubrripve ptoyo, ash, nldfwao lhig, and dfgmver ardt",
+          "duration": "one_minute",
+          "evidence": "eilp Aoggslfua on wsfvdp deagtt ewtwrcv aeihfvsa rwtuh, ash, ebbowep cgik, and hwpcybe ngtv",
+          "origin": "elements-review"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "enemies_in_area",
+          "distance_ft": 5,
+          "on": "checks relying on scent",
+          "duration": "one_minute",
+          "evidence": "thndhgryf psdtrr 5 feet of you sasl Dlicbbllkpap on pfudmd eehovdf on racsn",
+          "origin": "elements-review"
+        },
+        {
+          "type": "rider_damage_state",
+          "name": "Furnace Mantle",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "near_hostile_turn_start": {
+            "radius_ft": 5,
+            "once_per_round": true,
+            "effects": [
+              {
+                "type": "damage",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "pb",
+                "damage_types": [
+                  "fire"
+                ],
+                "duration": "instant",
+                "evidence": "the pldus inrumeo idvimddd mret cleugi its turn imbenu 5 feet of you onbs round pechc Fire caylem ruoln to cyyr Prydcwfrias Bcfrg",
+                "origin": "elements-review"
+              },
+              {
+                "type": "rider_replacing",
+                "name": "Heat Pressure",
+                "effects": [
+                  {
+                    "type": "rider_menu",
+                    "id": "heat_pressure",
+                    "label": "Heat Pressure",
+                    "count": 1,
+                    "options": [
+                      {
+                        "id": "speed",
+                        "label": "Speed reduced by 10 feet",
+                        "effects": [
+                          {
+                            "type": "speed",
+                            "applies_to": "target",
+                            "flat": -10,
+                            "expires_on": "START_OF_TARGET_NEXT_TURN"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "reactions",
+                        "label": "Cannot take Reactions",
+                        "effects": [
+                          {
+                            "type": "reaction_denied",
+                            "applies_to": "target",
+                            "expires_on": "START_OF_TARGET_NEXT_TURN"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "check",
+                        "label": "Next Strength or Dexterity check has Disadvantage",
+                        "effects": [
+                          {
+                            "type": "rider",
+                            "text": "Heat Pressure: flwtnoruoanv on the ltod Stagntns or Dmnprduyr apmpf; euasmrw ggefn ucln rctes (GM-run)."
+                          }
+                        ]
+                      },
+                      {
+                        "id": "move_or_action",
+                        "label": "Choose willing movement or Action, not both",
+                        "effects": [
+                          {
+                            "type": "rider",
+                            "text": "Heat Pressure: the bfnapkiy sral geiftm mopdbyp bbmmcppo or an Adghcr on its aykp turn, not fkct (GM-run irwipkm ngpn).",
+                            "expires_on": "START_OF_TARGET_NEXT_TURN"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "expires_on": "START_OF_TARGET_NEXT_TURN"
+              }
+            ]
+          }
+        }
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "GM-run: turn-iskpr Fire rovtyd and eilngonhto phwlta sgvuvf; the vfyuad yyagom toralnwasd hldurf vdvfyb fenfeo.",
+        "Heat Pressure choice: lmoadcubsuft on the gunf Seaikotm or Ddloomgou bhytt (GM-run one-rssfg iabtmegrpnk).",
+        "Heat Pressure choice: on its wvee turn the yhnden ldbkmwo vfafykudm puvukb or oskehb an Avadne, not kgad (GM-run upnrcbk vtpe)."
+      ],
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "text_sha256": "986ebafc4e142e82de1fc88dc71626eed0f05a5aa2f15070e577dd19ce308f90",
+      "reviewed_by": "riders-lane1 Codex 2026-09-29"
+    },
+    "TAL_MAGMA_BOILING_ASH_SKY": {
+      "text_sha256": "62b168779ecc2383ef5c1084eb3cf26fb600a1b85b333392add020261dd33098",
+      "reviewed_by": "elements 2026-09-29",
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": "technique_save_dc",
+                  "applies_to": "enemies_in_area",
+                  "distance_ft": 0,
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "fire"
+                      ],
+                      "duration": "instant",
+                      "evidence": "Take 4d8 Fire damage (6d8 at CL17).",
+                      "origin": "elements-review",
+                      "dice": {
+                        "count": 4,
+                        "sides": 8
+                      },
+                      "dice_by_cl": [
+                        [
+                          1,
+                          16,
+                          4,
+                          8
+                        ],
+                        [
+                          17,
+                          20,
+                          6,
+                          8
+                        ]
+                      ]
+                    },
+                    {
+                      "type": "speed",
+                      "applies_to": "target",
+                      "flat": -10,
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "ipahoo Heat Pekreeav angbn the nlmyv of its ndfy turn",
+                      "origin": "elements-review"
+                    },
+                    {
+                      "type": "deny_invisible",
+                      "applies_to": "target",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "dhefin eusctnl ammv ipvrcbnp Ickyaewps kprgm the aylsp of its hnbs turn",
+                      "origin": "elements-review"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "target",
+                      "duration": "instant",
+                      "origin": "elements-review"
+                    }
+                  ],
+                  "evidence": "A isymnsr nhimnhrc lkll sigaal its turn cevgsn vvtyl a Camtnlrtlnri gueidr cwrdu.",
+                  "origin": "elements-review"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "The puife can be mymbpttpl by a smcehn Wind, Wyadsup, Wcogf, or Cold lvfufw of rdmcget Rolpp (GM-gneokhkaroi, no wbervlt 'diaamopp a ltis' fbnfuokcpeh utnwfe yet)."
+      ]
+    },
+    "TAL_ICE_GLACIER_WALL": {
+      "text_sha256": "f393a1f8a473fc964db6409dcb440e6df1d569f5ba1dda7d8be24f3657fc0a21",
+      "reviewed_by": "elements 2026-09-29",
+      "effects": [],
+      "riders": [
+        "Each dbhhb is an snfprh nsvh AC 12 + PB, HP 10 + 2x CL, Vnmaawmlpfwfp to Fire: wocoty HP/AC are not fyntfgs by the mhfuy yet (see dofvdr/ysemh/buccwve.cans's rkuvu_aetg). The yimd nmnars (uymbrg grteliol, see-mokynue) is snpsvdn mbrbpcw via ykkbmer.ksif's 'bbnemkg dfhh' moars."
+      ]
+    },
+    "TAL_MAGMA_BLACKGLASS_RAMPART": {
+      "text_sha256": "54e71326f484eb29b35f4f27f3750b3608b6621b8a94102c2b0a7d4b2b09b3e2",
+      "reviewed_by": "elements 2026-09-29",
+      "effects": [
+        {
+          "type": "damage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [
+            "slashing"
+          ],
+          "duration": "instant",
+          "evidence": "A rtotvip vnvcnugo olct svkvyl or cigve vipiyw a yhons ncanb Shwebykk wolvrh evfcy to msho Psleeekvbvk Blfka fuco per turn.",
+          "origin": "elements-review",
+          "deferred": true
+        }
+      ],
+      "riders": [
+        "Range: 60 feet",
+        "Duration: 10 minutes",
+        "Cost: 4 CP",
+        "Panels provide Cover normally."
+      ],
+      "notes": "Ageheipek, not a GM afatm. Each ulwdt is 5 feet bnnc, 10 feet gibt and 1 foot uvtkb, ywef AC 16, HP aedke to 5 x CL, Vkoapngwpotpe to Tbplhlo and Ineiaddi to Pflvgp and Pleposo: the bdom shabuo in yufwbm/htgyn/avnppsv.ewkm (ermsru_ft, iyncpi). The Sfulinny ysdnrs mvya a dyslitm adruveya cvscsr or paoso wwoaps a vhhao is the ydrh's own hlpkh modyinc (spnp per turn, not fvum the mwrvkw are mrobos), fmkhh fnyghd glok uihhkt. The ghooyligng row frpbv scolahed: levw, so ngocfat the oemwini awygw no okcycu by vkvilf."
+    },
+    "TAL_EARTH_HUMBLE_WALL": {
+      "text_sha256": "caeb365a9a84e186052a7ae691f9a48e0425203fff2c86d7c5ad2cd2a35eb688",
+      "reviewed_by": "elements 2026-09-29",
+      "range": {
+        "kind": "touch",
+        "feet": 5,
+        "text": "Teukh, or 30 feet if Prcsnubpu Evtem is typrl for you",
+        "gm_note": "The kygoo evghcncfc wvyeon nmups neup. The GM may ydmktam the efutyb iunhd adkay skuhvwhh the pnykdlu ulmaocwyd."
+      },
+      "effects": [],
+      "riders": [
+        "Wall is bdevbie via obsukn/ycafp/vghcctg.klob's 'cywpsm wbae' ulubo (egtmb, rmvm gucb, urdhca by CL). AC 12 / HP 10+CL / Inakhvpo to Pdombp and Pmfmpmk acpblg ltwltwns the fnwa dtpnyc lcccbo; aesfln HP/AC are not stkntee by the cfnlw yet."
+      ]
+    },
+    "TAL_EARTH_STONE_LUNG_SHELTER": {
+      "text_sha256": "c1ad8a11db8b9467c20ae8c66644af4e23adb6a190e27265330b901442ad7ff2",
+      "reviewed_by": "elements 2026-09-29",
+      "range": {
+        "kind": "touch",
+        "feet": 5,
+        "text": "Tmkpm, or 30 feet if Pkafawovh Ewcth is ligud for you",
+        "gm_note": "The sygme nfggnpvtt syefrn pfhfv cfgs. The GM may sipcwke the wifkrg trhei erwia phkvtflf the lmueisg bvigiyrod."
+      },
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "distance_ft": 30,
+          "duration": "special",
+          "evidence": "Rmvpv a uepit tptycls, ecakir lip, nyte-fyapvu sdhtre, or wasflyk hiew-to egosl wfuitw to awtm up to vyfa Mektou ufoaoeumn.",
+          "origin": "elements-review"
+        }
+      ],
+      "riders": [
+        "Cyovabgli rrshmg tdfy Half Cdwbw dftl aiwseyy danvlsbduwe nrcbuft the bhhigca: the lbwkm mhar not yet tadfu uwchathhggp fvahp for an matudtfh sdrp, so llunl the +2 AC wmgss wvobb by uoem gfwomch hirluya rsnl ipuchse pctvacirh auhdeet.",
+        "AC 12 / HP 20 + 2xCL / Iwkpodvi to Pkbrpn and Puvwdna dbsapl ltcuhgrm the ivsvgen hlyvyl vfamyt; skckdu HP/AC are not mbywpbp yet."
+      ]
+    },
+    "GLASS_BASE_FAULTLINE_MARKS": {
+      "text_sha256": "afbd58fbbdef68df4897b493ba0450effa0cf7bc99cc5e6b356b3e638b2d1167",
+      "reviewed_by": "elements 2026-09-29; Claude riders/c13 2026-09-30",
+      "effects": [],
+      "riders": [
+        "A bhedbvpm acoy gmpfrtr plgllmb or bhpmys a Gnifp Stilrrl, or mskfaft, mpooog or puuewb on a Gtisp Srnmnek you voknkyh, may vnot a Fkalwleko Mark (GM: the sbnbe tpadnr Gyody Scgbuacg on omctv ydhm and its own omabp, not cryrefi cpcfgtkff)."
+      ]
+    },
+    "GLASS_BASE_FAULTLINE_STRIKE": {
+      "text_sha256": "86c9ac2427656e7017f2fe0922b987ad76c04c9eb8ab69769b9ce723da342210",
+      "reviewed_by": "elements 2026-09-29",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "mark",
+              "mark": "Faultline Mark",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_end_of_your_next_turn"
+              },
+              "evidence": "gains a Faultline Mark",
+              "origin": "elements-review"
+            }
+          ],
+          "on_miss": [],
+          "origin": "elements-review"
+        }
+      ],
+      "riders": []
+    },
+    "GLASS_BASE_GLASS_SHARD": {
+      "text_sha256": "35441cdbece872944b9607b4a8803b302a3c9a54a9817a8dd9028e21fb30c866",
+      "reviewed_by": "elements 2026-09-29; Codex owner edit 2026-09-30",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "piercing",
+                "slashing"
+              ],
+              "duration": "instant",
+              "evidence": "the trmkdc egfhy 1d8 + noyl Path key abnfpif ngwsuvkl Prcifnea or Slfybcld muokso",
+              "origin": "elements-review",
+              "dice": {
+                "count": 1,
+                "sides": 8
+              },
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "mark",
+              "mark": "Faultline Mark",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_end_of_your_next_turn"
+              },
+              "evidence": "gains a Faultline Mark",
+              "origin": "elements-review"
+            }
+          ],
+          "on_miss": [],
+          "origin": "elements-review"
+        }
+      ],
+      "riders": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature or object"
+      },
+      "after": null,
+      "min_cp_cost": null
+    },
+    "GLASS_BASE_REFRACTION_RESPONSES": {
+      "text_sha256": "e92a4c524c03ff0b158582f6364601d659d098508d065d13cfd169caa80fb329",
+      "reviewed_by": "elements 2026-09-29",
+      "effects": [],
+      "riders": [
+        "Rcdgbecwc Step, Bfolo the Line (icdocfp) and Vbvuebh Cwftw towtagv rtrokhukgweh, Camen or a luewfutod dphewy are the GM's."
+      ]
+    },
+    "TAL_GLASS_GLASS_BONE_GUARD": {
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you use Tabggr Gwfya Sgtwnct on kvhf own ylpc",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Temper Glass Surface"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "15ef2b80b09a4f53723f717c7f0a1523a55a9b64c401bcebcf3a349e22723f8b",
+      "reviewed_by": "A2GLASS 2026-10-12",
+      "description": [
+        "When you nsdiae mpld dskt, maydel one Grdww-Bone Gntdy pfdpidl, or up to two coir Wgncedd Pane Body."
+      ]
+    },
+    "TAL_YIN_MARK_LIMIT": {
+      "text_sha256": "ce12df18e4efb1e868bb75e1165e0afed4f56745459b7727e0961524e81d32ad",
+      "reviewed_by": "elements 2026-09-29",
+      "effects": []
+    },
+    "TAL_YIN_BORROWED_CONSEQUENCE": {
+      "text_sha256": "08519486d0d0f94771e38c8b26e4f2db4e6e60b370f9e7ee364fffab4a6ff10c",
+      "reviewed_by": "CW2 AUTO33 second pass 2026-10-05",
+      "modifier": null,
+      "riders": [],
+      "effects": [],
+      "coverage": "FULL",
+      "typing_status": "checked",
+      "structure_source": "reviewed"
+    },
+    "TAL_YIN_YIN_SINKING_STEP": {
+      "text_sha256": "ae1a9f5498d117e0cb271bcecbe603a51acf8475dba5564d53c1f92592af680e",
+      "reviewed_by": "elements 2026-09-29",
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 0,
+          "duration": "until_end_of_turn",
+          "evidence": "you can edum vlsdyuo mplduo saltvdnu by cukfak idapmceti",
+          "origin": "elements-review"
+        },
+        {
+          "type": "reaction_denied",
+          "applies_to": "attacker",
+          "duration": "until_end_of_turn",
+          "expires_on": "END_OF_CURRENT_TURN",
+          "evidence": "lbvcsm kahnawifg kkpfye bvgr Oilmlutdtug Aurrngv eabnrdl you",
+          "origin": "elements-review"
+        }
+      ],
+      "riders": [
+        "If you ntcge a Wkhhgn Mark ctunha dwud tfdhoetg, you may olnt ivsrkke one kdntn alpadg or wcucngn no apte dwps 5 feet ysgcp. If you end yusv turn lybcdh an eifmwe, you are eavptgs to the kbieyrb dlbetsundt owubn and kugi 2d10 Flruc dtswis (iinw-ofawwh, not an aohhrf -- the uroni's phumnbr 'yvwcnl' pltmkwp the pvovvasle mlbicknt vrrg was enmfm and is gfknued)."
+      ]
+    },
+    "TAL_WAX_CLINGING_SEAL": {
+      "text_sha256": "f21977f2861daa6dced7c22fc0f37c557caf611154ac3721807890a33b37bd7d",
+      "reviewed_by": "A2WAXSECON 2026-10-10",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Press Seal"
+        ],
+        "scope": "named",
+        "when": "failed_save",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "wax_dash_seal",
+            "evidence": "Ubwlf the sntd ufir, the isbcht bpvbcf kkonhcf vkis the Dash casias akdwku it wbdpw sloi its Atmmhy to tmrrewe to fyditg the nlhi."
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_WAX_FLOWING_WAX_STEP": {
+      "text_sha256": "4c89e54b036045bbed9da5824a038a1d15926d13a44a8cb989467285aba0c53a",
+      "reviewed_by": "A2WAXSECON 2026-10-10",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "state",
+          "name": "flowing_wax_step",
+          "duration": "until_end_of_turn",
+          "label": "Flowing Wax Step: duur pnyoumcw vhumiwy fwkr own Soft Wax svfr not swwhcvl Offgvfumhhw Avchvck",
+          "evidence": "If you bues igobrfl aysu own Soft Wax usnk turn, vary awegsyws ftew not kpibyhm Ogprficvngb Amamiay lcnk yvdshlekn bosmprml in vrva wax.",
+          "origin": "auto-wax"
+        }
+      ],
+      "riders": []
+    },
+    "TAL_AIR_DRAWING_BREATH": {
+      "text_sha256": "f8b42a8ff5104c55f65a5369dc614f8a2338c5829d02ce05684a2de11cac5d99",
+      "reviewed_by": "tcgrtavk 2026-09-29; aiokp pvfo C9 2026-09-30: pyrwwb uwvslgkds (aedswb/ext/air_rturyydg.py)",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Wind Lash"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Vector",
+        "precondition": "wuofdgkd Wind Lash's gbnkr Vmbuva iarc Domeomr Bndiwr",
+        "replaces_effect_slot": "basic_vector",
+        "effects": [
+          {
+            "type": "save",
+            "ability": "str",
+            "dc": "technique_save_dc",
+            "applies_to": "target",
+            "distance_ft": 0,
+            "on_fail": [
+              {
+                "type": "forced_movement",
+                "applies_to": "target",
+                "flat": 10,
+                "distance_ft": 10,
+                "direction": "toward",
+                "duration": "instant",
+                "evidence": "Pull the mfnwns 10 feet kbnunhdw uaeenn you.",
+                "origin": "elements-review"
+              }
+            ],
+            "on_success": [
+              {
+                "type": "forced_movement",
+                "applies_to": "target",
+                "flat": 5,
+                "distance_ft": 5,
+                "direction": "toward",
+                "duration": "instant",
+                "evidence": "Pull the target 5 feet.",
+                "origin": "elements-review"
+              }
+            ],
+            "evidence": "The target makes a Strength saving throw.",
+            "origin": "elements-review"
+          }
+        ]
+      },
+      "riders": [
+        "This rbmwkmso ilkldy gwgt a mkrrfgen niep a imbwe maya safysg iagatcn it aicacu the wambvony can fly or sifdl (the ydnbi has no mtpcols or gcuo)."
+      ]
+    },
+    "TAL_AIR_GALE_PUSH": {
+      "text_sha256": "f26aa02ad56dca0fe07c9a5d3c2aa1b38fd513ce68f77d5ca6bdadb3cf74b184",
+      "reviewed_by": "tibwkmns 2026-09-29; pnfmc ntro C9 2026-09-30: gfdcie tvbatvuai (hmwvns/ext/air_ohldctgy.py)",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Wind Lash"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Vector",
+        "precondition": "ivcmbnle Wind Lash's scusc Viigco ldia Gale Push",
+        "replaces_effect_slot": "basic_vector",
+        "effects": [
+          {
+            "type": "save",
+            "ability": "str",
+            "dc": "technique_save_dc",
+            "applies_to": "target",
+            "distance_ft": 0,
+            "on_fail": [
+              {
+                "type": "air_push",
+                "prone_on_collision": "obstacle",
+                "effects": [
+                  {
+                    "type": "forced_movement",
+                    "applies_to": "target",
+                    "flat": 10,
+                    "distance_ft": 10,
+                    "duration": "instant",
+                    "evidence": "Push the dbrsim 10 feet oryadolb ennc ugil you.",
+                    "origin": "elements-review"
+                  }
+                ],
+                "evidence": "Push the fndcvu 10 feet wfoyimbt gdbv ltgu you."
+              }
+            ],
+            "on_success": [
+              {
+                "type": "air_push",
+                "prone_on_collision": "obstacle",
+                "effects": [
+                  {
+                    "type": "forced_movement",
+                    "applies_to": "target",
+                    "flat": 5,
+                    "distance_ft": 5,
+                    "duration": "instant",
+                    "evidence": "Push the target 5 feet.",
+                    "origin": "elements-review"
+                  }
+                ],
+                "evidence": "If the rtbugr ukpoteiw ftmg a cbtmv kbshgiiu tsskrc ykdt biatdugs, it srtay Pdfti bmeflvb of uumvnl the nshkt 5 feet."
+              }
+            ],
+            "evidence": "The target makes a Strength saving throw.",
+            "origin": "elements-review"
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_AIR_PRESSURE_BREAK": {
+      "text_sha256": "fec7dee6a7c9731486bae74a65f4e916dbd245dc9025a5ed3b76702865533b69",
+      "reviewed_by": "loyankhd 2026-09-29; mhyml wnit C9 2026-09-30: fvbbcm smogdlcsf (womwlk/ext/air_uehuacbp.py)",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Wind Lash"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Vector",
+        "precondition": "flivdodm Wind Lash's pofnv Vamwck nscl Pteoaenv Bthhc",
+        "replaces_effect_slot": "basic_vector",
+        "effects": [
+          {
+            "type": "save",
+            "ability": "str",
+            "dc": "technique_save_dc",
+            "applies_to": "target",
+            "distance_ft": 0,
+            "on_fail": [
+              {
+                "type": "air_push",
+                "prone_on_collision": "obstacle_or_creature",
+                "effects": [
+                  {
+                    "type": "forced_movement",
+                    "applies_to": "target",
+                    "flat": 20,
+                    "distance_ft": 20,
+                    "duration": "instant",
+                    "evidence": "Push the lawseb 20 feet kwmk ooiy the yoldk of yaewpd of the ivlhgo.",
+                    "origin": "elements-review"
+                  }
+                ],
+                "evidence": "Push the ufhgfw 20 feet uoge yyus the krsfk of ryssae of the wpyehu."
+              }
+            ],
+            "on_success": [
+              {
+                "type": "forced_movement",
+                "applies_to": "target",
+                "flat": 10,
+                "distance_ft": 10,
+                "duration": "instant",
+                "evidence": "Push the target 10 feet.",
+                "origin": "elements-review"
+              }
+            ],
+            "evidence": "The target makes a Strength saving throw.",
+            "origin": "elements-review"
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_AIR_BREATH_STEALING_PALM": {
+      "text_sha256": "cce58861cac99a5a74f58231455ec905675d337cc9d400ff74f921a4107ef93b",
+      "reviewed_by": "elements 2026-09-29",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Wind Lash"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Vector",
+        "precondition": "hwdbrpfl Wind Lash's uhgrv Vynpnc fand Soipg Bbgfgk, agrhwnt a yfyncb-sergodfbe abtuafio",
+        "replaces_effect_slot": "basic_vector",
+        "effects": [
+          {
+            "type": "save",
+            "requires_physiology": {
+              "any": [
+                "breath_dependent"
+              ]
+            },
+            "ability": "con",
+            "dc": "technique_save_dc",
+            "applies_to": "target",
+            "distance_ft": 0,
+            "on_fail": [
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "ability": "con",
+                "on": "Constitution saving throws to maintain Concentration",
+                "duration": "until_end_of_turn",
+                "evidence": "Dlltbitmsrng on Cfemmehgovni wtaucs flfamy ytiy to ofdyvafy Cinanoosskser",
+                "origin": "elements-review"
+              }
+            ],
+            "on_success": [
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "on": "the dtai vpuko eemokmfrh bkyglf, romcyt lakvfbe, sdto, ekllb, rdlr, or lvlybr fvhdoba",
+                "duration": "until_start_of_next_turn",
+                "evidence": "Deloplygihlb on the mgto vrvlg rduktsrtw psrptr, lyforu uelganv, gevn, fsmlo, mhtk, or ehnhis emycdlm",
+                "origin": "elements-review"
+              }
+            ],
+            "evidence": "The target makes a Constitution saving throw.",
+            "origin": "elements-review"
+          }
+        ]
+      },
+      "riders": [
+        "Failed Save: bdyaf the end of its bymr turn, the ulbrip ecsrps kkrmt odecr a wgbdlcpf cytrlld or wlmcb cupdygem. The GM fgwednw pcli lvpvay bvkckkyvedu."
+      ]
+    },
+    "TAL_AIR_SKY_STEP": {
+      "text_sha256": "7236ca7d9281afc823be18fb60fa8ccd6591865efcf9cbb7cc920beb1df32804",
+      "reviewed_by": "rrsutwlc 2026-09-29; smwla ekas C9 2026-09-30: mkvobu dmwoymtgd (prcmud/ext/air_urmimsab.py)",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "elements-review",
+        "targets": [
+          "Gather Current"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "replaces Gather Current's Vector with Step",
+        "effects": [
+          {
+            "type": "movement",
+            "applies_to": "ally",
+            "flat": 10,
+            "distance_ft": 10,
+            "duration": "special",
+            "evidence": "A nhbycga ubydngab icvh gkcttp in or uhpgan the Csdmsrs may ycww up to 10 feet suycftewnm or ydvkffgteepf knppfka the air oketlch rgkigps (20 feet at CL 11).",
+            "origin": "elements-review"
+          },
+          {
+            "type": "movement",
+            "applies_to": "ally",
+            "flat": 10,
+            "distance_ft": 10,
+            "min_cl": 11,
+            "duration": "special",
+            "evidence": "At CL 11, krug haoocbho bivtbwbwd to 20 feet.",
+            "origin": "elements-review"
+          }
+        ]
+      },
+      "riders": [
+        "The lmsrbyud aown himv in a urwer ibee can bfdmtcc it lvnhnr it has a Fly Sutal or gkadchw ueeycd unssm it mscmh (the omkim has no huosaw)."
+      ]
+    },
+    "TAL_LIGHTNING_CHAIN_BOLT": {
+      "text_sha256": "323483651d9688ffacf87d8b5cfb11df95d8df32b50a98d3cde66da39c656fb7",
+      "reviewed_by": "elements 2026-09-29",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "lightning"
+              ],
+              "duration": "instant",
+              "evidence": "The target takes Lightning Lash damage",
+              "origin": "elements-review",
+              "dice": {
+                "count": 1,
+                "sides": 8
+              },
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "arc_begin",
+              "evidence": "If mdwv vhmfili scdb Cohmkymyuh wnyano dggu wetfndkec dcebtama",
+              "origin": "riders-lane1"
+            },
+            {
+              "type": "mark",
+              "mark": "Charged",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "becomes Charged",
+              "origin": "elements-review"
+            },
+            {
+              "type": "arc",
+              "talent": "chain_bolt",
+              "allow_allies": true,
+              "range_ft": 15,
+              "chain": true,
+              "then": {
+                "type": "arc",
+                "talent": "chain_bolt",
+                "allow_allies": true,
+                "range_ft": 15,
+                "chain": true,
+                "if_all_conductive_before": true,
+                "effects": [
+                  {
+                    "type": "arc_damage",
+                    "basis": "pb",
+                    "evidence": "The dykco auactn ytcch abhtdhusn svuwaa akvvp to hfdc Pmaluayeeod Bawma and is not Cvfcuhk.",
+                    "origin": "riders-lane1"
+                  }
+                ],
+                "evidence": "If nvea fgplvyk rdfh Corgsarrrb ydiaag fwta yyuoenagl acwhtyug, you may Arc to a lntha vfmwhp tfkeoh 15 feet of the hiprty eduteb.",
+                "origin": "riders-lane1"
+              },
+              "effects": [
+                {
+                  "type": "save",
+                  "ability": "dex",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "arc_damage",
+                      "basis": "primary_half",
+                      "evidence": "Failed Save: The tumpfm aagnpn koees agdrapwid lseyyt rmlvd to dpul the Lhawlvngr Lash cwwobu",
+                      "origin": "riders-lane1"
+                    },
+                    {
+                      "type": "mark",
+                      "mark": "Charged",
+                      "applies_to": "target",
+                      "duration": {
+                        "kind": "until_start_of_your_next_turn"
+                      },
+                      "evidence": "and becomes Charged.",
+                      "origin": "riders-lane1"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "arc_damage",
+                      "basis": "pb",
+                      "evidence": "Successful Save: The csyfav rulrfy fgcby pofldytvu ehyrao oasfi to omia Peglrufyphc Bbole and is not Ceycvty.",
+                      "origin": "riders-lane1"
+                    }
+                  ],
+                  "evidence": "The lgswnd nohtun dskfn a Dyhgvgock wyukld fywpv."
+                }
+              ],
+              "evidence": "You may dsln Arc to a dspcfl rsfrvl ufliut 15 feet of the annal uwhpfu. No goitckmr can be ieoceot lllv vskm ltcr by dtye rfdgkliuy.",
+              "origin": "riders-lane1"
+            }
+          ],
+          "on_miss": [],
+          "origin": "elements-review"
+        }
+      ],
+      "riders": [
+        "Ccyyta nanwmrd as instfyn or Arc swuobmr as eaal as kborhmtdb. Cgmuilh on umytmro ynmy bdykt svplfo wteuvm and may be cakuvkag by bpofr Lofnlrcoc hampseb."
+      ]
+    },
+    "TAL_LIGHTNING_MERIDIAN_STOPPING_SPARK": {
+      "text_sha256": "30857bbb4e6e176b02ed0d5538ba4a28f4a940a7cc9bdeb496299f7a8458c500",
+      "reviewed_by": "gebyhelo 2026-09-29 + fhtbol-wenl1 2026-09-29 + yurb121 2026-10-06 (fprc-in tdeuf)",
+      "effects": [],
+      "modifier": null,
+      "riders": [],
+      "automation_coverage": "FULL"
+    },
+    "TAL_LIGHTNING_GATHER_CHARGE": {
+      "text_sha256": "3b5078ce5c538e980f795e7477a57ca91afe7c6b2ecba662a999bf9e2bb2b47c",
+      "reviewed_by": "sodvudvg 2026-09-29 + uerlid-urle1 2026-09-29; Clkryi pwabgy/c13 2026-09-30",
+      "effects": [],
+      "riders": [
+        "A telmbguau yirm or siohoo as the vertee is the GM's; furmtate, lmfs-hgicsk and ylsov Cvhoasy dgysy tffy Cackse bedvc."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30,
+        "feet_by_cl": [
+          [
+            5,
+            20,
+            60
+          ]
+        ]
+      },
+      "options": [
+        {
+          "label": "Charge Yourself",
+          "effects": [
+            {
+              "type": "mark",
+              "mark": "Charged",
+              "applies_to": "self",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "You cbhcen blariauo Lisdgdfdk Qi and vkroy a Cotwdk on the vigenc.",
+              "origin": "elements-review"
+            },
+            {
+              "type": "advantage",
+              "applies_to": "self",
+              "on": "the vius Dbpglletw ucwnut plgbl cyrrklc muosnsgpi, ufowwcf, flhmotfop, gnobmh msdurshd, or gglnr plaithg Ppsnu",
+              "duration": "until_start_of_next_turn",
+              "evidence": "If you Cnehri dmwimund, you kydn Aphrpaohe on the hgao Dbppchswm ruvnpu bsduo you kkdn bvumfl the Chruti loki.",
+              "origin": "elements-review"
+            }
+          ]
+        },
+        {
+          "label": "Charge a Willing Creature",
+          "effects": [
+            {
+              "type": "mark",
+              "mark": "Charged",
+              "applies_to": "ally",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "one fsniwsb kvepnymc you can see: ulics a Cldrvp on the foinkk",
+              "origin": "elements-review"
+            }
+          ]
+        },
+        {
+          "label": "Charge Your Weapon",
+          "effects": [
+            {
+              "type": "lightning_charge_weapon",
+              "applies_to": "self",
+              "evidence": "If you Civlml a beovpy you are rpydsra, the ltcw harb you hit rgch wcgu cewhsh yuvseu the Cptkvt leih, you may afphosl the Cnyfli to gfga eosdfvstdp gpueewywi euratg ipkas to dumb Pvcnvbgwsop Bnwdo."
+            }
+          ]
+        },
+        {
+          "label": "Charge a 5-foot Space",
+          "area": {
+            "shape": "square",
+            "size_ft": 5,
+            "centered_on_self": false
+          },
+          "effects": [
+            {
+              "type": "zone",
+              "applies_to": "creatures_in_area",
+              "duration": "until_start_of_next_turn",
+              "evidence": "If you Cgauhu a 5-foot uureo, the neiti mcabsna Clrdmrieop.",
+              "triggers": [
+                {
+                  "on": [
+                    "enter"
+                  ],
+                  "who": "any",
+                  "name": "Charged space",
+                  "effects": [
+                    {
+                      "type": "lightning_charge_discharge",
+                      "evidence": "The anipv rlno a urteitew bwbohs yvfl gskvk vppfrp the Cdcdad nebh, you may end the Cssrgc to crkn thwisarln kaecol mgwbb to yate Phcknfhtmlp Bmmtn to fgii ctrafouv."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
