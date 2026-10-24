@@ -1,0 +1,117 @@
+{
+  "schema": "TianxiaFoundry.FeatureBlocks.v1",
+  "note": "Hunger (AUTO14, round 24): the Digestive Mantle lines the typed effects cannot express, and the Hunger talents that read which kind of Satiety a Mantle burns.  combat/ext/hunger_riders.py.  A mechanic already declared in another feature_blocks.d file keeps its row THERE: combat/typed_reactions.py rules() merges these files in sorted filename order, so a second copy under a later-sorting name silently replaces the earlier one.  tests/test_architecture_guards.py keeps that from happening again.",
+  "features": {
+    "tianxia.talent.hunger.beast_bone_broth": {
+      "block": "lane9_hunger",
+      "kind": "bone",
+      "keeps_compiling": true,
+      "reads": [
+        "bone"
+      ],
+      "why": "A Digestive Mantle made from Bone Satiety may take Thick Hide, and from Foundation Realm that Thick Hide cuts twice your Proficiency Bonus (combat/ext/hunger_riders.py)."
+    },
+    "tianxia.talent.hunger.demon_beast_digestion": {
+      "block": "lane9_hunger",
+      "kind": "demon",
+      "keeps_compiling": true,
+      "reads": [
+        "demon_beast"
+      ],
+      "benefits": 2,
+      "why": "A Digestive Mantle made from Demon-Beast Satiety has two basic Mantle benefits instead of one, and when it ends you make a Constitution saving throw against your Hunger Save DC (combat/ext/hunger_riders.py).",
+      "benefits_for": [
+        "demon_beast"
+      ]
+    },
+    "tianxia.talent.hunger.maw_of_ten_thousand_courses": {
+      "block": "lane9_hunger",
+      "kind": "maw",
+      "keeps_compiling": false,
+      "reads": [
+        "corrupted",
+        "demon_beast",
+        "forbidden"
+      ],
+      "benefits": 3,
+      "required_benefits": false,
+      "satiety_per_benefit": true,
+      "why": "Spend up to 3 Satiety on the Mantle and take one basic Mantle benefit for each; only one may add damage and only one may give Resistance. When the Mantle ends, an ordinary meal lowers your Impurity by 1 (combat/ext/hunger_riders.py)."
+    },
+    "tianxia.talent.hunger.dragon_marrow_banquet_scripture": {
+      "block": "lane9_hunger",
+      "kind": "dragon",
+      "keeps_compiling": false,
+      "reads": [
+        "dragon_marrow"
+      ],
+      "why": "The table records which kind of Satiety a Digestive Mantle burns, so a Dragon-Marrow Satiety can be told apart (combat/ext/hunger_riders.py).",
+      "second_pass": 1,
+      "benefits": 2,
+      "benefits_for": [
+        "dragon_marrow"
+      ]
+    },
+    "tianxia.talent.hunger.predator_king_digestion": {
+      "block": "lane9_hunger",
+      "kind": "predator_king",
+      "keeps_compiling": true,
+      "reads_provenance": [
+        "predator_or_apex"
+      ],
+      "why": "While Predator Step is active, once before the Mantle ends a hit on a Bloodied creature adds one roll of your damage die, but only for a Mantle burned from a predator or apex beast. That is where the creature came from rather than which kind of meal it was, so this row reads the provenance, which the table records beside the meal and independently of it (combat/ext/hunger_riders.py)."
+    },
+    "tianxia.talent.hunger.three_course_battle_body": {
+      "block": "lane9_hunger",
+      "kind": "three_course",
+      "keeps_compiling": true,
+      "why": "Spend one more Satiety as a Bonus Action and your Digestive Mantle's basic benefit becomes another one you choose, with Temporary HP equal to your Proficiency Bonus; a number of times equal to your Proficiency Bonus since your last long rest (combat/ext/hunger_riders.py)."
+    },
+    "HUNGER_BASE_DIGESTIVE_MANTLE": {
+      "block": "lane9_hunger",
+      "kind": "mantle_policy",
+      "runtime": 1,
+      "keeps_compiling": true,
+      "why": "Seal the second-pass Mantle standing/secondary benefit lifecycle. Missing policy retains historical bundles."
+    },
+    "tianxia.talent.hunger.hundred_flavour_mantle": {
+      "block": "lane9_hunger",
+      "kind": "hundred",
+      "runtime": 1,
+      "keeps_compiling": false,
+      "why": "Complete printed combat behavior in the owning Hunger plug-in; typed standalone/modifier effects are suppressed."
+    },
+    "tianxia.talent.hunger.devour_the_venom_keep_the_fang": {
+      "block": "lane9_hunger",
+      "kind": "fang",
+      "runtime": 1,
+      "keeps_compiling": false,
+      "why": "Complete printed combat behavior in the owning Hunger plug-in; typed standalone/modifier effects are suppressed."
+    },
+    "insight.iron-belly-foundation": {
+      "block": "d20_rewrite",
+      "kind": "hunger_iron_belly",
+      "why": "Once per scene, spend 1 CP to reroll an owned failed Constitution saving throw against Poisoned; use the new result.",
+      "text_sha256": "811b3cf5681f131f4adad94330ff156856e2e03d70b5a164e194a08ff3a81c38"
+    },
+    "tianxia.talent.hunger.demon_king_roast_method": {
+      "block": "lane9_hunger",
+      "kind": "demon_king",
+      "keeps_compiling": false,
+      "second_pass": 1,
+      "reads": [
+        "demon_king"
+      ],
+      "benefits": 2,
+      "benefits_for": [
+        "demon_king"
+      ],
+      "why": "Owned Demon-King Mantle gifts and ending Impurity; preparation remains a procedure."
+    },
+    "insight.monster-taste-scholar": {
+      "block": "hunger_scholar",
+      "why": "The Taste the Qi contest gains +1 only for an explicitly qualifying source.",
+      "text_sha256": "2cda49f37f1c3d575728f0ac176c8db0ac39de8d581812b86c0c02439fb5553e"
+    }
+  }
+}
