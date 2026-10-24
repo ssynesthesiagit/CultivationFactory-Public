@@ -1,0 +1,100 @@
+{
+  "features": {
+    "tianxia.path.spirit_awakening.feature.soul_anchor": {
+      "status": "definition",
+      "why": "A record of what the Anchor is (name, description, focus type). It creates no destructible object, immunity, weakness or ability by itself; other Spirit Awakening features (Astral Projection's return route, techniques needing a spiritual focus) read it as a rules term, not as fight math."
+    },
+    "tianxia.path.spirit_awakening.feature.spirit_awakening_subpath": {
+      "status": "build",
+      "why": "Which Subpath (CL3) is a character-build choice, not a fight action; its granted features are the Subpath's own records, each owned and reviewed separately."
+    },
+    "tianxia.path.spirit_awakening.feature.subpath_feature": {
+      "status": "build",
+      "why": "A placeholder progression slot (CL6/10/14/18) pointing at the chosen Subpath's own feature list; the actual feature at each slot is a separate record."
+    },
+    "tianxia.path.spirit_awakening.feature.ability_score_improvement_or_cultivation_insight": {
+      "status": "build",
+      "why": "A character-build choice at CL4/8/12/16/19 (an ability score increase or a Cultivation Insight); nothing to run in a fight."
+    },
+    "tianxia.path.spirit_awakening.feature.spiritual_sense": {
+      "status": "applied",
+      "why": "Blindsight-equivalent perception, CL-scaled (10/30/60 feet), already wired: combat/rules/senses.json's grants table + combat/senses.py (module docstring: 'Spiritual Sense works as Blindsight against living creatures'). Read the Spirit's information reveal is GM-adjudicated (rider)."
+    },
+    "tianxia.path.spirit_awakening.feature.soul_gaze": {
+      "status": "applied",
+      "why": "Costs 1 Resonance, a real action; its information reveal (HP, resistances/immunities, Resonance Mark status) now posts as a GM_RIDER via combat/ext/spirit_awakening.py soul_gaze_reveal (no separate reveal channel exists on the table). Soul Anchor/Bond/Nature detail stays GM-adjudicated."
+    },
+    "tianxia.path.spirit_awakening.feature.domain_manifestation": {
+      "status": "applied",
+      "why": "The 30-foot aura, ally save-Advantage and the once-per-turn free ordinary Spiritual Pressure on a failed save are typed. Unfading Marks, Revealed Spirits, Subpath Domain Expression and Domain Collision need aura-membership and multi-Domain bookkeeping the table does not track; GM-adjudicated (riders)."
+    },
+    "tianxia.path.spirit_awakening.feature.soul_vessel": {
+      "status": "table",
+      "why": "Creates a Spirit Cultivation Asset with its own AC/HP/immunities and a Vessel Imprint (direction-sensing, unfading marks while imprinted) -- the table has no non-actor asset object to track. GM-tracked."
+    },
+    "tianxia.path.spirit_awakening.feature.astral_projection": {
+      "status": "table",
+      "why": "Invisible-to-ordinary-sight and its duration are typed. The body/projection 'one creature, two positions' model needs a second tracked position the table's single condition set cannot represent (Unconscious would incorrectly stop the character acting); the 300-foot/1-mile tether and ending on damage are GM-adjudicated (rider)."
+    },
+    "tianxia.path.spirit_awakening.feature.soul_armor": {
+      "status": "applied",
+      "why": "Resistance to Psychic damage and 'no Psychic damage on a successful Soulward Response' are typed (unchanged, already correct). 'End one ordinary Resonance Mark or Spiritual Pressure effect on yourself' and the unprinted memory/identity-alteration reaction are GM-adjudicated riders (no printed DC or trigger the table can key off generically)."
+    },
+    "tianxia.path.spirit_awakening.feature.spiritual_exorcism": {
+      "status": "table",
+      "why": "A multi-tier resolution (compare Intrusion Source CL across bands, Diagnose/Suppress/Separate/Expel/Cleanse/Release/Destroy) needs Intrusion/possession bookkeeping (what is attached to what, its Source CL, its category) the table does not track. GM-adjudicated; removed a dangling 'repeat the save with Advantage' fragment that could not fire without that bookkeeping."
+    },
+    "tianxia.path.spirit_awakening.feature.soul_splitting": {
+      "status": "table",
+      "why": "GM-run: the rules button spends no action or Resonance and creates no fragment. The GM must spend your Action and 8 Resonance once to create the fragment for the scene, track its defenses, Hit Points, movement and 300-foot tether, measure features from the chosen origin, and resolve eligible Fragment Expressions and destruction backlash. Older saved paid placeholders are blocked; recompile the character for the free rules button."
+    },
+    "tianxia.path.spirit_awakening.feature.immortal_spirit": {
+      "status": "table",
+      "why": "Sovereign Identity is a passive resistance to being targeted by lower-authority mind/soul effects, not an action the bearer takes -- no compiled action should exist for it (removed a stray empty 'attack' action the parser produced). Continue Without the Body, Immortal Restoration Capacity (28-day) and Ageless Soul are outside one fight's scope; GM-tracked."
+    },
+    "tianxia.path.qi_cultivation.feature.qi_sensing": {
+      "status": "applied",
+      "why": "Always-on 30-foot detection is wired in combat/rules/senses.json (kept and shown; combat/senses.py's own design note: informational, no fight rule of its own -- it does not change hit/miss or hidden-creature outcomes). Analyze Qi's information reveal is GM-adjudicated."
+    },
+    "tianxia.path.qi_cultivation.feature.qi_technique_potency": {
+      "status": "applied",
+      "why": "combat/rules/feature_blocks.json 'technique_potency' block: the key ability modifier is added to one damage roll per activation of an ability paid with Qi or belonging to the Qi Cultivation Path (typed_executor _damage_roll 'potency'). Integrator 2026-09-29: this was mislabelled a gap."
+    },
+    "tianxia.path.qi_cultivation.feature.cultivated_response": {
+      "status": "partial",
+      "why": "The existing Defensive Discipline selector persists the chosen save; effective Qi Path CL15 admits two distinct disciplines and CL20 admits all three distinct disciplines, each picked at save time. The shared save_rescue consumer offers the printed correction only when the +PB can turn the failed save into a success, for 1 Qi and a Reaction, once per round. Deterministic native verification is required for closure."
+    },
+    "tianxia.path.qi_cultivation.feature.qi_cultivation_subpath": {
+      "status": "build",
+      "why": "Which Subpath (CL3) is a character-build choice; its granted features are separate records."
+    },
+    "tianxia.path.qi_cultivation.feature.subpath_feature": {
+      "status": "build",
+      "why": "A placeholder progression slot (CL6/10/14/18) pointing at the chosen Subpath's own feature list."
+    },
+    "tianxia.path.qi_cultivation.feature.ability_score_improvement_or_cultivation_insight": {
+      "status": "build",
+      "why": "A character-build choice at CL4/8/12/16/19; nothing to run in a fight."
+    },
+    "tianxia.path.qi_cultivation.feature.nascent_soul": {
+      "status": "table",
+      "why": "Gap, not fixed this pass: Second Defensive Discipline is a build-choice extension of Cultivated Response (see that record). Nascent Continuity (0-Qi turn-start recovery, once per scene) and Independent Concentration (a Constitution-save reaction) have real typed effects already present and unchanged; Nascent Armament Conduction (waive Remote Technique Origin's surcharge) needs Domain Armament Link bookkeeping this worker did not extend."
+    },
+    "tianxia.path.qi_cultivation.feature.nine_heavens_gaze": {
+      "status": "applied",
+      "why": "Truesight 60 feet and Qi Sensing 120 feet apply automatically on use via the existing combat/ext/docket_senses.py sense_while_active hook (already keyed to this record's id in combat/rules/senses.json). Removed a duplicate CL17 Domain Armament damage modifier (domain_armament_damage_increase already applies it; the two together would have doubled it). Heavenly Analysis's information reveal is GM-adjudicated."
+    },
+    "tianxia.path.qi_cultivation.feature.perfected_golden_core": {
+      "status": "applied",
+      "why": "Already implemented: combat/ext/qi_path.py gates every Perfected threshold on cl >= 17 directly. No change needed."
+    },
+    "tianxia.path.qi_cultivation.feature.second_golden_core_form": {
+      "status": "table",
+      "why": "Gap, not fixed this pass: a second simultaneous Golden Core Form (CL20) needs a second tracked slot in combat/ext/qi_path.py; only two fielded CL20 characters have it (Lingyue Frostveil, Lingfeng Frostblade)."
+    },
+    "tianxia.path.qi_cultivation.feature.immortal_of_qi": {
+      "status": "table",
+      "why": "The +5 Qi at the start of each turn is typed. Twin Domain Armaments/Twin Assault/Twin Guard/Remote Origins need combat/ext/qi_path.py to track two Armaments at once (it tracks one); Complete Cultivated Response and Second Golden Core Form are flagged on their own records; Immortal Physiology (ageless, no food/sleep) is outside a fight's scope. Only two fielded CL20 characters have this feature."
+    }
+  }
+}
