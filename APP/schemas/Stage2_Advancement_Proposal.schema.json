@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Stage2_Advancement_Proposal.schema.json",
+  "title": "Stage 2 Advancement Proposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "expected_project_revision",
+    "expected_content_lock_hash",
+    "target_cl",
+    "idempotency_key",
+    "choices"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "TianxiaFoundry.Stage2AdvancementProposal.v1"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "expected_project_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expected_content_lock_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "target_cl": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "choices": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 300,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "effective_cl",
+          "acquisition_channel"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "starting_state",
+              "level_advance",
+              "ability_score_change",
+              "background_acquisition",
+              "background_sphere_acquisition",
+              "background_talent_acquisition",
+              "origin_insight_acquisition",
+              "path_acquisition",
+              "subpath_acquisition",
+              "method_acquisition",
+              "method_activation",
+              "foundation_acquisition",
+              "foundation_expression",
+              "foundation_stage",
+              "sphere_acquisition",
+              "talent_acquisition",
+              "manual_acquisition",
+              "forged_technique_acquisition",
+              "equipment_acquisition",
+              "typed_none"
+            ]
+          },
+          "effective_cl": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 20
+          },
+          "record_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 200
+          },
+          "acquisition_channel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "parameters": {
+            "type": "object"
+          },
+          "reason_code": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 200
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
