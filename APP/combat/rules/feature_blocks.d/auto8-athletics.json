@@ -1,0 +1,180 @@
+{
+  "schema": "TianxiaFoundry.FeatureBlocks.v1",
+  "note": "Athletics sphere passive rows (lane AUTO8). Every rule here is a printed line from authority/typed_mechanics/rules_text.json; the engine reads the compiled row, never the prose. combat/ext/athletics.py owns the block 'athletics' and is inert for a fighter without these rows.",
+  "features": {
+    "TAL_ATHLETICS_WALL_STUNT": {
+      "block": "athletics", "kind": "wall_stunt",
+      "why": "Run up or along walls as difficult terrain. An explicitly GM-approved creature two sizes larger may supply a wall and provokes its Opportunity Attack. End unsupported wall running by falling."
+    },
+    "TAL_ATHLETICS_MULTIPLE_MOTIONS": {
+      "block": "athletics", "kind": "multiple_motions", "choice_owner": true,
+      "why": "Choose two known Motions for one movement sequence by expending one Martial Focus."
+    },
+    "TAL_ATHLETICS_TERRAIN_GLIDE": {
+      "block": "athletics", "kind": "terrain_glide",
+      "why": "Swim through soil, snow, loose earth and sand as difficult terrain; no sight, breath or passage through stone, metal or sealed barriers."
+    },
+    "TAL_ATHLETICS_CLOSE_QUARTERS_TRAINING": {
+      "block": "athletics", "kind": "close_quarters",
+      "why": "Contested hostile-space entry, attacks while sharing, mutual size-based cover, and original-roll cover transfer."
+    },
+    "TAL_ATHLETICS_CAPOEIRA_SPIN": {
+      "block": "athletics", "kind": "capoeira_spin",
+      "why": "Prone alone does not penalize Unarmed Strikes. Starting your turn Prone permits a Bonus Action to stand and make one Unarmed Strike."
+    },
+    "TAL_ATHLETICS_SUDDEN_FLANK": {
+      "block": "athletics", "kind": "sudden_flank",
+      "why": "After successfully Tumbling through an enemy's space, your next attack against it this turn has Advantage."
+    },
+    "TAL_ATHLETICS_WHIRLWIND_FLIP": {
+      "block": "athletics", "kind": "whirlwind_flip",
+      "why": "A successful Tumble check against an enemy restores Martial Focus."
+    },
+    "TAL_ATHLETICS_MOVING_TARGET": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "moving_target",
+          "purchases": 1,
+          "half_cover_ft": 20,
+          "three_quarters_cover_ft": 40
+        }
+      ],
+      "why": "After moving more than 20 feet this turn: Half Cover against ranged attacks and ranged supernatural effects until the start of your next turn. At 40 feet, spending Martial Focus makes it Three-Quarters Cover instead. A second purchase also covers melee attacks."
+    },
+    "TAL_ATHLETICS_COURT_OF_TEN_THOUSAND_STEPS": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "court_of_steps",
+          "speed_ft": 20,
+          "focus_ft": 20,
+          "miss_step_ft": 5,
+          "keeps_compiling": true
+        }
+      ],
+      "why": "The 1-minute Bonus Action stance: +20 feet Speed, nonmagical difficult terrain ignored, standing from Prone for free, Martial Focus back after 20 feet of movement each turn, and 5 feet of movement without Opportunity Attacks when a hostile creature misses you. Allied spaces are already ordinary ground and the maps have no climbable face."
+    },
+    "TAL_ATHLETICS_HEAVEN_TREADING_BODY": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "heaven_treading",
+          "motion": [
+            "ignore_difficult"
+          ]
+        }
+      ],
+      "why": "Fly Speed equal to your land Speed, Hover, nonmagical difficult terrain ignored, and falling damage reduced to 0."
+    },
+    "TAL_ATHLETICS_SPARROW_S_PATH": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "sparrows_path"
+        }
+      ],
+      "why": "Fly Speed equal to half your base land Speed."
+    },
+    "TAL_ATHLETICS_POWERFUL_WINGS": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "powerful_wings"
+        }
+      ],
+      "why": "While you have a Fly Speed through your own wings, you may Hover."
+    },
+    "TAL_ATHLETICS_HELICOPTER_DESCENT": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "helicopter_descent",
+          "fall_speed_ft": 60
+        }
+      ],
+      "why": "Spend your Reaction and Martial Focus at the end of a turn in the air: fall no faster than 60 feet a round, take no falling damage if you land first, and land on your feet, for rounds equal to your Proficiency Bonus."
+    },
+    "TAL_ATHLETICS_FLASH_STEP": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "flash_step"
+        }
+      ],
+      "why": "When you Dash, spend Martial Focus to appear at your final destination instead of passing through the spaces between."
+    },
+    "TAL_ATHLETICS_SPEED_BOOST": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "speed_boost",
+          "action_extra_ft": 10,
+          "boost_ft": 50
+        }
+      ],
+      "why": "Dash or Disengage as your Action moves you 10 feet further. Spending Martial Focus raises every movement Speed by 50 feet for rounds equal to your Constitution modifier, minimum 1, and one level of Exhaustion when that ends."
+    },
+    "TAL_ATHLETICS_DIZZYING_TUMBLE": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "dizzying_tumble",
+          "cost_ft": 10
+        }
+      ],
+      "why": "Leaving a space next to a hostile creature costs 10 feet of movement and forces that creature to make a Wisdom saving throw; a failure leaves it with Disadvantage on attack rolls until the end of your next turn."
+    },
+    "TAL_ATHLETICS_MERIDIAN_THREADING_DASH": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "meridian_threading",
+          "step_ft": 10
+        }
+      ],
+      "why": "When Coordinated Movement restores your Martial Focus, choose one: move 10 feet without provoking Opportunity Attacks; stand from Prone without spending movement; end one ordinary Grappled effect on you; or gain Advantage on your next Strength (Athletics) or Dexterity (Acrobatics) check before the end of your next turn."
+    },
+    "TAL_ATHLETICS_FLOWING_PURSUIT": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "flowing_pursuit",
+          "close_ft": 20,
+          "ac_bonus": 2
+        }
+      ],
+      "why": "After closing at least 20 feet toward one creature in a turn, choose one benefit against it: ignore its Opportunity Attacks for the rest of the turn; +2 Armor Class against it until the start of your next turn; or +5 feet on one jump (not automated: this table's jumps rise whole 5-foot steps and have no horizontal-jump value to increase, so combat/ext/athletics.py reads the jump option as text). Allied creatures' spaces are already ordinary ground."
+    },
+    "TAL_ATHLETICS_ONE_BREATH_TEN_THOUSAND_STEPS": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "one_breath",
+          "focus_ft": 20,
+          "keeps_compiling": true
+        }
+      ],
+      "why": "While One Breath, Ten Thousand Steps runs until the end of your turn, each further 20 feet you move regains Martial Focus. Hostile spaces are already difficult terrain and every owned Motion passive already applies on its own, so those printed lines need nothing here."
+    },
+    "TAL_ATHLETICS_POLEARM_VAULTER": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "polearm_vaulter",
+          "height_ft": 5
+        }
+      ],
+      "why": "While holding a pole or polearm on support, spend Martial Focus and a Bonus Action for the next pole vault this turn: choose +10 feet horizontally or +5 feet in height. The increase is independent of ability scores and remaining movement; vault movement needs no Action or check."
+    },
+    "TAL_ATHLETICS_MIGHTY_CONDITIONING": {
+      "block": "athletics",
+      "rules": [
+        {
+          "kind": "mighty_conditioning"
+        }
+      ],
+      "why": "Your jump height uses the better of your Strength and Dexterity instead of Strength alone. Strength (Athletics) and Dexterity (Acrobatics) checks the table resolves for you already take the better of the two (combat/ability_checks.escape_bonus, combat/ext/escape_checks.py), which is this talent's own printed reading."
+    }
+  }
+}
