@@ -1,0 +1,125 @@
+{
+  "schema": "TianxiaFoundry.FeatureStatus.v1",
+  "features": {
+    "TAL_BRUTE_GREATER_BRUTE": {
+      "status": "applied",
+      "why": "Gu's sheet already carries Strength (Athletics) at Expertise from tianxia.origin_insight.hunger_memory and tianxia.path.body_refining (skills.Athletics proficiency_multiplier 2, used wherever the fight reads the Athletics skill -- Brutal Shove's and Grapple's contests, escape checks). Greater Brute's own text says it 'does not stack with another feature granting Expertise ... to the same check', so it adds nothing further for this build."
+    },
+    "BRUTE_BASE_BRUTE_MANEUVERS": {
+      "status": "applied",
+      "why": "Disarm is live: added to combat/rules/weapon_specials.json sphere_maneuvers for tianxia.sphere.brute, using the same generic Disarm maneuver Piercing Needle already uses (a weapon attack that must hit, then a Strength-or-Dexterity save; it does not separately model 'Disadvantage if two-handed' or 'Advantage/Disadvantage by relative size'). Overrun (moving through a hostile creature's space) and Shove Aside (redirecting Brutal Shove to a chosen nearby space instead of directly away) are not automated: both need a contested-movement or chosen-destination targeting shape this table's attack-roll-based maneuver abstraction does not have. GM-adjudicated."
+    },
+    "TAL_BRUTE_TERRAIN_TRASHER": {
+      "status": "table",
+      "why": "Grab and destroy a wall/door/floor/barrier section with a DC 10 Strength check -- object and structure destruction/HP has no representation on this combat table (same category as falling, elevation, or mounts)."
+    },
+    "TAL_BRUTE_DROPKICK": {
+      "status": "table",
+      "why": "Triggers on finishing a long jump or high jump after moving 10+ feet; this table's movement system does not distinguish a jump or its landing from ordinary movement, so there is no event to key the Advantage rider off."
+    },
+    "BRUTE_BASE_IMPACT_COLLISION": {
+      "status": "definition",
+      "why": "Defines what an Impact Collision is generically ('some Brute talents cause an Impact Collision...'); Hammer is the concrete instance, automated via combat/ext/gu_brute.py's `collision` hook."
+    },
+    "TAL_BRUTE_HAMMER": {
+      "status": "applied",
+      "why": "combat/ext/gu_brute.py's `collision` hook: Impact Collision damage on a Brutal Shove that actually stops short, gated on holding Martial Focus. See tests/test_auto_gu.py::test_hammer_only_deals_damage_on_an_actual_collision_while_holding_focus. Still shows in this diagnostic's default 'skipped' pass because that pass does not know about combat/ext plug-ins, only the compiler's own blocks."
+    },
+    "TAL_BRUTE_BREAK_DEFENSES": {
+      "status": "applied",
+      "why": "combat/ext/gu_brute.py: a Brutal Shove hit gives the target's next attacker Advantage (gate2_engine's existing incoming_attack_mode/NEXT_ATTACK/CONSUMED modifier)."
+    },
+    "TAL_BRUTE_FOCUSED_MIGHT": {
+      "status": "applied",
+      "why": "combat/ext/gu_brute.py grants a real 'Focused Might: Regain Martial Focus' Bonus Action, gated on a self-condition set by a successful Brutal Shove (not an always-available refresh)."
+    },
+    "TAL_BERSERKER_BATTER": {
+      "status": "applied",
+      "why": "Missing from the sheet's automatic_sphere_component_record_ids despite being catalogued as an automatic base-sphere ability; combat/ext/gu_berserker.py supplies it directly. See tests/test_auto_gu.py."
+    },
+    "TAL_WRESTLING_CHOKE_HOLD": {
+      "status": "applied",
+      "why": "Applied through combat/ext/gu_wrestling.py's 'Apply a Slam: Choke Hold' action (WRESTLING_BASE_APPLYING_A_SLAM was misclassified 'build' and had no action of its own). The breathe/speak/Verbal-component denial and the consecutive-round-choking Exhaustion are GM-only riders (no Exhaustion-level resource on this table)."
+    },
+    "TAL_WRESTLING_CULTIVATION_SUPPRESSING_GRIP": {
+      "status": "applied",
+      "why": "Applied through combat/ext/gu_wrestling.py's 'Apply a Slam: Cultivation-Suppressing Grip' action; the actual suppress/dispel check against an arbitrary effect's rank is a GM-only rider (no generic 'effect rank' registry exists to automate it, the same gap as Cultivation Sunder)."
+    },
+    "TAL_WRESTLING_GRANDSTANDING_SLAM": {
+      "status": "applied",
+      "why": "Folded directly into combat/ext/gu_wrestling.py's Apply-a-Slam actions (fires on every Slam application) rather than left on the generic modifier pipeline: its authored scope was 'any_sphere_technique', which would have applied the Martial-Focus cost and fear burst to every Wrestling action (Grapple, Suplex), not just a Slam."
+    },
+    "TAL_SAND_SAND_STEP": {
+      "status": "applied",
+      "why": "combat/ext/gu_sand.py's attack_mode hook: Disadvantage on opportunity attacks against Gu while he stands in Sand Terrain he controls. Ignoring Difficult Terrain from sand/dust/gravel needs no extra code: a Sand talent's zone is already tagged difficult-for-hostiles-only (combat/zones.py), so the owner was never slowed by it in the first place."
+    },
+    "TAL_SAND_ABRADING_WARD": {
+      "status": "applied",
+      "why": "combat/ext/gu_sand.py's turn_start hook: Proficiency Bonus Slashing damage to a hostile creature that starts its turn in Gu's Sand Terrain. The printed 'you may' is defaulted to always-yes (no cost or downside to decline)."
+    },
+    "TAL_SAND_DUNE_BANK": {
+      "status": "table",
+      "why": "Reaction ('you or a creature within 5 feet of your Sand Terrain is targeted by an attack roll -> Half Cover') has no printed numbers missing, but this table's only reaction veto hook (ext reaction_allowed(engine, reactor, other)) cannot name which specific reaction of the reactor's is being offered -- gating it on 'near Sand Terrain I control' would have to silence every reaction Gu has, not just this one. Needs a per-row precondition hook this engine does not have yet; left un-automated rather than shipped ungated (which would be free Half Cover on every attack against him)."
+    },
+    "TAL_SAND_LOOSE_FOOTING": {
+      "status": "table",
+      "why": "Reaction trigger is 'a hostile creature enters Sand Terrain you control'; combat/reaction_triggers.py's classify_trigger explicitly excludes 'enters your ... Terrain' as an untracked trigger shape (_CREATURE_KIND_TEXT['moved']) -- an existing, corpus-wide boundary, not specific to Gu."
+    },
+    "tianxia.talent.hunger.beast_bone_broth": {
+      "status": "outside",
+      "why": "Modifies Refine the Meal (a 10-minute ritual/short-rest procedure, itself 'outside') and which Digestive Mantle benefit a later meal unlocks -- resolved when the meal is prepared, not in a fight."
+    },
+    "tianxia.talent.hunger.trail_stomach_scripture": {
+      "status": "outside",
+      "why": "A Refine the Meal rider granting Advantage on a future Constitution save against travel hardship before the next long rest -- a survival/travel benefit, not exercised in the fights this table runs."
+    },
+    "tianxia.talent.hunger.famine_enduring_bowl": {
+      "status": "outside",
+      "why": "Modifies Refine the Meal (a non-combat ritual) to feed willing creatures against ordinary hunger and thirst."
+    },
+    "tianxia.talent.hunger.wolfing_the_battlefield_scrap": {
+      "status": "outside",
+      "why": "Lets Refine the Meal (a non-combat ritual) run in 1 minute instead of 10 under a battlefield condition; still the same out-of-combat procedure."
+    },
+    "tianxia.talent.hunger.appetite_seal": {
+      "status": "outside",
+      "why": "Modifies Refine the Meal's DC on a later use -- resolved during meal preparation, not in a fight."
+    },
+    "TAL_WRESTLING_BODY_LOCK": {
+      "status": "table",
+      "why": "Waives the extra movement cost for dragging a Grappled creature under certain conditions; the drag-cost calculation itself lives in gate2_engine.py (off-limits to edit) and combat/ext has no movement-cost hook to intercept it from a plug-in."
+    },
+    "foundation.furnace_heart_record_v0_2B.generate_furnace_heat": {
+      "status": "table",
+      "why": "combat/pressure.py's existing 'generate' block (reused here rather than built fresh) only recognizes three triggers (damaged, hit_aggressor, pressure_save), and 'damaged' means hostile damage specifically -- Furnace backlash is self-inflicted, so it would not qualify even if wired up. The other printed trigger ('after you resolve a body-furnace technique that costs Path resource') has no matching keyword in pressure.py at all, and none of Gu's actual talents are tagged as body-furnace Path techniques, so it is unclear this ever fires for his real kit. Extending pressure.py's trigger vocabulary for an unconfirmed use was judged out of scope."
+    },
+    "foundation.furnace_heart_record_v0_2B.banked_coals": {
+      "status": "table",
+      "why": "Spends Furnace Heat, which Generate Furnace Heat (above) has no confirmed way to produce for this character; blocked on the same gap."
+    },
+    "tianxia.talent.gravity.heavy_weapon_body": {
+      "status": "build",
+      "why": "Only changes Weighted Strike's extra damage dice from d6 to d8; Gu does not own Weighted Strike (a different Gravity talent), so this has nothing to modify in his build. Not a fight-mechanics gap -- his build simply does not include the talent this one improves."
+    },
+    "tianxia.talent.gravity.light_body_rush": {
+      "status": "table",
+      "why": "Its first clause (spend 1 CP/Stamina as a Bonus Action to Dash/Disengage) needs a 'Body Lightening is active' precondition, which is not tracked as a condition or flag anywhere -- Weight Shift: Body Lightening's own compiled effects are a flat, self-contained bundle with no marker other talents can query (Feather Body's bonus is folded directly into that bundle instead, which only works for a fixed always-on buff, not a separately-gated action). Its second clause needs Weighted Strike, which Gu does not own. Extending Weight Shift to leave a queryable marker was judged out of scope for this pass."
+    },
+    "tianxia.talent.gravity.light_body_flurry": {
+      "status": "build",
+      "why": "Only changes Weighted Strike's Lightening Blow; Gu does not own Weighted Strike, so this has nothing to modify in his build."
+    },
+    "TAL_BERSERKER_ALTER_TERRAIN": {
+      "status": "table",
+      "why": "Digging a 5-foot-deep hole or raising ground by 5 feet when using Shatter Earth (now automated) is ground-elevation modelling this table does not have, the same category as falling or climbing."
+    },
+    "TAL_WRESTLING_CAPTURE_SPECIALIST": {
+      "status": "build",
+      "why": "Prerequisite is Pin (a Wrestling Slam talent), which Gu does not own, so there is no Pin-created Restrained condition for this to speed up in his current build."
+    },
+    "TAL_BRUTE_BATTLEFIELD_BOWLING": {
+      "status": "build",
+      "why": "Prerequisite is Dominoes, a different Brute talent Gu does not own, so there is no Dominoes trigger for this to extend."
+    }
+  }
+}
