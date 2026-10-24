@@ -1,0 +1,105 @@
+{
+  "features": {
+    "TAL_LIGHTNING_ELECTRIC_FIST_METHOD": {
+      "block": "lightning_combat",
+      "kind": "fist"
+    },
+    "TAL_LIGHTNING_LIGHTNING_WINGS_OF_THE_HEAVENLY_BODY": {
+      "block": "lightning_combat",
+      "kind": "wings",
+      "keeps_compiling": true
+    },
+    "TAL_LIGHTNING_SKY_FIRE_NERVE_NET": {
+      "block": "lightning_combat",
+      "kind": "sky_fire",
+      "radius_ft": 20,
+      "why": "Sky-Fire Nerve Net: \"When a creature fails a saving throw against Meridian-Stopping Spark, you may choose one additional Charged creature within 20 feet of it. The additional creature makes a Constitution saving throw.\" The save and both branches run here rather than as a modifier on Meridian-Stopping Spark, because the printed rule saves a second, different creature the owner picks, not the creature that already failed (combat/ext/lightning_riders.py, the after_save_resolved hook).",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "applies_to": "target",
+          "evidence": "The additional creature makes a Constitution saving throw.",
+          "on_fail": [
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "evidence": "It cannot take Reactions until the start of its next turn."
+            },
+            {
+              "type": "disadvantage",
+              "applies_to": "target",
+              "on": "the next Constitution saving throw it makes to maintain Concentration",
+              "duration": "until_end_of_turn",
+              "evidence": "has Disadvantage on the next Constitution saving throw it makes to maintain Concentration before the end of its next turn."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "spend_mark",
+              "mark": "Charged",
+              "applies_to": "target",
+              "evidence": "It loses its Charge."
+            }
+          ]
+        }
+      ]
+    },
+    "TAL_LIGHTNING_MERIDIAN_STOPPING_SPARK": {
+      "block": "lightning_combat",
+      "kind": "meridian",
+      "cp_cost": 1,
+      "why": "Meridian-Stopping Spark: \"When you hit a creature with Electric Fist Method, Charged Needle, or a melee Conductive Strike, you may spend 1 CP to intensify the meridian shock.\" Its typed modifier named those three abilities, but all three are plug-in driven (feature blocks and combat/ext hooks) rather than compiled actions, so the compiler's named-target matcher had nothing to attach to and the whole rider was dropped as 'no matching ability'. It is delivered here instead, on the hit that actually carried one of them (combat/ext/lightning_riders.py, the after_hit_choice hook).",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "applies_to": "target",
+          "evidence": "The target makes a Constitution saving throw.",
+          "on_fail": [
+            {
+              "type": "condition",
+              "condition": "no_cp_regain",
+              "applies_to": "target",
+              "duration": "until_end_of_next_turn",
+              "evidence": "Until the end of its next turn, the target cannot regain CP"
+            },
+            {
+              "type": "disadvantage",
+              "applies_to": "target",
+              "ability": "con",
+              "on": "Constitution saving throws to maintain Concentration",
+              "duration": "until_end_of_next_turn",
+              "evidence": "has Disadvantage on Constitution saving throws to maintain Concentration"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_end_of_next_turn",
+              "evidence": "and cannot take Reactions"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "condition",
+              "condition": "no_cp_regain",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Until the start of its next turn, the target cannot regain CP"
+            },
+            {
+              "type": "disadvantage",
+              "applies_to": "target",
+              "on": "the next Constitution saving throw it makes to maintain Concentration",
+              "duration": "until_start_of_next_turn",
+              "evidence": "and has Disadvantage on the next Constitution saving throw it makes to maintain Concentration"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
