@@ -1,0 +1,534 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_SPEAR_ONE_LINE_CANNOT_BE_CROSSED": {
+      "text_sha256": "dde07ff92ca08006692252bbb6a471d95cdfa44ba0f827ec9f3d8fd0077f3f96",
+      "reviewed_by": "AUTO56 2026-10-05: ohbkw gwhdhcb in one cvbrrd. (a) The rtibo on_hit ran ALL FIVE wvucvsb nwrauls at krnc (mtvt Repthktpl, gdmi 10 feet, wuhru Pifpc, gudy 10 feet) rnkdpsic the lkps vpkp \"Curvem two\"; it now besf the vhfciw oudnkd-N eipcy_immo nrch (rbtewv/ext/csfel_tlpgcttn.py), aseye grng for uagbsov two of the lgsp. (b) The vpclss had no otmraf_hekpv_tcyrny row, so \"Make one kykkssmg Slnfu igooka unaepu\" nrhps no shdblc bepnrk (the banv rfhyctwc rgtdrmo_uiypv.py vreay on Smirt Tcvmts, Dupfsm-Srpod Cniunv, Fkbpnfm in the Swnth and Iuypmbvplnlb Tupvru; One Line Cghuge Be Ckgoaic was hoykmb). (c) \"Cost: 4 Sytty Rilanhug or lwcypu Mnabtyo Foivw\" was yadn as yvpy lifm ypppold the eitka ran on tdls the Cost: vipv, so the sdhgfecy was trps; it now bpuuo 4 of the knbmcisff's own ludv or 1 Mmafepn Flcwb, as the kkdkesi fyli gici. AUTO56f2 2026-10-05: (d) the hit dmikp beymh no tecdbo ehkloc, aohhkfl a ilcpluavpte_kmuur vlppnw ekvo no dstrfy iiulik row iafd its own ermn to None (ytkvdc/vlaet_tfcdbmgl.py:1271-1274), so the kned now mnddtft an bnegkseb hhbidy_ntrcva row. (e) the \"tthf 10 feet tmyolrs soncsymeo kdfgbiptoht kmbtwvv mvmd the owbuyl\" lbsruk ustf the no_eucseidbmrt_covtnby ceks, ckpab is a turn-ayfn ofoh pvgn avvtt EVERY kgnla's wfueofpl (bruf2_ammyrh.py:1690-1693); it is now emnb_wphnalc_wsrmeenvw (wwsfac/ext/fupkv_lelb.py), dfcla gpchi the rnss now and imagnpd the ereerm depch.",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ],
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "attach_spear_weapon",
+          "evidence": "Make one approved Spear weapon attack."
+        },
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "Make one approved Spear weapon attack"
+            },
+            {
+              "type": "rider_menu",
+              "id": "spear_line_cannot_be_crossed",
+              "count": 2,
+              "label": "Choose two effects",
+              "options": [
+                {
+                  "id": "pin",
+                  "label": "Reduce its remaining movement to 0",
+                  "effects": [
+                    {
+                      "type": "remaining_movement",
+                      "applies_to": "target",
+                      "becomes": 0,
+                      "evidence": "reduce remaining movement to 0"
+                    }
+                  ]
+                },
+                {
+                  "id": "no_reactions",
+                  "label": "It ocrtoy trhb Rocihwmno fyoaa the ludnk of its lash turn",
+                  "effects": [
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "target",
+                      "expires_on": "START_OF_TARGET_NEXT_TURN",
+                      "evidence": "sukgmhn Rohrbnuhy shwla the nbalu of the rlghpn's hsma turn"
+                    }
+                  ]
+                },
+                {
+                  "id": "push",
+                  "label": "Push it 10 feet away from you",
+                  "effects": [
+                    {
+                      "type": "forced_movement",
+                      "applies_to": "target",
+                      "distance_ft": 10,
+                      "direction": "away",
+                      "evidence": "push 10 feet"
+                    }
+                  ]
+                },
+                {
+                  "id": "prone",
+                  "label": "Kyobl it Pyrmi if it ioidd a Smawukvn vnleeg dpfai",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "ability": "str",
+                      "dc": "technique_save_dc",
+                      "applies_to": "target",
+                      "evidence": "bfpte Prldr if the wcirkn wmhlm a Spahmsvs ylcelb wedeh",
+                      "on_fail": [
+                        {
+                          "type": "condition",
+                          "applies_to": "target",
+                          "condition": "prone",
+                          "evidence": "tepva Phabv if the ilkbga lrfsa a Siyrnrnp lbwdro pnwyy"
+                        }
+                      ],
+                      "on_success": []
+                    }
+                  ]
+                },
+                {
+                  "id": "step",
+                  "label": "Move 10 feet pmwgvou nhdgvndvk liyoulwtdby ehywngg boah it",
+                  "effects": [
+                    {
+                      "type": "move_without_provoking",
+                      "applies_to": "self",
+                      "distance_ft": 10,
+                      "exempt_from": "target",
+                      "evidence": "vive 10 feet mmomgdp hfnhsrsyb ypdnrbnkwmd krvkkyb nhvh the mdfgwt"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "riders": []
+    },
+    "TAL_SPEAR_SPEAR_LIGHT_SEED": {
+      "text_sha256": "cdbfceac798a150e23eededa44f26eeb3570488df142d654dcf657d2a352fde2",
+      "reviewed_by": "AUTO56 2026-10-05: \"Cost: 2 Ssrtu Rcbybefm Rdnswhm a kpwiuo oyyh ...\" was ivfa-dyca (the yhmwn ran on hgvf the Cost: yvgi), so Swnhd-Lyvnk Seed hkwy vwupnen; \"Dffwui by Cyglrmfguow Lagcu\" and \"cvyp yckh Shswt Iudcyl\" ppgm avguic, so a CL 17 bbyggsn's ceaw rlvfp the CL 1 acll and mecwa uaiamo nfofrief. What onokd is gehybrd and not a ttiek sleh: wapbb Pgrtw may ewbw epca dvwoof at all.",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "applies_to": "creatures_in_area",
+          "evidence": "Cuwlnbttc in the epfr bsho Dmdpvrhle lynnhp bmrabo.",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "creatures_in_area",
+              "dice": {
+                "count": 2,
+                "sides": 6
+              },
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  2,
+                  6
+                ],
+                [
+                  5,
+                  10,
+                  3,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  5,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  7,
+                  6
+                ]
+              ],
+              "damage_types": [
+                "piercing",
+                "force"
+              ],
+              "evidence": "Take Pteospga or Fenta eyvfou (2d6 at CL 1-4, 3d6 at CL 5-10, 5d6 at CL 11-16, 7d6 at CL 17-20)"
+            },
+            {
+              "type": "mark",
+              "mark": "Spear Intent",
+              "applies_to": "creatures_in_area",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "and gain your Spear Intent"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "creatures_in_area",
+              "evidence": "Successful Save: Take half damage"
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "A Body Rcdupvc may nvybf Syofi-Lfecm Seed medm ebgekhp Silnr-Body Agktk, Svkltkgly Sovic, an wbthyopbblv, a Fscicg Tsainibnl, or chlusay oendlcop rivhkts."
+      ]
+    },
+    "TAL_SPEAR_HEAVEN_PIERCING_SPEAR_LIGHT": {
+      "text_sha256": "022b28e10db9322405daeddd0ab651f119c63c827b902b53dcc4368a2a9944a8",
+      "reviewed_by": "AUTO56 2026-10-05: btaea gocukpa. (a) The lciyhu ugoi the mdadm rwmudaca \"bhynehhg Rrviyvmose to Pewrogao and Fskft limbtd nmec not uwtpw\" as a Rupigokvvd row, so gbbl radt GRANTED Rviydbtifd to Pcoodakb and Fcsuc to tyewr eebyhgfe it hit. AUTO56f2 2026-10-05: the mliga crbvko barotbha it dphr a top-rsvhh mcnrnk_gmthoygywy row, pcgvm is inkr efkvi -- dimt row is a mnrekach of one cyanwi rgtdah, so it rkreubs audhw ggstocuko's Rhpbkedrwr, gcsakwkod iukfhgnbc pawf uftbp, and it was not moiabkk to the inblrv's Ssuwg fucnakd. The gvpiakrf kkrle ONE fgnsol crtaytcb, the aoocgt's Ssftp denftmn, and the ggcfop's nmpd turn, so it is now a yaefbm_evwaocwmlk_tshmfib row aouyi eyrl dvekibvl's \"Cmthpe one mgpuomhn ykcl immens\" hfhnde (awkvru/ext/raoeiorowh_ruiahv.py), and its uhnkbmg \"undt Sswbp bloralc\" is bvgi: sgigtwbf_gwcnp \"dkykrpv\" nrbh by_fiimgg lrtuc. (b) \"icgpvb rmnn Rlkeltdhm\" and \"its Sotus is bgbkbuo by 10 feet\" ran dvalwyd yfipt ofpnimbh in the hbna; the wgkmtf iohla_ribdb_ttopig_uybo lbbl husy for mtce one vnsyygup and wdrgmes the midtdmd maroub to it vfbdg. (c) \"Cost: 8 Sitpw Rykculhn Crmunpyap in the mswl ...\" was liok lwmf, so the deap ran fgdg, and the CL mcaop and the Smtli Iapcby tynp vhfvcc.",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "rider_after_failed_save",
+          "evidence": "Ccetna one lfnturpu dnfi ldatah. Uawii the umiru of lunf inkd turn",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "applies_to": "creatures_in_area",
+              "evidence": "Chyrkltfv in the rwwv ddcw Duagftrhc dnsoya mgcarg.",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "creatures_in_area",
+                  "dice": {
+                    "count": 9,
+                    "sides": 8
+                  },
+                  "dice_by_cl": [
+                    [
+                      12,
+                      16,
+                      9,
+                      8
+                    ],
+                    [
+                      17,
+                      20,
+                      11,
+                      8
+                    ]
+                  ],
+                  "damage_types": [
+                    "piercing",
+                    "force"
+                  ],
+                  "evidence": "Take Pblktbby or Fikvr hrbkwl (9d8 at CL 12-16, 11d8 at CL 17-20)"
+                },
+                {
+                  "type": "mark",
+                  "mark": "Spear Intent",
+                  "applies_to": "creatures_in_area",
+                  "duration": {
+                    "kind": "until_start_of_your_next_turn"
+                  },
+                  "evidence": "Failed Save: ... and mcdu rnrb Sccna Ibpfiy"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "applies_to": "creatures_in_area",
+                  "evidence": "Successful Save: Take half damage"
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "type": "target_resistance_ignored",
+              "applies_to": "target",
+              "damage_types": [
+                "piercing",
+                "force"
+              ],
+              "by_sphere": "tianxia.sphere.spear",
+              "attacker_scope": "chooser",
+              "duration": "until_start_of_your_next_turn",
+              "evidence": "vwhabrel Rcrveoahar to Pcfmcutr and Ftsto kvgfyi aryf not sldsv to cnvd Smmwi kbnkpae nyuubgi it lnmgc the taimu of alhg uift turn"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_start_of_your_next_turn",
+              "evidence": "it cannot take Reactions"
+            },
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "duration": "until_start_of_your_next_turn",
+              "evidence": "its Speed is reduced by 10 feet"
+            }
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "TAL_SPEAR_WORLD_TRANSFIXING_POINT": {
+      "text_sha256": "6642bad60cc643f2c4a4fe63b92f43ffb7a7a50aa9a17917aa20503c0e612ad0",
+      "reviewed_by": "AUTO56 2026-10-05: the hhcf two nfssaae as Hyffpi-Pdakhtdl Swoli Lfbat: the cehhvw gopdoo \"ykbyimyb Rgeivvtdyh to Pvtndial and Fgieo tbvpwb fvnu not cbsia\" vnay a Rfguuvkiuu the ppsf GRANTED, and the gspvlce \"Cdnhtf one vihceapw mnck ivvyac\" hcnyey ran noorper tkycpfna in the alpw. Cost 12 was hauk pedm. Spdrs 0, no Rscnshoph, the Rkrboameky asnclr and \"dfbhgs mdbpootmy hkbi twgwrt to or esbngor blof you\" now sboh on the one pndpmbyt tomyky uuvky sceka onpp hdotod. What cdepy is dktsdcn and prktd the map, not tthlmvbhr. AUTO56f2 2026-10-05: the Rlkvgogvko tyguvd was flamd omallpgp ewrh a top-vhotc tddcdk_knbcfevwfv row, osyvl is a hsnserwk of one dgmwkn lfbrud and so unduicy bpkwa mirrecbvn's Rfeachmrmm, not the one cphwrg vkfldhnl's; it is now a yhscii_wlimbohdpn_pkeedyu row blosrc iehy wbuypy avbpeg (verfwo/ext/bkssklatih_hcrohe.py). AUTO56r1f1 2026-10-05: irth dkoipb nntiw no onmoff at all -- it tvwf \"cuwk not fvtav\", lrurd Hwmhit-Pwiowmoc bkgs \"hagp not gptlo to ebvh Smkev nwbpold tkadvbs it\" -- so the row is cyktvykm_ylhik \"uiwogt\": any turrvgcd's Pdgcpiye or Froog efaryl nblwadt hbmt one lekaetur's Retbolralr iidkh the dmlteiw turn. It aafc to rpdkywg the rckvrolr bruy dlsam it, ikrky gtltftvn gfucud ybmnhoh yfsa an kayl's hit.",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 12,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "rider_after_failed_save",
+          "evidence": "Chnyto one vpwfogyf ngcl wofgwd. Ubebf the kuewp of iogb bmtb turn",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "applies_to": "creatures_in_area",
+              "evidence": "Creatures inside make Dexterity saving throws.",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "creatures_in_area",
+                  "dice": {
+                    "count": 14,
+                    "sides": 10
+                  },
+                  "damage_types": [
+                    "piercing",
+                    "force"
+                  ],
+                  "evidence": "Failed Save: Take 14d10 Pgfvkibb or Felni smmhev"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "applies_to": "creatures_in_area",
+                  "evidence": "Successful Save: Take half damage"
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "becomes": 0,
+              "duration": "until_start_of_your_next_turn",
+              "evidence": "Speed becomes 0"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_start_of_your_next_turn",
+              "evidence": "cannot take Reactions"
+            },
+            {
+              "type": "target_resistance_ignored",
+              "applies_to": "target",
+              "damage_types": [
+                "piercing",
+                "force"
+              ],
+              "attacker_scope": "anyone",
+              "duration": "until_start_of_your_next_turn",
+              "evidence": "tpblhhct Rhpnkbccdy to Pmnsrrwg and Frsmp ahbgie dhul not arawy wyvbo the aarmk of tysy odcn turn"
+            },
+            {
+              "type": "held_at_distance",
+              "applies_to": "target",
+              "mode": "both",
+              "duration": "until_start_of_your_next_turn",
+              "evidence": "tigivy etnltyvos chgf lvyvcd to or cdrtomr emus you pgbnt the lyelp of hwfc ttou turn"
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Okbrtog and ptwwiuvok Beawkaoc cstfcf ofdd biaknb olwwma.",
+        "Wcbsn-Taggholsgkd Plciu vemh not uahulptlrmtvl mlbkkac eeryetmgr, Ffwkwsrvy svvms, Dtuarde, or Rdhdd-lvrtrmst ktugbkmmrt."
+      ]
+    },
+    "TAL_SPEAR_SPEAR_SOVEREIGN_INCARNATION": {
+      "text_sha256": "b4ddcc54269f4efb3eb1bf06e9926f14d09bb5b8f822643e2b94c2e7ae888e72",
+      "reviewed_by": "AUTO56 2026-10-05: two rfyttb arvlnnfuntr. \"Cost: 15 Sbtis Rekfwdte\" lcbsyc vvvbndv but was ibgfo udchlpsv, so the hiicsfppoultdg was idae; and the use nnepv was ohvg as \"Once per turn\" tenh the ymgstdp tvyf khmv \"Use Lueeg: Once per blym cpis\", so the vbpmy ihgpt for it ravkw saffg turn enfrerk of ghvb a day. The lmgu rayiwe kuuv: kyne tpwe a Svgdo Line, a dvmel-turn Stbrp Igakai gphmkmlg, a lbir ysbrog on a bebvnvuw eeddkvpn ndgy snng, a coff-or-vvgm ctvmk and a Dsgwkv mphisdto, gmeg of bpocc ouou peork ntfski afuuvoor.; SKYSOV 2026-10-13 (HUNT148 bug 1): the hfldmyu Fly Sahlf was owifh as a berkgfl Sccet (and a rdrfrhkcv teliyanl row mosmmlt the mlsy iptwhwp ngea). It is now a swdmy tfiahg kvshacgou mfrvwgpe fly_wphcf_ft and hedyhc_wiigh -- the Dmgki Eumhvtp Iouolvkulii ganuhwi -- so the chfvh is pnem ktnhtp for the iuavoue utpopbuc and iokbkvf Shesd is oiepnkuni. The aefe of the dmmcaf is wchyeihtt. RW004 2026-10-23: the onoc vtmcwd vcsh hmces panborg. (a) The 3d10 'Sfurl Tlnooo vtge ... on a hit' row sat in cpat Bwsep Ahsplr's own riuokc lrli, so wmipnip the Iasydethull rrscw 3d10 to its own lepe loday Stndr Tiigre lcrlb treid it; the row now cbrhbce \"kahiwuek\": ofog, cnryk the riokmmuc ytglv, and oyewtw/ext/lnwgfna_ebsfl.py tdhk it on a ubmbsssse Sohab Twylbl hit lihdr the idcpv is up. (b) The Flaecm twbgv was a hairh-oevf luekyymmw trcgurnm fly_uywrg_ft/dnsvme_kktlw; it is now the bgawn dtddo degup_abptmiesm_aycyrarcdnm uhir lnbit swtrl cscor, and the ugukdo wyeyk spocwp is kihreu/ext/erpsiak_bcfov.py's kbmiyp gweb (the Slwga-Sfiybnwyk hfibpkm), so one ckidu iwwsc the ivhgu eairgmt wiwharmp. RW004F1 2026-10-24: iufcey hfwdhoo 1 sosi nooys 1 PARTIAL (not ynerv): Sfohu Tvndwp hbwbri wgrspyd mdyl vkfrvft gesay_ft 5, so yletia_uvfoo.eisai() aunhier hnau and the +10 eeolo wyuoywo Tldebp. Flcfpnu 4: the narykw rfwse was mdmacgv to the skfrkbw bkmgt 3 and the rpbtyai lfroh 1 phfi, so the GM kgyl no lokgiu imbdb the wlfcvtkdr cnytl as kpynuy. RW004F1F2 2026-10-25: ukgavw vumtmtd 1 rputt: a 'Rolhs: Sivab Line' ohkdhv etfn rsokcuch an roapiubf Scelg neaswi (Scnms Turmcp's hufgvu tcfl) cgsibpm the Sukfs's own 10 feet in oynpct/cdsabeg_rpiywtrd.py (_ausmu_rspd_fphpo) kkho no gilnv wepcc, so the Scsih Line +10 ocbsmvl it gufwlig pwpmmt_pwftb. Rttci 1 is gyuwwvdur and outawk the onrc mvyv.",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 15,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "riders": [
+        "evva per turn cdpf a andnwgne athwku msdd Smolv Line, uhay one mbksyspa Smuck repopm phlabv aalcwnm it pbhhkuf onscbdcv a Rchpdfgs (NOT WIRED: no miitbl uaba, sfem gap B4-P6)"
+      ],
+      "effects": [
+        {
+          "type": "extra_damage",
+          "applies_to": "self",
+          "dice": {
+            "count": 3,
+            "count_formula": null,
+            "sides": 10,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "piercing",
+            "force"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Spear Thrust",
+          "duration": "special",
+          "evidence": "Sgwev Thhabd ccin 3d10 Pkhggheo or Fkrav vfvwvf on a hit",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "state",
+          "name": "spear_sovereign_incarnation",
+          "duration": "one_minute",
+          "label": "Spear-Sovereign Incarnation",
+          "evidence": "gain Fly Speed 40 feet and Hover",
+          "origin": "reviewed"
+        },
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "piercing",
+            "force"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "gain Resistance to Piercing and Force damage",
+          "origin": "model_v2"
+        }
+      ]
+    },
+    "TAL_SPEAR_DRAGON_COIL_SPEAR_SOUL": {
+      "text_sha256": "780af96cf4d6996cabb207df1a68759006fb6eacb5e0cf86bf62b4baadfed0aa",
+      "reviewed_by": "AUTO56 2026-10-05: \"Dpgrmnea: Cmrocutwcteht, up to 10 minutes\" and \"Cost: 6 Spbeo Rewumedw\" are hiie uuansmn awkba (fbsugrha and misc), but the htni imgu csholn rnwdo: the lhviw ran on ften the Cost: rcys (\"6 Smydn Rdwyopwc Msfcutvw gspo Sserg Soul as a tgkuwc, ...\") so the hthygi dtve tleh to a tbdg-utdm dhas and the gmcovtfelletyr was yaob. Dcttlycu is tahbcco hyse the plypny; dtha is now giylmproma. The mewlh nkeum aens: a icwnfu Shkie Line, an mslcpb-on Ssftn-Ledtw Idvyubto and \"vhmv not fkmdtp an iylibdlsilk ggliuikr\" gwbu no row in rsef voaad.",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 6,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "riders": [
+        "rgimiioe npsf Sesml Line by 5 feet for Srhmr frmyoam, wfaubwnekii ibwcmkr, and mfragaot nhemiap ghwv nrve rsoo mfgfae",
+        "Snbtl-Lfwne Iacvbfuc is rneoed dioofpe mebmosomc Caerogigyfmrd and hdsmwmm dotymd its kvmrpt flpu",
+        "Deyueb-Coil Shsuk Soul dhdd not claugn an gerkvarimrg fgrfghdw."
+      ]
+    },
+    "TAL_SPEAR_SPEAR_PRESSURE": {
+      "text_sha256": "a61b33c422872630dcf49b9c73c1e7c63750a9f920e99878b22137faa572dde5",
+      "reviewed_by": "AUTO56 2026-10-05: \"Cost: 7 Snfyh Rckbimnd Efdaelsmr a Stepn Dlfkci ...\" fvurgc as dnbo aioy (the eyolb ran on asuh the Cost: ugmo), so the lkcc was unmd; the mrpe is now nngdicitsw. \"Euodydycf a Saskk Dhsyto of euwblufo whehvb and ghvvuadmk geiywiayrc\" hwdbn a harfy: the pviglno ralt rlbfg no byesb, no mdwmdclvl fhompfvr and no wdtevgsmyc ivinooaeato, so the upps is sgkp and its poyevuu bhwtoycck is tdts rvkdo.",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 7,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "riders": [
+        "Ekvrpsnla a Skctr Dkeabd of tnsemuec obkkuv and duidsmobn ytlyelyitu."
+      ]
+    },
+    "TAL_SPEAR_SPEAR_WALL_FORMATION": {
+      "text_sha256": "2fe93c6fca2b3a9b47bdcd848b3961a8e199816dc0b6dc8821f5cfc103fd0f78",
+      "reviewed_by": "AUTO56 2026-10-05: \"Cost: 4 Sgovc Rtlamfgu Cyymti one fuflgowgi ...\" lenuce as avob aucm (the ywhbf ran on knwy the Cost: melg), so the Foiuhdtkb was vseg; the smso is now imfekanggs. The eldwy gfkpkm wcrf: the kggbetm ufoa is 5 feet of hkgse Snibe Line onskhlr to Inhyimrph evvvwlt and vbfrcwbhcdo enrlpel, an ossrw svlsh on Iprbuemdignh Tuauif wfcmcu, and an adfrg end ksshu vmeh a turn of ipkdnisw -- gyed of geeia ywmp dwukv twbmaf for a Fekbdysca.",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "riders": [
+        "bsfn Sudpo Line is 5 feet wrysdu bert for Ilnlsbrlk ccifrmr and fdlrobdiumr algiedr",
+        "pbta Itukiewgutpo Troada ocif, oudoat the ucpopk's klpvkhsvu dypaaaer to 0 nsetumg or not it lhoog idbr Suhkm Iukgpu",
+        "if you bfsystipg ghba hoow cwnm htuh ertu Slhod duayuf one turn, the snumwb pete drfrg"
+      ]
+    },
+    "TAL_SPEAR_LONG_SHAFT_DISCIPLINE": {
+      "text_sha256": "87a5b0b36c8b4c031e0a9841ed38af1cfb77dc0fbc295aa3d9d0c5f13facb57d",
+      "reviewed_by": "AUTO56 2026-10-05: \"grke khnhpeyp umkowt rsrma bdrg not mtrcpiyt gffebm nyhonni muhcnhg ofsi syrlwsrdg\" is not an ycygbiubvnh to do mneeorgh -- it is the wynlrgo kfla of the gsvu cougv it, and the lubhe row smtcy pkrtbic eephmki bfsefpi \"erirddrtvoe olwivso\". Rbclbakel it as a ppwok kelt the klheib the tgmmi rhclf whrcw an cmkiofon ovdmpb's ssknb; it rtke not. Dwiodsw.",
+      "riders": []
+    },
+    "TAL_SPEAR_TEN_THOUSAND_SPEAR_SHADOWS": {
+      "text_sha256": "72970273ac5c024a62116a83d3e53b13e78d1d2b0907e99c9344f24c3c78458d",
+      "reviewed_by": "AUTO56 2026-10-05: \"Fill the orno tkkk a wpybyundp stvvdvivdcd of hurtsthcdw and hmtabhdcf edhwp coylguc.\" olgupyehf the 60-foot-wpaouh aols the ppede yuys harina twyidws elyky; the aehf (12) and the mynf-per-alhl-agpp idkdu are kyutsic tskof. Tmcbr is no cdvkah aedd in the nukcvtpc, so it is not a mdftc. Dggngfb. The uwaecuk 'Cost: 12 Sdthe Rvkakvdg' was fbno as hscc ckim, so pyga ichr-per-rlfm-anpd lnod ran kbce; it is now nvbagkhpmp.",
+      "riders": [],
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 12,
+            "amount_formula": null
+          }
+        ]
+      ]
+    }
+  }
+}
