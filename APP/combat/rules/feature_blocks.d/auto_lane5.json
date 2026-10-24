@@ -1,0 +1,30 @@
+{
+  "features": {
+    "TAL_BERSERKER_JUGGERNAUT": {
+      "block": "motion",
+      "rules": [
+        {"kind": "ignore_difficult", "magical": true, "while": "condition:typed.body_adrenaline_juggernaut"},
+        {"kind": "speed_floor", "while": "condition:typed.body_adrenaline_juggernaut"}
+      ],
+      "why": "Juggernaut (Adrenaline): \"ignore difficult terrain; your Speed cannot be reduced below its normal value by ordinary effects; effects that reduce Speed to 0 still function if they explicitly immobilize, Grapple, Restrain, or seal movement.\" Both benefits are motion.py rows that hold only while the Adrenaline marker for Juggernaut is on the fighter (combat/ext/body_berserker.py). speed_floor is read where a typed effect would lower Speed (typed_executor _modifier: a Speed penalty, \"halve its Speed\", or \"its Speed becomes N\" for N above 0 is not applied); a Speed of 0 (Grappled, Restrained, speed_zero conditions, \"becomes 0\") is never blocked, which is the printed exception."
+    },
+  "TAL_THE_HIDDEN_EYE_RAPID_ANALYSIS": {
+   "block": "hidden_eye",
+   "kind": "rapid_analysis",
+   "why": "Analyze is a Bonus Action (combat/ext/mind_hidden_eye.py compile_actions), and the Eye makes one free Analyze of the nearest foe it can see within 60 feet as the fight's first turn starts, with no action and no Martial Focus (combat/ext/eye_analyze.py turn_start). The 1-minute out-of-fight time is not a combat matter."
+  },
+  "TAL_THE_HIDDEN_EYE_PART_BREAKER": {
+   "block": "hidden_eye",
+   "kind": "part_breaker",
+   "why": "A free Part-Breaker declaration (Martial Focus) ahead of a weapon attack or Unarmed Strike; the hit Analyzes the target with no check (combat/ext/eye_analyze.py). Offered to the player like Deadly Strike's toggle; the AI does not declare it."
+  },
+  "TAL_FENCING_NEEDLE_CATCHING_REVERSAL": {
+   "block": "needle_catching",
+   "why": "Regain the Martial Focus when Parry and Riposte takes a melee hit's damage to 0 (combat/ext/fencing_needle_catching.py, the hit_absorbed hook). Parry and Riposte's retaliatory attack is still a GM rider, so the Focus returns as the damage reaches 0."
+  },
+  "TAL_LIGHTNING_GROUNDING_BREATH": {
+   "block": "grounding_breath",
+   "why": "+PB on a save against lightning or thunder damage, paralysis, being knocked Prone or being moved by a lightning or thunder effect; once until the start of the creature's next turn (combat/ext/lightning_grounding.py, a save hook)."
+  }
+ }
+}
