@@ -1,0 +1,59 @@
+{
+  "features": {
+    "TAL_FENCING_FOOTWORK": {
+      "block": "needle",
+      "kind": "footwork",
+      "why": "Expend Martial Focus: move up to 10 feet, no Action or Reaction, not on your turn only, no Opportunity Attacks; after an attack is declared against you it has Disadvantage (or misses if you are no longer a legal target), and before a Dexterity save you may leave the effect or have Advantage on the save (combat/ext/needle_footwork.py, the before_attack / before_dex_save hooks). Asked as a choice, with the squares as options."
+    },
+    "TAL_FENCING_CRANE_WING_ADVANCE": {
+      "block": "needle",
+      "kind": "crane_wing",
+      "why": "Footwork moves up to 15 feet; ending within 5 feet of a creature, the rest of the turn's movement does not provoke Opportunity Attacks from it (combat/ext/needle_footwork.py)."
+    },
+    "TAL_FENCING_GROUP_COVER": {
+      "block": "needle",
+      "kind": "group_cover",
+      "why": "When a hostile creature makes an attack roll against you, each other hostile creature adjacent to that attacker has Disadvantage on attack rolls against you until the start of your next turn (combat/ext/needle_footwork.py, the before_attack hook)."
+    },
+    "TAL_FENCING_LUNGE": {
+      "block": "needle",
+      "kind": "lunge",
+      "why": "While holding Martial Focus, a free toggle raises melee reach by 5 feet until the end of the turn, at a -2 penalty to attack rolls against targets within 5 feet until the start of your next turn (combat/ext/needle_footwork.py)."
+    },
+    "TAL_FENCING_RETURNING_POINT": {
+      "block": "needle",
+      "kind": "returning_point",
+      "why": "Once per turn, after you apply an Exploit to a creature, move up to 5 feet to an unoccupied space you can reach, without Opportunity Attacks from that creature; asked as a choice (combat/ext/needle.py)."
+    },
+    "TAL_FENCING_EXPERT_FEINT": {
+      "block": "needle",
+      "kind": "expert_feint",
+      "why": "Feint as a Bonus Action instead of the Help action (an extra Feint action, combat/ext/needle_feint.py)."
+    },
+    "TAL_FENCING_THREE_STEP_FEINT": {
+      "block": "needle",
+      "kind": "three_step",
+      "why": "A Bonus Action Feint chooses up to two enemies within 5 feet; each is resolved separately, with its own saving throw (combat/ext/needle_feint.py)."
+    },
+    "TAL_FENCING_GREATER_FEINT": {
+      "block": "needle",
+      "kind": "greater_feint",
+      "why": "When you Feint an enemy you may expend Martial Focus: it makes a Wisdom save, and on a failure the first attack roll made by each creature against it has Advantage until the end of your next turn (combat/ext/needle_feint.py)."
+    },
+    "TAL_FENCING_FENCING_FOCUS": {
+      "block": "needle",
+      "kind": "fencing_focus",
+      "why": "After you Feint a valid enemy, a Bonus Action regains Martial Focus (an action offered after a Feint, combat/ext/needle_feint.py); the Disarm win is on the Disarm rows."
+    },
+    "TAL_FENCING_SKEWER": {
+      "block": "needle",
+      "kind": "skewer",
+      "why": "When you apply an Exploit to an attack you may expend Martial Focus to apply two different Exploits you know to it instead of one; the standing second pick is the table's \"Skewer: also <Exploit>\" toggle (combat/ext/needle.py apply_exploit)."
+    },
+    "TAL_FENCING_FATAL_OPENING": {
+      "block": "needle",
+      "kind": "fatal_opening",
+      "why": "An attack roll with Advantage from your own Feint scores a Critical Hit on a natural 19 or 20 (combat/ext/needle_feint.py)."
+    }
+  }
+}
