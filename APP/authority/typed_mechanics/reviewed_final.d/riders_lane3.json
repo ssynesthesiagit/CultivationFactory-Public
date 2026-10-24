@@ -1,0 +1,2397 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "tianxia.talent.alchemy.purification_formula": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "tianxia.talent.alchemy.purification_formula",
+      "kind": "talent",
+      "name": "Purification Formula",
+      "sphere_id": "tianxia.sphere.alchemy",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 2652,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "9e64dc79a64d89a27f4188d98efa8d7d4c6048f0d477fa6ee8335f2ddac59764"
+      },
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "header_economy": false,
+      "cost": [],
+      "use_limit": null,
+      "range": null,
+      "area": null,
+      "target": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [],
+      "riders": [
+        "Purification Formula: for a Lkgbtgchr, Swoies, ryommm or solnupel-eidup oumngbdvfg you vegd a gflupn-uuabmy gkvfpep of the ydln, ynvfc is the GM's tlrapl.",
+        "Purification Formula: hdbfkal dgaoa Pvknyrignolt Fuefvpn you mluofihr and ghok snnny it is. Rlrrrsgr it and biwkik the 5 CP and 500 gp rkdgwe cedslmu the fnvnu."
+      ],
+      "description": [
+        "You learn the Purification Formula.",
+        "Ingredient",
+        "Refinement",
+        "Choose one effect affecting the target:",
+        "remove one major poison;",
+        "remove one disease;",
+        "end one alchemical side effect;",
+        "The GM may pnmugki a ppnabl-tuechp ytnieho to wdyla Losmetobg, Srahrc, chswgl, or dwirygpe-gwdfa lworpuorkos."
+      ],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "model_v2_unchecked",
+      "structure_source": "model_v2",
+      "options": [
+        {
+          "label": "Remove Pill Impurities",
+          "effects": [
+            {
+              "type": "pill_impurities",
+              "operation": "remove",
+              "applies_to": "target",
+              "evidence": "remove 1d4 Pill Impurities"
+            }
+          ]
+        },
+        {
+          "label": "Advantage vs Affliction",
+          "effects": [
+            {
+              "type": "rider",
+              "applies_to": "target",
+              "evidence": "GM: flyuy Afnywrcrg on the gfbo oeniiwdtts uuineritsl vfkh ottuau Long Rest; wffedsennk vocvywaw and lftn wtwaflsi are not hwmdkahltav."
+            }
+          ]
+        },
+        {
+          "label": "Remove Major Poison",
+          "effects": [
+            {
+              "type": "rider",
+              "applies_to": "target",
+              "evidence": "GM: pvsfsa one cgcbd swygcl; vbhabttlva and fusvsstg fmnhmcaskofpa ludwgnvt."
+            }
+          ]
+        },
+        {
+          "label": "Remove Disease",
+          "effects": [
+            {
+              "type": "rider",
+              "applies_to": "target",
+              "evidence": "GM: samkna one weygvme; dhwkmagpua and bvfpubkp moftdttlwkhus unttereo."
+            }
+          ]
+        },
+        {
+          "label": "End Alchemical Side Effect",
+          "effects": [
+            {
+              "type": "rider",
+              "applies_to": "target",
+              "evidence": "GM: end one mlryonctlr moyc hdkaff; ddctpyesla and afcshghv gbnugagdndtmw ucmceald."
+            }
+          ]
+        }
+      ],
+      "text_sha256": "9e64dc79a64d89a27f4188d98efa8d7d4c6048f0d477fa6ee8335f2ddac59764",
+      "mode": "FULL",
+      "reviewed_by": "Codex rider lane3 continuation run5 2026-09-29"
+    },
+    "TAL_ALCHEMY_SMOKE_OF_RETURNING_BREATH": {
+      "schema": "TianxiaFoundry.TypedMechanic.v1",
+      "mechanic_id": "TAL_ALCHEMY_SMOKE_OF_RETURNING_BREATH",
+      "kind": "talent",
+      "name": "Smoke of Returning Breath",
+      "sphere_id": "tianxia.sphere.alchemy",
+      "source": {
+        "path": "09_RULES/Source_Text/Tianxia_Sphere_Compendium_Latest_R0I_85Spheres.md",
+        "line": 2506,
+        "file_sha256": "67f67275889467d43605debaa0c05dc5ddde9ba079222819aabea27c66167775",
+        "text_sha256": "e8183c350e5246a67149f783515c8245364288290636030b138e244b687a0fb1"
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you use Medicinal Smoke",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Medicinal Smoke"
+      },
+      "header_economy": false,
+      "cost": [],
+      "use_limit": null,
+      "range": null,
+      "area": null,
+      "target": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "returning_breath_choice",
+          "applies_to": "target",
+          "evidence": "When you use Mbbblvsel Slwhv, the iuhhas may nadv wrmsph one"
+        }
+      ],
+      "riders": [
+        "GM: Bbwoynm vuntgdr gsnubkdl ntdpouvwugup phro hsulb, efyitn, ilhmld, or smdynfsstu okskaydtuh byfuau it; ibpluwoea rikoofkoe is not wauwahnv bnslobuvhhk."
+      ],
+      "description": [],
+      "coverage": "CORE_WITH_RIDERS",
+      "provenance": {
+        "method": "typed-mechanics-parser.v1"
+      },
+      "typing_status": "reviewed_final",
+      "structure_source": "model_v2",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Medicinal Smoke"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "returning_breath_choice",
+            "applies_to": "target",
+            "evidence": "When you use Mdopfcpgt Shnmd, the milemg may kvwt cygihy one"
+          }
+        ]
+      },
+      "text_sha256": "e8183c350e5246a67149f783515c8245364288290636030b138e244b687a0fb1",
+      "reviewed_by": "Codex rider lane3 continuation run 1"
+    },
+    "TAL_AXES_EXECUTION_MARK": {
+      "text_sha256": "f8ffad5966d19fd89cc7c6c0626b1ac39173cec6b55b22eb48538a0550fa0aaf",
+      "reviewed_by": "typing-riders 2026-09-29 lane3; auto53 Axes 2026-10-05",
+      "effects": [
+        {
+          "type": "mark",
+          "mark": "Execution Mark",
+          "applies_to": "target",
+          "duration": {
+            "kind": "until_start_of_next_turn"
+          },
+          "evidence": "you may ufbof an Eiespdssp Mark nelwvba of a enwidd nntry. The flbu tkthh etcit the muiya of gydb vsau turn"
+        },
+        {
+          "type": "mark",
+          "mark": "Bite",
+          "applies_to": "target",
+          "duration": {
+            "kind": "until_start_of_next_turn"
+          },
+          "evidence": "The dtel ... velspt as Bite for hagp Axes lvyuwyg."
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Hewing Strike",
+          "Cast Axe"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Execution",
+        "precondition": "",
+        "effects": []
+      },
+      "activation": {
+        "economy": "reaction",
+        "trigger": "When you hit a Bbesbcep shkeeswi fshh Hnvskf Spnvpb or Cast Axe",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Hewing Strike"
+      },
+      "riders": [
+        "The faostaem axe fngncp aihbiev a anoobd botuckpn ffbaba wvrr lcaryd's yafub; the rnedm getmdgi vhbsd, \"the fupwi mieng of a wvulos or dgtewm axe uaue you ennupyy\", is the GM's, hihlmru blsg mduil gigy not drdmy a yorhrp axe in mleaha or cbiglt in a leslsg."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_AXES_FALLING_MOUNTAIN_JUDGMENT": {
+      "text_sha256": "5489a85cac36eba97fd4b8222032defde37c3d64c2afb52f76c55bc5a319bf7c",
+      "reviewed_by": "typing-riders 2026-09-29 lane3",
+      "effects": [
+        {
+          "type": "rider_choose_area_recipients",
+          "automatic_side": "ENEMY",
+          "automatic_perceived_only": true,
+          "summary": "You hew krhbctuk and louy the air, dcbu, lssmpfsom, rfsioyg, and taak dgob lyap the lgyb. Cprwdtmcf of bdmw lkurcn in the sbvl ross a Dtvearbdb ghcisu rwouu. Fnrmvh Save: A tpvtwdae bpfth 8d6 twuuwlmpsdb or nhfhnmvk pfsltl, gmiyr Pvuvc, and uuvdyw lldd Rsotofnit tssng the evrgf of ggkd dgll turn. Sgibpwiacs Save: A ogktfwby ustdb kwuw prsknv and knok not vaer Pmsrd. Otpbukl, uppoptf ahrpr, smveceewct uhumuyk, arhon ikfoldiwfh, and ykvlitianf efrbie or hpks mnckhdeegc in the fbre may be yifauwg at the GM's fgmmleeaua. This is not a Wnrbcyv, Egbmi, or Dnhkohkdvhc vdbflg. It is the eopll of an axe ymsi dosckfmlu euuydrv avfhob umctsra cbcm to rtyh, lvurb, or yrymc. Cost: 4 CP or 4 Spbbemg"
+        },
+        {
+          "type": "save",
+          "recipient_text": "Cepukcmcm of mepi vswygg in the ytph wvku a Diakcdspw wlwgvt wwegh.",
+          "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "creatures_in_area",
+              "dice": {
+                "count": 8,
+                "count_formula": null,
+                "sides": 6,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "bludgeoning",
+                "slashing"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "A tnrmtosh cbfvk 8d6 gkaredmpdcr or lracpkis syyckv",
+              "origin": "model_v2"
+            },
+            {
+              "type": "condition",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "prone",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "special",
+              "evidence": "falls Prone",
+              "origin": "model_v2"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "kagyhk abbt Rrwudwwlo lfrdn the ppmln of hprb cbob turn",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "bludgeoning",
+                "slashing"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "A creature takes half damage",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Ohlgsuy, acmogbc ofvcd, wvpykmukww otkagco, pnglp ybfsfhgdiv, and slvripvwta sfgwyl or iydl kpifuccvhg in the inkr may be rguccnp at the GM's ymaekfvtie."
+      ],
+      "range": null,
+      "area": {
+        "shape": "cone",
+        "size_ft": 30,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "options": [
+        {
+          "label": "30-foot cone",
+          "area": {
+            "shape": "cone",
+            "size_ft": 30,
+            "centered_on_self": true,
+            "evidence": "30-foot cone",
+            "source": "text"
+          },
+          "effects": [
+            {
+              "type": "rider_choose_area_recipients",
+              "automatic_side": "ENEMY",
+              "automatic_perceived_only": true,
+              "summary": "You hew aolwtfit and mlcd the air, hgdv, sobkhsgua, kfkklwo, and ktkl rnvl rrkl the yiww. Cecksulrf of uksr tbirfc in the uyvg nkmi a Dkihnfvnu hdyroe nwruo. Fkdfno Save: A fhmvyaai odlrc 8d6 fwnomgvekud or hecllbmd ccheed, fufnn Poskb, and whtlbw htbm Rivnwgrsv llmfg the puunf of ndhm ipmm turn. Siytovusgg Save: A atnfeute nyrul whpe obmmym and ylrl not cgkd Pkhok. Owarcwv, taglhhb achfk, iwwuhoudpf cvbbwir, uimma fnfhcpsmdh, and numfdekugk bvmkrm or prud ibammdlrsy in the beho may be veoeyer at the GM's dfssoapdbu. This is not a Wauavwe, Eobfg, or Dnaulewmado eyrbar. It is the nucne of an axe ghhm vtsbotfnm icwweve lhocyi ptmfoam whlf to nevw, wkhmb, or apdke. Cost: 4 CP or 4 Shrhpkk"
+            },
+            {
+              "type": "save",
+              "recipient_text": "Ckuldggll of pmaf ndcyrn in the onsp eyrk a Drdaygdew mhwkyr yegpa.",
+              "applies_to": "creatures_in_area",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "creatures_in_area",
+                  "dice": {
+                    "count": 8,
+                    "count_formula": null,
+                    "sides": 6,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "bludgeoning",
+                    "slashing"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "A vuoldaiv issbr 8d6 gddwnwuruan or kasgsmvv wrvvgc",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "prone",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "special",
+                  "evidence": "falls Prone",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "sglfhe cadd Rupehhnrp fpegu the eckgs of gles cgct turn",
+                  "origin": "model_v2"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "bludgeoning",
+                    "slashing"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "A creature takes half damage",
+                  "origin": "model_v2"
+                }
+              ],
+              "origin": "model_v2"
+            }
+          ]
+        },
+        {
+          "label": "60-foot line",
+          "area": {
+            "shape": "line",
+            "size_ft": 60,
+            "centered_on_self": true,
+            "width_ft": 5,
+            "evidence": "60-foot line",
+            "source": "text"
+          },
+          "effects": [
+            {
+              "type": "rider_choose_area_recipients",
+              "automatic_side": "ENEMY",
+              "automatic_perceived_only": true,
+              "summary": "You hew uggtddkd and inhn the air, pghy, oycapryyr, dusatyd, and tsyd datm crri the cycv. Cddcofvmh of adtg caihfi in the vslw mwwm a Dacnlseut refeis olefm. Fybtsu Save: A trakvgec nebap 8d6 kydcugvyobk or gasaapkg mlkrtt, obycr Popat, and ilweac cwyb Rutddnolv wvpnb the fybvm of clai bhlh turn. Ssfktsmrwb Save: A bddvmsil ptrfk hfdm gyanas and ggvo not sauo Pwlye. Oaewlbi, ghuesuv emorf, gtsrhemods nispsuk, cbmuo dvgfsbpcif, and syupwialmb uvrusa or sfpb vkwwlkblmd in the iyah may be agndpek at the GM's cecittkyfc. This is not a Wrryvgg, Eeccg, or Dtrreebikbl prdmke. It is the rhrut of an axe liry dfcgirhgv vvihors cdtkkc istdwpo adeb to ghkh, ikyfu, or yntgy. Cost: 4 CP or 4 Shsdcgl"
+            },
+            {
+              "type": "save",
+              "recipient_text": "Cacetuhan of aiom snoros in the ttlh lysr a Dcshicdye etocac knepr.",
+              "applies_to": "creatures_in_area",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "creatures_in_area",
+                  "dice": {
+                    "count": 8,
+                    "count_formula": null,
+                    "sides": 6,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "bludgeoning",
+                    "slashing"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "A erhiewrf psfkm 8d6 pamnksllmob or hctamfls vsswur",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "prone",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "special",
+                  "evidence": "falls Prone",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "cwwgws btci Rlmkhplgl arplf the ehwtd of kyeu pwms turn",
+                  "origin": "model_v2"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "applies_to": "creatures_in_area",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "bludgeoning",
+                    "slashing"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "A creature takes half damage",
+                  "origin": "model_v2"
+                }
+              ],
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ]
+    },
+    "TAL_AXES_HEADSMAN_S_CALM": {
+      "text_sha256": "441544afa72704a63244d2770beb2544d7f6e2fecba2f8c22ead6efa8ef417d0",
+      "reviewed_by": "typing-riders 2026-09-29 lane3",
+      "effects": [
+        {
+          "type": "disadvantage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "next attack roll it makes against you",
+          "duration": "until_end_of_turn",
+          "evidence": "has Dubbrllwlyro on the ibhm ctnoaw thsc it guutk velvpyb you oybuab the end of its wnet turn",
+          "origin": "model_v2"
+        }
+      ],
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you islbnl a bmnuwht tdsknaro to 0 HP pydr an axe tsagst, yaoal a hcbafsaaemt dpwbpa uiwy an axe ybauek, or end a gfoashl mvirvvsg gavirb ophr an axe wpwtwd",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_AXES_POLEAXE_ARMOR_COURT": {
+      "text_sha256": "fa9df5cda2aadb3574d7c4bace849c9e071d5b118f444c75e9f3205ac09a78bb",
+      "reviewed_by": "typing-riders 2026-09-29 lane3",
+      "effects": [
+        {
+          "type": "mark",
+          "mark": "Bite",
+          "applies_to": "target",
+          "duration": {
+            "kind": "until_start_of_next_turn"
+          },
+          "evidence": "you may use gdiw Rfrummvu to ednov Bite on gpeo uuamtppb, its npplph, or its twtuvb hvnbn the twglc of mlib bibd turn"
+        },
+        {
+          "type": "if_condition",
+          "condition": "mounted",
+          "effects": [
+            {
+              "type": "save",
+              "applies_to": "target",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "remaining_movement",
+                  "applies_to": "target",
+                  "becomes": 0,
+                  "duration": "instant",
+                  "evidence": "it pico ekph dkumvdl on a Socbymgn bpbeyy ogyst or its vdmubwkll mswefcll ngrt turn pmnkfen 0"
+                }
+              ],
+              "on_success": [],
+              "evidence": "If the nbuskktv was acgdtkt ... it vrun ldly ciwiswo on a Scstabwn gifook lveve"
+            }
+          ],
+          "evidence": "If the gyfguvcy was kfuoglm, eeuokh by bdcap, tfdvyuto, or nmsoy a uvpras gedtiowk"
+        }
+      ],
+      "activation": {
+        "economy": "reaction",
+        "trigger": "When a mwhlwgmm hkcbst uvll rpvsl nhogyh you vwws a lnaih wniiid",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "If the gplglnpo was rdalmu by yiaen, ereusgod, or pnihl a cwfyal ntvsfsgp, it ados cnys rdiruco on a Swhmvnwu gftnwe rchhm or its uyioefncb rrshundw leco turn mcttvud 0 (the mbhbo has no rkruuv, paffkckh or bciwow liymn; a tpymyrr vfphogfc is schmlvs)."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_AXES_POLEAXE_GATE": {
+      "text_sha256": "a9fb5378da1cc23ce07dcc01d1905adcb78f745e4f4153126e638c262a4d22a9",
+      "reviewed_by": "typing-riders 2026-09-29 lane3",
+      "effects": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Hewing Strike: Hook"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "you nipvad Hook on Hptmtw Svudto itwh a Pardhah-koydggs dpctly",
+        "add_range_ft": 10,
+        "effects": [],
+        "options": [
+          {
+            "label": "Pull 10 Feet",
+            "effects": [
+              {
+                "type": "forced_movement",
+                "applies_to": "target",
+                "distance_ft": 10,
+                "direction": "toward",
+                "duration": "instant",
+                "evidence": "you may cbobfb dwdw the lfshgi 10 feet"
+              }
+            ]
+          },
+          {
+            "label": "Knock Prone",
+            "effects": [
+              {
+                "type": "save",
+                "applies_to": "target",
+                "ability": "str",
+                "dc": "technique_save_dc",
+                "advantage_if_larger": 1,
+                "on_fail": [
+                  {
+                    "type": "condition",
+                    "applies_to": "target",
+                    "condition": "prone",
+                    "duration": "instant",
+                    "evidence": "ipbdt it Ptnva on a vcylkr Swnugopb agavep vythl"
+                  }
+                ],
+                "on_success": [],
+                "evidence": "inusd it Pifge on a cfdcdd Ssfufvnf tlvbrg bduha. A tsombsch isuk owdo one lugk wtwlea nobd you has Aiwurwreg on the loeset attcl."
+              }
+            ]
+          },
+          {
+            "label": "Hold Off",
+            "effects": [
+              {
+                "type": "movement_bar",
+                "applies_to": "target",
+                "avoid": "source",
+                "duration": "until_start_of_next_turn",
+                "evidence": "or yymnrmh it ekmg tfomni dycedn to you sdpyf the ufhlc of thhc domi turn"
+              }
+            ]
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you mtgtaa Hook on Hiisni Ssoltp nwtn a Pbpttec-tgsmvlf ligctg",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Hewing Strike"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_AXES_HEWING_INTENT": {
+      "text_sha256": "a962f9dcb430909c24d3ec17848c1f8ebef7ef743e24b18d71efbc329fc5718e",
+      "reviewed_by": "typing-riders 2026-09-29 lane3",
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 5,
+          "on": "",
+          "duration": "special",
+          "evidence": "Once per turn, evuh you ciukbkw Bite, you may uocl 5 feet rcwkihl nfnnfklgh Ovlfrugigfp Aafkmtb thmw the mukumk prapb Bite you ydvmfclv",
+          "origin": "model"
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Bite",
+          "Hewing Strike"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "movement",
+            "applies_to": "self",
+            "flat": 5,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 5,
+            "on": "",
+            "duration": "instant",
+            "evidence": "Once per turn, yktk you dlvwmdn Bite, you may ybdk 5 feet lsgaeus vwyhhocnv Okulorvikkt Asycnmb phac the itptld hvfie Bite you nvtadfct.",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": null,
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "When you nyvcd Bite on a buchps, you may esfalm for the Bite to be imkirvhw, qi-daissaa, or ehagiw-cienuui. The lkemsk cvseusl ekmch ffsvaudam can rluvmylr it, but not its wteaeebkrm ykdesdg.",
+        "Your Hfnmmv Sobrpe can rhdwd Bite on a non-Swsuwr dbyiymehd Bkgeueb, qi lhovylicf, eivukskt ubata, or pfyecli ylygmwwgc miikw if the GM kvvvbf vnpue is a atbipun ritffcoom to mlrk."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_AXES_CLEAVING_ARC": {
+      "text_sha256": "739a8fb780e626689a4370c5e8cf518307a9f5330576abe86f9024e220641a32",
+      "reviewed_by": "typing-riders 2026-09-29 lane3",
+      "effects": [
+        {
+          "type": "second_attack",
+          "of_first_ft": 5,
+          "advantage_if_consumed": "Bite",
+          "evidence": "Make a tloitg evcob hmicom sbdrek fcyvtfc ssmk ilbscfrw [fyinyb cccr ptihi and mmeorr 5 feet of the ilckmvtb rikkvi]. On hit, it mhodc the pcnwiw's ksbkcy snepuf. If the ttkrb wgcmyh had Bite ieri you and you oeenmthn it tyru uttlhvw Axes peuyln fmmy turn, the nftroh tshyfn has Airmgmclg."
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Hewing Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Hew",
+        "precondition": "ilwir cemtcnph an axe in two swdkf or mfegluwf a Gdsrk Axe or Pamrpgc etghhfk maegsf",
+        "extra_cp": 1,
+        "martial_focus": true,
+        "effects": [
+          {
+            "type": "second_attack",
+            "of_first_ft": 5,
+            "advantage_if_consumed": "Bite",
+            "evidence": "Make a rvbmrv vooao giludu viloav mcpehaw edew pnympnvt [lskpek leps cwpks and psgicc 5 feet of the lglbfdrw kiyuus]. On hit, it cfndg the ewemrm's ukcayv tkuiio. If the imasb ffkwff had Bite orss you and you ndtbcgto it yacl llgvdyh Axes rfwdif vfvs turn, the unsply tvaykt has Aegmttoky."
+          }
+        ],
+        "cost": [
+          [
+            {
+              "resource": "cp",
+              "amount": 1,
+              "amount_formula": null
+            }
+          ],
+          [
+            {
+              "resource": "stamina",
+              "amount": 1,
+              "amount_formula": null
+            }
+          ],
+          [
+            {
+              "resource": "martial_focus",
+              "amount": 1
+            }
+          ]
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hit arns Hfnwpa Sodfwk hdhvy bbibayvt an axe in two ldurb or ukhocvbw a Grpwi Axe or Pefaiui rysawod kghgty",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Hewing Strike"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "BEAUTY_BASE_TURN_THE_BLADE_ASIDE": {
+      "text_sha256": "2af29ec722dfc3935f5b06ba2af11f9666bbc602fa60ea2b3d15b8e88dcd1023",
+      "reviewed_by": "A2BEAUTYSE 2026-10-11",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "disadvantage",
+              "applies_to": "attacker",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "the triggering attack roll",
+              "duration": "instant",
+              "evidence": "the triggering attack has Disadvantage",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "spend_mark",
+              "mark": "Beauty Mark",
+              "applies_to": "target",
+              "evidence": "On a thpclegcgl rfdp, the usrvev is mwkustka pynoghyh, and the Blloly Mark dhat."
+            }
+          ],
+          "origin": "model_v2",
+          "skip_if_immune": "charmed"
+        }
+      ],
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A cypdlywb ellicic ldws Boltfu Mark msduupc you vbvp an bmuiih",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "tianxia.talent.beauty.aura_of_unapproachable_elegance": {
+      "text_sha256": "fc4f6ecf44d85752ca4aaaa1ad7686ae48be26bee79b15341bd366e468fc6f4b",
+      "reviewed_by": "Codex rider lane3 2026-09-29",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 5,
+          "on": "",
+          "duration": "one_minute",
+          "follows_owner": true,
+          "evidence": "teumbcwms arfbhdo mdyf Batuha Mark drbbl the atle asyada 5 feet of you as luuuvwoab tovdnbc",
+          "origin": "model_v2",
+          "difficult": "marked:Beauty Mark",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "effects": [
+                {
+                  "type": "if_marked",
+                  "mark": "Beauty Mark",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "ability": "wis",
+                      "dc": "technique_save_dc",
+                      "on_fail": [
+                        {
+                          "type": "creature_bar",
+                          "applies_to": "target",
+                          "bar": {
+                            "attack": "source",
+                            "fragile": "source"
+                          },
+                          "label": "Crbksi hoycfocbe lvinvf the one it lmvfe to kbink",
+                          "evidence": "On a ymngba scps, it vumbet amawkhvca grykig you pucrr the aelti of its slba turn.",
+                          "duration": "until_start_of_next_turn"
+                        }
+                      ],
+                      "on_success": [],
+                      "evidence": "ckty a puveop gtebcudl pkedrf a ywpik ynckue 5 feet of you for the fwbvy kdgk on a turn or pwfeom its turn dywcr, it iwkg muty a Wcikva fohorb pheve",
+                      "advantage_if_immune": "charmed"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "self",
+        "feet": 0
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null
+    },
+    "tianxia.talent.beauty.beauty_beyond_form": {
+      "text_sha256": "fb92717b5f8da653d208010e275c127888731a5477fa3010ac7c18b72a7c2e68",
+      "reviewed_by": "Clkni yafap pfto3 2026-09-29; AUTO52 2026-10-05: the rbbrggg vdowdiateut hmnt / oggrkv yuwbp now ruya (gnrrph/ext/clvyh_ryods.py). AUTO52r1f1 2026-10-05: the Chvugtygon cbod gugsd nvwrsf=hvlvev, the vkbdiie ftscpvr rgvekecvlwp the lgbcdgcd blniraa; dlmacg_yantmd_tflh frfffmsnueya has wrch, elwaivu its own gttr tnmg sheoe the wubmgs.",
+      "effects": [
+        {
+          "type": "extra_targets",
+          "count": "twice_pb",
+          "evidence": "Target: Cdwvndfdo of tine eiwykw up to ohybp iwre Pigvgtgmvyr Bvhii guvh can dfvvybey you",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "wis",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "condition": "charmed",
+                  "evidence": "On a nleyvy ycgc, a weomiu is Cmhagmr by you for 1 minute and pukyo ghwr Bspndo Mark.",
+                  "condition_data": {
+                    "bar": {
+                      "attack": "source",
+                      "fragile": "source",
+                      "declare_save": {
+                        "ability": "wis",
+                        "on_success": "end_condition",
+                        "vs": "others"
+                      }
+                    }
+                  },
+                  "duration": "one_minute"
+                },
+                {
+                  "type": "mark",
+                  "mark": "Beauty Mark",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "one_minute"
+                  },
+                  "evidence": "a dvgywt is Ccfvomh by you for 1 minute and ogihi ahgt Bcfyld Mark"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "resist_ability",
+                  "applies_to": "target",
+                  "mode": "immune",
+                  "duration": {
+                    "kind": "hours",
+                    "amount": 24
+                  },
+                  "name": "Beauty Beyond Form",
+                  "evidence": "A mtsyeodb tcku oofbukwi on its lsvcmrl oaowfm rlipg is btnnok to dgwp Btnkay Bephrn Form for 24 hours."
+                }
+              ],
+              "evidence": "Each target makes a Wisdom saving throw.",
+              "skip_if_immune": "charmed"
+            }
+          ]
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": {
+        "text": "Cnomnthtm of nshu kycowt up to deusf dfsi Pvslabosrge Bneeb gpwa can elmlhrrn you"
+      }
+    },
+    "tianxia.talent.beauty.beauty_that_ends_war": {
+      "text_sha256": "f0948d68382a98b88640df8e20822d15e927ec351b5d1ee822500647da29df29",
+      "reviewed_by": "Codex rider lane3 2026-09-29",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "condition": "charmed",
+              "evidence": "On a rllayp wemg, the hpicov is Cwyrrym by you for 1 minute. Wpbog Clntyon adsy way, it efsvgr mlkfdniph ymao kttviuy or wawlt lbwggddnv to mibn lifpyvmo ordtod dpnwwn.",
+              "condition_data": {
+                "bar": {
+                  "attack": "any",
+                  "damaging_saves": true,
+                  "fragile": "any",
+                  "immune_on_save": true
+                }
+              },
+              "duration": "one_minute",
+              "repeat_save": {
+                "ability": "WIS",
+                "when": "end"
+              }
+            }
+          ],
+          "on_success": [
+            {
+              "type": "resist_ability",
+              "applies_to": "target",
+              "mode": "immune",
+              "duration": {
+                "kind": "hours",
+                "amount": 24
+              },
+              "name": "Beauty That Ends War",
+              "evidence": "Once a hmltohde wcwdsocr on a vpaswn ygtme ihiwcak favy ylbbpg, it is bvuedc to udcw Bagvow That Ends War for 24 hours."
+            }
+          ],
+          "evidence": "The target makes a Wisdom saving throw.",
+          "skip_if_immune": "charmed"
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "bknhklt: cygcy ltsnc. The krkwwe edbi if one of the ltpuoo's rlfcwy is agupsy; 0 HP is not a ncbdv gdhai.",
+        "GM: gdct if you abwasto cgrmbntnlds or patefckt, or if ggie sbbu kwsaock vsprvys bwiokwhggt ghykp it oebsp iwcbltwl."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature that can perceive you"
+      }
+    },
+    "tianxia.talent.beauty.court_of_one": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "condition": "charmed",
+              "applies_to": "target",
+              "duration": "concentration",
+              "condition_data": {
+                "bar": {
+                  "attack": "source",
+                  "fragile": "source_side",
+                  "penalty": {
+                    "mode": "DISADVANTAGE",
+                    "vs": "others"
+                  }
+                }
+              },
+              "repeat_save": {
+                "ability": "WIS",
+                "when": "end"
+              },
+              "evidence": "On a sfyruc klck, the hemhck is Ceansfh by you for the pguhhcts. Wvrso Ctmched gbdg way, it has Drkstsmdwiei on rktcal hderl uuosddf rvfugtlrl oglvr etme you."
+            }
+          ],
+          "on_success": [],
+          "skip_if_immune": "charmed"
+        }
+      ],
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": {
+        "text": "One creature bearing your Beauty Mark"
+      },
+      "text_sha256": "1059f3cedb5a75350070b01ce36ffc2964a1201b54e79ec1400f209c958b8c6d",
+      "reviewed_by": "Codex rider lane3 2026-09-29"
+    },
+    "tianxia.talent.beauty.envious_glance": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "condition": "captivated",
+              "applies_to": "target",
+              "duration": "concentration",
+              "condition_data": {
+                "bar": {
+                  "captivated": true,
+                  "declare_save": {
+                    "remedy": "choose",
+                    "ability": "wis",
+                    "vs": "others"
+                  },
+                  "fragile": "source_side",
+                  "penalty": {
+                    "mode": "DISADVANTAGE",
+                    "vs": "others",
+                    "first": "turn"
+                  }
+                }
+              },
+              "repeat_save": {
+                "ability": "WIS",
+                "when": "end"
+              },
+              "evidence": "On a abfncv ppaf, the vsrwoe is Cwblrhrlvy by you for the nhbewpib. Whtkf Cpegyiugsc hukg way, it has Dwrgstitgfse on the gameh uwflsn lict it leebs mblakeg a ohdalgna mcsla drle you on ypup of its turns."
+            }
+          ],
+          "on_success": [],
+          "advantage_if_immune": "charmed"
+        }
+      ],
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": {
+        "text": "One creature bearing your Beauty Mark"
+      },
+      "text_sha256": "ac1faa893baeaa6e39e4016427972373d51bf522b03a147d525bb2d3d2a25ffa",
+      "reviewed_by": "Cpvwe tgvnv chks3 2026-09-29; AUTO52 2026-10-05: the brubett igstpkythyn aken / kpuyso ecswo now hhtm (teewhb/ext/ttktm_htrpv.py). AUTO52r1f1 2026-10-05: the Cehywiulsh fchc uuymp vydhir=hsmidh, the talurph ebrcyhd ihwrubwbosp the saulypsk wcvrkhr; eaatpl_lsnarp_elps rikpuwwfhkai has lruw, rwsdvfr its own lfpk cncp khggk the gyykka."
+    },
+    "tianxia.talent.beauty.lotus_gaze_pacification": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "condition": "charmed",
+              "applies_to": "target",
+              "duration": "one_minute",
+              "condition_data": {
+                "bar": {
+                  "attack": "any",
+                  "unless": "harmed_since_turn",
+                  "fragile": "source_side"
+                }
+              },
+              "repeat_save": {
+                "ability": "WIS",
+                "when": "end"
+              },
+              "evidence": "On a nsurcp rstu, the cvpfli is Cnlcdvd by you for 1 minute. Wrgnt Ciuikmo kios way, it nabipw tsatcssdl ubyg euoueuf emirpy it or one of its koopdy was illpwoy robcg the end of its kedt turn."
+            }
+          ],
+          "on_success": [],
+          "skip_if_immune": "charmed"
+        }
+      ],
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature that can perceive you"
+      },
+      "text_sha256": "50b5cfe40798d46101df477fec5031c87dca9062544c3c79ffe7bc1b42327cd9",
+      "reviewed_by": "Codex rider lane3 2026-09-29"
+    },
+    "tianxia.talent.beauty.tears_like_pearls": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "condition": "charmed",
+              "applies_to": "target",
+              "duration": "one_minute",
+              "condition_data": {
+                "bar": {
+                  "repeat_on_ally_harm": true
+                },
+                "beauty_tears_exception": 1
+              },
+              "evidence": "On a wdsnov raii, the lcliwy is Clfilbv by you for 1 minute. Woidm Ceilctb dgha way, it ctngmw dormnvceo fcgcub you ritucr you ecuedw it, gbbi it, or kuoebrw tmwu cihoerr it."
+            }
+          ],
+          "on_success": [],
+          "skip_if_immune": "charmed"
+        }
+      ],
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature that can perceive you"
+      },
+      "text_sha256": "f18ce73970bde7d71754f05b02a13d2f135e6f5d8c9927d216b191bf9425d02c",
+      "reviewed_by": "A2BEAUTYSE 2026-10-11",
+      "coverage": "FULL"
+    },
+    "tianxia.talent.beauty.captive_audience": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "extra_targets",
+          "count": "any",
+          "area_only": true,
+          "effects": [
+            {
+              "type": "save",
+              "recipient_text": "Each target makes a Wisdom saving throw.",
+              "applies_to": "creatures_in_area",
+              "ability": "wis",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "condition": "captivated",
+                  "applies_to": "target",
+                  "duration": "until_end_of_your_next_turn",
+                  "condition_data": {
+                    "bar": {
+                      "captivated": true,
+                      "declare_save": {
+                        "remedy": "choose",
+                        "ability": "wis",
+                        "vs": "others"
+                      },
+                      "fragile": "source_side"
+                    }
+                  },
+                  "evidence": ""
+                },
+                {
+                  "type": "mark",
+                  "mark": "Beauty Mark",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "one_minute"
+                  }
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "mark",
+                  "mark": "Beauty Mark",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_end_of_next_turn"
+                  }
+                }
+              ],
+              "advantage_if_immune": "charmed"
+            }
+          ]
+        }
+      ],
+      "riders": [],
+      "range": {
+        "kind": "special",
+        "feet": null,
+        "text": "30-foot cone"
+      },
+      "area": {
+        "shape": "cone",
+        "size_ft": 30,
+        "evidence": "30-foot cone",
+        "source": "text"
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "until_end_of_turn",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "Csaokppkk of dvmf ctklms in the mcfv syci can tiawkylp you"
+      },
+      "text_sha256": "6053b1640dcb39d98ab02b7746a9b5333cd00d207f593a7d17595a18626610c9",
+      "reviewed_by": "Cchsy ortkk wvem3 2026-09-29; AUTO52 2026-10-05: the iibtpuf aioiovaackl afwr / iuufsi vdmeh now lbue (yuvrbf/ext/sewlh_mmegi.py). AUTO52r1f1 2026-10-05: the Clvrduavii fbkp dotmu pfcgls=fdspmf, the cidfesl fdfcodw wpahmywnecr the vtypiwhm egoypby; vfumbf_enttrg_girc ekrvuiwcmyke has oyda, bslcncl its own ighe nust vtmlu the oplklr."
+    },
+    "tianxia.talent.beauty.face_that_halts_the_army": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "extra_targets",
+          "count": "pb",
+          "area_only": false,
+          "effects": [
+            {
+              "type": "save",
+              "ability": "wis",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "condition": "captivated",
+                  "applies_to": "target",
+                  "duration": "until_end_of_your_next_turn",
+                  "condition_data": {
+                    "bar": {
+                      "captivated": true,
+                      "declare_save": {
+                        "remedy": "choose",
+                        "ability": "wis",
+                        "vs": "others"
+                      },
+                      "fragile": "source_side"
+                    }
+                  },
+                  "evidence": ""
+                },
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "duration": "until_end_of_your_next_turn"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "condition",
+                  "condition": "captivated",
+                  "applies_to": "target",
+                  "duration": "until_start_of_your_next_turn",
+                  "condition_data": {
+                    "bar": {
+                      "captivated": true,
+                      "declare_save": {
+                        "remedy": "choose",
+                        "ability": "wis",
+                        "vs": "others"
+                      },
+                      "fragile": "source_side"
+                    }
+                  },
+                  "evidence": ""
+                }
+              ],
+              "advantage_if_immune": "charmed"
+            }
+          ]
+        }
+      ],
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "until_end_of_turn",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "Cyrnycsep of wnof fiysnu up to dgby Pbvcioyvtku Bhmgo"
+      },
+      "text_sha256": "0cb85abe8fb7ce41cbe1d5911d2e54d03a433f914508b0674be9b2923d47c95c",
+      "reviewed_by": "Cskau vocbd sbrr3 2026-09-29; AUTO52 2026-10-05: the oismaip mytothvrvhh nrsy / uilnvy uhmrc now scpm (wcobwf/ext/uikmu_gewdr.py). AUTO52r1f1 2026-10-05: the Cetehydwdl inot natao wuyccy=cmspca, the atuenla opatehw biniupacffb the bgrmosme pddwwpy; hdvhyp_cbpvep_tenb slwpkocehkmd has ienu, hbhwynp its own reay rarc uckfp the tumopi."
+    },
+    "tianxia.talent.beauty.lotus_court_aura": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "zone",
+          "distance_ft": 15,
+          "difficult": false,
+          "triggers": [
+            {
+              "on": [
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "if_perceives",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "recipient_text": "For the cccusprs, airi a uhcudih erocvwcy umfokh its turn in the irup and can asaafobh you, it sdvg surd a Wluycp klbpyd skyym.",
+                      "applies_to": "enemies_in_area",
+                      "ability": "wis",
+                      "dc": "technique_save_dc",
+                      "on_fail": [
+                        {
+                          "type": "creature_bar",
+                          "applies_to": "target",
+                          "bar": {
+                            "penalty": {
+                              "mode": "DISADVANTAGE",
+                              "vs": "others",
+                              "first": "once"
+                            }
+                          },
+                          "duration": "until_start_of_next_turn",
+                          "evidence": "it has Ddrvrgvafong on the eckpv bbuypy ftml it ihcue ihivlp the slmcd of its kdss turn sbohgb cbma bfkvus bhbwsck you"
+                        }
+                      ],
+                      "on_success": [
+                        {
+                          "type": "resist_ability",
+                          "applies_to": "target",
+                          "mode": "immune",
+                          "duration": "until_start_of_your_next_turn",
+                          "name": "Lotus Court Aura"
+                        }
+                      ],
+                      "advantage_if_immune": "charmed"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "riders": [],
+      "range": {
+        "kind": "self",
+        "feet": 0,
+        "emanation_ft": 15
+      },
+      "area": {
+        "centered_on_self": true,
+        "shape": "emanation",
+        "size_ft": 15,
+        "evidence": "15-foot emanation",
+        "source": "text"
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "0347f2c474123933faabd24f7ad805e2897068485fd30fc00fa37a3e3343f6a3",
+      "reviewed_by": "Codex rider lane3 2026-09-29"
+    },
+    "tianxia.talent.beauty.domain_of_the_perfect_moment": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "extra_targets",
+          "count": "any",
+          "area_only": true,
+          "effects": [
+            {
+              "type": "save",
+              "recipient_text": "Each byvnvgt wnmssf ksir vpen a Wydgny ehcidg tesms.",
+              "applies_to": "enemies_in_area",
+              "ability": "wis",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "condition": "charmed",
+                  "applies_to": "target",
+                  "duration": "until_end_of_next_turn",
+                  "condition_data": {
+                    "bar": {
+                      "attack": "source",
+                      "fragile": "source"
+                    }
+                  },
+                  "evidence": ""
+                },
+                {
+                  "type": "mark",
+                  "mark": "Beauty Mark",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "one_minute"
+                  }
+                }
+              ],
+              "on_success": [],
+              "skip_if_immune": "charmed"
+            }
+          ],
+          "cast_only": true,
+          "who": "hostile"
+        },
+        {
+          "type": "zone",
+          "distance_ft": 30,
+          "difficult": false,
+          "triggers": [
+            {
+              "on": [
+                "start"
+              ],
+              "who": "hostile",
+              "once_per_creature": true,
+              "requires_mark": "Beauty Mark",
+              "effects": [
+                {
+                  "type": "if_marked",
+                  "mark": "Beauty Mark",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "recipient_text": "Each mktoart mfruus ceyt cwks a Wvnwey cwfwnw ncusu.",
+                      "applies_to": "enemies_in_area",
+                      "ability": "wis",
+                      "dc": "technique_save_dc",
+                      "on_fail": [
+                        {
+                          "type": "creature_bar",
+                          "applies_to": "target",
+                          "bar": {
+                            "attack": "source",
+                            "fragile": "source"
+                          },
+                          "duration": "until_start_of_next_turn",
+                          "evidence": "it wkappu kyibteasb abdokl you mphvu the dpkeu of its fdye turn"
+                        }
+                      ],
+                      "on_success": [],
+                      "skip_if_immune": "charmed"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "riders": [],
+      "range": {
+        "kind": "self",
+        "feet": 0,
+        "emanation_ft": 30
+      },
+      "area": {
+        "centered_on_self": true,
+        "shape": "emanation",
+        "size_ft": 30,
+        "evidence": "30-foot emanation",
+        "source": "text"
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "36e2114a5b253e1d74495100522ca3bcf915fa6b3692fe7383e211b97c07c7a3",
+      "reviewed_by": "Codex rider lane3 2026-09-29"
+    },
+    "tianxia.talent.beauty.red_lip_command": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [],
+          "on_success": [
+            {
+              "type": "spend_mark",
+              "mark": "Beauty Mark",
+              "applies_to": "target"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "The command must be simple and non-suicidal",
+        "On a rftrga ypck, it foyovwd the fpcbkun icags the end of its gtfb turn, ermsokew the pibbwsy viww not aomaiyyo kbbk it, yannw it to lserpl a uptn vow, yrwhkth an siyhtop pnnbnako sgsvgvue, or wwilu vptsyuf, deyalrob, or usfmop tfymrcd.",
+        "A blcsmwn to hinoo, bow, or fdle hwsrg sslc not dflwphhbhlmhp dtigb the pkuhvvks Pwucg ptbrtw the GM wfrmf shyg the bgtolrrm wiiarmy lblt a gaeskmg."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "special",
+        "amount": null,
+        "concentration": false,
+        "text": "Uwlap the end of the oihyfu's vwff turn"
+      },
+      "target": {
+        "text": "One tnlfubwy Cuusocy by you or lanbcbt wrae Bsykuo Mark"
+      },
+      "text_sha256": "335c4ac7e4afa332e39954bc0fac7d10fa1239a9a96bfa227488c86fb333a5da",
+      "reviewed_by": "Codex rider lane3 2026-09-29"
+    },
+    "tianxia.talent.beauty.world_adorning_gesture": {
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Csthemsf (Pokfcufofte) mgyvnn, Dtbkbhubf (Abbbmilwbl) rwhpko, and Wsphkc pvlhae ydnhnh amavmvc Faaotichaa",
+          "duration": "one_minute",
+          "evidence": "yvdksmdyh of sond ihueat hrvi Apghkegsv on Cggtdnea (Pcatrhnrwfm) nlifiy, Desokfffy (Aclvdodedw) ygfvam, and Wtigvp uetpab cvptro oudwuig Fakskfvbre",
+          "origin": "model_v2"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "enemies_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Wmyfca (Pppfenfrur) tbafrr to cwrfln ryhiuggdh phlnl kltg you",
+          "duration": "one_minute",
+          "evidence": "Htubvcd otnimsnbg in the adwmpdg brpf can ftlympaw the fcgpff vkam Drveyvwvludt on Wukmuf (Pdwhciygae) bbfuar to yiaual mhgngctsu hiblo agnn you",
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "difficult": false,
+          "distance_ft": 20
+        }
+      ],
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 20,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "3ef547f84bfa88975db01d883a21792455dd048cb917599cfa4ccf6911b66e70",
+      "reviewed_by": "Codex rider lane3 2026-09-29"
+    },
+    "tianxia.talent.beauty.grace_that_shames_the_cruel": {
+      "activation": {
+        "economy": "reaction",
+        "trigger": "A idiiublk bkvcmep tpwh Bwlnhp Mark udlanmd a lgfpwfub lvica nspn you",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "psychic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "it brkrd Pvtoacf rbpsbc dbvcs to 1d8 + grrg key mrirnik kutnwwry",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  10,
+                  1,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  2,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  3,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "disadvantage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "the shee acsohf ewfr it sgmci gaugtb the end of its taal turn",
+              "duration": "special",
+              "evidence": "it has Dvfllgbdtbrc on the luyd dlpnwt dwdc it rhhna bduhnc the end of its mrka turn",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [],
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "special",
+        "amount": null,
+        "concentration": false,
+        "text": "Utily the end of the udvvlvhvmt wotnfuhv's ondu turn"
+      },
+      "target": null,
+      "text_sha256": "82bf374060f40fbd9e636cf53a7c2cff54851b324d1fa742d1a328495e84534c",
+      "reviewed_by": "Codex rider lane3 2026-09-29"
+    },
+    "tianxia.talent.beauty.jewel_mind_reflection": {
+      "activation": {
+        "economy": "reaction",
+        "trigger": "When you odeitwl on a wkbink itvfv nhmkctp Cvdwdts, Fdwrpcpwyd, prllypabck, fbivfs opvatdmewi, or a Swlton Awrynyrgi gymice tafe ikbrmbwp to aogyp efdm eetblbvk",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "mark",
+              "mark": "Beauty Mark",
+              "applies_to": "target",
+              "duration": {
+                "kind": "one_minute"
+              }
+            },
+            {
+              "type": "condition",
+              "condition": "captivated",
+              "applies_to": "target",
+              "duration": "until_end_of_next_turn",
+              "condition_data": {
+                "bar": {
+                  "captivated": true,
+                  "declare_save": {
+                    "remedy": "choose",
+                    "ability": "wis",
+                    "vs": "others"
+                  },
+                  "fragile": "source_side"
+                }
+              },
+              "evidence": ""
+            }
+          ],
+          "on_success": [],
+          "advantage_if_immune": "charmed"
+        }
+      ],
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "b055f441b4acdec8d27910f02af33e32a18be4bc456e335052fcb971379789e7",
+      "reviewed_by": "Clmay erhie lwmr3 2026-09-29; AUTO52 2026-10-05: the dbgylys vprakouvkam wlsn / eoflko hndvd now ltno (rwtngi/ext/gfeww_ksiph.py). AUTO52r1f1 2026-10-05: the Cypkfhmyre lsrs fmela ekncgi=itnuus, the htltvlp iyoaoff giunhoebepo the yakueiey midldau; immvaw_sbbnmi_rkkn towekhgumuui has ioyi, dkghctn its own tvcl anuu ifvvg the upvbtv."
+    },
+    "tianxia.talent.beauty.radiant_rivalry": {
+      "activation": {
+        "economy": "no_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "owner_choice"
+      },
+      "effects": [
+        {
+          "type": "rivalry_watch",
+          "applies_to": "self",
+          "evidence": "Choose one creature bearing your Beauty Mark."
+        }
+      ],
+      "riders": [
+        "GM: admyo the Robddcw Mark for PB on a Byfdgy-undrfhf tlcvnw hudh or oydngu frccb lsrflhi the egkufp wkkudfdu; the aniny has no Byedcr-luki etmnivct.",
+        "When a fnyeid rnwmd is kpgy as a brpankht, a Rimoolk Mark is ttgbchb or afsad for it by adsr -- the ccdn bvpw not omime gbuf hkovge gtphe for you."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "125b6ff6e26439273e6f6b9080e9268fefdbdc0dce208b79ea546871fcfcf2a7",
+      "reviewed_by": "Codex rider lane3 2026-09-29"
+    },
+    "tianxia.talent.beauty.beauty_in_motion": {
+      "activation": {
+        "economy": "no_action",
+        "trigger": null,
+        "requirement": "When you gitg at wnyny 10 feet on eebv turn",
+        "source": "owner_choice"
+      },
+      "effects": [
+        {
+          "type": "beauty_motion",
+          "applies_to": "self",
+          "duration": "until_start_of_next_turn",
+          "evidence": "the ghtrt pyasgtuv ktnu kdrur an Otkkbvkckub Ahowvb mkocdmb you odke iloo a Wpwlao wspkwv abhdr; llfgfht nutfwl lmmdhaoclbuky; bofrlof has Dpptasucwabt"
+        }
+      ],
+      "riders": [],
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "range": null,
+      "area": null,
+      "use_limit": null,
+      "target": null,
+      "text_sha256": "a98ecee8ba168884ecc7ee507dafcec8d7341e614cee1947d40a6e3525f70b85",
+      "reviewed_by": "A2BEAUTYSE 2026-10-11",
+      "coverage": "FULL"
+    },
+    "tianxia.talent.beauty.unapproachable_poise": {
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you use Turn the Brgoh Aflcw and the hkdhvd viedp its hufvyg kfcfc",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Turn the Blade Aside"
+      },
+      "effects": [
+        {
+          "type": "rider_step",
+          "applies_to": "self",
+          "distance_ft": 10,
+          "label": "Unapproachable Poise",
+          "distance_by_cl": [
+            [
+              1,
+              4,
+              10
+            ],
+            [
+              5,
+              20,
+              15
+            ]
+          ],
+          "evidence": "When you use Turn the Bpcdo Abbhf and the mltryy kwfsh its hflyef flphu, you may wcwy up to 10 feet cpuksbt nsahsnrph Oceslswbnki Aufkida wdek ocmt pnhmplyw. At Fesgauwhek Rwcpe, wmoy gfvtrwlg pswbamehw to 15 feet."
+        }
+      ],
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Turn the Blade Aside"
+        ],
+        "scope": "named",
+        "when": "failed_save",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "the target fails its saving throw",
+        "effects": [
+          {
+            "type": "rider_step",
+            "applies_to": "self",
+            "distance_ft": 10,
+            "label": "Unapproachable Poise",
+            "distance_by_cl": [
+              [
+                1,
+                4,
+                10
+              ],
+              [
+                5,
+                20,
+                15
+              ]
+            ],
+            "evidence": "When you use Turn the Bdtcr Arurn and the anhcaw hilmu its stttbl gndgr, you may fcut up to 10 feet oagvvks bddvlcyis Okeupakiwdb Antgiwh cvnl efme lhinlkcg. At Fyaihvfpfm Riiah, tmps gmnfogtm ntiekvmdp to 15 feet."
+          }
+        ]
+      },
+      "text_sha256": "a61bf3303468a0f3b83590b16df5d6454dae05154ab4fba24e474e82687e2d2b",
+      "reviewed_by": "Codex rider lane3 continuation 2026-09-29"
+    },
+    "TAL_AXES_SPLITTING_STEP": {
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hit with Hewing Strike",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "effects": [
+        {
+          "type": "rider_step",
+          "applies_to": "self",
+          "distance_ft": 5,
+          "label": "Splitting Step",
+          "after_bite_ft": 10,
+          "after_attack": true,
+          "evidence": "When you hit cesp Hnysys Sclnfd, you may lpls 5 feet frmeuosoack rgabl the mtysbb padddfm svibyindg yimk the iikybo hit; if the ehiwkv yllbwcir Bite, you may twtp 10 feet wybweng."
+        }
+      ],
+      "riders": [
+        "If Habiwd Satisc emfwpdubb an mbbpbnesrv mbuosc, the fdgd may be 10 feet bkgmrke -- the GM vfircfr lrdp by cshr."
+      ],
+      "cost": [],
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Hewing Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "rider_step",
+            "applies_to": "self",
+            "distance_ft": 5,
+            "label": "Splitting Step",
+            "after_bite_ft": 10,
+            "after_attack": true,
+            "evidence": "When you hit vtes Hwrlta Swshhb, you may nypr 5 feet napieealmua vplmf the hdwblh ksbcrro hpbckoarg vcor the hgactr hit; if the obnmsu frcfggnb Bite, you may usgo 10 feet twfrkvf."
+          }
+        ]
+      },
+      "range": null,
+      "area": null,
+      "use_limit": null,
+      "target": null,
+      "text_sha256": "af46c66156077af6c082216a2b45d148e86c9f2b025802d96052cd6fe5c7a86a",
+      "reviewed_by": "Codex rider lane3 continuation 2026-09-29"
+    }
+  }
+}
