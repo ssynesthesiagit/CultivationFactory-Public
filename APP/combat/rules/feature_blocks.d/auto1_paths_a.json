@@ -1,0 +1,73 @@
+{
+  "schema": "TianxiaFoundry.FeatureBlocks.v1",
+  "note": "Automation lane AUTO1 (round 24, 2026-10-04): Body Refining Path and Subpath features, the first Path alphabetically. Each row names the printed line the table now resolves.",
+  "features": {
+    "tianxia.subpath.body.kensei.feature.sword_saint_incarnation": {
+      "block": "critical_range",
+      "lowest": 19,
+      "while_state": "sword_saint_incarnation",
+      "weapons": "unarmed_or_blade",
+      "name": "Sword Saint Incarnation",
+      "covers": [],
+      "why": "While Sword Saint Incarnation lasts, your unarmed strikes and recorded integrated Blade attacks score a Critical Hit on a d20 roll of 19 or 20. Choose the integrated weapon attack on your sheet. Other attacks retain their normal critical range."
+    },
+    "tianxia.subpath.body.hundred_hand_battle_mandala.feature.thousand_hand_incarnation": {
+      "block": "reaction_economy",
+      "grant": "extra",
+      "while_state": "thousand_hand_incarnation",
+      "name": "Thousand-Hand Incarnation",
+      "covers": {
+        "features": [
+          "tianxia.subpath.body.hundred_hand_battle_mandala.feature.circle_of_uncounted_arms"
+        ]
+      },
+      "why": "While the incarnation lasts you gain one additional Reaction each round, spent only on Circle of Uncounted Arms (combat/ext/reaction_economy.py grant 'extra')."
+    },
+    "tianxia.path.body_refining.feature.tempered_response": {
+      "block": "save_rescue",
+      "abilities": [
+        "STR",
+        "DEX",
+        "CON"
+      ],
+      "choose_one": true,
+      "pick_sources": ["tianxia.path.body_refining.feature.indomitable_body"],
+      "optional": true,
+      "resource": "stamina",
+      "cost": 1,
+      "bonus": "pb",
+      "reaction": false,
+      "covers": [
+        "No action is required.",
+        "You may use it once per round.",
+        "You may use it after learning that the saving throw failed.",
+        "You may use it only once on the same saving throw.",
+        "This bonus is not saving-throw proficiency."
+      ],
+      "why": "Body Refining's CL1 Tempered Response answers one failed saving throw a round for 1 Stamina and your Proficiency Bonus (combat/typed_reactions.py save_rescue, no Reaction, keyed on the chosen ability). The printed Defensive Discipline is now the fighter's own pick (combat/ext/defensive_disciplines.py), so those five procedure lines are the table's own rules and are not left for the GM. Not automated: the printed 'It does not stack with saving-throw proficiency from another source.' stays with the GM. The rescue bonus is added to the final save total, and that total already includes proficiency (combat/factory_compiler.py), so the engine cannot read whether the character is proficient; enforcing the printed restriction needs recorded save-proficiency provenance, never a numeric guess."
+    },
+    "tianxia.path.body_refining.feature.meridian_reinforcement": {
+      "block": "meridian_reinforcement",
+      "kind": "meridian_reinforcement",
+      "name": "Meridian Reinforcement",
+      "resource": "stamina",
+      "cost": 1,
+      "conditions": [
+        "poisoned",
+        "disease",
+        "sickened"
+      ],
+      "against": [
+        "poisoned",
+        "disease",
+        "sickened",
+        "exhaustion"
+      ],
+      "covers": [
+        "No action is required.",
+        "You may make this additional saving throw once per round."
+      ],
+      "why": "Consolidates the existing Poisoned/Exhaustion save Advantage with disease Advantage and the paid end-of-turn repeat. Only an ordinary stored repeat_save contract that ends on success is eligible. Origin provenance alone, unknown source restrictions, and multiple-success diseases remain GM work; their outcome clauses are deliberately uncovered. The prior Exhaustion benefit is preserved; breathing and meridian-disruption classification remains unimplemented."
+    }
+  }
+}
