@@ -1,0 +1,49 @@
+{
+  "features": {
+    "foundation.dragon_wind_vessel_v0_2E.generate_dragon_wind_momentum": {
+      "block": "generate",
+      "resource": "foundation",
+      "on": [
+        "dragon_wind_hit"
+      ],
+      "max": 1,
+      "per_round": 1,
+      "expires": "end_of_next_turn",
+      "refresh": true
+    },
+    "foundation.dragon_wind_vessel_v0_2E.wind_opened_body": {
+      "block": "motion",
+      "rules": [
+        {
+          "kind": "speed_bonus",
+          "ft": 10
+        }
+      ]
+    },
+    "foundation.dragon_wind_vessel_v0_2E.momentum_step": {
+      "block": "foundations1_conversion",
+      "resource": "foundation",
+      "kind": "momentum_step"
+    },
+    "foundation.dream_mirror_soul_anchor_v0_2B.reflection_cut": {
+      "block": "dream_mirror_conversion",
+      "kind": "reflection_cut",
+      "why": "One paid post-hit/failed-damaging-save route in combat/ext/dream_mirror.py; no upfront modifier variant."
+    },
+    "foundation.dream_mirror_soul_anchor_v0_2B.dream_mirror_domain": {
+      "block": "dream_mirror_domain",
+      "resource": "foundation",
+      "kind": "dream_mirror_domain",
+      "why": "Printed Foundation combat conversion; combat/ext/dream_mirror.py. The 30-foot emanation, its ally coverage and the once-per-round +PB are evented there."
+    },
+    "foundation.furnace_heart_record_v0_2B.banked_coals": {
+      "block": "foundations1_conversion",
+      "resource": "foundation",
+      "kind": "banked_coals"
+    },
+    "foundation.furnace_heart_record_v0_2B.heart_cauldron_body": {
+      "block": "foundations1_conversion",
+      "kind": "heart_cauldron_body"
+    }
+  }
+}
