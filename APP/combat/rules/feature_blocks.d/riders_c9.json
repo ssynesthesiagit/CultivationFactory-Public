@@ -1,0 +1,19 @@
+{
+  "features": {
+    "tianxia.talent.spirit_companions.pact_brother_battle_rhythm": {
+      "block": "spirit_bond",
+      "kind": "pact_brother",
+      "why": "Once per round, when you damage a creature your Bonded Spirit damaged since the start of your last turn (or it damages one you did), choose one: the next attack roll against that creature has Advantage; move yourself or the spirit up to 10 feet without Opportunity Attacks; the spirit uses its Reaction to Help (Advantage on your next attack roll against it); or reduce Bond Strain by 1 (combat/ext/spirit_bonds.py, a damage_dealt hook)."
+    },
+    "TAL_AIR_ARROW_TURNING_BREATH": {
+      "block": "air",
+      "kind": "arrow_turning",
+      "why": "Reaction when a creature you can see within 30 feet is hit by a ranged weapon attack (Ammunition weapons; thrown weapons too from CL 5): you are asked, then roll an Air Check (d20 + Proficiency Bonus + key ability modifier) against the attack roll. Beat it: the damage is reduced by 1d8 + your Proficiency Bonus. Beat it by 5 or more: the attack misses instead (combat/ext/air_currents.py, a hit_response hook)."
+    },
+    "TAL_AIR_INVISIBLE_BLADE_CURRENT": {
+      "block": "air",
+      "kind": "invisible_blade",
+      "why": "A Wind Lash made while you stand in one of your own Air Currents may be made invisible (you are asked): the target rolls Wisdom (Perception) against your Cultivation Save DC before the attack roll, with Advantage if it has blindsight or tremorsense; on a failure the attack has Advantage (combat/ext/air_currents.py, a before_attack hook)."
+    }
+  }
+}
