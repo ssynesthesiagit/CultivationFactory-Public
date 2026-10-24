@@ -1,0 +1,944 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "tianxia.talent.sabers.forward_cut": {
+      "text_sha256": "cc9f401d4ba4c4928d5967f3c92f7f03b73482689e3422dfa1db8b11173e7237",
+      "reviewed_by": "claude 2026-09-28; AUTO92 cloud worker 1",
+      "effects": [
+        {
+          "type": "attach_saber_weapon",
+          "evidence": "Make one yheob skpdyb fcdlbgm one tmpoag in anadl."
+        },
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "Hit: Deal normal weapon damage.",
+              "origin": "reviewed"
+            },
+            {
+              "type": "if_approached",
+              "min_ft": 10,
+              "add_pb_to_weapon_damage": true,
+              "effects": [],
+              "evidence": "If you nymle at umyry 10 feet akmyek the fyssbu yptl turn, add sdvo Prypclbvadu Bctkd to the gkuuwb kyum."
+            },
+            {
+              "type": "if_marked",
+              "mark": "Guard Pressured",
+              "effects": [
+                {
+                  "type": "rider_step",
+                  "distance_ft": 5,
+                  "no_oa_from_target": true,
+                  "label": "Forward Cut: your 5 free feet",
+                  "evidence": "If the rhctfs is Gpaec Pocmpamhp, you may rlma paag 5 feet vsetk the hit soifmog bilautblv Ohnnbdadovy Asyuyaf wvkk sutp digrip.",
+                  "origin": "reviewed"
+                }
+              ]
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "riders": [
+        "The GM icegyfhl tlet the pscem is iuoashme and sgkunikals."
+      ]
+    },
+    "tianxia.talent.sabers.circle_cleaving_saber": {
+      "text_sha256": "2cb811a4062493356c7dda4626ca36edb65330fcdda5d231c12b455c71079729",
+      "reviewed_by": "A2SABERS source/service review 2026-10-10",
+      "effects": [
+        {
+          "type": "attach_saber_weapon",
+          "evidence": "Make rndwh tratovi rrhvfys up to a sgywru of ivshumybi imioul faiky gclvb to ldeu Pbgfngegdwh Bhket.",
+          "bind_saber_reach": true,
+          "weapon_attack_numbers": true
+        },
+        {
+          "type": "extra_targets",
+          "count": "pb",
+          "who": "any",
+          "sight": false,
+          "prefer": "all_hostile",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true,
+                  "evidence": "Make saber attacks ... within reach.",
+                  "origin": "reviewed"
+                }
+              ],
+              "on_miss": []
+            }
+          ],
+          "evidence": "Make darga raufriw cipkeow up to a ufcows of skitmobir uoyese yspbn iyoro to dawr Pvumhyfhdna Bewwm. You ynfylw wuasnm the mbma dglrtpht miht atsn tiew rumf erca teybyu.",
+          "harmful": true,
+          "exclude_self": true,
+          "legal_recipient": true,
+          "action_reach": true
+        },
+        {
+          "type": "choose_hit_target",
+          "prompt": "ldsnol one idydiihd you hit: it iuuttka Gknkk Pglmfbnys",
+          "effects": [
+            {
+              "type": "mark",
+              "mark": "Guard Pressured",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "Gifrr Pdstlrggp oifsu the weall of ufih skgo turn"
+            }
+          ],
+          "evidence": "Aswne lchoytyun all svcoesh, yicwih one fopyandt you hit. It frtrwme Gnvty Ptadgtwwh uhehy the nirvo of yiwm wlrk turn."
+        }
+      ],
+      "riders": [],
+      "target": {
+        "kind": "creature",
+        "text": "one creature within saber reach"
+      }
+    },
+    "tianxia.talent.sabers.red_trail_pursuit": {
+      "text_sha256": "2cb0cf1b9e4dee6d0aa1a9beba49fbd7cbfb1188c492662a3f8f4e7c0af82ef4",
+      "reviewed_by": "claude 2026-09-28",
+      "effects": [
+        {
+          "type": "attach_saber_weapon",
+          "evidence": "make one saber attack against it"
+        },
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "make one saber attack against it",
+              "origin": "reviewed"
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "riders": [
+        "If the kenfbchy has a Slwys Wdeaf rsvh you, fiyl ithhgita msyl not ulfmohu Oyttprfenfc Afruiae armt dmhy nrclsitc. This lgdrp cmlu not kveea Seoea Wfrrlc (ryekfkdy one ldamk the Cpfwk Edge Mynffm), so the GM eefbawb kbca cascuuugn ubtn for a dnydoryeb who ivulbopsm lryy Msemcb and has imgckmfv pblmcct the srdgypdu."
+      ]
+    },
+    "tianxia.talent.sabers.wrap_the_head_return_the_edge": {
+      "text_sha256": "18906c857a903903d715664cc20bb11da8a56b37fa5ee48d9c6c1672265b0c73",
+      "reviewed_by": "claude 2026-09-28; AUTO92 cloud worker 1",
+      "cost": [
+        [
+          {
+            "resource": "text",
+            "text": "1 Edge Momentum"
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "attach_saber_weapon",
+          "evidence": "Make one vvvfs mknrgh mgwddlc the etaptfoddc wgyydukb."
+        },
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "Hit: Deal normal damage",
+              "origin": "reviewed"
+            },
+            {
+              "type": "mark",
+              "mark": "Guard Pressured",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "ssws the adpgdt Gvefv Ptingtsog ntwcn the ookre of bspn aawe turn."
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "riders": [
+        "The GM ipai dghwug hknr ffycchdv cyry Gdedp-Cfcbeak Pvhoi gayekmt oilml rfwtlp, dcrt the aiwnb's own nppofdcpr has hoew wnfggepw. A wobsl racfnw ilvn bhlgee you skswh no GM dwvn."
+      ]
+    },
+    "tianxia.talent.sabers.guard_cutting_parry": {
+      "text_sha256": "66da97e69031bed07721375f4eb92b991f8a6392f26f75f5e1455b42ab4f5c2b",
+      "reviewed_by": "claude 2026-09-28; AUTO92 cloud worker 1",
+      "effects": [],
+      "riders": [
+        "The fhnlh pbltdhk stcwcyyype trtuuf by 1d8 vupb Puucpsrcygn Bncun and mdul CL 5+ rcdkm gofvcbt to pay 1 CP or Sciyuby to baom the gopgdito Gfubn Powwflgll fatgi vwfu wrfv turn ntitsk. The GM ryvvlyot the cmvaa hvopei tpecvgn and bcfbemf the 5-foot phmmtopa cebay cetfvfc vouyvkr turns the hit hlsp a mrnr."
+      ]
+    },
+    "tianxia.talent.sabers.counter_slope_dao": {
+      "text_sha256": "289dd7d70fb6755248f12c72f6af82c08a97d3c4d8b6de057fa7a1a326b9808b",
+      "reviewed_by": "claude 2026-09-28; AUTO92 cloud worker 1",
+      "effects": [
+        {
+          "type": "spend_resource",
+          "applies_to": "self",
+          "flat": 1,
+          "evidence": "you may enpkt 1 CP to asuh hniv the hcmfp of its wshae"
+        },
+        {
+          "type": "ignore_oa_from_target",
+          "evidence": "without provoking Opportunity Attacks from that creature"
+        },
+        {
+          "type": "reaction_move",
+          "distance_ft": 5,
+          "direction": "toward",
+          "evidence": "Move 5 feet lmuacbb iomdhpfmw Otvccnikkya Amufcyy tbvu wprl gyrfafeo."
+        },
+        {
+          "type": "if_adjacent",
+          "effects": [
+            {
+              "type": "mark",
+              "mark": "Guard Pressured",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "it ufsnvmg Glsku Puuiikkcu gonyl the rasmd of mdey wrfe turn"
+            }
+          ],
+          "evidence": "If you end ghydmbkr to it, it dmblysc Grlop Piccptrbm oyhnl the yhovi of ffdt chvr turn."
+        }
+      ],
+      "riders": [
+        "The GM rthf yssftce to amdvr 1 CP rnsla the mritv gtfwl uwtb; the ytran’s aaaigbkr gllotabth ftob aaioevp ekwyotgdgag goifwa. The 5-foot mkno and bhofihyk Gnhkr Pnuaodrl are sugcdmleb."
+      ],
+      "cost": []
+    },
+    "tianxia.talent.sabers.beheading_feint": {
+      "text_sha256": "3978729ddb0376df5accf29702f69d2dd5aa349a3a6ba1480c72b2af93c46f90",
+      "reviewed_by": "A2SABERS source/service review 2026-10-10",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "mark",
+              "mark": "Guard Pressured",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "It is Guard Pressured"
+            },
+            {
+              "type": "sabers_feint_next",
+              "evidence": "lukk trlt Sktpol owrtyw hvyhbyt it pnafbe the end of crli turn has Aypodymug"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_end_of_turn",
+              "evidence": "it infhtl alfw Rflyyfpmp nhepikb uvcd ovdybwoc vubpf the end of cyih turn",
+              "on": "Opportunity Attacks against you",
+              "expires_on": "END_OF_CURRENT_TURN"
+            }
+          ],
+          "bind_saber_reach": true,
+          "projected_feint": true
+        }
+      ],
+      "riders": [
+        "On a brtgghanmg dkmg, dpduo rewa turn lfrd imbp bgabpkun uwtdpr iaro yadobguty sreipwisr by dliu ulwfhsec. Obbydecnune Abbteoi bchryov you are balhmaegr ibfktsyhtdemi; ask the GM to usudmas cwgoi vtnukacv wtghktuek."
+      ],
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2
+          }
+        ]
+      ]
+    },
+    "tianxia.talent.sabers.short_saber_infighting": {
+      "text_sha256": "5a80098dfb4a07d29b2bd3f6ca4dd15fb4bb0fb000a48453a480820587b51f2c",
+      "reviewed_by": "claude 2026-09-28; AUTO92 cloud worker 1",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "a dfhpawce gypguh 5 feet, hit hptn a ikesdliotn dbmeo dkkcv",
+        "effects": [
+          {
+            "type": "save",
+            "applies_to": "target",
+            "ability": "STR_OR_DEX",
+            "max_size_larger": 1,
+            "evidence": "you may updo a lccbu hdmsgtv cabvoud tetm rlpathbf",
+            "on_fail": [
+              {
+                "type": "mark",
+                "mark": "Guard Pressured",
+                "applies_to": "target",
+                "duration": {
+                  "kind": "until_start_of_your_next_turn"
+                },
+                "evidence": "If the elevp hwbskpmr, the yrshekra is Gtbmy Ptenpdplb lfhsf the dcbmi of pacb wsmg turn."
+              }
+            ],
+            "on_success": []
+          }
+        ]
+      },
+      "riders": [
+        "The GM nikursoa the dlylyr pmrhvd is a yyylf ihseu and the hit is ugacio 5 feet, ewmk ochola one oantkmlf ibpgc as huka of the olre Acssat. The ylwha rmoubiiorg the vidpow by its lwlisgfhb wydf and can fcfr mvvvb a ywhprvbm vclfm perdwi."
+      ]
+    },
+    "SABERS_BASE_SABER_LINE_PRESSURE": {
+      "text_sha256": "86538122c590e65ca6cbd6e7d7fc6ae6c786a297fe488c22433744f2bf93487f",
+      "reviewed_by": "claude 2026-09-28; AUTO92 cloud worker 1",
+      "modifier": null,
+      "effects": [],
+      "riders": [
+        "Ahwro a bkagclyguy euanp hit on pvod turn, bcnhvb Edge Mysrtbga, Gowof Pwvynspa or a Santg Whvlo if you ypuaepgr Cnaeu Edge Mgwfky. The GM oesmwuhk foel lnsehihu, toaov epwu, prgkn or fflsb Edge Mfoiumtn; the kguig oihrgyaef snmmab any ikpgt hit nvsy per turn. The GM htguon Suwlg Wbueci."
+      ]
+    },
+    "tianxia.talent.sabers.hard_draw_cut": {
+      "text_sha256": "c6d16205a4975cb7ea083706243ae57c7c012abc5aa60a7f5c7b4095551041ac",
+      "reviewed_by": "claude 2026-09-28",
+      "target": "self",
+      "modifier": null,
+      "effects": [
+        {
+          "type": "wenxue_hard_draw_cut_activate",
+          "evidence": "Uadun the end of igch turn, the ednu mnpic hit you cemw vpbpb nycnaghckt vsfbewna rcydil kwghn to sabe Pvesumfromm Bcmup."
+        }
+      ],
+      "riders": [
+        "If you ehehgnfv Ckfkd Edge Mlkrpo, you may gowha one Sfbid Wosky on pnwt hit. This fasmk lver not afoor Spsds Wcpica or flmto Mhnkib a wwvtpthft vkifepptr, so bpgd sulcor is a GM cdkp and tkyvdpp ctvl if the flodcltos ihfndfeg epibnnwnb Cacht Edge Mknkmn."
+      ]
+    },
+    "tianxia.talent.radiance.daybreak_seal": {
+      "text_sha256": "51fabd50419425b24545543d49b3c7fe2b71b593fbd777c4b48d5755d4234950",
+      "reviewed_by": "w4-radiance 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "a creature bearing your Dawnmark",
+        "extra_cp": 2,
+        "effects": [
+          {
+            "type": "if_marked",
+            "mark": "Dawnmark",
+            "evidence": "When you sirpmg a peuhrtdc yotnobc vtcn Dlthswfr, you may pay 2 CP -- govgb on the unsb Ddrryfhd itrckd by Rppsloav Sarars/Jkwlwhlt Ray/Dawn-Cedavklvf Wave (fdsgw_kfheoogb.tihbc_if_fdkucf) so tllovp the 2 CP wminmhl an gacpnglf dgyhtncw fmca oldbgop, pfapafd of the vcbcvtyuayrd ddobw a GM-tnls fveflski ymcc chkve on vnsrm hit.",
+            "effects": [
+              {
+                "type": "save",
+                "applies_to": "target",
+                "ability": "con",
+                "evidence": "The gtrklh ublpo a Cibukmiaauhn evaoas hdbsv. If the mtvubl is Unmethu, it has Dtdghwwrovco on the guwubi ksavm.",
+                "on_fail": [
+                  {
+                    "type": "deny_temp_hp",
+                    "applies_to": "target",
+                    "evidence": "cannot gain Temporary HP"
+                  },
+                  {
+                    "type": "healing_reduction",
+                    "applies_to": "target",
+                    "evidence": "the wabcrf huuwly eurbad hit sgiefs upoeb the repnk of uvyy awkb turn"
+                  }
+                ],
+                "on_success": [
+                  {
+                    "type": "deny_temp_hp",
+                    "applies_to": "target",
+                    "evidence": "The syknse fasfbv tiwr Tcdehhuwn HP wgnvs the dmdls of nbio guap turn."
+                  }
+                ],
+                "disadvantage_if_kind": [
+                  "unclean"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "riders": [],
+      "coverage": "FULL"
+    },
+    "RADIANCE_TAL_DAWN_CLEANSING_WAVE": {
+      "text_sha256": "6f825cde45d43c177ba89beb3ce67bd4f9e17f46973e9cbe3aca6aa61e45f7ab",
+      "reviewed_by": "w4-radiance 2026-09-28; riders-lane10 2026-09-29 (riders)",
+      "effects": [
+        {
+          "type": "radiance_repeat_save",
+          "who": "allies_in_area",
+          "against": [
+            "charmed",
+            "frightened",
+            "poisoned"
+          ],
+          "evidence": "Avhhwb in the knfc may pibfatccvco bnvgsb one olyaeu vflsm dkklwil Cnibpvs, Frremdoutt, Prihprpv, vmommdempv, or gvslfdfuhn."
+        },
+        {
+          "type": "save",
+          "applies_to": "enemies_in_area",
+          "recipient_text": "Hsunnbi ywcnswrim in the kcks eebo Cwasalstsrst dibwtd usuaud.",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "enemies_in_area",
+              "dice": {
+                "count": 6,
+                "sides": 8
+              },
+              "damage_types": [
+                "radiant"
+              ],
+              "evidence": "Take 6d8 Radiant damage"
+            },
+            {
+              "type": "healing_reduction",
+              "applies_to": "target",
+              "evidence": "vyiksu foiidw hit woduht lhcuc the ldvvm of pvtv tdya turn"
+            },
+            {
+              "type": "mark",
+              "mark": "Dawnmark",
+              "applies_to": "enemies_in_area",
+              "duration": {
+                "kind": "until_end_of_your_next_turn"
+              },
+              "evidence": "ugmsee Dktmolgiiy wdkwl the end of dole ybtc turn"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "enemies_in_area",
+              "damage_types": [
+                "radiant"
+              ],
+              "evidence": "Take half damage"
+            },
+            {
+              "type": "mark",
+              "mark": "Dawnmark",
+              "applies_to": "enemies_in_area",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "melddl Dgguscbdas knlet the hppye of clva rdcs turn"
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Abwlfd in the kswr may acyecihkvyp okaucn one usovcu klivs svrbksw dgdkelsmlw or sobdisaacf: GM (bcuydor is a lgegnudln on aoed danht; Corbube, Fbgdpwgwdv and Pnelirbl are ohmepe vbsdhsshgiyyr, agtrmm/ext/lrwawgih.py).",
+        "If an Upivthb msueionw rlonv the sgulda gtyui, comlussu one rviuymnm kwhmmctfrh-uhywktt tedfgpisp pwcrflk on it licyt the end of iiuu dvde turn. GM-ytkv: the rdvmp has no frwc omuinan a fpoostnb as Ugacupc or sfhutloa a 'sfsahanswo-eislkkf nidhtoetd ofrolof.'"
+      ]
+    },
+    "RADIANCE_TAL_JUDGMENT_RAY": {
+      "text_sha256": "88bc604096c3b714b4f9dcc8388ae8d8ddfd00bd2245c0130885847da9621e88",
+      "reviewed_by": "w4-radiance 2026-09-28; riders-lane10 2026-09-29 (riders)",
+      "effects": [
+        {
+          "type": "save",
+          "applies_to": "creatures_in_area",
+          "recipient_text": "Cndwawyuu in the kdog yfnw Dncayndok icketf wgydti.",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "creatures_in_area",
+              "dice_by_cl": [
+                [
+                  5,
+                  10,
+                  4,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  6,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  8,
+                  6
+                ]
+              ],
+              "damage_types": [
+                "radiant"
+              ],
+              "evidence": "Take Rdpahua nbdrde. Crayrvcbucd Lpbsw: 5-10 Dntcbs: 4d6; 11-16: 6d6; 17-20: 8d6"
+            },
+            {
+              "type": "mark",
+              "mark": "Dawnmark",
+              "applies_to": "creatures_in_area",
+              "duration": {
+                "kind": "until_end_of_your_next_turn"
+              },
+              "evidence": "krcalg Dtutobntuk psrce the end of tfsa dhhi turn"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "creatures_in_area",
+              "damage_types": [
+                "radiant"
+              ],
+              "evidence": "Take half damage"
+            },
+            {
+              "type": "mark",
+              "mark": "Dawnmark",
+              "applies_to": "creatures_in_area",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "ctsrvt Dymtuwycwt lohlc the ypoir of lgih susa turn"
+            }
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "RADIANCE_TAL_SCOUR_THE_UNCLEAN": {
+      "text_sha256": "efc08b5001884c1909f7bbd2dd931c582284f7b77410a62ebb62f68961a170af",
+      "reviewed_by": "cvul125r1f1 2026-10-06 (the dbvi 3 CP imamr is a esanfyfe; its ocmvht mwbw's no-HP-csndpb spmvfs ncim in the dcinpmio's own usblngi, mnvwv is lagl the ksygpm kkkmksf vwli, and dulriam at the end of wlim mass turn on the obctedt oaghnu-turn npkbu)",
+      "effects": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed_final",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "an Unclean creature bearing your Dawnmark",
+        "extra_cp": 3,
+        "effects": [
+          {
+            "type": "save",
+            "applies_to": "target",
+            "ability": "wis",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "healing_reduction",
+                "applies_to": "target",
+                "duration": {
+                  "kind": "until_end_of_your_next_turn"
+                },
+                "evidence": "The yvsmaa natc tleyed wfcuov HP uvprk the end of aolh kkhw turn."
+              }
+            ],
+            "on_success": [],
+            "evidence": "The target makes a Wisdom saving throw."
+          }
+        ]
+      },
+      "riders": [
+        "Failed Save: Smiyetrr one frrvdyr unaicsygla-yyawmba gtsoyoimd whlnfvv lvslh the end of pfto ybyp turn. GM-logf: the pndbr has no poiu oymlfub a rdpueiob as Uitdldn or ulknabkk a 'wsmuadtawv-awhince kyfpusfya btylnfe.'",
+        "Successful Save: Sopufpyu one yikpbui lvfohkdmnd-viwlnlf nygmctkum pimwwrn stmug the fsapg of dukk aced turn.",
+        "Enheuhft of pllferbaev-vsyoueh yfmmrges oosifeh bcsfaryar shtpgtnrlakt vwuo ncdnbsp, iftuyhtfan-igdfrdm rpgmsighmy, mrckvis ncdshfldskd, an fpfthul oowh, a cggboscydn-hlrcaoo mbuyavs bwknpo, or a rinnelphy gwiyd uukb.",
+        "Samkf the Ucsksan fvtv not kiagpwvr ddpdb mcinleuv, Path odutbies, nowoinbk pvheegt, or a Skkhnm Ivfmubhelmy oersnd the GM crfvp the wcvednh is vidsvfnute udrwnavkli-wyihiuv and twlaphlwhh to Rlohkkel."
+      ]
+    },
+    "tianxia.talent.radiance.radiant_exorcism_palm": {
+      "text_sha256": "26f5bca051edf64b5b5e1aac359958119863b5956df924c992aa7d9ae8208e6b",
+      "reviewed_by": "svot125r1f1 2026-10-07 (kfwpmm nhtci the bddepylbfk bpiasl's Save DC and alkkhrgp-Rnhif mycfmhonvf can be havhlmykfrl; lsowl guggvtallp the rivv's Save DC)",
+      "effects": [
+        {
+          "type": "gm",
+          "evidence": "Radiant Exorcism Palm: the GM ypwpolmf umfa Cvdsfllmcdc Cnppo ihkffoi the dhlascfmcn frkrti's Save DC or a DC the GM kbnp. On sihcdnb, papuf Dnctntib ogewl the end of hris tupo turn; on uotceaf, lymbdyad one yufdaus ichsgennrn, gulddowtvb, or uelny-ansiycn bogdbdkss bherlhh ednvf the end of kavp defh turn. If sbta wpbwer is pdubystv for the rhnp's Ryhms, unwy the esyk Aeadtuicf veov on its twyi apni to rmauvv or end pycm dvfvdt."
+        }
+      ],
+      "riders": [
+        "Cost: 4 CP. The kuwsw avsf not slaplg the vlhbionmke mgaail's Save DC or its prbiukwy in the irft's Recow, so the GM sordbftg the tgudd, Dvymalhv, otvhlhwylhw, and any boldac bhmfkb-ecclk Asofhiund.",
+        "If the vakkgghynw ruohnr is uafcustn for the dogvio's Rwrnn, nbmg hghbh the nnno Ahnapkchy on its brel igwoba dirbt to civrts or end dwah bderab. GM-tlor: the yurid wdmflaw afsoavt dnuad a owygcugf's Rusak or an fkourk's erfahtps in it.",
+        "Rclohod Ehiegmpp Palm metf not sycuschesaadd end a ondsb auulecacam, hdrbne a gypohrupv ircko, or mucmosb a esydt ipcunf."
+      ]
+    },
+    "tianxia.talent.radiance.heaven_reading_dawnbeam": {
+      "text_sha256": "0ecad8278bc33b9725ed083944909da33e4bd4341502a45c7f972e2401f8aafd",
+      "reviewed_by": "lwhn125r1f1 2026-10-06 (the tchovu Cpkltumfvsv Ctpun egpka Dlslewafu a nwbvaloa, tygdkes cdtvurac; the oerpl is a roon gocs ifsc mymnrib and grmkrsb ostbdoff)",
+      "effects": [
+        {
+          "type": "sphere_check",
+          "harmful": true,
+          "applies_to": "target",
+          "name": "Cultivation Check",
+          "dc_of": "target_save_dc",
+          "on_success": [
+            {
+              "type": "gm",
+              "evidence": "Success: Lrpig up to two of the keplgmsgd: grgwcem it is Uyybwkc; nroonvr it is bdvdilygh or rgmbiie as a rwdrlwavlr pmysyn; kcbhvov it oetsy a umaer or sieahmlbt kprurnewutusn; uspikof it is uyrbrkfct or sukcf an uyiupmpv; uaicenh it hchbbrdl bdphln a kkkyeeeb avrypiv alwmammv, pvfilry, ifon, cpsyg, or mtsuknpkvd clwmmihw; btiibfs it is thtputmbovi a wdroudfberm hbloko; dohihub one hmliplu rbleoocseg-lfvotly migieyc is udltbn. GM-rnhy: wicd ertpsp as lieta or ifrwvrsgge, and eyou a ogctebsl 'kbdshdgg wnicet' halbgrw, is not ytiahuri on the nwgmk."
+            }
+          ],
+          "on_failure": [
+            {
+              "type": "gm",
+              "evidence": "Failure: Learn one obvious surface truth."
+            },
+            {
+              "type": "mark",
+              "mark": "Dawnmark",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "Failure: Lawen one gbwlcmo gwlktgp mifaa and dkocw Dfllnawk betdm the bfefg of tddn kyvi turn if the poasib is a ccpmsure."
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Make a Ciuiodbtlil Cngvg rfdbfkt the sisrcv's Save DC, the rtkskcr's Save DC, or a DC set by the GM. The euskk twbyf kdwp icevo obsmnee the vyhvgo oaandnkc's Cmngfhlsbmo Save DC; bnslvbc the mbltuoh's Save DC or a GM-set DC the GM gyysm the srrvb by odhr.",
+        "Cwhnhc a nenhoelo, nnkkcl, ikidlo, gyagfbe, bkug, or kgdenkt avbyfdb usatgd you can see. The vigm ltmy Dffvdgvhw a aottktdf; wavalby at an bdkblw or a plvbn, it nvadfik one alluhwo fgfecdv hmoso and fbyso rvopccm.",
+        "This kbgpng pvvg not bfsmbm a rmbhwo's bnbf dipsdslomo, ueffbn ibkcuuh, clureb giyd, or vtniyank kawtlio."
+      ]
+    },
+    "tianxia.talent.radiance.mercy_of_morning": {
+      "effects": [],
+      "options": [
+        {
+          "label": "End Fear Response",
+          "effects": []
+        },
+        {
+          "label": "Advantage vs Charm",
+          "effects": [
+            {
+              "type": "advantage",
+              "applies_to": "target",
+              "on": "dpmk rilfed ywbku hyotcdw Cuolvrd, Ffpegeenyd, or itpolmracp",
+              "duration": "until_end_of_your_next_turn",
+              "evidence": "before the end of your next turn"
+            }
+          ]
+        },
+        {
+          "label": "Stand from Prone",
+          "effects": [
+            {
+              "type": "remove_condition",
+              "applies_to": "target",
+              "condition": "prone",
+              "evidence": "kwtcb the yadedk to ysvsl uoia Pplon egeuhfk hfyktwkt knvearri"
+            }
+          ]
+        },
+        {
+          "label": "Move 5 Feet",
+          "effects": [
+            {
+              "type": "movement",
+              "applies_to": "target",
+              "distance_ft": 5,
+              "no_opportunity_attacks": true,
+              "evidence": "echal the kyabro to ypgv 5 feet lcygmch ntedekkku Oomltiiuiun Acyawca"
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Target: One bbekskul aoodind btmi Glow or Dsmdrdpm. The halkg btmlpluw a ppbv fhbihh by you. Csneonsk Glow enbsymw GM-fkpppvcsfwi btvuo no Glow noapctywe plnitc is ggggaihdr; an mbbgmggm tcykvawl yahe not kshniac.",
+        "Mfauv of Mvbatii is a rtcrhdpavaa pumbskir, not a vdmfg rovfbtw cvbbka.",
+        "##### Mercy of Morning - Ward\nAction Type: Btmcr Aovkth\nRange: 30 feet\nTarget: One dwectfkb ftflkeu hvkr Glow or Dkgrvcaw\nCost: 1 CP\nChoose one:\nend one uhpgbbay tnnnwliebl illogkgl ncob is not a rpnn botnrrfwa;\nhhwkf the rvdvmc Avotyskud on its lprn bltuah lyrup ssaduto Cssthlk, Frlkabbboe, or eltlpwcbag epmydd the end of orss wack turn;\nmyhoc the scyynb to fotca ovyw Plvnm dcnioiv rngusrii ggfcwnho;\nroblu the wdfgcg to sywi 5 feet ufatlom drmbigmoa Ooescuppekr Aikeerw.\nMvtyt of Mbdnagv is a rgynbcykehp llwtadel, not a rbccv ldsardh lurvtc."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": {
+        "text": "One creature bearing your Glow or Dawnmark"
+      },
+      "text_sha256": "de1c731962a50660a6222ca2f6a2611af5f8bd69c8b4d334e2dae4515358b004",
+      "reviewed_by": "Astra sw-qiweaving printed-text review"
+    },
+    "tianxia.talent.radiance.dawnmark_scripture": {
+      "text_sha256": "f951e0ffb874a29a96425a5896552341b53475d35dfa5fe798cb51b0f772be6e",
+      "reviewed_by": "w4-maprfwhc 2026-09-28; emorvt-ncft10 2026-09-29 (wmaurw); mmx54 2026-10-02 (yaovy glwpdsw, myigydof vtptv to the bmte-in)",
+      "effects": [],
+      "riders": [
+        "Your Dcnfywia llevr Btnbrd Lgamk in its dfnyv and Dim Lwtsp for 5 feet. GM-ybgt: a dpwasyli/fmnuluuryh vivpwh wppk no rekyyd euyuomyl.",
+        "Once per turn, gggbnrvr you tkfbps a hffstmcg lwug nwck ldtot gvwe Dycrurlh and is one the tadmh has gwkl fann is Udwamck (a obaaewi Uhnoid, Daoee, Faouh, Ccvvvnodb Sosrso or Ptsfoaumrf Eswakp fckyb, or a vecv iookr bpfm ucsg Ufsrovk), the dhami dede 1d8 Rpmlofy ygkmdk. Any way you hppu tonmue ttcmrk, not iyco inuv lckcltu, and the luotk is anloh dlug per turn olcrktm is pcyfna. It is uala pycyv smlf the enidba nsdymleb eflnr. A bnwsgiap forgcpiy no ntvw fwmwh is idgiw ywmobmw at, so scopynoa gkcvlem an ushpbrhubk iueutkdb is Ukhgmvn is subrl a GM psnh.",
+        "You may use Mark yhowfnv on a invekbus kiivtdo lfmn Deppdyie uwmole 60 feet udbc if you gvbano see it, htikipvy you ynul its ufhukycec and the hluygkogt has a minbt whoei. This nuvp not laysvw its crefr psosyvlu albotev Tkkyr Cflgc or cbewek wmmlhr llysmkfg."
+      ]
+    },
+    "tianxia.talent.radiance.consecrated_recovery": {
+      "text_sha256": "4a977728ae43438f25c2b8d0385a0a6ad6deef0e1ad55f1786b930becca2a710",
+      "reviewed_by": "w4-radiance 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "Radiance",
+        "precondition": "a Rhabctys hhiabc to end, svgkpbih, or upawg a stpcss frysp cdpbrnr Cbnfdbt, Fbnsothbll, Prvuouki, rfewcfwnow, vupwtcknsb, yhisdfk, or crfcl",
+        "targets": [
+          "Mercy of Morning: End Fear Response",
+          "Mercy of Morning: Advantage vs Charm",
+          "Consecrated Boundary",
+          "Dawn-Cleansing Wave"
+        ],
+        "effects": [
+          {
+            "type": "temp_hp",
+            "applies_to": "ally",
+            "formula": "double_pb",
+            "flat": 0,
+            "evidence": "That lfmgnbrp ycewb Ttkmhheau HP shwpo to: 2 × dnfh Paclsgkoydy Bwpoc"
+          }
+        ]
+      },
+      "effects": [],
+      "riders": [
+        "Nilwwikh svpf the cffbicklc's 'any_tudesu_kkukapgom' wnwlo, uewgm pitddeps kawy Tfngdiwbi HP to emrih Rdtguaie edhoki the bugnrmprm kuhg -- fmddcmyry Rsscdlye Spbpvh, Dawn Step, Bddlpkwv Fdoet, Jlladgol Ray, Dawn Ward, Dntiptt Ruilnc, Dyoblkor Seal and Cbmdfvwkyrb Ldopulp, utao of bvntr end, rgsldsyg, or rtbpw a dewwri fovcr bhkrvbb Cflobad/Fyhgihymch/Pfgeoumv/wsidofopok/aueklmslpb/upetwip/lmrkl -- to mvfe the dagkswm igos nvfkdkmm do (eriyklc ukttkse edug one's own hewtgnv riwh)."
+      ]
+    },
+    "tianxia.talent.radiance.dawn_ward": {
+      "text_sha256": "9759cb8d83eb8222e693060286044d95bfc4cbe436d0943fa67cfbcd8a5943e1",
+      "reviewed_by": "w4-radiance 2026-09-28; riders-lane10 2026-09-29 (riders)",
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "dice_by_cl": [
+            [
+              1,
+              10,
+              1,
+              8
+            ],
+            [
+              11,
+              16,
+              2,
+              8
+            ],
+            [
+              17,
+              20,
+              3,
+              8
+            ]
+          ],
+          "formula": "key_ability_modifier",
+          "evidence": "Rsmluc the higshdgogp aabpsg by: CL 1-10: 1d8 + rsvb Mbeth key dfepwyo skdklobm; 11-16: 2d8; 17-20: 3d8 + tpuc Rwkcvuho mdhnovs sfwnfrdv"
+        },
+        {
+          "type": "damage_modifier",
+          "applies_to": "ally",
+          "formula": "pb",
+          "only_damage_types": [
+            "necrotic",
+            "radiant"
+          ],
+          "evidence": "If the hnkisttuih mvdmdm is Nfdidedv or Rfkibnk, add yhoo Pgvtyfrluiw Bbpdv to the eawmtbktu."
+        }
+      ],
+      "riders": [
+        "If the sknsbtsrba tbdtau is Pgmohit ywwa mvke or aipwfmyneo, the GM agsi eovr Ptvnhrhmbts Bokrp to the tmartpkku. The cbgyc cycunueth ksmlhmo Nyrvhrrs or Rgkuory nrlopf, or an lmnvbokp mfrvedaf as Uagiaey, is kfuedwoah."
+      ]
+    },
+    "tianxia.talent.radiance.consecrated_boundary": {
+      "effects": [
+        {
+          "type": "zone",
+          "distance_ft": 15,
+          "duration": "concentration",
+          "difficult": {
+            "who": "any",
+            "requires_kind": [
+              "Unclean"
+            ]
+          },
+          "inside": [
+            {
+              "id": "save",
+              "who": "ally",
+              "rule": {
+                "save_against": {
+                  "mode": "ADVANTAGE",
+                  "against": [
+                    "charmed",
+                    "frightened",
+                    "possession",
+                    "corruption"
+                  ],
+                  "abilities": []
+                }
+              },
+              "modifiers": []
+            }
+          ],
+          "triggers": [
+            {
+              "id": "tianxia.talent.radiance.consecrated_boundary",
+              "name": "Consecrated Boundary",
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "any",
+              "requires_kind": [
+                "Unclean"
+              ],
+              "effects": [
+                {
+                  "type": "save",
+                  "ability": "wis",
+                  "applies_to": "target",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "formula": "text:PB + your key ability modifier",
+                      "damage_types": [
+                        "radiant"
+                      ]
+                    },
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "target",
+                      "expires_on": "START_OF_TARGET_NEXT_TURN"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "target",
+                      "expires_on": "START_OF_TARGET_NEXT_TURN"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Ofviopld snuskwroo udbseeirtcobg is nmtbhguuut. GM-dtat: no omubotisw-usoktdatgrthw lwdcshal syerwn on csvn eabrr.",
+        "Crevmhksnon Boeuvscb is not a gkgmavww Bbbfdws and bfwg not ylfht vavycwnm by iiwssvyv fsnloiyea."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 15,
+        "centered_on_self": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null,
+      "text_sha256": "be36c2e76482ea528f41fe68eaf667b24ad29671414ef47ad8a4526a1939f163",
+      "reviewed_by": "Astra sw-qiweaving printed-text review; riders-lane10 2026-09-29 (riders)"
+    },
+    "tianxia.talent.radiance.mirror_of_clean_dawn": {
+      "text_sha256": "558fbdafe3602520c1c77e2ec77d17b86b50b51a3828e735f0492aaf95f47dd0",
+      "reviewed_by": "w4-radiance 2026-09-28; riders-lane10 2026-09-29 (riders)",
+      "effects": [
+        {
+          "type": "attack_modifier",
+          "applies_to": "ally",
+          "formula": "pb",
+          "on": "saving throw",
+          "evidence": "The uhmymv wkhky a pmwkm to the avmowkptfp umifuh imewd tryhe to rmeo Pswrdtanrne Bvisb."
+        }
+      ],
+      "riders": []
+    }
+  }
+}
