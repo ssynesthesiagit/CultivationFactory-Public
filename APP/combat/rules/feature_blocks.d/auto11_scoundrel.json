@@ -1,0 +1,64 @@
+{
+ "features": {
+  "TAL_SCOUNDREL_BOB_AND_WEAVE": {
+   "block": "scoundrel_talent",
+   "kind": "bob_and_weave",
+   "keeps_compiling": true,
+   "why": "AUTO11 2026-10-04: the talent is its own Bonus Action, so its typed row (cover_anchor) keeps compiling; \"Choose one qualifying ally or object as your cover anchor. You gain Half Cover while you remain adjacent to that anchor\" is asked (combat/ext/scoundrel_riders.py cover_anchor, combat/ext/needle.py ask) and the shared cover provider gives Half Cover while the anchor is still adjacent."
+  },
+  "TAL_SCOUNDREL_QUICK_THIEVERY": {
+   "block": "scoundrel_talent",
+   "kind": "quick_thievery",
+   "covers": [
+    "Expend Martial Focus to use Dirty Trick or Steal as a Bonus Action.",
+    "Use Quick Thievery only once per turn."
+   ],
+   "why": "AUTO11 2026-10-04: one Bonus Action button per printed ability that re-asks that ability's own printed result menu, priced at 1 Martial Focus and once per turn (combat/ext/scoundrel_riders.py quick_thievery_actions / rerun_ability_option)."
+  },
+  "TAL_SCOUNDREL_STEAL_EQUIPMENT": {
+   "block": "scoundrel_talent",
+   "kind": "steal_equipment",
+   "covers": [
+    "Cost: Expend Martial Focus",
+    "attempt to remove one worn item, including: a belt; sash; cloak; quiver; scabbard; component pouch; robe; shield; helmet; worn talisman; suit of armor; comparable worn equipment.",
+    "Make the Steal check with Disadvantage. Master Thief does not remove this Disadvantage.",
+    "On a success, the object appears in your free hand or one legal unoccupied space inside your Empty-Sleeve Hand range."
+   ],
+   "why": "AUTO11 2026-10-04: the talent compiled to nothing at all, because its only typed row was a disadvantage with the free text \"on the Steal check\" that no reader consults. It is now its own Action (combat/ext/scoundrel_riders.py steal_equipment_actions): 1 Martial Focus, the printed Scoundrel Check with Disadvantage set after Master Thief's waiver (combat/ext/tabik_scoundrel.py scoundrel_check), and on a success the table asks which worn thing comes away and hands it over as this table's own Disarmed condition carrying held_by, which is how a handover is recorded. A full pair of hands puts it in the thief's own space, which is a legal unoccupied space."
+  },
+  "TAL_SCOUNDREL_CLEANED_OUT": {
+   "block": "scoundrel_talent",
+   "kind": "cleaned_out",
+   "covers": [
+    "take or reposition up to two accessible objects instead of one",
+    "Resolve both objects through the same successful check. You still need free hands or legal spaces for the objects."
+   ],
+   "why": "AUTO11 2026-10-04: the printed two objects come through the same successful Steal check as one menu with two slots (combat/ext/scoundrel_riders.py scoundrel_objects), and an object with no free hand to go to is placed in the thief's own space, which is a legal place for it."
+  },
+  "TAL_SCOUNDREL_SWITCHEROO": {
+   "block": "scoundrel_talent",
+   "kind": "switcheroo",
+   "covers": [
+    "replace the stolen object with one different Tiny object you hold or plausibly carry."
+   ],
+   "why": "AUTO11 2026-10-04: the plant half of the Steal menu (combat/ext/scoundrel_riders.py scoundrel_objects) puts one of the thief's own Tiny objects into the target's hands. \"Switcheroo does not create the replacement object\" holds: the object is one the thief already carries, and a volatile, alchemical, poisoned or talismanic item keeps its own printed preparation, trigger, activation and consumption rules because the table applies only the handover."
+  },
+  "TAL_SCOUNDREL_IMPOSSIBLE_FASTENING": {
+   "block": "scoundrel_talent",
+   "kind": "impossible_fastening",
+   "covers": [
+    "expend Martial Focus to extend it to 1 minute",
+    "The target or an adjacent creature can take the Utilize action to end the hindrance early by undoing the knot, clearing the eyes, loosening the strap, removing the object, or otherwise solving the physical problem."
+   ],
+   "why": "AUTO11 2026-10-04: a Dirty Trick hindrance that would end at the start of your next turn is extended to 1 minute for 1 Martial Focus through the general condition_state expiry seam (combat/ext/scoundrel_riders.py impossible_fastening). Prone and Exploited Opening are left alone, as printed. The Utilize ending is the table's own action, registered through combat/ext/utilize_end.py register_ending: the extended hindrance carries a marker naming that one instance, so the target or any creature within 5 feet can spend its Action undoing the knot by hand."
+  },
+  "TAL_SCOUNDREL_MASTER_THIEF": {
+   "block": "scoundrel_talent",
+   "kind": "master_thief",
+   "covers": [
+    "expend Martial Focus to ignore Disadvantage caused by an object being securely fastened, worn tightly, or held in two hands."
+   ],
+   "why": "AUTO11 2026-10-04: the Steal check's printed Disadvantage for a fastened, tightly worn or two-handed object is waived for 1 Martial Focus (combat/ext/scoundrel_riders.py waive_steal_disadvantage, asked through combat/ext/needle.py ask)."
+  }
+ }
+}
