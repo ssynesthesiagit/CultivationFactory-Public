@@ -1,0 +1,56 @@
+{
+ "features": {
+  "MUSIC_BASE_KEEP_THE_MEASURE": {
+   "status": "applied",
+   "why": "Keep the Measure has no automatic effect of its own by design (its own GM-only rider says so); Battle Cadence supplies the +5 feet Speed and once-per-turn +PB damage as a compiled variant of this same action (see the Battle Cadence modifier, status 'applied', verified in tests/test_auto_wenxue.py)."
+  },
+  "tianxia.talent.music.silence_breaking_note": {
+   "status": "table",
+   "why": "A Music Check contested against an arbitrary named ongoing effect's own Cultivation Save DC (or DC 15 if none exists), with the GM choosing whether a success ends or merely suppresses it. There is no generic 'opposed skill check vs. a named effect, GM picks the outcome' mechanic in the table; kept as a GM-run check."
+  },
+  "tianxia.talent.music.choir_of_the_split_spirit": {
+   "status": "table",
+   "why": "A choose-one upgrade to Echo Performer (two echoes instead of one; AC 16 and Proficiency-Bonus HP; carry a sustained Chord's origin point; +PB on a Resonant Note it delivers; deliver Harmonizing Breath). Echo Performer itself is compiled as a bare zone placeholder with no independent AC/HP/action list in this table, so none of these five branches has anything to attach to yet."
+  },
+  "tianxia.talent.music.unbroken_rhythm": {
+   "status": "table",
+   "why": "A passive that only applies 'while using Battle Cadence' (Advantage vs. being knocked Prone, -10 feet forced movement, Opportunity Attacks against you at Disadvantage, once per turn on a miss move 5 feet free). Battle Cadence itself is compiled as a one-shot variant of Keep the Measure (its Speed/damage bonus fires once when chosen), not a tracked ongoing stance the table can ask 'is this still active' about turns later, so this passive has no persistent state to key off."
+  },
+  "tianxia.talent.radiance.consecrated_lantern": {
+   "status": "table",
+   "why": "Upgrades 'Glow' (an 8-hour light source with a Perception/Investigation Advantage aura) into a longer-lasting, maintainable Consecrated Lantern. Glow has no standalone compiled action in this bundle -- the table does not model ambient light sources as objects a talent can upgrade -- so this modifier's target does not exist to attach to."
+  },
+  "tianxia.talent.radiance.dawnmark_scripture": {
+   "status": "applied",
+   "why": "Extends your Dawnmark until the end of your next turn and offers its free flare when the marked creature starts its turn, preventing Reactions until its next turn starts. You may use Mark talents on a creature bearing your Dawnmark within 60 feet without seeing it if you know its direction and the technique has a legal route; Total Cover and sealed barriers still block it. The shared committed-damage event adds 1d8 Radiant damage once per turn when you damage an Unclean creature bearing your Dawnmark, including native and typed damage. Not automated: shedding Bright/Dim light."
+  },
+  "tianxia.tradition.spirit.plain_truth_fist.feature.word_and_hand": {
+   "status": "blocked",
+   "why": "Grants Open Declaration and Credence, then lets a Martial Strike spend 1 Credence for a declaration-matched rider (Challenge/Pursuit/Guard/Break). The base rules for how Credence is gained, its cap, and how an Open Declaration is made and tracked are defined elsewhere in the Spirit Awakening Tradition compendium and are not present among the mechanic records this tool extracts (only this feature's own CL3 text and Deed Follows Word's CL10 text are available). Modelling the spend/declaration state without that base text would mean inventing a resource cap. Needs the owner's Credence/Open Declaration base rule text, or a ruling on a simplified stand-in."
+  },
+  "tianxia.tradition.spirit.plain_truth_fist.feature.deed_follows_word": {
+   "status": "blocked",
+   "why": "Requires 'at least 1 Credence' and spends 1-3 of it; see Word and Hand for why the Credence system's base rules are not available to this tool. Its own cultivation-attack shape (Psychic/Force damage scaling with Credence spent, a completion rider per declared deed) is otherwise reasonably typed, but the compiled action currently costs only Resonance -- the Credence precondition and per-Credence damage scaling are silently dropped rather than enforced, which is a known residual gap this tool could not safely close without inventing Credence's cap and gain rate. GM should treat this action as unavailable until Credence exists, or rule a stand-in cap."
+  },
+  "tianxia.tradition.spirit.plain_truth_fist.feature.unspoken_intention_made_visible": {
+   "status": "blocked",
+   "why": "Triggers only on a creature 'bearing your Resonance Mark' and its Intent-naming/Contradiction machinery needs a tracked 'declared Intent + named subject' state per hostile creature that the base Spirit Awakening rules define outside the records available to this tool (see Word and Hand). The Contradiction branch's own damage/condition effects are typed, but nothing can legally trigger them without that missing state."
+  },
+  "TAL_GUARDIAN_COLD_IRON_CALL": {
+   "status": "blocked",
+   "why": "Reserves 'space in your Held Harm Pool equal to 5x the originator's Proficiency Bonus' to delay a non-damaging supernatural effect. The Held Harm Pool's total capacity is defined in the base Guardian sphere rules, not in this talent's own text or Durable's (both only state per-use reservation costs, never the pool's size). Automating the delay without a known cap would mean inventing a rule for when the reservation can fail. Needs the owner's Guardian base-rules text or an explicit cap ruling."
+  },
+  "TAL_GUARDIAN_DURABLE": {
+   "status": "blocked",
+   "why": "Same missing base rule as Cold Iron Call: reserves '10 points of empty space in your Held Harm Pool' against a failed save, but the pool's total capacity is not stated anywhere in the records available to this tool. Needs the owner's Guardian base-rules text or an explicit cap ruling."
+  },
+  "tianxia.talent.weapons.break_the_guard": {
+   "status": "table",
+   "why": "Lets Wen Xue 'use Breaking Method even if your weapon does not have a qualifying tag' on a hit against a shielded/guarding/temporarily-AC-boosted creature. Breaking Method is a separate Weapons-sphere maneuver Wen Xue has not learned and which does not exist as its own compiled action in this bundle, so this modifier's target ability is not present to attach the Strength-save/defensive-bonus-reduction effect to."
+  },
+  "foundation.FOUNDATION_03_EMPTY_BOWL_SOUL_ANCHOR.anchor_answers_need_self": {
+   "status": "blocked",
+   "why": "Adds Proficiency Bonus to a failed 'Fixed Empty Bowl Scope check or saving throw' by spending a pre-existing Empty Bowl Mark. 'Fixed Empty Bowl Scope' is a defined term from the base Empty Bowl Soul Anchor / Foundation rules that is not present among the records this tool extracts, so which of Wen Xue's checks and saves actually qualify cannot be determined without inventing a scope. The sibling Ally-facing version (Anchor Answers Need -- Ally) already compiles and fires correctly as a real Reaction (verified: it reached the generic creature_save_failed reaction block with its attack_modifier effect intact); the Self version's No Action/Triggered economy does not reach that same generic block and was not force-fit into it given the undefined scope. Needs the owner's Fixed Empty Bowl Scope definition, or a ruling on what it covers for Wen Xue specifically."
+  }
+ }
+}
