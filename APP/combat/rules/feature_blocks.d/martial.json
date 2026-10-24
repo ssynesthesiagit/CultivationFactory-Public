@@ -1,0 +1,29 @@
+{
+ "features": {
+  "TAL_DUAL_WIELDING_HIGH_LOW_COMBINATION": {"block": "dw_highlow_exact", "covers": [], "why": "After both Lead and Answering Weapon hits on one target this turn, optional paid immediate native Shove; once per turn."},
+  "TAL_DUAL_WIELDING_ASYNCHRONOUS_SWING": {"block": "dw_asynchronous_exact", "covers": [], "why": "Printed choice of normal die and type after attacks with both readied weapons, while holding Martial Focus."},
+  "TAL_DUAL_WIELDING_FOCUSING_DEFENSE": {"block": "dw_focusing_defense", "auto94": true, "covers": [], "why": "While Dodging with a readied Qualifying Pair, Balanced Defense grants +3 AC instead of +1; the increase ends when Dodge ends or the pair is lost."},
+  "TAL_AXES_HEADSMAN_S_CALM": {
+   "block": "axes_headsmans_calm",
+   "why": "'When you reduce a hostile creature to 0 HP with an axe attack, you may regain Martial Focus if absent; once per short/long rest, Disadvantage on the next attack roll a nearby witness makes against you' has no modifier and modifies no named ability -- combat/ext/martial_axes.py applies it as an automatic after_hit policy keyed off this marker row (once-per-fight substitutes for once-per-rest; a fight rarely spans a real rest)."
+  },
+  "TAL_DUAL_WIELDING_DANCING_DISPLAY": {
+    "block": "dw_dancing_display",
+    "why": "'When your Paired Strike hits a creature, your movement does not provoke Opportunity Attacks from that creature' targets \"Paired Strike\", which is not a separately named ability anywhere in the authority (the pairing mechanic lives entirely in combat/factory_compiler.py's own weapon-generation code); combat/ext/martial_dual_wielding.py applies it via the attack_resolved hook, filtered to the Answering Weapon's hit (the game's own \"paired_strike\" event, per typed_executor.py's on_own_event call).",
+    "auto94": true,
+    "covers": []
+  },
+  "TAL_DUAL_WIELDING_DIZZYING_COMBINATION": {
+    "block": "dw_dizzying_combination",
+    "why": "Same \"Paired Strike\" targeting problem as Dancing Display; combat/ext/martial_dual_wielding.py applies the Dexterity save and Speed-halving on the same Answering Weapon hit.",
+    "auto94": true,
+    "covers": []
+  },
+  "TAL_DUAL_WIELDING_DEFENSIVE_WHIRL": {
+    "block": "dw_defensive_whirl",
+    "why": "Same \"Paired Strike\" targeting problem as Dancing Display and Dizzying Combination; combat/ext/martial_dual_wielding.py applies it on the same Answering Weapon hit, as the third on-hit Pair choice, spending 1 Martial Focus and giving that one creature Disadvantage on its attack rolls against the owner until the end of that creature's next turn (the sealed attack_mode_vs modifier with the END_OF_HOLDER_NEXT_TURN expiry the holder sweep removes).",
+    "auto94": true,
+    "covers": []
+  }
+ }
+}
