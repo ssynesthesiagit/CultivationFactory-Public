@@ -1,0 +1,630 @@
+{
+ "_comment": "Synthetic GM-sheet snapshot fixture with catalog-derived records; identifiers are synthetic.",
+ "schema_version": "TianxiaFoundry.OwnerCharacterSheet.v1",
+ "identity": {
+  "concept": "A curious apprentice who studies old maps and helps neighbors find safe paths.",
+  "creature_type": "Humanoid",
+  "cultivation_level": 1,
+  "display_name": "Wayfinder",
+  "key_ability": "INT",
+  "path": "Qi Cultivation",
+  "path_id": "tianxia.path.qi_cultivation",
+  "path_ids": [
+   "tianxia.path.qi_cultivation"
+  ],
+  "paths": [
+   {
+    "display_name": "Qi Cultivation",
+    "effective_cl": 1,
+    "key_ability": "INT",
+    "path_id": "tianxia.path.qi_cultivation",
+    "selected_skills": [],
+    "source_packet_ids": [
+     "packet.stage2.006.syntheticfixture00000001"
+    ]
+   }
+  ],
+  "proficiency_bonus": 2,
+  "realm": "Mortal",
+  "realm_display": "Mortal Realm",
+  "size": "Medium",
+  "species": "Human",
+  "title": null,
+  "title_status": "OPTIONAL_OMITTED_BY_OWNER"
+ },
+ "ability_scores_and_statistics": {
+  "abilities": [
+   {
+    "ability": "STR",
+    "modifier": 2,
+    "score": 15
+   },
+   {
+    "ability": "DEX",
+    "modifier": 2,
+    "score": 14
+   },
+   {
+    "ability": "CON",
+    "modifier": 1,
+    "score": 13
+   },
+   {
+    "ability": "INT",
+    "modifier": 1,
+    "score": 12
+   },
+   {
+    "ability": "WIS",
+    "modifier": 0,
+    "score": 10
+   },
+   {
+    "ability": "CHA",
+    "modifier": 0,
+    "score": 10
+   }
+  ],
+  "armor_class": {
+   "authority": {
+    "pack_id": "tianxia.core.character_baseline.owner_r1",
+    "sha256": "993630c640415acdec4570c78db000c3a6fba5697282d51c8af87be5e9370d6a",
+    "version": "1.0.0"
+   },
+   "base_value": 12,
+   "calculation": "10 + Dexterity modifier while unarmored and without another applicable AC calculation",
+   "conditional_note": "Qi Armor is a conditional +3 AC bonus and does not replace the base calculation.",
+   "formula_trace": {
+    "node_count": 3,
+    "root": {
+     "op": "add",
+     "terms": [
+      {
+       "op": "constant",
+       "value": 10
+      },
+      {
+       "ability": "DEX",
+       "op": "ability_modifier",
+       "value": 2
+      }
+     ],
+     "value": 12
+    },
+    "schema_version": "TianxiaFoundry.SafeFormulaTrace.v1"
+   },
+   "value": 12
+  },
+  "hit_points": {
+   "build_state_current": 9,
+   "maximum": 9,
+   "progression": {
+    "levels": [
+     {
+      "cl": 1,
+      "formula_id": "ns1r.tianxia.path.qi_cultivation.hp.cl1",
+      "gain": 9,
+      "maximum": 9
+     }
+    ]
+   }
+  },
+  "initiative": {
+   "ability": "DEX",
+   "authority": {
+    "pack_id": "tianxia.core.character_baseline.owner_r1",
+    "sha256": "993630c640415acdec4570c78db000c3a6fba5697282d51c8af87be5e9370d6a",
+    "version": "1.0.0"
+   },
+   "bonus": 2,
+   "check": "1d20 + initiative bonus",
+   "formula_trace": {
+    "node_count": 1,
+    "root": {
+     "ability": "DEX",
+     "op": "ability_modifier",
+     "value": 2
+    },
+    "schema_version": "TianxiaFoundry.SafeFormulaTrace.v1"
+   },
+   "situational_note": "Street-Hardened can grant Advantage under its authenticated trigger; it does not replace the Dexterity formula."
+  },
+  "primary_resource": {
+   "build_state_current": 2,
+   "current_state_note": "This is the deterministic build-state value, not mutable GM-session tracking.",
+   "definitions": [
+    {
+     "authority_components": [
+      {
+       "formula_id": "ns1r.tianxia.path.qi_cultivation.resource.maximum",
+       "record_hash": "4f70e4aac8305e253eaf489e0a555955aa6bf4f271fd075402897e4e04daafa4",
+       "record_id": "tianxia.path.qi_cultivation",
+       "role": "path_base",
+       "source_anchor": "path:tianxia.path.qi_cultivation",
+       "value": 2
+      }
+     ],
+     "current": 2,
+     "formula_id": "ns1r.tianxia.path.qi_cultivation.resource.maximum",
+     "max": 2,
+     "name": "Qi",
+     "resource_id": "tianxia.resource.qi"
+    }
+   ],
+   "maximum": 2,
+   "name": "Qi"
+  },
+  "skills": [],
+  "speed": {
+   "generation": {
+    "mode": "walking",
+    "rule_id": "tianxia.core.human.walking_speed.v1"
+   },
+   "walking_ft": 30
+  },
+  "technique_attack_bonus": 3,
+  "technique_save_dc": 11
+ },
+ "background_and_origin": {
+  "background": {
+   "background_id": "tianxia.background.abandoned_orphan"
+  },
+  "origin_insight": {
+   "origin_insight_id": "tianxia.origin_insight.beast_sign",
+   "result": "catalog_effect"
+  }
+ },
+ "path_and_subpath": {
+  "path": {
+   "name": null
+  },
+  "paths": [
+   {
+    "display_name": "Qi Cultivation",
+    "effective_cl": 1,
+    "key_ability": "INT",
+    "path_id": "tianxia.path.qi_cultivation",
+    "selected_skills": [],
+    "source_packet_ids": [
+     "packet.stage2.006.syntheticfixture00000001"
+    ]
+   }
+  ],
+  "subpaths": [],
+  "bindings": []
+ },
+ "spheres_and_talents": {
+  "sphere_record_ids": [
+   "tianxia.sphere.beastmastery",
+   "tianxia.sphere.scoundrel"
+  ],
+  "learned_talent_record_ids": [
+   "TAL_BEASTMASTERY_DEFENSIVE_RIDER",
+   "tianxia.talent.scoundrel.grifter_s_hands"
+  ],
+  "cultivation_insight_record_ids": [],
+  "automatic_sphere_component_record_ids": [
+   "BEASTMASTERY_BASE_BEASTMASTERY_TRAINING",
+   "BEASTMASTERY_BASE_RIDER_PACKAGE",
+   "BEASTMASTERY_BASE_TAMER_PACKAGE",
+   "TAL_SCOUNDREL_DIRTY_TRICK",
+   "TAL_SCOUNDREL_SCOUNDREL_TRAINING",
+   "TAL_SCOUNDREL_STEAL"
+  ]
+ },
+ "method": {
+  "display_name": "Outer Court Twin-Current Primer",
+  "record_id": "METHOD-081"
+ },
+ "foundation": {
+  "display_name": "Empty Bowl Soul Anchor",
+  "record_id": "FOUNDATION_03_EMPTY_BOWL_SOUL_ANCHOR"
+ },
+ "owner_facing_action_feature_index": [],
+ "selected_record_sections": {
+  "background_origin": [
+   {
+    "record_id": "tianxia.background.abandoned_orphan",
+    "record_hash": "2a5548326879aebadbe2ca8bdf5702588b0f6023ebf107cd1969b06ca75c7baf",
+    "display_name": "Abandoned Orphan",
+    "section": "background_origin",
+    "subsection": "Background",
+    "acquisition_cl": 1,
+    "acquisition_route": "background_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.002.0ff1f414daa841bf"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "## Abandoned Orphan\n\nYou grew up in alleys, ruins, kitchens, docks, roadside shrines, or abandoned courtyards. No one gave you a place. You survived by noticing danger early, hiding what mattered, and taking what you needed before someone stronger took it first.\n\n### Ability Scores\n\nChoose one:\n\n- Increase one of the following ability scores by 2: Dexterity, Wisdom, Charisma.\n- Increase two of the following ability scores by 1 each: Dexterity, Wisdom, Charisma.\n\n### Skill Proficiencies\n\nYou gain",
+    "full_description": "## Abandoned Orphan\n\nYou grew up in alleys, ruins, kitchens, docks, roadside shrines, or abandoned courtyards. No one gave you a place. You survived by noticing danger early, hiding what mattered, and taking what you needed before someone stronger took it first.\n\n### Ability Scores\n\nChoose one:\n\n- Increase one of the following ability scores by 2: Dexterity, Wisdom, Charisma.\n- Increase two of the following ability scores by 1 each: Dexterity, Wisdom, Charisma.\n\n### Skill Proficiencies\n\nYou gain proficiency in Deception and Sleight of Hand.\n\n### Tool, Language, or Trade Proficiencies\n\nYou gain proficiency with thieves' tools and one language of your choice.\n\n### Background Sphere and Talent\n\nChoose one:\n\n- **Scoundrel Sphere.** You gain the Scoundrel sphere and the **Grifter’s Hands** (`GRIFTER’S HANDS`) talent.\n- **Scoundrel Sphere.** You gain the Scoundrel sphere and the **Hidden Tool Cache** (`HIDDEN TOOL CACHE`) talent.\n- **Equipment Sphere.** You gain the Equipment sphere and the **Hidden Plates** talent.\n\n### Starting Equipment\n\nYou begin with worn common clothes, a small knife, thieves' tools, a bedroll, a hidden pouch, three days of poor rations, and one keepsake from the life you lost or never had.\n\n### Origin Insight Options\n\nSuggested Origin Insights include:\n\n- Street-Hardened\n- Hunger Memory\n- No One Saves You\n- Quick Hands\n\n### Social Hook\n\nYou know how people treat the powerless. Other outcasts may recognize you as one of their own, but officials, guards, and respectable families rarely assume the best of you.\n\n---",
+    "parent_sphere_id": null,
+    "combat_execution_note": "No combat execution definition is applicable."
+   },
+   {
+    "record_id": "tianxia.origin_insight.beast_sign",
+    "record_hash": "5314e7f3d0f8389e938a6e51d0f90f1de4f49cea99858940a3d08e5c06dab46f",
+    "display_name": "Beast Sign",
+    "section": "background_origin",
+    "subsection": "Origin Insight",
+    "acquisition_cl": 1,
+    "acquisition_route": "origin_insight_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.005.52729e0a644c4aa3"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "You gain proficiency in Animal Handling, Survival, or Perception. If you already have proficiency in the chosen skill, gain expertise in it.",
+    "full_description": "You gain proficiency in Animal Handling, Survival, or Perception. If you already have proficiency in the chosen skill, gain expertise in it.",
+    "parent_sphere_id": null,
+    "combat_execution_note": "Combat execution is not yet typed; this description is display-only."
+   }
+  ],
+  "background_talent": [
+   {
+    "record_id": "TAL_SCOUNDREL_HIDDEN_TOOL_CACHE",
+    "record_hash": "1435e5a94d4b0f7db95d80eeeb85111a983df54d36bc9a32d37f7d07a9794303",
+    "display_name": "HIDDEN TOOL CACHE",
+    "section": "background_talent",
+    "subsection": "Background Talent",
+    "acquisition_cl": 1,
+    "acquisition_route": "background_talent_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.004.798e6179b05d1a6b"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "Action Type: Bonus Action",
+    "full_description": "Action Type: Bonus Action",
+    "parent_sphere_id": null,
+    "combat_execution_note": "Combat execution is not yet typed; this description is display-only."
+   }
+  ],
+  "explicit_none": [
+   {
+    "record_id": "tianxia.c1a.none.equipment",
+    "record_hash": "ec3038e90c58c91e81d4950990cfa3d8c44e8c116264871cc1c2bcd9a29b6908",
+    "display_name": "C1A explicit no-equipment authority",
+    "section": "explicit_none",
+    "subsection": "Explicit None",
+    "acquisition_cl": 1,
+    "acquisition_route": "typed_none",
+    "source_packet_ids": [
+     "packet.stage2.014.84e9d668db3897ab"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "Bounded C1A source-backed typed-none authority for equipment.",
+    "full_description": "Bounded C1A source-backed typed-none authority for equipment.",
+    "parent_sphere_id": null,
+    "combat_execution_note": "No combat execution definition is applicable."
+   },
+   {
+    "record_id": "tianxia.c1a.none.forged_techniques",
+    "record_hash": "ef59ed25f29942302c92300f6ad2b45fc911cf3e6317e366f1ffc74f032e8a24",
+    "display_name": "C1A explicit no-forged_techniques authority",
+    "section": "explicit_none",
+    "subsection": "Explicit None",
+    "acquisition_cl": 1,
+    "acquisition_route": "typed_none",
+    "source_packet_ids": [
+     "packet.stage2.015.41218cdcc799b072"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "Bounded C1A source-backed typed-none authority for forged_techniques.",
+    "full_description": "Bounded C1A source-backed typed-none authority for forged_techniques.",
+    "parent_sphere_id": null,
+    "combat_execution_note": "No combat execution definition is applicable."
+   },
+   {
+    "record_id": "tianxia.c1a.none.manuals",
+    "record_hash": "a589bc017d5c74985b7a692de404fb4614b36572ecfea1270f800f052c6aa74d",
+    "display_name": "C1A explicit no-manuals authority",
+    "section": "explicit_none",
+    "subsection": "Explicit None",
+    "acquisition_cl": 1,
+    "acquisition_route": "typed_none",
+    "source_packet_ids": [
+     "packet.stage2.013.542a6158e7f6f565"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "Bounded C1A source-backed typed-none authority for manuals.",
+    "full_description": "Bounded C1A source-backed typed-none authority for manuals.",
+    "parent_sphere_id": null,
+    "combat_execution_note": "No combat execution definition is applicable."
+   }
+  ],
+  "other": [
+   {
+    "record_id": "FOUNDATION_03_EMPTY_BOWL_SOUL_ANCHOR",
+    "record_hash": "4b8aeb7290a774e91c2bd1243cbe72348e71874fa9053a7ed7d6abec275067c4",
+    "display_name": "Empty Bowl Soul Anchor",
+    "section": "other",
+    "subsection": "Foundation",
+    "acquisition_cl": 1,
+    "acquisition_route": "foundation_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.008.02975283c9e7b31a"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "{\"dao_principle\":\"Need is not shame. Need is the first proof that the soul still reaches for life.\",\"summary\":\"Your soul remembers hunger. You can sense need in yourself and others. Hunger may become compassion, discipline, survival, temptation, or law.\",\"visible_sign\":\"\",\"warning\":\"Severity 1 strains Empty Bowl scenes.\"}",
+    "full_description": "{\"dao_principle\":\"Need is not shame. Need is the first proof that the soul still reaches for life.\",\"summary\":\"Your soul remembers hunger. You can sense need in yourself and others. Hunger may become compassion, discipline, survival, temptation, or law.\",\"visible_sign\":\"\",\"warning\":\"Severity 1 strains Empty Bowl scenes.\"}",
+    "parent_sphere_id": null,
+    "combat_execution_note": "No combat execution definition is applicable."
+   },
+   {
+    "record_id": "METHOD-081",
+    "record_hash": "f9e56e7cab640748f81c5028682a872a8a66536f3d7d5216e30de678149b4c98",
+    "display_name": "Outer Court Twin-Current Primer",
+    "section": "other",
+    "subsection": "Cultivation Method",
+    "acquisition_cl": 1,
+    "acquisition_route": "method_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.007.80cdc058ae0bb3b0"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "A deliberately modest outer-court curriculum that teaches body discipline and qi circulation side by side without pretending they are one progression. It exists so a sect can legally introduce a dual orthodox route before granting a specialized inheritance.",
+    "full_description": "A deliberately modest outer-court curriculum that teaches body discipline and qi circulation side by side without pretending they are one progression. It exists so a sect can legally introduce a dual orthodox route before granting a specialized inheritance.",
+    "parent_sphere_id": null,
+    "combat_execution_note": "No combat execution definition is applicable."
+   }
+  ],
+  "path_features": [
+   {
+    "record_id": "tianxia.path.qi_cultivation.feature.cultivated_response",
+    "record_hash": "bce60276f3fd0f15b9637802c2c24ff6622eb55e03b1f41b1d9e4a668a5efc8e",
+    "display_name": "Cultivated Response",
+    "section": "path_features",
+    "subsection": "Path Feature",
+    "acquisition_cl": 1,
+    "acquisition_route": "level_advance",
+    "source_packet_ids": [
+     "packet.stage2.011.2e144681ec82c01e"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "Cultivated Response",
+    "full_description": "Cultivated Response",
+    "parent_sphere_id": null,
+    "combat_execution_note": "Combat execution is not yet typed; this description is display-only."
+   }
+  ],
+  "path_subpath": [
+   {
+    "record_id": "tianxia.path.qi_cultivation",
+    "record_hash": "4f70e4aac8305e253eaf489e0a555955aa6bf4f271fd075402897e4e04daafa4",
+    "display_name": "Qi Cultivation",
+    "section": "path_subpath",
+    "subsection": "Path",
+    "acquisition_cl": 1,
+    "acquisition_route": "path_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.006.syntheticfixture00000001"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "Martial combatant, hybrid weapon-and-technique cultivator, ranged combatant, controller, healer, artisan, scholar, and supernatural specialist",
+    "full_description": "Martial combatant, hybrid weapon-and-technique cultivator, ranged combatant, controller, healer, artisan, scholar, and supernatural specialist",
+    "parent_sphere_id": null,
+    "combat_execution_note": "No combat execution definition is applicable."
+   }
+  ],
+  "source_authority": [
+   {
+    "record_id": "tianxia.source.canon.authority.manifest.p2a.json",
+    "record_hash": "2024cd27ff31887f1c35a303854e528dc611792a7c26fe4bb21db9de5469e7d9",
+    "display_name": "CANON_AUTHORITY_MANIFEST_P2A.json",
+    "section": "source_authority",
+    "subsection": "Authority Source",
+    "acquisition_cl": 0,
+    "acquisition_route": "starting_state",
+    "source_packet_ids": [
+     "packet.stage2.001.076d4c676c6b79e1"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "Reference-only source inventory entry for CANON_AUTHORITY_MANIFEST_P2A.json.",
+    "full_description": "Reference-only source inventory entry for CANON_AUTHORITY_MANIFEST_P2A.json.",
+    "parent_sphere_id": null,
+    "combat_execution_note": "No combat execution definition is applicable."
+   }
+  ],
+  "sphere_automatic_components": [
+   {
+    "record_id": "BEASTMASTERY_BASE_BEASTMASTERY_TRAINING",
+    "record_hash": "9c1964420cb27f7a5dbe95cbf087b148935fb922f7998c8b7f42ecd9fab6d328",
+    "display_name": "Beastmastery Training",
+    "section": "sphere_automatic_components",
+    "subsection": "Beastmastery Automatic Components",
+    "acquisition_cl": 1,
+    "acquisition_route": "ai_bootstrap_sphere_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.009.492bb5f38f3f993d"
+    ],
+    "timing_or_category": "Automatic Sphere Component",
+    "one_line_description": "#### Beastmastery Training",
+    "full_description": "#### Beastmastery Training\nWhen you learn Beastmastery:\ngain proficiency in Wisdom (Animal Handling);\nif already proficient, choose one Beastmastery talent for which you meet the prerequisites as a bonus talent;\nchoose one Beastmastery Package: Rider or Tamer. You may later gain the other Package through Extra Beastmastery Package.\nBeastmastery Packages",
+    "parent_sphere_id": "tianxia.sphere.beastmastery",
+    "combat_execution_note": "No combat execution definition is applicable."
+   },
+   {
+    "record_id": "TAL_SCOUNDREL_DIRTY_TRICK",
+    "record_hash": "9b9cba1fc50dfdb042847f997ffec62c66916854b225933b2b2f87c2a121a065",
+    "display_name": "DIRTY TRICK",
+    "section": "sphere_automatic_components",
+    "subsection": "Scoundrel Automatic Components",
+    "acquisition_cl": 1,
+    "acquisition_route": "background_sphere_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.003.5a667805859c5c60"
+    ],
+    "timing_or_category": "Automatic Sphere Component",
+    "one_line_description": "#### DIRTY TRICK",
+    "full_description": "#### DIRTY TRICK\nAction Type: Action\nFactory Combat Bucket: action\nFactory Routing: combat_action_row\nRange: Natural reach\nCost: None\nAttempt an underhanded maneuver against one creature you can physically hinder.\nDescribe the method: throw grit into its eyes, knot a sleeve, stamp on a foot, box its ears, loosen a belt, hook a leg, slap a talisman across its vision, overturn a stool beneath it, or use another plausible tactic.\nMake a Scoundrel Check against the target.\nSuccess: Choose one appropriate result:\nEyes Spoiled. The target has the Blinded condition until the start of your next turn.\nEars Ringing. The target has the Deafened condition until the start of your next turn.\nTangled Footwork. Halve the target’s Speed until the start of your next turn.\nLow Sweep. The target has the Prone condition.\nJammed Guard. The target cannot take Reactions until the start of your next turn.\nOpen the Guard. Apply Exploited Opening.\nThe GM may approve a comparable effect when the description, anatomy, and surroundings support it. A base Dirty Trick should not inflict a stronger condition than those listed above.\nA creature without the relevant anatomy or vulnerability is immune to an inappropriate effect.\nIf a talent extends a physical Dirty Trick beyond the start of your next turn, the target or an adjacent creature can normally take the Utilize action to end that physical hindrance early.",
+    "parent_sphere_id": "tianxia.sphere.scoundrel",
+    "combat_execution_note": "No combat execution definition is applicable."
+   },
+   {
+    "record_id": "BEASTMASTERY_BASE_RIDER_PACKAGE",
+    "record_hash": "6c1e6faa72e0543f7fcf6543d3e5a4f9c214b066ec9b21cc182fd0b9dc1a1c9c",
+    "display_name": "Rider Package",
+    "section": "sphere_automatic_components",
+    "subsection": "Beastmastery Automatic Components",
+    "acquisition_cl": 1,
+    "acquisition_route": "ai_bootstrap_sphere_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.009.492bb5f38f3f993d"
+    ],
+    "timing_or_category": "Automatic Sphere Component",
+    "one_line_description": "#### Rider Package",
+    "full_description": "#### Rider Package\nYou cultivate partnership through the saddle, harness, rein, knee, breath, and shared momentum.\nGain Skillful Riding.\n##### Skillful Riding\nWhile you ride a willing mount, when the mount makes a Dexterity saving throw to take half damage:\nit takes no damage on a success;\nit takes half damage on a failure.",
+    "parent_sphere_id": "tianxia.sphere.beastmastery",
+    "combat_execution_note": "No combat execution definition is applicable."
+   },
+   {
+    "record_id": "TAL_SCOUNDREL_SCOUNDREL_TRAINING",
+    "record_hash": "19e534f32dedf2a63553d24e0571c283e5bd56c74fcce6b559a0b48a4c4d3fd6",
+    "display_name": "SCOUNDREL TRAINING",
+    "section": "sphere_automatic_components",
+    "subsection": "Scoundrel Automatic Components",
+    "acquisition_cl": 1,
+    "acquisition_route": "background_sphere_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.003.5a667805859c5c60"
+    ],
+    "timing_or_category": "Automatic Sphere Component",
+    "one_line_description": "#### SCOUNDREL TRAINING",
+    "full_description": "#### SCOUNDREL TRAINING\nWhen you learn Scoundrel:\ngain proficiency in Dexterity (Sleight of Hand);\nif already proficient, choose one Mortal Realm Scoundrel talent for which you meet the prerequisites as a bonus talent;\nchoose one Mortal Realm Trick talent for which you meet the prerequisites as a bonus talent.",
+    "parent_sphere_id": "tianxia.sphere.scoundrel",
+    "combat_execution_note": "No combat execution definition is applicable."
+   },
+   {
+    "record_id": "TAL_SCOUNDREL_STEAL",
+    "record_hash": "25d84383408cde97219eac53725da5ecf3607df82b1da28510b509cd1c650da2",
+    "display_name": "STEAL",
+    "section": "sphere_automatic_components",
+    "subsection": "Scoundrel Automatic Components",
+    "acquisition_cl": 1,
+    "acquisition_route": "background_sphere_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.003.5a667805859c5c60"
+    ],
+    "timing_or_category": "Automatic Sphere Component",
+    "one_line_description": "#### STEAL",
+    "full_description": "#### STEAL\nAction Type: Action\nFactory Combat Bucket: action\nFactory Routing: combat_action_row\nRange: Natural reach\nCost: None\nChoose one accessible object. Attempt to take it, reposition it, or plant one Tiny object in an accessible location.\n##### Aware Target\nMake a Scoundrel Check against the creature.\n##### Unaware Target\nMake a Dexterity (Sleight of Hand) check against the target’s Passive Perception.\n##### Difficult Object\nMake your check with Disadvantage if the object is securely fastened, worn tightly, held in two hands, or similarly difficult to remove.\n##### Success\nChoose one appropriate result:\ntake the object into a free hand;\ncause the object to fall into an unoccupied space within your reach;\nreposition the object to another accessible location on the same target;\nplant one Tiny object in an accessible location on the target.\nYou may use Steal to remove an object from a creature’s hand as a local Scoundrel disarm rule.\nSteal does not automatically activate, identify, attune to, or safely handle the object.",
+    "parent_sphere_id": "tianxia.sphere.scoundrel",
+    "combat_execution_note": "No combat execution definition is applicable."
+   },
+   {
+    "record_id": "BEASTMASTERY_BASE_TAMER_PACKAGE",
+    "record_hash": "c1f2532a6f83b412c155f97e7ec79d03bb20fc1c2e77fbab10c5888dbc1df8f2",
+    "display_name": "Tamer Package",
+    "section": "sphere_automatic_components",
+    "subsection": "Beastmastery Automatic Components",
+    "acquisition_cl": 1,
+    "acquisition_route": "ai_bootstrap_sphere_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.009.492bb5f38f3f993d"
+    ],
+    "timing_or_category": "Automatic Sphere Component",
+    "one_line_description": "#### Tamer Package You cultivate patience, hierarchy, instinct, and training.",
+    "full_description": "#### Tamer Package You cultivate patience, hierarchy, instinct, and training.\nGain Tame.\n##### Tame\nTrain one non-sapient Beast to obey commands in and out of combat.\nRequirements:\nfind, purchase, rescue, raise, or capture the creature;\nspend 8 hours training one creature;\nmake a Wisdom (Animal Handling) check. The DC is:\n10 + the creature’s Challenge Rating\nSuccessful Check: The creature becomes Tame.\nFailed Check: The creature is not Tame. You may train again after addressing an appropriate narrative obstacle.\nYou may train only one creature at a time.\n##### Tamer Capacity\nYou may maintain:\na number of Tame Creatures no greater than your Proficiency Bonus;\na total combined Challenge Rating no greater than the table. After the first CR 0 creature, treat each additional CR 0 creature as CR 1/8.\nIf training a creature would exceed a cap, release enough Tame Creatures to remain within the limit.\n##### Commands\nTame Creatures follow your commands to the best of their ability.\nGiving ordinary commands requires no Action unless a talent says otherwise.\nWithout a command, a Tame Creature acts according to its nature, training, and circumstances.\n##### Contested Control\nWhen another creature attempts to control one of your Tame Creatures, it must first make:\nCharisma check\nopposed by your:\nWisdom (Animal Handling) check\nFailed Opposed Check: The control attempt fails.\nSuccessful Opposed Check: Resolve the controlling effect normally.\n##### Awakening\nA beast that becomes sapient is no longer an ordinary Tame Creature.\nIts future relationship should be resolved through:\nconsent;\nnarrative agreement;\na Beast Companion bond;\nBeast-sphere cultivation;\nSpirit practices;\nor another appropriate feature. Combat Rule Reminders",
+    "parent_sphere_id": "tianxia.sphere.beastmastery",
+    "combat_execution_note": "No combat execution definition is applicable."
+   }
+  ],
+  "spheres": [
+   {
+    "record_id": "tianxia.sphere.beastmastery",
+    "record_hash": "2166fc2d95868508559477af37bb64c6f354f5f61813a329b20cee87afadc4b6",
+    "display_name": "Beastmastery",
+    "section": "spheres",
+    "subsection": "Sphere",
+    "acquisition_cl": 1,
+    "acquisition_route": "ai_bootstrap_sphere_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.009.492bb5f38f3f993d"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "Beastmastery",
+    "full_description": "Beastmastery",
+    "parent_sphere_id": null,
+    "combat_execution_note": "No combat execution definition is applicable."
+   },
+   {
+    "record_id": "tianxia.sphere.scoundrel",
+    "record_hash": "44a75766a1d9307643bfbbf140a4d2981091c55b688b6c639a15d06ac42ea454",
+    "display_name": "Scoundrel",
+    "section": "spheres",
+    "subsection": "Sphere",
+    "acquisition_cl": 1,
+    "acquisition_route": "background_sphere_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.003.5a667805859c5c60"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "Scoundrel",
+    "full_description": "Scoundrel",
+    "parent_sphere_id": null,
+    "combat_execution_note": "No combat execution definition is applicable."
+   }
+  ],
+  "talents": [
+   {
+    "record_id": "TAL_BEASTMASTERY_DEFENSIVE_RIDER",
+    "record_hash": "bd92701612d099b667126727cb419eadc59ab97ccc4cacb1ca877e031a8ed2f2",
+    "display_name": "Defensive Rider",
+    "section": "talents",
+    "subsection": "Talent",
+    "acquisition_cl": 1,
+    "acquisition_route": "ai_bootstrap_talent_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.010.5b32f07f8360acae"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "When an attack targets your mount, redirect the attack to yourself.",
+    "full_description": "When an attack targets your mount, redirect the attack to yourself.",
+    "parent_sphere_id": null,
+    "combat_execution_note": "Combat execution is not yet typed; this description is display-only."
+   },
+   {
+    "record_id": "tianxia.talent.scoundrel.grifter_s_hands",
+    "record_hash": "3978883ad233420d8ab4e58a870e8661a3f7b19744f791307395097f830cab46",
+    "display_name": "GRIFTER’S HANDS",
+    "section": "talents",
+    "subsection": "Talent",
+    "acquisition_cl": 1,
+    "acquisition_route": "level_talent_acquisition",
+    "source_packet_ids": [
+     "packet.stage2.012.1ccf0563810c66c6"
+    ],
+    "timing_or_category": null,
+    "one_line_description": "Gain Expertise in Dexterity (Sleight of Hand).",
+    "full_description": "Gain Expertise in Dexterity (Sleight of Hand).",
+    "parent_sphere_id": null,
+    "combat_execution_note": "Combat execution is not yet typed; this description is display-only."
+   }
+  ]
+ },
+ "advancement_history": {
+  "event_count": 15,
+  "levels": [
+   {
+    "cl": 1,
+    "realm": "Mortal",
+    "pb": 2,
+    "hp": {
+     "max_after_level": 9
+    }
+   }
+  ]
+ },
+ "capability_status": {
+  "summary": {
+   "advancement": "complete",
+   "character_sheet": "complete",
+   "combat_execution": "pending",
+   "gm_authoring": "pending"
+  }
+ },
+ "readiness": {
+  "advancement": "ADVANCEMENT_READY",
+  "character_sheet": "CHARACTER_SHEET_READY",
+  "combat": "NOT_ATTEMPTED",
+  "gm_screen": "NOT_ATTEMPTED"
+ }
+}
