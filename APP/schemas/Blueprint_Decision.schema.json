@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Blueprint_Decision.schema.json",
+  "title": "Tianxia Foundry Blueprint Decision",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "decision_id", "batch_id", "ordinal", "slot_id", "state", "selected_record_ids", "record_snapshots", "reason_code", "reason"],
+  "properties": {
+    "schema_version": {"const": "TianxiaFoundry.BlueprintDecision.v1"},
+    "decision_id": {"type": "string", "minLength": 1},
+    "batch_id": {"type": "string", "minLength": 1},
+    "ordinal": {"type": "integer", "minimum": 1},
+    "slot_id": {"type": "string", "minLength": 1},
+    "state": {"enum": ["selected", "explicit_none", "blocked_missing_authority", "deferred_with_reason"]},
+    "selected_record_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "record_snapshots": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["record_id", "record_hash", "pack_id", "pack_version", "pack_hash", "choice_snapshot_hash", "choice_snapshot"], "properties": {"record_id": {"type": "string"}, "record_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "pack_id": {"type": "string"}, "pack_version": {"type": "string"}, "pack_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "choice_snapshot_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "choice_snapshot": {"type": "object"}}}},
+    "reason_code": {"type": ["string", "null"]},
+    "reason": {"type": ["string", "null"]}
+  }
+}
