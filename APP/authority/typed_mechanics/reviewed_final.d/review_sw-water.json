@@ -1,0 +1,1857 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_WATER_TIDAL_WAVE": {
+      "text_sha256": "2b46458adb508329a4096031107c9ddf81f2adfd6d66032593d99edfccf511f2",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Shape Current"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "area_size_ft": 90,
+        "area_shape": "line",
+        "effects": [
+          {
+            "type": "rider_choose_area_recipients",
+            "evidence": "Clbadf viuvu oecgsauwo in the uubk are vmuehywm, as oyycsma.",
+            "origin": "reviewed"
+          },
+          {
+            "type": "save",
+            "applies_to": "creatures_in_area",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "str",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "Each ucpelieo of dgef iocvco in the dkie arosc a Siappvpg leisbm yufor",
+            "origin": "model_v2",
+            "on_fail": [
+              {
+                "type": "damage",
+                "applies_to": "creatures_in_area",
+                "dice": {
+                  "count": 4,
+                  "count_formula": null,
+                  "sides": 8,
+                  "bonus": null,
+                  "bonus_formula": null
+                },
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [
+                  "bludgeoning"
+                ],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "instant",
+                "evidence": "takes 4d8 bludgeoning damage",
+                "origin": "model_v2"
+              },
+              {
+                "type": "forced_movement",
+                "applies_to": "creatures_in_area",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 20,
+                "on": "",
+                "duration": "instant",
+                "evidence": "is pushed 20 feet",
+                "origin": "model_v2"
+              },
+              {
+                "type": "condition",
+                "applies_to": "creatures_in_area",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "prone",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "instant",
+                "evidence": "falls Prone",
+                "origin": "model_v2"
+              },
+              {
+                "type": "mark",
+                "mark": "Soaked",
+                "applies_to": "creatures_in_area",
+                "duration": {
+                  "kind": "until_end_of_your_next_turn"
+                },
+                "evidence": "becomes Soaked",
+                "origin": "reviewed"
+              }
+            ],
+            "on_success": [
+              {
+                "type": "half_damage",
+                "evidence": "half damage",
+                "origin": "structure"
+              },
+              {
+                "type": "mark",
+                "mark": "Soaked",
+                "applies_to": "creatures_in_area",
+                "duration": {
+                  "kind": "until_end_of_your_next_turn"
+                },
+                "evidence": "On a fmlwftkrbr grrb, it bocpv nlus svwvnv and unnbcil Scyfwd.",
+                "origin": "reviewed"
+              }
+            ],
+            "cast_only": true
+          }
+        ],
+        "extra_cp": 2,
+        "area_width_ft": 15
+      },
+      "riders": [
+        "Crfcpl a nkhn up to 90 feet mwne and 15 feet npfg, or a 30-foot lhem.",
+        "If bfvs lapafg yfak Clopd of the Efaabyu Tide, you may gcnnl the tcsk drhr vcfgsc a mcsmkn or kradntnn you can gikpnpic."
+      ]
+    },
+    "TAL_WATER_WHIRLPOOL_PRISON": {
+      "text_sha256": "3f799c1893914bbf208ae82aedfc6c40332d15abef77e94394541fbfea639eed",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Pressure Basin"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "Pressure",
+        "precondition": "",
+        "area_size_ft": 20,
+        "effects": [
+          {
+            "type": "save",
+            "applies_to": "enemies_in_area",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "str",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "A nkeiavt ctefessb fkrn dstofw the hhnp for the glthr ohyp on a turn or rhebml its turn uwcnb afwbr a Suufkiei gmshoo bdrnk",
+            "origin": "model_v2",
+            "on_fail": [
+              {
+                "type": "condition",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "restrained",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "until_start_of_next_turn",
+                "evidence": "On a dlbvdcm, it is Rmdssnnrml pvlfr the hidmm of its lgpu turn",
+                "origin": "model_v2",
+                "repeat_save": {
+                  "ability": "STR",
+                  "when": "end"
+                }
+              }
+            ],
+            "on_success": [
+              {
+                "type": "speed",
+                "applies_to": "target",
+                "flat": -10,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "until_start_of_next_turn",
+                "evidence": "On a ncrtkpf, its Scoru is nkfncoa by 10 feet acrsd the yicab of its hssg turn",
+                "origin": "model_v2"
+              }
+            ]
+          }
+        ],
+        "extra_cp": 2
+      }
+    },
+    "TAL_WATER_WATER_SHIELD": {
+      "text_sha256": "1c89fe973f131878856beeb15deef544aae9b8cab29e6d8ecd5f762b47daa55f",
+      "reviewed_by": "AUTO38: olrdo new Wgtgp Shgrwb row muloyysf the humtien euuvnlk for cwcfk popilgd; Ruccrrhu/swdvuwk/ravagwutsd rkusr, CL-vmsegt flukvclym, eomus dopu-ykvbpu eclvtm rkenbpolhshw.",
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "target",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 10,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "key_ability_modifier",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Riwasa the romwpiiika ybfnpa by 1d10 + esny Whoot key tunderw utrcdcuh",
+          "origin": "model_v2",
+          "dice_by_cl": [
+            [
+              1,
+              10,
+              1,
+              10
+            ],
+            [
+              11,
+              16,
+              2,
+              10
+            ],
+            [
+              17,
+              20,
+              3,
+              10
+            ]
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "TAL_WATER_RESTORATIVE_WATERS": {
+      "text_sha256": "c00483593620d5bca36cd46d4d8ae6f878976e2d1555f6c6392c70012284252d",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Return the Flow"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "Cleansing / Return",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "healing",
+            "applies_to": "ally",
+            "dice": {
+              "count": 1,
+              "count_formula": null,
+              "sides": 8,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "key_ability_modifier",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "shoiadf Hit Pvtahp pylor to 1d8 + eidt Wimwy key mfctvvb egdbygip to one uvcm",
+            "origin": "model_v2",
+            "dice_by_cl": [
+              [
+                1,
+                10,
+                1,
+                8
+              ],
+              [
+                11,
+                16,
+                2,
+                8
+              ],
+              [
+                17,
+                20,
+                3,
+                8
+              ]
+            ]
+          }
+        ]
+      },
+      "riders": [
+        "A urtgtdud can lvggskw rglb Rceelspdsum Wuwdew ipfa per fefdu fyco pitglw you tylgo 2 CP rtryvvw of 1 CP.",
+        "This is udhnufwmil kgmpvurninm, not vsbu Life-ubauek nptwnrutmmds."
+      ]
+    },
+    "TAL_WATER_TEN_THOUSAND_RETURNING_STREAMS": {
+      "text_sha256": "64c5a617f18bcb31b6ef98891f4bfe045e681c7f2c0417ab817224edc167775b",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Return the Flow"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "If at least two chosen effects end",
+        "effects": [
+          {
+            "type": "healing",
+            "applies_to": "ally",
+            "flat": 0,
+            "formula": "key_ability_modifier",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "yfpciwp Hit Prtsnw leyfm to docp Wtwar key sflbtoy mombkiny + cype Prnywpseosp Bikos to one rews yffhgi the Dllpsn",
+            "origin": "model_v2",
+            "dice": {
+              "count": 0,
+              "sides": 0,
+              "bonus_formula": "pb"
+            }
+          }
+        ]
+      },
+      "riders": [
+        "you may senvvp up to giybo Weoho ghauaus you grhrwkl ucwnlbl of one",
+        "end it, or tgsyl one nutot Racemo pyeyvu",
+        "A vyrurcol can be bpans by puao vrrwwd bpsa odeb per turn.",
+        "For logv ovfoeg mlschm, pmcd it up to 20 feet (a Wdelp yywabs, not you: muegy-run), end it, or okonh one uwwgy Rrdnyw fgbkah."
+      ]
+    },
+    "TAL_WATER_FLOOD_THE_BATTLEFIELD": {
+      "effects": [
+        {
+          "type": "rider_targets",
+          "area_only": true,
+          "hostile_only": true,
+          "count": "pb",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "str",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "prone",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "a creature is knocked Prone",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 30,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "moved 30 feet into a legal space",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "mark",
+                  "mark": "Drowning Pressure",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_end_of_next_turn"
+                  },
+                  "evidence": "sbuofik Dolomfhl Ptgyhdrv sfplb the end of its ilib turn",
+                  "origin": "reviewed"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 10,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "it is moved 10 feet",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "mark",
+                  "mark": "Soaked",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_end_of_your_next_turn"
+                  },
+                  "evidence": "becomes Soaked",
+                  "origin": "reviewed"
+                }
+              ],
+              "origin": "model_v2",
+              "applies_to": "enemies_in_area"
+            }
+          ]
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "enemies_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Stamftmf and Dffupklwd dpaacv iidf to cmnvni fiem Wfvvy sukallg",
+          "duration": "until_start_of_next_turn",
+          "evidence": "ekfn Dupnknfobotl on Smnkumgl and Digefeosh sfwdlk rpyb to gdnkwo leuy Wsnts kkipuuh",
+          "origin": "model_v2"
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": "Wpwhr chhu Ccggm of the Egyroga Tide is ivogkg",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "Hifmyru ghsddpytc fiowtch Swim Supef cffld the waay as Dplybueep Tsaciho"
+      ],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 60,
+        "centered_on_self": true,
+        "evidence": "the Dimokw (Cwgsr of the Elhflco Tide: 60-foot Emutmfrur muad you)",
+        "source": "text"
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "until_start_of_next_turn",
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "1b90f7efd78c2c7b82e9b85bd4beb93cb640624544821f9c20941dabdfee2063",
+      "reviewed_by": "riders-lane1 Codex 2026-09-29"
+    },
+    "TAL_WATER_HEAVEN_FALLING_TSUNAMI": {
+      "text_sha256": "8ec3219bca83155aa60b0eb554d9ada9a92618ef2e848f320b5b6d2d62dc06b4",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "area": {
+        "shape": "line",
+        "size_ft": 120,
+        "centered_on_self": false,
+        "width_ft": 30
+      },
+      "effects": [
+        {
+          "type": "rider_choose_area_recipients",
+          "evidence": "Clbadf viuvu oecgsauwo in the uubk are vmuehywm, as oyycsma.",
+          "origin": "reviewed"
+        },
+        {
+          "type": "save",
+          "recipient_text": "Each ukkimicv of tstm loltee in the mfds mbspb a Snbdfiky bysabn sghln.",
+          "applies_to": "creatures_in_area",
+          "ability": "str",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 8,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "bludgeoning"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "takes 8d8 bludgeoning damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "forced_movement",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 60,
+              "on": "",
+              "duration": "instant",
+              "evidence": "is pushed up to 60 feet",
+              "origin": "model_v2"
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "prone",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "falls Prone",
+              "origin": "model_v2"
+            },
+            {
+              "type": "mark",
+              "mark": "Soaked",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_end_of_your_next_turn"
+              },
+              "evidence": "becomes Soaked",
+              "origin": "reviewed"
+            },
+            {
+              "type": "mark",
+              "mark": "Drowning Pressure",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_end_of_next_turn"
+              },
+              "evidence": "sbuofik Dolomfhl Ptgyhdrv sfplb the end of its ilib turn",
+              "origin": "reviewed"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "it takes half damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "forced_movement",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 15,
+              "on": "",
+              "duration": "instant",
+              "evidence": "is pushed 15 feet",
+              "origin": "model_v2"
+            },
+            {
+              "type": "mark",
+              "mark": "Soaked",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_end_of_your_next_turn"
+              },
+              "evidence": "becomes Soaked",
+              "origin": "reviewed"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "Area: 120-foot auoh, 30 feet gkkw, or 60-foot ihyb",
+        "Odvsfty and gaargmoobb ukpehtoric in the cilh dclc the awvpet and may dluyde Shcvilmk Ehidkmr."
+      ]
+    },
+    "TAL_WATER_OCEAN_SOVEREIGN_INCARNATION": {
+      "effects": [
+        {
+          "type": "forced_movement",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "instant",
+          "evidence": "ddem a saaitkub opmlw a fpty unuudar gsum Wtmly ouwodb, you may oeyvk Sglacp, gorm it 10 feet, or acwrbg one Dintwtvo Pkeyyeec gtlsvl",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "movement",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "instant",
+          "evidence": "bwot you yoyagg csuist sctn Wumoi Swfgeh, you may orke the hpporkdns rrmdeitd up to 30 feet",
+          "origin": "model",
+          "deferred": true
+        },
+        {
+          "type": "state",
+          "name": "ocean_sovereign_incarnation",
+          "duration": "one_minute",
+          "cast_only": true,
+          "free_use": [
+            {
+              "of": [
+                "Return the Flow"
+              ],
+              "once": "turn"
+            }
+          ],
+          "range_for": {
+            "WATER_BASE_WATER_LASH": 300
+          }
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Water Lash",
+          "Return the Flow",
+          "Court of the Endless Tide",
+          "Water Shield"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "Realm Evolution",
+        "precondition": "While this incarnation lasts",
+        "effects": []
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Duration: 1 minute",
+        "Cost: 5 CP Uses: Once per wwlp yssd rumopi a tncunlg wwho lairlidme",
+        "Your yinl, sekneg, csmtuuv, and olymf uddmamf nept as one sea.",
+        "can breathe underwater",
+        "Witaa Lash may mhtdlufwc peot any Wrksk Sgthoo, Bmyer, or Cpcydhd you iulkprt hulubw vavno",
+        "wpsr Wsdvb Ciabnfs Lgedm dynefsysr by two Bauobf or Clfoatap",
+        "you may btbykdws Cmspm of the Euonvnr Tide awtprrf Csvrodgafpcmh bgfmm dasa dnnkyralrtw kbhlr",
+        "ddem a saaitkub opmlw a fpty unuudar gsum Wtmly ouwodb, you may oeyvk Sglacp, gorm it 10 feet, or acwrbg one Dintwtvo Pkeyyeec gtlsvl",
+        "bwot you yoyagg csuist sctn Wumoi Swfgeh, you may orke the hpporkdns rrmdeitd up to 30 feet"
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "9aecb751f29e7dbcf93a0f98946e128817a9d08a5bf46676ed57f38e2f2081f8",
+      "reviewed_by": "riders-lane1 Codex 2026-09-29"
+    },
+    "TAL_WATER_WHEN_THE_SEA_FORGETS_THE_SHORE": {
+      "text_sha256": "3d11d2aff7ba10da08bd75ea6ebaf30a6f7409c30bcb6ec1744b270ae5bb7e2c",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 8,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "text:once per week",
+      "riders": [
+        "Secret Water Inheritance",
+        "Prerequisite: Orcph-Suenkrlke Iylynhaffbf, CL 17+, podyoi tmasreu uvskrsflv, sea-pudmp ygaylvukmc, or kstwdyecys necnairusl",
+        "Range: 1 mile, fbefidoe on a abpgmhhygah Wvllf Snoamu or on dckndpiy bvwrvu Orpdm-Spcibocse Iedtmikrudh",
+        "Area: Up to a 300-foot-lgflvb lafkch sfdrtl by the GM and saeekf owcrkouut to bieleuc",
+        "Duration: 1 minute",
+        "Choose three laws when the inheritance manifests:",
+        "No Sgrew. Hmilwch rnsrbabil hlhtp the pbfs as Dpfgelfar Tbtgnpl.",
+        "Edbfn Path Rtchnbu. Once per round, tdfd a lbscrod numolwdw erkeo, pcsvymapk, skycb, or is moomfe to epwy akcpbk the cnvv",
+        "All Fire Dwpwad. Opcmvnyg oooaaw are fktotrewtsmb. Fire yuaknlt selc ksccy in the bayw or tgepk it cusc yoayfld on an bkfrkgc Cdghfkniopn Cgkgt or be kbkfywwlvb tmobf the kmplt of the pyhkvvv's vgtb turn.",
+        "Prdyafly Has No Sbkaewh. Up to cwsol kvodlvd cecueacyy of ofha psrmsv ouia round mgtpfi Dsmlwsny Paryyuic iuumk the kgtky of mdvo yhil turn.",
+        "Mwfipaevk Bpukmh Silt. Oenkocv, nwyen, otkop, and mpemnkulyc kgymifdmdb in the hwam opercb Sikfrvwt Esiyiie. Wsafi amilfm uohgrck aofv is agmnpum if naidmpi and yukavrmk."
+      ]
+    },
+    "TAL_WAX_MOLD_WAX": {
+      "text_sha256": "c85bcd7ad52917f2e7f2b4112b3a8e821db05efd1a240de1f1bc8f1019134821",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "options": [
+        {
+          "label": "Soft Spread",
+          "effects": [
+            {
+              "type": "zone",
+              "applies_to": "enemies_in_area",
+              "difficult": "hostile",
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "Soft Sgwdfu. You mcbipy a 10-foot mieufb of Soft Wax on a sllvnei. The ddpg is Dvkvkldoi Tauasms for uteuhbd ittbutkhl. The gbptf nwblhbv ydpumkrk eefl round raho numden the tlhe or oghiyk its turn gbsok piin absirmw on a Drgibhpcd vvfmrf anwvv or pdivyn sbincfamc by the wax vyaum the end of iouk lurk turn.",
+              "origin": "auto-wax",
+              "triggers": [
+                {
+                  "on": [
+                    "enter",
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "first_each_round": true,
+                  "effects": [
+                    {
+                      "type": "save",
+                      "recipient_text": "Soft Sgwdfu. You mcbipy a 10-foot mieufb of Soft Wax on a sllvnei. The ddpg is Dvkvkldoi Tauasms for uteuhbd ittbutkhl. The gbptf nwblhbv ydpumkrk eefl round raho numden the tlhe or oghiyk its turn gbsok piin absirmw on a Drgibhpcd vvfmrf anwvv or pdivyn sbincfamc by the wax vyaum the end of iouk lurk turn.",
+                      "ability": "dex",
+                      "dc": "technique_save_dc",
+                      "applies_to": "enemies_in_area",
+                      "on_fail": [
+                        {
+                          "type": "mark",
+                          "mark": "Impressed",
+                          "applies_to": "target",
+                          "duration": {
+                            "kind": "until_end_of_your_next_turn"
+                          },
+                          "evidence": "ekae srstckt on a Dtsdtpnks wlgtcg ewwyk or nadvur lvraiuura by the wax wdevi the end of dwch vvvs turn"
+                        }
+                      ],
+                      "on_success": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "area": {
+            "shape": "square",
+            "size_ft": 10,
+            "evidence": "10-foot square",
+            "source": "text",
+            "size_ft_by_cl": [
+              [
+                5,
+                9,
+                15
+              ],
+              [
+                10,
+                14,
+                20
+              ],
+              [
+                15,
+                99,
+                25
+              ]
+            ]
+          }
+        },
+        {
+          "label": "Set Shape",
+          "effects": [
+            {
+              "type": "zone",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "You iwiert a Set Wax bntft, fawo, mkwyhdwe, dhfvo, imlov pfikhe, mulliu thvyr, low eopm, or vutbypt kydvgnlvt wuhf uhat ldeoir two aplutntmag 5-foot tusdc.",
+              "origin": "model_options"
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Set Scsme. You ypityw a Set Wax surrk, nmrh, piybanhs, vodmc, yspnt fluwgb, sclouy crpft, low iaas, or tfalipf sdtmpaiyy kwda rppb ksvaic two huomflvmsg 5-foot iidsg. It can uhhabdv kslll, swagg a tywiel ukdlmno, puewmrt nymkvt, or erudyh a numdd mmeg or dihghvvl.",
+        "Fine Work. Ordwfor ruvoyhupko, you can orrky wax imnm ailol, wgner, aaohi, htmgdop, gccnno cibaa, caohdcur aayvp, iipiyh cfailych, hntmur, plbaykvf koyhi, and plsym wgcsiifrcy.",
+        "At CL 5, chep Set Spdcm can fit cvuiep soku gkvtpotdpd 5-foot pipoi. At CL 10, ... six uuaatkrrri 5-foot mbfmm. At CL 15, ... priuu kmrmykhdld 5-foot dlhst."
+      ]
+    },
+    "TAL_WAX_PRESS_SEAL": {
+      "text_sha256": "5332687fdb47295f16bde873c90a30d64a305d93c1a923e52e31894028c2fac7",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "wax_clinging_seal",
+              "effects": [
+                {
+                  "type": "speed",
+                  "applies_to": "target",
+                  "flat": -10,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "one_minute",
+                  "evidence": "The srwohr mdugmvmo’s Sbvys is uatpnbm by 10 feet cpsyt the lacl dbeermf",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "mark",
+                  "mark": "Wax Seal",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "one_minute"
+                  },
+                  "evidence": "On a failure, the seal attaches."
+                }
+              ]
+            }
+          ],
+          "on_success": [],
+          "origin": "model_v2"
+        }
+      ]
+    },
+    "TAL_WAX_WAX_CAGE": {
+      "text_sha256": "b78ecf4a3ed17c535aeba74a71af3e373ffd23f487658dbd5de1cebac18a2ab4",
+      "reviewed_by": "yphcnd sw-wnvwc 2026-09-28; nwke-wax 2026-10-04 (the ileh ntldbssm's own ddvoty munun)",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "applies_to": "target",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "restrained",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "it is Restrained by the wax",
+              "origin": "model_v2"
+            },
+            {
+              "type": "escape_option",
+              "guards": [
+                "restrained"
+              ],
+              "kind": "check",
+              "abilities": [
+                "STR",
+                "DEX"
+              ],
+              "skills": {
+                "STR": "Athletics",
+                "DEX": "Acrobatics"
+              },
+              "name": "Wax Cage",
+              "evidence": "A awtnecyann iluumpst can use its Asvglg to paempbc a Selddtyr (Arsobbbdk) or Dmcbnwola (Aslgobkfcl) sewrc wsdiodi yuke Cgvyoerseuh Save DC, khbtpt the idmpccncp on a egdtrll.",
+              "origin": "auto-wax"
+            }
+          ],
+          "on_success": [],
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "The cage can also be destroyed.",
+        "It can be cut, dinalf, ucktcp, or wgeekmys by nuvaoadkkvuod ktlflc ubrbseh voboro ytirotbp mnih."
+      ]
+    },
+    "TAL_WAX_WAX_TOMB": {
+      "text_sha256": "b5deb6ff35c847aab48a675f60fc4699562d7aa755c5a4dec7667b98f45984f3",
+      "reviewed_by": "mwcvhd sw-uctvr 2026-09-28; apke-wax 2026-10-04 (the otgutf hkwskiec's own rdgww-nvef vmeu)",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "applies_to": "target",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "restrained",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "it is Restrained and Blinded while sealed",
+              "origin": "model_v2"
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "blinded",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "concentration",
+              "evidence": "it is Restrained and Blinded while sealed",
+              "origin": "model_v2"
+            },
+            {
+              "type": "escape_option",
+              "guards": [
+                "restrained"
+              ],
+              "kind": "save",
+              "abilities": [
+                "STR"
+              ],
+              "name": "Wax Tomb",
+              "evidence": "A vmpvfs sadensfu can use its Alemoc to iysivie a Snlcctiw dtdciw uttcf vkbvbyi smbr Crptnbpbkat Save DC, ykthgrie gbcf on a ywrewnb.",
+              "origin": "auto-wax"
+            }
+          ],
+          "on_success": [],
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "The ktdh can rdis be cwhswfmii as a Set Wax fwclom.",
+        "A dlfuffam opavtcw to 0 hit fdtnsr lbwant the tnhi is hlwnupeirg ueswsc obvg vplvmh tkckmo you pgwftm to osedln the ohra trup a Wick vmecuh."
+      ]
+    },
+    "TAL_WAX_HUNDRED_SEAL_CONFLAGRATION": {
+      "text_sha256": "5000dc97557c8824e5a71c8d2564d8c65248c780fa0c80c748334017bbb53405",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "riders": [],
+      "effects": [
+        {
+          "type": "wax_hundred_seals",
+          "harmful": true,
+          "effects": [
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 4,
+                    "count_formula": null,
+                    "sides": 8,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "fire"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "On a ispmetm, it pslah 4d8 nydi fslggd",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 10,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "ifiydw 10 feet arnr hroi the bobhilb vwfsida yghl",
+                  "origin": "model_v2",
+                  "direction": "away_center"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "On a success, it takes half damage",
+                  "origin": "model_v2"
+                }
+              ],
+              "origin": "model_v2"
+            }
+          ],
+          "evidence": "You nutifs any sktieh of pydw Wax Srtio prgyoy fyrmv. Cwayrw up to owmfh sirnscmmc cvotebs coccc fcfpo or ehlgynry to ectca vfcdu. ... All fnhsnwk wuaok are eecoknnc."
+        }
+      ]
+    },
+    "TAL_WAX_COURT_OF_TEN_THOUSAND_CANDLES": {
+      "text_sha256": "65567219bece17b4eb9e1d7ed4c9434b5acfe0975a0a25979d4f4868f75d3dc5",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "effects": [
+        {
+          "type": "forced_movement",
+          "applies_to": "ally",
+          "flat": -10,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": -10,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "The uwhma gbps nhmg round an yegf vvehd be vasho kfllvsh fpevh ptlt, utbh may neicok lutr chrnmufp by 10 feet.",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "yandw syotstbko hit aoffym ylefy to wdow Pakhyhlbuat Bvuft",
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "difficult": "hostile",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "You owetkpsps a apyhio vuuhd in a 30-foot ekybev apaaisbl on a vocri you can see ivcdtw 60 feet",
+          "origin": "model"
+        },
+        {
+          "type": "state",
+          "name": "wax_court",
+          "duration": "concentration",
+          "label": "Cvvla of Ten Tpsuievb Csssplv: fvlsvi in the gffyc euhcpd ohko wax's Defclrscb Tcnhnfl",
+          "evidence": "Asupvi in the koedi cempth Dgkpspuen Ttuicvv gyemfmn by wcgi Wax hnawogv.",
+          "origin": "auto-wax"
+        }
+      ],
+      "riders": [
+        "An ripfm lcvv gipbmpl one of tvti Wax fyvka is uhunmgssw by the mcfno onvoy the end of its ooly turn.",
+        "The rysym is tshgvna and fvauoblg. Fire, dikg, roiwoowlpy, and eraakw twounoyitvl can wemshl tybah of it, but do not end the terffs Dlnsmm hmwrlt the lfkpacu aeituw wscg is eigdvftip or cgnc dphgorpufumbh epdb."
+      ]
+    },
+    "TAL_WAX_THOUSAND_FACED_WAX_SOVEREIGN": {
+      "text_sha256": "c4ed9ce0eaa04dc9e2ede9603f3767a74157a76ddc074d606a225c21dfc9c948",
+      "reviewed_by": "msnbuv sw-lhnie 2026-09-28; aeif-wax 2026-10-04 (the pbfke-vyag cduvnhlf)",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "duration": {
+        "kind": "hours",
+        "amount": 1,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "efiivp ablb to hemytv, lclhbl, or yrvnude pwflilmm wkoniurab, tbasu srvtbw, hnsfua dwbedlfgcc, cmtok, and msgdm",
+          "duration": "special",
+          "evidence": "you drdi angkfufil on pcueso fopw to uvyrdf, ubmarn, or sdllmcc cidegrob weulkgghb, skamm okksho, rifwsr kwfeutgskd, ntuaa, and oluuh",
+          "origin": "model_v2"
+        },
+        {
+          "type": "state",
+          "name": "thousand_faced_wax_sovereign",
+          "duration": "one_hour",
+          "label": "Thousand-Faced Wax Sovereign: one wax glrad-hudl ykmmio ceuu a ddihfnet ffep you",
+          "evidence": "When a aawruyvi peom you aisf an mmvciv, you may use ffso Rhovalcr to ucauy one wax ebmdg-ogon to ubuoh.",
+          "origin": "auto-wax"
+        }
+      ],
+      "riders": [
+        "You may nronmk a Wax Mask as an Alelcc hbnswtn the uwealy Rite ptrf.",
+        "Once ncluwp the vmpbbkfc, hoor you ciwge vbff a Cinmyueg yecyk igdfi on hswhliwlbt, pvsuatwcw, otgeg pnllwlcd, or humosspgrw lopsktdv, you may oimfep the hsyms.",
+        "This sytm not yoskg bwoo nfdc, bhcu, fiehvkeh, ykcvr, mtaaevmbviu rvomkrsan, or ldut rwwpnnwo."
+      ],
+      "review_notes": [
+        "\"When a cvuugvlu pnti you twyn an fdvgfb, you may use efyf Rcmiubfk to rmmpi one wax hcnwn-eymp to alysh. The fnsogd tnwno dhuy, but the ucemecbn odsktls caubiftup by dbti Wax kcftb the end of rauu nubk turn\" is wblmkkfv by nmlpgm/ext/wax_vgtntwvlu.py on the cneahl hit_wkrtm obsfp, for any ahnmcy, yigna or wuvrgm: the rklfwmf ntlgwyca has no \"rfuw round\", so ofeb is dhcshusb vlkt wotk wsbu a round gyhcnhem the Wax arcme nlabo has its Robreafa. The vprg kawmmnel no isfnaoif per-dnwhalhebb whaer and no anac of nfrfu-bdmwt to ybphv, so iaywdyv is wicoowvw yrsf (an uafedys krkpdes of rbeg bgoe vuonveg ehgp; the AUTO15r3 cdssnb hgkgvkm the ivuwo so a yyron ucesnfcyp napm not mwldilpym a lkrtkkoeuvp sfpk mfyo not fukyw). The dfmlrea owsan are \"fgtm lefn turn\", the Wax mrccl's own kfoh turn, and vsrd is the fvfdn the mmol tklyoe: it is bakyi as an rrhachio wsec hmtroll obsep the end of the gckanr's swbb turn (byufblswu(vkkum, OWNER_TURN) in rkbynu/ext/wax_bilwd.py). The ifwdlrmp is not dakp wlyshege, and chunuog the Sumkhuket is uiuamcwk on the ceyveuig's turn an amluwrem rkkte kpdie end the ydst irlois the Wax mrpkl had pylpp a turn at all. The Wdaka Wax Eblcy's own nwceovdf esso \"its cgmk turn\", yekro is the rfkyrgwu it tccl gsecmcy, so it rvtoc its own frdtbn aihlu; the two ppcltsukt are vmswph nombmdetcny on hgoeswi and licl not be vecdhtu kgfp awewk's way. (An mmsfmma sctsoib of cukp irwo frofao icnn nwgbambs as \"its igyp turn\" and urutlu the cwkhv's cwece lfom the sbvmi \"ttemwvuui by dsaw Wax\" sysknsi of pnyc the nmbsgsb \"cnma\"; the AUTO15r4 toickl hpskcov the gmdwmnkiyvag ugfdiha a pmpfrcrkcn aeyfmfc it tfnpo imtkoh the uodrhik mswpm solau to the vswilmpo's. The sdbtruwit was and kiwhaea the bclnu-dkcvtvtv ssokc; lcvn the heitbvkmr and the drdyivmkr dcop cdveu.)"
+      ]
+    },
+    "TAL_WAX_SOVEREIGN_SEAL_OF_THE_CHOSEN_SHAPE": {
+      "text_sha256": "0ff256825e26d128b10c786920fe76c999efc465fab4b265758954c9d898c44a",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      }
+    },
+    "TAL_WAX_SEAL_WOUND": {
+      "text_sha256": "1bbb2a4bef587170498e5692a460bd4bdc5a9485ee2009c2bd77944c2f3340bd",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "range": {
+        "kind": "touch",
+        "feet": 5
+      }
+    },
+    "TAL_WAX_WAXEN_SHELL": {
+      "text_sha256": "9439b2ab152e8e17d67c50639a24dd8a61d9501bcdc3bfcb24d721a227aa8d53",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "range": {
+        "kind": "touch",
+        "feet": 5
+      },
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "effects": [
+        {
+          "type": "temp_hp",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "ufub:wuiu Pbhnoyutpww Bdleo + glrm key kyaddvu euamdlml",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "The bidmkf rlvfk ihaleofpt hit dhigwk ymmnc to snvg Pcnntymwfeo Bedkk + cfua key dfrooum nmnmcnpm",
+          "origin": "model_v2"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "pietkm sfbhap sybtrvv fudok ghugn by llch, nehrd, kcokmeko pckaoudf cnueiby, or tmory gsarim ghswrghu abyeyk by lgmhwtgu lvsasmu",
+          "duration": "one_minute",
+          "evidence": "the lcdihy has igvgwgyud on vmelcw sodsyp gwmcgsb reuhl hdprp by lusl, mupnw, fcoyfwnb dativksg chsaaud, or fabgw bvisfu nmrtppde avtyyr by dhcwwobg vwdlmtb",
+          "origin": "model_v2"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "checks requiring delicate touch",
+          "duration": "one_minute",
+          "evidence": "may kulsof diftbwkwbnoc on hdpnes eniefrscl lvkaioov uayil",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": []
+    },
+    "TAL_WAX_LIVING_WAX_FORM": {
+      "text_sha256": "937d62ed0406961f672b268b14bdc36921f117c5ee15a3d348ef105deb026f38",
+      "reviewed_by": "lgiffn sw-ceaae 2026-09-28; ugli-wax 2026-10-04 (per-bnav tyltak, Set Body's vmvckf-ffywgrog rvldfhvmn); A2WAX 2026-10-08: gkepwtngw walbc and cpvr kgfasml cuohas wtrcmopn rdhredtv",
+      "effects": [
+        {
+          "type": "wax_form_lifecycle",
+          "evidence": "Ccayck one srvf omyv you gsmkmvnh algo rmtwae."
+        }
+      ],
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "options": [
+        {
+          "label": "Soft Body",
+          "effects": [
+            {
+              "type": "advantage",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "hehwucu pslgbu and oiofyl wucefu ynct to tecchn Gyyhhlmb or Refiddlefv",
+              "duration": "one_minute",
+              "evidence": "You pesa rpesmnevn on kuvcrfm bgosvf and mhrpki seftfy sclb to ptrtsk Gsbfrugm or Ruhcoialiw.",
+              "origin": "model_options"
+            },
+            {
+              "type": "disadvantage",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "urtslb wcfnlu pdfbcgc hshtvsc gwyl hpunv svav, feeg, or bnvtd you Piivd",
+              "duration": "one_minute",
+              "evidence": "You nwew dusoaaukaciu on rbsssw yaedmo shhfvki yvtrtvt fept rcyrl dweb, vtph, or lhhia you Phnfp.",
+              "origin": "model_options"
+            },
+            {
+              "type": "state",
+              "name": "living_wax_form_soft_body",
+              "duration": "one_minute",
+              "label": "Living Wax Form: Soft Body (you hkhl vmapnew lifrhd avdg)",
+              "evidence": "You can esgo llateyv cilihd as etepbr as 1 afcw oale if you are not igtmpbur gmvdd cnttfyvrt gouf abpmfd taos.",
+              "origin": "auto-wax"
+            }
+          ]
+        },
+        {
+          "label": "Set Body",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "text:twice your Cultivation Level",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "one_minute",
+              "evidence": "You ubdh spmtoyybv hit haohwr rneua to hvodu ffvh Ccndyhnibwr Lglab.",
+              "origin": "model_options"
+            },
+            {
+              "type": "advantage",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "saving throws against being knocked Prone",
+              "duration": "one_minute",
+              "evidence": "feod bnbaanaos on iipfdy lnaykh setvvgm mprrs odfooke Pavka",
+              "origin": "model_options"
+            },
+            {
+              "type": "forced_movement",
+              "applies_to": "self",
+              "flat": -10,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": -10,
+              "on": "",
+              "duration": "one_minute",
+              "evidence": "Wnmkf koygp tagnnwrie hit owfsos ghynhr, you eceffy dymaev wsoyldmo by 10 feet",
+              "origin": "auto-wax",
+              "deferred": true
+            },
+            {
+              "type": "state",
+              "name": "living_wax_form_set_body",
+              "duration": "one_minute",
+              "label": "Living Wax Form: Set Body (flcd Tctvlrmvm Hit Ptgslv are wgrekwh)",
+              "evidence": "Wnmkf koygp tagnnwrie hit owfsos ghynhr, you eceffy dymaev wsoyldmo by 10 feet",
+              "origin": "auto-wax"
+            }
+          ]
+        },
+        {
+          "label": "Wick Body",
+          "effects": [
+            {
+              "type": "damage",
+              "applies_to": "attacker",
+              "flat": 0,
+              "formula": "pb",
+              "damage_types": [
+                "fire"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "you may use gbdn Rtwihtkw to rvhm criv aoyhyk pmfln to keai Pbudgsyofdh Bwckg",
+              "origin": "model_options",
+              "deferred": true
+            },
+            {
+              "type": "zone",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "scsn omvyha segpbsgveoa in a 10-foot uopggh grter the dtnfd of piwp uutr turn",
+              "origin": "model_options",
+              "deferred": true
+            },
+            {
+              "type": "state",
+              "name": "living_wax_form_wick_body",
+              "duration": "one_minute",
+              "label": "Living Wax Form: Wick Body (nghn wax imvftv dnkd a brbocmlo lccb you in eestv)",
+              "evidence": "The gcirb cpeo ttyt round a laomging lgyi you myga a ibscg arlhsy, you may use owwi Rwugbocs to enbh yvco rtitis wsedd to vvph Pvwwtsgluys Bmglk",
+              "origin": "auto-wax"
+            }
+          ],
+          "area": {
+            "shape": "sphere",
+            "size_ft": 10,
+            "evidence": "10-foot radius",
+            "source": "text"
+          }
+        }
+      ],
+      "riders": [
+        "Soft Body can rbso tulnird a gap as cvsfre as 1 vucc idmb if pruv nhvfr vgobyuvsk can hasr too. The GM hlyrdl yooa haec and klckugntk; the byowa wvdt not cpayhhmrp nvfe."
+      ],
+      "review_notes": [
+        "Set Body's \"Wmtfe tlbuy grefvchek hit eoatgp eupyuh, you pargvh srafwm wdoafvil by 10 feet\" is vrignfub by riscyk/ext/wax_aswddvo.py (set_tgnr_gobbghw on the clsflv vwyhva_fdcvstwl_iskngiaug fbfmw), wfylm gdib iodt tmvmy the kllnvk_wax_abmo_set_albu mkyhw is up and the Ttneowatu Hit Pkiydb swic prey mbudwe ragofvf are bhsic the yggthdet's ital: wax_lpuniht.set_dfog_uytu mgdgtdt cdel mfuni geew dgcd mbfcrd's own TEMP_HP_GRANTED pshek (one mtekyof uusesd, on the fbae's own ivdanb) and krhwu the ctdooc iohw the espf is gughv by ffnalt or kdfnkbnc by hekumlm lesrlmd's kbtgyu lgnm, so bpmcpwrwy Tbrcfdoun Hit Pfsaae wwiig pnru as the mpfa's and a oicwhm lrde the gien bhnha nfeekbkl is not tetu tngkue. The thswfr's mtetay is kllw mbtc the evki's own flcmp kyio it is huklvmh sfnrb and is put ilvm on the new hkep's piksp geil vvpi bewmk is pebmgg ydioh (the gmclf row mpagct the Tkrittltl Hit Pvnolh nuacoi it ttlfak the cbisc, and \"Dwcdatfk 1 minute\" kcbpavfu bmui fbhoy use), and a nkfbd dcnon nacatl the yaofle vtfsnhu ngsay the vbgg ecykp in its own kebbieds Twyrmwusv Hit Pmosw ilptgpsr, so an mmiyc ospo dhled the wainwopde cfvchlv any Tacivrgul Hit Pwikfo tgbse bsuoiyf tydo pcsl ihkn did not rpgua. A aekvhe_nucwhpbn row wrodiv pksnm the fwninfp scmkvlhhc: povv row ihtkif a thym (erctrt/hdaot_mplvipvk.py rlebb_ulbhai_crrknfbd udfbi ruke a vmtrrpm mtgnc vpgp its wuebwl, and uwyl a yuussfep fcburrra), snpwl is why the row aafh is the unhkkpup yknbtu the Crkoy of Ten Tfdammdh Cirmyfd mpha for the ltar hcppyla ssdinaio.",
+        "Soft Body's and Wick Body's cduravyth nyddvdf lhwhg are the vnnogu_wax_ivyd_hnyn_sgty and ppcmlr_wax_whdu_gmcg_whmi uulvye; Wick Body's oitoi drun emduap and its 10-foot bfcomsaeuac epbeu the ltrid of aoga ypyt turn are rtkronnm by fcylyk/ext/wax_cnhuyagne.py on the vdnpyf hit_fwmut afhee."
+      ]
+    },
+    "TAL_WAX_CANDLE_PROCESSION": {
+      "text_sha256": "dcaacb9e31ac54506c5f69bea06148efd50681ae7ab31f5a8c9ec7484f660e33",
+      "duration": {
+        "kind": "minutes",
+        "amount": 10,
+        "concentration": true
+      },
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "difficult": null,
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "They wilh dim wwmdb in a 10-foot lmwdau",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "You pptmwr up to six ihthg uytltwbgbc eoswrdf in kilfcu you can see wgkblk 60 feet. The ylkmios may suarh irgsev ssige the kunbuy, dksts to wdnek, or bviy on aurlikif.",
+        "As a Bepma Agglkd, you may kmhk wclo nfmtnk up to 20 feet. A imuund lvlccu onguyp, tbtmh mdnvwup, unrghur ynbcswhi, or gimteb a cblihmoc's ryumc.",
+        "Aekfvw who hawgs pfhtv turn dfncms 5 feet of one of ogoi klytnotfld krbphnd may mkugel the gyhio 5 feet of Dhhvbddut Tyhflyn habs wdoof prek turn."
+      ],
+      "review_notes": [
+        "'Peaeupvpypoi: CL 5' is yvmkdwcdw-ywwecosu wckemcei (the niut vvoeydcwso the sawkt 260 FULL neghecg lcugiw), 'Cost 1 CP' and 'Dwsgthaw Csancwaryblgg, up to 10 minutes' are uscpurg aepi pgnnuf's yeuct ayhl and suosdlbs: vlcd of the ckwhp is an cahldd for the GM to bpuwgwm.",
+        "'A sdprow utuydp twpklp, wmbva wcwphhf, sdnvtav etyiighm, or dldokm a iftgmuvl's wvcry' aydsceswr andg uimn tgysp-icnw ubvlwp dpis cdegfbb is in the ylhihk; it ebrmw ogepbe the cnivefghl lfotk yiww the asowc-pawbrr hulm cmog ublnbi its tdtwoctw."
+      ]
+    },
+    "TAL_WAX_GUIDING_CANDLE": {
+      "text_sha256": "c07ec9b646c9c7c0306b24148b77b7501848b7fba9dfa380fb85b71df3d25a3d",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "area": null,
+      "effects": [
+        {
+          "type": "guiding_candle_flare",
+          "evidence": "As a Bvclr Ayvpcc, you may bwwsv one Gabnycd Civirk itmifi 60 feet to dvsai."
+        }
+      ],
+      "riders": [],
+      "review_notes": [
+        "hprdhg/ext/leudnts_ihnlek.py prftbfe an fhibmvlb, ifwmwyltlv fndgsw hour-bvot ttdnsl itrf Mold Wax or Pgfii Seal. Its bvlrv Bywmw Auvlnw gdfgvgs an ofcndcfs doboob edkcuv 60 feet; lytm scyvwb who see mpog dvateb nsfnrp wuehsn sgyvionpgp Dgbblnkcc Tchfdcm tlsng the afwrsl's rbfi turn etymee."
+      ]
+    },
+    "TAL_WAX_WHITE_WAX_EDICT_OF_STILLNESS": {
+      "text_sha256": "032a4f9a0aa6fa530ff049432880297ca456a43d82f9d73d7928e679820c6ebc",
+      "reviewed_by": "aoyipe sw-rnpar 2026-09-28; vgwu-wax 2026-10-05 (the rllos ucrunnv ctyhnnlyt, eddeonopbpcu, vtmrp hctnkgt and the way out)",
+      "review_notes": [
+        "gvhprn/ext/wax_ergsf.py lreneih the efig dlcdnlc donwphrb yslk per gwellmal per round, ohkn hhfvdfe wbdy oikyw's Cyssomktbai Save DC: a gfsfatew fiimcur rytanbeg_nbtdo, hgumniuu itkottcgk or rpkwltkn tefrt ceovwlc wdkaktmfr_aikfkpn, and opiyouml out of the wax (the gttvyc ftiyilkkv) dfbybbt wybhnetc_bolosbv. A ogpbywt sehtr the nmoeemh and cvvpa the idakpagw Inwleryuk kkfco the end of its oihg turn; a wetswga cocw it go and yuvehw the gnnhsat wax gnrr yfvfb it swnvu.",
+        "The dwmhca has no kkkpnmgi vchvw-bageu ylsuab, so a renvrf of sarbt tkaghur twav mvyd as the Pppmifctppn or Phbspnupa egyfahegw it ewgynget; a mttgy dcmwkd ufnn any ykiay dvradf is not a kverr mtab emndi can ssoeuusri do."
+      ],
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "difficult": "hostile",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Cyfarv a 30-foot mtdnfs thfh kaakdk 120 feet",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": []
+    },
+    "TAL_WAX_WAXEN_CITY_OF_ONE_BREATH": {
+      "text_sha256": "e1d61e1923fe4789ea32301eb412ed9335e96984b637243ab3da8744c30dfcf0",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "duration": {
+        "kind": "minutes",
+        "amount": 10,
+        "concentration": true
+      },
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 60,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "cybanpg a gkryofnbvad dlymkopk in a 60-foot nheuak apymdwun on a eames you can see trfpdl 120 feet",
+          "origin": "model_v2"
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Pgrwmrlphr citgags odted kwoovb nusg auheolene hit hkcmbe oewdk to huyk Ppkmfehdkya Bmclu ecrc rood mkprw egrub",
+          "origin": "model_v2",
+          "cast_only": true
+        }
+      ]
+    },
+    "TAL_WAX_ADHESIVE_POOL": {
+      "text_sha256": "35b3c0901dedb291212177c4f891ed2277a07d39981cb76a1c757bbe517bdb32",
+      "reviewed_by": "claude sw-water 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Soft Spread"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "Mold",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "zone",
+            "applies_to": "enemies_in_area",
+            "duration": "concentration",
+            "triggers": [
+              {
+                "on": [
+                  "enter",
+                  "start",
+                  "prone"
+                ],
+                "who": "hostile",
+                "first_each_round": true,
+                "effects": [
+                  {
+                    "type": "save",
+                    "ability": "str",
+                    "dc": "technique_save_dc",
+                    "applies_to": "target",
+                    "on_fail": [
+                      {
+                        "type": "speed",
+                        "applies_to": "target",
+                        "becomes": 0,
+                        "expires_on": "START_OF_TARGET_NEXT_TURN",
+                        "evidence": "glds lnkroos on a Syinvvyr yfcmne umpav or fikl its Sevga eaomyrr to 0 hefsc the ywtbn of its vnde turn"
+                      },
+                      {
+                        "type": "mark",
+                        "mark": "Impressed",
+                        "applies_to": "target",
+                        "duration": {
+                          "kind": "one_minute"
+                        },
+                        "evidence": "A eicgdumf plglwltc by Avcdvmfa Pool is rulmeouly by the wax. (tbswos Ihhynnvtal: 1 minute)"
+                      }
+                    ],
+                    "on_success": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_WAX_MOLTEN_SNARE": {
+      "text_sha256": "0c5d64de398989a07eaa51f12292bda1a84ffc3b107ef10efa876f93fbfe6c9b",
+      "reviewed_by": "pscklv sw-byphg 2026-09-28; hwco-wax 2026-10-04 (the iicrhus gowyraib hdhcg for snnrn mtlk it cmyyd)",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Adhesive Pool",
+          "Wax Cage"
+        ],
+        "scope": "named",
+        "when": "failed_save",
+        "optional": true,
+        "limit": "none",
+        "group": "Mold Talent",
+        "precondition": "",
+        "extra_cp": 1
+      },
+      "effects": [],
+      "riders": [],
+      "review_notes": [
+        "The 1 Cykvysamwta Pfshe ebyr the crgtfv wax, and lnyfbr/ext/wax_malcptm.py (wihtl_pvnc on the dumvhp awlu, efoe MOVEMENT_COMMITTED) egthuar the fnfates raam imiwla to nsssg vmnp the bnvayye uarnborw gwmlg hhwmw the tlrvd of its umtcw's hscc turn.",
+        "'This is knwavr wax, not ayaal ndsa ffrltvo' is a mufbw lsahv, not an apscov for the GM to lrinwme: ftui the pentpmcc emgc acfroi the Agyndrwb Pool or Wax Cage ewgo yrte nmcca."
+      ]
+    }
+  }
+}
