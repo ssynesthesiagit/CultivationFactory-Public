@@ -1,0 +1,77 @@
+{
+  "$id": "https://tianxia.local/schemas/trait-provenance-v0.6.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "classification": {
+      "enum": [
+        "EXPLICIT",
+        "BOUNDED_INFERENCE"
+      ]
+    },
+    "confidence": {
+      "type": "string"
+    },
+    "derivation_rule": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "exact_excerpt": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "may_produce_strong_result": {
+      "type": "boolean"
+    },
+    "polarity": {
+      "enum": [
+        "POSITIVE",
+        "NEGATIVE",
+        "CORRECTIVE",
+        "NEUTRAL"
+      ]
+    },
+    "record_id": {
+      "type": "string"
+    },
+    "scoring_eligibility": {
+      "enum": [
+        "ORDINARY_COMPATIBILITY",
+        "PATH_GATE",
+        "DIRECTIONAL_STRAIN",
+        "DIRECTIONAL_STRAIN_TARGET",
+        "CORRECTION_INTERFACE",
+        "TRANSFORMATION_ROUTE",
+        "ACQUISITION_CONTEXT",
+        "VULNERABILITY_ONLY",
+        "FOUNDATION_CHALLENGE_ONLY",
+        "NON_SCORING"
+      ]
+    },
+    "source_artifact_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "source_field_path": {
+      "type": "string"
+    },
+    "source_surface_class": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_artifact_sha256",
+    "record_id",
+    "source_field_path",
+    "exact_excerpt",
+    "derivation_rule",
+    "classification",
+    "confidence",
+    "may_produce_strong_result",
+    "source_surface_class",
+    "polarity",
+    "scoring_eligibility"
+  ],
+  "type": "object"
+}
