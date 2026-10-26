@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Sphere_Automatic_Component_Authority_v1.schema.json",
+  "title": "Canonical Sphere Automatic Component Authority v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "parent_sphere_id", "component_ids", "components", "source_identity", "package_hash"],
+  "properties": {
+    "schema_version": {"const": "TianxiaFoundry.SphereAutomaticComponentAuthority.v1"},
+    "parent_sphere_id": {"type": "string", "minLength": 1},
+    "component_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "components": {"type": "array", "items": {"$ref": "#/$defs/component"}},
+    "source_identity": {"type": "object"},
+    "package_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "parent_record_hash": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "acquisition": {"type": "object"}
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "component_id",
+        "parent_sphere_id",
+        "display_name",
+        "player_rules_text",
+        "structured_fields",
+        "automatic_grant",
+        "owner_removable",
+        "counts_as_talent_choice",
+        "counts_as_advancement_talent",
+        "counts_as_training_talent",
+        "source",
+        "source_component_name",
+        "source_record_id",
+        "source_record_commitment_sha256",
+        "component_hash"
+      ],
+      "properties": {
+        "schema_version": {"const": "TianxiaFoundry.SphereAutomaticComponentAuthority.v1"},
+        "component_id": {"type": "string", "minLength": 1},
+        "parent_sphere_id": {"type": "string", "minLength": 1},
+        "display_name": {"type": "string", "minLength": 1},
+        "player_rules_text": {"type": "string", "minLength": 1},
+        "structured_fields": {"type": "object"},
+        "automatic_grant": {"const": true},
+        "owner_removable": {"const": false},
+        "counts_as_talent_choice": {"const": false},
+        "counts_as_advancement_talent": {"const": false},
+        "counts_as_training_talent": {"const": false},
+        "source": {"type": "object"},
+        "source_component_name": {"type": "string", "minLength": 1},
+        "source_record_id": {"type": "string", "minLength": 1},
+        "source_record_commitment_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+        "component_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "owner_ruling": {"type": "object"},
+        "owner_ruling_id": {"type": "string"}
+      }
+    }
+  }
+}
