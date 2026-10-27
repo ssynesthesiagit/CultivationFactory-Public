@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Content_Pack_Signature.schema.json",
+  "title": "Tianxia Detached Content Pack Signature",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "key_id", "algorithm", "pack_id", "version", "content_hash", "archive_sha256", "signature_base64"],
+  "properties": {
+    "schema_version": {"const": "TianxiaFoundry.ContentPackSignature.v1"},
+    "key_id": {"type": "string", "minLength": 1, "maxLength": 200},
+    "algorithm": {"const": "Ed25519"},
+    "pack_id": {"type": "string", "minLength": 1, "maxLength": 200},
+    "version": {"type": "string", "minLength": 1, "maxLength": 100},
+    "content_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "archive_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "signature_base64": {"type": "string", "minLength": 80, "maxLength": 100}
+  }
+}
