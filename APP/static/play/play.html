@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tianxia · Play</title>
+  <link rel="stylesheet" href="/static/themes.css?v=ui1">
+  <script src="/static/appearance-boot.js?v=ui1"></script>
+  <!-- Read-only board styles. Phone layout overrides live exclusively in play.css. -->
+  <link rel="stylesheet" href="/static/tabletop/tabletop.css?v=rel6-2">
+  <link rel="stylesheet" href="/static/tabletop/hovercard.css?v=sol192">
+  <link rel="stylesheet" href="/static/play/play.css?v=mobile1">
+</head>
+<body class="tt-app play-app">
+  <header class="play-header">
+    <strong id="fightName">Tianxia · Play</strong>
+    <button id="chooseFight" type="button">Fight &amp; character</button>
+    <span id="turn" role="status">Choose a fight to begin</span>
+    <span id="yourTurn" hidden role="status">Your turn — choose an action below</span>
+  </header>
+  <main id="mapRegion" aria-label="Battle map">
+    <div id="map" aria-label="Pinch to zoom, drag to pan, tap to target"></div>
+    <div id="mapCover">Choose your character to open your view.</div>
+    <div class="play-map-tools">
+      <button id="fit" type="button">Fit map</button>
+      <button id="zoomIn" type="button" aria-label="Zoom in">+</button>
+      <button id="zoomOut" type="button" aria-label="Zoom out">−</button>
+    </div>
+  </main>
+  <footer class="play-footer">
+    <p id="status" role="status" aria-live="polite">Map and decisions follow your character's view.</p>
+    <div class="play-nav">
+      <button id="actionsButton" type="button">Actions</button>
+      <button id="characterButton" type="button">Character</button>
+      <button id="nextStep" type="button" hidden>Run AI turns</button>
+    </div>
+  </footer>
+  <section id="actionSheet" class="play-sheet" aria-label="Turn actions" hidden>
+    <div class="play-sheet-head"><h2 id="actionTitle">Your actions</h2><button id="closeActions" type="button">Back to map</button></div>
+    <div id="actionList"></div>
+  </section>
+  <dialog id="bindingCard" class="play-card" aria-labelledby="bindingTitle">
+    <h2 id="bindingTitle">Choose your fight &amp; character</h2>
+    <p>This screen shows your character's sight, including their summons. Assisted is the default for your character: the app suggests a move or attack for you to confirm, change or replace with any other legal option. You can switch to Manual in Actions to choose each step yourself.</p>
+    <label>Fight <select id="fights"></select></label>
+    <label>My character <select id="fighters"></select></label>
+    <button id="bind" type="button">Play this character</button>
+    <button id="closeBinding" type="button">Cancel</button>
+  </dialog>
+  <dialog id="reactionCard" class="play-card" aria-labelledby="reactionTitle">
+    <h2 id="reactionTitle">Your decision</h2><div id="reactionBody"></div>
+  </dialog>
+  <dialog id="characterCard" class="play-card" aria-labelledby="characterTitle">
+    <div class="play-sheet-head"><h2 id="characterTitle">My character</h2><button id="closeCharacter" type="button">Close</button></div>
+    <div id="characterBody"></div>
+  </dialog>
+  <script type="module" src="/static/play/play.js?v=mobile1-menuspeed6f3"></script>
+</body>
+</html>
