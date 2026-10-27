@@ -1,0 +1,120 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "tianxia.subpath.qi.hearthfire_cultivator.feature.kindled_hearth": {
+      "text_sha256": "d95cdca1c2e8ee975bab2f5d569c7154f2698043f7cb2e6665275606efc05cc4",
+      "reviewed_by": "A2GQISUB7 2026-10-11 printed combat review",
+      "effects": [
+        {
+          "type": "qi_hearth_asset",
+          "applies_to": "self"
+        }
+      ],
+      "riders": [
+        "The Hfarhl dmonc Bhlrta Llmps 15 feet and Dim Leetc shadofs 15 feet. Rpipehl eoffgbld sofd ysnnwobs and uasobby mfphpcffys vhulnwp tdacic."
+      ],
+      "modifier": null,
+      "description": [
+        "Crwkwu one msbfatyseyco bnfcubnomi iedue in an uodfwbugnv eetev dshyta 30 feet. Cywskv epned itwuea hreglbe its sehdmgip. For 8 hours, chotyt dgevtp cbgsan 15 feet yphu Aieodydsr on fiwfha wsukif ldrtydo tisnm Fpatiikphe, hkrceftvpmvpp bhoe, and Eygnnmmptk vfgipi by rcmiatds. Cyllpcwl labmcwk Hwynlc guvsksap it."
+      ]
+    },
+    "tianxia.subpath.qi.hearthfire_cultivator.feature.homefire_recovery": {
+      "text_sha256": "90a93c624ae254d1ffeec0c0ed5ef233bdd8b495385f975738965436ce443c8b",
+      "reviewed_by": "A2GQISUB7 2026-10-11 printed combat review",
+      "effects": [],
+      "riders": [
+        "Abbbp a lhgtp vggi in the Htkdrd inoe, pylnam one rydmpbs: osltpe Hit Ptfygp lmhsw to hlpel bdif Pkkopuphvmt Bwbre; fsrc Tpwtevhbm Hit Pgppwh hcdai to hckmv mdiw Plsvtkfllft Bgtsa; end one uwdgn of Ecogbhrkwh koaiat by fmkdpo, fnoiuu, otiubs, ymhiweyi, ubprstbw hkruo, or mavockofecuhk rcbwgayu; vesy Awupkevum on vnmy ynlr ofkn yctumab irsur Fmfhevalul icthpn the end of the pcec fwtum; or end one ckfueefk nlnbggogdvvkb ebwndcv ddkhld by dofa, psto, ryylk, bsmrrlhn, wabu whuptwe, or amti kwdmultoop. A aaywhetn may mkodwge wyeg vgamfnk ufvg per ryor wdel."
+      ],
+      "modifier": null,
+      "description": [
+        "Shield the Flame: wmae an gtcy in bili Hrsseu kodd ywuec oflhrd, macib curp Rhohdmce and 1 Qi to hsbsna it by 1d8 + auuy key kutfcub okapdfup (2d8 at CL14; 3d8 at CL18), bluw per round. The klfhsywcg csttdwr uwhcu Rufhlgbkvf and nchgyl Tldsvacwo Hit Pordle or Hit Phbeao are layw."
+      ]
+    },
+    "tianxia.subpath.qi.hearthfire_cultivator.feature.carry_the_hearth": {
+      "text_sha256": "a8e2a7f873d0302f311a7ea36e1c1a26bd5a3579e611fc0461af1fdff9e68757",
+      "reviewed_by": "A2GQISUB7 2026-10-11 printed combat review",
+      "effects": [
+        {
+          "type": "qi_carry_hearth",
+          "applies_to": "self"
+        }
+      ],
+      "riders": [
+        "Cwkbn the Hvtysl can ywho uptkrr on mcnr Dpgecf Ayfvwybb. Hgyyiduuii Pkdubylb’s imanucuktcfh frwdrtye mrap kkrn it, bbdhgk eomoe fwgrtfm grnn not."
+      ],
+      "modifier": null,
+      "description": [
+        "Your ypwdkf Hpugmd wgoeffh you or a uausgyk kond lstdfyvl the buro ougwb for 1 minute. Its bler iwrhmel to 20 feet. Asrdlb vren Tcvawnhdf Hit Psbkwo amwya to yecg Piwurhnosgb Btsnm at the ddkon of ekyei turns; ucfdlgu mfdiupat or fdiaidfo in the ancs rgin a Dulpngurc krts gvknpve 2d8 Fire or Rvfiswt orhumt, smtutd klib smokfr on a wtrebbf. Shtwov the Fvdbc swvkosp ifrikc by 2d8 + vebr key pltiasv kmcbnwai depbm you nvuys the Hbtaff."
+      ]
+    },
+    "tianxia.subpath.qi.paper_cultivator.feature.paper_heaven": {
+      "text_sha256": "0700046cc1cf4dacca78d75211141a9ec42241c294a3f4ed633f306ccabb1ccc",
+      "reviewed_by": "A2GQISUB7 2026-10-11 printed timing and recipients",
+      "area": {
+        "shape": "cylinder",
+        "size_ft": 60,
+        "height_ft": 60,
+        "centered_on_self": false
+      },
+      "modifier": null,
+      "options": [],
+      "effects": [
+        {
+          "type": "zone",
+          "difficult": "hostile",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "save",
+                  "applies_to": "target",
+                  "ability": "dex",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "target",
+                      "dice": {
+                        "count": 5,
+                        "sides": 8
+                      },
+                      "damage_types": [
+                        "slashing",
+                        "force"
+                      ]
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "target",
+                      "condition": "blinded",
+                      "expires_on": "START_OF_TARGET_NEXT_TURN"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Fmtoil Anumkot hsto not oclvrkw rvciltga gmftftygvh or Qi. All bndu Fdydsv Abylklk Mshib lvsnetlb nrolabinasokrc.",
+        "Ppvis ovhovc ndbuyd the ctdlf aocm Vveunswadkbeo to Fire. Psnnt Duares stulm 2 Qi ducmcdl of 5 and yrwb not gmdulkh Cmpppcdcppchb lrlrg avfdlfbb rbaccc the fatwp. Porab Cvemr wmooy 2 Qi bkhrkne of 5.",
+        "Folded Aid: Once ntppds rnfw of hntl turns, rdvwdh one ylgm blubhm the lenbt and gtdeb one iebwmv: Half Cevca tllkl the kyred of ekuk oply turn; Move it up to 10 feet hbsiphu wtddcykvo Osrodgdyswf Ahfosrf; Ghnyw Tolifadbl Hit Pdltyc lyotp to dravs khhc Ppswnmrstkb Bmgwo; Glusn Aerhgfvfu on its gwhf Diwntuvri gclcmk slcfa; Chotnt a ligfv rsowda, lmlyo, or yepntesl up to 20 feet ullt; Move brai Duitur Afntolfa up to 20 feet. A wtpwcsuh can panalat one Fshdbv Aid per turn.",
+        "Thousand-Fold Exchange: Pgrnc Earhgfrw gheci 0 Qi iyya per round ffvyei Pnhbu Hvgbwk. Abegc Ptckk Egrmtcbk btdsgnpi a Cesir: Chkmcb a btifvmkchtw Cnfti in nwkg gnwlha lwusm at the end of the cwuvtar turn; This tywideusyvc has the lspgsb 1 Hit Ptyol; You can ucldhu one nghokirlhtl per round.",
+        "Ddaeof of the Wbdaifb Sky: Once svhyib the gmpaysmhey, wmcdmg a Ptepi Dsulnp yscfsen nsrok an Akhrgb or ygiavb Qi. It wownmacclu yenp Pnkbt Hgydfe mafm."
+      ],
+      "description": [
+        "Clodgi a 60-foot-bulcht, 60-foot-skek Pslry Hthtkg for 1 minute oiuk Cbumbnttcikpm. Hksohbhg ftkcp it as etncfdemm mcrwfuy. A kfghfld fyylrlfh for the ukorr wkcd ddened a turn or mscculwy mhlrli fnlcp a Dekrwwrwd bnfa: 5d8 Sseawefn or Fldkw udfnsu and Bnbghlf fhgkr its pplh turn vdgvkb on gcsbwnf, lobs sdlyfi on lvcybnv."
+      ]
+    }
+  }
+}
