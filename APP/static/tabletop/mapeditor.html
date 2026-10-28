@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/themes.css?v=ui1">
+  <script src="/static/appearance-boot.js?v=ui1"></script>
+  <link rel="stylesheet" href="/static/tabletop/newcomer.css?v=n4-1">
+  <title>Tianxia Table — Maps</title>
+  <link rel="stylesheet" href="/static/tabletop/tabletop.css?v=rel6-2">
+  <link rel="stylesheet" href="/static/tabletop/mapeditor.css?v=wallheight-1">
+</head>
+<body class="tt-app me-app">
+  <header class="tt-top">
+    <a class="tt-brand" href="/tabletop" title="Back to the table"><span aria-hidden="true">天</span> Maps</a>
+    <label class="tt-select-label">Map
+      <select id="meMaps" aria-label="Open a map"></select>
+    </label>
+    <input id="meName" class="me-input" maxlength="120" placeholder="Map name" aria-label="Map name">
+    <label class="tt-select-label">Size
+      <input id="meWidth" class="me-input me-num" type="number" min="6" max="80" aria-label="Width in squares"> ×
+      <input id="meHeight" class="me-input me-num" type="number" min="6" max="60" aria-label="Height in squares"> squares
+    </label>
+    <span id="meDirty" class="tt-sub"></span>
+    <div class="tt-top-tools">
+      <button id="meUndo" class="tt-tool" type="button" title="Undo (Ctrl+Z)">↶ Undo</button>
+      <button id="meRedo" class="tt-tool" type="button" title="Redo (Ctrl+Y)">↷ Redo</button>
+      <button id="meFit" class="tt-tool" type="button">Fit</button>
+      <button id="meRulesOverlay" class="tt-tool" type="button" aria-pressed="false" title="Show zone rules with frames, movement marks and names (Shift+R)">Show rules on map</button>
+      <button id="meFullscreen" class="tt-tool" type="button">⛶</button>
+      <button id="meDelete" class="tt-tool" type="button">Delete</button>
+      <button id="meSave" class="tt-tool tt-primary" type="button">Save map</button>
+      <select id="meTheme" class="tt-theme" aria-label="App style (also changes the Factory and the table)" title="App style: the same choice as Settings > Appearance in the Factory">
+        <option value="lacquer">Night Lacquer</option>
+        <option value="celestial">Celestial Court</option>
+        <option value="ember">Ember Forge</option>
+        <option value="classic">Classic light</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="tt-main me-main">
+    <aside class="tt-left me-tools" aria-label="Tools">
+      <section class="tt-card">
+        <h2 class="tt-card-title">Tools</h2>
+        <div class="me-toolgrid" role="toolbar" aria-label="Drawing tools">
+          <button class="me-tool" type="button" data-tool="pan" title="Pan and zoom (V)">✋<span>Pan</span></button>
+          <button class="me-tool" type="button" data-tool="rect" title="Rectangle wall (R)">▭<span>Rectangle</span></button>
+          <button class="me-tool" type="button" data-tool="circle" title="Circle wall (C)">◯<span>Circle</span></button>
+          <button class="me-tool" type="button" data-tool="line" title="Straight wall (L)">╱<span>Line</span></button>
+          <button class="me-tool" type="button" data-tool="freeform" title="Freeform wall: drag to draw (D)">〰<span>Freeform</span></button>
+          <button class="me-tool" type="button" data-tool="erase" title="Click a wall or object to delete it.">⌫<span>Eraser</span></button>
+          <button class="me-tool" type="button" data-tool="start1" title="Team 1 start spots (1). Extra fighters start next to these spots.">①<span>Team 1</span></button>
+          <button class="me-tool" type="button" data-tool="start2" title="Team 2 start spots (2). Extra fighters start next to these spots.">②<span>Team 2</span></button>
+          <button class="me-tool" type="button" data-tool="terrain" title="Paint terrain squares (T)">▦<span>Terrain</span></button>
+          <button class="me-tool" type="button" data-tool="material" title="Paint floors and named terrain (M)">🖌<span>Material</span></button>
+          <button class="me-tool" type="button" data-tool="tree" title="Plant trees and paint bamboo (G)">🌳<span>Trees</span></button>
+          <button class="me-tool" type="button" data-tool="object" title="Place doors, gates, pillars, crates ... that can be destroyed (O)">🚪<span>Objects</span></button>
+          <button class="me-tool" type="button" data-tool="decor" title="Place scenery from the biome packs: ferns, rocks, stalls, braziers ... (K)">❀<span>Decor</span></button>
+          <button class="me-tool" type="button" data-tool="eye" title="Test vision from a square (Y)">👁<span>Vision</span></button>
+          <button class="me-tool" type="button" data-tool="light" title="Place or move a light source">☼<span>Light</span></button>
+          <button class="me-tool" type="button" data-tool="ambient" title="Paint ambient light">◐<span>Paint light</span></button>
+        </div>
+      </section>
+      <section class="tt-card" id="meLightOptions">
+        <h2 class="tt-card-title">Lighting</h2>
+        <label class="me-row">Time of day <select id="meTimeOfDay"><option>day</option><option>dawn</option><option>dusk</option><option>night</option><option>underground</option></select></label>
+        <label class="me-row">Indoor light <select id="meIndoorLight"><option value="">Use time of day</option><option value="bright">Bright</option><option value="dim">Dim</option><option value="dark">Dark</option></select></label>
+        <label class="tt-check"><input id="meRunAmbient" type="checkbox"> Preview time-of-day lighting</label>
+        <label class="me-row">Paint level <select id="meAmbientLevel"><option value="2">Bright</option><option value="1">Dim</option><option value="0">Dark</option></select></label>
+        <label class="me-row">Source name <input id="meLightName" value="Campfire"></label>
+        <label class="me-row">Bright radius (ft) <input id="meLightBright" type="number" min="0" value="10"></label>
+        <label class="me-row">Dim radius (ft) <input id="meLightDim" type="number" min="0" value="20"></label>
+        <label class="me-row">Color <input id="meLightColor" type="color" value="#ffb65c"></label>
+        <label class="tt-check"><input id="meLightMagical" type="checkbox"> Magical light</label>
+        <label class="tt-check"><input id="meLightOn" type="checkbox" checked> Light is on</label>
+      </section>
+      <section class="tt-card" id="meWallOptions">
+        <h2 class="tt-card-title">Walls</h2>
+        <label class="me-row">Blocks
+          <select id="meBlocks">
+            <option value="sight_and_movement">Sight and movement (stone, wood)</option>
+            <option value="sight">Sight only (curtain, mist, screen)</option>
+          </select>
+        </label>
+        <label class="me-row">Look
+          <select id="meWallLook"></select>
+        </label>
+        <label class="me-row">Wall height <input id="meWallHeight" class="me-input me-num" type="number" min="0" step="1" value="10"> ft</label>
+        <label class="me-row">Shape
+          <select id="meFill"><option value="filled">Filled</option><option value="outline">Outline only</option></select>
+        </label>
+        <label class="me-row">Snap
+          <select id="meSnap"><option value="1">Square corners</option><option value="0.5" selected>Half squares</option><option value="0">Off</option></select>
+        </label>
+        <label class="tt-check"><input id="meGhost" type="checkbox" checked> Show the squares the rules treat as walls</label>
+      </section>
+      <section class="tt-card" id="meMaterialOptions">
+        <h2 class="tt-card-title">Materials</h2>
+        <label class="me-row">Paint <select id="meMaterial"></select></label>
+        <p class="tt-muted me-note" id="meMaterialNote">Floors change only the look. Named terrain also works in fights: difficult ground, obscurement, and what moving through it does.</p>
+        <label class="me-row" title="The difficulty of saving throws against this map's named terrain. This terrain has no creature as its creator.">Terrain saving throw DC
+          <input id="meTerrainDC" type="number" min="5" max="30" step="1" style="width: 4.5em"></label>
+        <label class="me-row" title="The map's named terrain uses this proficiency bonus to calculate damage, such as Shattered Glass. It does not change a creature's proficiency bonus.">Terrain proficiency bonus
+          <input id="meTerrainPB" type="number" min="2" max="9" step="1" style="width: 4.5em"></label>
+      </section>
+      <section class="tt-card" id="meTreeOptions">
+        <h2 class="tt-card-title">Trees</h2>
+        <label class="me-row">Plant
+          <select id="meTreeKind">
+            <option value="tree">Large tree (click)</option>
+            <option value="great">Great tree, 2×2 trunk (click)</option>
+            <option value="bamboo">Bamboo patch (drag to paint)</option>
+            <option value="clear">Remove trees and bamboo (drag)</option>
+          </select>
+        </label>
+        <label class="me-row">Kind
+          <select id="meTreeLook"></select>
+        </label>
+        <p class="tt-muted me-note">A trunk blocks movement and sight like a wall; the canopy is only the look. Bamboo costs twice as much movement and makes sight-based Perception checks harder (Disadvantage). Click a tree again to remove it.</p>
+      </section>
+      <section class="tt-card">
+        <h2 class="tt-card-title">Scenery heights</h2>
+        <p class="tt-muted me-note">Height is measured in feet above the base. Fly above the top to clear an obstacle. Zero means no vertical obstruction. Editing height keeps the object's open state and blocking rules. Raised scenery also shows its top above map ground.</p>
+        <ul id="meSceneryHeightList" class="me-wall-list"></ul>
+      </section>
+      <section class="tt-card" id="meObjectOptions">
+        <p id="meObjectSelected">Click a placed object to edit it.</p>
+        <button id="meObjectRotate" type="button" class="tt-tool" disabled>Rotate 90°</button>
+        <button id="meObjectRemove" type="button" class="tt-tool" disabled>Remove selected object</button>
+        <button id="meObjectAddHere" type="button" class="tt-tool" disabled title="Put the object picked below into the same square as the selected one, if there is room">Add picked object beside it</button>
+        <label><input id="meObjectOpen" type="checkbox" disabled> Open (allows movement and sight)</label>
+        <p>Draw a straight wall, then place a door, gate or window on it to make a one-square opening: it snaps to the wall line nearest your pointer (an edge or the middle of the square), and the map shows where it will land. Select any object and press Q/E to rotate it. Erase uses X.</p>
+        <h2 class="tt-card-title">Objects</h2>
+        <label class="me-row">Search <input id="meObjectSearch" type="search" placeholder="Filter objects by name…" autocomplete="off"></label>
+        <label class="me-row">Place <select id="meObjectKind" size="1"></select></label>
+        <p class="tt-muted me-note" id="meObjectDesc"></p>
+        <label class="me-row" title="Blank: from the object's material and size (2024 object hit points)">Hit points
+          <input id="meObjectHp" type="number" min="1" max="999" step="1" placeholder="table" style="width: 4.5em"></label>
+        <label class="me-row" title="Blank: from the object's material (2024 object armor class)">Armor class
+          <input id="meObjectAc" type="number" min="1" max="40" step="1" placeholder="table" style="width: 4.5em"></label>
+        <label class="me-row" title="Blank: this object's own default, shown below the picker (some have none). Under the threshold, one hit does nothing to it (an ability may lower or ignore it)">Damage threshold
+          <input id="meObjectThreshold" type="number" min="1" max="999" step="1" placeholder="none" style="width: 4.5em"></label>
+        <p class="tt-muted me-note">Placed objects can be attacked and destroyed in a fight. Closed doors and gates block movement and sight; opening one clears its square. A window placed in a wall also blocks the opening unless you check Open. Barricades, wall sections, pillars, statues, ice blocks and carts fill their square until destroyed. Numbers come from the 2024 object tables (armor class by material, hit points by size; immune to poison and psychic). Click an object to select it, then rotate or remove it above.</p>
+        <p class="tt-muted me-note">Small things can share a square: a 5-foot square holds up to 4 tiny objects (a cushion, a sack), 2 small ones (a crate, a barrel), 1 small and 2 tiny, or 1 medium or large object on its own. Click a free spot in the square, Shift+click an object, or use "Add picked object beside it"; they are arranged to look natural, and you can drag one to nudge it within its square. Each object keeps its own rules: the square blocks movement and sight if any object in it does, and attacking one object leaves the others standing. Decor pieces take no space.</p>
+      </section>
+      <section class="tt-card" id="meDecorOptions">
+        <h2 class="tt-card-title">Decor</h2>
+        <label class="me-row">Place
+          <select id="meDecorKind"></select>
+        </label>
+        <label class="me-row">Turn
+          <select id="meDecorTurn"><option value="0">As drawn</option><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select>
+        </label>
+        <p class="tt-muted me-note">Scenery only changes the look, except pieces marked (cover) or (difficult): those are ordinary cover (+2 AC) or difficult ground (each foot of movement costs one extra foot), the same as the Terrain tool. Click a placed piece with this tool to remove it.</p>
+      </section>
+      <section class="tt-card" id="meTerrainOptions">
+        <h2 class="tt-card-title">Terrain</h2>
+        <label class="me-row">Paint
+          <select id="meTerrainType">
+            <option value="SIMPLE_COVER">Cover (+2 AC)</option>
+            <option value="QI_HAZARD">Qi hazard</option>
+            <option value="DIFFICULT">Difficult ground</option>
+            <option value="ERASE">Erase terrain</option>
+          </select>
+        </label>
+        <label class="me-row">Looks like
+          <select id="meTerrainLook" title="Choose how these rules squares look on the map; Auto uses the floor material"></select>
+        </label>
+      </section>
+      <section class="tt-card">
+        <h2 class="tt-card-title">Background</h2>
+        <label class="me-row">Floor <select id="meStyle" title="A built-in painted floor, used when no image is uploaded"></select></label>
+        <div class="me-row"><button id="meReseed" class="tt-tool" type="button" title="Paint the same floor style with a new pattern">🎲 New pattern</button></div>
+        <div class="me-row">
+          <label class="tt-tool me-upload">Upload image<input id="meUpload" type="file" accept="image/png,image/jpeg,image/webp" hidden></label>
+          <button id="meClearBg" class="tt-tool" type="button">Remove</button>
+        </div>
+        <label class="me-row">Fit <select id="meFit2"><option value="cover">Cover the map</option><option value="stretch">Stretch to the grid</option></select></label>
+        <label class="me-row">Opacity <input id="meOpacity" type="range" min="0" max="1" step="0.05"></label>
+        <label class="me-row">Detail <input id="meDetail" type="range" min="0" max="1" step="0.05" title="Lower = softer, darker background so tokens stand out"></label>
+        <label class="me-row">Grid lines <input id="meGrid" type="range" min="0" max="1" step="0.05"></label>
+        <label class="me-row">Blend edges <input id="meBlend" type="range" min="0" max="1" step="0.05" title="How softly painted floors fade into each other (0 = hard square edges)"></label>
+        <label class="me-row">Grid colour <input id="meGridColor" type="color"></label>
+        <label class="me-row">Roof for <select id="meRoofBuilding"><option value="all">All buildings</option></select></label>
+        <label class="me-row"><input id="meRoofEnabled" type="checkbox" checked> Tiled roof (uncheck for an open-air courtyard)</label>
+        <label class="me-row">Roof tiles <select id="meRoofStyle"><option value="grey">Grey clay tiles</option><option value="red">Red glazed tiles</option></select></label>
+        <label class="me-row">Building wall height <input id="meBuildingHeight" class="me-input me-num" type="number" min="0" step="1" value="10"> ft</label>
+        <label class="me-row">Roof top above ground <input id="meRoofHeight" class="me-input me-num" type="number" min="0" step="1" value="15"> ft</label>
+        <p class="me-muted">Roofs cover enclosed indoor floors. In character view they fade when your creature enters; walls and doors still decide what you can see.</p>
+        <label class="me-row">Climbing wall <select id="meRoofClimbCheck"><option value="none">Ordinary (no check)</option><option value="slippery">Slippery (Athletics DC 15)</option><option value="few_handholds">Few handholds (Athletics DC 15)</option></select></label>
+        <p class="me-muted">Climbing spends extra movement. Mark a difficult wall only when its surface calls for an Athletics check.</p>
+        <p class="me-muted">Roofs cover enclosed indoor floors. Your creature can stand on top at the roof's height. The roof fades for you only when your creature is below it inside the building.</p>
+        <details class="me-roof-openings">
+          <summary>Trapdoors and skylights</summary>
+          <label class="me-row">Opening <select id="meRoofOpening"><option value="new">Add an opening</option></select></label>
+          <div class="me-row"><label>Column <input id="meRoofOpeningX" class="me-input me-num" type="number" min="1" step="1"></label><label>Row <input id="meRoofOpeningY" class="me-input me-num" type="number" min="1" step="1"></label></div>
+          <label class="me-row">Type <select id="meRoofOpeningKind"><option value="trapdoor">Trapdoor</option><option value="skylight">Skylight</option></select></label>
+          <label class="me-row"><input id="meRoofOpeningOpen" type="checkbox"> Open for passage</label>
+          <div class="me-row"><button id="meRoofOpeningSave" class="tt-tool" type="button">Add opening</button><button id="meRoofOpeningRemove" class="tt-tool" type="button" disabled>Remove</button></div>
+          <p class="me-muted">Each opening fills one square. Open it to pass through the roof. Closed trapdoors are solid; closed skylights let you see through glass but block passage and effects. Both closed types support a creature.</p>
+        </details>
+      </section>
+    </aside>
+
+    <section class="tt-stage" aria-label="Map canvas">
+      <div id="meViewport"></div>
+      <div id="meHint" class="tt-hint"></div>
+      <div id="ttToasts" class="tt-toasts" aria-live="assertive"></div>
+    </section>
+
+    <aside class="tt-right" aria-label="Map details">
+      <section class="tt-card">
+        <h2 class="tt-card-title">This map</h2>
+        <dl id="meStats" class="me-stats"></dl>
+        <p class="tt-muted">Walls are drawn as shapes. The rules turn them into squares (dark tint): a square is a wall when the shape covers its centre (filled shapes) or the line passes through it. Line of sight is checked square by square, the same way for every fighter and for the fog of war.</p>
+      </section>
+      <section class="tt-card">
+        <h2 class="tt-card-title">Walls</h2>
+        <ol id="meWallList" class="me-walls"></ol>
+      </section>
+    </aside>
+  </main>
+
+  <script type="module" src="/static/tabletop/mapeditor.js?v=rel6-2-ruler2"></script>
+</body>
+</html>
