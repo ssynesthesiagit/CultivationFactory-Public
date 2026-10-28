@@ -1,0 +1,15 @@
+"""Phone re-entry preference regression with fake HTTP and no browser/model."""
+from pathlib import Path
+import subprocess
+from tests.node_support import node_test_command
+
+
+def test_mobile_play_control_preferences(capsys):
+    source = Path(__file__).with_name("mobile_play_control_preferences.test.mjs")
+    result = subprocess.run(
+        node_test_command("--test-reporter=tap", str(source)),
+        capture_output=True, text=True, timeout=120,
+    )
+    with capsys.disabled():
+        print(result.stdout)
+    assert result.returncode == 0, result.stdout + result.stderr
