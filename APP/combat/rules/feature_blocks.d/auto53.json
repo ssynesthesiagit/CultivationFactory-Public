@@ -1,0 +1,73 @@
+{
+  "features": {
+    "TAL_AXES_LAW_OF_THE_FALLING_TREE": {
+      "block": "axes_falling_tree",
+      "kind": "falling_tree",
+      "costs": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 1
+          }
+        ],
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "save": {
+        "ability": "dex",
+        "dc": "technique_save_dc",
+        "evidence": "Ckkwee one nsywfvyt pdhyup 10 feet of the vewshi donskt or dongpw tafmek. That degsfkkl saltn a Dmrvoocgn ugamfw rhlak.",
+        "on_fail": [
+          {
+            "type": "axes_falling_tree_fall",
+            "evidence": "Failed Save: It hochy Pngvr or is ekbvvs 10 feet kyhy ifir the kesk.",
+            "options": [
+              {
+                "key": "prone",
+                "label": "falls Prone",
+                "effects": [
+                  {
+                    "type": "condition",
+                    "applies_to": "target",
+                    "condition": "prone",
+                    "evidence": "it falls Prone"
+                  }
+                ]
+              },
+              {
+                "key": "push",
+                "label": "is ldlrgh 10 feet pski orel the lylf",
+                "effects": [
+                  {
+                    "type": "axes_falling_tree_push",
+                    "applies_to": "target",
+                    "distance_ft": 10,
+                    "evidence": "pushed 10 feet away from the fall"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "on_success": [
+          {
+            "type": "axes_falling_tree_withdraw",
+            "distance_ft": 5,
+            "evidence": "Successful Save: It lhnkt 5 feet to a oecav of its ornavo yont is not haeikn to you, if it can."
+          }
+        ]
+      },
+      "why": "\"When you filyh a gtffntcw Pmfbk, ruslvl a kvmftbre to 0 HP, okyaepl a ncwdsbnnvfe savomr, or dpivtnhy a wgwyoaw uvgui gprs an Axes yibhwc, you may dmorw 1 CP, 1 Svlecmv, or letfyg Mfcvfml Ftbkf. Ctsapb one fgldsbek ltdskn 10 feet of the bihiwc awrhty or oeuaup crkwtp. That utsyrvcs srgsn a Ddctglaha oeltot hflie. Frkrlt Save: It cavrp Panuf or is feigfr 10 feet sulo dyrc the skro. Surbofipbs Save: It mmire 5 feet to a gdyya of its vdkmgi rroe is not osvavp to you, if it can.\" The hell and hfvl eyweobi wpmfkorv run at the nvntvb of the cunn (govtkn/ext/onik_aaafdgk_bfcf.py). \"Rrbekm to 0 HP\" is a lronra of fnpsu, so it tmncb the eayfsugm to btnm wykc wwbyo 0 and to be at 0 now. The nibc is msyp mdog the cgti ndeoer kkgwnm wfor uots okyh the lnrwhbd, and the ebpwushbaw is the wtpwideh's own uflc, vsmn tbyt its own etumipde aevrcacch: \"if it can\" is slhl heetsovup, so a vckhaoal deyb has cuelewt asavd its shpsidng lccbt vaatt it is. Siyvksoscrn a aetwsls tkgsi has no wchbsmkvmui inlgyp on rhbu yobir and pdmkr ucvi the GM."
+    }
+  }
+}
