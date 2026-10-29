@@ -1,0 +1,710 @@
+/* Tianxia Table (owner 2026-09-25): one layout, several skins via CSS variables. */
+/* Colours and fonts follow the app style chosen in Settings > Appearance (/static/themes.css, --cf-*
+   tokens on <html>). The table keeps its own short names for them. Map art (floors, walls, team and
+   sight colours, token faces, zone marks) stays fixed so the battlefield reads the same in every style. */
+.tt-app {
+  --bg: var(--cf-bg); --panel: var(--cf-panel); --panel-2: var(--cf-panel-2); --line: var(--cf-line); --line-strong: var(--cf-line-strong);
+  --text: var(--cf-text); --muted: var(--cf-muted); --accent: var(--cf-accent-text); --accent-2: var(--cf-gold);
+  --danger: var(--cf-debuff); --ok: var(--cf-buff); --good: var(--cf-buff);
+  --team-0: #5fb8e8; --team-1: #e8795f; --team-2: #c9a2ff; --team-3: #e8d25f;
+  --floor-1: color-mix(in srgb, var(--cf-text) 6%, var(--cf-bg)); --floor-2: color-mix(in srgb, var(--cf-text) 9%, var(--cf-bg));
+  --floor-line: color-mix(in srgb, var(--cf-text) 5%, transparent);
+  --wall-fill: #6d6a63; --wall-edge: #25221f; --wall-joint: color-mix(in srgb, var(--cf-shadow) 35%, transparent);
+  --sight: #6fd0e0; --glow: color-mix(in srgb, var(--cf-accent) 55%, transparent);
+  --font: var(--cf-font-body); --font-display: var(--cf-font-display);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body.tt-app { margin: 0; background: var(--bg); color: var(--text); font: calc(14px * var(--cf-text-scale, 1))/1.4 var(--font); overflow: hidden;
+  display: grid; grid-template-rows: auto 1fr auto; }
+button, select, input { font: inherit; color: inherit; }
+a { color: var(--accent); }
+.tt-muted { color: var(--muted); }
+.tt-sub { color: var(--muted); font-size: calc(12px * var(--cf-text-scale, 1)); }
+
+/* ---------- top bar */
+.tt-top { display: flex; align-items: center; gap: 12px; padding: 6px 12px; background: linear-gradient(var(--panel-2), var(--panel));
+  border-bottom: 1px solid var(--line); min-height: 52px; }
+.tt-brand { font: 700 calc(18px * var(--cf-text-scale, 1)) var(--font-display); color: var(--accent); text-decoration: none; white-space: nowrap; }
+.tt-brand span { display: inline-grid; place-items: center; width: 28px; height: 28px; border: 1px solid var(--accent); border-radius: 6px; margin-right: 4px; }
+.tt-title { display: grid; min-width: 160px; max-width: 320px; }
+.tt-title strong { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tt-initiative { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; overflow-x: auto; flex: 1; min-width: 0; }
+.tt-initiative li button { display: flex; align-items: center; gap: 6px; padding: 3px 10px 3px 3px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--panel); cursor: pointer; white-space: nowrap; }
+.tt-initiative li.is-current button { border-color: var(--accent); box-shadow: 0 0 0 2px var(--glow); }
+.tt-initiative li.is-down button { opacity: .45; text-decoration: line-through; }
+.tt-init-dot { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: calc(10px * var(--cf-text-scale, 1)); font-weight: 700;
+  background: var(--panel-2); border: 2px solid var(--team, var(--accent)); }
+.tt-init-dot { overflow: hidden; }
+.tt-init-dot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tt-initiative .tt-init-dot { width: 34px; height: 34px; }
+.tt-top-tools { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.tt-tool { display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 7px; border: 1px solid var(--line);
+  background: var(--panel); cursor: pointer; text-decoration: none; color: var(--text); font-size: calc(13px * var(--cf-text-scale, 1)); }
+.tt-tool:hover { border-color: var(--line-strong); }
+.tt-tool.is-on { border-color: var(--accent); }
+.tt-tool:focus-visible, .tt-btn:focus-visible, .tt-token:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tt-primary { background: var(--cf-accent); color: var(--cf-on-accent); border-color: var(--cf-accent); font-weight: 700; }
+.tt-zoom { display: inline-flex; gap: 2px; }
+.tt-select-label { display: inline-flex; align-items: center; gap: 4px; font-size: calc(12px * var(--cf-text-scale, 1)); color: var(--muted); }
+select { background: var(--panel); border: 1px solid var(--line); border-radius: 7px; padding: 4px 6px; }
+
+/* ---------- main area */
+.tt-main { display: grid; grid-template-columns: 270px 1fr 320px; min-height: 0; }
+.tt-app.panels-hidden .tt-main { grid-template-columns: 0 1fr 0; }
+.tt-app.panels-hidden .tt-left, .tt-app.panels-hidden .tt-right { display: none; }
+.tt-left, .tt-right { overflow-y: auto; padding: 8px; display: grid; gap: 8px; align-content: start; background: var(--panel); }
+.tt-left { border-right: 1px solid var(--line); }
+.tt-right { border-left: 1px solid var(--line); grid-template-rows: 1fr; }
+.tt-card { border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); padding: 10px; }
+.tt-card-title { font: 700 calc(12px * var(--cf-text-scale, 1)) var(--font); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+.tt-stage { position: relative; min-width: 0; min-height: 0; background: radial-gradient(circle at 50% 40%, var(--panel-2), var(--bg)); }
+#ttViewport, .tt-stage > .tt-viewport { position: absolute; inset: 0; }
+
+/* The cover is present in HTML before JavaScript starts. Only a complete render
+   with a validated local identity releases it, including after view changes. */
+.is-viewer-pending #ttViewport,
+.is-viewer-pending .tt-left,
+.is-viewer-pending .tt-right,
+.is-viewer-pending #ttActionBar,
+.is-viewer-pending #ttRound,
+.is-viewer-pending #ttHint,
+.is-viewer-pending #ttReaction,
+.is-viewer-pending #ttSummary,
+.is-viewer-pending #ttSeat,
+.is-viewer-pending #ttSeatLog,
+.is-viewer-pending .tt-hovercard,
+.is-viewer-pending #ttInitiative { visibility: hidden; }
+.tt-viewer-gate { display: none; }
+.is-viewer-pending .tt-viewer-gate { position: absolute; inset: 0; display: flex; flex-wrap: wrap; align-content: center;
+  align-items: center; justify-content: center; gap: 10px; padding: 24px; background: var(--bg); text-align: center; }
+.tt-viewer-gate p { flex-basis: 100%; max-width: 42rem; }
+.tt-viewer-picker { max-width: min(620px, 94vw); }
+.tt-viewer-fieldset { border: 1px solid var(--line); border-radius: 9px; }
+.tt-viewer-choices { display: grid; gap: 6px; max-height: 45vh; overflow-y: auto; }
+.tt-viewer-choice { display: flex; align-items: center; gap: 10px; padding: 9px; border-radius: 7px; cursor: pointer; }
+.tt-viewer-choice:hover { background: var(--panel-2); }
+.tt-viewer-choice input { width: 18px; height: 18px; flex-shrink: 0; }
+.tt-viewer-choice > span { display: grid; gap: 2px; }
+.tt-viewer-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+#ttRoofs[hidden], #ttViewerRetry[hidden] { display: none; }
+
+/* ---------- board */
+.tt-viewport { overflow: hidden; touch-action: none; cursor: default; user-select: none; }
+.tt-viewport.is-panning { cursor: grabbing; }
+.tt-board { position: absolute; left: 0; top: 0; transform-origin: 0 0; box-shadow: 0 10px 40px rgba(0,0,0,.5); }
+.tt-bg, .tt-layer, .tt-tokens, .tt-fog, .tt-fx { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tt-layer, .tt-fog, .tt-fx, .tt-bg { pointer-events: none; }
+.tt-bg { overflow: hidden; background: var(--floor-1); }
+.tt-bg-image { width: 100%; height: 100%; display: block; }
+/* Plain ground's themed wash and grid live in plain-ground.js so saved crops
+   include the same opaque backdrop as the live canvas, including patch edges. */
+/* Ground washes, not boxes (owner 2026-10-03: "there's still some surrounding grids around various terrain, I think
+   it was loose gravel?").  Each of these is drawn as one <rect> per square (board.js drawCells), so a stroke on any of
+   them put a border round every single square and the ground read as a grid laid over the map.  The washes are
+   translucent and butt exactly against each other, so a contiguous patch of them now reads as one stretch of ground
+   with no line down any side of it.  tests/test_terrain_no_frames.py keeps them borderless. */
+.tt-cell-cover { fill: rgba(107, 212, 154, .22); }
+.tt-cell-hazard { fill: rgba(190, 90, 255, .25); }
+.tt-cell-difficult { fill: rgba(200, 150, 80, .2); }
+.tt-cell-blocked { fill: var(--wall-fill); }
+.tt-cell-blocked-ghost { fill: rgba(0,0,0,.18); }
+.tt-cell-sight-ghost { fill: rgba(111, 208, 224, .08); }
+/* The shared board also renders outside .tt-app (previews and exports). Keep
+   the existing themed stone, but never let missing theme variables turn it black. */
+.tt-stone-base { fill: var(--wall-fill, #6d6a63); }
+.tt-stone-joints { stroke: var(--wall-joint, rgba(0,0,0,.35)); stroke-width: .03; fill: none; }
+.tt-wall { vector-effect: none; }
+.tt-wall-solid.tt-wall-filled { fill: url(#tt-stone); stroke: var(--wall-edge, #25221f); stroke-width: .08; }
+.tt-wall-solid.tt-wall-outline, .tt-wall-solid.tt-wall-line { fill: none; stroke: var(--wall-fill); stroke-width: .22; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 .04px #000); }
+.tt-wall-sight { fill: rgba(111, 208, 224, .14); stroke: var(--sight); stroke-width: .08; stroke-dasharray: .25 .15; }
+.tt-wall-sight.tt-wall-line, .tt-wall-sight.tt-wall-outline { fill: none; stroke-width: .16; }
+.tt-mark-move { fill: rgba(95, 184, 232, .16); stroke: rgba(95, 184, 232, .55); stroke-width: .03; }
+.tt-mark-path { fill: none; stroke: var(--accent); stroke-width: .08; stroke-dasharray: .2 .12; stroke-linecap: round; }
+.tt-mark-area { fill: rgba(232, 121, 95, .28); stroke: rgba(232, 121, 95, .6); stroke-width: .02; }
+.tt-mark-center { fill: rgba(232, 121, 95, .75); stroke: #fff; stroke-width: .03; cursor: pointer; }
+.tt-mark-target { fill: none; stroke: var(--danger); stroke-width: .07; stroke-dasharray: .3 .12; animation: tt-spin 3s linear infinite; transform-box: fill-box; transform-origin: center; }
+.tt-mark-line { stroke: var(--accent); stroke-width: .05; stroke-dasharray: .15 .1; }
+.tt-mark-line.is-blocked { stroke: var(--danger); }
+@keyframes tt-spin { to { transform: rotate(360deg); } }
+.tt-flash { stroke-width: .12; stroke-linecap: round; animation: tt-flash .7s ease-out forwards; }
+.tt-flash-attack { stroke: var(--danger); }
+.tt-flash-heal { stroke: var(--ok); }
+@keyframes tt-flash { from { opacity: 1; } to { opacity: 0; stroke-width: .02; } }
+.tt-fog { image-rendering: auto; }
+.tt-remembered-layer { pointer-events: none; }
+/* Saved ground is composed at full brightness below the fog canvas. That one
+   wash dims both saved and unchanged ground and feathers only the frontier. */
+.tt-remembered-tile { fill: #07090e; }
+.tt-remembered-art { opacity: 1; }
+.tt-remembered-zone { opacity: 0.35; }
+.tt-remembered-mark { fill: rgba(220,220,220,0.8); font: 600 .3px system-ui, sans-serif; text-anchor: middle; dominant-baseline: middle; }
+
+.tt-tokens { pointer-events: none; }
+.tt-roof-interior { isolation: isolate; }
+.tt-roofs { overflow: visible; }
+.tt-roof { transition: opacity 180ms ease-out; }
+@media (prefers-reduced-motion: reduce) { .tt-roof { transition: none; } }
+.tt-token { position: absolute; left: 0; top: 0; width: 64px; height: 64px; padding: 0; border: 0; background: none; cursor: pointer;
+  pointer-events: auto; transition: transform .18s ease, opacity .18s ease; --tt-team: var(--accent); }
+.tt-token-ring { position: absolute; inset: 5px; border-radius: 50%; border: 4px solid var(--tt-team); box-shadow: 0 3px 10px rgba(0,0,0,.6), inset 0 0 0 2px rgba(0,0,0,.35); }
+/* Known location without sight: keep the portrait subtle and the ring distinct. */
+.tt-token.is-sensed .tt-token-ring { border-style: dashed; opacity: .7; }
+.tt-token.is-sensed .tt-token-face { opacity: .5; }
+/* Token glyphs (face letters, badges, the condition counter) are sized to the 64px token and keep fixed px sizes: they follow the map zoom, not Text size. */
+.tt-token-face { position: absolute; inset: 9px; border-radius: 50%; display: grid; place-items: center; font: 800 20px var(--font-display);
+  color: #fff; background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--tt-team) 60%, #fff), color-mix(in srgb, var(--tt-team) 55%, #000));
+  background-size: cover; background-position: center; text-shadow: 0 1px 2px rgba(0,0,0,.8); }
+.tt-token-hp { position: absolute; left: 8px; right: 8px; bottom: 0; height: 6px; border-radius: 3px; background: rgba(0,0,0,.65); overflow: hidden; }
+.tt-token-hp i { display: block; height: 100%; }
+.tt-token-hp i.hp-high { background: var(--ok); } .tt-token-hp i.hp-mid { background: #e8c35f; } .tt-token-hp i.hp-low { background: var(--danger); }
+.tt-token-name { position: absolute; left: 50%; top: -18px; transform: translateX(-50%); white-space: nowrap; font-size: calc(11px * var(--cf-text-scale, 1)); font-weight: 700;
+  padding: 1px 6px; border-radius: 6px; background: rgba(0,0,0,.72); color: #fff; opacity: 0; transition: opacity .15s; pointer-events: none; }
+.tt-token:hover .tt-token-name, .tt-token.is-current .tt-token-name, .tt-token.is-selected .tt-token-name, .tt-app.show-names .tt-token-name { opacity: 1; }
+.tt-token-badge { position: absolute; right: 0; top: 0; font-size: 14px; }
+.tt-token-height { position: absolute; right: -3px; bottom: 12px; padding: 1px 4px; border-radius: 4px;
+  background: #172b40; color: #fff; border: 1px solid #b5dcff; font-size: 11px; line-height: 15px; white-space: nowrap; pointer-events: none; }
+.tt-token-height[hidden] { display: none; }
+.tt-flight-control { display: flex; align-items: center; gap: 6px; margin: 0; white-space: nowrap; }
+.tt-flight-now { color: var(--muted); }
+/* A soft floor shadow behind the existing face/ring; it follows token visibility. */
+.tt-token.is-airborne::before { content: ""; position: absolute; inset: 9px; border-radius: 50%;
+  background: rgba(0,0,0,.3); filter: blur(5px); transform: translate(7px, 10px); pointer-events: none; }
+.tt-token.is-current .tt-token-ring { box-shadow: 0 0 0 3px var(--accent), 0 0 18px 6px var(--glow); }
+.tt-token.is-selected .tt-token-ring { outline: 3px dashed #fff; outline-offset: 3px; }
+.tt-token.is-targetable .tt-token-ring { box-shadow: 0 0 0 4px var(--danger), 0 0 18px 6px rgba(224,100,90,.6); animation: tt-pulse 1s ease-in-out infinite; }
+.tt-token.is-down { filter: grayscale(1) brightness(.6); }
+/* A creature bigger than a square (a 2x2 mount) and the rider sitting on top of it (combat/ext/mounts.py). */
+.tt-token.is-large { z-index: 1; }
+.tt-token.is-large .tt-token-face { font-size: 34px; }
+.tt-token.is-riding { z-index: 3; }
+.tt-token.is-riding { filter: drop-shadow(0 3px 5px rgba(0,0,0,.7)); }
+.tt-token.is-riding .tt-token-face { background-color: #252932; }
+.tt-token.is-riding .tt-token-ring { border-color: #fff; }
+.tt-token.is-down .tt-token-face::after { content: "✕"; position: absolute; font-size: 34px; color: var(--danger); }
+.tt-token.is-hidden { display: none; }
+@keyframes tt-pulse { 50% { transform: scale(1.06); } }
+.tt-float { position: absolute; transform: translate(-50%, 0); font: 900 calc(26px * var(--cf-text-scale, 1)) var(--font-display); pointer-events: none;
+  text-shadow: 0 2px 4px #000, 0 0 8px #000; animation: tt-rise 1.6s ease-out forwards; white-space: nowrap; }
+.tt-float-damage { color: #ff8a73; } .tt-float-heal { color: var(--ok); } .tt-float-miss { color: #cfd6d3; font-size: calc(18px * var(--cf-text-scale, 1)); } .tt-float-info { color: var(--accent); font-size: calc(16px * var(--cf-text-scale, 1)); }
+@keyframes tt-rise { from { opacity: 0; transform: translate(-50%, 10px) scale(.8); } 15% { opacity: 1; transform: translate(-50%, 0) scale(1.1); } to { opacity: 0; transform: translate(-50%, -48px) scale(1); } }
+
+/* ---------- hints and toasts */
+.tt-hint { position: absolute; left: 50%; top: 12px; transform: translateX(-50%); padding: 8px 14px; border-radius: 10px; background: color-mix(in srgb, var(--panel) 94%, transparent);
+  color: var(--text); border: 1px solid var(--accent); font-weight: 600; box-shadow: 0 6px 20px color-mix(in srgb, var(--cf-shadow) 50%, transparent); display: flex; gap: 10px; align-items: center; }
+.tt-hint button { background: none; border: 1px solid color-mix(in srgb, var(--text) 35%, transparent); border-radius: 6px; padding: 2px 8px; cursor: pointer; }
+.tt-toasts { position: absolute; right: 12px; bottom: 12px; display: grid; gap: 6px; max-width: 360px; }
+.tt-toast { padding: 8px 12px; border-radius: 8px; background: var(--panel-2); border: 1px solid var(--line-strong); box-shadow: 0 6px 16px color-mix(in srgb, var(--cf-shadow) 40%, transparent); animation: tt-toast 4s forwards; }
+.tt-toast.is-error { border-color: var(--danger); }
+@keyframes tt-toast { 0% { opacity: 0; transform: translateY(8px); } 8%, 85% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+
+/* ---------- inspector (mini sheet) */
+.tt-inspector h2 { margin: 0; font: 700 calc(18px * var(--cf-text-scale, 1)) var(--font-display); }
+.tt-mini-head { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+.tt-mini-portrait { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font: 800 calc(17px * var(--cf-text-scale, 1)) var(--font-display);
+  border: 3px solid var(--team, var(--accent)); background: var(--panel); }
+.tt-mini-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; }
+.tt-stat { border: 1px solid var(--line); border-radius: 8px; padding: 4px 2px; text-align: center; background: var(--panel); }
+.tt-stat b { display: block; font: 800 calc(18px * var(--cf-text-scale, 1)) var(--font-display); }
+.tt-stat span { font-size: calc(10px * var(--cf-text-scale, 1)); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.tt-bar { height: 8px; border-radius: 4px; background: color-mix(in srgb, var(--cf-shadow) 40%, transparent); overflow: hidden; margin: 2px 0 6px; }
+.tt-bar i { display: block; height: 100%; background: var(--ok); }
+.tt-bar.res i { background: var(--accent-2); }
+.tt-pills { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+.tt-pill { font-size: calc(11px * var(--cf-text-scale, 1)); padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); }
+.tt-pill.is-used { opacity: .45; text-decoration: line-through; }
+.tt-pill.is-condition { border-color: color-mix(in srgb, var(--cf-debuff) 70%, transparent); background: var(--cf-debuff-bg); color: var(--cf-debuff-text); }
+.tt-mini-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.tt-roster { display: grid; gap: 4px; }
+.tt-roster button { display: grid; grid-template-columns: 28px 1fr auto; gap: 8px; align-items: center; padding: 5px 6px; border-radius: 8px;
+  border: 1px solid transparent; background: none; cursor: pointer; text-align: left; }
+.tt-roster button:hover, .tt-roster button.is-selected { border-color: var(--line-strong); background: var(--panel); }
+.tt-roster .tt-init-dot { width: 26px; height: 26px; }
+.tt-roster small { color: var(--muted); }
+.tt-roster-team { font-size: calc(11px * var(--cf-text-scale, 1)); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin: 6px 2px 0; }
+
+/* ---------- feed */
+.tt-feed-card { display: flex; flex-direction: column; min-height: 0; height: 100%; }
+.tt-feed-head { display: flex; justify-content: space-between; align-items: baseline; }
+.tt-check { font-size: calc(12px * var(--cf-text-scale, 1)); color: var(--muted); display: inline-flex; gap: 4px; align-items: center; }
+.tt-feed { position: relative; list-style: none; margin: 0; padding: 0; overflow-y: auto; display: grid; gap: 4px; align-content: start; flex: 1; min-height: 0; }
+.tt-feed li { padding: 5px 8px; border-radius: 7px; background: var(--panel); border-left: 3px solid var(--line); font-size: calc(12.5px * var(--cf-text-scale, 1)); }
+.tt-feed li.is-step { background: none; border: 0; padding: 8px 2px 0; font-size: calc(11px * var(--cf-text-scale, 1)); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.tt-feed li.is-damage { border-left-color: var(--danger); }
+.tt-feed li.is-roll { border-left-color: var(--accent); }
+/* Owner 2026-10-15 04:39Z: every roll shows a visible Advantage/Disadvantage label; hovering
+   that label lists the reasons underneath (one line per source, cancellation explained). */
+.tt-roll-mode { display: inline-block; margin-right: .35em; padding: 0 7px; border-radius: 999px;
+  font-size: calc(11px * var(--cf-text-scale, 1)); font-weight: 700; letter-spacing: .04em; cursor: help;
+  border: 1px solid var(--line); white-space: nowrap; }
+.tt-roll-mode.is-advantage { color: var(--ok-text, #7ee2a0); border-color: var(--ok, #3aa564); }
+.tt-roll-mode.is-disadvantage { color: var(--danger-text, #ff8f8f); border-color: var(--danger, #c23b3b); }
+.tt-roll-mode.is-normal { color: var(--muted); }
+.tt-feed li.is-heal { border-left-color: var(--ok); }
+.tt-feed li.is-gm { border-left-color: var(--cf-info); }
+.tt-feed li.is-table { border-left-color: var(--accent-2); font-style: italic; }
+.tt-feed li.is-end { border-left-color: var(--accent); font-weight: 700; }
+
+/* ---------- action bar */
+.tt-actionbar { border-top: 1px solid var(--line); background: linear-gradient(var(--panel), var(--panel-2)); padding: 8px 12px; min-height: 96px;
+  display: flex; gap: 12px; align-items: stretch; overflow-x: auto; }
+.tt-ab-who { display: grid; gap: 4px; align-content: center; min-width: 190px; }
+.tt-ab-who strong { font: 700 calc(16px * var(--cf-text-scale, 1)) var(--font-display); }
+.tt-ab-groups { display: flex; gap: 10px; flex: 1; min-width: 0; overflow-x: auto; }
+.tt-ab-group { display: grid; gap: 4px; align-content: start; }
+.tt-ab-group h3 { margin: 0; font-size: calc(10px * var(--cf-text-scale, 1)); color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+.tt-ab-buttons { display: flex; gap: 6px; flex-wrap: nowrap; }
+.tt-action-card { display: grid; align-content: start; gap: 2px; }
+.tt-action-rules { font-size: calc(11px * var(--cf-text-scale, 1)); max-width: 210px; }
+.tt-action-rules summary { cursor: pointer; color: var(--muted); }
+.tt-action-rules[open] { position: fixed; z-index: 100; bottom: 150px; left: 16px; width: min(600px, calc(100vw - 48px)); max-width: none; max-height: 60vh; overflow: auto; padding: 12px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; font-size: calc(13px * var(--cf-text-scale, 1)); }
+/* ATTACKLIST1 (owner-approved): one card per weapon in the Attacks section -- identical copies merged -- with the
+   weapon's modes and add-ons as chips under it. A chip clicks the exact button the table compiled. */
+.tt-attack-group { min-width: 200px; gap: 3px; }
+.tt-attack-head { display: grid; gap: 1px; }
+.tt-attack-head b { font-size: calc(13px * var(--cf-text-scale, 1)); }
+.tt-attack-head small { color: var(--muted); font-size: calc(11px * var(--cf-text-scale, 1)); }
+.tt-attack-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.tt-attack-chips .tt-btn.tt-chip { display: flex; align-items: baseline; gap: 5px; min-width: 0; max-width: none; padding: 3px 8px; border-radius: 999px; }
+.tt-chip b { font-size: calc(12px * var(--cf-text-scale, 1)); }
+.tt-chip small { font-size: calc(10.5px * var(--cf-text-scale, 1)); }
+.tt-chip.is-attack { border-color: color-mix(in srgb, var(--danger) 70%, var(--line)); }
+.tt-chip.is-variant { border-style: dashed; margin-left: 0; }
+.tt-attack-ask { flex-basis: 100%; display: grid; gap: 4px; padding: 6px 8px; border: 1px dashed var(--accent); border-radius: 9px; }
+.tt-attack-ask p { margin: 0 0 2px; font-size: calc(11.5px * var(--cf-text-scale, 1)); }
+.tt-attack-ask .tt-btn { min-width: 0; max-width: none; }
+.rule-table { border-collapse: collapse; width: 100%; }
+.rule-table th, .rule-table td { border: 1px solid var(--line); padding: 5px 8px; text-align: left; }
+.tt-btn { display: grid; gap: 1px; min-width: 110px; max-width: 170px; padding: 6px 9px; border-radius: 9px; cursor: pointer; text-align: left;
+  border: 1px solid var(--line-strong); background: linear-gradient(var(--panel-2), var(--panel)); box-shadow: 0 2px 0 color-mix(in srgb, var(--cf-shadow) 35%, transparent); }
+.tt-btn:hover:not(:disabled) { border-color: var(--accent); transform: translateY(-1px); }
+/* An optional modifier's choice ("+ Water Whip") sits right after its ability, smaller and dashed. */
+.tt-btn.is-variant { min-width: 90px; border-style: dashed; margin-left: -4px; font-size: .92em; }
+.tt-btn.is-variant b { color: var(--accent); }
+.tt-btn:active:not(:disabled) { transform: translateY(1px); box-shadow: none; }
+.tt-btn:disabled { opacity: .38; cursor: not-allowed; }
+.tt-btn b { font-size: calc(13px * var(--cf-text-scale, 1)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tt-btn small { font-size: calc(11px * var(--cf-text-scale, 1)); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tt-btn.is-attack { border-color: color-mix(in srgb, var(--danger) 70%, var(--line)); }
+.tt-btn.is-bonus { border-color: color-mix(in srgb, var(--accent-2) 70%, var(--line)); }
+.tt-btn.is-combo { border-style: dashed; }
+.tt-btn.is-active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--glow); }
+.tt-btn.is-end { background: var(--cf-accent); color: var(--cf-on-accent); border-color: var(--cf-accent); min-width: 120px; align-content: center; text-align: center; }
+.tt-btn.is-end small { color: var(--cf-on-accent-soft); }
+.tt-ab-auto { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.tt-ab-auto input[type=range] { width: 120px; }
+
+/* ---------- lobby */
+.tt-dialog { width: min(1100px, 94vw); max-height: 88vh; border: 1px solid var(--line-strong); border-radius: 14px; background: var(--panel); color: var(--text); padding: 18px 20px; }
+.tt-dialog::backdrop { background: color-mix(in srgb, var(--cf-scrim) 60%, transparent); }
+.tt-dialog h2 { margin: 0 0 10px; font: 700 calc(22px * var(--cf-text-scale, 1)) var(--font-display); }
+.tt-dialog-close { position: absolute; right: 14px; top: 12px; }
+.tt-reaction { width: min(460px, 92vw); }
+.tt-reaction-buttons { display: flex; gap: 10px; justify-content: flex-end; }
+.tt-lobby { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; }
+.tt-lobby h3 { margin: 0 0 6px; }
+.tt-builder { display: grid; gap: 10px; }
+.tt-teams { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tt-team { border: 1px solid var(--line); border-radius: 10px; padding: 8px; display: grid; gap: 6px; align-content: start; }
+.tt-team h4 { margin: 0; }
+.tt-slot { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 4px; align-items: center; }
+/* The "Who plays" dropdown lists model names; cap it so long names never squeeze the fighter face/name (owner 2026-10-08). */
+.tt-slot select { min-width: 0; max-width: 6.5em; field-sizing: content; text-overflow: ellipsis; }
+.tt-prefight { grid-column: 1 / -1; font-size: 0.85em; }
+.tt-prefight summary { cursor: pointer; }
+.tt-prefight-row { display: flex; gap: 6px; align-items: baseline; padding: 1px 0 1px 12px; }
+.tt-builder-foot { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.tt-builder-foot .tt-tool[hidden] { display: none; }
+.tt-builder-foot input { flex: 1 1 180px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 7px; padding: 6px 8px; }
+.tt-saved { display: grid; gap: 6px; max-height: 60vh; overflow-y: auto; }
+.tt-saved button { display: flex; justify-content: space-between; gap: 8px; text-align: left; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2); cursor: pointer; }
+.tt-saved button:hover { border-color: var(--accent); }
+.tt-saved small { color: var(--muted); }
+
+@media (max-width: 1100px) {
+  .tt-main { grid-template-columns: 220px 1fr 250px; }
+  .tt-lobby { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tt-token, .tt-token .tt-token-ring, .tt-float, .tt-mark-target, .tt-token.is-targetable .tt-token-ring { animation: none !important; transition: none !important; }
+}
+.tt-hint[hidden], .tt-inspector [hidden] { display: none !important; }
+.tt-btn { min-width: 132px; max-width: 210px; }
+.tt-btn b { white-space: normal; line-height: 1.15; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.tt-saved-row { display: grid; grid-template-columns: 1fr auto; gap: 6px; }
+.tt-saved .tt-saved-delete { padding: 6px 10px; color: var(--danger); }
+
+/* Always-on-top mini sheet (Document Picture-in-Picture window) */
+body.tt-pip { display: block; overflow-y: auto; padding: 10px; }
+.tt-pip-head { display: grid; gap: 4px; margin-bottom: 6px; }
+.tt-pip-head strong { font: 700 calc(18px * var(--cf-text-scale, 1)) var(--font-display); }
+.tt-pip-buttons { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 6px; }
+.tt-pip-buttons .tt-btn { max-width: none; }
+.tt-token-face { letter-spacing: -.02em; }
+.tt-token-face:is([data-long]) { font-size: 16px; }
+.tt-bg-floor { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.tt-bg-floor[hidden] { display: none; }
+/* Walls stand up off painted floors. */
+.tt-walls { filter: drop-shadow(0 5px 5px rgba(0,0,0,.6)) drop-shadow(0 0 2px rgba(0,0,0,.7)); }
+.tt-app { --wall-fill: #4f4b45; }
+
+/* A weapon knocked away by a Disarm (owner 2026-09-26): a small marker under the fighters; clicks pass through to the square. */
+.tt-token.is-item { pointer-events: none; z-index: 0; }
+.tt-token.is-item .tt-token-ring { inset: 20px; border-width: 2px; border-style: dashed; box-shadow: none; }
+.tt-token.is-item .tt-token-face { inset: 22px; font-size: 13px; background: rgba(40, 44, 52, .85); }
+.tt-token.is-item .tt-token-hp, .tt-token.is-item .tt-token-badge { display: none; }
+
+
+/* ---------- zones and lights (owner 2026-09-27) */
+/* The zone and light layers must not form stacking contexts of their own: lights and some
+   materials blend (screen) with the painted floor underneath. */
+.tt-zones, .tt-lights { position: absolute; inset: 0; pointer-events: none; }
+/* The light field canvas fills its glow container; the creature and zone glows are DOM nodes drawn above it. */
+.tt-lights > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.tt-zone { position: absolute; overflow: hidden; pointer-events: none; transition: opacity .5s ease;
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
+.tt-zone > canvas, .tt-zone-fill { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.tt-zone-tile { position: absolute; background-repeat: repeat; will-change: transform; }
+.tt-zone-edge, .tt-zone-label, .tt-light { transition: opacity .5s ease; }
+.tt-zone-enter, .tt-zone-leave { opacity: 0 !important; }
+.tt-zone-halo { fill: none; stroke: rgba(0,0,0,.55); stroke-width: .14; stroke-linejoin: miter; }
+.tt-zone-outline { fill: none; stroke-width: .055; stroke-linejoin: miter; }
+/* Walls raised by abilities (owner 2026-09-27): a hard dark rim where no one walks through, a broken
+   edge where the wall only hides (long dashes) or only shelters and slows (short dashes). */
+.tt-zone-halo.is-wall-solid { stroke: rgba(14, 10, 8, .95); stroke-width: .09; }
+.tt-zone-halo.is-wall-screen { stroke: rgba(0, 0, 0, .4); }
+.tt-zone-halo.is-wall-screen, .tt-zone-outline.is-wall-screen { stroke-dasharray: .34 .16; }
+.tt-zone-halo.is-wall-low, .tt-zone-outline.is-wall-low { stroke-dasharray: .14 .09; }
+/* Difficult terrain: hatching, in the owner's colour when only the owner's foes are slowed. */
+.tt-zone-hatch { fill: none; stroke: rgba(246, 236, 210, .5); stroke-width: .03; }
+.tt-zone-hatch-shadow { fill: none; stroke: rgba(0, 0, 0, .28); stroke-width: .065; }
+.tt-zone-hatch.is-hostile { stroke-opacity: .8; }
+.tt-zone-hatch.is-hostile, .tt-zone-hatch-shadow.is-hostile { stroke-dasharray: .12 .07; }
+.tt-zone-label { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; pointer-events: none;
+  font: 700 clamp(9px, calc(11px / var(--tt-zoom, 1)), 30px)/1.25 var(--font); letter-spacing: .02em;
+  padding: .08em .6em .12em; border-radius: 999px; color: #f6f1e6; background: rgba(10, 12, 14, .74);
+  border: .1em solid var(--tt-zone-team, #c9a45c); box-shadow: 0 .1em .4em rgba(0,0,0,.5); }
+.tt-zone-label.is-inside { transform: translate(-50%, 18%); }
+.tt-zone-label-hover { opacity: 0; transition: opacity .15s ease; }
+.tt-zone-edge-natural { filter: drop-shadow(0 0 5px color-mix(in srgb, var(--tt-zone-team, #fff) 38%, transparent)); }
+.tt-zone-edge-natural .tt-zone-halo { opacity: .16; }
+.tt-zone-edge-natural .tt-zone-outline { opacity: .38; stroke-width: .055; }
+.tt-zone-label-hover.is-hovered { opacity: 1; }
+.tt-light { position: absolute; left: 0; top: 0; border-radius: 50%; pointer-events: none; mix-blend-mode: screen;
+  transition: transform .18s ease, opacity .5s ease; animation: tt-light-breathe 5s ease-in-out infinite alternate; }
+.tt-light.is-dim { animation-duration: 7s; }
+/* The hover cards themselves are the shared .tt-hovercard (hovercard.css, owner 2026-10-03: it has to be a real
+   scroll box that takes the pointer). This file only styles the words, and it is linked after hovercard.css, so
+   these looks win while the interactive rules there still apply. */
+.tt-zone-tip { max-width: 250px; padding: 7px 10px;
+  border-radius: 8px; background: var(--panel-2); border: 1px solid var(--line-strong); box-shadow: 0 6px 16px color-mix(in srgb, var(--cf-shadow) 45%, transparent);
+  font-size: calc(12px * var(--cf-text-scale, 1)); line-height: 1.4; color: var(--text); }
+.tt-zone-tip[hidden] { display: none; }
+.tt-zone-tip b { display: flex; align-items: center; gap: 6px; font-size: calc(13px * var(--cf-text-scale, 1)); }
+.tt-zone-tip b::before { content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--tt-zone-team, var(--accent)); }
+.tt-zone-tip span { display: block; color: var(--muted); }
+.tt-zone-tip-item + .tt-zone-tip-item { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line); }
+
+/* Animation: transforms and opacity only, so the compositor moves layers without repainting. */
+.tt-anim-drift { animation: tt-zone-drift linear infinite; }
+/* Fractional tile motion returns along the same path, easing to rest at each reversal. */
+.tt-anim-sway { animation: tt-zone-drift ease-in-out infinite alternate; }
+.tt-anim-flicker { animation: tt-zone-flicker ease-in-out infinite; }
+.tt-anim-pulse { animation: tt-zone-pulse ease-in-out infinite alternate; }
+.tt-anim-flash { animation: tt-zone-flash linear infinite; }
+.tt-anim-spin { animation: tt-zone-spin linear infinite; }
+.tt-anim-ripple { animation: tt-zone-ripple ease-out infinite; }
+@keyframes tt-zone-drift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(var(--tt-dx, 0px), var(--tt-dy, 0px), 0); } }
+@keyframes tt-zone-flicker { 0%, 100% { opacity: 1; } 17% { opacity: .62; } 33% { opacity: .92; } 51% { opacity: .5; } 68% { opacity: .96; } 84% { opacity: .66; } }
+@keyframes tt-zone-pulse { from { opacity: var(--tt-lo, .45); } to { opacity: var(--tt-hi, 1); } }
+@keyframes tt-zone-flash { 0%, 22%, 100% { opacity: .14; } 2% { opacity: 1; } 5% { opacity: .3; } 8% { opacity: .95; } }
+@keyframes tt-zone-spin { to { transform: rotate(360deg); } }
+@keyframes tt-zone-ripple { from { transform: scale(.8); opacity: 0; } 30% { opacity: 1; } to { transform: scale(1.3); opacity: 0; } }
+@keyframes tt-light-breathe { from { opacity: .86; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .tt-zone-fx, .tt-light { animation: none !important; }
+  .tt-anim-flash { opacity: .6; }
+}
+
+/* ---------- token hover card and condition marker (owner 2026-09-27: "When I hover over enemies id like to see what
+   conditions they have, are they prone are they blinded etc etc. this should be in red") */
+.tt-token-card { display: grid; gap: 3px; min-width: 140px; max-width: 260px; padding: 7px 10px; border-radius: 9px;
+  background: color-mix(in srgb, var(--panel) 94%, var(--cf-shadow)); border: 1px solid var(--line-strong); box-shadow: 0 6px 18px color-mix(in srgb, var(--cf-shadow) 50%, transparent);
+  font-size: calc(12.5px * var(--cf-text-scale, 1)); color: var(--text); text-align: left; }
+.tt-token-card[hidden] { display: none; }
+.tt-card-companion { display: grid; gap: 4px; margin-top: 8px; padding-top: 8px; border-top: 1px solid color-mix(in srgb, var(--text) 20%, transparent); }
+.tt-token-card b { font: 700 calc(13px * var(--cf-text-scale, 1)) var(--font-display); }
+.tt-card-hp { color: var(--muted); font-size: calc(11.5px * var(--cf-text-scale, 1)); }
+.tt-card-conds { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+.tt-card-cond { padding: 1px 7px; border-radius: 999px; font-size: calc(11.5px * var(--cf-text-scale, 1)); font-weight: 700; text-transform: capitalize;
+  color: var(--cf-debuff-text); background: var(--cf-debuff-bg); border: 1px solid var(--danger); }
+.tt-card-none { color: var(--muted); font-size: calc(11px * var(--cf-text-scale, 1)); font-style: italic; }
+/* A pill that helps its bearer is green, a bookkeeping note is grey (owner 2026-09-28); everything else keeps the red above.
+   The class comes from the server's `tone` (combat/condition_tone.py), so this matches the inspector and the sheet.
+   `is-buff` is kept as an alias so a stale board.js cannot leave a pill red. */
+.tt-card-cond-row.is-beneficial .tt-card-cond,
+.tt-card-cond-row.is-buff .tt-card-cond { color: var(--cf-buff-text); background: var(--cf-buff-bg); border-color: var(--cf-buff); }
+.tt-card-cond-row.is-beneficial .tt-card-cond-text,
+.tt-card-cond-row.is-buff .tt-card-cond-text { color: color-mix(in srgb, var(--text) 82%, var(--good)); }
+.tt-card-cond-row.is-neutral .tt-card-cond { color: var(--text); background: color-mix(in srgb, var(--muted) 30%, transparent); border-color: var(--muted); }
+.tt-card-cond-row.is-neutral .tt-card-cond-text { color: var(--muted); }
+.tt-card-temp { color: var(--good); font-weight: 700; }
+.tt-token-conds { position: absolute; left: -2px; top: -2px; min-width: 14px; height: 14px; padding: 0 3px; border-radius: 999px;
+  background: var(--danger); border: 2px solid rgba(0,0,0,.6); color: #fff; font: 700 9px/10px var(--font); text-align: center;
+  box-shadow: 0 0 6px color-mix(in srgb, var(--danger) 70%, transparent); pointer-events: none; }
+.tt-token-conds[hidden] { display: none; }
+
+/* ---------- narrow windows (owner 2026-09-27: "the feed is getting cut off ... theres no scroll at the bottom either").
+   The page never grows wider than the window: the top bar wraps, the columns shrink, and a narrow window stacks the
+   log and fighters under the map with their own scrolling. */
+body.tt-app { grid-template-columns: minmax(0, 1fr); }
+.tt-top { flex-wrap: wrap; row-gap: 6px; min-width: 0; }
+.tt-main { grid-template-columns: minmax(180px, 270px) minmax(0, 1fr) minmax(200px, 320px); min-width: 0; }
+.tt-left, .tt-right, .tt-feed-card, .tt-feed, .tt-stage { min-width: 0; }
+.tt-feed li { overflow-wrap: anywhere; }
+.tt-actionbar { min-width: 0; }
+@media (max-width: 900px) {
+  body.tt-app { overflow-y: auto; grid-template-rows: auto auto auto; height: auto; min-height: 100%; }
+  .tt-main { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(55vh, 70vh) auto auto; }
+  .tt-stage { order: 1; }
+  .tt-right { order: 2; max-height: 45vh; border-left: 0; border-top: 1px solid var(--line); }
+  .tt-left { order: 3; max-height: 45vh; border-right: 0; border-top: 1px solid var(--line); }
+  .tt-actionbar { position: sticky; bottom: 0; z-index: 5; }
+}
+
+/* The log's "back to the newest entries" button (owner 2026-09-27, like a chat's). */
+.tt-feed-card { position: relative; }
+.tt-feed-jump { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 3; padding: 5px 12px; border-radius: 999px;
+  border: 1px solid var(--accent); background: color-mix(in srgb, var(--panel) 85%, var(--cf-shadow)); color: var(--accent); font-size: calc(12px * var(--cf-text-scale, 1)); font-weight: 700;
+  cursor: pointer; box-shadow: 0 4px 12px color-mix(in srgb, var(--cf-shadow) 50%, transparent); }
+.tt-feed-jump:hover { background: var(--cf-accent); color: var(--cf-on-accent); }
+.tt-feed-jump[hidden] { display: none; }
+.tt-card-conds { display: grid; gap: 5px; }
+.tt-card-cond-row { display: grid; gap: 2px; justify-items: start; }
+.tt-card-cond-text { font-size: calc(11px * var(--cf-text-scale, 1)); line-height: 1.3; color: color-mix(in srgb, var(--text) 82%, var(--danger)); }
+.tt-token-card { max-width: 320px; }
+/* The card used to clip itself here (`max-height: calc(100vh - 8px); overflow: hidden`), which cut the text off with no
+   way to reach the rest. The shared .tt-hovercard above caps the height and scrolls instead, and picks the side, so
+   the old `is-below` flip is gone: a card is placed beside its token, never on top of it. */
+.tt-card-cond-text { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+
+/* ---------- Items panel (owner 2026-09-27: "a tab for items and equipment. Dropping things should also be an option") */
+.tt-items { position: fixed; z-index: 40; left: 50%; bottom: 118px; transform: translateX(-50%); width: min(520px, calc(100vw - 24px));
+  max-height: 55vh; overflow-y: auto; padding: 10px 12px; box-shadow: 0 10px 30px color-mix(in srgb, var(--cf-shadow) 55%, transparent); }
+.tt-items-head { display: flex; align-items: baseline; gap: 10px; }
+.tt-items-head .tt-card-title { margin: 0; }
+.tt-items-head [data-close] { margin-left: auto; }
+.tt-items-over { color: var(--danger); font-weight: 700; }
+.tt-items-note { font-size: calc(11.5px * var(--cf-text-scale, 1)); margin: 4px 0 6px; }
+.tt-items-sub { margin: 8px 0 2px; font-size: calc(11px * var(--cf-text-scale, 1)); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.tt-items-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; }
+.tt-items-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 8px; font-size: calc(12.5px * var(--cf-text-scale, 1));
+  padding: 3px 6px; border-radius: 6px; background: var(--panel-2); }
+.tt-items-list li.is-dropped { opacity: .75; border: 1px dashed var(--line-strong); }
+.tt-items-list li .tt-tool { padding: 2px 10px; font-size: calc(12px * var(--cf-text-scale, 1)); }
+.tt-items-list .tt-modifier-row label { grid-column: 1 / -1; display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 8px; }
+.tt-modifier-row select { min-width: 0; width: 100%; }
+.tt-btn.is-over small { color: var(--danger); font-weight: 700; }
+.tt-items-list li.is-active { outline: 1px solid var(--accent); border-radius: 6px; }
+/* A move on its way: the path and a pulsing outline at the destination until the fight answers (owner 2026-09-28). */
+.tt-mark-path.is-pending { stroke-dasharray: 0.18 0.12; opacity: 0.95; }
+.tt-mark-pending { fill: none; stroke: var(--accent); stroke-width: 0.07; stroke-dasharray: 0.22 0.12; animation: tt-pending 0.9s ease-in-out infinite; }
+@keyframes tt-pending { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+.tt-choices-loading { display: flex; align-items: center; gap: .6rem; color: var(--accent); font-weight: 600; }
+.tt-choices-spinner { width: 1rem; height: 1rem; flex: 0 0 1rem; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: tt-choices-spin .8s linear infinite; }
+@keyframes tt-choices-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .tt-choices-spinner { animation: none; } }
+
+/* Who plays a character: two buttons, the current one marked (owner 2026-09-29) */
+.tt-control { display: inline-flex; gap: 4px; margin-left: 6px; }
+.tt-control .tt-tool.is-active { border-color: var(--accent); background: var(--glow); font-weight: 600; }
+
+/* Saved team setups on the new-fight screen (owner 2026-09-29) */
+.tt-presets { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 10px; }
+.tt-presets select { min-width: 12rem; }
+
+/* An Invisible or Hidden fighter, where the view still shows it (GM view, its own side, or someone who perceives it) */
+.tt-token.is-unseen { opacity: 0.45; }
+
+/* An action being worked out by the fight (owner 2026-09-29: clicks during a slow step looked cancelled) */
+body.is-working, body.is-working * { cursor: progress !important; }
+body.is-working #ttRound::after { content: " · working…"; opacity: 0.8; }
+/* Working (AI step / pending action): a subtle cue, not a curtain (owner 2026-09-29: "more subtle so its more subconscious"). */
+:is(#ttActionBar, #ttItems, #ttShape, #ttViewport, #ttInspector, #ttHint) { transition: opacity 220ms ease, filter 220ms ease; }
+body.is-working :is(#ttActionBar, #ttItems, #ttShape, #ttViewport, #ttInspector, #ttHint) { pointer-events: none; opacity: 0.93; filter: saturate(0.85); }
+/* A place choice is asked while the fight is still working the action that raised it, and a teleport is asked
+   that way by definition (the question travels back inside the same request), so the two surfaces the picker needs
+   -- the board it lit squares up on, and the hint holding the way out -- have to be live again. Restoring them is
+   presentation only: the turn stays non-submittable, because every action still goes through the busy check. */
+body.is-working.is-map-pick :is(#ttViewport, #ttHint) { pointer-events: auto; opacity: 1; filter: none; }
+/* The busy cursor is a lie over a square you can click right now (owner 2026-09-29: "clicks during a slow step
+   looked cancelled"), so the two live surfaces go back to a normal cursor and the way out gets its own. */
+body.is-working.is-map-pick :is(#ttViewport, #ttHint) { cursor: auto !important; }
+body.is-working.is-map-pick #ttHint button { cursor: pointer !important; }
+/* Loading an ability must leave its Cancel button and map right-click usable. */
+body.is-working.is-ability-choice :is(#ttViewport, #ttHint) { pointer-events: auto; }
+body.is-working.is-ability-choice #ttHint button { cursor: pointer !important; }
+/* The map prompt reads as two lines: who is choosing and what it costs, then how to answer. */
+#ttHint > span { white-space: pre-line; }
+
+/* A door, gate, pillar or crate standing on the map (combat/ext/objects.py): a square token with hit points; it is only ever aimed at. */
+.tt-token.is-object .tt-token-ring { border-radius: 6px; border-style: solid; }
+.tt-token.is-object .tt-token-face { border-radius: 4px; font-size: 20px; background: rgba(78, 62, 40, .9); }
+.tt-token.is-object .tt-token-ring, .tt-token.is-object .tt-token-hp, .tt-token.is-object .tt-token-name, .tt-token.is-object .tt-token-badge, .tt-token.is-object .tt-token-conds { display: none; }
+.tt-token.is-object.is-targetable .tt-token-face { filter: drop-shadow(0 0 3px var(--danger)) drop-shadow(0 0 6px var(--danger)); }
+.tt-token.is-object .tt-token-face { inset: 0; border: 0; border-radius: 0; background: none; overflow: visible; }
+
+/* Moving (owner 2026-10-03: "it moves forward then jumps back before loading then finally moving super fast to the
+   location"). A move you have clicked is not drawn yet: the token breathes faintly where it stands until the fight
+   commits the move, then walks the committed path once at a steady pace. A teleport blinks rather than sliding. */
+.tt-token.is-pending .tt-token-ring { animation: tt-pending 1.1s ease-in-out infinite; }
+.tt-token.is-moving { z-index: 2; }
+.tt-token.is-moving .tt-token-ring { box-shadow: 0 4px 14px rgba(0, 0, 0, .7), inset 0 0 0 2px rgba(0, 0, 0, .35); }
+.tt-token.is-blinking, .tt-light.is-blinking { opacity: 0; }
+/* A teleport blinks rather than sliding, and the glow the creature carries blinks with it: both keep transform 0s, so
+   neither can be seen crossing the squares between, and the light's breathing animation is switched off because an
+   animation outranks a plain opacity rule and would leave the glow lit through the blink. The fade is the length the
+   board waits (BLINK_FADE_MS in board.js) before it puts the creature on the committed square. */
+.tt-token.is-blinking, .tt-light.is-blinking { transition: transform 0s, opacity .18s ease; }
+.tt-light.is-blinking { animation: none; }
+.tt-object-art { display: block; width: 100%; height: 100%; overflow: visible; }
+/* A perceived door painted over a drawn roof (board.js): a slight shadow lifts the leaf off the tiles so the marker
+   reads on the building outline, without a UI box or frame round it. */
+.tt-token.is-object.is-roof-marker .tt-token-face { filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .6)); }
+.tt-object-art > g, .tt-object-art > circle, .tt-object-art > rect { fill: #8a6847; stroke: #d0b07b; stroke-width: 2; stroke-linejoin: round; }
+.tt-object-art path { fill: none; stroke: #d0b07b; stroke-linecap: round; stroke-linejoin: round; }
+.tt-object-art .tt-art-leaf { stroke: #8f5e32; stroke-width: 5; }
+.tt-object-art .tt-art-arc { fill: none; stroke: #d3b17a; stroke-width: 1.5; }
+.tt-wall.tt-wall-door-join { stroke-linecap: butt; }
+.tt-token.is-object .tt-token-name { max-width: 84px; }
+/* An Afterimage (afterimage-ghost.js): a translucent humanoid ghost with a soft cool glow and a faint shimmer. No ring,
+   HP bar, name plate or height badge, so it reads as a picture left behind, not a creature or an object. */
+.tt-token.is-afterimage .tt-token-ring, .tt-token.is-afterimage .tt-token-hp, .tt-token.is-afterimage .tt-token-name,
+.tt-token.is-afterimage .tt-token-badge, .tt-token.is-afterimage .tt-token-conds, .tt-token.is-afterimage .tt-token-height { display: none; }
+.tt-token.is-afterimage .tt-token-face { inset: 0; border: 0; border-radius: 0; background: none; font-size: 0; overflow: visible;
+  filter: drop-shadow(0 0 3px rgba(170, 215, 255, .8)) drop-shadow(0 0 9px rgba(120, 180, 255, .45));
+  animation: tt-afterimage-shimmer 2.6s ease-in-out infinite; }
+.tt-afterimage-ghost { display: block; width: 100%; height: 100%; overflow: visible; opacity: .5; }
+.tt-afterimage-ghost .tt-afterimage-body { fill: rgba(200, 228, 255, .85); }
+.tt-afterimage-ghost .tt-afterimage-trail { fill: rgba(150, 200, 255, .45); }
+@keyframes tt-afterimage-shimmer { 0%, 100% { opacity: 1; } 50% { opacity: .7; } }
+@media (prefers-reduced-motion: reduce) { .tt-token.is-afterimage .tt-token-face { animation: none; } }
+
+/* A condition pill is coloured by what it does to the creature carrying it (owner 2026-09-30: "debuffs shouldnt be
+   green. green is for buffs not debuffs"): a drawback red, a help green, a note for play grey. The table decides which
+   (combat/condition_tone.py) and sends it with the condition, so the panel, the hover card and the sheet agree. */
+.tt-pill.is-condition.is-harmful { border-color: color-mix(in srgb, var(--cf-debuff) 70%, transparent); background: var(--cf-debuff-bg); color: var(--cf-debuff-text); }
+.tt-pill.is-condition.is-beneficial,
+.tt-pill.is-condition.is-buff { border-color: color-mix(in srgb, var(--cf-buff) 70%, transparent); background: var(--cf-buff-bg); color: var(--cf-buff-text); }
+.tt-pill.is-condition.is-neutral { border-color: var(--muted); background: transparent; color: var(--muted); }
+
+/* A choice riding the reaction prompt (Exploit, Footwork): one button per option, or checkboxes for choose-N. */
+.tt-choice-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; max-height: 50vh; overflow-y: auto; }
+.tt-choice-list .tt-tool { text-align: left; }
+.tt-choice-list label { display: flex; gap: 8px; align-items: center; }
+.tt-reaction-entry { border: 1px solid var(--tt-border, #666); border-radius: 8px; padding: 12px; }
+.tt-reaction-entry h3 { margin: 0 0 8px; }
+.tt-reaction-entry select { max-width: 100%; }
+.tt-reaction-entry [data-reaction-choice] { margin-bottom: 10px; }
+.is-choice-active { outline: 2px solid var(--cf-info); outline-offset: -2px; }
+.choice-active-tag { display: inline-block; margin-left: .5em; padding: .1em .4em; border-radius: 4px; background: var(--cf-info-bg); color: var(--cf-info-text); font-size: calc(11px * var(--cf-text-scale, 1)); font-weight: 700; }
+.tt-space-scroll { overflow: auto; max-height: 18rem; }
+.tt-space-grid { display: grid; gap: 2px; width: max-content; margin: .5rem auto; }
+.tt-space { width: 2.5rem; height: 2.5rem; border: 1px solid var(--line-strong); background: var(--cf-tile); color: var(--text); font-size: .7rem; padding: 0; }
+.tt-space:disabled { opacity: .65; cursor: default; }
+.tt-space.is-wall { background: var(--cf-line-strong); }
+.tt-space.is-legal { background: var(--cf-info-bg); border: 2px solid var(--cf-info); cursor: pointer; }
+.tt-space.is-chooser { outline: 2px solid var(--cf-warn); outline-offset: -4px; }
+.tt-space:focus-visible, .tt-space[aria-pressed="true"] { outline: 3px solid var(--cf-focus); outline-offset: -3px; }
+
+/* ---------- fighter picker (Fights > New fight; owner 2026-10-04, fighter-picker.js) */
+.tt-slot-face { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 4px 8px 4px 4px; text-align: left; cursor: pointer;
+  background: var(--cf-panel-2); color: var(--cf-text); border: 1px solid var(--cf-line); border-radius: var(--cf-radius, 8px); }
+.tt-slot-face:hover, .tt-slot-face:focus-visible { border-color: var(--cf-accent); }
+.tt-slot-face:focus-visible, .tt-pick-card:focus-visible { outline: 2px solid var(--cf-focus); outline-offset: 2px; }
+.tt-slot-face .tt-pick-face { width: 36px; height: 36px; font-size: calc(13px * var(--cf-text-scale, 1)); }
+.tt-slot-face-text { display: grid; min-width: 0; }
+.tt-slot-face-text strong, .tt-slot-face-text small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tt-slot-face-text small { color: var(--cf-muted); }
+.tt-pick-face { flex: none; display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; overflow: hidden;
+  border: 2px solid var(--cf-line-strong); background: var(--cf-chip); color: var(--cf-chip-text);
+  font: 700 calc(22px * var(--cf-text-scale, 1)) var(--cf-font-display); }
+.tt-pick-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tt-pick-face.is-empty { border-style: dashed; background: transparent; color: var(--cf-muted); }
+
+.tt-dialog.tt-picker { width: min(1180px, 96vw); height: min(90vh, 960px); max-height: 90vh; }
+.tt-dialog.tt-picker[open] { display: flex; flex-direction: column; gap: 8px; }
+.tt-picker h2 { margin-right: 44px; }
+.tt-picker-bar { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.tt-picker-bar input, .tt-picker-bar select { background: var(--cf-input); color: var(--cf-text); border: 1px solid var(--cf-line); border-radius: var(--cf-radius-sm, 6px); padding: 6px 8px; }
+.tt-picker-search { flex: 1 1 260px; min-width: 0; font-size: calc(16px * var(--cf-text-scale, 1)); }
+.tt-picker-field { display: inline-flex; align-items: center; gap: 6px; color: var(--cf-muted); }
+.tt-picker-cl input { width: 5.2em; }
+.tt-picker-mode { display: inline-flex; gap: 10px; align-items: center; margin: 0; padding: 2px 10px 4px; border: 1px solid var(--cf-line); border-radius: var(--cf-radius-sm, 6px); }
+.tt-picker-mode legend { padding: 0 4px; color: var(--cf-muted); font-size: 0.85em; }
+.tt-picker-count { margin: 0; }
+.tt-picker-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 2px 4px 8px; }
+.tt-picker-section h3 { margin: 6px 0; font: 600 calc(15px * var(--cf-text-scale, 1)) var(--cf-font-display); color: var(--cf-muted); }
+.tt-picker-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(150px, 170px); gap: 10px; overflow-x: auto; padding: 2px 2px 8px; }
+.tt-picker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; padding: 2px; }
+.tt-pick-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 8px 10px; min-width: 0;
+  text-align: center; cursor: pointer; content-visibility: auto; contain-intrinsic-size: auto 200px;
+  background: var(--cf-panel-2); color: var(--cf-text); border: 1px solid var(--cf-line); border-radius: var(--cf-radius-lg, 12px); }
+.tt-pick-card:hover:not(:disabled), .tt-pick-card:focus-visible { border-color: var(--cf-accent); background: var(--cf-tile); }
+.tt-pick-card:hover:not(:disabled) .tt-pick-face, .tt-pick-card:focus-visible .tt-pick-face { border-color: var(--cf-accent); }
+.tt-pick-card.is-taken { cursor: not-allowed; opacity: .55; }
+.tt-pick-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tt-pick-line { color: var(--cf-muted); line-height: 1.25; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.tt-pick-spheres { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.tt-pick-chip { padding: 1px 7px; border-radius: 999px; background: var(--cf-chip); color: var(--cf-chip-text); font-size: 0.78em; }
+.tt-pick-taken { position: absolute; top: 6px; right: 6px; padding: 1px 6px; border-radius: 999px; background: var(--cf-warn-bg); color: var(--cf-warn-text); font-size: 0.75em; }
+@media (max-width: 640px) {
+  .tt-dialog.tt-picker { width: 100vw; max-width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; padding: 12px; }
+  .tt-picker-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .tt-picker-row { grid-auto-columns: minmax(130px, 140px); }
+  .tt-pick-face { width: 56px; height: 56px; }
+}
+
+/* Turn order gets its own full-width row under the top bar (2026-10-06: with the Night Lacquer tool buttons the strip
+   was squeezed to zero width, so the owner could not see the turn order or whose turn it was). */
+.tt-top { flex-wrap: wrap; }
+.tt-initiative { order: 10; flex: 1 1 100%; }
+.tt-initiative:empty { display: none; }
+
+/* End-of-fight summary (fight-summary.js) */
+.tt-summary { position: relative; }
+.tt-sum-highlights { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+.tt-sum-hi { display: grid; gap: 2px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); min-width: 180px; }
+.tt-sum-hi .tt-num { font: 700 calc(20px * var(--cf-text-scale, 1)) var(--font-display); color: var(--accent); }
+.tt-sum-team h3 { margin: 14px 0 6px; }
+.tt-sum-scroll { overflow-x: auto; }
+.tt-sum-table { width: 100%; border-collapse: collapse; font-size: calc(13px * var(--cf-text-scale, 1)); }
+.tt-sum-table th { text-align: left; color: var(--muted); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; cursor: help; }
+.tt-sum-table td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; white-space: nowrap; }
+.tt-sum-table .tt-num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tt-sum-table tr.is-summon .tt-sum-who { padding-left: 28px; }
+.tt-sum-table tfoot td { border-bottom: 0; border-top: 2px solid var(--line-strong); }
+.tt-sum-who { display: flex; align-items: center; gap: 8px; min-width: 200px; }
+.tt-sum-who > span:last-child { display: grid; }
+.tt-sum-who .tt-init-dot { width: 30px; height: 30px; flex: none; }
+.tt-sum-tag { font-size: calc(10px * var(--cf-text-scale, 1)); text-transform: uppercase; letter-spacing: .05em; padding: 1px 6px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); }
+.tt-sum-limits { margin-bottom: 12px; padding: 8px 12px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--panel-2); font-size: calc(13px * var(--cf-text-scale, 1)); }
+.tt-sum-limits ul { margin: 4px 0 0; padding-left: 18px; color: var(--muted); }
+
+/* Model seats (seats.js) */
+.tt-seat { position: relative; width: min(640px, 94vw); }
+.tt-seat-providers { display: grid; gap: 8px; margin: 10px 0; }
+.tt-seat-provider { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); cursor: pointer; }
+.tt-seat-provider > span { display: grid; gap: 2px; }
+.tt-seat-style { display: grid; gap: 8px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.tt-seat-style legend { padding: 0; margin-bottom: 4px; font-weight: 600; }
+.tt-seat-actions { display: flex; justify-content: flex-end; }
+.tt-seat-note { margin-top: 4px; }
+.tt-link { background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; font: inherit; }
+.tt-seat-log { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; max-height: 60vh; overflow-y: auto; }
+.tt-seat-log li { display: grid; gap: 2px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); }
+.tt-seat-log li.is-fallback { border-color: var(--line-strong); }
+/* Concentration stays on the fighter sheet, using the theme's quiet accent. */
+.tt-concentration-line { color: var(--accent); cursor: help; }
