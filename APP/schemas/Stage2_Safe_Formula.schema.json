@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Stage2_Safe_Formula.schema.json",
+  "title": "Tianxia Foundry Safe Formula v1",
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": [
+        "op"
+      ],
+      "properties": {
+        "op": {
+          "enum": [
+            "constant",
+            "cl",
+            "pb",
+            "ability_score",
+            "ability_modifier",
+            "selected_path_base",
+            "add",
+            "subtract",
+            "multiply",
+            "minimum",
+            "maximum",
+            "clamp"
+          ]
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "$ref": "#/$defs/node"
+            }
+          ]
+        },
+        "ability": {
+          "enum": [
+            "STR",
+            "DEX",
+            "CON",
+            "INT",
+            "WIS",
+            "CHA"
+          ]
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "terms": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        },
+        "left": {
+          "$ref": "#/$defs/node"
+        },
+        "right": {
+          "$ref": "#/$defs/node"
+        },
+        "minimum": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "maximum": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "formula_id",
+    "root"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "TianxiaFoundry.SafeFormula.v1"
+    },
+    "formula_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "root": {
+      "$ref": "#/$defs/node"
+    }
+  }
+}
