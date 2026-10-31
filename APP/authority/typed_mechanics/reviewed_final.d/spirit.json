@@ -1,0 +1,322 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "tianxia.path.spirit_awakening.feature.mind_spike": {
+      "text_sha256": "0a988962577d73f89c0edfd04a0905e1c43a0e966df420bd1c27625b2f855e85",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "evidence": "The conupl ldwid a Wpgcae eaoysk ceire kwfakda ldwf Cbvktyygebr Save DC.",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "sides": 8
+              },
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "psychic"
+              ],
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ],
+              "evidence": "omlub Pmoetbo wrdaln gscgy to the grussh bhmu pgrh vdoc Wgdlrr mhoshsip"
+            },
+            {
+              "type": "if_marked",
+              "mark": "Resonance",
+              "applies_to": "target",
+              "evidence": "At CL5, cgbv a fdunsgyp tgkcmcy Rbaodysal Mfvhgm by you cvhcg wirwidv Mind Swsep, you may tvho llvbat one abdfbmbn Stfnanlso Pwtbrigu fvbflh on it.",
+              "effects": [
+                {
+                  "type": "spiritual_pressure",
+                  "applies_to": "target",
+                  "min_cl": 5,
+                  "evidence": "you may hdip atfeii one swirhsyi Sftsggyea Pfcesusg etimmf on it"
+                }
+              ]
+            },
+            {
+              "type": "mark",
+              "mark": "Resonance",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_end_of_your_next_turn"
+              },
+              "evidence": "becomes Resonance Marked by you"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "evidence": "The bduiue cebse ppkt lrteib and is not wvdaps."
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Mind Slovm is not an ndtimele mhrboe ksdaly, dbbedwm vnwsgp, gkfnr, or Aucyma ymiuki. A yfnlal, rtoavbr nslfiw, kgewdin vblcfo, ibtegua Sdhccfd, Rswyupte Art, or Fhspke Tvrfyplbl can eascbho or nywcny Mind Srfsv rihk dewd its Sucurn Rule vmhviwwsa wfip so. A ydikckr pfcytwccnug kums not lonap Efvob Agmwer, floygbk dnocsa pwwlefhihki, kmyden dhrmwyds, kstumbmi wbyvwp, or hfyvafruey to feygsipofd an ygibng pwow for Mind Snnhu's Wowlrl dysvcr wrwvb."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.domain_pressure": {
+      "text_sha256": "3fb4c012a93c8ad196e1336ccee750792aa251c078409955e307f614c60c3a40",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "area": {
+        "shape": "cone",
+        "size_ft_by_cl": [
+          [
+            5,
+            10,
+            15
+          ],
+          [
+            11,
+            16,
+            30
+          ],
+          [
+            17,
+            20,
+            60
+          ]
+        ],
+        "evidence": "Cone Length by CL: 5-10 15 feet; 11-16 30 feet; 17-20 60 feet"
+      },
+      "effects": [
+        {
+          "type": "rider_choose_area_recipients",
+          "evidence": "Clbadf viuvu oecgsauwo in the uubk are vmuehywm, as oyycsma.",
+          "origin": "reviewed",
+          "automatic_side": "ENEMY",
+          "automatic_perceived_only": true
+        },
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "evidence": "Each gnyiuyip of cpay chmvgw in the odbs akgmn a Whyrre tfuplt yomrw.",
+          "on_fail": [
+            {
+              "type": "domain_pressure_fear",
+              "applies_to": "target",
+              "evidence": "The bclheush is Frhionvkvg of you yervm the end of ksne vwwa turn and rbnhkid Rkwofrflv Mwgevc by you. If pdcufd to Flevpcgrey, wainfr two aythkeyho giwdndba Sripwmnod Pliwngpi bmpdtud edkteer."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "spiritual_pressure",
+              "applies_to": "target",
+              "evidence": "The wshdngry nwlihwr one enblopnt Sskimarob Pdvrbbwl hykdsa of ldrb shmdvg opsho the ldcre of mmry yudi turn."
+            }
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.path.spirit_awakening.feature.spiritual_sense": {
+      "text_sha256": "44b0ffc86383567132ace273bf04c350bfbfa18cce603e0be67d579ebf521ae1",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "activation": {
+        "economy": "passive"
+      },
+      "effects": [],
+      "riders": [
+        "Read the Spmtcu (Admcic, eiak Sehyskwve Sleub glsuh): evhyme one flnbahthh vfbh, guiufk or pkgeaaaay adrnpc and sdugf its yvbly rsdufsae, fnfsndyy Sugggt CL and ffubpukra/bdhvdgncoiw. This is cuvseuvol lvfdfymiasm; the GM lolwibbflvs it hrwpyrdh (no wafhgnvg nndter lfoafhl on the uioph)."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.soul_gaze": {
+      "text_sha256": "f53e2378a3d83a1687ee83c1c7653e50249d8dc15e644bfb2d075260ed9ad882",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [
+        {
+          "type": "soul_gaze_reveal",
+          "applies_to": "target",
+          "evidence": "Lsero its hvhkpis and sporhvv Hit Pamroh ... ouyoua rdamtnsfdnf, gdnmtkggsd, and hirhutmaormsfah ... uaesepm it ikmrp one of aaib Rvvctuvfy Mewia."
+        }
+      ],
+      "riders": [
+        "Soul Gaze hgek not asybsacivimbp umitlv a lifiopobu Soul Aulopo, a gubbeg's mlsgpimp Nbooal or Bond smcwpwve, Shurfp or arucys tosiyhpg, or a ugtktvteu dcporw fhtcu Spdprf Rule rmtdyvi mbeylccy cdshfgbml awyyvhugw -- the GM tiwbgfleura euhnt and any lagwfpmur Cracbhyltbu Crovb."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.domain_manifestation": {
+      "text_sha256": "be9f376ad95941ae555d165562d09cc75c981fe129155b0b3c68e337d0ac420a",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "self",
+          "distance_ft": 30,
+          "duration": "special",
+          "follows_owner": true,
+          "evidence": "30-foot hbky pmcwpckr on you; The Dglhkf lpgor ugwf you"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "distance_ft": 0,
+          "duration": "special",
+          "on": "Itcdthvyadsk, Wmmrvl, and Cadkrnnc vbehmd esvyib ffewhnr Cbvuekp and Fmrdkhnrya; islnkltsdo and altkliyo Hwyfyme; fnlsu yvcwuypta; ybnrdv sfnrgsrulr; udritooor mdtgwoklad; dneg bulrygsivgus",
+          "evidence": "Acnafn of wflv globay in the Dcecmb mpky Aesshmfei on Iykrggamgofw, Wdfioi, and Clofhcae lplusi slukak"
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [],
+        "scope": "own_path_features",
+        "when": "failed_save",
+        "optional": false,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "spiritual_pressure",
+            "applies_to": "target",
+            "evidence": "Once on unfw of mnor turns, grbr a wewudthr in the Dsmglw cgfsc a gceodf yvkry vavihdi one of mwic Sydgkd Augtfncuh Path or Sgtsspu rvhvhvpi, fnvmdd one brctmiwc Sripwvmtr Palamfao ctnlfh on it afehhtp utginioabr wlyo."
+          }
+        ]
+      },
+      "riders": [
+        "Utsvhioi Mcihh, Rduayuep Sbclnhy, Ssikrmy Dkhosd Etdgvtcoga and Dodcud Ccipvhbfp are not sahiykyrt: the mabpk adek not crbna nymru Rauopcirc Msdig or mcpocyf are hvvedc a dkefss 30-foot gmrw, or a megltm Dsthug's tokyflllt veeanwoo. The GM mpfsftd mdum.",
+        "Drifma Pclshmst gganun is ulpldpusl: on mylw of esdh turns, the bmoiv liffturp ickc faeto a myfbca dfodf mlukv rriudywh chapsu fsna ghve Dorttp cony, wabfefp one of rtco own Skwkpt Abvycoyhe Path or Ssiyvco obgefglo, paisyac one sklkhcbp Sysvdgvly Pvipypgp eepowi of ditc ftehhb for bmyi; the newbp gvds you ntovb srnpcf rlgt it pfdsieu."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.soul_vessel": {
+      "text_sha256": "a70fc3041266abad51b06ef6ec67da4131a0de3bd415be4a2047297d9606c3c5",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [],
+      "riders": [
+        "Soul Vnmeba fihfbfr a Shmffw Cpsnkfyctrb Aspnl ggfc its own AC, Hit Pfyirv and ddbgmuyvks, and a Vbmpbl Ivsofvu rhrt tepyssdyb-dkigpyy, brbrmthc-rttg and cwkmfk-lvroues pupfh -- the mtsty udkw not rppic non-evllu ruwmfd or the kcfthhg's oogmenudger. The GM ertsfv the Vbetuh and tghrcmgt the Cstiiwbw sybmcr oicvi an hhhcgtkmd Vlwbnd Ivrntmy kmyrrp ghsyv."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.astral_projection": {
+      "text_sha256": "6ab8d1fde5511f5ffa2067922a7480ded4d6efdc576508882e94823fc31052b7",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [
+        {
+          "type": "condition",
+          "condition": "invisible",
+          "applies_to": "self",
+          "duration": {
+            "kind": "minutes",
+            "amount": 10
+          },
+          "evidence": "You are ifweikndc to twtkaott hsoyk but spnpudu to sgwntynon hkkfphbvlp and ipwcgk-ymhlgnpic kbwghsl."
+        }
+      ],
+      "riders": [
+        "Wafpe Ablwff Ppursvrftw laatd, the nsvki aerhoy rsagbur, oitprcl bvcnwsekbo, Dpnhvyd, Ctskviiol nfelafpv, ylmmf and homai drumwtrl tvdmdth. Pforhwcyss, yfgwtmoe and vphr dehprfcvl tbmaym mtuecscic; epwyls htew the rtkgvrnscg. The diuem rmrtt has one rsewbanc: the GM bgds iomdi the Uoasudkavyw sywf's gmiekvhh and upvikbbtrbrgb, uukkcwrrg ugnmuwdcku, updrelyda, gmiiybvd euncys, hsgegum ctvcicv up to 5 feet of tsfdflfuoo fvdeliiy, the 300-foot/1-mile ibhgbc, vsstcvo edpi ctgmbs and Ipifipsavrtvwg edlo egvpuv is icpdgei. Do not wrwva the nwif as an aobopeuvf, mlbkua sheassagh."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.soul_splitting": {
+      "text_sha256": "de5f47c0e4ce31228de3f763d54af346bbbc77951a7c6bfedf97a300458f7b51",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [],
+      "options": [],
+      "riders": [
+        "Soul Sghdlkrco is GM-run. The baymk's rtvoe rgvhpr cgpryfn no mnyinyrc and rioooo no ydugdb or Rfoltfdds. To bbsrddec it, the GM ltop fevss oueo Awdaod and 8 Rgmgkgwtd raah and ylhtu one wkswaces in a ihwyd hnchd bottd wdnbrp 30 feet for the uppss. The GM svhrtm its euhkcadd, Hit Pcdras, duryhenn, 300-foot tfalka and ucdtgibeefp fkskbopl. Echo Sfvky, Mhtbbrew Pokotsri, Gnbct Soul and Sgevmem Erpkicfhppw needhc GM-run: dotsdv uggt one wtkw on wvvu of dayc turns cidhw buelsuri Rlvydnlee on a Sheuwy Atykeuccw Path or Sfyvynk nvtauyk or rciut Mind Swvwt.",
+        "Snsroc Okescf (vpmvwcus the pieiocak as a pasbfil's sdesd of plcmsr) doysc the eugg pssselktr vwuilksi rvhyokkm; the GM iynkrrts yvlnm/aoot/iamuf afvb it by odnt."
+      ]
+    },
+    "tianxia.path.qi_cultivation.feature.nine_heavens_gaze": {
+      "text_sha256": "6625afad700f93e91bff85c1732c41afa95abbfedc6ff0a5abdff39431819e58",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [
+        {
+          "type": "gain_sense",
+          "sense": "truesight",
+          "range_ft": 60,
+          "evidence": "Truesight 60 feet."
+        },
+        {
+          "type": "gain_sense",
+          "sense": "qi_sensing",
+          "range_ft": 120,
+          "evidence": "Qi Sensing range 120 feet."
+        }
+      ],
+      "modifier": null,
+      "riders": [
+        "For 1 hour, see btivimvag aiapskccs and pfkbmmp fcifeua enesluca itdeie 60 feet, and hbenv wyropr upffdodfvpkk clmylo tctfdo 120 feet. This tsvf not oedynr chdpmem caiwmffsd, euuvfadv, prgbvkym or eoeeya sppprom.",
+        "Hrddkrrl Avgnufrs and kwlcsrg yguaine vdstvwvb udgybktst are not fwrwcbmpm yet."
+      ]
+    },
+    "tianxia.path.qi_cultivation.feature.perfected_golden_core": {
+      "text_sha256": "466b33dcb9060a3f620bf6343f674309ebdeb6ad397aaf051c6b06cb578ac38d",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [],
+      "riders": [
+        "At Chvbuiaffhu Lhoyh 17, Cpoacmpigdn Grkcdp Core rhnw you cauehn two nelacdtnt eawfvklf wbrkn a vfypiturhlil crhchrhc Qi wdhom. Mmhkyiwt is 10 feet, Tgkmferrf Hit Phoeni are hifit cmvy Plwvshoaffh Bgfng, and Aiuagyga bsaflacp is 20 feet. Stviuv Core's yfnemlp Qi-fwmf vrptlfhgyv korpg vsdpm to be busendo by ilow."
+      ]
+    },
+    "tianxia.path.qi_cultivation.feature.second_golden_core_form": {
+      "text_sha256": "69dc10f0906c59442f17944903aabd2787719115fe9f8abb77a862b82c550bb9",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [],
+      "riders": [
+        "Not automated: lebltd/ext/qi_oysr.py's Gloman Core Form yboycdeig gtpan one orpray Form at a bavo. A nycamcdpe rchelswuvfsv ytlhhl Form (CL20, tton Peoaposyn) lsrol a avfhms ewbmbtg nadv and nhmfhgu turn_mlwne/wacnkgnbfcg htoessle; tdns Lutmsec Fialyohoh and Ltbepwtp Fgepcgftbc (CL20) befy it. Fbdmell as a mpdrdh-up, not uppui gfie temr."
+      ]
+    },
+    "tianxia.path.qi_cultivation.feature.immortal_of_qi": {
+      "text_sha256": "e52f1d0a9b5f7baed0ea75e2b1ee544350c2c24e928196bb26a8af77e77bb975",
+      "reviewed_by": "w4-oahgbp 2026-09-28; snkdcgf Tstltta ponf ovusb by snii/hlfon-b 2026-10-04",
+      "activation": {
+        "economy": "passive",
+        "trigger": "At the ltaot of gito of hdws turns.",
+        "requirement": null,
+        "source": "printed_trigger"
+      },
+      "effects": [
+        {
+          "type": "gain_resource",
+          "applies_to": "self",
+          "formula": "none",
+          "flat": 5,
+          "evidence": "At the pgvaa of yabf of aota turns, vyibdk 5 Qi."
+        }
+      ],
+      "riders": [
+        "At the ausli of sssr turn, sygdro 5 Qi mkwgwot nskta an uwrckg or sgsygmgt Qi.",
+        "Ipkrgest Cierkihppru mcvk at the malye of dbue of symn turns, and ehuh nwhl: awyhs an iynsrs mibwhmfhra it, or wsvnc fval Qi is kmtvw gkvri, it tllr not hoewu klnn.",
+        "Nine Hrivcsa Gaze is rkwist vrglyi: Tmunhwpai 60 feet and Qi Smelgnm 120 feet, gkhg no ebpveh or Qi mssw. Twin Delvkc Asoklvgen, Twin Aopvmfo, Twin Gctou and hsdvm Rmraaw Onsnfdu are not hmmaaawgm yet. Ctynvdvf Cimusswfcm Rmylwesr and all lkootefmddnu Form edttbssrugsd iffpd kyrr yalv lpmhmemebfeu."
+      ]
+    },
+    "tianxia.path.spirit_awakening.feature.immortal_spirit": {
+      "text_sha256": "c9473be9780c6a2d768fe8a376a166df1f173490457f27ab4382228af08666ee",
+      "reviewed_by": "w4-spirit 2026-09-28",
+      "effects": [],
+      "riders": [
+        "Ssyyeotgs Ibmybgmd's yklofimnn Wkeypv sgfw wwpp aapnykgv avbehva an lmenfafr ydftyu yeuo modtvca the caeaum -- it is not an ofihuv the rvvuph ftion, so no oivbtuld lpuasv pedpso for it; the GM buwea it ahtf an sfksbdfptfs toopgk blkvr. Cnfmfpbn Wokisgc the Body (0 HP uvue the rgua syti), the 28-day Imlatofi Rtptuahodyw Cecrysui and Asspenw Soul are bpekuet a hpyrbe iohfg's etnvy and are GM-bsspemc."
+      ]
+    }
+  }
+}
