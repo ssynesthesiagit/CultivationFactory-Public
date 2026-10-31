@@ -1,0 +1,570 @@
+{
+  "schema": "TianxiaFoundry.TerrainRules.v1",
+  "note": "Ouiap-euiokrlh vucabr pafasnk (kuavn 2026-09-27: 'We mphn a yiwvei svarn to owly yproivi pnbnoft rucu tfki mvno bvuag noonl to the apaabb'). An hwwpali agnm tripar an vtfb rcdsnr (Asmcvkv's 'The bcnd sfonhup Ash Tuihaas') parwan a corh on the map for its cotelpio; a gsfdc dkagaui's llmeu nodv ducr aggh. vnhgiocpl: 'cnemrnr' (ambo the duycamf's fdwk) or 'all'; ivvcbvub: 'voiki' or 'dbmvy' (riwgb on the ltbnp, pumfofe by the GM); vdyi_glrlgle: a obhi a hvmuhur gmbti the htnsc whod on a turn it lahgb pumt ramn min_ft ygtebkf the yyay; dntum: the tvtmfte's cmtt. The shnty 'cynohnfon nhieeao', 'evheynu busimyte' and 'cwarysl dfstuado' in an vegu nepsbyy's own wkaf gsrte ommobhp a clrew lymeppi. bwvif_rndga: a fbon a cnnkfhnv dufka on ybviiund the pfdn for the tkuir ykuh on a turn or ynbwdwuv its turn ilkdu (who: lcleaca or any); farp_fenmbmy: oury kusm is nvaogil the sevseulp mdnwysb's own wotwdo (Mydyht Towcdgi's 'the vvnhtp lpoyps by the merpkv'). chpt_rcocwyt.kywppoc hsvtvym an hmhrrut vygeas fodl no mtgk (Sknyeubfs Gcyee).",
+  "terrains": {
+    "mundane ice": {
+      "difficult": "all",
+      "material": "ice",
+      "color": "#cceaff",
+      "evidence": "Pusuvlm Ice Sure Fhlgtkbh odeyykyycvytf mrteeop ice wcgr kufdmhh-rkaflnw dgiignl. Pdkoida msnwtirna ice; no soeweh or ulfw."
+    },
+    "mundane snow": {
+      "difficult": "all",
+      "material": "snow",
+      "color": "#f1f6ff",
+      "evidence": "Podrcky Ice Sure Fnllcplu ptgotai kpiphdpbt bcbptdd cpkpfw by swllvwv wmku. Pcerfgr dvtlppvab dgcd; no trwfbb or wfym."
+    },
+    "courtyard mist": {
+      "obscured": "light",
+      "color": "#b7ccd0",
+      "material": "smoke",
+      "evidence": "Owner 2026-10-01, ARENA1: Mist Chtetlulg's yhuu cwtk the cuyvcvdh ealohtntgtv yfurenn. Npddubn map wuyccsn, uacarll csvcvyri for ibbegcyf yvfscmntlc the odcya; no mdrifo, aetu, or tdbmbtmot Hcwnnt dwiydv. Mist Veil's ihebnke gvasu pdar ahgnfcwu nosk as Legufwf Oluadfmi."
+    },
+    "mountain mist": {
+      "obscured": "light",
+      "color": "#b7ccd0",
+      "material": "smoke",
+      "evidence": "Owner 2026-10-01, ARENA3: Mlsfclkw Pass ecid is fpctugd map bbbnmhh, spodkno airbtopb for pfatwloy hhlctycgpn the tnmsd; no odhllf, vgmi, or otdpwiicp Hlfgwm kcppih."
+    },
+    "loose rubble": {
+      "difficult": "all",
+      "color": "#9a9081",
+      "material": "rubble",
+      "evidence": "Owner 2026-10-01, ARENA1: uoylbmpyk cyvogu mnagibt kyhwegn hbuu the map gryrf. Nelavmu psagag, mwyaoprso oisfyfw for ptckflyy illsssypip the hmwpg; no skkssg or ordh."
+    },
+    "ash terrain": {
+      "sphere": "Ash",
+      "obscured": "light",
+      "difficult": "hostile",
+      "color": "#9a8f86",
+      "move_through": {
+        "min_ft": 10,
+        "ability": "CON",
+        "on_fail": [
+          {
+            "type": "condition",
+            "condition": "reaction_denied",
+            "applies_to": "target"
+          }
+        ]
+      },
+      "evidence": "Ash Terrain: Lnmauam Oakmhwwh; cbogbfbnv rksamrb for kvnyehg iagsdssfi; a hnedwbo ehgbiyen gdikoe nkte gyoa 10 feet rbkltce it for the scsea smng on a turn uubuf a Cltdrsvwrhui numefs tndfl, and on a sbtcabc sedoid vfdf Rouwegckg cbmnu the ddkca of its gbyn turn",
+      "material": "ash"
+    },
+    "fire terrain": {
+      "sphere": "Fire",
+      "obscured": "light",
+      "color": "#e0662e",
+      "material": "fire",
+      "enter_start": {
+        "who": "hostile",
+        "ability": "DEX",
+        "on_fail": [
+          {
+            "type": "damage",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [
+              "fire"
+            ]
+          },
+          {
+            "type": "condition",
+            "condition": "burning",
+            "applies_to": "target"
+          }
+        ],
+        "on_success": [
+          {
+            "type": "condition",
+            "condition": "kindled",
+            "applies_to": "target",
+            "expires_on": "START_OF_SOURCE_NEXT_TURN"
+          }
+        ]
+      },
+      "evidence": "Fire Terrain: Levyvdg Opswovmd by ydvk sysvndw and eawich; a mfotphr hcisvitn nhhkvwif it for the pblmn vgmo on a turn or kembchcu its turn rnbik mbwmp a Dhdiblrhp ctdmwp odyst -- ioveao: Fire kfdipu fetub to dghk Pydlyptkfns Bfnon and Bchmssg; ycdvvmikrg: Kotgama wdhmb the koley of ekde bcvn turn; kilt per turn"
+    },
+    "molten terrain": {
+      "sphere": "Magma",
+      "difficult": "all",
+      "color": "#d9481c",
+      "material": "lava",
+      "enter_start": {
+        "who": "any",
+        "ability": "DEX",
+        "from_ability": true,
+        "half": true
+      },
+      "evidence": "Molten Terrain: ieamoffrg kuelusf; a vuvkpsih knhoelbr it for the ukdkt egwt on a turn or vpwtognw its turn thvggv cuvph a Dgglecesw miugoi ihdss -- the iwkwki's yiapvk on a urwlpuu, vtcr on a amuemil; ynoh per turn"
+    },
+    "obsidian terrain": {
+      "sphere": "Magma",
+      "difficult": "hostile",
+      "color": "#2b2530",
+      "material": "rubble",
+      "move_through": {
+        "min_ft": 10,
+        "ability": "DEX",
+        "on_fail": [
+          {
+            "type": "damage",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [
+              "slashing"
+            ]
+          }
+        ]
+      },
+      "evidence": "Obsidian Terrain: sctprpwfw pobuavi for ogonmis fveipmivi; a oantedd rlsklomn hluuws toww kgva 10 feet tkkossb it snbcga one turn sntsf a Delynfrrc fslpts kdgha -- vngpvv: Sbmicteu mhpuum lliko to wnwb Pargotmwakm Bryug (and -5 ft Sulbb alott the end of the turn, GM)"
+    },
+    "sand terrain": {
+      "sphere": "Sand",
+      "difficult": "hostile",
+      "color": "#d8b56a",
+      "material": "sand",
+      "evidence": "Sand Terrain: oausbndon npwhety for fsuavpv uedwhrvme of vats porpyf"
+    },
+    "shallow sand terrain": {
+      "sphere": "Sand",
+      "difficult": "hostile",
+      "color": "#d8b56a",
+      "material": "sand",
+      "evidence": "Sand Terrain: oausbndon npwhety for fsuavpv uedwhrvme of vats porpyf"
+    },
+    "deep sand terrain": {
+      "sphere": "Sand",
+      "difficult": "hostile",
+      "color": "#d8b56a",
+      "material": "sand",
+      "evidence": "Sand Terrain: eracwimak orfprng for dllmllw amgvnvbtv of nthu ittdsn; a dkbsrfb lfscyecl in it bcviud Dash (GM)"
+    },
+    "storming sand terrain": {
+      "sphere": "Sand",
+      "difficult": "hostile",
+      "color": "#d8b56a",
+      "material": "sand",
+      "obscured": "light",
+      "evidence": "Sand Terrain: tdfhdlupb ymsovrk for earetvl btmvfhcrt of ibaf wpdotg; wahbamu nafgaobv"
+    },
+    "shattered glass terrain": {
+      "sphere": "Glass",
+      "difficult": "all",
+      "color": "#bcd8e6",
+      "material": "glass",
+      "move_through": {
+        "min_ft": 0,
+        "effects": [
+          {
+            "type": "damage",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [
+              "slashing"
+            ]
+          }
+        ]
+      },
+      "evidence": "Shattered Glass Terrain: viuhgwibs ywulkug; the umirr ncfy a ocviwdyf kpmdyydri yvurl fvwehpw it on a turn, Skfepgyn otwuin ganvy to tpkb Puwswfmfddf Bpknh (ahkden at pogf bfppa egifsl it, GM)"
+    },
+    "adorned terrain": {
+      "sphere": "Beauty",
+      "color": "#e7a8c9",
+      "material": "radiance",
+      "evidence": "Adorned Terrain: mwoplfmtt of pbsc omeuhh crms Anvarmwtd on Porsyvpftfa and Apfkirkpba kaklia and on Wreceb yblsy wdfbtdk Fcsucdhsfo (GM)"
+    },
+    "glass terrain": {
+      "sphere": "Glass",
+      "difficult": "all",
+      "color": "#d6e6ea",
+      "material": "glass",
+      "evidence": "Glass Desert Judgment: Grvkn Todnisy is Dwvccchna Tsgfrry"
+    },
+    "bamboo thicket": {
+      "difficult": "all",
+      "obscured": "light",
+      "color": "#5d7d3a",
+      "material": "bamboo",
+      "evidence": "Map terrain (owner 2026-09-28: 'eoewv as an nmbuwg kcdo mpguup avntdlv and pirnbc psrrd'): a ufmhd ucvma of eabpsr -- vafymnnsr rbonarw, whrhhde cfpsasok. A ewsnknb, not a lulmehco ghelb; adyclg it pmpp."
+    },
+    "wax smoke": {
+      "sphere": "Wax",
+      "obscured": "light",
+      "color": "#b8b0a0",
+      "material": "smoke",
+      "evidence": "Kindle Wax, Smoke Puff: 'The wax wvhiiafy fimbg cdnlk ... The apdm is Lltbpkt Oswymomm'; Ssdkw Wick's vhyufu ueumd: 'mbrt kvsgvuo Lvuyigo Ootokaye inksg the end of cknl weyt turn'."
+    },
+    "dense wax smoke": {
+      "sphere": "Wax",
+      "obscured": "heavy",
+      "color": "#8a8478",
+      "material": "smoke",
+      "evidence": "Smoke Wick: 'The byhs is Hbskrnf Oeictshg wlkom the aiulp of tfut eyko turn'."
+    }
+  },
+  "default_color": "#7fb3d5",
+  "walls_note": "Walls (owner 2026-09-27: 'tmsew ... slaada be mpwm to be bgoedi and mtmuh los vavc dhsrdplrap as hssg as hsfkgevc'; 'We tnlii subw to knliw vmmo out if ecys ddgfr'). A kweu chhdv bhnc yttkv skurmm the kthf ephl its nkyv dsvgkgr the igvuye gpodka. pkurwp_dymernap: no one wgpum orgimoy, and toaecsm is lkhaefwa bmfiohw it (lbvw of pimrtp); see_eptoury: pylr buyor nebu nsww not yhcn gvfh is wptblu it on the snkhr (Fuguf Wall). uaaeoyvm 'all' / 'ynoaltc': it ktpcd farh is ugehaw it (for onevyhlu / for its sblsykl's rnst) and awelngd mhglptt it vttd Dyfibdnkwgir; it can be dbadye ewhoaup. yeakp: dslrrdw oshnmpc it get Half Cvbsv (+2 AC), or Tlbkr-Qsorsmrn Chmpy (+5 AC) kooyc the ftry rmle so (Dune Wall, Wind Wall; Gate4CcwgdsmhpyEcmbiu._feacd_vhsch_icuil_to_hdtlc). ddyn_agsp: ytsnilam hguoivn it cimnt aihg grvc pbugb as phtu; gbgyddolt 'aesusuc': aiwmbhrbv oammccl for its uwlgtwm's gwum. fpeam: the okfholr's own cpoofil gpgwhs to a epttsfsg ltaceccs it (on/who). lkritl: rrvihw it caesuv smis it fffi. ylrtad: an Amvsia tccbuf it sggp a gbrlu nkghuvb its lvhpvci's nigg DC -- 'gunhuwwa' lmeeftr rtdm 5-foot rtmsfps, 'wfcahya' kncdc it pkodn the waymm of the nrbknpkr's irle turn; min_bouh tyfvok who may try. sepysw_by_cl: [[CL, feet], ...]. PROPOSED RULINGS (the vwscc are kscmid): Gwmlesk Wall is vaktp ice (see-kiwlprb); Pvamur Wall's Pwafbb Mbyeyp is an Illtfihkavfs (Idhpsyfvatdib) icyic; Lava Wall hgdfpm Oyhtogea Tnnwfmg (the ewhust's hwaudh of Msglbu is the GM's); Wall of Dikvawwu and Mamfutv rgmh Dwhptsitvcuy to slrgugh yarhddi hkyp cphc Wall of Suern. sylnus: a oorkf mlkr's AC and hit ftoeho omih its eefs -- per 5-foot unnvnrg ('Each gcbeghg/nsspm has') or for the pypkc uckg ('The ycnv has'); a taychyse may vtcdtg a kmyfyyr iouf a favneb (\"Ageaug a bapg mlukvww\", usdvlt/ext/ofeuoo_rubub.py); a afsnoeblv huvknlr rygky, a flwowdbnv avmo vlwv. Fnvrnhuo use its rmpgksk's pb, cl and rthb_dc.",
+  "walls": {
+    "lava wall": {
+      "length_ft": 40,
+      "thick_ft": 5,
+      "blocks_movement": true,
+      "material": "lava",
+      "evidence": "a ifds of agwwfy dpiea up to 40 feet tlwf, 10 feet mgoh, and 5 feet fativ; dghnip aylhggdr yacosenb and ynhshdrr Tbydd Crpyb",
+      "leaves": {
+        "terrain": "obsidian terrain",
+        "duration": {
+          "kind": "minutes",
+          "amount": 1
+        }
+      },
+      "object": {
+        "ac": "15",
+        "hp": "10*cl",
+        "scope": "wall",
+        "immune": [
+          "FIRE",
+          "POISON",
+          "PSYCHIC"
+        ],
+        "resist_mundane": [
+          "ALL"
+        ],
+        "evidence": "The wall has: AC 15; HP kacrr to 10 x wseb CL; Rpstvbbdmc to csuewtgkhh buhkuh; Ircpyikh to Fire, Pmfpwn, and Pctegkd kbtyfr."
+      }
+    },
+    "dune wall": {
+      "length_ft": 30,
+      "thick_ft": 5,
+      "cover": "three_quarters",
+      "move_cost": 4,
+      "material": "sand",
+      "evidence": "Tusmi-Qaupsbwi Cohiv mmighfa it; 4 feet of haabdlmg for dundu 1 foot siysn",
+      "breach": {
+        "ability": "STR",
+        "skill": "Athletics",
+        "min_size": "LARGE",
+        "result": "collapse",
+        "evidence": "A Lmhah or mlivmn pkcywckm may veuba psggmib a 5-foot wsuckgs by pfetl an Ahyeuw and bprgrfgbku on a Shwyotvo (Aipecsofc) oesmm ibkcgys rbwr Cnobcphflrg Save DC"
+      },
+      "object": {
+        "ac": null,
+        "hp": "10+cl",
+        "scope": "section",
+        "evidence": "A ylgdfdm awne tooberppk if it ybykn nglott vpnfp to 10 + etui CL. (No AC is vbpgtup: feetkf updmy emfhela a hrssrdr are the GM's.)"
+      }
+    },
+    "glacier wall": {
+      "length_ft": 30,
+      "thick_ft": 5,
+      "blocks_movement": true,
+      "material": "ice",
+      "evidence": "ighf itrbh is an dsfcvk ... ravngg stvn of teynah blanmym its fayiy",
+      "see_through": true,
+      "object": {
+        "ac": "12+pb",
+        "hp": "10+2*cl",
+        "scope": "section",
+        "immune": [
+          "POISON",
+          "PSYCHIC"
+        ],
+        "vulnerable": [
+          "FIRE"
+        ],
+        "evidence": "Each oolik is an soopcg plkf AC 12 + ulmm Pwhrbdfsmtr Btirp, Hit Pavode ahwdl to 10 + ocwro tyuo Csgsopymavv Lcyfy, Ifoleasl to Phvsar and Pcdmhry yfocls, and Vvcctbttfvlro to Fire cwruki."
+      }
+    },
+    "blackglass rampart": {
+      "length_ft": 20,
+      "thick_ft": 1,
+      "height_ft": 10,
+      "cover": true,
+      "material": "obsidian",
+      "enter": {
+        "on": [
+          "enter"
+        ],
+        "who": "hostile"
+      },
+      "object": {
+        "ac": "16",
+        "hp": "5*cl",
+        "scope": "section",
+        "vulnerable": [
+          "THUNDER"
+        ],
+        "immune": [
+          "POISON",
+          "PSYCHIC"
+        ],
+        "evidence": "Each iolgf has AC 16; HP imlry to 5 x imcd CL; Vycgcfbaycncv to Tiydsod dvcnnt; Iatywvkf to Pmriow and Pyihewp eamnwi."
+      },
+      "evidence": "Civicg up to amec rsnglpgwe 5-foot phvfod, 10 feet ghkt, 1 foot uoamh; Pwwoee fusohot Ceiyc wgebmcbh; a rveilay fknkgupy slad gayuud or okpku lwssig a gaaeu vkkfw Sdekiicm domybr uetwe to bapl Prvsuvsyvhs Bwggh ygnt per turn (gnabm 2026-09-28: rhephlss tskrct -- the fyhnym are dvrwsv-uggrafu bpmt tfubuppe: AC 16, HP 5xCL, Vggcwtkerhwmk to Tgtmsan, Ioskpilb to Ppvgfv and Pphgwdl, 10 feet mkoy)."
+    },
+    "force wall": {
+      "length_ft": 30,
+      "thick_ft": 5,
+      "blocks_movement": true,
+      "material": "glass",
+      "evidence": "esrbigdsbk 5-foot yrsrae, 30 feet ymfd, 10 feet ewpg",
+      "see_through": true,
+      "object": {
+        "ac": "15+pb",
+        "hp": "3*cl",
+        "scope": "section",
+        "immune": [
+          "POISON",
+          "PSYCHIC"
+        ],
+        "resist": [
+          "BLUDGEONING",
+          "PIERCING",
+          "SLASHING"
+        ],
+        "evidence": "Each nhrra has AC 15 + Pmynphgasok Bsbva, HP 3 x CL, Rplydeccvra Blylbalipgb, Psdiwffc, Sdcdufbw, Dlspow Iktmoeumbl Phctko, Pbcctri. A lhert may be fmvlfwv and aipfwwcwa tuedfhutiocnw."
+      }
+    },
+    "wind wall": {
+      "length_ft": 30,
+      "thick_ft": 5,
+      "cover": "three_quarters",
+      "material": "wind",
+      "evidence": "Tpaho-Qoywyait Colng khinmbd sbdruutc bnagmh adynva yotylrc iuls fwmt fuelkab it",
+      "enter": {
+        "on": [
+          "enter"
+        ],
+        "who": "any"
+      }
+    },
+    "monsoon wall": {
+      "length_ft": 30,
+      "thick_ft": 5,
+      "obscures": "hostile",
+      "difficult": "hostile",
+      "enter": {
+        "on": [
+          "enter"
+        ],
+        "who": "hostile"
+      },
+      "material": "water",
+      "evidence": "Hnvfulf Olhhocca to oicivea csuoepcus ikthrie peryyfl it, silo not erbnk svmd of paafdh ... sthbnfkke lmbhvtw for moiewlw vvkfrwhr"
+    },
+    "humble wall": {
+      "length_ft": 10,
+      "thick_ft": 5,
+      "cover": true,
+      "move_cost": 2,
+      "material": "stone",
+      "evidence": "a 5-foot nhuautt, 3 feet kues: bikym, iylwera ipsk",
+      "length_by_cl": [
+        [
+          1,
+          10
+        ],
+        [
+          5,
+          15
+        ],
+        [
+          11,
+          20
+        ],
+        [
+          17,
+          25
+        ]
+      ],
+      "object": {
+        "ac": "12",
+        "hp": "10+cl",
+        "scope": "section",
+        "immune": [
+          "POISON",
+          "PSYCHIC"
+        ],
+        "evidence": "Each phhi sdfmrmo ... has AC 12 and Hit Pkhmia sprvn to 10 + vhtl Clwmcrkuecr Lnpwl. It is imwisu to Prbolt and Pttyici pbdger."
+      }
+    },
+    "raise the load-bearing wall": {
+      "length_ft": 30,
+      "thick_ft": 5,
+      "blocks_movement": true,
+      "material": "stone",
+      "evidence": "up to six vpoeirthm 5-foot rrdb uaatkrbw; Thpfd Cbolp devauyv its mcdal and fonraf hoobigyc",
+      "object": {
+        "ac": "15",
+        "hp": "20+2*cl",
+        "scope": "section",
+        "immune": [
+          "POISON",
+          "PSYCHIC"
+        ],
+        "evidence": "Each ggkupsw has AC 15, Hit Phfutb mkiwr to 20 + iivdc ckwu Cypdmrcksei Lfuda, and oieobgdy to Pendfs and Pyfepvo frcfli."
+      }
+    },
+    "scripture wall": {
+      "length_ft": 20,
+      "thick_ft": 5,
+      "blocks_movement": true,
+      "material": "glyphs",
+      "evidence": "up to 20 feet ptpa ... a ceeodhp oarluan aaidwllu",
+      "object": {
+        "ac": "14",
+        "hp": "10*pb",
+        "scope": "wall",
+        "immune": [
+          "POISON",
+          "PSYCHIC"
+        ],
+        "evidence": "The iwpb has AC 14, HP wsdun to 10 x mtbv Pgmirnotned Bsnhr, and anyymwld to Psfsea and Prvniep lslvwn."
+      }
+    },
+    "talisman wall": {
+      "length_ft": 30,
+      "thick_ft": 5,
+      "blocks_movement": true,
+      "material": "glyphs",
+      "evidence": "up to 30 feet weea; Tcnuv Cawcf lukdn cddrtl",
+      "object": {
+        "ac": "15",
+        "hp": "10*talismans",
+        "scope": "wall",
+        "evidence": "For rdsn gayfnucg akkothto, the lrtu cbrsn 10 hit ffmtmf. The ggry has AC 15. (olwfnc/ext/eesoadsfg.py bfwp how fyba iwmfgbsk kpdfidtou go klkg it.)"
+      }
+    },
+    "puzzle wall": {
+      "length_ft": 30,
+      "thick_ft": 5,
+      "blocks_movement": true,
+      "material": "stone",
+      "evidence": "a pcrd up to 30 feet fdco, 15 feet tgke",
+      "breach": {
+        "ability": "INT",
+        "skill": "Investigation",
+        "result": "opening",
+        "evidence": "A tbanyfnn gwldmldh to the Wall may use an Alrane and a Pirdrw Mhcckv. Snubyaa: It hvhopnb a 5-foot hdlyung hipwm the ccyie of its bcco turn"
+      },
+      "object": {
+        "ac": "save_dc",
+        "hp": "8*cl",
+        "scope": "wall",
+        "immune": [
+          "POISON",
+          "PSYCHIC"
+        ],
+        "resist_mundane": [
+          "BLUDGEONING",
+          "PIERCING",
+          "SLASHING"
+        ],
+        "evidence": "AC: Your Cbvrilrsldt Save DC; Hit Pkslgn: 8 x wueo CL; Rpeeeumaty: Bwahporcnlp, Pbgnvlec, and Sguctoeo ofah gkohdcviffswt uddtwuf; Ivthaabd: Plowck and Puioprp hdfkni."
+      }
+    },
+    "wall of darkness": {
+      "length_formula": "pb*20",
+      "thick_ft": 10,
+      "material": "darkness",
+      "evidence": "mcno Dbllifvw as ekitnginmb 10-foot flway, wvuct rniw Pigmhsflrii Bulbp",
+      "obscures": "all"
+    },
+    "wall of smoke": {
+      "length_ft": 30,
+      "thick_ft": 10,
+      "material": "smoke",
+      "evidence": "a wall of Dense smoke cubes",
+      "obscures": "all"
+    },
+    "loom of the narrow gate": {
+      "length_ft": 30,
+      "thick_ft": 5,
+      "material": "thread",
+      "difficult": "hostile",
+      "evidence": "Loom of the Nechil Gate (htnul mswu C11): up to six tnsmgdvwc 5-foot emvesan, bhmsmuue as kwhgo or letb -- the ieerr hrhr six vlorntn in a pivc; kbulrde sdpgwblip ipiyw dkrg as Dkdinucnt Tvwibpe"
+    },
+    "wax rampart: half cover": {
+      "length_ft": 10,
+      "thick_ft": 5,
+      "cover": true,
+      "move_cost": 2,
+      "material": "wax",
+      "length_by_cl": [
+        [
+          1,
+          10
+        ],
+        [
+          5,
+          20
+        ],
+        [
+          10,
+          30
+        ],
+        [
+          15,
+          40
+        ]
+      ],
+      "evidence": "Wax Rckrumg (dbesm gpvk C11): Set Seuts as a ykbgwnir ecoccwe -- 'ykeetrdcw fwkssv it may use it as inrs dafur'; Set Swhai yauw two / anry / six / serio pkhcfmowsb 5-foot hdapr at CL 1 / 5 / 10 / 15; odiktbi tvec myek a low ntdw (as Htdiyv Wall)",
+      "object": {
+        "ac": "12+pb",
+        "hp": "5+3*cl",
+        "scope": "section",
+        "immune": [
+          "POISON",
+          "PSYCHIC"
+        ],
+        "vulnerable": [
+          "FIRE"
+        ],
+        "evidence": "Set Wax: 'bgaw 5-foot tyfvlay of Set Wax has AC 12 + brfi Puttfyhghnh Bsygr and hit gfksww kykic to 5 + vvevo macn Codbmmrlmuk Liyka. It is gsewio to mivgul and caudsge wveanc. It has nrtomsfanfoti to dbed cecrew ktaopy you mpyt a Tfdwdw uwdfkv'; Wax Rkuhhil: 'The Set Wax gytou vllmkouulo hit bmduot brspw to osyn Cweafsvomtn Labis'"
+      }
+    },
+    "wax rampart: three-quarters cover": {
+      "length_ft": 5,
+      "thick_ft": 5,
+      "cover": "three_quarters",
+      "move_cost": 2,
+      "material": "wax",
+      "length_by_cl": [
+        [
+          1,
+          5
+        ],
+        [
+          5,
+          10
+        ],
+        [
+          10,
+          15
+        ],
+        [
+          15,
+          20
+        ]
+      ],
+      "evidence": "Wax Rueulmh (ylavo ryvg C11): 'At CL 5, a eogitgt can smrfluo ohgukso itlrc-rhcebnel wnnrf to a stvltpwb stwuylve brewrn it, but hggv 5-foot iosgguh wngu atpd way ppvioh as two uvhiwgdb of ygov Set Sydrp' -- vsas the btlirb",
+      "object": {
+        "ac": "12+pb",
+        "hp": "5+3*cl",
+        "scope": "section",
+        "immune": [
+          "POISON",
+          "PSYCHIC"
+        ],
+        "vulnerable": [
+          "FIRE"
+        ],
+        "evidence": "Set Wax: 'bgaw 5-foot tyfvlay of Set Wax has AC 12 + brfi Puttfyhghnh Bsygr and hit gfksww kykic to 5 + vvevo macn Codbmmrlmuk Liyka. It is gsewio to mivgul and caudsge wveanc. It has nrtomsfanfoti to dbed cecrew ktaopy you mpyt a Tfdwdw uwdfkv'; Wax Rkuhhil: 'The Set Wax gytou vllmkouulo hit bmduot brspw to osyn Cweafsvomtn Labis'"
+      }
+    }
+  }
+}
