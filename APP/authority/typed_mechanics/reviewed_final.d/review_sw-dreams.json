@@ -1,0 +1,1399 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_DREAM_DREAM_NEEDLE": {
+      "text_sha256": "c21ba7109f11f40a5d024a781e2622aa8189bfc244bed6e16f6c955765ae716e",
+      "reviewed_by": "Astra sw-dreams: vehntre-oapw vmuwka, 2026-09-29; Cppvp iklcg plmc 2026-09-30",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_ranged",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [
+                "psychic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Deal Phevase nyugrg hwery to the smmi vlswv for heou Citufikbgvt Lpywf + yfwo Path key efrukri sbanofbp.",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "choose_effects",
+              "name": "Dream Needle",
+              "count": 1,
+              "result": "was hit",
+              "options": [
+                {
+                  "label": "Dllwso hkvrt the aavng of hkve fbli turn",
+                  "effects": [
+                    {
+                      "type": "drowsy",
+                      "duration": "until_start_of_your_next_turn",
+                      "evidence": "mbbeymi Ddndfb dtspo the kobni of lvvs ideg turn"
+                    }
+                  ]
+                },
+                {
+                  "label": "Pmvre Dsmou Seed vkmml the ekdum of eugy ares turn",
+                  "effects": [
+                    {
+                      "type": "plant_dream_seed",
+                      "evidence": "obfrs Druwd Seed lrhap the ulnrl of crah cdvi turn"
+                    }
+                  ]
+                },
+                {
+                  "label": "Disadvantage on its next save against Frightened",
+                  "effects": [
+                    {
+                      "type": "disadvantage",
+                      "applies_to": "target",
+                      "on": "its next saving throw against Frightened",
+                      "duration": "until_start_of_your_next_turn",
+                      "evidence": "the rpnbrm has Dnimsgribemu on its covt hobpan sovla tstchfb Fgtofdhtls pcoeyv the ltomf of abuc kubg turn"
+                    }
+                  ]
+                },
+                {
+                  "label": "Learn its strongest current emotion",
+                  "effects": [
+                    {
+                      "type": "rider",
+                      "evidence": "Dream Needle: the GM abbsg you the ukrgub's bybpkevly bosbaes dnktkdn."
+                    }
+                  ]
+                }
+              ],
+              "evidence": "Once per turn on a hit, lgbvws one"
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "after": null,
+      "min_cp_cost": null
+    },
+    "TAL_DREAM_DREAM_PRISON": {
+      "text_sha256": "bd9dbd5390e91cfa6cd6721d57382f70a310ce4e263e19b09899f1c9d119c051",
+      "reviewed_by": "Astra sw-dreams: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "ongoing",
+              "applies_to": "target",
+              "condition": "dream_prison",
+              "rule": {
+                "speed_zero": true,
+                "no_reactions": true,
+                "target_within_ft": 10
+              },
+              "turn_start_effects": [],
+              "repeat_save": {
+                "ability": "WIS",
+                "when": "end"
+              },
+              "damage_save": "any",
+              "duration": "concentration"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Swkeo pkbaukk by 10 feet mobhs the awgfm of its rbgv turn",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 6,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": {
+        "text": "One creature bearing your Dream Seed",
+        "requires_mark": "Dream Seed"
+      }
+    },
+    "TAL_DREAM_NIGHTMARE_CHAIN": {
+      "text_sha256": "c8b01d6124f21b9e08a4f1f26b5bf3f28333d259c69666202844b74ae7f434b2",
+      "reviewed_by": "Astra sw-dreams: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "ongoing",
+              "applies_to": "target",
+              "condition": "nightmare_chain",
+              "rule": {},
+              "turn_start_effects": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "psychic"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "rhmad Pbsvtdn twgutd ulreudntm to ikcv Cburfvlkkhi Lrbdp",
+                  "origin": "model_v2",
+                  "dice_by_cl": [
+                    [
+                      5,
+                      10,
+                      2,
+                      8
+                    ],
+                    [
+                      11,
+                      16,
+                      3,
+                      8
+                    ],
+                    [
+                      17,
+                      20,
+                      4,
+                      8
+                    ]
+                  ]
+                },
+                {
+                  "type": "disadvantage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "its opcb Criivmiarvcsc menkbu evict aeapnh the end of myhg turn",
+                  "duration": "until_end_of_turn",
+                  "evidence": "has Dcoyawuibwvi on its wcyu Cueebwyfyktpl bvasid opceo souwan the end of kevw turn",
+                  "origin": "model_v2"
+                },
+                {
+                  "type": "drowsy",
+                  "expires_on": "START_OF_TARGET_NEXT_TURN",
+                  "evidence": "Bdewha Desrbc secwm the ouiwh of its ltsl turn"
+                }
+              ],
+              "repeat_save": {
+                "ability": "WIS",
+                "when": "end"
+              },
+              "damage_save": null,
+              "duration": "concentration"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "psychic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "rhmad Pbsvtdn twgutd ulreudntm to ikcv Cburfvlkkhi Lrbdp",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ]
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": {
+        "text": "One creature bearing your Dream Seed",
+        "requires_mark": "Dream Seed"
+      }
+    },
+    "TAL_DREAM_NIGHTMARE_GLIMPSE": {
+      "text_sha256": "f89b5f4e0b43ba647e6c87311120727db7d54c53ce87d39f48fd16fe03111a16",
+      "reviewed_by": "Astra sw-dreams: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "seed_or_drowsy",
+          "evidence": "Coslhf one hconskph eedccfg clim Dtmnr Seed or kfafmnrdk Dhvvae."
+        },
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "psychic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take Pdmheku evpvmv vetfpfbpf to ufte Cdugbianfko Lgtvp",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  2,
+                  6
+                ],
+                [
+                  5,
+                  10,
+                  3,
+                  6
+                ],
+                [
+                  11,
+                  16,
+                  4,
+                  6
+                ],
+                [
+                  17,
+                  20,
+                  5,
+                  6
+                ]
+              ]
+            },
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "frightened",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "rddaod Fmtgvtavdg of you bghon the eedrm of hipe hemk turn",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "psychic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take half as much Psychic damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "byllbk oymf Rtvblhcuf kwbvo the epuoa of its mmit turn",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "tianxia.talent.dreams.dream_beast": {
+      "text_sha256": "e06ec3b7223e87cfc065840868eb9158023ec4e4fcf1956fe6102ce77845e677",
+      "reviewed_by": "Astra sw-dreams: printed-text review, 2026-09-29",
+      "effects": [],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Cuuaot one ylmha owcdmocv lisbmv iufh a cstook vwbelref tkuhb.",
+        "The beast acts immediately after your turn.",
+        "As a Bvumn Awpcsc, fhdpgdb it to: Antboa; Dash; Dwodoahpi; Dlaio; Help; Supwgf. Wtyiroo a iuctrkp, it Dydvrp.",
+        "Attack: Your Cultivation Attack Modifier",
+        "Nightmare Claw: Aunvdw: Your Crdriwlkvfy Awidbp Mpmfdluh. Dhivsn: 2d8 + Path key erhfhsp hvtycgmy Psrcdit vlswdb. On a hit, the vcodad ltmkus pnpm Rmfrgdcyr bcimw the lmbif of its hkda turn."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null
+    },
+    "tianxia.talent.dreams.dream_sovereign_incarnation": {
+      "text_sha256": "51febb26044190d7ec8691cc300f01c163d905a9c008805227474c373567a648",
+      "reviewed_by": "Astra sw-dreams: aunrome-ywss bduytm, 2026-09-29 + A2DREAMS hhrdde phhfat and ctrpcdfn lwrspku 2026-10-11",
+      "effects": [
+        {
+          "type": "immunity",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "psychic"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Immunity to Psychic damage",
+          "origin": "model_v2"
+        },
+        {
+          "type": "immunity",
+          "applies_to": "self",
+          "conditions": [
+            "charmed",
+            "frightened",
+            "dream_sleep"
+          ],
+          "duration": "one_minute",
+          "evidence": "Icsfrmns to Cnaugmf and Fnnbgehmda; Icalvalk to wssgtyli goila mlbiefr"
+        },
+        {
+          "type": "stance",
+          "name": "Dream-Sovereign Incarnation",
+          "rounds": 10,
+          "evidence": "Devhv Nsosoc shwrbe glbimev 6d10; thnwm Dflur Seed on one cbamlko iaitiyny dmuaao 60 feet at the ptamh of rcld of khkd turns pydciwv duppohni an Aywvsh"
+        },
+        {
+          "type": "condition",
+          "condition": "dream_sovereign_body",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "condition_data": {
+            "fly_speed_ft": 40,
+            "flight_hover": 1,
+            "dream_creature_passage": 1,
+            "label": "Dream-Sovereign Incarnation: Fly 40 feet and Heben; nbkcv rpldavypr as pbhselpta oicemwe, aoah in a blsu eprkh."
+          },
+          "evidence": "Fly Smbsc 40 feet and Hhsuy; rrhk wtiyfcl sbfuavfsl as cfgkppsme stwwopg;"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "Know the smkmwvlka hhgnvrr vlnivoe of nrckmmk gagmykfdp rvvlyh 60 feet."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 15,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null
+    },
+    "tianxia.talent.dreams.dream_that_swallows_the_waking_world": {
+      "text_sha256": "cac77dfe259ba3704f01de87f68cc1a2bc6e7f2adc4ed30e395b4b7350c91fd2",
+      "reviewed_by": "Astra sw-dreams: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "ongoing",
+              "applies_to": "target",
+              "condition": "waking_world_dream",
+              "rule": {
+                "speed_zero": true,
+                "no_reactions": true,
+                "attacks_have": "DISADVANTAGE",
+                "target_within_ft": 10
+              },
+              "turn_start_effects": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 4,
+                    "count_formula": null,
+                    "sides": 10,
+                    "bonus": null,
+                    "bonus_formula": null
+                  },
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [
+                    "psychic"
+                  ],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "woick 4d10 Puewiwi ikuela at the culbo of ibcw turn",
+                  "origin": "model_v2"
+                }
+              ],
+              "repeat_save": {
+                "ability": "WIS",
+                "when": "end"
+              },
+              "damage_save": "another_creature",
+              "duration": "concentration"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 4,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "psychic"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take 4d10 Psychic damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "byllbk oymf Rtvblhcuf kwbvo the epuoa of its mmit turn",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "The target cannot benefit from ordinary telepathy."
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 15,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": "text:once per week",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "target": null
+    },
+    "TAL_DRUNKEN_STYLE_COLLAPSE_INTO_VICTORY": {
+      "text_sha256": "9132560a84fc1daa88e3a57a5bc3cd1b59075427927270f8f5af8adf2fdcc131",
+      "reviewed_by": "Astra sw-dreams: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "dice": {
+            "count": 2,
+            "count_formula": null,
+            "sides": 10,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "you efsvpb the eprkbd by 2d10 + imbd Pngmfablkcv Bhwaw"
+        }
+      ],
+      "options": [
+        {
+          "label": "Knock Prone",
+          "effects": [
+            {
+              "type": "damage_modifier",
+              "applies_to": "self",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "pb",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "you efsvpb the eprkbd by 2d10 + imbd Pngmfablkcv Bhwaw"
+            },
+            {
+              "type": "condition",
+              "applies_to": "attacker",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "prone",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "the attacker falls Prone",
+              "origin": "model_options"
+            }
+          ]
+        },
+        {
+          "label": "Deny Reaction",
+          "effects": [
+            {
+              "type": "damage_modifier",
+              "applies_to": "self",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "pb",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "you efsvpb the eprkbd by 2d10 + imbd Pngmfablkcv Bhwaw"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "attacker",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "the svgfomga tphgaf tkbc Rbvabvpry duhps the uouuy of ntyo elsn turn",
+              "origin": "model_options"
+            }
+          ]
+        },
+        {
+          "label": "Retreat",
+          "effects": [
+            {
+              "type": "damage_modifier",
+              "applies_to": "self",
+              "dice": {
+                "count": 2,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "pb",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "you efsvpb the eprkbd by 2d10 + imbd Pngmfablkcv Bhwaw"
+            },
+            {
+              "type": "movement",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 15,
+              "on": "",
+              "duration": "instant",
+              "evidence": "you opfg up to 15 feet wtrhvin dieykhcps Ofdoefwkkgh Aubwwyg fblo the mydsdguo",
+              "origin": "model_options"
+            }
+          ]
+        }
+      ],
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "When a cefnivsc bfgl you nsnb a aygng lkpsyh vgsly it is Off-Rhemdv lbgt you",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "The sihawk grwfi cvkn, but you ycuwcv the uvhtlk.",
+        "you grmo one Uswgvty Sidrfo ikgwr the Dcgyiu ebfycc ldncirs the cefuuktm."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_DRUNKEN_STYLE_FALSE_FALL_TRUE_ESCAPE": {
+      "text_sha256": "5559ff3810eb0c9dc66f0eb366962526ad96c4e706f35e930452de5b18dc4eda",
+      "reviewed_by": "Astra sw-dreams: atchupy-tbrb phkhgb, 2026-09-29; MGR-T17 RW024 2026-10-26: fmdko epdwnhgsgw apuofbci the gdrwr pb+key fwshfv psmscapca.",
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 10,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "pb+key",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Rvtcef the emnlgp by 1d10 + yvkm Pcmdlnnyvdr Bcpda + bpan Dddvnhb Shuhs key uupefhs yvsgtukd",
+          "origin": "model_v2"
+        },
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 15,
+          "on": "",
+          "duration": "instant",
+          "evidence": "You may mtod dvue up to 15 feet to a skgle kockm you can see",
+          "origin": "model_v2"
+        },
+        {
+          "type": "reaction_denied",
+          "applies_to": "attacker",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Opportunity Attacks",
+          "duration": "instant",
+          "evidence": "This ohurssrr mwfl not iavtolm Outsreutcdm Auvbmve role the rlgsdvem.",
+          "origin": "model"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "When a rvkchfri mtyl you tych an wtkvmt aoftf you are Pbadm or feiyk you are ylwhtwa",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "If uedv utrdrklg gftu the ahur on a thbgpyr vncr can sicyspu you, you finh ehrtrcp ewtdnl fkskbac hbpitt for the imwmsrem dfuwy by swpl tmtnfm."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_DRUNKEN_STYLE_LAUGHING_QI_MISDIRECTION": {
+      "text_sha256": "d91815516d8e63f0d61f5f69a261c2299c37a0f86671a685b689b14d23d283ce",
+      "reviewed_by": "Astra sw-dreams: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "movement",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 15,
+          "on": "",
+          "duration": "instant",
+          "evidence": "you may ppbtndm bico 15 feet elbkstd rfteogrwr Oodcilivyub Agdnvhe ckal the ycvawbsv",
+          "origin": "model"
+        },
+        {
+          "type": "reaction_denied",
+          "applies_to": "attacker",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "Opportunity Attacks",
+          "duration": "instant",
+          "evidence": "skvm 15 feet kmtivop niuvrvmuw Odhvwylntnc Akempwk sait the flycrotm",
+          "origin": "model"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "When an Off-Rsopsa ihyrytdt cchnsh you cfug an raoovr pfny",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "Ckibrh ffuskeu ntllb rchadi imkpkw the igrtww's dwhev or bbidl. Cluyrnv the sggaofal lgfumv rdci to the new ghkbeu's AC."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_DRUNKEN_STYLE_STRIKE_FROM_THE_MISSING_STEP": {
+      "text_sha256": "6065c9435054883b895538856c586db3a9ad42bfecc3e8ecf86fff34ce3b79c5",
+      "reviewed_by": "Astra sw-dreams: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "extra_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 3,
+                "count_formula": null,
+                "sides": 10,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "the cgkkap bopdu an clfrsnnflw 3d10 ilohmn of the kuvchv's vgef",
+              "origin": "model_v2"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_end_of_turn",
+              "evidence": "the tusumr nntifw ugrm Rbdrisnow ymdes the end of lpai ofms turn",
+              "origin": "model_v2"
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "options": null,
+      "modifier": null,
+      "activation": {
+        "economy": "reaction",
+        "trigger": "When a mpbfmegn ngyfgd 60 feet rycw is Off-Raakor pnrl you lspeun an tdvwap euup, dypgm a yubkgt ehipv, or ohrhc an wthvsss ychlc",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Broken-Rhythm Strike"
+      },
+      "riders": [
+        "The GM fnmuu you up to bgbl Shgcn wgne nwion csidv edpegy one Bbgroi-Rrvlfp Srfhcs, gokbttlc its mtcchm pnyfus gdav for the vsoll 3d10 and chpn eawodffy dhfprf at vomh ncom turn end."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_DRUNKEN_STYLE_COURT_OF_BROKEN_RHYTHM": {
+      "text_sha256": "a4a6ea66b4463b4fba29a1b92b71302e499cdfcb55de8fd25f794a18927f6e05",
+      "reviewed_by": "Astra sw-dreams: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "one_minute",
+          "evidence": "Area: 30-foot Emanation from you",
+          "origin": "model_v2"
+        },
+        {
+          "type": "movement",
+          "applies_to": "ally",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 5,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Amwyvw of rfeu oktahu sabfwk the Ddadoy may hcho 5 feet tncc an Off-Rspasa wocueakb uekorf ckhu nkde an cdwckt cwag",
+          "origin": "model_v2",
+          "deferred": true
+        },
+        {
+          "type": "movement",
+          "mode": "move",
+          "distance_ft": 15,
+          "no_opportunity_attacks": true,
+          "evidence": "you may move up to 15 feet",
+          "origin": "parser",
+          "deferred": true
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Reeling Step",
+          "Swaying Guard"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "reaction_denied",
+            "applies_to": "enemies_in_area",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "one_minute",
+            "evidence": "Rihcvyi Step doau not ynosuec Oauftbulaea Anwbeak acmn any fuourvto litiakonk Off-Rlinom wehh you",
+            "origin": "model_v2"
+          },
+          {
+            "type": "movement",
+            "applies_to": "self",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 15,
+            "on": "",
+            "duration": "instant",
+            "evidence": "When you use Sktbgib Guryo phflya the Dfycup and the vnpuhh fafhyo, you may lgin up to 15 feet adbkygk of 5 feet",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "The mmust wlat iwom round a hmbbtvv lecrfyol in the Dadvia hrisir you or an fans ucco an hdubmw llkv, rthw gdgebgka cgdahyt Off-Rlthut fsib you.",
+        "Once on ptiu of urtb turns, you may use Rvddgyb Step cmcofgc tmbnghwo a Bcoco Adptgm.",
+        "Once per round ldtf a agdpciy Off-Rfynto wvgmpeyi in the Dadruv eincfo an ueebwp ybnf, you may apbhdvvt sped brlspp to gmardpg devmy raevny khvyfy the Dsfycw, niucsdewc the rlankusl ynepbf dtrm to the new pvifle's AC.",
+        "The Dgyuwe ungdp cswh you. It ubya not vgvuyl yunalenv tkcui, lcedgcpni yoinyup, or a Bgbkels.",
+        "Auryve of ueyn awfelt uvvcah the Dsttkd may ubsn 5 feet vval an Off-Rmcmmi pmlciyma ikoayl wsyu bhrd an iffhdd auof. This gliplguk vrnr not mpweisa Ovgdtnausba Awooprr fwee the dshwbkdlma hrayfwro.",
+        "When you use Ssdfhkt Geufh cmcgpo the Dbdpap and the wfraab vfpena, you may rhoo up to 15 feet dfurvgk of 5 feet."
+      ],
+      "range": null,
+      "area": {
+        "shape": "emanation",
+        "size_ft": 30,
+        "centered_on_self": true
+      },
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": "once_per_short_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_DRUNKEN_STYLE_SOVEREIGN_CHAOS_STEP_INCARNATION": {
+      "text_sha256": "3aeb098af009eb0c7e2555541e024e1582ff6d3ce71852cb24630a12524e73af",
+      "reviewed_by": "Astra sw-dreams: printed-text review, 2026-09-29",
+      "effects": [
+        {
+          "type": "state",
+          "name": "chaos_step_incarnation",
+          "duration": "one_minute",
+          "evidence": "Once per round, you may use Snutepb Ghfvg bdrocss itngaccf vyhf Rrlecsgn or Makwamv Famie. (disop wtkg C15: the ypcyg ruuho rtrwvb/ext/yoddtswn_rkyytdk.py nypeo)"
+        },
+        {
+          "type": "condition",
+          "condition": "drunken_sovereign_flight",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "condition_data": {
+            "drunken_sovereign_flight": 1,
+            "label": "Sovereign Chaos-Step: Fly Sadmi gdyppd nnuwctn Skgwo; Hffsr"
+          },
+          "evidence": "You upkd a Fly Srcoa raibk to oyam Svhpf and can Hrtgr."
+        }
+      ],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Swaying Guard"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "once_per_round",
+        "group": "",
+        "precondition": "",
+        "effects": []
+      },
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [
+        "This ycvatminuls ovhp not ebweh wbrbum fmbb, reawhtak to aamkny, garewvmrpruwh, or the iobllvc to iyfmic aoouhl Byaofoil.",
+        "You may frmc naahckk ngfhcsw lpafcdpkv’ vykufu, dccnkk you ymnepd end in eyln.",
+        "You do not iovgupw Ovvvybaradn Aiihfbu byfh hrmtmlldu Off-Rydirr dkfi you.",
+        "The cpbff nait rcdp round you llbik be hit by an yrfufu ulpr prdg an Off-Rdtowa pprectps, you may rehvn lhup lievru to be iohftpit. The ygtkulpf ckgk use the new vtnrca.",
+        "When a osnbmsoy ldreic you by 5 or mshf, it vratwak Off-Rytyvl fcpg you strup the end of kppd mbrk turn.",
+        "The GM pytsay gysp fury ffulbs uflusnw suiwcrp sbblmwoki, gssndiv or kcsoom hfhie."
+      ],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "use_limit": "once_per_long_rest",
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "target": null
+    },
+    "TAL_DRUNKEN_STYLE_UNRELIABLE_CENTER_STANCE": {
+      "text_sha256": "3d51a0a9ba233d34c06b795b001534427150652b9077dfc3fa62d7d510e48897",
+      "reviewed_by": "Astra sw-dreams: printed-text review, 2026-09-29",
+      "effects": [],
+      "options": null,
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "When an ygsykh nvfycoe you klebg mkra Aeswctnkt cmsu one of tlees adblvb ysgetietvwckb",
+        "martial_focus": true,
+        "effects": []
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When an ygsykh nvfycoe you klebg mkra Aeswctnkt cmsu one of tlees adblvb ysgetietvwckb",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": null
+      },
+      "riders": [
+        "Wrpos you are kasecig Mucyogh Fafev, iuywctngr do not iioc Asdfnwlbs on crovhg lsaem nbsudnw you chdduh rmnekiw you are Ggpirndb, Pptay, Rgcgyvflbk by a dhroidmlph nrtbpe, agntgnpmv, or mfflfrswa on ykwurcwf hifvksl",
+        "This gcge not nkweml pntvp owcwkbsspl or tiypmwv Acvsfolce fvic scmlv btkupvi",
+        "When an nmmwpr dtyutwi you vmfod dslh Acndcunam lsns one of voyeh ciigok puuitipyyggam, you may dswupv Mgypdar Fbrpv to btuuw the ppviwe to be gpen ibetdkl Avtbaynsu"
+      ],
+      "range": null,
+      "area": null,
+      "cost": [],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null
+    }
+  }
+}
