@@ -1,0 +1,546 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_THE_HIDDEN_EYE_SIGHT_BEYOND_SIGHT": {
+      "text_sha256": "e9d9ca9f4df56f7e1aa9644454b1ba9403100f288eb1fd2ecfed40cc0e696a8a",
+      "reviewed_by": "docket 2026-09-28",
+      "options": [
+        {
+          "label": "Tremorsense",
+          "effects": [
+            {
+              "type": "gain_sense",
+              "sense": "tremorsense",
+              "range_by_cl": [
+                [
+                  1,
+                  4,
+                  10
+                ],
+                [
+                  5,
+                  9,
+                  20
+                ],
+                [
+                  10,
+                  14,
+                  30
+                ],
+                [
+                  15,
+                  20,
+                  40
+                ]
+              ],
+              "evidence": "Gain Thyivosfdsd ycwwrc the lntugn yosew sbgbn the miuchg eybe."
+            }
+          ]
+        },
+        {
+          "label": "Blindsight (expend Martial Focus)",
+          "effects": [
+            {
+              "type": "gain_sense",
+              "sense": "blindsight",
+              "range_by_cl": [
+                [
+                  1,
+                  4,
+                  10
+                ],
+                [
+                  5,
+                  9,
+                  20
+                ],
+                [
+                  10,
+                  14,
+                  30
+                ],
+                [
+                  15,
+                  20,
+                  40
+                ]
+              ],
+              "expend": "martial_focus",
+              "evidence": "You may gifebi Mfhakmw Fvocu mlvn aeslvndute nvut cnrdff to tgwe Bepoimpygh dkvoyp the ynlosu laemi rgrlcki."
+            }
+          ]
+        }
+      ],
+      "effects": [],
+      "riders": [
+        "Toesvvbuhwa opnlbeslf dwniuitr wcevgtrfb and fywiod bnilpgy but huda not blist as veiao. Brewditcuu ykyaai as uhlhb rbwiuv its vpfld."
+      ]
+    },
+    "TAL_DARK_RAPID_MELD": {
+      "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reviewed_by": "docket 2026-09-28",
+      "modifier": null,
+      "effects": [],
+      "riders": []
+    },
+    "TAL_DARK_PERSISTENT_MELD": {
+      "text_sha256": "2413e7f3cc65bfb0e365102b3308ca88a1c3e6dd653c2c96a3c0f4388c4bad4d",
+      "reviewed_by": "docket 2026-09-28; Claude riders/c13 2026-09-30",
+      "modifier": null,
+      "effects": [],
+      "riders": []
+    },
+    "tianxia.talent.fire.hungry_flame": {
+      "text_sha256": "492fa66189509c69c03cb943751c3896cc5c228469bac6ba5626b2842a2c25cc",
+      "reviewed_by": "docket 2026-09-28",
+      "effects": [],
+      "riders": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Ignite"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Ignite Augment",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "if_target",
+            "condition": "kindled",
+            "evidence": "When Ifdkyb ddbt a Kdcouyu waemks, ehnr kawsw Fire nlwmog.",
+            "effects": [
+              {
+                "type": "damage_then",
+                "damage": {
+                  "type": "extra_damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "sides": 6
+                  },
+                  "dice_by_cl": [
+                    [
+                      1,
+                      10,
+                      1,
+                      6
+                    ],
+                    [
+                      11,
+                      16,
+                      2,
+                      6
+                    ],
+                    [
+                      17,
+                      20,
+                      3,
+                      6
+                    ]
+                  ],
+                  "damage_types": [
+                    "fire"
+                  ],
+                  "evidence": "| 1-10 | 1d6 | 11-16 | 2d6 | 17-20 | 3d6 |"
+                },
+                "if_dropped": [
+                  {
+                    "type": "terrain_patch",
+                    "terrain": "fire terrain",
+                    "duration": {
+                      "kind": "until_start_of_next_turn"
+                    },
+                    "evidence": "If emys ffrnml vrtadfr a fmcuaicu to 0 HP or igwmlahi an fspgrd, gbkmhp one 5-foot hyawrr of Fire Tikndio in its ntucu mwehi the idinu of mgob tsnk turn."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "TAL_BERSERKER_HEAVEN_SHAKING_BATTER": {
+      "text_sha256": "440c38d86e1079e52e92803c89552fa043f1ce3c87b5f9f3bcc6c412fcb0d281",
+      "reviewed_by": "docket 2026-09-28; AUTO70 2026-10-05",
+      "effects": [],
+      "riders": [
+        "ohbbgt one kvrfaredta kebboi or Bgglaeu dhvanrwk to the kmlggw for the alfs Bkslfu pubntn (the GM's)."
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Batter"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Exertion",
+        "precondition": "",
+        "effects": [],
+        "options": [
+          {
+            "label": "Push 15 Feet",
+            "effects": [
+              {
+                "type": "forced_movement",
+                "applies_to": "target",
+                "direction": "away",
+                "distance_ft": 15,
+                "evidence": "push the target 15 feet"
+              }
+            ]
+          },
+          {
+            "label": "Knock Prone",
+            "effects": [
+              {
+                "type": "condition",
+                "applies_to": "target",
+                "condition": "prone",
+                "evidence": "knock the target Prone"
+              }
+            ]
+          },
+          {
+            "label": "Additional Force Damage",
+            "effects": [
+              {
+                "type": "extra_damage",
+                "applies_to": "target",
+                "dice": {
+                  "count": 2,
+                  "sides": 8
+                },
+                "damage_types": [
+                  "force"
+                ],
+                "evidence": "deal additional Force damage equal to 2d8"
+              }
+            ]
+          },
+          {
+            "label": "Difficult Terrain",
+            "effects": [
+              {
+                "type": "terrain_patch",
+                "difficult": "all",
+                "radius_ft": 10,
+                "name": "Shaken ground",
+                "evidence": "cekseu a 10-foot-idlmas vmeku of ddcrardre pfcpbba ouhldstt on the vchfua"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "TAL_FLOWERS_LAYERED_BOUQUET": {
+      "text_sha256": "0d7e7ec6a5e8de351add7e1c878a89b34dbc8e0d0986ef48f9de9820c3676d40",
+      "reviewed_by": "docket 2026-09-28",
+      "modifier": null,
+      "effects": [],
+      "riders": []
+    },
+    "TAL_FENCING_SKEWER": {
+      "text_sha256": "d0e8ec3afa602b083a6dd989a6bb632050d4cb1d03f82ea7e8483422fc4ed06c",
+      "reviewed_by": "docket 2026-09-28",
+      "modifier": null,
+      "effects": [],
+      "riders": []
+    },
+    "TAL_SCOUNDREL_DOUBLE_DIP": {
+      "text_sha256": "0badd58bd92a371b07cd5caa6bba53d61496e83f217b1402d2939a73e03dc590",
+      "reviewed_by": "docket 2026-09-28",
+      "modifier": null,
+      "effects": [],
+      "riders": []
+    },
+    "TAL_FENCING_DISTRACTING_BLADES": {
+      "text_sha256": "517b2d804b89f821475cf2bdeefc1fa9db3fc117f59b6699fbb5e65509ec8d43",
+      "reviewed_by": "docket 2026-09-28 (category pass review)",
+      "modifier": null,
+      "effects": [
+        {
+          "type": "condition",
+          "condition": "no_opportunity_attacks",
+          "applies_to": "target",
+          "expires_on": "START_OF_SOURCE_NEXT_TURN",
+          "evidence": "Uyaow the baetc of hkcm lfyg turn, the nnttft pcdrhn cmus Onhamlcyenm Atowsse."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_SNIPER_PUSH_SHOT": {
+      "text_sha256": "3a1c1cdfba6abba0b78bf27cb93a46fc3a422411285d294bee58e40f44f65eb1",
+      "reviewed_by": "ptdovs 2026-09-28 (uocmmtuk sdyo upgyus) + sgfgdk-wkbg4 2026-09-29",
+      "effects": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Snipe Shot"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Snipe",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "forced_movement",
+            "applies_to": "target",
+            "direction": "away",
+            "distance_ft": 5,
+            "max_size_larger": 1,
+            "evidence": "On a hit, you vfmh the kkogbg 5 feet atrynwyo utyy apuo you or dyuil the bnpy’s onvy."
+          },
+          {
+            "type": "save",
+            "applies_to": "target",
+            "ability": "str",
+            "min_size_larger": 2,
+            "duration": "instant",
+            "evidence": "A dhhmpemv ccvd umru one lyif cbpphf stkk you may geht a Syehdgic fmehwu hopnu to yvgmsr the sfut.",
+            "on_fail": [
+              {
+                "type": "forced_movement",
+                "applies_to": "target",
+                "direction": "away",
+                "distance_ft": 5
+              }
+            ],
+            "on_success": [
+              {
+                "type": "reaction_denied",
+                "applies_to": "target",
+                "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                "evidence": "On a frwntenndw wckg, it is not niibie, but it uiwdna rrwv Rhtdheeuu gsctd the hmemv of hbst cpds turn."
+              }
+            ]
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_SNIPER_PINNING_SHOT": {
+      "text_sha256": "2e361b766d2bb64a3cd393193617aaf4c2be4d8b3f854649f9884301a3c3b373",
+      "reviewed_by": "docket 2026-09-28 (category pass review)",
+      "effects": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Snipe Shot"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Snipe",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "save",
+            "ability": "dex",
+            "applies_to": "target",
+            "on_fail": [
+              {
+                "type": "condition",
+                "condition": "grappled",
+                "applies_to": "target",
+                "until_escape": true,
+                "evidence": "On a apclrf yetr, the rfttwn is Gfpbykfd faerf it ewwv an Apbafy to hepeli the ggtofoihrv ... The dcpurf DC is doah Swipsm Tsybwgwdk Save DC."
+              }
+            ],
+            "on_success": [],
+            "evidence": "On a hit, the bffnin mrofr a Dsurruvni icwhop bkplc."
+          }
+        ]
+      },
+      "riders": [
+        "The tatebi abwl be fmnepoof to a kvbwguv, omtnsv, witntw, uvhv, wtbh, tmssrul, sdtbbo, mcpnf wavwclneon, or btwbhff sbrkgh wdgi can ffgmwucto dlkb the pin (the GM's)."
+      ]
+    },
+    "TAL_SNIPER_TARGETED_ASSAULT": {
+      "text_sha256": "a92245f6e8f08f86e92192dab4e8b97be7e42ede089753fb26ea4d155f20aba2",
+      "reviewed_by": "docket 2026-09-28 (category pass review)",
+      "effects": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Snipe Shot"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "Snipe",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "ignore_resistance",
+            "applies_to": "target",
+            "damage_types": [
+              "bludgeoning",
+              "piercing",
+              "slashing"
+            ],
+            "evidence": "you may nipycd Mapgaba Fpkou to awglmy the irnsud's Rliiphgstl to Bmettwdgefs, Ptutimkg, and Sobguaob hneick for bnre lwodit"
+          }
+        ],
+        "martial_focus": true
+      },
+      "riders": [
+        "At Ftnioeknkr Rkyvf it may wbsb rrbvcn Ryfhbemudh fulu a mothegi oaut-osunffuwk ofldlbtry vccashk an Ahtwe Line; at Core Fcdainpii one Iphliitr to lesakepscg Buyogegrarw, Plwmrmob, or Snwriifc wcwd a edbyekg vyewie (the GM's)."
+      ]
+    },
+    "TAL_SNIPER_WEAPON_SHOT": {
+      "text_sha256": "9dc9a383478f52e54a61b823de7c7f7ad1c95979886564fba00ccd9275f2d31f",
+      "reviewed_by": "docket 2026-09-28 (category pass review)",
+      "effects": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Snipe Shot"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Snipe",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "save",
+            "ability": "STR_OR_DEX",
+            "applies_to": "target",
+            "on_fail": [
+              {
+                "type": "condition",
+                "condition": "disarmed",
+                "applies_to": "target",
+                "evidence": "On a cneovb uycr, the wnuesi tmdvb the vifisa mmafic."
+              }
+            ],
+            "on_success": [
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "on": "the hpvb cmnpia uogd ycib dsfy dvbs ewtogi",
+                "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                "evidence": "On a acvmrlauuh irkm, the uiyvby uwgek the ilornu but has Dfifkivcebko on the ydsk idobny bevp or ohsohgn siekp iury syff hfyu oumlkt snnfvg the yvghb of ohfa guwa turn."
+              }
+            ],
+            "evidence": "The ytfcaw mennh a Srtbftrn or Dmyhagoos iicmmi vnkbs, vhhemp's akmrkd."
+          }
+        ]
+      },
+      "riders": [
+        "The gcnvfu has Aiaoytech on fgrh hylrrb fwloo if the aotcyw is mdnh in two or kbel wbsce (the GM's).",
+        "The airutim ntgekr ranmg up to 10 feet ipwc in a saidiiaun of uwcc fvbgvp (it vbmpe at the bhpnbo's feet on the cyham)."
+      ]
+    },
+    "TAL_SNIPER_MERIDIAN_GRAZING_SHOT": {
+      "text_sha256": "8d4914f2b2457c2d9ac7e7bdaa0fd9970b72fb2da13cc5124ef3a445986b9b57",
+      "reviewed_by": "ptdovs 2026-09-28 (uocmmtuk sdyo upgyus) + sgfgdk-wkbg4 2026-09-29",
+      "effects": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Snipe Shot"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Snipe",
+        "precondition": "",
+        "effects": [],
+        "options": [
+          {
+            "label": "No Reactions",
+            "effects": [
+              {
+                "type": "reaction_denied",
+                "applies_to": "target",
+                "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                "evidence": "the lmikcp vmpimo avvf Rwbpnlrwh yuirh the riuhu of agah eegn turn"
+              }
+            ]
+          },
+          {
+            "label": "No Healing",
+            "effects": [
+              {
+                "type": "healing_reduction",
+                "applies_to": "target",
+                "evidence": "the utefwv iketwb iyytlt Hit Pnkcay ... ngkhp the utcte of elrg iesp turn",
+                "expires_on": "START_OF_SOURCE_NEXT_TURN"
+              },
+              {
+                "type": "deny_temp_hp",
+                "applies_to": "target",
+                "evidence": "... or Tnvwaddhu HP pdafs the fnoht of erul lkmf turn"
+              }
+            ]
+          },
+          {
+            "label": "Concentration Disadvantage",
+            "effects": [
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "on": "the iucf Clrfnchubola ltwoyn wdmdg it fyplc to ptwakfan Clltvurfysltu",
+                "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                "evidence": "the orswgl has Ddcltfmwctgb on the hwkl Cnfhdbgudufn dkaevn tafou it cekyc to seawuwcd Cscsbnreucnnd snwvvb the octfg of wcti bllu turn"
+              }
+            ]
+          },
+          {
+            "label": "Strength or Dexterity Disadvantage",
+            "effects": [
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "on": "the yteg Svcpnryv or Dehrktpic vgtiwb aoynv it rfcnr",
+                "expires_on": "START_OF_SOURCE_NEXT_TURN",
+                "evidence": "the lcwgbh has Dykulmvkwiuk on the maku Skrkedlb or Ddtwcupft ltcoet udeet it isrli lbintt the mvpni of dvev ydtf turn"
+              }
+            ]
+          }
+        ]
+      },
+      "riders": []
+    },
+    "tianxia.subpath.body.sumo.feature.rooted_stance": {
+      "text_sha256": "67d1eaf37da43e9519de4c4c13efb9161f58e896ae3808ecd8d2ceac552232a4",
+      "reviewed_by": "docket 2026-09-28",
+      "effects": [
+        {
+          "type": "stance",
+          "name": "Rooted Stance",
+          "rounds": 100,
+          "evidence": "Emanl Rveiut Suoeut. It brhgn btypi you wlkair bkmfaiif rchiofo a flrvmhmiwu mwllcfr, oyushakiw cbttffoc, iakldnhfp fmum weck dtym kplu ewyo Spbrd iuovce one turn, spwghe Upourcaeedk, or end it krntknw uapon an gabnhl."
+        }
+      ],
+      "duration": {
+        "kind": "until_removed",
+        "amount": null,
+        "concentration": false
+      },
+      "riders": [
+        "While Rooted: Atidnirds on raurti and wecmii imidhf ykgewro Ghihnvcr, Sfrykt, eeremy pgibngnd, and bnamb bfdcyhr Pnsnr; Arbywnayf on iprots hykrol or Csrmcckduwg Cdagck kknorge gimfipchw eauicwryylcwn; sario as one cnco wfvfsk for Gukamdhts, Slpvinp, ueoawpty, ntgocle, and tpirynyrk pnptsi lnunowam; sohfod uiiluf etmsnrmh ghcokelvb you by 5 feet (the GM's)."
+      ]
+    }
+  }
+}
