@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Stage2_Blocker_Report.schema.json",
+  "title": "Stage 2 Typed Blocker Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "project_revision",
+    "blocked",
+    "blockers"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "TianxiaFoundry.Stage2BlockerReport.v1"
+    },
+    "project_id": {
+      "type": "string"
+    },
+    "project_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "blocked": {
+      "type": "boolean"
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "severity",
+          "pointer",
+          "message",
+          "details"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "blocker",
+              "error",
+              "warning"
+            ]
+          },
+          "pointer": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}
