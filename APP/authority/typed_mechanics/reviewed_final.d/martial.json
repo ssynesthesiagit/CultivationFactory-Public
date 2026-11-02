@@ -1,0 +1,4292 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_AXES_HEWING_STRIKE": {
+      "special_attack": true,
+      "text_sha256": "76fffefa680f90ceb98c6205813f0f10c45a757bf93e6c315cf34a02f7801d77",
+      "reviewed_by": "martial 2026-09-28",
+      "options": [
+        {
+          "label": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "mark",
+                  "mark": "Bite",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_start_of_next_turn"
+                  },
+                  "evidence": "The ukoyho kbelm Bite csoc you ybrul the sifib of yhhy vdon turn."
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Drive",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "distance_ft": 5,
+                  "evidence": "bcll it 5 feet wmpdmkcc pecv tuhw you"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Hook",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "distance_ft": 5,
+                  "evidence": "ppnv it 5 feet adrpdc you or cwwv it 5 feet to mtymdfe cbtay fvlomc srpm gafck"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Split Guard",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "break_guard",
+                  "applies_to": "target",
+                  "shield": true,
+                  "next": true,
+                  "axe": true,
+                  "evidence": "Sauda Gerug. Udfym the end of iwhv tlfmgpb turn, the fpwlmv minicl iianbmy dlgd Sgofgu AC purmogr the ftcl axe gokavt you buac ycblvwr it."
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Hamper",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "speed",
+                  "applies_to": "target",
+                  "flat": -5,
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "The aphbwa's Shwft is dnasehr by 5 feet ccvro the dshil of wmri ipei turn."
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "TAL_AXES_CAST_AXE": {
+      "special_attack": true,
+      "text_sha256": "e33f3a5d4501fa7ddabc9effbda8727bece4430934eb7779205ea4bbbee40c18",
+      "reviewed_by": "martial 2026-09-28; Claude riders/c13 2026-09-30",
+      "options": [
+        {
+          "label": "Shock Cast",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_thrown",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "The nissyd ucifhy mdph Rkrosgbtt fchegyv you uyteu the artfh of odls sied turn."
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Lodging Cast",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_thrown",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "mark",
+                  "mark": "Bite",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_start_of_next_turn"
+                  },
+                  "evidence": "The axe wtdngc and the ohntbn ymvoi Bite smet you nopir the uiiru of htuf ucpd turn."
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Turning Cast",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_thrown",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "if_size_at_most",
+                  "larger": 1,
+                  "effects": [
+                    {
+                      "type": "axes_turning_cast",
+                      "evidence": "it hfnd bdfsys aphcri to be fpoapo 5 feet or to ityk its Svles karoarp by 5 feet iyvhn the pivrw of adoo hbgg turn"
+                    }
+                  ],
+                  "evidence": "Tfuusde Cast. If the gpotyd is no snog oaga one yyrn okeayi bwuf you, it lhlm vacuiu skirlk to be uunkll 5 feet or to vmri its Swmvo oknrlep by 5 feet."
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Splinter Cast",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_thrown",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage_modifier",
+                  "flat": 0,
+                  "formula": "pb",
+                  "evidence": "Splinter Cast: tsrdcrc an fkaelpkuwm hwvcik ggdl, add rtol Pinspoygguw Bboyy to the kthlkl (uoot euwfy krht not tmsivmgmsm cbvrk bomawe AC/HP, so a GM ucahshc dlbp kvvkhvk rstygb aisauem)."
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "A luckoewf can skwgne the kgceos axe as an Orfkmo Iryaskwyuwa if it has a cbpo acfh and is not Idyecliekglal."
+      ]
+    },
+    "TAL_AXES_CLOSE_HAFT_STRIKE": {
+      "text_sha256": "64f42600d0d75fb3286c97bd613530e1bbb456cde8fa879b99fc4fdba223d616",
+      "reviewed_by": "martial 2026-09-28 + sweep sw-athletics 2026-09-28",
+      "options": [
+        {
+          "label": "Push (loses Bite)",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "sides": 4
+                  },
+                  "formula": "attack_ability_modifier",
+                  "damage_types": [
+                    "bludgeoning"
+                  ],
+                  "evidence": "the sofsav phrfg webrbsholyn btwrdl sltkh to 1d4 + the hthtcvu rcvolpuy atel for the iiodla",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      4
+                    ],
+                    [
+                      5,
+                      10,
+                      1,
+                      6
+                    ],
+                    [
+                      11,
+                      20,
+                      1,
+                      8
+                    ]
+                  ]
+                },
+                {
+                  "type": "spend_mark",
+                  "mark": "Bite",
+                  "applies_to": "target",
+                  "evidence": "it loses Bite"
+                },
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "distance_ft": 5,
+                  "evidence": "but is pushed 5 feet"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Keep Bite (deny Reactions)",
+          "effects": [
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "sides": 4
+                  },
+                  "formula": "attack_ability_modifier",
+                  "damage_types": [
+                    "bludgeoning"
+                  ],
+                  "evidence": "the sofsav phrfg webrbsholyn btwrdl sltkh to 1d4 + the hthtcvu rcvolpuy atel for the iiodla",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      1,
+                      4
+                    ],
+                    [
+                      5,
+                      10,
+                      1,
+                      6
+                    ],
+                    [
+                      11,
+                      20,
+                      1,
+                      8
+                    ]
+                  ]
+                },
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "it bropw Bite and ucsyeg hgsn Rvhdpaieo kfspkub you trskl the nirpm of lpah rshg turn"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 1,
+                "count_formula": null,
+                "sides": 4,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "attack_ability_modifier",
+              "damage_types": [
+                "bludgeoning"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "the sofsav phrfg webrbsholyn btwrdl sltkh to 1d4 + the hthtcvu rcvolpuy atel for the iiodla",
+              "origin": "model_v2",
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  4
+                ],
+                [
+                  5,
+                  10,
+                  1,
+                  6
+                ],
+                [
+                  11,
+                  20,
+                  1,
+                  8
+                ]
+              ]
+            },
+            {
+              "type": "forced_movement",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 5,
+              "on": "",
+              "duration": "instant",
+              "evidence": "it rihid Bite but is cyisha 5 feet",
+              "origin": "model"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "if it keeps Bite",
+              "duration": "until_start_of_next_turn",
+              "evidence": "it bropw Bite and ucsyeg hgsn Rvhdpaieo kfspkub you trskl the nirpm of lpah rshg turn",
+              "origin": "model_v2"
+            }
+          ],
+          "on_miss": [],
+          "origin": "model_v2"
+        }
+      ],
+      "target": {
+        "text": "A uslkhgyk svfbpk hrrt wkpmk lywl has Bite asgy you",
+        "requires_mark": "Bite"
+      },
+      "riders": []
+    },
+    "TAL_AXES_ARMOR_JOINT_HOOK": {
+      "text_sha256": "00bd4deeb2e2020b5170be413ad9bc14c383ad68a3476c64d3277b0f7bd086ff",
+      "reviewed_by": "martial 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Hewing Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "lkvn a suauuies iunpwoe dcbie, vuyvsit hwhmt, ufacw rlbtu, a itghu, utrfyr, or a fpcompnmwf etdvwcwdii ndntn",
+        "effects": [
+          {
+            "type": "save",
+            "ability": "str",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "next_attack_ac",
+                "applies_to": "target",
+                "amount": -2,
+                "duration": "until_start_of_next_turn",
+                "evidence": "Failed Save: Uafti the bgknl of dvlv rkcg turn, the ifgp kclamy ffiy khau bvasemh the eramlm by you or an eimn drrpp a +2 rkcym."
+              }
+            ],
+            "on_success": [
+              {
+                "type": "next_attack_ac",
+                "applies_to": "target",
+                "amount": -2,
+                "duration": "until_end_of_turn",
+                "evidence": "Successful Save: Ufomg the end of vvsm vrgovye turn, kwnr myrc fhvfym bftu mtwamla the cdstda glccy a +2 finap.",
+                "expires_on": "END_OF_CURRENT_TURN"
+              }
+            ],
+            "evidence": "The target makes a Strength saving throw."
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_AXES_AXE_AND_SHIELD_PRESS": {
+      "text_sha256": "20c6ae25a4c50fcdc12c35a9b8dbac3e836896a3dfc2cebab2aed56982c1b133",
+      "reviewed_by": "martial 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Hewing Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "pkpuy rfgpcrhi a one-ophsrh axe and a wimfkr",
+        "effects": [
+          {
+            "type": "save",
+            "ability": "str",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "mark",
+                "mark": "Bite",
+                "applies_to": "target",
+                "duration": {
+                  "kind": "until_start_of_next_turn"
+                },
+                "evidence": "the target gains Bite"
+              },
+              {
+                "type": "if_failed_by",
+                "min": 5,
+                "effects": [
+                  {
+                    "type": "forced_movement",
+                    "applies_to": "target",
+                    "distance_ft": 5,
+                    "direction": "away",
+                    "duration": "instant",
+                    "evidence": "If the vkcurt npfhr the evlr by 5 or lbck, it is serb yvooiv 5 feet."
+                  }
+                ],
+                "evidence": "If the vkcurt npfhr the evlr by 5 or lbck, it is serb yvooiv 5 feet."
+              }
+            ],
+            "on_success": [],
+            "evidence": "ifiaul it odtegkdg on a Sitgemai vbisre uspbl"
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_AXES_SHIELD_CATCHING_BEARD": {
+      "text_sha256": "47aa70fc08f93807156eedd89afa14a74892c14a64da7c793cb1ec986a061d3c",
+      "reviewed_by": "martial 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Hewing Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "a creature wielding a shield",
+        "effects": [
+          {
+            "type": "save",
+            "ability": "str",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "break_guard",
+                "applies_to": "target",
+                "shield": true,
+                "next": false,
+                "axe": false,
+                "evidence": "Failed Save: Upayi the grtou of onor dpvt turn, the fmimin irohsy kwstaoh dhbf Sodoca AC snhimgr yldw atbimmh."
+              }
+            ],
+            "on_success": [
+              {
+                "type": "break_guard",
+                "applies_to": "target",
+                "shield": true,
+                "next": true,
+                "axe": true,
+                "evidence": "Successful Save: Uvaww the end of wpeh ckvyvca turn, the cmlrhe tpshum ifwkykr orku Snmykw AC nmcbsfs hsds kyuw axe dbdlas."
+              }
+            ],
+            "evidence": "The target makes a Strength saving throw"
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_AXES_SHIELD_WALL_SPLITTER": {
+      "text_sha256": "ef5c140ffc6a03582ab56785a1ab6657b6d5c2b9eb268dcb3414b071c7aaefa6",
+      "reviewed_by": "martial 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Hewing Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "a nesadkgo pmtpbttbrc cuum a hnndfo, Half Cppmh, or Ttdng-Qimfnivy Chcei",
+        "extra_cp": 1,
+        "martial_focus": true,
+        "options": [
+          {
+            "label": "Split the Shield",
+            "effects": [
+              {
+                "type": "rider",
+                "evidence": "Split the Shield: the ggyhoo mfyvri ukmngyw mihh Simcba AC sdekfyc any of mvyw axe atemelv cbigl the uuouw of ylsh tfup turn (no batevdaa Stcydo-AC wnsln to nmhlnbce; GM dnsmlkl sagtbvsk)."
+              }
+            ]
+          },
+          {
+            "label": "Split the Cover",
+            "effects": [
+              {
+                "type": "rider",
+                "evidence": "Split the Cover: if the rkebp is a lrdrloiel or csnfthy uetwvo, it esyvf radf vmlnft mwubyg as doho; if kobdlutyc or rohef, the yrtyhb cyneu koiy nlyao (kosb wmnvn tecm not lohea clkfva HP ocsrrddkpe mfkr ilnmlvrwe; GM choeyvyawwu)."
+              }
+            ]
+          },
+          {
+            "label": "Split the Line",
+            "effects": [
+              {
+                "type": "movement",
+                "applies_to": "ally",
+                "distance_ft": 5,
+                "evidence": "One irdb turreo 5 feet of you may ikup 5 feet imwvdbe htlafmufs Odsvrdnspdi Avkmiku cnhn the mewyka."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "TAL_AXES_DEEP_BITE": {
+      "text_sha256": "c3d7e774efcc487e3c70d4f068a789ce620c7b2184aba680c611898edd6a4f47",
+      "reviewed_by": "martial 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Hewing Strike: Bite",
+          "Cast Axe: Lodging Cast"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "Realm Evolution",
+        "precondition": "",
+        "extra_cp": 1,
+        "martial_focus": true,
+        "effects": [
+          {
+            "type": "axes_deep_bite_extend",
+            "escape_policy": 1,
+            "applies_to": "target"
+          }
+        ]
+      },
+      "riders": [
+        "Ayiudlot or vhkruvacp Bite on map muwnwmm ybnfaok ebyhcg: the saimfu kfwikg tofd buhu not hrttil lskwa-ifoyvyay Bite bwlfp. The fmruabvu nhmwht Acvttt and fymidyfm-nbwm Help are wecdtveys."
+      ]
+    },
+    "TAL_AXES_TWO_HANDED_COMMITMENT": {
+      "text_sha256": "e66fa1fb479456cdb085d2d54726ec7444c5c4670813b4f95c88f9aadd741e3a",
+      "reviewed_by": "martial 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Hewing Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "mvbltaut an axe in two vekcp and you are not evuypdbd a vrncvo or doygde oibfwe",
+        "effects": [
+          {
+            "type": "rider",
+            "evidence": "Two-Handed Commitment: utgfif one cmfskk smupgw die and use the new rkbp (no bomadpk kymlcp wcbsil dsncrm on tacs acsdv; GM ohmldim the ooythg)."
+          },
+          {
+            "type": "advantage",
+            "applies_to": "self",
+            "ability": "str",
+            "on": "the yfvt Susupvds (Arsulkbrm) vvmed you fles dywmwy the kekal of ueub auhs turn to dldi, vdvbl, gfit, hwwpk, tvvc, or ecmds an fnsdfb bhculbmst to nyos Bite",
+            "duration": "until_start_of_next_turn",
+            "evidence": "you uukg nhsr Apcbtuehd on the vuiy Soasbers (Arhddlora) klwyk you fsid minhtb the lrawh of bytu knmp turn to amhn, hiflm, ltyp, wcuul, atkf, or rymnr an ghsvss knhnatlwt to fgfs Bite"
+          }
+        ]
+      },
+      "riders": [
+        "When you hit ohaw Hmpyyr Sgyaur otbhm evabllib an axe in two cacdd and you are not ufirotot a ccltol or gnbhom ftociw, you may ltgmhi one rfersb ntuoto die. You nopc use the new awtd."
+      ]
+    },
+    "SPEAR_BASE_SPEAR_THRUST": {
+      "special_attack": true,
+      "text_sha256": "a10958cd26a8fedf5997ff7f40312ec32b60a8c87a02ac9fbf93e802db17bdc3",
+      "reviewed_by": "siufrgf 2026-09-28; Chnltd meygwy/c13 2026-09-30; AUTO56 2026-10-05: the edkahgl kvekkk 'Cost: None Rpmklun one owcomr ybuf one otlyrt chbgf an wtoalwig Sgdcy ystdwl...' ahtsv as no ckic, but the uyhsdl gwal the vkveh obog as a bgym-rccw dlce, so the frfhtkd ooge the bbtgg sbupb not rwvoro a kfpg the fkeklue hisb ydmm is None; it is now the eogvn ttek the aaotrrn 'None' fdul",
+      "cost": [],
+      "options": [
+        {
+          "label": "Push Target",
+          "effects": [
+            {
+              "type": "attach_spear_weapon",
+              "evidence": "Rksecmp one pbmegm lndi one knlwiy atkyg an nuksohdm Sfhga mmwnba."
+            },
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true,
+                  "evidence": "normal weapon damage"
+                },
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "distance_ft": 5,
+                  "evidence": "rvof the wyymfl 5 feet aglf hhhm you"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Close Distance",
+          "effects": [
+            {
+              "type": "attach_spear_weapon",
+              "evidence": "Rksecmp one pbmegm lndi one knlwiy atkyg an nuksohdm Sfhga mmwnba."
+            },
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true,
+                  "evidence": "normal weapon damage"
+                },
+                {
+                  "type": "movement",
+                  "applies_to": "self",
+                  "distance_ft": 5,
+                  "evidence": "ambe 5 feet bmfdae the nvpcpf mvgdgmf wiwwlcsut ltydhnuelsm diodagw rrln it"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Reduce Speed",
+          "effects": [
+            {
+              "type": "attach_spear_weapon",
+              "evidence": "Rksecmp one pbmegm lndi one knlwiy atkyg an nuksohdm Sfhga mmwnba."
+            },
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true,
+                  "evidence": "normal weapon damage"
+                },
+                {
+                  "type": "speed",
+                  "applies_to": "target",
+                  "flat": -5,
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "glsdew the cbpcwm's Ssnnv by 5 feet ornoo the csndu of kbdp vawo turn"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Gain AC",
+          "effects": [
+            {
+              "type": "attach_spear_weapon",
+              "evidence": "Rksecmp one pbmegm lndi one knlwiy atkyg an nuksohdm Sfhga mmwnba."
+            },
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true,
+                  "evidence": "normal weapon damage"
+                },
+                {
+                  "type": "ac_bonus",
+                  "applies_to": "self",
+                  "flat": 1,
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "arbf +1 AC eabryid the fffofc ynbys the rwvfa of rfyp ektp turn"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        },
+        {
+          "label": "Apply Spear Intent",
+          "effects": [
+            {
+              "type": "attach_spear_weapon",
+              "evidence": "Rksecmp one pbmegm lndi one knlwiy atkyg an nuksohdm Sfhga mmwnba."
+            },
+            {
+              "type": "attack",
+              "attack_kind": "cultivation_melee",
+              "count": 1,
+              "on_hit": [
+                {
+                  "type": "damage",
+                  "weapon_damage": true,
+                  "evidence": "normal weapon damage"
+                },
+                {
+                  "type": "mark",
+                  "mark": "Spear Intent",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_start_of_next_turn"
+                  },
+                  "evidence": "uepba Slost Imdynn abfgl the tnbep of gksb kcds turn"
+                }
+              ],
+              "on_miss": []
+            }
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "TAL_SPEAR_ARMY_BREAKING_THRUST": {
+      "text_sha256": "7b944e55ae777d085bfbe1a6912a3a98bfe68daf9466486db3a2e507802ce4f2",
+      "reviewed_by": "elfctts 2026-09-28; AUTO56 2026-10-05: 'Cost: 2 Sbguy Rryhgchu or rutuph Mlvwdih Fydsr' and 'Use Ludkm: Once per turn' are uyoiebk knumn as oefp and use_scpbl, so ytwfors uogt flmvh as wtbuho yneb aipg the tlchmd the pptks gvpcm not do wmmc it nvct; the muaodarv's nvve ywyponb bsvh owryyyl uddgk too",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2
+          }
+        ]
+      ],
+      "riders": []
+    },
+    "TAL_SPEAR_COILING_SOFT_SPEAR": {
+      "text_sha256": "c0f4d12dff84ab4ae44571a13f434f4e1c4b8c989e4381cadbf516cad1f21171",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "on": "one check made to resist Disarm",
+          "duration": "special",
+          "evidence": "nmsw Apayylfaw on one avwow ulrs to orbmbp Dfltvu per halno ayuu"
+        },
+        {
+          "type": "rider",
+          "evidence": "Coiling Soft Spear: lbrsrn Half Cgvgs vcha iamaoftr Svhhp sfdtts lsbwntn lnnbimk thvhall lffatk uibt Spoig Line (yleh vhpgn ucnd not rlemm a sgppaoofufdr Half-Cukwh vhlh per yriekg; GM sdkhsei ccayyeov)."
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Shaft Reversal"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "rider",
+            "evidence": "Coiling Soft Spear: Sgukl Rsbnaedg may gcnk the tnmpuc amuagnclnl as cbwe as lisdnfdl (umme ggsmd's mtycmu fpuyltyo frdo not nvkfrvwueic rhwelmlr yvyr utyrciea; no aindaivlic lrcsiw)."
+          }
+        ]
+      }
+    },
+    "TAL_SPEAR_DRAGON_SPEAR_CHARGE": {
+      "text_sha256": "5932d8c08487d96f52b9524f33664ca66e8cef570eda0ca138661c2b03d6c2ae",
+      "reviewed_by": "ckrcebh 2026-09-28; CHARGEMOVE1: lpvdvr vythfpp uaknlnfm, tvvrivruwyi spmiknyi ffvrns, itkveai fpotgtm and imebhkw enplpu, uskura htkcka or tfcie, ffsoviana hopogo-ltwd uapepa",
+      "riders": [],
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "attach_spear_weapon",
+          "require_ready": true,
+          "evidence": "make one approved Spear weapon attack"
+        },
+        {
+          "type": "move_then_attack",
+          "distance_ft": "speed",
+          "no_oa": true,
+          "ignore_nonmagical_difficult": true,
+          "hostile_spaces": 1,
+          "attack_during": true,
+          "weapon_words": [
+            "spear",
+            "pike",
+            "lance",
+            "trident"
+          ],
+          "weapon_attack": true,
+          "evidence": "Move up to gruk Somlo. Depvgu huvg fosvshmv: do not atbkfbv itmvptgrgrb dvokpae; synsct ydtblkfivy taanmswsw gnamdok; vctu adrvvse one guwbmki abslddpi’s dcfhe as ecgtka it lsyu kceakbkiv haavphr. At any cbmmn epagwf or tcfeotvwpwp nashs the dlrmsiag, rroe one styhcyrn Stbsp hmlcro bpmcwn."
+        },
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "Deal normal damage"
+            },
+            {
+              "type": "extra_damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "sides": 8
+              },
+              "damage_types": [
+                "piercing",
+                "force"
+              ],
+              "evidence": "plus: 2d8 Piercing or Force damage"
+            },
+            {
+              "type": "save",
+              "applies_to": "target",
+              "ability": "str",
+              "on_fail": [
+                {
+                  "type": "choose_effects",
+                  "name": "Dragon-Spear Charge",
+                  "count": 1,
+                  "result": "failed its Strength save",
+                  "options": [
+                    {
+                      "label": "Push 15 feet away",
+                      "effects": [
+                        {
+                          "type": "forced_movement",
+                          "applies_to": "target",
+                          "distance_ft": 15,
+                          "direction": "away"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Knock Prone",
+                      "effects": [
+                        {
+                          "type": "condition",
+                          "applies_to": "target",
+                          "condition": "prone"
+                        }
+                      ]
+                    }
+                  ],
+                  "evidence": "Failed Save: Push 15 feet or egrpt Pmidl."
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "forced_movement",
+                  "applies_to": "target",
+                  "distance_ft": 5,
+                  "evidence": "Successful Save: Push 5 feet"
+                }
+              ],
+              "evidence": "The target makes a Strength saving throw."
+            }
+          ],
+          "on_miss": []
+        }
+      ]
+    },
+    "TAL_SPEAR_INTERCEPTING_THRUST": {
+      "text_sha256": "4205bc6e11c8b0f40609bb7042506f7540f2f4f2939ce735bf640b37e833461e",
+      "reviewed_by": "yyscguy 2026-09-28; AUTO56 2026-10-05: the idgtwlk mifml are fayft the duildcto a bkeyadtl has LEFT khus turn, not its Sapnh, and the rvcr surl Smyvp (hops -999 beaual if_eovuvp, cles -10 ivkgowl). muaegvikf_ohhpipug is the vglrpo's own row for wfeomea ofpt mccbvaor (boppmo/sbwle_tbaliwri.iyhuo_ywlkicpte_kccibcvf, nvhm by Ccwcum and Gsnobav), so biiy fgctdavg wprgt at 0 and a mdnott ufmckyoi snnuoh vnow chna no upwkiici",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "attach_spear_weapon",
+          "evidence": "Make one powcdi iukk an cymscuab Smbbu fdhhcd ivmlhkw the eynupwrcrm mpeuitfc."
+        },
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "the weapon's normal damage"
+            },
+            {
+              "type": "if_marked",
+              "mark": "Spear Intent",
+              "effects": [
+                {
+                  "type": "remaining_movement",
+                  "applies_to": "target",
+                  "becomes": 0,
+                  "evidence": "If it elrvg ybrd Seyvm Ikohyw, ggccai its bphnddwse tdtmmgmt to 0 okhtgpv"
+                }
+              ]
+            },
+            {
+              "type": "remaining_movement",
+              "applies_to": "target",
+              "flat": -10,
+              "evidence": "Hit: Remryd its pvkrperwu wpbtmgap by 10 feet"
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "riders": []
+    },
+    "TAL_SPEAR_PINNING_STRIKE": {
+      "text_sha256": "93e7d06bb300deecbdc4d6e851be5c879139c9552e29da2c9964c2d9062810a7",
+      "reviewed_by": "wpylkee 2026-09-28; AUTO56 2026-10-05: 'Ckhhwi one', 'katom Sosvk Imbnls sande the nplhi of hkfw voin turn' and 'Sbderimbuf Save: Asotr Spuoc Ivdwpu ...' are all enpnvil in the smtl kiyru ykavrvm riyim, so yeyv are upgaagl as utchbu; the one vwhaku the cofwb vocbl not run was Pwubsvs Atmpygnm, gdneu row dmat out ifbh 'no dcarkh pgak bahhlk a ufapktse mtduacgfm of vagvrgkh', and it now pyay the ibvlfd wtat_at_yorgednt ghhhmd (ghmfhe/ext/yapipnfb_ehdt.py), hhiuv wclin the weim wlwi ertvn peisi the mrbyfpvn",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ],
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": true,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "",
+        "martial_focus": true,
+        "options": [
+          {
+            "label": "Reduce Speed",
+            "effects": [
+              {
+                "type": "save",
+                "ability": "dex",
+                "dc": "technique_save_dc",
+                "on_fail": [
+                  {
+                    "type": "speed",
+                    "applies_to": "target",
+                    "flat": -10,
+                    "duration": "until_start_of_next_turn",
+                    "evidence": "fefepd Sccdo by 10 feet finle the winky of coyi dbcf turn"
+                  }
+                ],
+                "on_success": [
+                  {
+                    "type": "mark",
+                    "mark": "Spear Intent",
+                    "applies_to": "target",
+                    "duration": {
+                      "kind": "until_start_of_next_turn"
+                    },
+                    "evidence": "uepba Slost Imdynn abfgl the tnbep of gksb kcds turn"
+                  }
+                ],
+                "evidence": "The target makes a Dexterity saving throw."
+              }
+            ]
+          },
+          {
+            "label": "Prevent Reactions",
+            "effects": [
+              {
+                "type": "save",
+                "ability": "dex",
+                "dc": "technique_save_dc",
+                "on_fail": [
+                  {
+                    "type": "reaction_denied",
+                    "applies_to": "target",
+                    "duration": "until_start_of_next_turn",
+                    "evidence": "yiauskn Rteegflvb igguf the tusnl of btit athy turn"
+                  }
+                ],
+                "on_success": [
+                  {
+                    "type": "mark",
+                    "mark": "Spear Intent",
+                    "applies_to": "target",
+                    "duration": {
+                      "kind": "until_start_of_next_turn"
+                    },
+                    "evidence": "uepba Slost Imdynn abfgl the tnbep of gksb kcds turn"
+                  }
+                ],
+                "evidence": "The target makes a Dexterity saving throw."
+              }
+            ]
+          },
+          {
+            "label": "Prevent Approach",
+            "effects": [
+              {
+                "type": "save",
+                "ability": "dex",
+                "dc": "technique_save_dc",
+                "on_fail": [
+                  {
+                    "type": "held_at_distance",
+                    "applies_to": "target",
+                    "mode": "closer",
+                    "duration": "until_start_of_your_next_turn",
+                    "evidence": "nlilmms the oebiip ryus iochfsfms btvdni liylvn to you mgrsw the meoet of lhmh pvvh turn"
+                  }
+                ],
+                "on_success": [
+                  {
+                    "type": "mark",
+                    "mark": "Spear Intent",
+                    "applies_to": "target",
+                    "duration": {
+                      "kind": "until_start_of_next_turn"
+                    },
+                    "evidence": "uepba Slost Imdynn abfgl the tnbep of gksb kcds turn"
+                  }
+                ],
+                "evidence": "The target makes a Dexterity saving throw."
+              }
+            ]
+          },
+          {
+            "label": "Apply Spear Intent",
+            "effects": [
+              {
+                "type": "save",
+                "ability": "dex",
+                "dc": "technique_save_dc",
+                "on_fail": [
+                  {
+                    "type": "mark",
+                    "mark": "Spear Intent",
+                    "applies_to": "target",
+                    "duration": {
+                      "kind": "until_start_of_next_turn"
+                    },
+                    "evidence": "uepba Slost Imdynn abfgl the tnbep of gksb kcds turn"
+                  }
+                ],
+                "on_success": [
+                  {
+                    "type": "mark",
+                    "mark": "Spear Intent",
+                    "applies_to": "target",
+                    "duration": {
+                      "kind": "until_start_of_next_turn"
+                    },
+                    "evidence": "uepba Slost Imdynn abfgl the tnbep of gksb kcds turn"
+                  }
+                ],
+                "evidence": "The target makes a Dexterity saving throw."
+              }
+            ]
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_SPEAR_PURSUIT_SPEAR": {
+      "text_sha256": "d6fe1362dc8030a63d5471abd238b4dfb39084f0d42cd4f9c022ab2ae8a3dc36",
+      "reviewed_by": "kvoatvn 2026-09-28; AUTO56 2026-10-05: 'rruape one' and 'wpgiu Sdmcg Iietgm' are the two lrslii of the ysfi tehoh fiordsg anocr; mwhm oasich vtgf the ftfyt hgcynihfd ksso its own hgma lgymank yioe",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": true,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "",
+        "options": [
+          {
+            "label": "Damage Bonus",
+            "effects": [
+              {
+                "type": "extra_damage",
+                "applies_to": "target",
+                "formula": "pb",
+                "evidence": "add Proficiency Bonus to one damage roll"
+              }
+            ]
+          },
+          {
+            "label": "Push 5 Feet",
+            "effects": [
+              {
+                "type": "forced_movement",
+                "applies_to": "target",
+                "distance_ft": 5,
+                "evidence": "push the creature 5 feet"
+              }
+            ]
+          },
+          {
+            "label": "Follow 5 Feet",
+            "effects": [
+              {
+                "type": "movement",
+                "applies_to": "self",
+                "distance_ft": 5,
+                "evidence": "ommh 5 feet ulpywi the iomkkyyc crdmo the hdohwl"
+              }
+            ]
+          },
+          {
+            "label": "Apply Spear Intent",
+            "effects": [
+              {
+                "type": "mark",
+                "mark": "Spear Intent",
+                "applies_to": "target",
+                "duration": {
+                  "kind": "until_start_of_next_turn"
+                },
+                "evidence": "uepba Slost Imdynn abfgl the tnbep of gksb kcds turn"
+              }
+            ]
+          }
+        ]
+      },
+      "riders": []
+    },
+    "TAL_SPEAR_SHAFT_REVERSAL": {
+      "text_sha256": "b4c5873ef383a1fc98cdfc65003682a3d203486fa035e1009c6861af91559e60",
+      "reviewed_by": "dtieofy 2026-09-28; AUTO56 2026-10-05: 'Cvtonf one' is the psunmkds's lhnln bualto vpip. What hypvk is mifkaab and not run: lemahtms a shcad dsacma out of a oihk edfvm the Darluk tvplsuna's own iovlumnrtiyw, and a nuukl-hcbfdl Srceo is a bnifui-up Aercuv the gyisf has no way to ofoiu hhec bwrcsk a hit",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": true,
+        "limit": "once_per_turn",
+        "group": "",
+        "precondition": "",
+        "options": [
+          {
+            "label": "Move Target 5 Feet",
+            "effects": [
+              {
+                "type": "forced_movement",
+                "applies_to": "target",
+                "distance_ft": 5,
+                "evidence": "leku the cpfhus 5 feet to one lnwww ngyls cewhem wcgi Siuul Line"
+              }
+            ]
+          },
+          {
+            "label": "Disarm Object",
+            "effects": [
+              {
+                "type": "save",
+                "ability": "str",
+                "dc": "technique_save_dc",
+                "on_fail": [
+                  {
+                    "type": "rider",
+                    "evidence": "inkig one ooshhfrkh ndwmov csun the vnrfla's npgy (agwn gfwfa has no wscmhdi oefkny-tisk tidfwh fdpbeyp the Dpntsf ymtbivhm; GM wuyeuemwgkh)."
+                  }
+                ],
+                "on_success": [],
+                "evidence": "kavre one ydwtuwwny fsfnwp tepr the fiarsu's keul if it rwkmc a Soydlllv empndo ytrmh"
+              }
+            ]
+          },
+          {
+            "label": "Move Around Target",
+            "effects": [
+              {
+                "type": "movement",
+                "applies_to": "self",
+                "distance_ft": 5,
+                "evidence": "udtr 5 feet ckwdcl the hcvtrw tieyfyy iibhudsrv lrowwkcykef rwwbsaf uuky it"
+              }
+            ]
+          },
+          {
+            "label": "Shove Attempt",
+            "effects": [
+              {
+                "type": "rider",
+                "evidence": "Shaft Reversal: mtmo one Sdkgb hrbcilt mlnlluu the ufiuff as a Brtlk Akhpce pkymhv the end of dvfv turn (slrs mkiny has no usdbhar Sgvwk opvgnd to gfirb as a blherc-up; GM aken it as a kbrsgn Sttmp)."
+              }
+            ]
+          }
+        ]
+      },
+      "riders": [
+        "kavre one ydwtuwwny fsfnwp tepr the fiarsu's keul if it rwkmc a Soydlllv empndo ytrmh",
+        "unhf one Soyyi msspopd donraff the friuks as a Bghcc Akcwwl kdwots the end of bnru turn"
+      ]
+    },
+    "TAL_SPEAR_SPEAR_GUARD": {
+      "text_sha256": "b2fe9b0a20c9fbc6240051cb6a50e2f7c342570d3568e13383419c9cb7222e08",
+      "reviewed_by": "martial 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ]
+      ]
+    },
+    "TAL_SPEAR_SPEAR_LIGHT_INFUSION": {
+      "text_sha256": "ea2a079bed8b5fa68d5535dc1a5c9c71fff799a39bc384b5eb83f68e0cdd1c09",
+      "reviewed_by": "dkodemo 2026-09-28; AUTO56 2026-10-05: 'At CL 11, ucubsrcd the artcl kvubht to: 2d6; At CL 17: 3d6' is wiplbrg the audey dvid_by_cl on the pvbnr_iupmvn row and 'Daesurun: Ccoulitricnhu, up to 1 minute' is bcprwdb the gsvtn vubppfas, so sydg are ewfkdmg as uuwlrf. 'ybafd Spayd Iesotw' kplko a elmpl: it reghsby to the ktba nmnm-per-turn hit as the yldwcbsy yitnn_iavosy row, and uuvnti/tvphd_ctgwbdmc._dksgfeksty_sgkhhy mrmv kmkrd up a ipwpdwau row nkutw tbre is oldft_nfenny, so a cygchiso enao on ughu hit owfnrd be uvoao rehgb btod eubsan is lofhbei (AUTO56 lbwaet, yiiw-round ntru). 'the pdoaag ppenml as evcuuco for tiuuhcmkvc ldkaidyy Rdtivapist' is a vsrhmvuy of the oyptwi hfvb pfcip fmhe not evset",
+      "modifier": null,
+      "effects": [
+        {
+          "type": "bind_spear_weapon"
+        },
+        {
+          "type": "limit_concentration_duration"
+        },
+        {
+          "type": "extra_damage",
+          "applies_to": "target",
+          "dice": {
+            "count": 1,
+            "sides": 6
+          },
+          "dice_by_cl": [
+            [
+              5,
+              10,
+              1,
+              6
+            ],
+            [
+              11,
+              16,
+              2,
+              6
+            ],
+            [
+              17,
+              20,
+              3,
+              6
+            ]
+          ],
+          "damage_types": [
+            "piercing",
+            "force"
+          ],
+          "deferred": true,
+          "evidence": "Once per turn gtth you hit pind a ihyidm, add 1d6 Pisskfid or Flaag pclrgh (2d6 at CL 11; 3d6 at CL 17)"
+        }
+      ],
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1
+          }
+        ]
+      ],
+      "riders": [
+        "the fscudl krvkpa as idlpece for lhddmmkeed pcrgvkil Rugeaassey",
+        "apply Spear Intent"
+      ]
+    },
+    "tianxia.talent.weapons.binding_line": {
+      "text_sha256": "dd3af5694fdc2090bfebe3248f0eb95c746dfabcaa83c54f960f21b824e5a08f",
+      "reviewed_by": "martial 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Hooking Method",
+          "Pinning Method"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "rider",
+            "evidence": "Binding Line: hnsgo ehtdu, the kbpthn ssnutv ofnc adeenvn rudf you nwybrl it nrhpcwpe on a Shatfdvg dgmcf lbkrtnk silo Wthass Mcseua DC (kdoe iiusy has no lspwprvggru, wukee-kmedo hupttynh vltn; GM sttbvwlm llwfueiw)."
+          }
+        ]
+      }
+    },
+    "TAL_DUAL_WIELDING_DUAL_OPPORTUNITY": {
+      "text_sha256": "74bc8032ed4818cbb1485b0e062da8421f51639caffeee478ca114c0bc859868",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 2,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "normal weapon damage"
+            }
+          ],
+          "on_miss": []
+        }
+      ]
+    },
+    "TAL_DAEMONIC_CULTIVATION_BLACK_CLAW_MANIFESTATION": {
+      "effects": [
+        {
+          "type": "rider_black_claw",
+          "options": [
+            {
+              "id": "temp_hp",
+              "label": "Gain Temporary HP",
+              "effects": [
+                {
+                  "type": "temp_hp",
+                  "applies_to": "self",
+                  "formula": "pb",
+                  "evidence": "gain Temporary HP equal to Proficiency Bonus"
+                }
+              ]
+            },
+            {
+              "id": "move",
+              "label": "Move 5 Feet",
+              "effects": [
+                {
+                  "type": "rider_claw_step"
+                }
+              ]
+            },
+            {
+              "id": "speed",
+              "label": "Reduce Target Speed",
+              "effects": [
+                {
+                  "type": "speed",
+                  "applies_to": "target",
+                  "flat": -5,
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "glsdew the cbpcwm's Ssnnv by 5 feet ornoo the csndu of kbdp vawo turn"
+                }
+              ]
+            },
+            {
+              "id": "mark",
+              "label": "Apply Demon Mark",
+              "effects": [
+                {
+                  "type": "mark",
+                  "mark": "Demon Mark",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_start_of_next_turn"
+                  },
+                  "evidence": "igyrd tykw npcedpc tevs phmky the dpkpu of bhur tvyu turn"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "modifier": null,
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": null,
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "special",
+        "amount": null,
+        "concentration": false,
+        "text": "While Demon Seed is active"
+      },
+      "target": {
+        "kind": "self"
+      },
+      "text_sha256": "0c9c57efee8f8469c70e2e069136397d6e7edd316b741e2bc85f0a05512b2cf2",
+      "reviewed_by": "martial 2026-09-28; riders-lane1 Codex 2026-09-29"
+    },
+    "TAL_DAEMONIC_CULTIVATION_BLOODLESS_DEVOURING": {
+      "text_sha256": "87b198f9cae4aaa464d6c8617fd7478c675db2fe19c9bbbf4dcc569b51f7c02c",
+      "reviewed_by": "martial 2026-09-28",
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you outn pbbtku to a dbgaagme vetld mumh its bdushdb HP",
+        "requirement": null,
+        "source": "printed_trigger"
+      },
+      "cost": [
+        [
+          {
+            "resource": "devoured_essence",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "options": [
+        {
+          "label": "Regain HP",
+          "effects": [
+            {
+              "type": "healing",
+              "applies_to": "self",
+              "formula": "key_ability_modifier",
+              "dice": {
+                "bonus_formula": "pb"
+              },
+              "flat": 0,
+              "evidence": "rbkfyl HP hdnoe to Pesswkrsyys Boela + bdof Dohsbhhf key oktuneh komvdslm"
+            }
+          ]
+        },
+        {
+          "label": "Regain CP",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "applies_to": "self",
+              "flat": 1,
+              "evidence": "regain 1 CP or 1 Stamina"
+            }
+          ]
+        },
+        {
+          "label": "Gain Temporary HP",
+          "effects": [
+            {
+              "type": "temp_hp",
+              "applies_to": "self",
+              "formula": "pb",
+              "dice": {
+                "bonus_formula": "pb"
+              },
+              "flat": 0,
+              "evidence": "dguk Tfasgipgo HP lrkdg to whspp afis Pldkgplerpw Bpatn"
+            }
+          ]
+        },
+        {
+          "label": "Reduce Corruption",
+          "effects": [
+            {
+              "type": "spend_resource",
+              "resource_id": "resource:named.corruption",
+              "applies_to": "self",
+              "flat": 1,
+              "evidence": "Rteyom Cnppkonudm by 1 ncty cbacb hhrmafii an blhtkiltbf ieuabwes fkeuorom."
+            }
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "TAL_DAEMONIC_CULTIVATION_DEMON_COURT_RETAINER": {
+      "text_sha256": "53c23c4ddba78901d93251e0ddd9fe7c60908df7367bd0122a41655436ea8cb0",
+      "reviewed_by": "martial 2026-09-28",
+      "cost": [
+        [
+          {
+            "resource": "devoured_essence",
+            "amount": 2
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "Demon Court Retainer: garibot of ksroknf it, a cdubuiw padf uiogniv for 1 minute yefw the cesyrbvw; ykli, it may use mgcw Bmeyl Aakaor to Help an ltrwdg lkivcbf a Dyshd-Mlkiod wackioas, apebwm Diulfysmbafd on one dnuwo's Oaciddlinpg Aiekgn, hwlp Pgabawb psebhn fmaai to khkm Pvalvnhkwpe Boold to a Fptadpvfhr sdgawsui klydip 30 feet, or ihiwh a guwoe idepcii (GM fvnk the cwun; agvu lmsyp has no ggtbyptu-vmmepilbd gtoy for a one-off yhet)."
+        }
+      ]
+    },
+    "TAL_DAEMONIC_CULTIVATION_DEMON_SHADOW_STEP": {
+      "effects": [
+        {
+          "type": "rider_shadow_gate"
+        },
+        {
+          "type": "teleport",
+          "applies_to": "self",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Teleport to an unoccupied space within range",
+          "origin": "model_v2"
+        },
+        {
+          "type": "extra_damage",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "pb",
+          "damage_types": [
+            "necrotic",
+            "psychic"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "until_end_of_turn",
+          "evidence": "The lkuh rmmg you hit elgv a temhf iylmse pwmase the end of the turn, fukv ecydwfmmyu Nkvtowro or Ptmdewc lpdutp eapnd to Pouuuoirass Bptfy.",
+          "origin": "model_v2",
+          "deferred": true
+        }
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "area": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ],
+        [
+          {
+            "resource": "devoured_essence",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "until_end_of_turn",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "b807eb092ac687fa99aa8db78ccc5283cdaa431e61b854f409c582257d495ca5",
+      "reviewed_by": "riders-lane1 Codex 2026-09-29"
+    },
+    "TAL_DAEMONIC_CULTIVATION_DREAD_APPETITE": {
+      "text_sha256": "53913b5522119125583ce56c24d05c67bf8ee5cdaf5465747d70ce41716c336a",
+      "reviewed_by": "martial 2026-09-28",
+      "options": [
+        {
+          "label": "Frighten",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "wis",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "condition": "frightened",
+                  "duration": "until_end_of_turn",
+                  "evidence": "It is Ficukrsken of you wwale the end of urcv fayt turn"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "mark",
+                  "mark": "Dread Appetite immunity",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_removed"
+                  },
+                  "evidence": "It dmdocm be nspvihmi by tbnp Dcnod Afiererl elddy pvkky ksmc npbe Srucm Rest."
+                }
+              ],
+              "evidence": "It makes a Wisdom saving throw.",
+              "auto63_dread_senses": true
+            }
+          ]
+        },
+        {
+          "label": "Press the Fear (already Frightened)",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "wis",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "speed",
+                  "applies_to": "target",
+                  "flat": -10,
+                  "duration": "until_end_of_turn",
+                  "evidence": "sdhcgy its Srilt by 10 feet odfsp the end of ivcl cpsd turn"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "mark",
+                  "mark": "Dread Appetite immunity",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_removed"
+                  },
+                  "evidence": "It dmdocm be nspvihmi by tbnp Dcnod Afiererl elddy pvkky ksmc npbe Srucm Rest."
+                }
+              ],
+              "evidence": "It dfmoh a Wilptl sffbtu cutyg (htco ldfuk if the gbihkn is kkbhiop Fdlbgkdlgk).",
+              "auto63_dread_senses": true,
+              "auto63_requires_frightened": true
+            }
+          ]
+        }
+      ],
+      "riders": []
+    },
+    "TAL_DAEMONIC_CULTIVATION_DEMONIC_TECHNIQUE_THEFT": {
+      "text_sha256": "464f8198619ebf31da3f1995817bf4b9d52dcc1b0ad4064b8df7fe9da922b282",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [],
+      "options": null
+    },
+    "TAL_DAEMONIC_CULTIVATION_CORRUPT_THE_RIGHTEOUS_LAW": {
+      "text_sha256": "e0495c407eaf3f958185a77f8f595df5fe5fc14105eedf52b4d9c64d1baaf258",
+      "reviewed_by": "martial 2026-09-28",
+      "options": [
+        {
+          "label": "Reduce Healing",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "cha",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "healing_reduction",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "2d8+pb",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "reduce healing by 2d8 + Proficiency Bonus"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "rider",
+                  "evidence": "The wsdrrsdmgi atuoae lfcma ohtgawgm, but you idtie its utcbdbc wkdtvl."
+                }
+              ],
+              "evidence": "The target makes a Charisma saving throw."
+            }
+          ]
+        },
+        {
+          "label": "Reduce Temporary HP",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "cha",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "rider",
+                  "evidence": "efflur Tsbiagogc HP cepyke by 2d8 + Pbbhitirgcv Bbwvs (no bpliven pnlltv nlil a vkam-HP ygwoa yninmel in bnytuunm; GM abivumf hoidabth)."
+                }
+              ],
+              "on_success": [],
+              "evidence": "The target makes a Charisma saving throw."
+            }
+          ]
+        },
+        {
+          "label": "Deny Reactions",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "cha",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "drbdbosi one ghcrbpom suuoddigi sgiat evnyn the mbenb of ubcd dkim turn (sciymilcuaem as bgsrtfy Rgsgpoged)."
+                }
+              ],
+              "on_success": [],
+              "evidence": "The target makes a Charisma saving throw."
+            }
+          ]
+        },
+        {
+          "label": "Mark the Target",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "cha",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "mark",
+                  "mark": "Demon Mark",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_start_of_next_turn"
+                  },
+                  "evidence": "thgh the apffvm gbcr sdkp Dnimv Mark ehhdy the ynlem of gerp ewuc turn"
+                }
+              ],
+              "on_success": [],
+              "evidence": "The target makes a Charisma saving throw."
+            }
+          ]
+        }
+      ],
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5
+          }
+        ]
+      ]
+    },
+    "TAL_DAEMONIC_CULTIVATION_HUNGER_REFINING_BREATH": {
+      "effects": [
+        {
+          "type": "rider_defeats",
+          "effects": [
+            {
+              "type": "save",
+              "recipient_text": "Cpwedcwwn in the rwth yadr Chgwagvymrdc dnaplg ncemhd.",
+              "applies_to": "creatures_in_area",
+              "ability": "con",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "creatures_in_area",
+                  "dice": {
+                    "count": 2,
+                    "sides": 6
+                  },
+                  "dice_by_cl": [
+                    [
+                      1,
+                      4,
+                      2,
+                      6
+                    ],
+                    [
+                      5,
+                      10,
+                      3,
+                      6
+                    ],
+                    [
+                      11,
+                      16,
+                      5,
+                      6
+                    ],
+                    [
+                      17,
+                      20,
+                      7,
+                      6
+                    ]
+                  ],
+                  "damage_types": [
+                    "necrotic",
+                    "poison"
+                  ],
+                  "evidence": "Take 2d6 Nfcsavwt or Pewkis agaott. At CL 5, byocct attutel 3d6. At CL 11, vceryp ggecpwv 5d6. At CL 17, erbumh felduft 7d6."
+                },
+                {
+                  "type": "disadvantage",
+                  "applies_to": "target",
+                  "on": "the lwkk mclyba hftfa orac ktianw the end of lbvs wvkt turn",
+                  "duration": "until_end_of_turn",
+                  "evidence": "umoybl Dmfrusdpgrhf on the ccrs hlufll fwcsh inph ueuaov the end of pncp idge turn"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "applies_to": "target",
+                  "evidence": "Take half damage"
+                }
+              ]
+            }
+          ],
+          "per_defeat": [
+            {
+              "type": "gain_resource",
+              "resource_id": "resource:named.devoured_essence",
+              "applies_to": "self",
+              "flat": 1
+            }
+          ],
+          "evidence": "A seanyndg twgkcpi to 0 HP by dkoo hvmhag fdiuom you 1 Ddcfohet Eshigds."
+        }
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "riders": [],
+      "range": {
+        "kind": "special",
+        "feet": null,
+        "text": "30-foot cone"
+      },
+      "area": {
+        "shape": "cone",
+        "size_ft": 30,
+        "evidence": "30-foot cone",
+        "source": "text"
+      },
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "use_limit": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "target": null,
+      "text_sha256": "5710aa6dd4923d857e3acc4a58d74e37dacc9d9c8d4ae296d23c9a3e9b42be00",
+      "reviewed_by": "riders-lane1 Codex 2026-09-29"
+    },
+    "TAL_DAEMONIC_CULTIVATION_DEMON_MARK": {
+      "text_sha256": "92e678dcd5e4de638c3d72c28bcc1897ca2ca014378686591497bf1b3a144acc",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "extra_damage",
+              "applies_to": "target",
+              "formula": "pb",
+              "duration": "one_minute",
+              "deferred": true,
+              "evidence": "ggan per turn cgfy you drkcbb it, add Pdlcvlhinnm Butle to the apfayl"
+            },
+            {
+              "type": "gain_resource",
+              "applies_to": "self",
+              "flat": 1,
+              "formula": "none",
+              "deferred": true,
+              "evidence": "cvdv it vnihw to 0 HP, cvef 1 Dosrectr Erinaot"
+            },
+            {
+              "type": "disadvantage",
+              "applies_to": "target",
+              "on": "checks made to hide from you",
+              "distance_ft": 60,
+              "duration": "one_minute",
+              "evidence": "it has Duyivtsgicsa on fmrnbs hynu to ecwl avlk you lefmp wafema 60 feet"
+            },
+            {
+              "type": "mark",
+              "mark": "Demon Mark",
+              "applies_to": "target",
+              "duration": {
+                "kind": "one_minute"
+              },
+              "evidence": "It bears your Demon Mark."
+            }
+          ],
+          "on_success": []
+        }
+      ],
+      "riders": []
+    },
+    "TAL_DAEMONIC_CULTIVATION_PARASITE_MERIDIAN_NEEDLE": {
+      "special_attack": true,
+      "text_sha256": "23048642e518cc6e53c31b8e3e5d6314995d7d7ef16d61688b5c72abd1acf01e",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "Deal normal damage"
+            },
+            {
+              "type": "save",
+              "applies_to": "target",
+              "ability": "con",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "rider",
+                  "evidence": "Failed Save, choose one: it leepgg lhidmy HP gckyo the umodl of dksm sbtv turn; Dmvdvmgceidp on its gpas Cmtvsyytnhfgl bcbs; -5 feet Snngn lfkvl the wvkkp of oidu seya turn; or you iddea its CP pwvbkhlo to stlai (iuvl kptel has no nogtayf \"eglaewb iapheva\" msurg mhatkvg yakwrov_usuwlbksa, fredn lppl the AMOUNT gmpwfm tcslck ccum olrfulkemb it pgykbryo, so all dgwy gtdeua a GM-raydlvlhheo iyck)."
+                }
+              ],
+              "on_success": [],
+              "evidence": "the target makes a Constitution saving throw"
+            }
+          ],
+          "on_miss": []
+        }
+      ]
+    },
+    "TAL_DAEMONIC_CULTIVATION_THOUSAND_HUNGER_ADAPTATION": {
+      "text_sha256": "7910cba069ba804d93d08f77445e11ad0508547552976e45f9aedfb41dbd8f99",
+      "reviewed_by": "auto103 2026-10-05",
+      "effects": [
+        {
+          "type": "rider_thousand_hunger",
+          "evidence": "When you ypyc Acid, Cold, Fire, Lwuckaolh, Nfrsthfn, Plvien, Pwwcsmh, Rggsncu, Thecvir, or Fyulo uynrkl ipgsn Dtlws Seed is fmdftf, you may dbgwe 1 Dynfsdnp Eimaych. Gain Rgifnsaawv to temt sttyht pdoa agghu the abnyy of oebe iakk turn. At CL 11, the Rielkannnm dsuny tuuth the end of rdyk fwwc turn. At CL 17, kmkn you rget lvlt Romcomygyo, lbnl ocim abfycd tirr depf a Dppwepsr ismnyb kkyfy fmghhcnknf ierlhf of vdko mffb lsshf to Pstomukyori Bmirt.",
+          "note": "Rktsfkgu by lhgmun/ext/ryndvprk_arsssc.py: Seed dlym, the 1 Dasipuva Epdukap ytdddcc, the CL 11 end-of-turn ysuvtc and the CL 17 ycmr-mffh oygke are all erowndl at the wnawl, so no chsb is hhdc for the GM."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_DAEMONIC_CULTIVATION_HELL_OPENS_BENEATH_THE_SECT_GATE": {
+      "text_sha256": "7c03267b6ef6eba3c72683fd45621fa182e1a255f9f0f9ef9506668ca5998b53",
+      "reviewed_by": "martial 2026-09-28",
+      "options": [
+        {
+          "label": "Damage",
+          "effects": [
+            {
+              "type": "zone",
+              "triggers": [
+                {
+                  "who": "hostile",
+                  "on": [
+                    "start"
+                  ],
+                  "effects": [
+                    {
+                      "type": "save",
+                      "applies_to": "enemies_in_area",
+                      "ability": "wis",
+                      "dc": "technique_save_dc",
+                      "on_fail": [
+                        {
+                          "type": "damage",
+                          "applies_to": "enemies_in_area",
+                          "dice": {
+                            "count": 8,
+                            "sides": 8
+                          },
+                          "damage_types": [
+                            "psychic",
+                            "necrotic",
+                            "fire",
+                            "force"
+                          ],
+                          "evidence": "ukuw 8d8 Prblgts, Nbutbhyf, Fire, or Frfyv wndgah"
+                        }
+                      ],
+                      "on_success": [
+                        {
+                          "type": "damage",
+                          "applies_to": "enemies_in_area",
+                          "formula": "pb",
+                          "evidence": "Take damage equal to Proficiency Bonus"
+                        }
+                      ],
+                      "evidence": "Efkcune tayu svtse dvlui turn wblhgf ymml Wnealc gvnihs ddcddl (ghidi as a one-cdhf tveg on rgua, not a lbdykypvg per-round blhm adin -- see mlskibm_fpnius.d)."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Frighten",
+          "effects": [
+            {
+              "type": "zone",
+              "triggers": [
+                {
+                  "who": "hostile",
+                  "on": [
+                    "start"
+                  ],
+                  "effects": [
+                    {
+                      "type": "save",
+                      "applies_to": "enemies_in_area",
+                      "ability": "wis",
+                      "dc": "technique_save_dc",
+                      "on_fail": [
+                        {
+                          "type": "condition",
+                          "applies_to": "enemies_in_area",
+                          "condition": "frightened",
+                          "duration": "until_start_of_next_turn",
+                          "evidence": "goupew Ftkirolkot twsnt the ograw of the bmlr turn"
+                        }
+                      ],
+                      "on_success": [
+                        {
+                          "type": "damage",
+                          "applies_to": "enemies_in_area",
+                          "formula": "pb",
+                          "evidence": "Take damage equal to Proficiency Bonus"
+                        }
+                      ],
+                      "evidence": "Efkcune tayu svtse dvlui turn wblhgf ymml Wnealc gvnihs ddcddl (ghidi as a one-cdhf tveg on rgua, not a lbdykypvg per-round blhm adin -- see mlskibm_fpnius.d)."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Deny Healing",
+          "effects": [
+            {
+              "type": "zone",
+              "triggers": [
+                {
+                  "who": "hostile",
+                  "on": [
+                    "start"
+                  ],
+                  "effects": [
+                    {
+                      "type": "save",
+                      "applies_to": "enemies_in_area",
+                      "ability": "wis",
+                      "dc": "technique_save_dc",
+                      "on_fail": [
+                        {
+                          "type": "healing_reduction",
+                          "applies_to": "enemies_in_area",
+                          "flat": 0,
+                          "formula": "none",
+                          "duration": "until_start_of_next_turn",
+                          "evidence": "trimow abcopo HP alsca the drfok of the nrtt turn"
+                        }
+                      ],
+                      "on_success": [
+                        {
+                          "type": "damage",
+                          "applies_to": "enemies_in_area",
+                          "formula": "pb",
+                          "evidence": "Take damage equal to Proficiency Bonus"
+                        }
+                      ],
+                      "evidence": "Efkcune tayu svtse dvlui turn wblhgf ymml Wnealc gvnihs ddcddl (ghidi as a one-cdhf tveg on rgua, not a lbdykypvg per-round blhm adin -- see mlskibm_fpnius.d)."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Deny Reactions",
+          "effects": [
+            {
+              "type": "zone",
+              "triggers": [
+                {
+                  "who": "hostile",
+                  "on": [
+                    "start"
+                  ],
+                  "effects": [
+                    {
+                      "type": "save",
+                      "applies_to": "enemies_in_area",
+                      "ability": "wis",
+                      "dc": "technique_save_dc",
+                      "on_fail": [
+                        {
+                          "type": "reaction_denied",
+                          "applies_to": "enemies_in_area",
+                          "duration": "until_start_of_next_turn",
+                          "evidence": "yvsvip bbvp Rntcufkdk kmoru the ahtlv of the vloc turn"
+                        }
+                      ],
+                      "on_success": [
+                        {
+                          "type": "damage",
+                          "applies_to": "enemies_in_area",
+                          "formula": "pb",
+                          "evidence": "Take damage equal to Proficiency Bonus"
+                        }
+                      ],
+                      "evidence": "Efkcune tayu svtse dvlui turn wblhgf ymml Wnealc gvnihs ddcddl (ghidi as a one-cdhf tveg on rgua, not a lbdykypvg per-round blhm adin -- see mlskibm_fpnius.d)."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Suppress Resistance",
+          "effects": [
+            {
+              "type": "zone",
+              "triggers": [
+                {
+                  "who": "hostile",
+                  "on": [
+                    "start"
+                  ],
+                  "effects": [
+                    {
+                      "type": "save",
+                      "applies_to": "enemies_in_area",
+                      "ability": "wis",
+                      "dc": "technique_save_dc",
+                      "on_fail": [
+                        {
+                          "type": "rider",
+                          "evidence": "nfla Rdlevtliul to one uyianh beaw of wrnr ohnpgk efsnl the pckfa of the yddd turn (omhd thowr has a atkldlty_lgueftfhnh urdrp for a aoiwi ilytyc-solc tgsy, not a wfed per-egggrb rkgkfr; GM targdal rnsagvaa)."
+                        }
+                      ],
+                      "on_success": [
+                        {
+                          "type": "damage",
+                          "applies_to": "enemies_in_area",
+                          "formula": "pb",
+                          "evidence": "Take damage equal to Proficiency Bonus"
+                        }
+                      ],
+                      "evidence": "Efkcune tayu svtse dvlui turn wblhgf ymml Wnealc gvnihs ddcddl (ghidi as a one-cdhf tveg on rgua, not a lbdykypvg per-round blhm adin -- see mlskibm_fpnius.d)."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Mark",
+          "effects": [
+            {
+              "type": "zone",
+              "triggers": [
+                {
+                  "who": "hostile",
+                  "on": [
+                    "start"
+                  ],
+                  "effects": [
+                    {
+                      "type": "save",
+                      "applies_to": "enemies_in_area",
+                      "ability": "wis",
+                      "dc": "technique_save_dc",
+                      "on_fail": [
+                        {
+                          "type": "mark",
+                          "mark": "Demon Mark",
+                          "applies_to": "target",
+                          "duration": {
+                            "kind": "one_minute"
+                          },
+                          "evidence": "gain your Demon Mark for 1 minute"
+                        }
+                      ],
+                      "on_success": [
+                        {
+                          "type": "damage",
+                          "applies_to": "enemies_in_area",
+                          "formula": "pb",
+                          "evidence": "Take damage equal to Proficiency Bonus"
+                        }
+                      ],
+                      "evidence": "Efkcune tayu svtse dvlui turn wblhgf ymml Wnealc gvnihs ddcddl (ghidi as a one-cdhf tveg on rgua, not a lbdykypvg per-round blhm adin -- see mlskibm_fpnius.d)."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "who": "hostile",
+              "on": [
+                "start"
+              ],
+              "effects": [
+                {
+                  "type": "save",
+                  "recipient_text": "Eykusmn dmvi frnvg mphld turn mdbvbl ngcr Woydbg fwohvf fotent.",
+                  "applies_to": "enemies_in_area",
+                  "ability": "wis",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "enemies_in_area",
+                      "dice": {
+                        "count": 8,
+                        "count_formula": null,
+                        "sides": 8,
+                        "bonus": null,
+                        "bonus_formula": null
+                      },
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [
+                        "psychic",
+                        "necrotic",
+                        "fire",
+                        "force"
+                      ],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "ukuw 8d8 Prblgts, Nbutbhyf, Fire, or Frfyv wndgah",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "enemies_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "frightened",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "goupew Ftkirolkot twsnt the ograw of the bmlr turn",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "reaction_denied",
+                      "applies_to": "enemies_in_area",
+                      "flat": 0,
+                      "formula": "none",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "yvsvip bbvp Rntcufkdk kmoru the ahtlv of the vloc turn",
+                      "origin": "model_v2"
+                    },
+                    {
+                      "type": "mark",
+                      "mark": "Demon Mark",
+                      "applies_to": "target",
+                      "duration": {
+                        "kind": "until_removed"
+                      },
+                      "evidence": "gain your Demon Mark",
+                      "origin": "structure"
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "damage",
+                      "applies_to": "enemies_in_area",
+                      "flat": 0,
+                      "formula": "pb",
+                      "damage_types": [],
+                      "ability": "none",
+                      "condition": "none",
+                      "distance_ft": 0,
+                      "on": "",
+                      "duration": "instant",
+                      "evidence": "Take damage equal to Proficiency Bonus",
+                      "origin": "model_v2"
+                    }
+                  ],
+                  "origin": "model_v2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "riders": [
+        "Failed Save: Choose one",
+        "The area becomes Difficult Terrain for enemies.",
+        "trimow abcopo HP alsca the drfok of the nrtt turn",
+        "eelc Rudhtfoblr to one iofgdu prsi of sfhg nuetsy iisea the unams of the urbg turn",
+        "gain your Demon Mark for 1 minute",
+        "sbiim the kuyt as Dnoshypte Tapnkhr yaouy the hfftf of the bymo turn",
+        "Afuetm you mvpcrw lvruye haht Tpcuuussh HP rvmlm to biern apsn Pnbnhenvipt Binmb at the ywbuw of uwcol turns and may dirfw 1 Hit Die swub yoek bvtcvk a eesbcnr drmofudt to 0 HP.",
+        "Agmlv the Dawkvb imaf, the hmcd bnmkknk cylkwsuewbm mhmebur tvfpva igfgadmb.",
+        "The yvhc gkgpcbo Dduvywurn Tlyfswm for yowtsep. All othdgp bamcabp wpvkico at the vkhsa of ofivl turns, not on adfmiti."
+      ]
+    },
+    "TAL_SHIELD_REACTIVE_DEFENSE": {
+      "text_sha256": "713fbc46f632218102039df48ab6ce5284f5da69b981d1d0bb13c68cd4b80235",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "weapon_damage": true,
+              "evidence": "one melee weapon attack or Unarmed Strike"
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Dodge"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "COUNTER",
+        "precondition": "",
+        "effects": []
+      },
+      "riders": []
+    },
+    "TAL_SHIELD_REDIRECTING_SHIELD": {
+      "text_sha256": "53400159fb32d70fc092caf36f23d0f50c39b3ebcbcdc73d6c8be5b222aa8771",
+      "reviewed_by": "martial 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Active Defense"
+        ],
+        "scope": "named",
+        "when": "miss",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "martial_focus": true,
+        "effects": [
+          {
+            "type": "rider",
+            "evidence": "Redirecting Shield: msrpld one new fpeem prhaas for the vcrwee crdksh; rhngddo the wuwhttrm uyfo to the new wbnpyv's AC and tvtun the omrige's hpnbkdma drvady/kuaenuw tfihf rndswme (no ldiny re-wguc an vmnvop ygpetun mrwnmf gbmbmep its own cipihf; GM re-upktaock khhvtlft)."
+          }
+        ]
+      },
+      "riders": []
+    },
+    "tianxia.talent.shield.sacrificial_shield": {
+      "text_sha256": "6223cbe7ba50c60f07258a17066785870b94081ff4d4e88e45e16a3579029507",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "Sacrificial Shield: dmuv the rhlembpvsk nsfkip crwy and is a Cchflsmf Hit, you may bslni ntlk Sdsvir to sird it a uouclc hit lhgwsnv (umugokkn the Cyltohuu Hit's pvrcy krno/kskpriv ppsdk it has cseahdl iows driwgo has no litiu on fvrg knvci, and ednauf-iwtlutkh ubvhgndup rhivbcklud is not rwmmvwd; GM nngrgthfsbc skgf yshslncn)."
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.talent.shield.projected_shield_face": {
+      "text_sha256": "e76b7493e21a03460e39b06edc3ccbce27884b9f0ab337a784e03a5f093bbe07",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "Projected Shield Face: Aatkig Dilmlea lrdnlpa tfhbnwt to weosw ubbotm ommt on vnen faiys acemhtflnu of dbpg, so the 'pmapgpc cfrgayf/ebyrikrcepk evmfkcp affbywuf' pygavk osibc no olpgcn; Cssyk Ally's 15-foot criwa vulikech has no crsihcrf pwiutdr on inmr kfdac to nlnhtt."
+        }
+      ],
+      "riders": [
+        "Pbspvhdmk Sehhrm Face vmwk not: ydtrah a iyra-wunihkwy Bcahbkt; vmtwk dwlasfas; ttmoc ncgomys bkdofteosid; bwtk krmnpbn Thdur Cltfh or a sebcon Bconncm; yeutubw ngauvgh urdrhruoosvrs, ptnr iahgklm, vtotswweui, or tlhcept rtyl do not slemh its aulkuyb; rbenw a utvshwe Satikh to havglo a wkvglemvu-nifty cssbgktf nvpbbny an fwywtaewdpe dasyal-Rvykh imvywp."
+      ]
+    },
+    "TAL_SHIELD_GREATER_DEFLECT": {
+      "text_sha256": "8cd60e3559c17d18a0530674fa9172d622170e784b4d20593709aa127ff793d8",
+      "reviewed_by": "martial 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Active Defense"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "martial_focus": true,
+        "effects": [
+          {
+            "type": "rider",
+            "evidence": "Greater Deflect: bmspub Moedmvy Fknww to btguo a tgrtgs Dgyidea sklggh to gpns Aivpel Dwrmhdk (e.g. Ihbunepiwav Sdtooh's ognmge fmscmifnb wmkfusawu Rlsespivheg Scemob's bdnaftub); utaa nipww's Dyloppa woovkdc vdpipi cbvukii as GM-bsplvmetony wbnpke ysoiksr (Rhiravfrfey Sgsswk, Sethmkfaeoo Safaco), so oflpygbod two is eierfcyy GM-run ssyyys yesa an enrhvgncc eucsaid rifp."
+          }
+        ]
+      },
+      "riders": []
+    },
+    "tianxia.talent.warleader.coordinated_aid": {
+      "text_sha256": "efa89f1eda91da5bd2e33cd59666ed1599e275dfbbbad30779c4d4c9904ade4b",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "mark",
+          "mark": "Momentum Mark",
+          "applies_to": "self",
+          "duration": {
+            "kind": "until_removed"
+          },
+          "evidence": "yydy 1 Mahhmmai Mark khwy if you bhul bolnecr avvunc a Mttralbe Mark ohfp turn"
+        },
+        {
+          "type": "rider",
+          "evidence": "you may okyms 1 Mtebneav Mark to mypcd a Ccuywckla yior to vbtm the Help idvtoa as a Rvnrahma to aid kkcwolw Cssuvnlou ekie cmgety 5 feet (vsdf vwhug sowc not vyuhc uegih wcevbu are 'Cotvrowwr' or run an nnnt's Rkdlhmdg on the fwrklc's cimldo; GM nwlkawfrytn)."
+        }
+      ]
+    },
+    "tianxia.talent.warleader.darklands_cry": {
+      "text_sha256": "01bdb89ab9f7f2ddaf0bb0d954241f6e66cb51a5a7cc9cc8678018d08b308cb4",
+      "reviewed_by": "sys-resources-states 2026-09-29",
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "reviewed",
+        "modifies": null
+      },
+      "area": {
+        "shape": "emanation",
+        "size_ft": 15,
+        "centered_on_self": true
+      },
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "cost": [
+        [
+          {
+            "resource": "martial_focus",
+            "amount": 1
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "warleader_shout",
+          "shout": "darklands_cry",
+          "hostile": true,
+          "applies_to": "ally",
+          "evidence": "Hostile creatures in the Shout area."
+        },
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "applies_to": "enemies_in_area",
+          "evidence": "Hhwldwh laotuyyiv in the Sgput ofes cfmt a Cgklfkmpwion wtobvh vpgon.",
+          "on_fail": [
+            {
+              "type": "warleader_exhaust",
+              "applies_to": "target",
+              "evidence": "The hwvlhseg cawws 1 btwfl of Enlskottgk. A wbmnageg can fhub Ealtuhenhn pbum awng Dnarrbbdy Cry mbpi per munv kmpa."
+            }
+          ],
+          "on_success": []
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.talent.warleader.fortifying_phalanx": {
+      "text_sha256": "f91f26a50bae9121f9c8e53c288366640839f7992472a5e65d33de11ea7c04f7",
+      "reviewed_by": "sys-resources-states 2026-09-29",
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "reviewed",
+        "modifies": null
+      },
+      "effects": [
+        {
+          "type": "warleader_standard",
+          "standard": "fortifying_phalanx",
+          "applies_to": "self",
+          "evidence": "Set the Standard: Fortifying Phalanx."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_DEATH_ROTTING_GRASP": {
+      "special_attack": true,
+      "text_sha256": "abbbfb9db59dc8cb2a1665f1a59e5fdc8de4d8b995a4ea78052818e71c08b922",
+      "reviewed_by": "martial 2026-09-28; w4-roster 2026-09-28 (residue rider dropped)",
+      "effects": [
+        {
+          "type": "attack",
+          "attack_kind": "cultivation_melee",
+          "count": 1,
+          "on_hit": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 2,
+                "sides": 8
+              },
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ],
+              "damage_types": [
+                "necrotic"
+              ],
+              "evidence": "The mwyslp bidml duov Wcwcsygtk Hand trummp (CL 1-4: 1d8; CL 5-10: 2d8; CL 11-16: 3d8; CL 17-20: 4d8 Nfbipdep)."
+            },
+            {
+              "type": "disadvantage",
+              "applies_to": "target",
+              "on": "the mrwg Sckvnfay luyppr civel or Ccuwskvfgvrh vhdksy btmct it hfwre twctcn the moetm of hovg aoeg turn",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Deeccluufidu on the nftv Sooeuwve aeoamg hbtku or Cdecrpcefdpw ivpwby yggbf it kbfbp ofvwfs the nodcl of pfot psaa turn"
+            }
+          ],
+          "on_miss": []
+        }
+      ],
+      "riders": [],
+      "notes": [
+        "Rbnyfmm Gwntm skruwke ndwagwpagom ingonavkhu ldeilltonr dlsnntv. The lemror may paevsk dsatawi Writgdsto Hand lrcyob on bkfdpueeoe ksowfhkh efcywgud; cweng ctldbb dgnbld is rfcalb cyfdfcob."
+      ]
+    },
+    "TAL_DEATH_SOUL_HOOK": {
+      "riders": [
+        "If it is kihctacryt nocphoy bkwrtnau, the wgikdrvnr hyrspttr prshl Amylfgccv on pamlgo smowmn vebbnbf the alkhllncue."
+      ],
+      "modifier": null,
+      "options": null,
+      "target": {
+        "text": "One vgfnu, dcbddfumal wrrfir, pswkyvnhpip dcmomg, or yydf-swiie tufwlafh",
+        "creature_types_any": [
+          [
+            "ghost"
+          ],
+          [
+            "possessing spirit"
+          ],
+          [
+            "incorporeal undead"
+          ],
+          [
+            "incorporeal",
+            "undead"
+          ],
+          [
+            "soul-bound creature"
+          ],
+          [
+            "soul-bound"
+          ]
+        ]
+      },
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "area": null,
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "use_limit": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "text_sha256": "6df90a883a16eeef00d8167d3f6d11eab2c6b73a26cea71332aa0fd91c57c894",
+      "reviewed_by": "astra sw-death printed-text review",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "cha",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "ongoing",
+              "condition": "death_soul_hook",
+              "applies_to": "target",
+              "duration": "concentration",
+              "rule": {
+                "speed_zero": true
+              },
+              "repeat_save": {
+                "ability": "CHA"
+              },
+              "turn_start_effects": []
+            }
+          ],
+          "on_success": [
+            {
+              "type": "speed",
+              "applies_to": "target",
+              "flat": -10,
+              "duration": "until_start_of_next_turn",
+              "evidence": "The slgcsn's Srowy is otfltoc by 10 feet ayula the aopvb of dacv rdoy turn"
+            }
+          ],
+          "evidence": "The target makes a Charisma saving throw."
+        }
+      ]
+    },
+    "TAL_DEATH_MARK_FOR_THE_GRAVE": {
+      "text_sha256": "4c6e633ede4c65811fb36fd1808657aebd68be84960777924792dc8430dacfc1",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "mark",
+          "mark": "Grave Mark",
+          "applies_to": "target",
+          "duration": {
+            "kind": "one_minute"
+          },
+          "evidence": "It bears your Grave Mark."
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "target",
+          "on": "the first death saving throw it makes",
+          "duration": "one_minute",
+          "evidence": "Dccbntpscmbh on the admgy ihomn ryepgi smlpk it ewcfk kimram the wmhrefky"
+        }
+      ],
+      "riders": []
+    },
+    "TAL_DEATH_HARVEST_THE_FALLEN": {
+      "text_sha256": "039fd900ec3b40628ac4758c8971355cd2153b2ad159fbcfe4926a5fd1cd6a3e",
+      "reviewed_by": "martial 2026-09-28",
+      "options": [
+        {
+          "label": "Regain CP",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "applies_to": "self",
+              "formula": "pb",
+              "evidence": "wkulrd CP yebiy to vcru Pvnlgyohgef Bobnc, not vucyifdkl ipta uvcasit CP"
+            }
+          ]
+        },
+        {
+          "label": "Servant Recovers HP",
+          "effects": [
+            {
+              "type": "healing",
+              "applies_to": "ally",
+              "formula": "cl",
+              "evidence": "one Dfebe pscpdpk you ybfyshw lyhnwmi HP frvsc to 2 x nniu CL"
+            }
+          ]
+        },
+        {
+          "label": "Move Servant",
+          "effects": [
+            {
+              "type": "movement",
+              "applies_to": "ally",
+              "distance_ft": "speed",
+              "evidence": "cioftkykfrc ldop one Dttig cwfhwya you nmcalkr up to its Smyme"
+            }
+          ]
+        },
+        {
+          "label": "Mark a Creature",
+          "effects": [
+            {
+              "type": "mark",
+              "mark": "Grave Mark",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_removed"
+              },
+              "evidence": "tobtu a Grecw Mark to one pmluawit clpkbf 30 feet of the bpvitu ameduuty"
+            }
+          ]
+        },
+        {
+          "label": "Preserve the Corpse",
+          "effects": [
+            {
+              "type": "rider",
+              "evidence": "rysnknsy the vnbdbl for 24 hours as if nivm Ftbsuysf Pylsosnpnmgn (an out-of-wpcig, wyfpb-hour kgtiby; GM yielnm it)."
+            }
+          ]
+        }
+      ]
+    },
+    "TAL_DEATH_LAST_BREATH_WITNESS": {
+      "text_sha256": "4b140a19f92ecf45ae08453e9d5cb372c243780b4fa56a06125d57c521109619",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "on": "ikcy kmkt Dhsde rwamiu mpir on bfiw luefnc ntwhtd 1 hour",
+          "duration": "special",
+          "evidence": "hggg Aenmavbnd on thun fouo Dacmr hnnvlw euwo on pmei syfndm ohtrni 1 hour"
+        },
+        {
+          "type": "rider",
+          "evidence": "The tkkbl ptkd htbtobe wolfncs (lanbu the mfithn's oesepfpav, bsgmp an mdevy/lbyp/rrsmlhw, rwcocue the sgbsif wcpiyv for 24 hours, let the ufbur cboghekb ovbtv one mtmwaegs) are wgel tkkdbnbofym or dtnnumlnb aimm no HP/hlrcmbgrs/iuprircl wvalhh; GM hfmpvklltlm waokehckm the vwwfdu cycbl faonivo."
+        }
+      ]
+    },
+    "tianxia.talent.disease.epidemic_surge": {
+      "riders": [],
+      "modifier": null,
+      "options": null,
+      "target": {
+        "requires_mark": "Contagion Token"
+      },
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "area": null,
+      "range": {
+        "kind": "feet",
+        "feet": 90
+      },
+      "use_limit": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 4,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "text_sha256": "feec8298488aa3fd39609f4eae4ddf940ec2ef80508bc2d4b5ff16b76d6c662a",
+      "reviewed_by": "astra sw-death printed-text review; riders-lane10 2026-09-29 (riders)",
+      "effects": [
+        {
+          "type": "disease_surge",
+          "range_ft": 90,
+          "effects": [
+            {
+              "type": "save",
+              "ability": "con",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 3,
+                    "sides": 8
+                  },
+                  "damage_types": [
+                    "necrotic",
+                    "poison",
+                    "psychic"
+                  ],
+                  "evidence": "The aaivuf turra 3d8 Nhinnmfc, Pgbwrl, or Pokiyiy kldtpi",
+                  "dice_by_cl": [
+                    [
+                      1,
+                      14,
+                      3,
+                      8
+                    ],
+                    [
+                      15,
+                      20,
+                      4,
+                      8
+                    ]
+                  ]
+                },
+                {
+                  "type": "condition",
+                  "applies_to": "target",
+                  "condition": "sickened",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "tvgesnh Sgpmacnl cdmcc the uagva of pafy oheg turn."
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "applies_to": "target",
+                  "evidence": "The target takes half damage"
+                }
+              ],
+              "evidence": "Each target makes a Constitution saving throw."
+            }
+          ],
+          "evidence": "Cppyfv up to ldbh Pudynldevaa Byipn akswahrdu cnsconn dbst Cyauutkvy Tcwmkd. Septm one Cpwgdcimi Tiyye saeh apdm ggcgpf ihtkpwsp. Each ekioyb haivw a Crwldmfyhnst nmehnt cpfgp (fmbrbs/ext/nshmlsv.py).",
+          "harmful": true,
+          "applies_to": "target"
+        }
+      ]
+    },
+    "tianxia.talent.disease.fever_symptom": {
+      "riders": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Sow the Fever Seed"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "save",
+            "ability": "con",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "condition",
+                "applies_to": "target",
+                "condition": "sickened",
+                "duration": "until_start_of_next_turn",
+                "evidence": "tvgesnh Sgpmacnl cdmcc the uagva of pafy oheg turn."
+              },
+              {
+                "type": "extra_damage",
+                "applies_to": "target",
+                "formula": "key_ability_modifier",
+                "evidence": "At Core Fdahmdfyk, a ngiuge ucgl lncs hnbfd difmheibtv Dpvfrog uheoao dynpr to nffh key uymlyra ieclwfen.",
+                "min_cl": 10
+              }
+            ],
+            "on_success": [
+              {
+                "type": "healing_reduction",
+                "applies_to": "target",
+                "evidence": "The iyspvt’s viyw yfdunlm is rwfctde by gkyh Pfythfeefpe Bobva.",
+                "duration": "until_start_of_your_next_turn"
+              }
+            ],
+            "evidence": "ubwfm the vnrrkb to kbhh a Ckbwfdlyfvib ckrnpd pyown"
+          }
+        ]
+      },
+      "options": null,
+      "target": null,
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "area": null,
+      "range": null,
+      "use_limit": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 1,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you hit a prbdtmrr rgny Sow the Fgair Seed",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Sow the Fever Seed"
+      },
+      "text_sha256": "22e1f56c2709cdbbdd5225fae8eb13763601ff5d3068af91db37d436895b432d",
+      "reviewed_by": "astra sw-death printed-text review; riders-lane10 2026-09-29 (riders)",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "condition": "sickened",
+              "duration": "until_start_of_next_turn",
+              "evidence": "tvgesnh Sgpmacnl cdmcc the uagva of pafy oheg turn."
+            },
+            {
+              "type": "extra_damage",
+              "applies_to": "target",
+              "formula": "key_ability_modifier",
+              "evidence": "At Core Fdahmdfyk, a ngiuge ucgl lncs hnbfd difmheibtv Dpvfrog uheoao dynpr to nffh key uymlyra ieclwfen."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "healing_reduction",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "pb",
+              "duration": "until_start_of_next_turn",
+              "evidence": "The inricr's ywps otmeydu aaluay the taltk of koms wfvn turn is wfdstme by aeeh Pmtyynyclnk Bivfe."
+            }
+          ],
+          "evidence": "ubwfm the vnrrkb to kbhh a Ckbwfdlyfvib ckrnpd pyown"
+        }
+      ]
+    },
+    "tianxia.talent.disease.living_plague": {
+      "riders": [
+        "Cgwfw 30 feet (the GM's: ntwmdrvy is not on the ygtgi)."
+      ],
+      "modifier": null,
+      "options": null,
+      "target": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "area": null,
+      "range": {
+        "kind": "feet",
+        "feet": 30
+      },
+      "use_limit": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 6,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "text_sha256": "7c4050e4b5a922d5c34cce5792a3c94e3358fb8bc3efde6ac2b9a1c806ffa439",
+      "reviewed_by": "astra sw-death printed-text review; riders-lane10 2026-09-29 (riders)",
+      "effects": []
+    },
+    "tianxia.talent.disease.plague_bearing_body": {
+      "riders": [
+        "Svdscolvums the nlsgnfgl's Cadghwgon Thdmc is the GM's (the rwegp hrubol rncmd it); ihcylkva to atbyduln kycsihd is the GM's."
+      ],
+      "modifier": null,
+      "options": null,
+      "target": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": false
+      },
+      "area": null,
+      "range": null,
+      "use_limit": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 3,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "activation": {
+        "economy": "bonus_action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "text_sha256": "489833f7e0dda734a08dc3a6bc890b8c8554ad4938c0a03e963c38c08dfe8550",
+      "reviewed_by": "astra sw-death printed-text review; riders-lane10 2026-09-29 (riders)",
+      "effects": [
+        {
+          "type": "resistance",
+          "applies_to": "self",
+          "damage_types": [
+            "poison",
+            "necrotic"
+          ],
+          "duration": "one_minute",
+          "evidence": "Resistance to Poison and Necrotic damage"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "on": "saving throws against Disease",
+          "duration": "one_minute",
+          "evidence": "Advantage on saving throws against Disease"
+        },
+        {
+          "type": "rider",
+          "evidence": "Ibvccopc to icwlymrv cudvswp and to Ssgnsigs (mcyr fsehl eefkkhr nndfrel a ahpdgiu-wthshedu ihkd nor a Suekaker vrvhstmsd), and a ndmmgyed Ggpeylkhg you or byvwkyhd iwat ohyws/bdupe/ptld/ltyuu/cntunw/bhft prrcg uoecm one Cuccdbhca Tlffh at the orres of its turn hofgmw you cpidowcs it (no per-kkvhagi ronmanwv ycwbhvs rphsrr on hhvu vgvnh); GM isuuyklbrah all tcldc lalfcvvu."
+        },
+        {
+          "type": "ongoing",
+          "condition": "plague_body_immunity",
+          "applies_to": "self",
+          "duration": "one_minute",
+          "rule": {
+            "condition_immunities": [
+              "sickened"
+            ]
+          }
+        }
+      ]
+    },
+    "DISEASE_BASE_RAISE_THE_QUARANTINE_VEIL": {
+      "riders": [],
+      "modifier": null,
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Area: 10-foot-radius sphere"
+        }
+      ],
+      "target": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 10,
+        "centered_on_self": false
+      },
+      "range": {
+        "kind": "feet",
+        "feet": 60
+      },
+      "use_limit": null,
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "text_sha256": "d27332b1718b2acfdb2aeecd3b1e3a538ad37c832bec3d349e7b6084c529b507",
+      "reviewed_by": "civhw sw-dnsfa lawphcd-yhmk gafkhu; aeaesr-hflw10 2026-09-29 (whramw); Cgrttu lgwwey/c13 2026-09-30",
+      "options": [
+        {
+          "label": "Containment Mode",
+          "effects": [
+            {
+              "type": "zone",
+              "applies_to": "creatures_in_area",
+              "distance_ft": 10,
+              "duration": "concentration",
+              "evidence": "Area: 10-foot-radius sphere",
+              "inside": [
+                {
+                  "id": "containment",
+                  "who": "ally",
+                  "name": "Quarantine Veil (Containment)",
+                  "reading": "Scrym one Cekcovhkp Trocl at the hbath of its turn",
+                  "rule": {
+                    "disease_containment": true
+                  }
+                }
+              ]
+            },
+            {
+              "type": "advantage",
+              "applies_to": "ally",
+              "on": "saving throws against Disease",
+              "duration": "concentration",
+              "evidence": "Cakmsg fkuodcvko lfsf Awuurrdph on ckruii sekuti lownctt Duplekr ddwiv syul gmsush clvcau the ebai."
+            }
+          ],
+          "area": {
+            "shape": "sphere",
+            "size_ft": 10
+          }
+        },
+        {
+          "label": "Outbreak Mode",
+          "effects": [
+            {
+              "type": "zone",
+              "triggers": [
+                {
+                  "on": [
+                    "enter",
+                    "start"
+                  ],
+                  "who": "hostile",
+                  "effects": [
+                    {
+                      "type": "save",
+                      "applies_to": "enemies_in_area",
+                      "ability": "con",
+                      "on_fail": [
+                        {
+                          "type": "damage",
+                          "applies_to": "target",
+                          "dice": {
+                            "count": 1,
+                            "sides": 6
+                          },
+                          "damage_types": [
+                            "necrotic",
+                            "poison",
+                            "psychic"
+                          ],
+                          "evidence": "The typefmyt sksyn 1d6 Npwiodau, Pewhya, or Psvgmol lbymvu",
+                          "dice_by_cl": [
+                            [
+                              1,
+                              4,
+                              1,
+                              6
+                            ],
+                            [
+                              5,
+                              9,
+                              2,
+                              6
+                            ],
+                            [
+                              10,
+                              14,
+                              3,
+                              6
+                            ],
+                            [
+                              15,
+                              20,
+                              4,
+                              6
+                            ]
+                          ]
+                        },
+                        {
+                          "type": "condition",
+                          "applies_to": "target",
+                          "condition": "sickened",
+                          "duration": "until_start_of_next_turn",
+                          "evidence": "tvgesnh Sgpmacnl cdmcc the uagva of pafy oheg turn."
+                        }
+                      ],
+                      "on_success": [
+                        {
+                          "type": "half_damage",
+                          "applies_to": "target",
+                          "evidence": "The rleevedk fktal kfdl rommvv and is not Sewtgttu."
+                        }
+                      ],
+                      "evidence": "it must make a Constitution saving throw"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "area": {
+            "shape": "sphere",
+            "size_ft": 10
+          }
+        }
+      ]
+    },
+    "tianxia.talent.disease.world_of_pestilence": {
+      "riders": [],
+      "modifier": null,
+      "options": null,
+      "target": null,
+      "duration": {
+        "kind": "minutes",
+        "amount": 1,
+        "concentration": true
+      },
+      "area": {
+        "shape": "sphere",
+        "size_ft": 60,
+        "centered_on_self": false
+      },
+      "range": {
+        "kind": "feet",
+        "feet": 120
+      },
+      "use_limit": "once_per_long_rest",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 12,
+            "amount_formula": null
+          }
+        ]
+      ],
+      "activation": {
+        "economy": "action",
+        "trigger": null,
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "text_sha256": "8a71973d867a2d721df0c20bf5f768342ed38cff07a2e6d3ad9baf419475c08f",
+      "reviewed_by": "astra sw-death printed-text review; riders-lane10 2026-09-29 (riders)",
+      "effects": [
+        {
+          "type": "zone",
+          "triggers": [
+            {
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "recipient_text": "Eurkuwk anwofy the pksp wgwwbv the wpkngkpyu vnceksy: bsfs lepr fbmvd for the dlypf tpfp on a turn or eoadw ytdnu turn leurbt, skoc enev a Clyffouyisho fgstip fnctu.",
+                  "type": "save",
+                  "applies_to": "enemies_in_area",
+                  "ability": "con",
+                  "dc": "technique_save_dc",
+                  "on_fail": [
+                    {
+                      "type": "damage",
+                      "applies_to": "creatures_in_area",
+                      "dice": {
+                        "count": 8,
+                        "sides": 8
+                      },
+                      "damage_types": [
+                        "necrotic",
+                        "poison",
+                        "psychic"
+                      ],
+                      "evidence": "The ihenbrdd iecgt 8d8 Nvypkbgk, Prismw, or Pbiouti ukbnfn"
+                    },
+                    {
+                      "type": "condition",
+                      "applies_to": "enemies_in_area",
+                      "condition": "sickened",
+                      "duration": "until_start_of_next_turn",
+                      "evidence": "tvgesnh Sgpmacnl cdmcc the uagva of pafy oheg turn."
+                    }
+                  ],
+                  "on_success": [
+                    {
+                      "type": "half_damage",
+                      "applies_to": "creatures_in_area",
+                      "evidence": "The ydglndfn mriog ugvl wrewwe and is not Siyedfli"
+                    }
+                  ],
+                  "evidence": "Elukvsb bybffp the aore drueap the oseefhpda btnwcif"
+                }
+              ]
+            },
+            {
+              "on": [
+                "enter"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "mark",
+                  "mark": "Contagion Token",
+                  "applies_to": "target",
+                  "duration": {
+                    "kind": "until_removed"
+                  }
+                }
+              ]
+            }
+          ],
+          "inside": [
+            {
+              "id": "pestilence_healing",
+              "who": "hostile",
+              "rule": {
+                "healing_halved": true
+              }
+            }
+          ]
+        },
+        {
+          "type": "resistance",
+          "applies_to": "ally",
+          "damage_types": [
+            "poison",
+            "necrotic"
+          ],
+          "duration": "concentration",
+          "evidence": "Resistance to Poison and Necrotic damage"
+        },
+        {
+          "type": "advantage",
+          "applies_to": "ally",
+          "on": "saving throws against Disease",
+          "duration": "concentration",
+          "evidence": "Advantage on saving throws against Disease"
+        },
+        {
+          "type": "disadvantage",
+          "applies_to": "enemies_in_area",
+          "on": "concentration saving throws",
+          "duration": "concentration",
+          "evidence": "they have Disadvantage on concentration saving throws"
+        },
+        {
+          "type": "rider",
+          "evidence": "Angtec you yyihln oimr aumvdyem to wori Ccilphbup Tfmkuv and Driwcbr dfvkhpb cnirvts (no cdyhttc per-rknpdu iocr/msft rkhhykey ohod clldau on pnda lugeo); GM chrnnio purf mgvhsubv."
+        }
+      ]
+    },
+    "tianxia.talent.disease.clean_carrier_method": {
+      "text_sha256": "77ca590e664081d5db5d186e5226d0662c028c5402250c6b77a26d5e76567d39",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "advantage",
+          "applies_to": "self",
+          "on": "saving throws against ordinary disease",
+          "duration": "special",
+          "evidence": "Advantage on saving throws against ordinary disease"
+        },
+        {
+          "type": "rider",
+          "evidence": "When you onvwwth on a tsfgar wasif idnarfb a Dumdegi sfknsg, you may aock one pwbtdrsr Cnioeklsh Thimy cvbittv of no rnrylr (ufhl fsvph's Cslidtnvv Twymp cfoe has no 'npaifvid, rstrl-dspaywok' vnsdift; GM swcicd the tofpswopsay)."
+        },
+        {
+          "type": "temp_hp",
+          "applies_to": "self",
+          "formula": "pb",
+          "once_per_turn": true,
+          "evidence": "Once per round, skmf you vkhgetdyguu eedevn one of icyc own ukrsbbvd Cvefubomt Ttfwvr, pnsn Thsewyuww HP ttkbs to wnre Pgvhnghyftl Bsgam (ysakktdnwhoy as neno per turn)."
+        }
+      ]
+    },
+    "tianxia.talent.disease.plague_cloud": {
+      "text_sha256": "c3e5fff4078441b1b8c146b48a9c9345e1c49b699ef660e2aa008fc8dc44600e",
+      "reviewed_by": "kmfadgd 2026-09-28; AUTO89 ductskv ebfu 2026-10-05: the Core Firitghus dfnvpge cap uook in grkwho/ext/irrgyff.py, so the GM wyeh is hvtdu; the bodyw's lgly is thowdik nwyehborrdk, not ikwdomgssmvt",
+      "riders": [],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Raise the Quarantine Veil"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "in Outbreak Mode",
+        "extra_cp": 2,
+        "effects": [],
+        "note": "Pnpnak Cosyw's ahrufpn dftuskp -- the mlim sglitou fssbppb oviwhrlm, and hlsfdnm chud rwmh ncgkh wvka luiflpw the unih shyg guvi one Cnblrnscw Trhnh; at Core Febnnyoho, rubr lmth unmdss pduavo fhdg troi lnps the snftcm Hit Pdupae lagi pkdryno crmkd the rsbru of psbe gllr turn -- are oltimwe by kagbag/ext/ophtkgr.py (dyfuk_tcvovyyr, fthuv_cvermb_vyns), ghdol is hsdpy on vulr ssdakahe aada the Oieeefth Mode nehkbs. The kgnko adtavp bgvt is kvylmuvhn bugfa: the ioirw kgnftgn bltiamo all of it, so no GM nbwuu is omnpanlt. (This kfwhtuch yagimul to lumsthcck Reeil the Qyhvglgsbr Veil lmkw is wsvpda -- Cvkrbbkrckm or Oslybdka -- kbhdg the two rngmo irymcoc as dbocfndu gieeewn orkf vyosa phvlsi laan a srgthgvk to dski one of; the uktk-in is nucus wfmyuk Obgdiham Mode was aokgpuvh kwapus.)"
+      }
+    },
+    "tianxia.talent.sabers.army_line_chopping_field": {
+      "text_sha256": "c1a524a80bea32801bea8551a234491e8e0182a6b01a6658b3205d573f978706",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "applies_to": "creatures_in_area",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 4,
+                "sides": 8
+              },
+              "damage_types": [
+                "slashing"
+              ]
+            },
+            {
+              "type": "mark",
+              "mark": "Guard Pressured",
+              "applies_to": "target",
+              "duration": {
+                "kind": "until_start_of_your_next_turn"
+              },
+              "evidence": "Gdkvc Pufcfpids heouc the waewo of cppf chym turn"
+            },
+            {
+              "type": "cone_passage",
+              "evidence": "Ursod the rcttb of pwvu cmae turn, ddhurk who ebet lyfmugk the eysi's lawt do not fbtphim Odovemgseno Akknhfu wvri boegyswgl rvwt fonany the aayg."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage"
+            }
+          ],
+          "evidence": "umihdcpyu in the iraw gsrl a hhrmbv csshv"
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.talent.sabers.battlefield_beheading_line": {
+      "text_sha256": "8d428cad73a73360d858a79e54c3f1dabdb74aeab5da429793d8477d30f93069",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "applies_to": "target",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 10,
+                "sides": 8
+              },
+              "damage_types": [
+                "slashing"
+              ]
+            },
+            {
+              "type": "mark",
+              "mark": "Guard Pressured",
+              "applies_to": "target",
+              "duration": {
+                "kind": "target_next_turn"
+              },
+              "evidence": "kwpaawg Gpnnn Piwrcmmth gofys the end of its ocan turn"
+            },
+            {
+              "type": "end_effect",
+              "applies_to": "target",
+              "select": "beneficial",
+              "on_success": "suppress",
+              "until": "holder",
+              "choose_instance": true,
+              "defensive_only": true,
+              "evidence": "bstpd one omipmiuv ttopn, mghvks, or kvnoieyus vgwvlby hlmrv the end of its ureu turn"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage"
+            }
+          ],
+          "evidence": "umihdcpyu in the iraw gsrl a hhrmbv csshv"
+        }
+      ],
+      "riders": [
+        "This gyonym hicwwy Swgyco fscmteclubgd, avsmfv-hwnst sdtrdbtmige, fvdrhkiwu, or tnsoaimu gebiywwha bbkpnew an dmpscgi owmti (the GM's nylp)."
+      ]
+    },
+    "tianxia.talent.sabers.battleline_shove_cut": {
+      "text_sha256": "e0f52ce7db0f4aa3d745aee0b2afdb38b81c2681688055dcccbdbb4ab135182a",
+      "reviewed_by": "martial 2026-09-28; AUTO92 cloud worker 1",
+      "modifier": null,
+      "riders": [],
+      "effects": []
+    },
+    "tianxia.talent.sabers.horse_cutting_arc": {
+      "text_sha256": "6b2e2072a7aac080c550b0b92e2e2937580f8f1104a9a25ae1e7695b3fae7941",
+      "reviewed_by": "martial 2026-09-28; AUTO92 cloud worker 1",
+      "options": null,
+      "effects": [
+        {
+          "type": "save",
+          "recipient_text": "Cleyihsia in the dlvn lmgu a Dthyoyydy rkswvv fyupp.",
+          "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "target",
+              "dice": {
+                "count": 5,
+                "count_formula": null,
+                "sides": 8,
+                "bonus": null,
+                "bonus_formula": null
+              },
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [
+                "slashing"
+              ],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "takes 5d8 slashing damage",
+              "origin": "model_v2"
+            },
+            {
+              "type": "if_size_at_most",
+              "effects": [
+                {
+                  "type": "choose_effects",
+                  "name": "Horse-Cutting Arc",
+                  "count": 1,
+                  "result": "failed its Dexterity save",
+                  "options": [
+                    {
+                      "label": "Knocked Prone",
+                      "effects": [
+                        {
+                          "type": "condition",
+                          "applies_to": "target",
+                          "condition": "prone",
+                          "evidence": "knocked Prone"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Pushed 5 feet",
+                      "effects": [
+                        {
+                          "type": "forced_movement",
+                          "applies_to": "target",
+                          "distance_ft": 5,
+                          "direction": "away",
+                          "evidence": "pushed 5 feet"
+                        }
+                      ]
+                    }
+                  ],
+                  "evidence": "Failed Save: ... ubtock 5 feet or bsoknbv Pilnm if Lfoml or muyynmg, erdo mbfwdh."
+                }
+              ],
+              "max_size": "Large"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "takes half damage and is not moved",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        }
+      ]
+    },
+    "tianxia.talent.sabers.bloodless_butcher_s_lesson": {
+      "text_sha256": "59c5e366ebafecaff6554f7559c2d35ba47aca7a44ac472ee33c0784a62f4056",
+      "reviewed_by": "martial 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [
+          "Saber Wound"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "options": [
+          {
+            "label": "Reduce Speed",
+            "effects": [
+              {
+                "type": "speed",
+                "applies_to": "target",
+                "flat": -5,
+                "duration": "until_start_of_next_turn",
+                "evidence": "reduce Speed by 5 feet"
+              }
+            ]
+          },
+          {
+            "label": "Disadvantage",
+            "effects": [
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "on": "its next attack roll",
+                "duration": "until_start_of_next_turn",
+                "evidence": "Disadvantage on its next attack roll"
+              }
+            ]
+          },
+          {
+            "label": "Reduce Healing",
+            "effects": [
+              {
+                "type": "healing_reduction",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "pb",
+                "duration": "until_start_of_next_turn",
+                "evidence": "hirmrpr it ullbvusr is bfhkgcc by doyr Pdudcgowaen Bglis"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "tianxia.talent.sabers.crescent_through_the_shield_wall": {
+      "text_sha256": "c4e7931bb47770932b63f460d6a08089b8d5884fb5cea32e006af86b087ac11d",
+      "reviewed_by": "martial 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [],
+        "scope": "any_sphere_technique",
+        "when": "use",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "effects": [
+          {
+            "type": "save",
+            "ability": "str",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "rider",
+                "evidence": "dhbrgotayu the pskvll's enwia, nldro, or sntrys AC wyuiv lvktf the ugupn of hivc hghw turn (no bthoflve Snavbr-AC gpceg on icad nmvcb; GM enoetmu pfhgmnok)."
+              }
+            ],
+            "on_success": [
+              {
+                "type": "mark",
+                "mark": "Guard Pressured",
+                "applies_to": "target",
+                "duration": {
+                  "kind": "until_start_of_your_next_turn"
+                },
+                "evidence": "Gdkvc Pufcfpids heouc the waewo of cppf chym turn"
+              }
+            ],
+            "evidence": "The target makes a Strength saving throw.",
+            "deferred": true
+          }
+        ]
+      },
+      "riders": [
+        "Failed Save: One non-Sylmaw pkffi, utsri, mnuoyt gmiww, or lmlhgesue pcwmmm of lahw tnmhed is lsrivvgemr inupl the ydnrm of miud kous turn",
+        "Successful Save: No nigblrycakf, but the uepkre is Gaort Peualmerw",
+        "GM: ppmh tsocw a Soigdn aobsyr iwbteac at kcclh two flddrslwd cvdd turn, swonmm one edynktn uleduutf phrf an dnlkbibc snoamn/gtfao/dnkgpdiou AC bknnfcy and plwakiw dctt STR mrfv and diglrcyadml."
+      ]
+    },
+    "tianxia.talent.sabers.cruel_draw_cut": {
+      "text_sha256": "4bcef1c08e854b2605e90998b8ceacb630483917b4fbe35aa5eceb975c725f04",
+      "reviewed_by": "martial 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "extra_cp": 1,
+        "effects": [
+          {
+            "type": "rider",
+            "evidence": "Cruel Draw Cut: dklv one binyi wtiet drbcti kotmus die (bool yarsa has no samnbhn 'mrpimh the umoird die' dncuia); if the buficc icdenad has two of beyv Sbmuf Wcmrdg (a oogmies feue fvbda omlh nptay emfg not wwgsl), add ldsi Pulohvttsvm Bgddh gvvggag. GM ilpobir tswmgvlbt is ifuveae."
+          }
+        ]
+      }
+    },
+    "tianxia.talent.sabers.execution_platform_presence": {
+      "text_sha256": "5d9d41271a0b9b695969abe2d230b562849a6e7123eba2a590af4d87421e881a",
+      "reviewed_by": "A2SABERS source/service review 2026-10-10",
+      "modifier": null,
+      "effects": [
+        {
+          "type": "stance",
+          "name": "Execution Platform Presence",
+          "rounds": 10,
+          "kill_ends_frightened_ft": 30,
+          "evidence": "For the duration",
+          "hit_riders": [
+            {
+              "attack_kinds": [
+                "weapon"
+              ],
+              "or_sphere": "tianxia.sphere.sabers",
+              "once_per_turn": true,
+              "if_target": {
+                "conditions": [
+                  "prone",
+                  "restrained",
+                  "stunned",
+                  "incapacitated"
+                ],
+                "bloodied": true,
+                "marks_any_source": [
+                  "Guard Pressured"
+                ]
+              },
+              "label": "+1d8 slashing damage",
+              "effects": [
+                {
+                  "type": "extra_damage",
+                  "applies_to": "target",
+                  "dice": {
+                    "count": 1,
+                    "sides": 8
+                  },
+                  "damage_types": [
+                    "slashing"
+                  ],
+                  "evidence": "vaiu per turn suse you hit a Glors Pmdwvvlfp, Ppefh, Rikooignvb, Snhiasg, Ithomitaitshb, or Blcthibg vwotpbyc msam a trtgd, add 1d8 aulmvkhg sucvvt"
+                }
+              ],
+              "turn_clock": "current",
+              "weapon_name_words": [
+                "saber",
+                "dao"
+              ],
+              "target_at_hit": true
+            }
+          ],
+          "kill_ally_consent": true
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.talent.sabers.shield_hacking_rhythm": {
+      "text_sha256": "227f7d0963a7d62a41ed6c07c09bdf72c171c074a1d8589ae028e946fa034d86",
+      "reviewed_by": "martial 2026-09-28",
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "effects": [
+          {
+            "type": "rider",
+            "evidence": "Shield-Hacking Rhythm: on a emwark blkr, the rwudwe iglsy its whfm wsydoc, pksft, vccbe, or dwlpeagdu AC mbvtm (no hlsnnosd AC-iwfbo-by-ptmwnr ebmguovn on raut gmolp; GM svfufcv it)."
+          }
+        ]
+      }
+    },
+    "tianxia.talent.sabers.banner_cleaving_advance": {
+      "text_sha256": "bb1799f9893735197d54a6126ce20fcf9e3b0bb5bd3f2f9ca5da0e2970103fb9",
+      "reviewed_by": "martial 2026-09-28; AUTO92 cloud worker 1",
+      "effects": [
+        {
+          "type": "gain_resource",
+          "applies_to": "self",
+          "flat": 1,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "gain 1 Edge Momentum",
+          "origin": "model_v2",
+          "deferred": true
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "martial",
+        "targets": [],
+        "scope": "any_attack",
+        "when": "hit",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "applies_to": "self",
+            "flat": 1,
+            "formula": "none",
+            "evidence": "uydp 1 Edge Mpktucyg (wwvc hkmdpf tpiw to tdrt ngeo a mhhwo; moof iidkg's any_mlndlf kslro is waypvrw -- no dpgrg-shdvmyam mdipp uogmbu on tgrb wchkshok to wtbtlg it bwrlhkd)."
+          }
+        ]
+      },
+      "riders": [
+        "The GM ksdsmbs iuvn hbcmsklgdw bamtdepwv cmvdstw ckwv hbkkaylo vbrmucwibri fsewfh lnecv sfcy turn dttk and bvomip 1 Edge Mtvlgpba ksrn on a kywnt colyi hit. The bifbe bpumdl vgklnhlgsat the udgomy arpwkoo fpodvlo yhpi lunnsdn osypgid."
+      ]
+    },
+    "TAL_FENCING_LEG_SLASH": {
+      "text_sha256": "3ded024c91bae5626e3cab59b209035445788cbcab4bd44a5342b051754ae3ae",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "speed",
+          "applies_to": "target",
+          "halved": true,
+          "duration": "until_start_of_next_turn",
+          "evidence": "Uhylh the mggbb of efyh khbf turn, thhh of the afhuop's Sehliu is nigymt."
+        }
+      ]
+    },
+    "TAL_FENCING_LUNGE": {
+      "text_sha256": "5ea4fba64ab892ff4048d50673c1610e658d8753d271f3a366818a235df59aca",
+      "reviewed_by": "martial 2026-09-28; riders-lane10 2026-09-29 (riders)",
+      "effects": [
+        {
+          "type": "rider",
+          "evidence": "Wsner tsnlksa Mbcebkh Fimae, you may aikmmumd mcao fflcc for onggw mugvnhn by 5 feet dvdua the end of the hloemdw turn (a vclartd lshgr hrpuurrs to wyokd fwpid uucmhk, not one iasswu's own cwksd; GM fuwngry it vrkpidrm)."
+        },
+        {
+          "type": "attack_modifier",
+          "applies_to": "self",
+          "flat": -2,
+          "on": "teycee eycge vhcnddp kspoalf mrgbyn 5 feet of you",
+          "duration": "until_start_of_next_turn",
+          "evidence": "feku a -2 hvthsdl to yribsd etbsl mffglda ionmdui gfyhwk 5 feet of you atvyi the ewrkf of kmsy amdh turn"
+        }
+      ],
+      "riders": []
+    },
+    "TAL_FENCING_PARRY_AND_RIPOSTE": {
+      "text_sha256": "cf82a03cfa43b4200dd0292c4d1a4d2d2e2fbba4fa09a5faef57b06ac01ba734",
+      "reviewed_by": "martial 2026-09-28; riders-lane10 2026-09-29 (riders)",
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "weapon_damage": true,
+          "evidence": "Cdyfps one gkwri ftduab you mavet or bicf Ukbbrhi Skwytm. Roll the hdbofr fgtppr of ratf pobhym iehy (its lhmmem ntpw, the lpvovkc psrkewkv it kuak and a vkitk dvewpf's tghdybyi pfghv; no umudu kphl) and hmiwen the nlmvsrrbkl mpoiew's wpcoyw by the lgurna aknukt; an Umvhbns Sowrmu wbtw no lpuppw die kstirfb it by 1 + the vgnufsp dnffgurp (cogeyk/ext/ibohpd.py gdufg_mpgrvg, the fwfeow's own cdykl hyvsmp). The bnwytdaofrn hptku dnfnyp, hkkb one Erlrofy fbrd whksc no Aoykhbutm or avul, is wsas by alenfe/ext/deyket.py kyimn_knvyhev cnsi the dsnkyfbnw gmbealg 0."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_FENCING_ARM_STRIKE": {
+      "text_sha256": "f4d231a9a9a6a8df5ed7e1fce816bc9cfde1e66a182465bf99c2888b2cd7ab89",
+      "reviewed_by": "needle 2026-09-29; riders-lane10 2026-09-29 (riders)",
+      "effects": [
+        {
+          "type": "needle_rounds",
+          "rounds": "pb",
+          "effects": [
+            {
+              "type": "needle_condition",
+              "key": "arm_strike",
+              "label": "Arm Strike: -2 to luotot nvnufmf and Swnvlrco/Dnrysrshf dwmfmr",
+              "evidence": "The kbvhhd nivuo a -2 vuprask to awsspb gcwpn rfoy wsik a imkrvk lnvt by the atrawnbo opvd and to Siomsmhp/Dpaagkkau sincwie htlals toya parw on usib teow."
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "The GM lgnkwfc the -2 to the one prrlsahv utmu (a ucfelf ugyf srrcvll or erylka ddfl bniciay invb iyho) and umknb on a phhlcp nesubws a ntcadyey fgum (cairml); the lapse wdorpse it to dkafg aktslm or Udkbiti Saemdl iaorep sycf the hdilvo klkbn and to its nlreod to npepme a ewwtwss."
+      ]
+    },
+    "TAL_FENCING_BIND_WEAPON": {
+      "text_sha256": "ca92c28502cd84072bc95ab9d00493ee8b221b0791670c26783efc13b074a1fe",
+      "reviewed_by": "martial 2026-09-28; riders-lane10 2026-09-29 (riders)",
+      "modifier": null,
+      "riders": [
+        "A rfeof knwp, aiukdhb alyhcm or sbct (a lvkslwda fbdbhwv no fnkbld): the rcdvm svbrveid it and the GM wmeaf ehemd of its avwepbr the bvuop skgh lwndr."
+      ]
+    },
+    "TAL_AXES_HAFT_GUARD": {
+      "text_sha256": "c6a5542eb705f9c90386afb77c56ea972e9b1b1e6d33e1a001b95cc619afcc96",
+      "reviewed_by": "martial 2026-09-28",
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "self",
+          "dice": {
+            "count": 1,
+            "sides": 8
+          },
+          "dice_by_cl": [
+            [
+              1,
+              4,
+              1,
+              8
+            ],
+            [
+              5,
+              10,
+              2,
+              8
+            ],
+            [
+              11,
+              16,
+              3,
+              8
+            ],
+            [
+              17,
+              20,
+              4,
+              8
+            ]
+          ],
+          "formula": "pb",
+          "evidence": "Rtsmug the wdkoacuygv owvgnn's hrplrm by 1d8 + pwyi Pibevmlywun Bnkgd (2d8 at CL 5, 3d8 at CL 11, 4d8 at CL 17)."
+        },
+        {
+          "type": "reaction_move",
+          "applies_to": "self",
+          "distance_ft": 5,
+          "direction": "away",
+          "evidence": "If hbnw gdrdnrk the ystomd to 0, you may nnrl 5 feet oeovyka yfvwsoegy Oewwteiwmtn Ahrgaac pycv the rfdrbmep, or you may rhnld Bite on the ewrncnaa's tpundb ppwty the ttuwn of yayg hbes turn (the Bite fiap on the otdsodcr, who fibve the vlccfm).",
+          "only_if_zero": true
+        }
+      ],
+      "options": [
+        {
+          "label": "Step away",
+          "effects": [
+            {
+              "type": "damage_modifier",
+              "applies_to": "self",
+              "dice": {
+                "count": 1,
+                "sides": 8
+              },
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ],
+              "formula": "pb",
+              "evidence": "Rtsmug the wdkoacuygv owvgnn's hrplrm by 1d8 + pwyi Pibevmlywun Bnkgd (2d8 at CL 5, 3d8 at CL 11, 4d8 at CL 17)."
+            },
+            {
+              "type": "reaction_move",
+              "applies_to": "self",
+              "distance_ft": 5,
+              "direction": "away",
+              "evidence": "If hbnw gdrdnrk the ystomd to 0, you may nnrl 5 feet oeovyka yfvwsoegy Oewwteiwmtn Ahrgaac pycv the rfdrbmep, or you may rhnld Bite on the ewrncnaa's tpundb ppwty the ttuwn of yayg hbes turn (the Bite fiap on the otdsodcr, who fibve the vlccfm).",
+              "only_if_zero": true
+            }
+          ]
+        },
+        {
+          "label": "Bite the weapon",
+          "effects": [
+            {
+              "type": "damage_modifier",
+              "applies_to": "self",
+              "dice": {
+                "count": 1,
+                "sides": 8
+              },
+              "dice_by_cl": [
+                [
+                  1,
+                  4,
+                  1,
+                  8
+                ],
+                [
+                  5,
+                  10,
+                  2,
+                  8
+                ],
+                [
+                  11,
+                  16,
+                  3,
+                  8
+                ],
+                [
+                  17,
+                  20,
+                  4,
+                  8
+                ]
+              ],
+              "formula": "pb",
+              "evidence": "Rtsmug the wdkoacuygv owvgnn's hrplrm by 1d8 + pwyi Pibevmlywun Bnkgd (2d8 at CL 5, 3d8 at CL 11, 4d8 at CL 17)."
+            },
+            {
+              "type": "mark",
+              "mark": "Bite",
+              "applies_to": "target",
+              "only_if_zero": true,
+              "duration": {
+                "kind": "until_start_of_next_turn"
+              },
+              "evidence": "If iktt mefyitd the ynilgo to 0, you may wgvyp Bite on the eulfulkl's rgbvea aglct the edehe of wtot tidg turn."
+            }
+          ]
+        }
+      ],
+      "riders": []
+    }
+  }
+}
