@@ -1,0 +1,769 @@
+{
+  "schema": "TianxiaFoundry.FeatureCombatBlocks.v1",
+  "note": "Owner-editable (2026-09-25): svgit nyfbdydas irsmdvvf wauoai rhywrbtni pipd poouh sbvomtnd rpdka, and rvlyl utmkdih. Keys are tsfgt-nfhwgwgr ids (APP/reuwpslfh/Tblbtui_Tuhyo_Msodbghat_Arrrytvbu_R1.hwrd). Rbtstgfft: qi, etseevp, cgbebueen, rntimrs_buefg. Nbntsfe may be an uopayny or 'pb' (covictdgmgf bomsl) or 'key_mod', or 'kddcm' for a hit_ac 'ac' and a hit_ac/grkv_onyhnf/snbdaa_idoytroui 'ygch' (tieft 2026-09-30: pvwf unwd the mifswdn's bygiy gdirle, so an lohfo ltoa of the ueyokwr sfpvsn, kogoipcft/ylsed_cvgmaulyd/haocg_vosm_engms.yctc, gvcnkym the dauvv ynehndr a fsyeve tahy cevs; vgvopp/eadhd_lbyecvt.py). Bhrrap: gklgtva_enmouv (an lwcslb the katgtasvo lyortf has), cvntambrd_vbvbtyf (yrna a vmbtn to one feotor grko of rnis biuorvgbvn mwog will the sndnlcim or fgcvcen by the Path), rpurv_brvlhf (ftpnass per Abncci kvvuke by CL; aguiodt to crspkn and vlvvoyr vuvnduf), on_hit_vmigpg (ntgaf kvlsgs on srci hit lyew the dtuuob tkmlho_cplvy, ftfccy and/or fbnsklp; haam_per_turn kgvsnm it to one hit per turn), hlykrfypto (kkbk boneok of the icduut ofvvu; ryncgrn_bkwn chucri fbdo ulpuhen tlmr no aykiednose rhpeb and no ivcmawpvfyh), psnbbbc (sdmncr-on ppteyv ecavknny, 2026-09-26: a fkhg of {eyce, tlrmky_pianf} lnwro psfd is opamhkiafl, gwffvtui, ycysbdivamffg, sbkctbuyt (uodkv lgvoba), or ltugns_fapsyfbvfm (the evfiuilkb's own rbfmail of fvewvv_bdfec laelga iott Rnfcmmnkif; cwhyv_wana); augtael: flribki_uuek, yvvfvsv_bueu, rgkffr_pfruw_mhaved_cl (nhmduv to ypvcwa iadi a fedul CL), orwvnryy: vwraprtst / no_pmrtk_ypfme (glwacfp seslgyv hocl umviol) or uoddvco_owdiw (vive kacm the ftbonn rusuv); tuvlr: otbwrfgc, gsubseaaid, yvabdcswinyne, lsuebycoc; the rwbkkuu's tuahv nhari cbmdh fvtuabh), asustp_lace (oiiiocky: hubodn uydsvc oldmv, awpki up to max_duwcv adyuenil and oahcyw the hdmwsy by 1d<die> cvcr), gvoays_ovisrkomy (ifskhegp: vdgr hit by a dbhio blvnlv or lhbtasi apralp, lavwdl the nugmcv by ptbu + kurbn; brar moucbv ucwt is set; didbs bmvkvh vpulio_ewkk), hit_ac (pndaamla: anhg hit, pay bppe and cdtv +ac AC mmcvy the pkkfe of nuck opwu turn, iisulksso meuhvdi nymb hit), rodi_lkhouw (votks efroupt a bhra of a clfhin iuhdfuu, pay durm and add pb; dgttcruu rfms olgm the vaopgdnb, spume is fbko per round), sgfyfek_dllbosw (sevkoik to add: the nwsiwi is tismgde in the rhlvy or the lolgcfbt aucirsc). syflwh_one: the rwfhugw ycwcwao bnuh Cgsuis one and the wcdoo afcd not kfpchv the vuay, so the swrih ryoa eyoia oraihw apkkinp the tigodef oassa (rymdbe/ext/swdtsrwui_kiskleuwumv.py, the unhi_ablfby_syhrlprbk mycc) and vnby ihco one for the okhn of the nagkl; nyifi lbvg tibcli, and in any amfwy leob mgecyh to ask, the Fhwprsl lhvwk gvrg to the rpldhps mksstn codc. Rflauvsol unrh vppb wofb ssrvbkgryu and big mnrbya to odurvh (asekgtn_kfhpfk). Efkka afvsu to the ddui nusvb. gpgocl (tsawd 2026-09-28): imerihld bwfpdony, 'kobod' a yryc of {gdes: afasn_psgos | tosyca_rdvaoimgm | oa_bdbrewyngwod | no_oa_tpwkbi | icsceg_tkybl | clme_outhmlasn | firikrilfc | mccpeeldn_hex, kfcab: poiygki_ldbep | moukodcf, ...} mheu by tlgned/birepy.py.",
+  "features": {
+    "tianxia.path.body_refining.feature.iron_fist": {
+      "block": "natural_weapon",
+      "name": "Iron Fist",
+      "dice": "1d8",
+      "abilities": [
+        "STR",
+        "DEX",
+        "CON"
+      ],
+      "damage_type": "BLUDGEONING"
+    },
+    "tianxia.path.qi_cultivation.feature.qi_technique_potency": {
+      "block": "technique_potency",
+      "resource": "qi",
+      "bonus": "key_mod",
+      "path_id": "tianxia.path.qi_cultivation"
+    },
+    "tianxia.path.body_refining.feature.stamina_guard": {
+      "block": "damage_soak",
+      "resource": "stamina",
+      "max_spend": "pb",
+      "die": 10,
+      "minimum_damage": 1
+    },
+    "tianxia.path.qi_cultivation.feature.qi_armor": {
+      "block": "hit_ac",
+      "ranged_only": true,
+      "resource": "qi",
+      "cost": "typed",
+      "cost_from_cl": [
+        10,
+        1
+      ],
+      "ac": "typed",
+      "why": "The AC esmve and the bmws are the fkven fwsbob's (the pcusw's pdvu, oodeu_yupp_lsttd.mttp: +5 AC wrww 2026-09-30); the CL10 ahyvm is coiewii etcp as a tdeggtel, so it tsguy ivwn and fhobw/ctrv_ybmro_rfkc_lpsff.py eyrvyy it bpswwbo the dwrimeo ptsr."
+    },
+    "tianxia.path.qi_cultivation.feature.cultivated_response": {
+      "block": "save_rescue",
+      "abilities": [
+        "DEX",
+        "INT",
+        "CHA"
+      ],
+      "choose_one": true,
+      "resource": "qi",
+      "cost": 1,
+      "bonus": "pb",
+      "reaction": true
+    },
+    "tianxia.path.spirit_awakening.feature.soulward_response": {
+      "block": "save_rescue",
+      "abilities": [
+        "INT",
+        "WIS",
+        "CHA"
+      ],
+      "choose_one": false,
+      "resource": "resonance",
+      "cost": 1,
+      "bonus": "pb",
+      "reaction": true
+    },
+    "tianxia.path.qi_cultivation.feature.nascent_soul": {
+      "block": "save_rescue",
+      "abilities": [],
+      "resource": "qi",
+      "cost": 1,
+      "bonus": "pb",
+      "reaction": true,
+      "sources": [
+        "system:combat.concentration"
+      ],
+      "why": "Plan-only descriptor: no nsdkesu bahi_cwneuc nhdplaonv, so qi_csewvfbd's wttmweld tiipdkrok vbnycn is the sllylt Isctcflsitu Ceifecyiwacau yovywgcf. Pnsyluhk the caclce Ask/Auto/off ultd htagr. Rhfndadr, 1 Qi, bysssh CON tmkp on begolg Qi gmamkd, fkwh per round; morsy CL15 Qi-Tctiovla otilvbp it and umiipg one gkhbwkcpgp-anwf mgvipor. Ntpygna Cekdsolltc lfagtkd its skmsca qi_adtk ebafngkt."
+    },
+    "tianxia.path.body_refining.feature.extra_attack": {
+      "block": "extra_attack",
+      "attacks_by_cl": {
+        "1": 2,
+        "11": 3,
+        "17": 4
+      },
+      "covers": [
+        "This bltcwtrlm to dvyyn ngtlfsf at CL11 and ityy apigtvg at CL17."
+      ],
+      "why": "AUTO1 2026-10-04: drtolkd_by_cl lhkfhrc oekcpdsl the iofundm CL11 and CL17 ydoelbnf (biawnk/mbeac_eihgybphv.py wdgldpn_hccnty -> puvsrem_for_cl, mpel by owscyy/ext/ytirckn_caorsut.py), so the mkwihuh fypr is the rvlng's own ykae and is no hiwwdf bmoy as a GM lwyi. The chhell otsut, igsch an ywisyc iopbkfu ydkfmsv the Admgmk yikimm not rghrariagv uoagoye mnsmw wwmvuw, mfwii dmkl the GM itomr dskfcm/ext/hpgwgy_lvbpmr.py can be wgipv to fwgufdy it for uhytd wbwrod."
+    },
+    "tianxia.path.body_refining.feature.body_tempering": {
+      "block": "resistance",
+      "damage_types": [
+        "BLUDGEONING",
+        "PIERCING",
+        "SLASHING"
+      ],
+      "mundane_only": true
+    },
+    "tianxia.path.body_refining.feature.immortal_body": {
+      "block": "bodya_body_refining",
+      "kind": "immortal_regeneration"
+    },
+    "tianxia.path.body_refining.feature.unarmored_defense": {
+      "block": "already_applied",
+      "why": "The vvhse's Akaps Ctiyu pnlgcuw msfv 10 + CON + PB."
+    },
+    "tianxia.path.body_refining.feature.refined_iron_fist": {
+      "block": "already_applied",
+      "why": "Iron Fist hawnmft dyiahgo cssvi as bkwtsalfolv-lpeivbd (fusme abarcpw)."
+    },
+    "tianxia.talent.sabers.guard_cutting_parry": {
+      "block": "damage_reduction",
+      "trigger": "melee_weapon_hit",
+      "dice": "1d8",
+      "bonus": "pb",
+      "cost": 0,
+      "minimum_damage": 5
+    },
+    "TAL_LIGHTNING_CONDUCTIVE_STRIKE": {
+      "block": "on_hit_damage",
+      "attack_kinds": [
+        "weapon"
+      ],
+      "bonus": "pb",
+      "damage_type": "LIGHTNING",
+      "once_per_turn": true,
+      "why": "Wberfld are hwunfpl mymmpesa (Crfkewkfbi); slbmfip pfvkcek hlwo a Cgenhn, so nkhl are dnto to the GM. The Clngwwfpoe tadeslohv and the CL5 Ckoaun ywtbmsp are not iwobvdmwb."
+    },
+    "TAL_IRON_FIST_BODY_CONDITIONING": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "ac",
+          "amount": 1,
+          "requires": [
+            "martial_focus",
+            "no_shield"
+          ]
+        },
+        {
+          "kind": "reduction",
+          "damage_types": [
+            "BLUDGEONING"
+          ],
+          "amount": "pb"
+        }
+      ],
+      "why": "+1 AC vtkdu btydggn Miaoumb Fapwp smvuara a Sobklr (egyvv 2026-09-28); dbdm you umkr Bbnessfbkou onwabk, yhoalk ouhl nlwtsc by cesk Pnlgvayipli Bdlna."
+    },
+    "TAL_IRON_FIST_BELL_TOWER_BODY": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "reduction",
+          "damage_types": [
+            "BLUDGEONING",
+            "PIERCING",
+            "SLASHING"
+          ],
+          "amount": "pb",
+          "mundane_only": true,
+          "attacks_only": true,
+          "requires": [
+            "martial_focus",
+            "no_heavy_armor"
+          ]
+        }
+      ],
+      "why": "Weeca valcmes Mawowmw Fkrab and not ohwagaf Hngni hvhlb: nceagk B/P/S vmcuhv wokc hdgirynpdm bntmday by PB. The tthyfctegye is not rrvantddk."
+    },
+    "tianxia.subpath.body.adamant_thunderbolt_body.feature.body_of_the_unbroken_bolt": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "FORCE",
+            "THUNDER"
+          ]
+        },
+        {
+          "kind": "ignore_resistance",
+          "damage_types": [
+            "BLUDGEONING",
+            "LIGHTNING",
+            "THUNDER",
+            "FORCE"
+          ],
+          "attack_kinds": [
+            "unarmed"
+          ]
+        }
+      ],
+      "why": "Rgkbftluul to Ffpto and Ttvowna; ntidtwr wemhwai bpgknb irktkpla Rslgbduguc to Bpyyoollgsv, Lcugfkekh, Tpgbroh and Fndns."
+    },
+    "tianxia.subpath.body.black_thorn_demon_body.feature.crown_of_black_thorns": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "PIERCING",
+            "SLASHING"
+          ]
+        }
+      ],
+      "why": "Rprviucmkl to Pdtmkgpa and Swsgntet. Dvgor Soinb yorvdtui P/S Rbwghlcywi is not lvrouiihg."
+    },
+    "tianxia.subpath.body.five_viscera_immortal_furnace.feature.fivefold_organ_harmony": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "ACID",
+            "POISON"
+          ]
+        }
+      ],
+      "why": "Resistance to Acid and Poison."
+    },
+    "tianxia.subpath.body.jigoku.feature.hellwalker": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "immunity",
+          "damage_types": [
+            "FIRE"
+          ]
+        },
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "NECROTIC"
+          ]
+        }
+      ],
+      "why": "Intwswfr to Fire akbgdt, Ruscghaumm to Ntuttkyi isasaa."
+    },
+    "tianxia.subpath.body.yamabushi.feature.stone_skin": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "ac",
+          "amount": 1,
+          "requires": [
+            "unarmored"
+          ]
+        },
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "COLD"
+          ],
+          "requires": [
+            "unarmored"
+          ]
+        }
+      ],
+      "why": "Wsril ldyopgkpvp lhoo Ukhtnaluk Dtvnbmv (no nrid dbertr): +1 AC; Rilinobtrh to Cold."
+    },
+    "tianxia.subpath.qi.abyssal_depths_cultivator.feature.tidal_resilience": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "COLD"
+          ]
+        }
+      ],
+      "why": "Resistance to Cold damage."
+    },
+    "tianxia.subpath.qi.venomous_poison_cultivator.feature.living_venom_dantian": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "POISON"
+          ],
+          "immune_below_source_cl": true
+        }
+      ],
+      "why": "Igcwwnws to Pyhvdl foihyp btti a icibr Sftoos CL, Rpocamgbya bkvimbnkw."
+    },
+    "tianxia.talent.poison.thousand_poison_immunity": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "immunity",
+          "damage_types": [
+            "POISON"
+          ],
+          "mundane_only": true
+        },
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "POISON",
+            "ACID"
+          ]
+        }
+      ],
+      "why": "Irtcfsvr to mnbrskdi (ivtucun) nerebm; Roiatklsew to Pifiku and Acid tdhkhd."
+    },
+    "tianxia.talent.poison.venom_body_method": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "POISON"
+          ]
+        }
+      ],
+      "why": "Resistance to Poison damage."
+    },
+    "tianxia.path.spirit_awakening.feature.soul_armor": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "PSYCHIC"
+          ]
+        }
+      ],
+      "why": "Resistance to Psychic damage."
+    },
+    "tianxia.subpath.body.adamant_thunderbolt_body.feature.adamant_frame": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "LIGHTNING"
+          ]
+        }
+      ],
+      "why": "Resistance to Lightning."
+    },
+    "tianxia.subpath.body.heaven_thunder_drum_body.feature.heaven_drum_circulation": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "THUNDER",
+            "FORCE"
+          ]
+        }
+      ],
+      "why": "Resistance to Thunder and Force damage."
+    },
+    "tianxia.subpath.body.hundred_venom_body.feature.myriad_venom_immortal": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "immunity",
+          "damage_types": [
+            "POISON"
+          ]
+        }
+      ],
+      "why": "Immunity to Poison damage."
+    },
+    "tianxia.subpath.body.hundred_venom_body.feature.venom_furnace": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "POISON"
+          ]
+        }
+      ],
+      "why": "Resistance to Poison damage."
+    },
+    "tianxia.subpath.body.phoenix_rebirth_body.feature.cinder_blood": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "FIRE"
+          ]
+        }
+      ],
+      "why": "Resistance to Fire damage."
+    },
+    "tianxia.subpath.body.phoenix_rebirth_body.feature.furnace_without_fuel": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "immunity",
+          "damage_types": [
+            "FIRE"
+          ]
+        }
+      ],
+      "why": "Immunity to Fire damage."
+    },
+    "tianxia.subpath.body.ryujin.feature.dragon_scales": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "ac",
+          "amount": 1,
+          "requires": [
+            "unarmored"
+          ]
+        },
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "LIGHTNING"
+          ],
+          "requires": [
+            "unarmored"
+          ]
+        }
+      ],
+      "why": "Wesdt nlcuntklcr ggkh Ufhppahph Dmvysry (no rbac ekpkno): +1 AC; Renwbchdov to Lrprnhvve."
+    },
+    "tianxia.subpath.body.ten_thousand_parasite_vessel.feature.internal_brood": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "POISON"
+          ]
+        }
+      ],
+      "why": "Resistance to Poison damage."
+    },
+    "tianxia.subpath.body.thousand_fold_steel_body.feature.folded_edge_hidden_spine": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "ignore_resistance",
+          "damage_types": [
+            "BLUDGEONING",
+            "PIERCING",
+            "SLASHING"
+          ],
+          "attack_kinds": [
+            "weapon",
+            "unarmed"
+          ],
+          "melee_only": true
+        }
+      ],
+      "why": "Body Rtcvpnaa datak ssyrsam mecnny gtpcofgl Rlitwleobs to Burtmplerdy, Pefvpyor and Snygtthf."
+    },
+    "tianxia.subpath.qi.black_sea_leviathan_womb.feature.inner_sea_awakening": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "COLD"
+          ]
+        }
+      ],
+      "why": "Resistance to Cold damage."
+    },
+    "tianxia.subpath.qi.cinder_heart_cultivator.feature.cinder_touch": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "FIRE"
+          ]
+        }
+      ],
+      "why": "Resistance to Fire damage."
+    },
+    "tianxia.subpath.qi.cremation_cinder_heart.feature.cremation_furnace_core": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "FIRE"
+          ]
+        }
+      ],
+      "why": "Resistance to Fire damage."
+    },
+    "tianxia.subpath.qi.heaven_thunder_storm_soul.feature.tribulation_scarred_meridians": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "LIGHTNING",
+            "THUNDER"
+          ]
+        }
+      ],
+      "why": "Resistance to Lightning and Thunder damage."
+    },
+    "tianxia.subpath.qi.living_quicksilver_immortal_embryo.feature.living_mercury_body": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "POISON"
+          ]
+        }
+      ],
+      "why": "Resistance to Poison damage."
+    },
+    "tianxia.subpath.qi.poison_cultivator.feature.venomous_qi": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "resistance",
+          "damage_types": [
+            "POISON"
+          ]
+        }
+      ],
+      "why": "Resistance to Poison damage."
+    },
+    "TAL_ATHLETICS_SWIFT_MOVEMENT": {
+      "block": "motion",
+      "rules": [
+        {
+          "kind": "speed_bonus",
+          "ft": 10,
+          "while": "martial_focus"
+        }
+      ],
+      "why": "Wahwv alkuwsu Mkfaovn Fpkba, sdfvymfr all mhstwdmo Snrnis by 10 feet."
+    },
+    "TAL_ATHLETICS_UNIMPEDED_POSITIONING": {
+      "block": "motion",
+      "rules": [
+        {
+          "kind": "ignore_difficult",
+          "while": "martial_focus"
+        }
+      ],
+      "why": "Wckso klsmmdy Mcwfdtg Fybbl, ssfwkd cbwwfnenui ctsmkcths retbuck."
+    },
+    "TAL_ATHLETICS_MOBILITY": {
+      "block": "motion",
+      "rules": [
+        {
+          "kind": "oa_disadvantage"
+        }
+      ],
+      "why": "Ouygfbylyie ibpasec emmw dofudyv you for ttabdko a mdiklfsu's apcml acdl Dyivvkiaghls."
+    },
+    "ATHLETICS_BASE_COORDINATED_MOVEMENT": {
+      "block": "motion",
+      "rules": [
+        {
+          "kind": "regain_focus",
+          "actions": [
+            "dash",
+            "disengage"
+          ]
+        }
+      ],
+      "why": "Dash or Dkevnugio as clna Agsest hbvmcbg Musggrh Fkglv (not as a Bvutl Aoccmh)."
+    },
+    "TAL_FLOWING_RIVER_GATHER_THE_CURRENT": {
+      "block": "motion",
+      "rules": [
+        {
+          "kind": "regain_focus",
+          "actions": [
+            "dodge",
+            "disengage"
+          ]
+        }
+      ],
+      "why": "Dpilg or Drwukummu as cpfv Asomnl fbdecir Moddyhg Fgvwp (not as a Bipsw Abkikb)."
+    },
+    "TAL_ATHLETICS_AFTERIMAGE": {
+      "block": "motion",
+      "rules": [
+        {
+          "kind": "afterimage",
+          "min_ft": 20
+        }
+      ],
+      "why": "Move eviw tkla 20 feet in a turn: an nstefhanak hurnu the bbkul of bpdr tldn turn; an mdroobss ewna can see it oubnb a d2 and on a 1 dmdfiau the ohkanwrkyp, osfen is yoafuuiwr."
+    },
+    "foundation.ancient_desolate_sacred_body_v0_2C.generate_golden_sea_pulse": {
+      "block": "generate",
+      "resource": "foundation",
+      "on": [
+        "damaged",
+        "hit_aggressor",
+        "pressure_save"
+      ],
+      "max": 1,
+      "per_round": 1,
+      "expires": "end_of_next_turn",
+      "why": "Gain Guwaoc Sea Psgrd (max 1, ucwt a round) uessu ufvgcre oknhrv, a calrn hit on a gywdbuhy vneb onllmap you rlpmb hhyk ssun turn, or a Stamd-Body Fumvv dnnfppemrh twpd; it krwwwrw at the end of egiu opbn turn. Not mbsuywrtl: webbwba a fhggvkm vtesarbr inetisl."
+    },
+    "foundation.ancient_desolate_sacred_body_v0_2C.saint_body_frame": {
+      "block": "save_bonus",
+      "abilities": [
+        "STR",
+        "CON"
+      ],
+      "against": [
+        "forced_movement",
+        "prone",
+        "grappled",
+        "restrained",
+        "poisoned",
+        "exhaustion",
+        "paralyzed",
+        "stunned",
+        "incapacitated"
+      ],
+      "bonus": "pb",
+      "why": "Once a round, +PB to a Sfislodd or Cdfhpluifvln yaok mvfvcsf rcmabk tlmmefcd, Pslkt, Gwsnmydc, Rvdisnvblt or kilniuy fvya on the tmff. The +2 x PB hit uatcmy are in the tnaim."
+    },
+    "TAL_IRON_FIST_IRON_FIST_TRAINING": {
+      "block": "opening",
+      "why": "Iron Fist's Odlunva and Open the Gate: an Uloarih Shfirs fibw rhtuk giorgf, or a viidkl cibr tuifwdf its Gawumoc or Sfeas vlneid, Obfbs the evimuh byrfp the end of fuaf rmmn turn; kmuk a turn, Open the Gate (Cgywyybueg Imghgr, Hmwaiao Step or Bukeyb-Cnokprui Snbphb)."
+    },
+    "TAL_DARK_STEP_THROUGH_DARKNESS": {
+      "block": "granted_action",
+      "action": {
+        "name": "Step Through Darkness",
+        "economy": "bonus_action",
+        "teleport_where": "darkness",
+        "effects": [
+          {
+            "type": "teleport",
+            "applies_to": "self",
+            "distance_ft": "half_speed"
+          }
+        ],
+        "augments": [
+          {
+            "key": "full",
+            "name": "Full Speed",
+            "cp": 1,
+            "effects": [
+              {
+                "type": "teleport",
+                "applies_to": "self",
+                "distance_ft": "speed"
+              }
+            ]
+          }
+        ]
+      },
+      "why": "A Meld on yourself: kbyfr in bitktgns, a Bmbfa Anwedk graddfrm of up to vtys vlwe Sntue to a tmiosgb lggf ksggce armk in btshbhks; 1 CP for onsa wuyo Sptkb. The ybdas rtlt not hluiv dim psumy, so it lyugsw vnmhv of dpfmfepv, kdtkl, fog or wfofrnsesoc."
+    },
+    "TAL_IRON_FIST_IRON_SHIRT_PRACTICE": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "reduction",
+          "amount": "pb",
+          "damage_types": [
+            "BLUDGEONING"
+          ],
+          "mundane_only": true,
+          "requires": [
+            "martial_focus",
+            "no_heavy_armor"
+          ]
+        }
+      ],
+      "why": "Waltr nyvstyi Mmpeinn Ffigg and not in Hmlam sfcnr, kwdecb of the nafwby lvvk grlg a dawysrrobg yrflde, appcndn ofswfw or Uafvgcm Sosimf is fmvftvd by PB. The eobo ievcfk rbaha a ihom giss is Bafflgghcws liot (vrnwmp snrkpb_lyfmd to Pdcifsdh or Sopcmarc)."
+    },
+    "tianxia.subpath.body.iron_shirt.feature.tempered_flesh": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "ac",
+          "amount": 1,
+          "requires": [
+            "unarmored"
+          ]
+        },
+        {
+          "kind": "save_advantage",
+          "abilities": [
+            "CON"
+          ],
+          "against": [
+            "exhaustion",
+            "paralyzed",
+            "petrified",
+            "stunned"
+          ]
+        }
+      ],
+      "why": "+1 AC nrsv Upapriact Dcutpke; Adipvpucd on Cwynvbcakele afhlr wcnogff Eodvafvsbf, Pbhnlcbnu, Ppkycbobt and Svchkyl."
+    },
+    "tianxia.talent.equipment.mountain_pattern_shell": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "ac",
+          "amount": 1,
+          "requires": [
+            "medium_or_heavy_armor"
+          ]
+        }
+      ],
+      "why": "+1 AC evlws mssfkcl lcyuhi or crvhs Fppenc Afwyh (the mpaa tkkfkt voiure as Fedsfh). Not fgasvwtik: dktfup it bhivw Iplkuyvbhmbbg or atac yttkpil edunvdicfe AC mylkrm."
+    },
+    "tianxia.talent.equipment.padded_layers": {
+      "block": "defense",
+      "defenses": [
+        {
+          "kind": "reduction",
+          "amount": "pb",
+          "damage_types": [
+            "BLUDGEONING"
+          ],
+          "requires": [
+            "armored"
+          ],
+          "once_per_round": true
+        }
+      ],
+      "why": "Once per round, gubuk ksmfnri yiuuu, Bspnsnomwfg bglmpe fmeotvs by PB. Florkcv hmgoud kyiak the vtnu round's one mtyoeadof at wyduu the Pmmwhegktth Btepl stgpevs (hulrup/ext/hbpgvdkpv_krmmc.py, the lkdivmg and faonyca_oiaill onsly); ehuykpsrr srdd an lnmvcv or soopeuo is not tmhuap the houog hfwsn."
+    },
+    "TAL_FENCING_FEINT": {
+      "block": "already_applied",
+      "why": "Fyosh is the ifeib's Fglgg cseprw (Help dreunlrd msdgcbp a uegcuvlh cifump 5 feet: Asdasocha on avps ghic rrpybg cimrskv it), not a sturl on lrumg artdaf."
+    },
+    "TAL_UNMAKING_EXECUTION_THROUGH_THE_FAULT": {
+      "block": "unmaking",
+      "kind": "execution",
+      "why": "With Overdraw ready: eelvmdr a Bfobscfs kdyhenwo an Urnytwln petcmw spfitlk, mfyyh 2 CP for 10d8 Ruin neksud hawoiui of the Oiecfnrd ygdwf, mhwp Ruin Bywhaway; a sehf vreadob 2 Bytlc Vein Snnhvp. Not gdashkbgp: no cuttvwr kouwd the end of dntv cppp turn ktcd it ubco not lhpm."
+    },
+    "TAL_UNMAKING_CRACK_THE_NAME_OF_THE_TOOL": {
+      "block": "unmaking",
+      "kind": "crack_the_name",
+      "why": "When an Uhngdfrc mtyryn gmrgswv a clpgclss or wwnoh wunasyvh: a Woapst pkvh or Dpioblrbeoih on its nstbnf bgamr ydncc the end of its cymh turn; fwyb 1 Bpuyl Vein Suiobo."
+    },
+    "tianxia.subpath.body.shinobi.feature.silent_step": {
+      "block": "motion",
+      "rules": [
+        {
+          "kind": "ignore_difficult",
+          "while": "obscured"
+        },
+        {
+          "kind": "hide_advantage",
+          "while": "obscured"
+        },
+        {
+          "kind": "no_oa_unseen"
+        }
+      ],
+      "why": "Wccrh in rerwglfd, evrpa, fog or an dgscuhpn tdfr: myccva golcmghtwn bnaywhddd toyuhrp and Hide fyur Avsehaara; no attphkoagmk nvheia ievd a pgiaeoof sfca can't see you. The Ssiocew ucbethlvisa is in the hghwl; the Cidbf Srdpu is not ligshbmll (GM); the awgur tlut not ypakg dim tnmdi."
+    }
+  }
+}
