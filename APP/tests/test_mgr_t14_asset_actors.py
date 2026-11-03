@@ -1,0 +1,47 @@
+"""Native table guards for source-profiled actor runtime. No models or browser."""
+import pytest
+from combat.factory_compiler import compile_character
+from tests.h1_support import sheet
+from tests.worker2_support import fixture, candidate, settle, reload, OWNER
+
+PAPER = 'tianxia.subpath.qi.paper_cultivator.feature.'
+
+
+@pytest.mark.parametrize('feature,group,hp', [
+    ('paper_dragon', 'paper_dragon', 90), ('paper_clone', 'paper_clone', 1),
+    ('folded_familiar', 'paper_familiar_crane', 36)])
+def test_owned_profiles_are_separate_and_cannot_borrow_features(feature, group, hp):
+    doc = sheet([], cl=18)
+    doc.setdefault('path_and_subpath', {})['path_feature_record_ids'] = [PAPER + feature]
+    bundle = compile_character(doc, actor_id=OWNER)
+    actor = next(c for c in bundle['summons'] if c['summon']['group'] == group)
+    assert actor['actor_template']['maximum_hp'] == hp
+    assert actor['actor_template']['owner_id'] == OWNER
+    assert not actor['actor_template']['resources']
+    assert not actor['actor_template']['primary_combatant']
+    assert actor['summon']['actor_policy']
+    for action in actor['action_catalog']:
+        assert action['owner_id'] == actor['actor_id']
+        assert not action.get('costs')
+
+
+def test_no_owned_source_is_default_inert():
+    bundle = compile_character(sheet([], cl=18), actor_id=OWNER)
+    assert not any(c['summon']['source'].startswith(PAPER) for c in bundle.get('summons', ()))
+
+
+@pytest.mark.parametrize('feature,name,group', [
+    ('paper_dragon', 'Paper Dragon', 'paper_dragon'),
+    ('paper_clone', 'Paper Clone', 'paper_clone')])
+def test_native_creation_table_commit_and_cold_replay(tmp_path, feature, name, group):
+    combat, table, mid = fixture(tmp_path, [], owner_features=[PAPER + feature], cl=18,
+        battlefield_transform=lambda arena: arena.update(terrain_regions=[]))
+    before = reload(tmp_path, mid).state.actors[OWNER].resources['resource:core.qi']
+    choice = candidate(combat, mid, name)
+    settle(table, mid, choice.candidate_id)
+    engine = reload(tmp_path, mid)
+    body = next(a for a in engine.state.actors.values() if (a.summon or {}).get('group') == group)
+    assert body.active
+    assert before-engine.state.actors[OWNER].resources['resource:core.qi'] == 5
+    assert engine.grid.distance_ft(engine.state.actors[OWNER].position, body.position) <= 30
+    assert body.summon['expires_on']
