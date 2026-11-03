@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Stage2_Reconciliation_Report.schema.json",
+  "title": "Stage 2 Final State Reconciliation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "project_revision",
+    "valid",
+    "event_state_hash",
+    "ledger_state_hash",
+    "orphaned_final_elements",
+    "mismatches"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "TianxiaFoundry.Stage2ReconciliationReport.v1"
+    },
+    "project_id": {
+      "type": "string"
+    },
+    "project_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "valid": {
+      "type": "boolean"
+    },
+    "event_state_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "ledger_state_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "orphaned_final_elements": {
+      "type": "array"
+    },
+    "mismatches": {
+      "type": "array"
+    }
+  }
+}
