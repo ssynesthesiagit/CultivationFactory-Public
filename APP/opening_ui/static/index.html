@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Factory · Mortal Opening</title>
+  <link rel="stylesheet" href="/opening/static/styles.css">
+</head>
+<body>
+  <main class="shell" id="app">
+    <section class="entry-screen" id="entry-screen" aria-labelledby="entry-title">
+      <p class="eyebrow">FACTORY / TEMPORARY OPENING</p>
+      <h1 id="entry-title">The porcelain gate waits.</h1>
+      <p class="entry-copy">Enter the verified mortal starter and continue from its canonical campaign record.</p>
+      <button class="seal-button" id="launch-button" type="button">Enter the campaign</button>
+      <p class="entry-note" id="entry-note">Loopback preview · validated export and trusted admission</p>
+    </section>
+
+    <section class="player-screen hidden" id="player-screen" aria-live="polite">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">FACTORY / PLAYER VIEW</p>
+          <p class="location-line" id="location-line">—</p>
+        </div>
+        <div class="time-readout"><span id="time-value">0</span><small>elapsed seconds</small></div>
+      </header>
+
+      <div class="player-grid">
+        <aside class="character-rail panel" id="character-rail">
+          <div class="seal-mark" aria-hidden="true">F</div>
+          <h2 id="character-name">—</h2>
+          <p class="muted" id="character-id">—</p>
+          <div class="stat-block">
+            <div class="stat-row"><span>Vitality</span><strong id="hp-value">—</strong></div>
+            <div class="meter"><span id="hp-meter"></span></div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-row"><span>Hit Dice</span><strong id="dice-value">—</strong></div>
+          </div>
+          <div class="condition-block">
+            <p class="label">Conditions</p>
+            <ul id="conditions-list"><li class="muted">None recorded</li></ul>
+          </div>
+          <div class="activity-block">
+            <p class="label">Activity</p>
+            <p id="activity-value">Idle</p>
+          </div>
+        </aside>
+
+        <section class="scene-column">
+          <article class="scene-card panel">
+            <div class="mountain-line" aria-hidden="true"></div>
+            <p class="eyebrow">SCENE / MORTAL START</p>
+            <h2>Ink on the threshold</h2>
+            <p class="scene-copy" id="scene-copy">The gate is quiet. A woven token rests beside the path, and the campaign clock belongs to the host.</p>
+          </article>
+          <article class="journal panel">
+            <div class="panel-heading"><h3>Chronicle</h3><span id="revision-value">rev —</span></div>
+            <ol id="journal-list"><li>Awaiting the first canonical event.</li></ol>
+          </article>
+        </section>
+
+        <aside class="status-rail panel">
+          <p class="label">Inventory</p>
+          <ul id="inventory-list"><li class="muted">Empty hands</li></ul>
+          <p class="label nearby-label">Nearby</p>
+          <ul id="nearby-list"><li class="muted">Nothing visible</li></ul>
+          <p class="label">State</p>
+          <p id="state-line" class="muted">Canonical state loaded.</p>
+        </aside>
+      </div>
+
+      <section class="bottom-actions panel" aria-labelledby="actions-title">
+        <div class="panel-heading"><h3 id="actions-title">Actions</h3><span class="muted">Server-authorized</span></div>
+        <div class="action-row">
+          <button class="action-button" id="short-rest-button" data-action="short_rest" type="button">Short Rest · 1 hour</button>
+          <button class="action-button" id="hit-die-button" data-action="spend_hit_die" type="button">Spend one Hit Die</button>
+          <button class="action-button" id="take-item-button" data-action="take_starter_item" type="button">Take woven token</button>
+          <button class="action-button" id="drop-item-button" data-action="drop_starter_item" type="button">Drop woven token</button>
+          <button class="quiet-button" id="reopen-button" type="button">Reload saved campaign</button>
+        </div>
+      </section>
+
+      <section class="local-tests panel" id="local-test-controls" hidden aria-labelledby="local-tests-title">
+        <div class="panel-heading"><h3 id="local-tests-title">Local smoke controls</h3><span class="warning-label">test only</span></div>
+        <p class="muted">These fixed host-side checks are separate from player actions; values and actor are chosen by the server.</p>
+        <p class="muted" id="local-test-guidance"></p>
+        <div class="action-row">
+          <button class="test-button" data-local-action="damage" type="button">Apply 1 damage</button>
+          <button class="test-button" data-local-action="poison" type="button">Apply Poisoned</button>
+          <button class="test-button" data-local-action="advance_time" type="button">Advance one hour</button>
+        </div>
+      </section>
+      <div class="notice" id="notice" role="status"></div>
+      <div class="error-box hidden" id="error-box" role="alert"><strong id="error-code"></strong><span id="error-message"></span><span id="error-guidance"></span></div>
+    </section>
+  </main>
+  <script src="/opening/static/app.js" defer></script>
+</body>
+</html>
