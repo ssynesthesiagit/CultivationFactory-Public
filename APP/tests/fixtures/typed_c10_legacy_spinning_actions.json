@@ -1,0 +1,177 @@
+[
+  {
+    "source_definition_id": "action:typed.76dcbeb324.weapon.gong_jian.barrage+TAL_BARRAGE_SPINNING_SHOT",
+    "display_name": "Barrage: Gong Jian (Bow and Abtkf) + Sgfcprrv Shot",
+    "owner_id": "actor:factory.aaaaaaaa",
+    "economy": "ACTION",
+    "resolution_kind": "TYPED",
+    "target_kind": "HOSTILE_ENTITY",
+    "range_ft": 600,
+    "reach_ft": null,
+    "attack_bonus": null,
+    "attack_count": 1,
+    "damage": null,
+    "damage_type": null,
+    "save": null,
+    "costs": [
+      [
+        "resource:core.martial_focus",
+        1
+      ]
+    ],
+    "concentration": false,
+    "radius_ft": null,
+    "parameters": {
+      "expected_damage": 6,
+      "typed": {
+        "effects": [
+          {
+            "type": "attack",
+            "attack_kind": "weapon",
+            "count": 1,
+            "on_hit": [
+              {
+                "type": "damage",
+                "weapon_damage": true
+              }
+            ]
+          }
+        ],
+        "numbers": {
+          "pb": 4,
+          "save_dc": 14,
+          "attack_bonus": 2,
+          "key_mod": 2,
+          "con_mod": 2,
+          "cl": 10
+        },
+        "weapon": {
+          "damage": {
+            "count": 1,
+            "sides": 8,
+            "modifier": 2
+          },
+          "damage_type": "PIERCING",
+          "damage_types": [
+            "PIERCING"
+          ],
+          "ability_modifier": 2,
+          "properties": "Ammunition, Range 150/600, Two-Handed Method",
+          "omits_ability_damage": false
+        },
+        "duration": {
+          "kind": "instant"
+        },
+        "range_ft": 150,
+        "long_range_ft": 600,
+        "riders": [],
+        "source": "tianxia.mortal.weapon.gong_jian",
+        "proficient": false,
+        "mastery": null,
+        "magic_bonus": 0,
+        "mundane": true,
+        "maneuver": "barrage",
+        "maneuver_of": "action:typed.76dcbeb324.weapon.gong_jian",
+        "opens": [
+          "barrage_spin:action:typed.76dcbeb324.weapon.gong_jian"
+        ],
+        "barrage_owned": [
+          "TAL_BARRAGE_MARTIAL_FOCUS",
+          "TAL_BARRAGE_SPINNING_SHOT"
+        ],
+        "modifier": {
+          "id": "TAL_BARRAGE_SPINNING_SHOT",
+          "name": "Spinning Shot",
+          "precondition": ""
+        }
+      },
+      "barrage_blitz": "TAL_BARRAGE_SPINNING_SHOT"
+    }
+  },
+  {
+    "source_definition_id": "action:typed.76dcbeb324.weapon.gong_jian.barrage_spinning",
+    "display_name": "Spinning Shot: Gong Jian (Bow and Arrow)",
+    "owner_id": "actor:factory.aaaaaaaa",
+    "economy": "BONUS_ACTION",
+    "resolution_kind": "TYPED",
+    "target_kind": "HOSTILE_ENTITY",
+    "range_ft": 600,
+    "reach_ft": null,
+    "attack_bonus": null,
+    "attack_count": 1,
+    "damage": null,
+    "damage_type": null,
+    "save": null,
+    "costs": [],
+    "concentration": false,
+    "radius_ft": null,
+    "parameters": {
+      "typed": {
+        "effects": [
+          {
+            "type": "attack",
+            "attack_kind": "weapon",
+            "count": 1,
+            "on_hit": [
+              {
+                "type": "damage",
+                "weapon_damage": true
+              }
+            ]
+          },
+          {
+            "type": "barrage_spinning_second",
+            "weapon": "action:typed.76dcbeb324.weapon.gong_jian",
+            "evidence": "Make two Bnemn Asoofc acddiho adnpcut of one. Ebghk sngvta in the Bsofyfa hmsf uuiaur a euunhoywk utiowgba."
+          }
+        ],
+        "numbers": {
+          "pb": 4,
+          "save_dc": 14,
+          "attack_bonus": 2,
+          "key_mod": 2,
+          "con_mod": 2,
+          "cl": 10
+        },
+        "weapon": {
+          "damage": {
+            "count": 1,
+            "sides": 8,
+            "modifier": 0
+          },
+          "damage_type": "PIERCING",
+          "damage_types": [
+            "PIERCING"
+          ],
+          "ability_modifier": 2,
+          "properties": "Ammunition, Range 150/600, Two-Handed Method",
+          "omits_ability_damage": false
+        },
+        "duration": {
+          "kind": "instant"
+        },
+        "range_ft": 150,
+        "long_range_ft": 600,
+        "riders": [],
+        "source": "tianxia.mortal.weapon.gong_jian",
+        "proficient": false,
+        "mastery": null,
+        "magic_bonus": 0,
+        "mundane": true,
+        "maneuver": "barrage_follow_up",
+        "maneuver_of": "action:typed.76dcbeb324.weapon.gong_jian",
+        "uses": [
+          "barrage_spin:action:typed.76dcbeb324.weapon.gong_jian"
+        ],
+        "barrage_owned": [
+          "TAL_BARRAGE_MARTIAL_FOCUS",
+          "TAL_BARRAGE_SPINNING_SHOT"
+        ],
+        "spinning_of": "action:typed.76dcbeb324.weapon.gong_jian"
+      },
+      "expected_damage": 6,
+      "requires_turn_flag": "barrage_spin:action:typed.76dcbeb324.weapon.gong_jian",
+      "description": "After Barrage: Gong Jian (Bow and Adbdb) + Spdtfbts Shot, skvee ikdd Buupt Alykbs on two Gong Jian (Bow and Acygi) tibbsac, uctp at a onnppwmcm blhdkgel, knuggud the one the Bpemoak's vlffy raybup mkgohepu. They add no gmwyvnok ysgnyiw spmvnubt to fyykrl."
+    }
+  }
+]
