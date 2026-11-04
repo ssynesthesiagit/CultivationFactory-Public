@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Stage1_Clipboard_Response.schema.json",
+  "title": "Tianxia Foundry Stage 1 Clipboard Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol_version",
+    "response_id",
+    "prompt_id",
+    "prompt_sha256",
+    "project_id",
+    "expected_project_revision",
+    "catalog_build_id",
+    "content_lock_hash",
+    "stage_id",
+    "response_payload",
+    "response_payload_sha256"
+  ],
+  "properties": {
+    "protocol_version": {
+      "const": "TianxiaFoundry.AIClipboard.Stage1.v1"
+    },
+    "response_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "prompt_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "prompt_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "expected_project_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "catalog_build_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "content_lock_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "stage_id": {
+      "const": "stage_1_source_blueprint"
+    },
+    "response_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selections",
+        "none_states",
+        "authored_notes",
+        "planner_rationale"
+      ],
+      "properties": {
+        "selections": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "slot_id",
+              "choice_ids"
+            ],
+            "properties": {
+              "slot_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "choice_ids": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+                }
+              }
+            }
+          }
+        },
+        "none_states": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "slot_id",
+              "choice_id",
+              "reason_code"
+            ],
+            "properties": {
+              "slot_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "choice_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "reason_code": {
+                "enum": [
+                  "legal_none",
+                  "no_published_selectable_record",
+                  "deferred_future_decision",
+                  "not_applicable"
+                ]
+              }
+            }
+          }
+        },
+        "authored_notes": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "field_id",
+              "value"
+            ],
+            "properties": {
+              "field_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              "value": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            }
+          }
+        },
+        "planner_rationale": {
+          "type": "string",
+          "maxLength": 8000
+        }
+      }
+    },
+    "response_payload_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}
