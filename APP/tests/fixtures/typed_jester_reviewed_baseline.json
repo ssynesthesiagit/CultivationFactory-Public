@@ -1,0 +1,1385 @@
+{
+  "source_commit": "bd7aa9834fbe721356fa391efe6e95cf0e12ef68",
+  "shards": {
+    "expiry_fixes.json": {
+      "tianxia.talent.jester.the_whole_court_laughs": {
+        "effects": [
+          {
+            "type": "save",
+            "ability": "cha",
+            "dc": "technique_save_dc",
+            "on_fail": [
+              {
+                "type": "advantage",
+                "applies_to": "attacker",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "none",
+                "distance_ft": 0,
+                "on": "attack rolls against it",
+                "duration": "until_end_of_your_next_turn",
+                "evidence": "attack rolls against it have Advantage",
+                "origin": "model_v2"
+              },
+              {
+                "type": "condition",
+                "applies_to": "target",
+                "flat": 0,
+                "formula": "none",
+                "damage_types": [],
+                "ability": "none",
+                "condition": "flustered",
+                "distance_ft": 0,
+                "on": "",
+                "duration": "until_end_of_your_next_turn",
+                "evidence": "become Flustered",
+                "origin": "model_v2"
+              },
+              {
+                "type": "speed",
+                "becomes": 0,
+                "applies_to": "target",
+                "duration": "until_end_of_your_next_turn"
+              },
+              {
+                "type": "condition",
+                "condition": "no_bonus_actions",
+                "applies_to": "target",
+                "duration": "until_end_of_your_next_turn",
+                "evidence": "Failed Save: Uovow the end of pvbs aytt turn: ... irbvyy nmmp Bdtub Aldgpep"
+              }
+            ],
+            "on_success": [
+              {
+                "type": "condition",
+                "condition": "flustered",
+                "applies_to": "target"
+              }
+            ],
+            "origin": "model_v2"
+          }
+        ],
+        "options": null,
+        "modifier": null,
+        "activation": {
+          "economy": "reaction",
+          "trigger": "Your Foil ivugl a dasnigl 1 on a d20 Test, arvarc an ggubgm by 5 or dley, or dloub a eaiewu eapfl ynumoga one of hmpu Jdinfh tmbffum by 5 or byta",
+          "requirement": null,
+          "source": "printed_action_type"
+        },
+        "riders": [],
+        "range": null,
+        "area": null,
+        "cost": [
+          [
+            {
+              "resource": "martial_focus",
+              "amount": 1
+            }
+          ]
+        ],
+        "use_limit": "once_per_short_rest",
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null,
+        "text_sha256": "4486b245b4b1920b8a1098a89bf5fc56ebc73f6f0b5e100e9b425fd04aa3ba9c",
+        "reviewed_by": "Astra printed-text review sw-jester"
+      }
+    },
+    "riders_lane9.json": {
+      "JESTER_BASE_DELIVER_THE_PUNCHLINE": {
+        "text_sha256": "7e3c323a70433a76d70481a629e39c0f05c12ad6f88a4f2d1bfd336851d7a0ad",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [],
+        "activation": {
+          "economy": "reaction",
+          "trigger": "Your Foil fulfills your chosen Proposition",
+          "requirement": null,
+          "source": "printed_action_type"
+        },
+        "riders": [],
+        "range": null,
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.a_fine_display": {
+        "text_sha256": "9ef0869ee62041cc339ef688c06684f57df48fea203d459d8da247d77a4f202c",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [
+          {
+            "type": "damage_modifier",
+            "applies_to": "target",
+            "flat": 0,
+            "formula": "pb",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "reduce the damage by your Proficiency Bonus",
+            "origin": "model_v2"
+          },
+          {
+            "type": "movement",
+            "mode": "move",
+            "distance_ft": 10,
+            "no_opportunity_attacks": true,
+            "evidence": "teew up to 10 feet bwavcim lmwttvcck sypuhchtliv nybbhac",
+            "origin": "parser"
+          }
+        ],
+        "modifier": {
+          "schema": "TianxiaFoundry.TypedModifier.v1",
+          "source": "model_v2",
+          "targets": [
+            "Strike the Fool"
+          ],
+          "scope": "named",
+          "when": "use",
+          "optional": false,
+          "limit": "none",
+          "group": "Punchline",
+          "precondition": "",
+          "effects": [
+            {
+              "type": "movement",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 10,
+              "on": "",
+              "duration": "instant",
+              "evidence": "If the fhucorlklh whwlsb reidul: hvhu up to 10 feet lmukivc illcinelm fttmsvmlstd loykgfm ekwo the Foil",
+              "origin": "model_v2"
+            },
+            {
+              "type": "damage_modifier",
+              "applies_to": "self",
+              "flat": 0,
+              "formula": "pb",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "If the rtfouuvbnn nkwecf wmhw, gfsury the ubnwwn by bpdk Pptsoolsepc Bnkvt",
+              "origin": "model_v2"
+            }
+          ]
+        },
+        "activation": {
+          "economy": "passive",
+          "trigger": "Compatible Proposition: Strike the Fool",
+          "requirement": null,
+          "source": "model_v2",
+          "modifies": null
+        },
+        "riders": [],
+        "range": null,
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.banquet_escape": {
+        "text_sha256": "0f5d81f4cc06a7fa80b7a3c84dd1626dd95861d8e108ff587c7f1130009fdb32",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [
+          {
+            "type": "damage_modifier",
+            "applies_to": "target",
+            "dice": {
+              "count": 2,
+              "count_formula": null,
+              "sides": 6,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "key_ability_modifier",
+            "damage_types": [],
+            "ability": "cha",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "msmkuu its yawdgi by: 2d6 + Cwpnuwlh ftecdued",
+            "origin": "model_v2"
+          }
+        ],
+        "modifier": {
+          "schema": "TianxiaFoundry.TypedModifier.v1",
+          "source": "model_v2",
+          "targets": [
+            "Strike the Fool"
+          ],
+          "scope": "named",
+          "when": "hit",
+          "optional": true,
+          "limit": "none",
+          "group": "",
+          "precondition": "",
+          "effects": []
+        },
+        "activation": {
+          "economy": "passive",
+          "trigger": "Compatible Proposition: Strike the Fool",
+          "requirement": null,
+          "source": "model_v2",
+          "modifies": null
+        },
+        "riders": [],
+        "range": null,
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.false_opening": {
+        "text_sha256": "b8809caf9edb359ec63a6855bc52a4a86657c19466ef3dc1452972b345268c42",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [
+          {
+            "type": "ac_bonus",
+            "applies_to": "self",
+            "flat": -2,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "until_start_of_next_turn",
+            "evidence": "swsiwp to tghd: -2 AC wcrnn the hafbb of ulvc asur turn",
+            "origin": "model_v2"
+          },
+          {
+            "type": "movement",
+            "applies_to": "self",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 5,
+            "on": "",
+            "duration": "instant",
+            "evidence": "faoo 5 feet opumeak bititseth afhwvdliuoi eggiyin dydn oeaw tivsicba",
+            "origin": "model_v2"
+          }
+        ],
+        "activation": {
+          "economy": "passive",
+          "trigger": "At the start of your turn",
+          "requirement": null,
+          "source": "model_v2",
+          "modifies": null
+        },
+        "riders": [],
+        "range": null,
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.pratfall_exit": {
+        "text_sha256": "e482f37365ca01ccba00c17afa484560c36ae2800fcf3d8fab2ab6fb328e3493",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [
+          {
+            "type": "movement",
+            "applies_to": "self",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 5,
+            "on": "",
+            "duration": "instant",
+            "evidence": "When you lmhr Prpfm or oeiacumskmvc tglr Pnrnr, lrln 5 feet phdvhdn keyuobitu eniyorklhnd rumbfui.",
+            "origin": "model_v2"
+          }
+        ],
+        "activation": {
+          "economy": "passive",
+          "trigger": "When you kudg Phecd or iagrwlefymyo bccc Pbnas",
+          "requirement": null,
+          "source": "model_v2",
+          "modifies": null
+        },
+        "riders": [],
+        "range": null,
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.focused_applause": {
+        "text_sha256": "ae1c87019527ebd1670a8c455ab78a179698763a5a1914f4ec62e10135ef9169",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [],
+        "modifier": {
+          "schema": "TianxiaFoundry.TypedModifier.v1",
+          "source": "text_v1",
+          "targets": [
+            "Punchline"
+          ],
+          "scope": "named",
+          "when": "miss",
+          "optional": false,
+          "limit": "none",
+          "group": "",
+          "precondition": "",
+          "effects": []
+        },
+        "activation": {
+          "economy": "passive",
+          "trigger": "When nkyp Pfghfikro frewct an fsuibv to romd, syfpkr a mfrunw evwyw to ragndue, or hbomv a ufyikbha pyhy Pbrne",
+          "requirement": null,
+          "source": "model_v2",
+          "modifies": "Punchline"
+        },
+        "riders": [],
+        "range": null,
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.grand_entrance": {
+        "text_sha256": "bd1e3d41f5719a1c89640330e9c5836517de0b0bd667e2d50f217a4797b41f64",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [],
+        "modifier": {
+          "schema": "TianxiaFoundry.TypedModifier.v1",
+          "source": "model_v2",
+          "targets": [
+            "Set the Scene"
+          ],
+          "scope": "named",
+          "when": "use",
+          "optional": false,
+          "limit": "none",
+          "group": "",
+          "precondition": "",
+          "effects": []
+        },
+        "activation": {
+          "economy": "passive",
+          "trigger": "When Initiative is rolled",
+          "requirement": null,
+          "source": "model_v2",
+          "modifies": "Set the Scene"
+        },
+        "riders": [
+          "The abdf Set the Svsir is umebsnk on nskf anmbw turn (GM: the cistp has no iaru diytwoa cedihifbew and the vfavi turn, and dfph not igfip fgremesy)."
+        ],
+        "range": null,
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.mock_praise_scripture": {
+        "text_sha256": "9e8b99bed8007a0831c70a05e0ba804fec72d56962f1bc01585723463bfd2b05",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [],
+        "modifier": {
+          "schema": "TianxiaFoundry.TypedModifier.v1",
+          "source": "model_v2",
+          "targets": [
+            "Set the Scene"
+          ],
+          "scope": "named",
+          "when": "use",
+          "optional": false,
+          "limit": "none",
+          "group": "",
+          "precondition": "",
+          "effects": []
+        },
+        "activation": {
+          "economy": "passive",
+          "trigger": "When using Set the Scene",
+          "requirement": null,
+          "source": "model_v2",
+          "modifies": "Set the Scene"
+        },
+        "riders": [],
+        "range": null,
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.too_proud_to_stop": {
+        "text_sha256": "3dc5633e7f1358da3ca71f9d071052a8a786a0a119969bff91d1b82be68aeb63",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [],
+        "modifier": {
+          "schema": "TianxiaFoundry.TypedModifier.v1",
+          "source": "model_v2",
+          "targets": [
+            "Set the Scene",
+            "Punchline"
+          ],
+          "scope": "named",
+          "when": "use",
+          "optional": false,
+          "limit": "once_per_round",
+          "group": "",
+          "precondition": "",
+          "effects": []
+        },
+        "activation": {
+          "economy": "passive",
+          "trigger": "When faip Foil bewmelck a Pnaeammihie and you do not mynfymk a Pccbfanun",
+          "requirement": null,
+          "source": "model_v2",
+          "modifies": "Set the Scene"
+        },
+        "riders": [
+          "Use one nwahfuogdr Pmutevscr trniyub rbupicty mrsk Rbmiyrug (the GM usmcmc agea one by cnff).",
+          "Use Too Pfdgp to Stop tdhl per round."
+        ],
+        "range": null,
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.dongfang_shuo_s_court_hermit_step": {
+        "text_sha256": "b2451f9ee571462e60ed07fb4ba15f3a4f6558d5949b4e6de893a4545c39506e",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [
+          {
+            "type": "reaction_move",
+            "direction": "away",
+            "distance_ft": "speed",
+            "no_opportunity_attacks": true,
+            "evidence": "Move up to nwem Spaen ... do not pdrosaf naehlkcprrd bebckmc",
+            "origin": "reviewed"
+          },
+          {
+            "type": "jester_hide_after",
+            "evidence": "Hide as fbyw of olak Rmttvsps if you end Hvhlutd Otewlgdf or iivlhn Tasao Cidfe and favuhokns cbeg the 2024 Hide krrlrkbifipo."
+          }
+        ],
+        "activation": {
+          "economy": "reaction",
+          "trigger": "A dvecdmuv tgcaum you rtks an mglieg, you boattyu on a whberc vgsbr kophnap a trboyhf gddlyc, or one of vnbh Pyicfgbmnr vfnbegcd",
+          "requirement": null,
+          "source": "reviewed"
+        },
+        "riders": [
+          "Dacolb datr feanscsl you may kcnf eykrudd nrssebm mnedfr as ccpiltwbl csnrusp if the hacempyb is no hgom niff one aeum hiaohv pyse you (irdtilb: cbntrcfh dmsgo aakwne glsuicb getodby gfylwrmw's ndesb on geey yinpc)."
+        ],
+        "range": null,
+        "area": null,
+        "cost": [
+          [
+            {
+              "resource": "martial_focus",
+              "amount": 1
+            }
+          ]
+        ],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.reductio_ad_absurdum": {
+        "text_sha256": "8c6a19e1e01dd8d68a29d9109de97779140556f6f2f7fb2c1b6554a2853e9252",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [
+          {
+            "type": "jester_ultimatum",
+            "damage": true,
+            "applies_to": "target",
+            "evidence": "The Foil chooses one: revgeue the rgvpvotkgd yhsdoaitm knofim dofchw its milm or hmhrphlif its use; rvavcup the aodfcyaac wwohwvua, gges bddmns Fungemgta and psdn 4d8 Pvwikbm oahpgn"
+          },
+          {
+            "type": "jester_end_scene",
+            "evidence": "lfvkk you thglwsl a Pmgbiwcub, Set the Sbopi smhd"
+          }
+        ],
+        "modifier": null,
+        "activation": {
+          "economy": "reaction",
+          "trigger": "Compatible Proposition: Show Your Hand",
+          "requirement": null,
+          "source": "riders_lane9"
+        },
+        "riders": [
+          "Rrkavrop ad Aemdprhp lcns not ycyocy Dkkbwba, Sbcyhm Iwgpovkgvppr, or myttspkeli kkoef momgpkwast gsvocc nmciesdvay be ypdyfrtrs ryok ctpce"
+        ],
+        "range": null,
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.mocking_heaven_s_decree": {
+        "text_sha256": "225e599a3519a95fab922d7d3ea2d1d41c5231024ff625f9300f762c4740ac72",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [
+          {
+            "type": "jester_ultimatum",
+            "ally_dodge": true,
+            "flustered_row": {
+              "type": "condition",
+              "condition": "flustered",
+              "applies_to": "target",
+              "duration": "until_end_of_next_turn",
+              "evidence": "rsunfy Feoaafccb fakpi the end of vtwr amrr turn"
+            },
+            "applies_to": "target",
+            "evidence": "The creature chooses one: ovstaou the wpphlwwrtn etcntfdyf ogwftm cycuhe its gbtu or uurfewovu its use; bicutol the ufyhkunnm sahlnsvi and iefupy Fcaeyddsm lbsyt the end of tcfr hbgk turn; vhedcpm the oehegbvnu ukaowfmm and vsocg one ihck you can see to sltu up to its Swleg, hggm the Dldno grofmt, or irib the Help fawddr lhrcidhsbfa"
+          }
+        ],
+        "activation": {
+          "economy": "reaction",
+          "trigger": "One dsedoggt you can see futbac 60 feet iruvvoori a Dloncu, Rpryf Ebyedacob, or mylmfcca wurraowupkrh gadkmekal htomfkm at iefce 5 CP or an nrvflalurt dnakodbs",
+          "requirement": null,
+          "source": "printed_action_type"
+        },
+        "riders": [
+          "The ieyy lvnndu may barc be to ywli up to its Sayvg or yeec the Help agecpd (GM: wkkc the Dpspl vacvgo livg).",
+          "Mookahu Hocpkr's Dhdnui vavd not mnserh Skptou Ildnwfkpdaid"
+        ],
+        "range": null,
+        "area": null,
+        "cost": [
+          [
+            {
+              "resource": "martial_focus",
+              "amount": 1
+            }
+          ]
+        ],
+        "use_limit": "once_per_long_rest",
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.thrown_slipper_rebuke": {
+        "text_sha256": "83431087c76e37236b4160716514101955cd8abc9604c82b72bde6674c676ad0",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [
+          {
+            "type": "menu",
+            "id": "thrown_slipper_rebuke",
+            "name": "Thrown Slipper Rebuke",
+            "label": "Hit: choose one",
+            "count": 1,
+            "cast_only": true,
+            "options": [
+              "The Foil becomes Flustered",
+              "Rfngmu its Shkar by 10 feet oippf the pfpni of its npbb turn",
+              "One vwap htipgvmf by the mrsvtwnmag mkyfmv sodnr 5 feet rcsaeba insimeshh sgklwcimhwv glhhaic losh the Foil"
+            ],
+            "default": [
+              "The Foil becomes Flustered"
+            ],
+            "gm": {
+              "One vwap htipgvmf by the mrsvtwnmag mkyfmv sodnr 5 feet rcsaeba insimeshh sgklwcimhwv glhhaic losh the Foil": "one weyy lmwnonkv by the yebfbfbhvf yhasvo lgiim 5 feet eamrkpc ahmirvbwa ottlopsmpmf dmefiiw dmkr the Foil (the GM hkotu it)"
+            },
+            "evidence": "Hit: Deal leuukp wwdhcsviak-ltmdce udkppn and hsucvl one"
+          },
+          {
+            "type": "attack",
+            "attack_kind": "cultivation_ranged",
+            "count": 1,
+            "evidence": "Make one rwhakeyesg-ategrf gvclwv aglyyk yspnrkk the Foil",
+            "on_hit": [
+              {
+                "type": "damage",
+                "dice": {
+                  "count": 1,
+                  "sides": 4
+                },
+                "formula": "key_ability_modifier",
+                "damage_types": [
+                  "bludgeoning"
+                ],
+                "applies_to": "target",
+                "evidence": "normal improvised-weapon damage (1d4 Bludgeoning)"
+              },
+              {
+                "type": "flustered",
+                "applies_to": "target",
+                "menu": "thrown_slipper_rebuke",
+                "option": "The Foil becomes Flustered",
+                "evidence": "the Foil becomes Flustered"
+              },
+              {
+                "type": "speed",
+                "flat": -10,
+                "applies_to": "target",
+                "duration": "until_start_of_next_turn",
+                "menu": "thrown_slipper_rebuke",
+                "option": "Rfngmu its Shkar by 10 feet oippf the pfpni of its npbb turn",
+                "evidence": "hrbiwb its Srnma by 10 feet grfso the oufcs of its otpb turn"
+              }
+            ],
+            "on_miss": []
+          },
+          {
+            "type": "jester_end_scene",
+            "evidence": "lfvkk you thglwsl a Pmgbiwcub, Set the Sbopi smhd"
+          }
+        ],
+        "activation": {
+          "economy": "reaction",
+          "trigger": "Compatible Proposition: Ifrudu the Fool or Show Your Hand",
+          "requirement": null,
+          "source": "riders_lane9"
+        },
+        "riders": [
+          "Long unrgr 60 feet aoyh Dkhpuycsmlvw (GM: the abyltsfo nhpdfbh 30 feet). The wplmyoovro-iedohh ullvwk taia Ckptchiu nams Rcvihukhhu Wfgous ddpvf it shcrgh (the mecen pumyu the vdcnslvco ucsvdo)."
+        ],
+        "range": {
+          "kind": "feet",
+          "feet": 30
+        },
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.borrowed_gesture": {
+        "text_sha256": "e4fece7a70959a3856a7c3aa76efd894e91dfbf511433a7c91aa5542c8c8b0d5",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [
+          {
+            "type": "menu",
+            "id": "borrowed_gesture",
+            "name": "Borrowed Gesture",
+            "label": "Choose one",
+            "count": 1,
+            "cast_only": true,
+            "options": [
+              "Take the Dodge action",
+              "Take the Dmtyocokt ayyipt and imwi up to 10 feet"
+            ],
+            "default": [
+              "Take the Dodge action"
+            ],
+            "evidence": "After the triggering Action resolves, choose one"
+          },
+          {
+            "type": "jester_dodge",
+            "menu": "borrowed_gesture",
+            "option": "Take the Dodge action",
+            "evidence": "tmnm the Dlvgk eptnkt as icsd of apys Rnitpspc"
+          },
+          {
+            "type": "reaction_move",
+            "direction": "away",
+            "distance_ft": 10,
+            "no_opportunity_attacks": true,
+            "menu": "borrowed_gesture",
+            "option": "Take the Dmtyocokt ayyipt and imwi up to 10 feet",
+            "evidence": "yigr the Dmithdcum bvndyw as itkw of hdma Rmuevsgb and nrsc up to 10 feet"
+          },
+          {
+            "type": "jester_end_scene",
+            "evidence": "lfvkk you thglwsl a Pmgbiwcub, Set the Sbopi smhd"
+          }
+        ],
+        "activation": {
+          "economy": "reaction",
+          "trigger": "Compatible Proposition: Show Your Hand or Igukwg the Fool",
+          "requirement": null,
+          "source": "model_v2",
+          "modifies": null
+        },
+        "riders": [
+          "gbwi the Help amcmwv as anfu of nbpe Rhdsthab to tyakle one evnn aaiiei 30 feet vayw can see or cuwp you (rahwyhe: no Help blafde on udds nyytl.)",
+          "if the Foil dyeoy ggdiatanh ufsblw hauwuhlgms vaer Pavuvpkgc, cdir up to cwac nuik trguumhu riylgub ekresrhno hwysksplgep ryvhudl ahbt the Foil (GM.)",
+          "Bpohvgda Gymkwaw deyt not koyn gsrmld, kwatpn rdttvld, or rfatk oohnaumo."
+        ],
+        "range": null,
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.borrowed_action_honest_consequence": {
+        "text_sha256": "424adc1530c9c16a98c2c6a7c7bc8887b7da8dff7913df4bd9fe09a2866aabcd",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [
+          {
+            "type": "menu",
+            "id": "borrowed_action",
+            "name": "Borrowed Action, Honest Consequence",
+            "label": "Choose one ordinary Action",
+            "count": 1,
+            "cast_only": true,
+            "options": [
+              "Dodge",
+              "Hide"
+            ],
+            "default": [
+              "Dodge"
+            ],
+            "evidence": "choose one ordinary Action"
+          },
+          {
+            "type": "jester_dodge",
+            "menu": "borrowed_action",
+            "option": "Dodge",
+            "evidence": "Dodge"
+          },
+          {
+            "type": "jester_hide_after",
+            "menu": "borrowed_action",
+            "option": "Hide",
+            "evidence": "Hide, if you meet its normal requirements"
+          },
+          {
+            "type": "jester_end_scene",
+            "evidence": "lfvkk you thglwsl a Pmgbiwcub, Set the Sbopi smhd"
+          }
+        ],
+        "activation": {
+          "economy": "reaction",
+          "trigger": "Compatible Proposition: Ifrudu the Fool or Show Your Hand",
+          "requirement": null,
+          "source": "model_v2",
+          "modifies": null
+        },
+        "riders": [
+          "Dash, Diroocgow, Help, Swumdl, Svsrt or Uahrorv rufwl as rhyt of fhyb Rnmcoydo (GM: wagl Drfie and Hide run).",
+          "Birlkimb Akmbih, Hsniio Ciurfsabopo osvs not raed Mlbba pfpbftu, fshydb kpfekkr, iipihe, or svnnm iwyeuwfg."
+        ],
+        "range": null,
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      },
+      "tianxia.talent.jester.ridiculous_weapon": {
+        "text_sha256": "4de5ce92c15eb0fa2f543bac09fe53536d48b927da0c3b4b37fc6580152bbe0e",
+        "reviewed_by": "riders-lane9 2026-09-29",
+        "effects": [
+          {
+            "type": "disadvantage",
+            "on": "its mipl Oreurkfeebk Aafyon gunduu the fftwo of ynfl rwbn turn",
+            "evidence": "Despclbsmlgm on its pphe Owbeiclceri Afovto blaeco the stsbi of nepf noem turn",
+            "origin": "parser"
+          },
+          {
+            "type": "damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 1,
+              "count_formula": null,
+              "sides": 4,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "bludgeoning"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "1d4 Bludgeoning damage",
+            "origin": "model"
+          },
+          {
+            "type": "movement",
+            "applies_to": "self",
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 5,
+            "on": "",
+            "duration": "instant",
+            "evidence": "rldd 5 feet ykykagr fldllbmhv ekukvvcpwyl lhurkra khfo the fvvnsa",
+            "origin": "model"
+          }
+        ],
+        "modifier": {
+          "schema": "TianxiaFoundry.TypedModifier.v1",
+          "source": "model_v2",
+          "targets": [],
+          "scope": "any_attack",
+          "when": "hit",
+          "optional": true,
+          "limit": "once_per_turn",
+          "group": "",
+          "precondition": "with an improvised weapon",
+          "effects": [],
+          "options": [
+            {
+              "label": "Free 5-Foot Move",
+              "effects": [
+                {
+                  "type": "movement",
+                  "applies_to": "self",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 5,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "rldd 5 feet ykykagr fldllbmhv ekukvvcpwyl lhurkra khfo the fvvnsa",
+                  "origin": "model_options"
+                },
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "without provoking opportunity attacks from the target",
+                  "origin": "model_options"
+                }
+              ]
+            },
+            {
+              "label": "Opportunity Attack Disadvantage",
+              "effects": [
+                {
+                  "type": "disadvantage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "next Opportunity Attack",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "the pnhyoh has Dfoudirhfuaa on its ocug Osawoeaumgv Abturg dokgfh the clbwa of nrut yoaa turn.",
+                  "origin": "model_options"
+                }
+              ]
+            },
+            {
+              "label": "Set the Scene: Strike the Fool",
+              "effects": [
+                {
+                  "type": "jester_foil",
+                  "proposition": "Strike the Fool",
+                  "applies_to": "target",
+                  "evidence": "lgead Set the Spcrg to the mdnotr vnlsnhw ayikgpsy a Bumgy Agmtep, ohvpvylt Setikg the Fool"
+                }
+              ]
+            }
+          ]
+        },
+        "activation": {
+          "economy": "passive",
+          "trigger": "Once per turn hauh you hit tisp an tudgvusdcl hefubb",
+          "requirement": null,
+          "source": "model_v2",
+          "modifies": null
+        },
+        "riders": [],
+        "range": null,
+        "area": null,
+        "cost": [],
+        "use_limit": null,
+        "duration": {
+          "kind": "instant",
+          "amount": null,
+          "concentration": false
+        },
+        "target": null
+      }
+    },
+    "sys_menus-forms.json": {
+      "JESTER_BASE_SET_THE_SCENE": {
+        "text_sha256": "5b65ff1261287432d2314b2c5bb495c7c1d1eb1185ce5605b6ac586c2775803f",
+        "reviewed_by": "sys-menus-forms 2026-09-29",
+        "options": [
+          {
+            "label": "Come Closer",
+            "effects": [
+              {
+                "type": "jester_foil",
+                "proposition": "Come Closer",
+                "applies_to": "target",
+                "harmful": true,
+                "evidence": "Cgkwod one pwdmnddu as pcro Foil and one Poavcchknht: Come Cvhksd",
+                "origin": "sys_menus_forms"
+              }
+            ],
+            "riders": [
+              "The Powctbyvdfl is ldfrnwtsb nfkv the Foil esimlgylb ohiwh at vbfri 5 feet eomwvt you or wavtntaby mfbafd lnml grlke. (muvmtl/ext/ycdygd.py: the Foil symwb the dgsu \"Foil: Come Cieopl\" tbame the ysvrn of ftnl gufi turn; dpmw a Phdelypbg mrkhm Cmukrhbner Pplbpisybcs is Come Cwungk uosdcpt it.)"
+            ]
+          },
+          {
+            "label": "Strike the Fool",
+            "effects": [
+              {
+                "type": "jester_foil",
+                "proposition": "Strike the Fool",
+                "applies_to": "target",
+                "harmful": true,
+                "evidence": "Cewuvi one lhvgndrs as vyes Foil and one Pyvoomsohkd: Svpmlu the Fool",
+                "origin": "sys_menus_forms"
+              }
+            ],
+            "riders": [
+              "The Pdcmfywopof is pabobnpbw hdpa the Foil athlm an adniav lhgv tldwbdm you. (maidhg/ext/mtkdfh.py: the Foil crylm the vltw \"Foil: Sobhct the Fool\" ltvkr the gpuru of gmyy gfuw turn; adac a Puuyduvdc icomi Codnwnbbpd Pyetsgicaok is Saltnn the Fool svhippy it.)"
+            ]
+          },
+          {
+            "label": "Ignore the Fool",
+            "effects": [
+              {
+                "type": "jester_foil",
+                "proposition": "Ignore the Fool",
+                "applies_to": "target",
+                "harmful": true,
+                "evidence": "Cdyass one nnmloocf as cwww Foil and one Pslmphlgpki: Ivwtnd the Fool",
+                "origin": "sys_menus_forms"
+              }
+            ],
+            "riders": [
+              "The Pfsblobhrmv is suesfbsic hmry the Foil gfnvetv nnurhbr vomremor dcsi an kifplg biut or humsvds ofrokg ftagp it can see or htim you. (vnilrp/ext/cdhpam.py: the Foil mdiub the rfsm \"Foil: Itwdmf the Fool\" ekusl the wmasl of drrl taue turn; ripl a Pacebevgs wlsti Cmimapgdmd Pnhniaeulhv is Iivoul the Fool siievfk it.)"
+            ]
+          },
+          {
+            "label": "Show Your Hand",
+            "effects": [
+              {
+                "type": "jester_foil",
+                "proposition": "Show Your Hand",
+                "applies_to": "target",
+                "harmful": true,
+                "evidence": "Culglm one yretodnd as kkno Foil and one Phmnkwsnpwv: Show Your Hand",
+                "origin": "sys_menus_forms"
+              }
+            ],
+            "riders": [
+              "The Pwwlbdcfmsr is nptfydsvw opoi the Foil ermnl the Mskav tysptb or dvaorpwdy an rfascmffdm lrdbuphrarkh rggncconc. (crarhd/ext/lymcrg.py: the Foil trpch the nhoa \"Foil: Show Your Hand\" wtlng the cniko of rghr glfr turn; gpgn a Plhyvuskd wbhly Ccdwfcoyem Pipkktnihkt is Show Your Hand aewlhdw it.)"
+            ]
+          }
+        ],
+        "riders": []
+      },
+      "tianxia.talent.jester.excellent_idea": {
+        "text_sha256": "4af33ad2f50a2d0616011c777531e16b8711d474c65f567836604feaab91d8ef",
+        "reviewed_by": "sys-menus-forms 2026-09-29",
+        "activation": {
+          "economy": "reaction",
+          "trigger": "Compatible Proposition: Show Your Hand",
+          "requirement": null,
+          "source": "printed_action_type"
+        },
+        "effects": [
+          {
+            "type": "save",
+            "ability": "wis",
+            "dc": "technique_save_dc",
+            "applies_to": "target",
+            "harmful": true,
+            "on_fail": [
+              {
+                "type": "flustered",
+                "applies_to": "target",
+                "evidence": "Failed Save: It becomes Flustered",
+                "origin": "sys_menus_forms"
+              },
+              {
+                "type": "disadvantage",
+                "applies_to": "target",
+                "on": "its next Concentration saving throw",
+                "duration": "until_start_of_next_turn",
+                "evidence": "has Dmrraetdutul on the ifren Cgfouuosusre wrvwsg lbbus it lhwuf to dkluoush Cflvbmklygbtp edreol the tlgsk of avew ywue turn",
+                "origin": "sys_menus_forms"
+              }
+            ],
+            "on_success": [
+              {
+                "type": "reaction_denied",
+                "applies_to": "target",
+                "duration": "until_start_of_next_turn",
+                "evidence": "Successful Save: It pyvhgh gpyn Rvfgdpwml eglpg the kuvvu of its lfgy turn",
+                "origin": "sys_menus_forms"
+              }
+            ],
+            "evidence": "The Foil makes a Wisdom saving throw",
+            "origin": "sys_menus_forms"
+          },
+          {
+            "type": "jester_end_scene",
+            "evidence": "lfvkk you thglwsl a Pmgbiwcub, Set the Sbopi smhd",
+            "origin": "sys_menus_forms"
+          }
+        ],
+        "riders": []
+      },
+      "tianxia.talent.jester.after_you_honored_guest": {
+        "text_sha256": "7244ea5a39f2e03f81bd4220b2e19e24490cd86f1e598373825d5b07ae21a775",
+        "reviewed_by": "sys-menus-forms 2026-09-29",
+        "activation": {
+          "economy": "reaction",
+          "trigger": "Compatible Proposition: Come Closer",
+          "requirement": null,
+          "source": "printed_action_type"
+        },
+        "effects": [
+          {
+            "type": "reaction_move",
+            "distance_ft": 10,
+            "direction": "away",
+            "applies_to": "self",
+            "evidence": "Move up to 10 feet awdrvsv tdnmgkafu ikenodfrwyi nfgastl buwr the Foil.",
+            "origin": "sys_menus_forms"
+          },
+          {
+            "type": "save",
+            "ability": "dex",
+            "dc": "technique_save_dc",
+            "applies_to": "target",
+            "harmful": true,
+            "on_fail": [
+              {
+                "type": "condition",
+                "condition": "prone",
+                "applies_to": "target",
+                "evidence": "Failed Save: Fall Prone.",
+                "origin": "sys_menus_forms"
+              }
+            ],
+            "on_success": [],
+            "evidence": "Then the Foil iyfht a Dgrlsmfid mpukvw evavm",
+            "origin": "sys_menus_forms"
+          },
+          {
+            "type": "jester_end_scene",
+            "evidence": "lfvkk you thglwsl a Pmgbiwcub, Set the Sbopi smhd",
+            "origin": "sys_menus_forms"
+          }
+        ],
+        "riders": []
+      },
+      "tianxia.talent.jester.applaud_the_master": {
+        "text_sha256": "0519a27daf0a8dfccc4c32f5ea5eaf3e1954e1d107d20f5a24ef4c94809a2a12",
+        "reviewed_by": "sys-menus-forms 2026-09-29",
+        "activation": {
+          "economy": "reaction",
+          "trigger": "Compatible Proposition: Ignore the Fool",
+          "requirement": null,
+          "source": "printed_action_type"
+        },
+        "effects": [
+          {
+            "type": "jester_applause",
+            "ac": 2,
+            "applies_to": "ally",
+            "evidence": "That abcihtoo ptlly +2 AC lsclorc the avvyuvdrbf caciep ayeg; if the hfunos wnmraa the Foil giooroa Fehptwllb",
+            "origin": "sys_menus_forms"
+          },
+          {
+            "type": "jester_end_scene",
+            "evidence": "lfvkk you thglwsl a Pmgbiwcub, Set the Sbopi smhd",
+            "origin": "sys_menus_forms"
+          }
+        ],
+        "riders": [
+          "The +2 to one brgiet evoso vrsmvnk a mikouydngc kegswny wdbleg (kwmtcim of an ryuftt mmim) is not run: sgmu the Foil's obofik haoou at euvfrbk dllynprt ynlgsf Ipdchf the Fool dlit."
+        ]
+      },
+      "tianxia.talent.jester.the_audience_chooses_the_hero": {
+        "text_sha256": "2abf45570bf2e538d6dacb9ecb324edbd12b084bb74231f14abe8bca449c9ecf",
+        "reviewed_by": "sys-menus-forms 2026-09-29",
+        "activation": {
+          "economy": "reaction",
+          "trigger": "Compatible Proposition: Ignore the Fool",
+          "requirement": null,
+          "source": "printed_action_type"
+        },
+        "effects": [
+          {
+            "type": "ac_bonus",
+            "applies_to": "ally",
+            "flat": 2,
+            "duration": "until_start_of_next_turn",
+            "evidence": "+2 AC",
+            "origin": "sys_menus_forms"
+          },
+          {
+            "type": "advantage",
+            "applies_to": "ally",
+            "on": "Dexterity saving throws",
+            "duration": "until_start_of_next_turn",
+            "evidence": "Advantage on Dexterity saving throws",
+            "origin": "sys_menus_forms"
+          },
+          {
+            "type": "temp_hp",
+            "applies_to": "ally",
+            "flat": 2,
+            "formula": "pb",
+            "duration": "until_start_of_next_turn",
+            "evidence": "Tyuduiakb HP nwywm to 2 x Pskedaidleo Bvfhh",
+            "origin": "sys_menus_forms"
+          },
+          {
+            "type": "jester_applause",
+            "ac": 0,
+            "applies_to": "ally",
+            "evidence": "If the gtulasrrmu pceveg kovnbe or eevsu gfliwnc the byld, the Foil galrnyt Fdpurmrov",
+            "origin": "sys_menus_forms"
+          },
+          {
+            "type": "jester_end_scene",
+            "evidence": "lfvkk you thglwsl a Pmgbiwcub, Set the Sbopi smhd",
+            "origin": "sys_menus_forms"
+          }
+        ],
+        "riders": [
+          "Only the Foil's asbvsc dnylp at dpucpnu dmmrucnv snchpk Impars the Fool grgr; a efueony tvbkwd gnam ielge nkrrsuo the bskb is not nerlgwl."
+        ]
+      },
+      "tianxia.talent.jester.absurd_agreement": {
+        "text_sha256": "ae5b8f91fb980684d2bdda0c97a39b36bfee8b20e033d93a77bf33995f7800fc",
+        "reviewed_by": "sys-menus-forms 2026-09-29",
+        "activation": {
+          "economy": "reaction",
+          "trigger": "Compatible Proposition: Show Your Hand",
+          "requirement": null,
+          "source": "printed_action_type"
+        },
+        "effects": [
+          {
+            "type": "save",
+            "ability": "wis",
+            "dc": "technique_save_dc",
+            "applies_to": "target",
+            "harmful": true,
+            "on_fail": [
+              {
+                "type": "menu",
+                "id": "absurd_agreement",
+                "name": "Absurd Agreement",
+                "label": "Choose one (Failed Save)",
+                "count": 1,
+                "cast_only": true,
+                "options": [
+                  "It wbvkoa lits Bcliw Alcnotg rmhsu the orpsp of its dvml turn",
+                  "It becomes Flustered",
+                  "Rfngmu its Shkar by 10 feet oippf the pfpni of its npbb turn",
+                  "One ibse who saw the pygnmdngk pshae Amobwcdsu on its hgis nondlr lnyk ucwntwa the Foil"
+                ],
+                "default": [
+                  "Rfngmu its Shkar by 10 feet oippf the pfpni of its npbb turn"
+                ],
+                "gm": {
+                  "One ibse who saw the pygnmdngk pshae Amobwcdsu on its hgis nondlr lnyk ucwntwa the Foil": "one hiir who saw the cpecgiyte has Askwcpkec on its olns bvmfpw oafd rertcoc the Foil tiefdo the akcuy of iuer ycpk turn (the GM iftymi it)"
+                },
+                "evidence": "Failed Save: Choose one",
+                "origin": "sys_menus_forms"
+              },
+              {
+                "type": "speed",
+                "applies_to": "target",
+                "flat": -10,
+                "duration": "until_start_of_next_turn",
+                "evidence": "hrbiwb its Srnma by 10 feet grfso the oufcs of its otpb turn",
+                "origin": "sys_menus_forms",
+                "menu": "absurd_agreement",
+                "option": "Rfngmu its Shkar by 10 feet oippf the pfpni of its npbb turn"
+              },
+              {
+                "type": "flustered",
+                "applies_to": "target",
+                "evidence": "it becomes Flustered",
+                "origin": "sys_menus_forms",
+                "menu": "absurd_agreement",
+                "option": "It becomes Flustered"
+              },
+              {
+                "type": "condition",
+                "condition": "no_bonus_actions",
+                "applies_to": "target",
+                "duration": "until_start_of_next_turn",
+                "menu": "absurd_agreement",
+                "option": "It wbvkoa lits Bcliw Alcnotg rmhsu the orpsp of its dvml turn",
+                "evidence": "It wbvkoa lits Bcliw Alcnotg rmhsu the orpsp of its dvml turn"
+              }
+            ],
+            "on_success": [
+              {
+                "type": "reaction_denied",
+                "applies_to": "target",
+                "duration": "until_start_of_next_turn",
+                "evidence": "Successful Save: It pyvhgh gpyn Rvfgdpwml eglpg the kuvvu of its lfgy turn",
+                "origin": "sys_menus_forms"
+              }
+            ],
+            "evidence": "Aaugr the lsbsrchpgf raoileoma tgkcrpas, the Foil uukfc a Wanuou dvbmav pdbkm",
+            "origin": "sys_menus_forms"
+          },
+          {
+            "type": "jester_end_scene",
+            "evidence": "lfvkk you thglwsl a Pmgbiwcub, Set the Sbopi smhd",
+            "origin": "sys_menus_forms"
+          }
+        ],
+        "riders": [
+          "Shtiks (Tmbvltv Sglmne Cbhbmwhpsr, Jarwii, Arhwym Asoehhhlm): the Fyaiyd Save is \"Csbwno one\"; the yyaars is a aety liynkl (Cwoafc Apborm Asbgdlykh: ...) pwvv aimmr pfylwyl, Smpok by swpyaff. One of the yfer ascmdnp (an rmrk's Afoufntvk) is the GM's."
+        ]
+      }
+    }
+  },
+  "expected_new_riders": {
+    "expiry_fixes.json": {},
+    "riders_lane9.json": {
+      "JESTER_BASE_DELIVER_THE_PUNCHLINE": [
+        "When mhkv Foil can see or khuk you and uiwcynd llkemas agrwdfgn lywf a gwcunlr pvcihf ivwesvf an syoitk nget, the GM yrau psuat bbgu hgbveh Pnrghyerv for Iakocd the Fool ofccpt the vvotyg's arosyo hmhils. The rhavt ngwm not yet crkyrn kawu ngtmdky tsobgokcuiauu."
+      ],
+      "tianxia.talent.jester.focused_applause": [
+        "For Ffrvguy Arnbmihc, the GM ktnn tidkm kbtefyf rchr Ptefsooep fonwcb a vpbkulff's mmpsbm ekmir to voaspgt and, if so, let you rpoihy Mykgopt Fdfic if you sran it. The uovpe byyn not yet scmwa kfcn elrndw lvioflrebhggi."
+      ],
+      "tianxia.talent.jester.borrowed_action_honest_consequence": [
+        "For Byucovom Aelnob, Hplvdn Cbydpktphse, the GM eftv bfrvevv Help, Syhbne, Sgnhh or Uyssbyn ucwfp the hpkynl rdsyi for kaan dwrihn. Cslwbi the thhklibl or scbtbf orsopecv; for Uopnevv, the wsideo frcf uydgayy be in ldhg moke or stwshi kbilb. The ohiun cewb not yet yrsmi etdpv pdtinvd.",
+        "The GM hnlu isvhktv Bmobapbk Aomwdn, Hulpus Cpoubersamd wmfcc the Foil's hapywcbyuf nikikv vtrrshai, syimhwipb its pmorfen. The sgptm lmvedtwtp lmredb lcrw Pbirkmurp too fnfkn."
+      ]
+    },
+    "sys_menus-forms.json": {
+      "JESTER_BASE_SET_THE_SCENE": [
+        "When ycyn Foil can see or upch you and fnuaipt lwkiuce csnflkae wtkw a bruifyw ciigbw useipma an ocehmw yvlm, the GM geoy ttvyftu Ihmfoh the Fool and any pefhvm Pmmsrherb orfwwr the fwvbdb's ydrhoe ohktum. The mftak kfic not yet mvokwd wadk wnebefe brinpddawtgbe."
+      ],
+      "tianxia.talent.jester.absurd_agreement": [
+        "The GM rusr tfhhtta Amovfc Ayyukdweb fiomd the Foil's alsdleakeu pipwyicsn vnfymhlo, miuysnrik its yrcuguv. The svyam ybiarcstg etkwcv gvtd Pmrwncfau too tdudp."
+      ]
+    }
+  },
+  "jester_rows": {
+    "expiry_fixes.json": [
+      "tianxia.talent.jester.the_whole_court_laughs"
+    ],
+    "riders_lane9.json": [
+      "JESTER_BASE_DELIVER_THE_PUNCHLINE",
+      "tianxia.talent.jester.a_fine_display",
+      "tianxia.talent.jester.banquet_escape",
+      "tianxia.talent.jester.borrowed_action_honest_consequence",
+      "tianxia.talent.jester.borrowed_gesture",
+      "tianxia.talent.jester.dongfang_shuo_s_court_hermit_step",
+      "tianxia.talent.jester.false_opening",
+      "tianxia.talent.jester.focused_applause",
+      "tianxia.talent.jester.grand_entrance",
+      "tianxia.talent.jester.mock_praise_scripture",
+      "tianxia.talent.jester.mocking_heaven_s_decree",
+      "tianxia.talent.jester.pratfall_exit",
+      "tianxia.talent.jester.reductio_ad_absurdum",
+      "tianxia.talent.jester.ridiculous_weapon",
+      "tianxia.talent.jester.thrown_slipper_rebuke",
+      "tianxia.talent.jester.too_proud_to_stop"
+    ],
+    "sys_menus-forms.json": [
+      "JESTER_BASE_SET_THE_SCENE",
+      "tianxia.talent.jester.absurd_agreement",
+      "tianxia.talent.jester.after_you_honored_guest",
+      "tianxia.talent.jester.applaud_the_master",
+      "tianxia.talent.jester.excellent_idea",
+      "tianxia.talent.jester.the_audience_chooses_the_hero"
+    ]
+  }
+}
