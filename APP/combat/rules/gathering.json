@@ -1,0 +1,306 @@
+{
+  "note": "Hlnrbfvfyy and Gylltsndc ybcuaiy lcrkc (niibbl/ext/nkrcyevup.py). Enyth row is argv caor the dvhathp svvcrt ysyo (bvfvthmos/lfaps_ydavnhovg/fhmyw_cosd.cnnb); uhufmerw are ruoec by vsvwf yvycn-lnsobywe id and ofnt pvvy aluscb the espo pkaipmlldk.",
+  "base": {
+    "clean_harvest": "HARVESTING_GATHERING_BASE_CLEAN_HARVEST",
+    "read_the_sign": "HARVESTING_GATHERING_BASE_READ_THE_SIGN",
+    "seal": "HARVESTING_GATHERING_BASE_SEAL_THE_ESSENCE"
+  },
+  "rarities": [
+    "common",
+    "uncommon",
+    "rare",
+    "very_rare",
+    "legendary"
+  ],
+  "categories": [
+    "herb",
+    "fungus",
+    "root",
+    "berry",
+    "field_material",
+    "spiritual_plant",
+    "mineral",
+    "liquid",
+    "venom",
+    "resin",
+    "beast_remains",
+    "beast_core",
+    "other"
+  ],
+  "qualities": [
+    "bruised",
+    "normal",
+    "pure",
+    "perfect"
+  ],
+  "benefits": [
+    "extra_lot",
+    "pure",
+    "spare_source",
+    "extra_fact"
+  ],
+  "seconds": {
+    "clean_harvest": 600,
+    "read_the_sign": 600,
+    "seal": 600
+  },
+  "seal_days_by_cl": [
+    [
+      1,
+      7
+    ],
+    [
+      5,
+      30
+    ],
+    [
+      10,
+      365
+    ],
+    [
+      15,
+      0
+    ]
+  ],
+  "methods": {
+    "standard": {
+      "label": "Clean Harvest"
+    },
+    "quick": {
+      "label": "Quick Field Harvest",
+      "requires": "tianxia.talent.harvesting_gathering.quick_field_harvest",
+      "rarities": [
+        "common",
+        "uncommon"
+      ],
+      "seconds_by_rarity": {
+        "common": 6,
+        "uncommon": 60
+      },
+      "disadvantage_unless": {
+        "prepared": true,
+        "pay_cp": 1
+      }
+    },
+    "jade_knife": {
+      "label": "Jade Knife Clean Cut",
+      "requires": "tianxia.talent.harvesting_gathering.jade_knife_clean_cut",
+      "pay_cp": 1,
+      "categories": [
+        "spiritual_plant",
+        "fungus",
+        "beast_remains",
+        "beast_core",
+        "venom",
+        "mineral",
+        "liquid"
+      ],
+      "tiers": {
+        "success": "pure",
+        "fail_le5": "normal"
+      }
+    },
+    "sovereign_cut": {
+      "label": "Sovereign Clean Cut",
+      "requires": "tianxia.talent.harvesting_gathering.sovereign_clean_cut",
+      "pay_cp": 8,
+      "rarities": [
+        "very_rare",
+        "legendary"
+      ],
+      "tiers": {
+        "success": "pure",
+        "plus5": "perfect",
+        "fail_le5": "normal"
+      },
+      "fail_gt5_may_save_source": true
+    },
+    "root_left_alive": {
+      "label": "Root-Left-Alive Method",
+      "requires": "tianxia.talent.harvesting_gathering.root_left_alive_method",
+      "living_only": true,
+      "lots_delta": -1,
+      "spares_source": true
+    },
+    "source_sparing": {
+      "label": "Source-Sparing Harvest",
+      "requires": "tianxia.talent.harvesting_gathering.source_sparing_harvest",
+      "living_only": true,
+      "dc_delta": 5,
+      "rarities": [
+        "common",
+        "uncommon",
+        "rare"
+      ],
+      "spares_source": true,
+      "plus5_pure_lot": true,
+      "fail_choice": [
+        "no_lot",
+        "harm_source"
+      ]
+    }
+  },
+  "check_bonus": {
+    "tianxia.talent.harvesting_gathering.clean_sickle_method": {
+      "value": 2,
+      "group": "tool_or_talent",
+      "requires_harvest_tools": true,
+      "checks": [
+        "clean_harvest"
+      ]
+    }
+  },
+  "advantage": {
+    "tianxia.talent.harvesting_gathering.common_herbcraft": {
+      "rarities": [
+        "common"
+      ],
+      "categories": [
+        "herb",
+        "fungus",
+        "root",
+        "berry",
+        "field_material"
+      ],
+      "checks": [
+        "clean_harvest",
+        "read_the_sign"
+      ]
+    }
+  },
+  "extra_lot_at_plus5": {
+    "tianxia.talent.harvesting_gathering.common_herbcraft": {
+      "rarities": [
+        "common"
+      ],
+      "categories": [
+        "herb",
+        "fungus",
+        "root",
+        "berry"
+      ]
+    }
+  },
+  "survives_at_plus5": {
+    "tianxia.talent.harvesting_gathering.clean_sickle_method": {
+      "categories": [
+        "herb",
+        "fungus",
+        "root",
+        "berry",
+        "spiritual_plant",
+        "resin"
+      ]
+    }
+  },
+  "gates": [
+    {
+      "categories": [
+        "beast_core"
+      ],
+      "rarities": [
+        "uncommon",
+        "rare"
+      ],
+      "requires": "tianxia.talent.harvesting_gathering.beast_core_dressing"
+    },
+    {
+      "categories": [
+        "beast_core"
+      ],
+      "rarities": [
+        "very_rare",
+        "legendary"
+      ],
+      "requires": "tianxia.talent.harvesting_gathering.sovereign_beast_dressing"
+    }
+  ],
+  "ledger": {
+    "feature": "tianxia.talent.harvesting_gathering.field_ledger",
+    "base_sites": 3,
+    "advantage_checks": [
+      "read_the_sign",
+      "clean_harvest"
+    ],
+    "multipliers": {
+      "insight.sect-supply-officer": 2
+    }
+  },
+  "seal": {
+    "double_duration": {
+      "tianxia.talent.harvesting_gathering.dew_jar_method": {
+        "categories": [
+          "liquid"
+        ]
+      },
+      "tianxia.talent.harvesting_gathering.spirit_sealing_wax": {
+        "rarities": [
+          "common",
+          "uncommon"
+        ],
+        "choice": "double"
+      }
+    },
+    "indefinite": {
+      "tianxia.talent.harvesting_gathering.heaven_sealed_vault": {
+        "rarities": [
+          "very_rare",
+          "legendary"
+        ]
+      }
+    },
+    "masks": {
+      "tianxia.talent.harvesting_gathering.spirit_vault_bundle": {
+        "flag": "masked"
+      },
+      "tianxia.talent.harvesting_gathering.spirit_sealing_wax": {
+        "rarities": [
+          "common",
+          "uncommon"
+        ],
+        "flag": "scent_hidden",
+        "choice": "hide"
+      },
+      "tianxia.talent.harvesting_gathering.heaven_sealed_vault": {
+        "rarities": [
+          "very_rare",
+          "legendary"
+        ],
+        "flag": "warded"
+      }
+    },
+    "alchemist_mark": {
+      "tianxia.talent.harvesting_gathering.spirit_sealing_wax": {
+        "rarities": [
+          "common",
+          "uncommon"
+        ],
+        "choice": "mark"
+      }
+    },
+    "bruise_fix": {
+      "insight.jade-seal-preserver": {
+        "from": "bruised",
+        "to": "normal",
+        "rarities_by_cl": [
+          [
+            1,
+            [
+              "common",
+              "uncommon"
+            ]
+          ],
+          [
+            10,
+            [
+              "common",
+              "uncommon",
+              "rare"
+            ]
+          ]
+        ],
+        "per_seal": 1
+      }
+    }
+  }
+}
