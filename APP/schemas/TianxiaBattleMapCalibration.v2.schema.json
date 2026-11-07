@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "TianxiaBattleMapCalibration.v2.schema.json",
+  "title": "Tianxia Battle Map Calibration v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "authority",
+    "grid_width_squares",
+    "grid_height_squares",
+    "source_pixel_width",
+    "source_pixel_height",
+    "playable_rect_pixels",
+    "fit_mode",
+    "position_x_percent",
+    "position_y_percent",
+    "asset_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "TianxiaBattleMapCalibration.v2"},
+    "authority": {"const": "PRESENTATION_ONLY"},
+    "grid_width_squares": {"type": "integer", "minimum": 1},
+    "grid_height_squares": {"type": "integer", "minimum": 1},
+    "source_pixel_width": {"type": "integer", "minimum": 1},
+    "source_pixel_height": {"type": "integer", "minimum": 1},
+    "playable_rect_pixels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "width", "height"],
+      "properties": {
+        "x": {"type": "integer", "minimum": 0},
+        "y": {"type": "integer", "minimum": 0},
+        "width": {"type": "integer", "minimum": 1},
+        "height": {"type": "integer", "minimum": 1}
+      }
+    },
+    "fit_mode": {
+      "enum": ["EXACT_PLAYABLE_RECT", "CONTAIN_DECORATIVE", "COVER_DECORATIVE"]
+    },
+    "position_x_percent": {"type": "number", "minimum": 0, "maximum": 100},
+    "position_y_percent": {"type": "number", "minimum": 0, "maximum": 100},
+    "asset_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "note": {"type": "string"}
+  }
+}
