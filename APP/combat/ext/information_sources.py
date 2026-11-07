@@ -1,0 +1,73 @@
+"""General native information producers; no opt-in means no behavior.
+
+Reviewed ``information_source`` effect: tags (list of exact classifications),
+save_ability, full_control, permanent, authority and duration describe this
+source's real ongoing effect. source_cl/save_dc are derived from the creating
+Context, never from player answers. ``requires_declaration`` asks the source
+owner to confirm a subjective fact through Needle, including on AI turns;
+AI cannot invent that fact. Missing consent creates no source.
+Existing typed conditions can opt into the same profile using
+``information_profile``. Both paths persist through ordinary conditions.
+"""
+from . import effect, hook
+from ..observer_information import SOURCE
+
+TAGS = frozenset({'illusion','visual_illusion','audible_illusion','possession',
+    'spirit_manifestation','concealment','invisible','charmed','frightened',
+    'deafened','supernatural_disorientation','temporary_corruption','daemonic_corruption'})
+
+
+def profile(ctx, row):
+    spec = row.get('information_profile') or row
+    tags = spec.get('tags')
+    if not isinstance(tags, list) or not tags or any(not isinstance(t,str) or t not in TAGS for t in tags):
+        raise ValueError('Information sources require explicit authored tags')
+    ability = spec.get('save_ability')
+    if ability is not None and (not isinstance(ability,str) or ability.upper() not in {'STR','DEX','CON','INT','WIS','CHA'}):
+        raise ValueError('Information source has an invalid saving throw')
+    if any(type(ctx.numbers.get(k)) is not int or ctx.numbers[k]<1 for k in ('cl','save_dc')):
+        raise ValueError('Information sources require the native source CL and save DC')
+    if any(k in spec and type(spec[k]) is not bool for k in ('full_control','permanent')):
+        raise ValueError('Information source permanence and control must be explicit boolean facts')
+    authority=spec.get('authority','ordinary')
+    if authority not in {'ordinary','protected'}:
+        raise ValueError('Information source authority must be ordinary or protected')
+    tags=set(tags)
+    if tags & {'visual_illusion','audible_illusion'}:tags.add('illusion')
+    return {'tags':sorted(tags), 'source_cl':ctx.numbers['cl'],
+        'save_dc':ctx.numbers['save_dc'], 'save_ability':ability.upper() if ability else None,
+        'full_control':int(bool(spec.get('full_control'))), 'permanent':int(bool(spec.get('permanent'))),
+        'authority':authority}
+
+
+@effect('information_source')
+def create_source(ctx, row):
+    from ..typed_executor import effect_subjects, effect_expiry
+    from .rider_choices import pick
+    from .source_eligibility import catalog_action
+    action=catalog_action(ctx.engine,ctx.source)
+    if action is None or action.owner_id!=ctx.actor.entity_id:
+        raise ValueError('Only the actual native source owner may establish information facts')
+    data = profile(ctx, row)
+    if row.get('requires_declaration'):
+        answer = pick(ctx.engine, ctx.actor, 'information_declaration', ctx.action.display_name,
+            ['confirm'], subject=ctx.actor, automatic=False, optional=True, intent=ctx.intent,
+            labels={'confirm':'Confirm this source-scoped fact'},
+            prompt=str(row.get('declaration_prompt') or 'Confirm the declared fact for this effect.'))
+        if not answer:
+            return
+    for subject in effect_subjects(ctx,row,harmful=bool(row.get('harmful'))):
+        ctx.engine._apply_condition(subject,SOURCE,ctx.source,ctx.actor.entity_id,
+            expires_on=effect_expiry(ctx,row,subject,condition=True) or 'UNTIL_REMOVED',
+            data={'information_profile':data, 'authority_actor_id':ctx.actor.entity_id,
+                  'source_id':ctx.source,
+                  'declaration_prompt':str(row.get('declaration_prompt') or '') if row.get('requires_declaration') else '',
+                  'declaration':int(bool(row.get('requires_declaration'))),
+                  'label':ctx.action.display_name})
+
+
+@hook('condition_state')
+def classify_condition(ctx, subject, row):
+    if row.get('information_profile'):
+        return {'data':{'information_profile':profile(ctx,row)}}
+    return None
