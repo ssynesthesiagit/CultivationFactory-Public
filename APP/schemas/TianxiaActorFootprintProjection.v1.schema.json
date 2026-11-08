@@ -1,0 +1,110 @@
+{
+  "$defs": {
+    "Position": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "minimum": 0,
+          "title": "X",
+          "type": "integer"
+        },
+        "y": {
+          "minimum": 0,
+          "title": "Y",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "title": "Position",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "anchor_semantics": {
+      "const": "TOP_LEFT",
+      "default": "TOP_LEFT",
+      "title": "Anchor Semantics",
+      "type": "string"
+    },
+    "anchor_x": {
+      "minimum": 0,
+      "title": "Anchor X",
+      "type": "integer"
+    },
+    "anchor_y": {
+      "minimum": 0,
+      "title": "Anchor Y",
+      "type": "integer"
+    },
+    "collision_free": {
+      "title": "Collision Free",
+      "type": "boolean"
+    },
+    "compatibility_mode": {
+      "enum": [
+        "TYPED",
+        "LEGACY_SINGLE_CELL"
+      ],
+      "title": "Compatibility Mode",
+      "type": "string"
+    },
+    "footprint_id": {
+      "title": "Footprint Id",
+      "type": "string"
+    },
+    "height_cells": {
+      "minimum": 1,
+      "title": "Height Cells",
+      "type": "integer"
+    },
+    "in_bounds": {
+      "title": "In Bounds",
+      "type": "boolean"
+    },
+    "mechanics_authoritative": {
+      "title": "Mechanics Authoritative",
+      "type": "boolean"
+    },
+    "occupied_cells": {
+      "items": {
+        "$ref": "#/$defs/Position"
+      },
+      "title": "Occupied Cells",
+      "type": "array"
+    },
+    "schema": {
+      "const": "TianxiaActorFootprintProjection.v1",
+      "default": "TianxiaActorFootprintProjection.v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "source_definition_id": {
+      "title": "Source Definition Id",
+      "type": "string"
+    },
+    "width_cells": {
+      "minimum": 1,
+      "title": "Width Cells",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "footprint_id",
+    "source_definition_id",
+    "anchor_x",
+    "anchor_y",
+    "width_cells",
+    "height_cells",
+    "occupied_cells",
+    "in_bounds",
+    "collision_free",
+    "mechanics_authoritative",
+    "compatibility_mode"
+  ],
+  "title": "ActorFootprintProjection",
+  "type": "object"
+}
