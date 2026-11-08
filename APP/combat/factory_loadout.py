@@ -1,0 +1,27 @@
+"""Saved combat loadout compilation shared by fight creation and preparation.
+
+Preparation must use the same physical inventory, grants and choices as a new
+fight; neither surface can silently substitute the original creation kit.
+"""
+from .tabletop import ButtonStore, TabletopError
+from factory_authoring.owner_items import OwnerItemStore
+
+
+def compile_saved_character(service, project_id, *, held_weapons=None):
+    try:
+        saved = ButtonStore(service.userdata_root / "tabletop_buttons").get(project_id)
+    except TabletopError:
+        saved = {}
+    # Resolve the compiler at call time so fight creation keeps going through the
+    # documented seam (combat.factory_compiler.compile_character). A bound import
+    # here would hide that seam from every caller that redirects compilation.
+    # _compile_factory is the one place that also applies recorded native acquisition
+    # (authority projection) on top of the saved loadout.
+    return service._compile_factory(
+        project_id, actor_id="actor:factory." + project_id,
+        owner_items=OwnerItemStore(service.userdata_root / "owner_items").items(project_id),
+        powering=saved.get("powering") or {}, reaction_plan=service._table_reactions(project_id),
+        granted_spheres=saved.get("granted_spheres") or None, summon_plan=saved.get("summons") or None,
+        left_behind=saved.get("left_behind") or None,
+        attuned=saved.get("attuned") if isinstance(saved.get("attuned"), list) else None,
+        held_weapons=held_weapons)
