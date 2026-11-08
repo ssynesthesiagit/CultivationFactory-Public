@@ -1,0 +1,217 @@
+"""Ask-me and turn limits through the persisted table, using sealed rider data."""
+import pytest
+
+from combat.gate4_engine import Gate4ControllerEngine
+from tests.h1_support import script
+from tests.iron_fist_support import answering_iron_fist
+from tests.hunt36_support import LEFT, RIGHT, fight, turn, send, reload
+from tests.test_sol117_attack_modifiers import NULL, IRON, setting
+
+
+@pytest.mark.parametrize('failed', [True, False])
+@pytest.mark.parametrize('hit,qi,stamina', [(True, 30, 30), (True, 1, 30), (True, 1, 1), (False, 1, 30)])
+def test_ask_me_rolls_back_and_respects_payment_damage_and_effect(tmp_path, monkeypatch, failed, hit, qi, stamina):
+    from tests import hunt36_support
+    original_sheet = hunt36_support.sheet
+    def dual(*args, **kwargs):
+        doc = original_sheet(*args, **kwargs)
+        doc['ability_scores_and_statistics']['primary_resource']['definitions'] = [{'name': 'Stamina', 'max': 30}]
+        doc['ability_scores_and_statistics']['technique_save_dc'] = 100 if failed else -100
+        # Qi is compiled from the primary pool; fight(stamina=...) seals the
+        # secondary pool into genesis. Neither is an unjournaled engine edit.
+        doc['ability_scores_and_statistics']['primary_resource']['maximum'] = qi
+        return doc
+    monkeypatch.setattr(hunt36_support, 'sheet', dual)
+    original = Gate4ControllerEngine._resolve_attack_spec
+    def roll(engine, *args, **kwargs):
+        script(engine, [19 if hit else 1, 19 if hit else 1, *([1] * 100)])
+        return original(engine, *args, **kwargs)
+    monkeypatch.setattr(Gate4ControllerEngine, '_resolve_attack_spec', roll)
+    combat, table, mid = fight(tmp_path, [NULL, IRON], cl=5, stamina=stamina, seed='SOL117-ASK')
+    turn(combat, table, mid)
+    engine = reload(combat, mid)
+    parent = next(a.source_definition_id for a in engine.action_catalog.values() if a.display_name == 'Iron Fist attack')
+    setting(combat, table, mid, parent, 'on', 'toggle')
+    engine = reload(combat, mid)
+    before = engine.state.model_dump(mode='json')
+    assert engine.state.actors[LEFT].resources['resource:core.qi'] == qi
+    assert engine.state.actors[LEFT].resources['resource:core.stamina'] == stamina
+    # Ask-me belongs to the parent loadout. An exact variant declares its own
+    # effect/payment and is checked separately against conflicting preferences.
+    variants = [a for a in engine.action_catalog.values()
+                if a.parameters.get('typed', {}).get('attack_modifier_family') == parent
+                and NULL in a.parameters['typed'].get('attack_modifier_selected', {})]
+    legal = engine.legal_candidates()
+    assert variants and all(not a.costs for a in variants)
+    assert all(any(c.source_definition_id == a.source_definition_id and c.target_ids == (RIGHT,)
+                   for c in legal) for a in variants)
+    candidate = next(c for c in legal if c.source_definition_id == parent and c.target_ids == (RIGHT,))
+    state = table.state(mid)
+    # Iron Fist itself must ask its printed declaration-time damage type even
+    # on a miss. Answer only that unrelated question; every rider prompt stays
+    # visible to the assertions below.
+    strike = answering_iron_fist(lambda answers: table.act(
+        mid, candidate.candidate_id, state['menu']['decision_id'], state['menu']['state_version'],
+        state['last_sequence'], answers))
+    result = strike()
+    if not hit or stamina < 2:
+        assert result['status'] == 'COMMITTED', result
+        engine = reload(combat, mid)
+        assert engine.state.actors[LEFT].resources == before['actors'][LEFT]['resources']
+        events = [e for e in engine.events if e.sequence > before['event_sequence']]
+        assert not [e for e in events if e.event_type == 'DAMAGE_ROLLED'
+                    and e.payload.get('damage_label') == 'Nullifying Strike']
+        assert not [e for e in events if e.event_type == 'SAVE_ROLLED']
+        attacks = [e for e in events if e.event_type == 'ATTACK_ROLLED']
+        assert len(attacks) == 1 and attacks[0].payload['provisional_hit'] == hit
+        if hit:
+            assert any(all(words in str(e.payload) for words in ('cannot afford', '2 Qi (Cultivation Points)', '2 Stamina'))
+                       for e in events)
+        return
+    assert result['status'] == 'REACTION_REQUIRED'
+    assert reload(combat, mid).state.model_dump(mode='json') == before
+    rider_prompts = []
+    for _ in range(3 if failed else 2):
+        assert result['status'] == 'REACTION_REQUIRED', result
+        prompt = result['reaction']
+        assert prompt['context']['reaction_source_id'] == 'choice:needle.attack_modifier', prompt
+        rider_prompts.append(prompt)
+        picked = next(o for o in prompt['choice']['options']
+                      if any(word in o['label'] for word in ('Hollowed', 'Stamina', 'Necrotic')))
+        result = strike([{**prompt['context'], 'selection': 'USE', 'option_ids': [picked['id']]}])
+    assert result['status'] == 'COMMITTED', result
+    payment = next(p for p in rider_prompts if 'Choose payment.' in p['moment'])
+    prices = {o['label'] for o in payment['choice']['options']}
+    assert any('Stamina' in label for label in prices)
+    # The table expands the printed CP abbreviation into player-facing words.
+    # Check the actual paying pool and stable choices, not a literal 'CP'.
+    assert any('2 Qi (Cultivation Points)' in label for label in prices) == (qi >= 2)
+    assert {o['id'] for o in payment['choice']['options']} == ({'0', '1'} if qi >= 2 else {'1'})
+    assert all('Nullifying Strike' in p['moment'] and 'Iron Fist attack' in p['moment'] and 'Visiting Fighter' in p['moment'] for p in rider_prompts)
+    engine = reload(combat, mid)
+    assert engine.state.actors[LEFT].resources['resource:core.qi'] == before['actors'][LEFT]['resources']['resource:core.qi']
+    assert engine.state.actors[LEFT].resources['resource:core.stamina'] == before['actors'][LEFT]['resources']['resource:core.stamina'] - 2
+    assert any(c.condition_id.endswith('.hollowed') for c in engine.state.actors[RIGHT].conditions.values()) == failed
+    assert any(e.event_type == 'DAMAGE_COMMITTED' and e.payload.get('damage_type') == 'NECROTIC' for e in engine.events)
+
+
+@pytest.mark.parametrize('rider', ['TAL_IRON_FIST_RISING_KNEE', 'TAL_IRON_FIST_CENTERED_BREATH'])
+def test_free_ask_on_hit_riders_do_not_gate_the_composed_attack(tmp_path, rider):
+    combat, table, mid = fight(tmp_path, [IRON, rider], cl=5, seed='PAYALT-FREE')
+    turn(combat, table, mid)
+    engine = reload(combat, mid)
+    parent = next(a for a in engine.action_catalog.values() if a.display_name == 'Iron Fist attack')
+    variant = next(a for a in engine.action_catalog.values()
+                   if a.parameters.get('typed', {}).get('variant_of') == parent.source_definition_id
+                   and a.parameters['typed'].get('modifier', {}).get('id') == rider)
+    source = next(a.source_definition_id for a in engine.action_catalog.values()
+                  if (a.parameters.get('attack_modifier_setting') or {}).get('family') == parent.source_definition_id
+                  and a.parameters['attack_modifier_setting']['modifier'] == rider
+                  and a.parameters['attack_modifier_setting']['field'] == 'on')
+    menu = table.state(mid)['menu']
+    payload = dict(actor_id=LEFT, decision_id=menu['decision_id'], state_version=menu['state_version'],
+                   sources=[source], source_definition_id=variant.source_definition_id, request_id='free-hit')
+    journal = combat._load_session(mid).store.journal_path.read_bytes()
+    preview = table.preview_composition(mid, payload)
+    assert any(o['target_ids'] == [RIGHT] for g in preview['menu']['actions'] for o in g['options'])
+    assert combat._load_session(mid).store.journal_path.read_bytes() == journal
+    # A deferred choice is not an embedded declaration-time effect. Its printed
+    # hit prerequisites remain the resolver's responsibility, not attack admission.
+    assert not variant.costs
+    assert variant.parameters['typed']['effects'] == parent.parameters['typed']['effects']
+    assert any(g['id'] == rider for g in variant.parameters['typed']['attack_modifier_loadout'])
+
+
+def test_generic_rider_turn_limit_is_paid_once_across_extra_attacks(tmp_path, monkeypatch):
+    from tests import hunt36_support
+    original_compile = hunt36_support.compile_character
+    def limited(*args, **kwargs):
+        bundle = original_compile(*args, **kwargs)
+        for action in bundle['action_catalog']:
+            typed = action['parameters'].get('typed') or {}
+            for group in typed.get('attack_modifier_loadout') or []:
+                if group['id'] == NULL:
+                    group['name'] = 'Test once-per-turn rider'
+                    for option in group['options']:
+                        for row in option['effects']:
+                            row.update(modifier_once='test-rider', modifier_once_period='turn')
+        # Existing settings keep their owner identity; this is deliberately a
+        # different rider's sealed turn contract, not a Nullifying special case.
+        return bundle
+    monkeypatch.setattr(hunt36_support, 'compile_character', limited)
+    original = Gate4ControllerEngine._resolve_attack_spec
+    def roll(engine, *args, **kwargs):
+        script(engine, [19, *([1] * 100)])
+        return original(engine, *args, **kwargs)
+    monkeypatch.setattr(Gate4ControllerEngine, '_resolve_attack_spec', roll)
+    extra = 'tianxia.path.body_refining.feature.extra_attack'
+    combat, table, mid = fight(tmp_path, [NULL, IRON, extra], primary='Stamina', cl=5, seed='SOL117-LIMIT')
+    turn(combat, table, mid)
+    engine = reload(combat, mid)
+    parent = next(a.source_definition_id for a in engine.action_catalog.values() if a.display_name == 'Iron Fist attack')
+    for field, value in (('on', 'toggle'), ('option', '1'), ('payment', '0'), ('damage', 'force')):
+        setting(combat, table, mid, parent, field, value)
+    engine = reload(combat, mid)
+    sequence = engine.state.event_sequence
+    candidate = next(c for c in engine.legal_candidates() if c.source_definition_id == parent and c.target_ids == (RIGHT,))
+    send(combat, table, mid, candidate.candidate_id)
+    events = [e for e in reload(combat, mid).events if e.sequence > sequence]
+    assert len([e for e in events if e.event_type == 'ATTACK_ROLLED']) == 2
+    assert len([e for e in events if e.event_type == 'RESOURCE_SPENT' and e.source_definition_id == NULL]) == 1
+    assert len([e for e in events if e.event_type == 'DAMAGE_ROLLED' and e.payload.get('damage_label') == 'Nullifying Strike']) == 1
+
+
+def test_turning_off_restores_plain_parent_attack(tmp_path):
+    combat, table, mid = fight(tmp_path, [NULL, IRON], primary='Stamina', cl=5, seed='SOL117-OFF')
+    turn(combat, table, mid)
+    engine = reload(combat, mid)
+    parent = next(a.source_definition_id for a in engine.action_catalog.values() if a.display_name == 'Iron Fist attack')
+    setting(combat, table, mid, parent, 'on', 'toggle')
+    setting(combat, table, mid, parent, 'on', 'toggle')
+    engine = reload(combat, mid)
+    before = dict(engine.state.actors[LEFT].resources)
+    sequence = engine.state.event_sequence
+    candidate = next(c for c in engine.legal_candidates() if c.source_definition_id == parent and c.target_ids == (RIGHT,))
+    send(combat, table, mid, candidate.candidate_id)
+    engine = reload(combat, mid)
+    assert engine.state.actors[LEFT].resources == before
+    assert not [e for e in engine.events if e.sequence > sequence and e.event_type == 'DAMAGE_ROLLED'
+                and e.payload.get('damage_label') == 'Nullifying Strike']
+
+
+def test_multiple_owned_modifiers_have_independent_rows_and_payments(tmp_path, monkeypatch):
+    # Two different Sphere riders share an attack without overwriting each
+    # other's loadout metadata or charging either before the parent hits.
+    from tests import hunt36_support
+    original = Gate4ControllerEngine._resolve_attack_spec
+    def roll(engine, *args, **kwargs):
+        script(engine, [19, *([1] * 100)])
+        return original(engine, *args, **kwargs)
+    monkeypatch.setattr(Gate4ControllerEngine, '_resolve_attack_spec', roll)
+    sound = 'TAL_SOUND_BODY_RESONANCE_STRIKE'
+    combat, table, mid = fight(tmp_path, [NULL, IRON, sound], primary='Stamina', cl=5, seed='SOL117-MULTIPLE')
+    turn(combat, table, mid)
+    engine = reload(combat, mid)
+    parent = next(a.source_definition_id for a in engine.action_catalog.values() if a.display_name == 'Iron Fist attack')
+    for field, value in (('on', 'toggle'), ('option', '0'), ('payment', '0'), ('damage', 'force')):
+        setting(combat, table, mid, parent, field, value)
+    engine = reload(combat, mid)
+    for field, value in (('on', 'toggle'), ('option', '0'), ('payment', '0')):
+        action = next(a for a in engine.action_catalog.values() if (a.parameters.get('attack_modifier_setting') or {}).get('family') == parent
+            and a.parameters['attack_modifier_setting']['modifier'] == sound and a.parameters['attack_modifier_setting']['field'] == field
+            and a.parameters['attack_modifier_setting']['value'] == value)
+        engine = reload(combat, mid)
+        send(combat, table, mid, next(c.candidate_id for c in engine.legal_candidates() if c.source_definition_id == action.source_definition_id))
+    state = table.state(mid)
+    row = next(e for e in state['shapes'][LEFT] if e['base'] == parent)
+    assert {m['name'] for m in row['modifiers']} == {'Nullifying Strike', 'Body Resonance Strike'}
+    assert all(m['on'] for m in row['modifiers'])
+    engine = reload(combat, mid)
+    before = engine.state.actors[LEFT].resources['resource:core.stamina']
+    sequence = engine.state.event_sequence
+    candidate = next(c for c in engine.legal_candidates() if c.source_definition_id == parent and c.target_ids == (RIGHT,))
+    send(combat, table, mid, candidate.candidate_id)
+    engine = reload(combat, mid)
+    assert engine.state.actors[LEFT].resources['resource:core.stamina'] == before - 3
+    events = [e for e in engine.events if e.sequence > sequence]
+    assert len([e for e in events if e.event_type == 'DAMAGE_ROLLED' and e.payload.get('damage_label') in ('Nullifying Strike', 'Body Resonance Strike')]) == 2
