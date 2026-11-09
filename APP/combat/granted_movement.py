@@ -1,0 +1,533 @@
+"""Immediate movement granted by abilities, using native movement and reactions.
+
+Merciful Hand uses a separate distance budget and exempts one named reactor.
+Alchemy's Formula Intensification uses the same budget and exempts all reactors.
+Sky-Treading's Pursuit Without Horizon uses native candidates and commits only
+destinations that are closer to its visible trigger subject.
+Other abilities may reuse the same path/terrain/drag/Speed checks without
+changing the actor's ordinary movement allowance or suppressing every enemy.
+Menus use observed occupancy and the same voluntary destination restrictions as
+ordinary movement. Actual occupancy is checked only by native step execution,
+which records unseen contact. Neither query mutates state or grants information.
+"""
+from contextlib import contextmanager
+from dataclasses import dataclass
+from collections.abc import Callable, Sequence
+from collections import deque
+from itertools import product
+from .gate2_runtime_models import LegalCandidate, Position
+from .read_queries import pure
+
+
+@dataclass(frozen=True)
+class Route(Sequence):
+    """Offered path and mode; shared by granted_moves and native validation.
+
+    Query-only value, never stored in fight state. Iteration remains compatible
+    with callers that inspect path positions; pass the route intact to commit.
+    """
+    positions: tuple[Position, ...]
+    mode: str
+
+    def __getitem__(self, index):
+        return self.positions[index]
+
+    def __len__(self):
+        return len(self.positions)
+
+
+@dataclass(frozen=True)
+class CrossingConstraint:
+    """Pure before/inside/after constraint for the native ground/spatial searches.
+
+    inside(cell) tests overlap at an anchor (integer x/y[/z] tuple).
+    A route may enter once, retain entry on interior steps, then exit; it may
+    never re-enter or stop inside. required=False also admits routes that
+    never enter. This constrains paths, not passage permission or terrain cost.
+    Query-only; no creature, event or fight state is changed.
+    """
+    inside: Callable
+    required: bool = True
+
+    def phase(self, cell, previous=0):
+        if self.inside(cell):
+            return None if previous == 2 else 1
+        return 2 if previous else 0
+
+    def accepts(self, phase):
+        return phase == 2 or (phase == 0 and not self.required)
+
+
+def movement_mode(engine, actor, path, mode=None):
+    from . import flight
+    selected = mode or (path.mode if isinstance(path, Route) else None)
+    if selected is None:
+        selected = 'fly' if any(p.z for p in path) and flight.profile(engine, actor).speed_ft else 'walk'
+    if selected not in {'walk', 'fly', 'impulse'}:
+        raise ValueError('Granted movement requires walking or flying (or an explicitly admitted impulse mode)')
+    return selected
+
+
+def _spatial(engine, actor):
+    from . import flight
+    return bool(actor.position.z or flight.profile(engine, actor).speed_ft)
+
+
+def _blocked_ends(engine, actor, feet):
+    """Cells a scoped movement rule refuses as an endpoint. Default-inert: no provider, no cells.
+
+    Rules that permit crossing matter or a creature's space still forbid stopping
+    there (a liquid surface, an occupied space). Each provider answers with exact
+    integer (x, y, z) cells for its own grant, and every endpoint is then checked
+    against them, so a provider can only narrow the endpoints of its own grant.
+    """
+    from . import ext
+    cells = set()
+    for value in ext.run_strict('movement_end_blocked', engine, actor, feet):
+        if value is None:
+            continue
+        for cell in value:
+            if not isinstance(cell, tuple) or len(cell) != 3 or any(type(part) is not int for part in cell):
+                raise ValueError('movement_end_blocked must return integer (x, y, z) cells')
+            cells.add(cell)
+    return cells
+
+
+def _ends(engine, actor, cell, blocked):
+    return bool(blocked) and bool(set(engine._actor_volume(actor, cell)) & blocked)
+
+
+def _passage_cells(engine, actor, feet):
+    """Cells a scoped movement rule opens to this one grant. Default-inert: no provider, no cells."""
+    from . import ext
+    cells = set()
+    for value in ext.run_strict('movement_passage_cells', engine, actor, feet):
+        if value is None:
+            continue
+        for cell in value:
+            if not isinstance(cell, tuple) or len(cell) != 3 or any(type(part) is not int for part in cell):
+                raise ValueError('movement_passage_cells must return integer (x, y, z) cells')
+            cells.add(cell)
+    return cells
+
+
+def _crossings(engine, actor, feet, blocked, occupied):
+    """Walk routes that enter matter or a creature's space that only this grant opens.
+
+    The ordinary grid search cannot enter such a cell at all, so these come from
+    the material search; every other step on the route must still satisfy the same
+    edge rule the ordinary search applies, so a grant can open its own crossings
+    and nothing else. Both the matter price and the Difficult price of a creature's
+    space are the native ones (combat/flight.step_cost).
+    """
+    from .terrain_materials import routes as material_routes
+    from .voluntary_movement import path_allowed
+    permitted = _passage_cells(engine, actor, feet)
+    if not permitted:
+        return {}
+    occupied_t = engine.grid._cell_set(occupied)
+    footprint = engine._footprint(actor)
+
+    def legal_step(prior, cell):
+        """This grant's own edge rule for one equal-price step: the grid's, or a permitted crossing."""
+        here = Position(x=prior[0], y=prior[1], z=prior[2])
+        beyond = Position(x=cell[0], y=cell[1], z=cell[2])
+        return (engine.grid._step_legal((here.x, here.y), (beyond.x, beyond.y), occupied_t, footprint)
+                or bool(set(engine._actor_volume(actor, beyond)) & permitted))
+
+    chosen = {}
+
+    def prefer_legal(start, predecessors, costs, parents):
+        """Keep an equal-price route whose every step this grant can actually walk.
+
+        The material search records one path per price, so a tie can hand an endpoint to a
+        corner-cutting diagonal no rule allows while a straight route at the same price is
+        legal, and the endpoint would silently vanish. Walking the equal-price search graph
+        in cost order picks a legal route; an endpoint whose every equal-price route is
+        illegal stays unreached, exactly as before.
+        """
+        best = {start: (start,)}
+        for cell in sorted(costs, key=lambda cell: (costs[cell], cell)):
+            if cell == start:
+                continue
+            for prior in sorted(predecessors.get(cell, ())):
+                path = best.get(prior)
+                if path is not None and legal_step(prior, cell):
+                    best[cell] = (*path, cell)
+                    break
+        chosen.update(best)
+        return {cell: path for cell, path in best.items() if cell != start}
+
+    out = {}
+    for cell, (path, cost, mode) in material_routes(engine, actor, 'walk', grant_ft=feet,
+                                                    path_selector=prefer_legal).items():
+        if (cell.x, cell.y, cell.z) not in chosen:
+            continue  # every equal-price route to it cuts a corner this grant cannot walk
+        if cell == actor.position or cost > feet or _ends(engine, actor, cell, blocked):
+            continue
+        if not any(set(engine._actor_volume(actor, step)) & permitted for step in path):
+            continue
+        if not path_allowed(engine, actor, path):
+            continue
+        ordinary = all(engine.grid._step_legal((a.x, a.y), (b.x, b.y), occupied_t, footprint)
+                       or set(engine._actor_volume(actor, b)) & permitted
+                       for a, b in zip(path, path[1:]))
+        if ordinary:
+            out[cell] = (tuple(path), cost, mode)
+    return out
+
+
+def _path_budget(engine, path):
+    """The least grant that could have walked this path: one square per step, never below one square."""
+    return max(len(path) - 1, 1) * engine.grid.square_size_ft
+
+
+@contextmanager
+def granted_pool(engine, actor, feet):
+    """Account one separately granted movement through the shared grant contract.
+
+    Native traversal and the checkpoints it runs price steps against the grant
+    while the creature's unrelated ordinary allowance is hidden. The live
+    ``engine._granted_movement_budget`` is the same transient value the
+    extension grant hooks read: nested effect scopes see the ordinary pool
+    again (a gain or a spend there belongs to ordinary movement), and the
+    shared event hook restores ordinary at the grant's own commit, before
+    later observers, when that commit is a plain system move.
+
+    On exit the ordinary pool keeps everything the grant gained while it
+    resolved -- an award made by a ``MOVEMENT_COMMITTED`` observer, for
+    example -- and the grant itself is discarded. It never restores a stale
+    snapshot over those changes. Used by :func:`resolve_candidate` here and by
+    the extension grant path (Reeling Step, Swaying Guard, Court) in
+    ``combat/ext/granted_movement.py``.
+    """
+    previous = getattr(engine, '_granted_movement_budget', None)
+    grant = int(feet)
+    budget = {'actor': actor, 'ordinary': actor.movement_remaining_ft,
+              'grant': grant, 'exposed': False, 'committed': False}
+    try:
+        engine._granted_movement_budget = budget
+        actor.movement_remaining_ft = grant
+        yield budget
+    finally:
+        if not budget['exposed']:
+            budget['ordinary'] += max(0, int(actor.movement_remaining_ft) - grant)
+        if not budget['committed']:
+            actor.movement_remaining_ft = (0 if getattr(actor, 'life_state', None) is not None
+                                           else budget['ordinary'])
+        engine._granted_movement_budget = previous
+
+
+def routes(engine, actor, feet, mode=None, *, crossing=None, edge_allowed=None):
+    """Separate-budget movement uses the same receipt inventory as native routes."""
+    from .passage_routes import reachable
+    if crossing is None and edge_allowed is None and (mode == 'walk' or not _spatial(engine, actor)):
+        limited = reachable(engine, actor, feet, mode or 'walk')
+        if limited is not None:
+            return limited
+    return _routes(engine, actor, feet, mode, crossing=crossing, edge_allowed=edge_allowed)
+
+
+def _routes(engine, actor, feet, mode=None, *, crossing=None, edge_allowed=None):
+    """Where a grant of ``feet`` can legally carry this creature: cell -> (path, cost, mode).
+
+    The one reachability query behind :func:`candidates`, and the general seam a movement rule reads when it
+    must know a grant's own reach rather than a route's geometric length (Set Up's endpoint exception). The
+    grant budget is priced exactly as native movement prices a route -- terrain, dragging, footprint, flight
+    and voluntary-movement restrictions -- and the creature's ordinary movement allowance, position and events
+    are left untouched. Read-only; nothing here is stored in fight state.
+
+    ``mode`` (optional) restricts the search to one movement mode (``'walk'`` or ``'fly'``) instead of the
+    default merged every-mode answer, so a rule can price a movement against the mode that actually governs it:
+    a walking grant must not count an endpoint reachable only by flying. Granting is limited to walking and
+    flying (see :func:`movement_mode`), so those are the only two modes that arise here.
+    Elevated walking uses the spatial search, preserving the supporting surface and native volume/cost checks.
+    Optional crossing: CrossingConstraint expands the native search state
+    with before/inside/after progress, so a cheaper detour cannot hide a required
+    transit. It supplies no permission or discount. Optional pure
+    edge_allowed(start, end) prunes edges in both modes. None preserves the
+    ordinary search and tie order. Empty Cup, Flowing Evasion and White Wing use
+    these through their scoped passage helper.
+    """
+    if not actor.active or engine._effective_speed(actor) <= 0:
+        return {}
+    drag = engine._drag_multiplier(actor)
+    from .voluntary_movement import path_allowed
+    from . import flight
+    blocked = _blocked_ends(engine, actor, feet)
+    if mode in {'fly', 'impulse'} or actor.position.z or (mode is None and _spatial(engine, actor)):
+        return {cell: (tuple(path), cost, flown)
+                for cell, (path, cost, flown) in flight.reachable(engine, actor, grant_ft=feet, mode=mode,
+                    crossing=crossing, edge_allowed=edge_allowed).items()
+                if cell != actor.position and not _ends(engine, actor, cell, blocked)
+                and path_allowed(engine, actor, path)}
+    from .voluntary_movement import edge_predicate
+    from .movement_costs import surcharge, walk_edge_surcharge
+    from .posture import walking_extra
+    from .creature_passage import geometry
+    occupied, end_blocked, extra_difficult, _ = geometry(engine, actor, observed=True)
+    restriction = edge_predicate(engine, actor)
+    def allowed(a, b):
+        return ((restriction is None or restriction(a, b))
+                and (edge_allowed is None or edge_allowed(a, b)))
+    reachable = engine.grid.reachable(actor.position, movement_ft=feet // drag,
+        extra_step_cost_ft=surcharge(engine, actor),
+        edge_surcharge=walk_edge_surcharge(engine, actor),
+        occupied_cells=occupied, end_blocked_cells=end_blocked,
+        difficult_cells=engine._hostile_difficult_cells(actor) | extra_difficult,
+        footprint=engine._footprint(actor),
+        extra_step_multiplier=walking_extra(engine, actor),
+        crossing=crossing,
+        **({'edge_allowed': allowed} if restriction is not None or edge_allowed is not None else {}))
+    walked = {cell: (tuple(path), int(cost) * drag, 'walk')
+              for cell, (path, cost) in sorted(reachable.items(), key=lambda item: (item[0].y, item[0].x))
+              if cell != actor.position and cost * drag <= feet and not _ends(engine, actor, cell, blocked)
+              and path_allowed(engine, actor, path)}
+    # Scoped passage cells are a plain walking grant only: a crossing or edge constraint must bound every
+    # step, so those routes are never joined with the unconstrained material search.
+    if mode in (None, 'walk') and not (actor.position.z or _spatial(engine, actor)) \
+            and crossing is None and edge_allowed is None:
+        return {**walked, **_crossings(engine, actor, feet, blocked, occupied)}
+    return walked
+
+
+@pure
+def distance_routes(engine, actor, feet, mode=None):
+    """Legal routes bounded by travelled distance, not the price of ordinary movement.
+
+    A fixed-distance rider has its own grant, so crawling, terrain and drag do
+    not turn five travelled feet into ten. Native geometry, observed occupancy,
+    limited passage receipts, flight, Speed and voluntary restrictions still
+    apply. The shortest route to each state is sufficient: a longer one cannot
+    reach anything it could not also reach with the same passage inventory.
+    """
+    if feet < engine.grid.square_size_ft or not actor.active or engine._effective_speed(actor) <= 0:
+        return {}
+    from . import flight
+    from .creature_passage import planning_scope
+    from .passage_routes import Resources
+    from .terrain_materials import placement_legal
+    from .voluntary_movement import edge_predicate
+
+    resources = Resources(engine, actor)
+    restriction = edge_predicate(engine, actor)
+    blocked = _blocked_ends(engine, actor, feet)
+    modes = [mode] if mode is not None else (['fly', 'walk'] if flight.profile(engine, actor).speed_ft else ['walk'])
+    found = {}
+    for moving in modes:
+        if moving not in ('walk', 'fly') or (moving == 'fly' and not flight.profile(engine, actor).speed_ft):
+            continue
+        start = actor.position
+        initial = (start.x, start.y, start.z, resources.initial)
+        queue = deque([(initial, (start,))])
+        visited = {initial}
+        offsets = tuple(d for d in product((-1, 0, 1), repeat=3)
+                        if d != (0, 0, 0) and (moving == 'fly' or not d[2]))
+        while queue:
+            state, path = queue.popleft()
+            if len(path) * engine.grid.square_size_ft > feet:
+                continue
+            previous = path[-1]
+            for dx, dy, dz in offsets:
+                x, y, z = previous.x + dx, previous.y + dy, previous.z + dz
+                if not (0 <= x < engine.grid.width and 0 <= y < engine.grid.height and z >= 0):
+                    continue
+                destination = Position(x=x, y=y, z=z)
+                if restriction is not None and not restriction(previous, destination):
+                    continue
+                for inventory, assignment in resources.advance(state[3], previous, destination):
+                    key = (x, y, z, inventory)
+                    if key in visited:
+                        continue
+                    with planning_scope(engine, assignment):
+                        if not flight.step_allowed(engine, actor, previous, destination, mode=moving, observed=True):
+                            continue
+                        endpoint = (not _ends(engine, actor, destination, blocked)
+                                    and placement_legal(engine, actor, destination, moving, observed=True))
+                    visited.add(key)
+                    route = (*path, destination)
+                    queue.append((key, route))
+                    distance = (len(route) - 1) * engine.grid.square_size_ft
+                    if endpoint and destination != start and (destination not in found or distance < found[destination][1]):
+                        found[destination] = (route, distance, moving)
+    return found
+
+
+def candidates(engine, actor, feet, intent, source, *, distance=False):
+    """Legal separate-budget routes as offered candidates, each stamped with the grant that built it.
+
+    ``metadata['movement_allowance_ft']`` is the grant's own budget, so a whole-route rule consulted for a
+    candidate (``candidate_allowed``) can price itself against the movement actually being made instead of the
+    mover's unrelated ordinary allowance."""
+    if not actor.active or engine._effective_speed(actor) <= 0:
+        return {}
+    spatial = _spatial(engine, actor)
+    out = {}
+    build = distance_routes if distance else routes
+    for cell, (path, cost, mode) in build(engine, actor, feet).items():
+        suffix = f'{cell.x},{cell.y},{cell.z}' if spatial else f'{cell.x},{cell.y}'
+        out[f'step:{suffix}'] = LegalCandidate(candidate_id=f'grant:{suffix}',
+            decision_id=intent.decision_id, state_version=intent.state_version, kind='MOVE',
+            actor_id=actor.entity_id, source_definition_id=source,
+            display_name=f'Move to {cell.z * 5} ft. altitude' if spatial else 'Step',
+            destination=cell, canonical_path=path, movement_cost_ft=cost,
+            metadata={**({'movement_mode': mode} if spatial else {}), 'movement_allowance_ft': feet,
+                      **({'distance_grant': True} if distance else {})})
+    return out
+
+
+def resolve_distance_candidate(engine, actor, candidate, feet, intent, *, ignore_oa_from=()):
+    """Commit a distance-bounded candidate through native steps, reactions and hazards.
+
+    The movement sequence owns the transient pricing context, so nested moves
+    regain their own ordinary or separately granted cost rules. The actor's
+    ordinary movement allowance is never spent.
+    """
+    engine._resolve_movement(actor, candidate, intent, granted_ft=feet, ignore_oa_from=ignore_oa_from,
+                             movement_context={'distance_grant': True})
+
+
+def path_cost(engine, actor, path, *, mode=None):
+    """Granted movement remains limited to walking/flying, never native jumps."""
+    _validate_origin(actor, path)
+    return native_path_cost(engine, actor, path, mode=movement_mode(engine, actor, path, mode))
+
+
+def _validate_origin(actor, path):
+    if not path or any(not isinstance(p, Position) for p in path) or path[0] != actor.position:
+        raise ValueError('Movement must start at the creature\'s current space')
+
+
+def native_path_cost(engine, actor, path, *, mode):
+    """Validate native modes, then price each separately funded transit episode."""
+    return _native_path_cost(engine, actor, path, mode=mode)
+
+
+def _native_path_cost(engine, actor, path, *, mode):
+    """Validate an offered route against observed geometry; return terrain/drag cost.
+
+    Hidden occupancy is deliberately left for native contact handling, which
+    stops safely without charging the blocked step. This query never moves actors.
+    Native route admission/recovery and granted movement share these checks;
+    the granted wrapper restricts modes, native jumps also enforce posture/height.
+    """
+    _validate_origin(actor, path)
+    from .creature_passage import geometry
+    _, _, extra_difficult, _ = geometry(engine, actor, observed=True)
+    difficult = engine._hostile_difficult_cells(actor) | extra_difficult
+    footprint = engine._footprint(actor)
+    from .terrain_materials import profile as material_profile
+    material = material_profile(engine, actor, mode)
+    from .terrain_materials import placement_legal
+    if not placement_legal(engine, actor, path[-1], mode, observed=True):
+        raise ValueError('Movement must end in a free legal space')
+    blocked = _blocked_ends(engine, actor, _path_budget(engine, path))
+    if _ends(engine, actor, path[-1], blocked):
+        raise ValueError('Movement must end in a free legal space')
+    from . import flight
+    if mode not in {'walk', 'fly', 'impulse', 'jump', 'climb', 'jump_down'} and material is None:
+        raise ValueError('Movement requires walking, flying or jumping')
+    from .posture import allows_jumping
+    if mode == 'jump' and (not allows_jumping(actor) or not flight.valid_jump(engine, actor, path, preview=True)):
+        raise ValueError('This route exceeds the creature\'s jump height or prevents jumping')
+    from .roof_movement import valid_climb, valid_drop, step_mode
+    if mode == 'climb' and not valid_climb(engine, actor, path):
+        raise ValueError('Climbing requires a supported space or existing grip, usable Speed, and an upright creature')
+    if mode == 'jump_down' and not valid_drop(engine, actor, path):
+        raise ValueError('Jump down by stepping off a supported edge into open space')
+    from .voluntary_movement import path_allowed
+    if not path_allowed(engine, actor, path):
+        raise ValueError('Frightened prevents this movement toward a visible source')
+    from .passage_routes import Resources, path_cost
+    if Resources(engine, actor).groups:
+        return path_cost(engine, actor, path, mode)
+    cost = 0
+    for a, b in zip(path, path[1:]):
+        if not flight.step_allowed(engine, actor, a, b, mode=mode, observed=True):
+            raise ValueError('Granted movement requires a legal path of adjacent spaces')
+        cost += flight.step_cost(engine, actor, a, b, mode, difficult)
+        if mode == 'climb' and cost > flight.remaining(engine, actor, step_mode(engine, actor, a, b)):
+            raise ValueError('This climbing route exceeds the remaining movement for one of its walking or climbing steps')
+    return cost
+
+
+def resolve_path(engine, actor, path, source, *, feet, intent=None, provokes=True, ignore_oa_from=(), mode=None, use_movement=False):
+    """Run a rider's route through native steps/OAs; return actual granted feet spent.
+
+    Call inside the accepted action transaction. The caller owns its grant pool,
+    consent and costs. Patrol Responses provoke; Interpose explicitly exempts all
+    reactors. Merciful Hand can exempt one reactor. Ordinary movement is untouched.
+    Player pauses/errors unwind the outer transaction; an interrupted grant spends
+    only the returned distance. The normal recorded path remains authoritative.
+    """
+    if type(feet) is not int or feet < 0 or type(provokes) is not bool:
+        raise ValueError('Granted movement requires a nonnegative distance and an explicit provoking rule')
+    if not isinstance(source, str) or not source:
+        raise ValueError('Granted movement requires its source')
+    ignore_oa_from = tuple(ignore_oa_from)
+    if any(not isinstance(a, str) or a not in engine.state.actors for a in ignore_oa_from):
+        raise ValueError('Granted movement names an unknown exempt creature')
+    mode = movement_mode(engine, actor, path, mode)
+    path = tuple(path)
+    cost = path_cost(engine, actor, path, mode=mode)
+    if cost > feet:
+        raise ValueError('Granted movement exceeds its distance allowance')
+    if len(path) == 1 or not actor.active or engine._effective_speed(actor) <= 0:
+        return 0
+    intent = intent or getattr(engine, '_active_intent', None)
+    if intent is None:
+        raise ValueError('Granted movement requires an active action')
+    candidate = LegalCandidate(candidate_id='grant:path', decision_id=intent.decision_id,
+        state_version=intent.state_version, kind='MOVE', actor_id=actor.entity_id,
+        source_definition_id=source, display_name='Granted movement', destination=path[-1],
+        canonical_path=path, movement_cost_ft=cost, metadata={'movement_mode': mode})
+    return _commit_candidate(engine, actor, candidate, source, feet, intent, provokes, ignore_oa_from, use_movement)
+
+
+def resolve_candidate(engine, actor, candidate, source, *, feet, intent, provokes=True):
+    """Commit an already offered native movement mode with a separate grant.
+
+    Pursuit and future movement-grant consumers can retain native jump/climb
+    metadata instead of flattening a selected candidate to a walk/fly path.
+    Existing resolve_path callers keep their walking/flying-only contract.
+    Default inert: no caller means no changed movement or recorded state.
+    """
+    if (type(feet) is not int or feet < 0 or type(provokes) is not bool
+            or not isinstance(source, str) or not source or intent is None):
+        raise ValueError('Native granted movement requires its source, intent, budget and provoking rule')
+    if candidate.kind != 'MOVE' or candidate.actor_id != actor.entity_id:
+        raise ValueError('Native granted movement requires the moving creature\'s candidate')
+    path = tuple(candidate.canonical_path)
+    mode = candidate.metadata.get('movement_mode', 'walk')
+    ordinary = actor.movement_remaining_ft
+    try:
+        actor.movement_remaining_ft = feet
+        cost = native_path_cost(engine, actor, path, mode=mode)
+    finally:
+        actor.movement_remaining_ft = ordinary
+    if cost > feet:
+        raise ValueError('Native granted movement exceeds its distance allowance')
+    if len(path) < 2 or not actor.active or engine._effective_speed(actor) <= 0:
+        return 0
+    candidate = candidate.model_copy(update={'movement_cost_ft': cost, 'source_definition_id': source})
+    # Native movement consumers still consult the actor's live allowance while
+    # resolving individual steps, even though the grant is independently capped
+    # by ``granted_ft``. The shared grant accounting exposes the grant for this
+    # accepted movement and keeps any movement the mover gains while it
+    # resolves (a completed Bearing's award, for example) in the ordinary pool.
+    with granted_pool(engine, actor, feet):
+        return _commit_candidate(engine, actor, candidate, source, feet, intent, provokes, (), False)
+
+
+def _commit_candidate(engine, actor, candidate, source, feet, intent, provokes, ignore_oa_from, use_movement):
+    """Shared settlement for path grants and full native candidate grants."""
+    exempt = tuple(ignore_oa_from) if provokes else tuple(engine.state.actors)
+    start = len(engine.events)
+    from .reaction_trigger import trigger_scope
+    with trigger_scope(engine, 'LEAVE_REACH', actor_id=actor.entity_id,
+                       target_id=actor.entity_id, source_id=source, roll_kind=''):
+        engine._resolve_movement(actor, candidate, intent, granted_ft=None if use_movement else feet,
+                                 ignore_oa_from=exempt, grant_source=source)
+    receipt = next((e for e in reversed(engine.events[start:]) if e.event_type == 'MOVEMENT_COMMITTED'
+                    and e.actor_id == actor.entity_id and e.source_definition_id == source), None)
+    return int(receipt.payload['cost_ft' if use_movement else 'granted_cost_ft']) if receipt is not None else 0
