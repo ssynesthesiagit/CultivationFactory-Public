@@ -1,0 +1,70 @@
+{
+  "$id": "https://tianxia.local/schemas/foundation-traits-v0.6.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "affinity_sphere_ids": {
+      "type": "array",
+      "uniqueItems": true
+    },
+    "compatible_path_ids": {
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "directional_identity_tags": {
+      "type": "array",
+      "uniqueItems": true
+    },
+    "form_tags": {
+      "type": "array",
+      "uniqueItems": true
+    },
+    "foundation_challenge_routes": {
+      "type": "array"
+    },
+    "ordinary_operation_tags": {
+      "type": "array",
+      "uniqueItems": true
+    },
+    "repair_interfaces": {
+      "type": "array"
+    },
+    "schema": {
+      "const": "Tianxia.FoundationCompatibilityTraits.v0.6"
+    },
+    "surface_separation": {
+      "type": "object"
+    },
+    "trait_provenance": {
+      "type": "object"
+    },
+    "transformation_routes": {
+      "type": "array"
+    },
+    "usable": {
+      "const": true
+    },
+    "vulnerability_tags": {
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema",
+    "foundation_id",
+    "usable",
+    "compatible_path_ids",
+    "ordinary_operation_tags",
+    "form_tags",
+    "affinity_sphere_ids",
+    "directional_identity_tags",
+    "vulnerability_tags",
+    "repair_interfaces",
+    "foundation_challenge_routes",
+    "transformation_routes",
+    "trait_provenance",
+    "surface_separation"
+  ],
+  "type": "object"
+}
