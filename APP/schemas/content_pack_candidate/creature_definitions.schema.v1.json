@@ -1,0 +1,645 @@
+{
+  "$defs": {
+    "blocker": {
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "capability": {
+          "enum": [
+            "advancement",
+            "character_sheet",
+            "gm_display",
+            "combat_execution",
+            "ai_policy"
+          ]
+        },
+        "pack_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "primitive_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "record_id": {
+          "$ref": "#/$defs/stable_id"
+        }
+      },
+      "type": "object"
+    },
+    "capabilities": {
+      "additionalProperties": false,
+      "properties": {
+        "advancement": {
+          "enum": [
+            "SUPPORTED",
+            "PARTIAL",
+            "UNSUPPORTED",
+            "NOT_APPLICABLE",
+            "STALE",
+            "BLOCKED_BY_DEPENDENCY"
+          ]
+        },
+        "ai_policy": {
+          "enum": [
+            "SUPPORTED",
+            "PARTIAL",
+            "UNSUPPORTED",
+            "NOT_APPLICABLE",
+            "STALE",
+            "BLOCKED_BY_DEPENDENCY"
+          ]
+        },
+        "character_sheet": {
+          "enum": [
+            "SUPPORTED",
+            "PARTIAL",
+            "UNSUPPORTED",
+            "NOT_APPLICABLE",
+            "STALE",
+            "BLOCKED_BY_DEPENDENCY"
+          ]
+        },
+        "combat_execution": {
+          "enum": [
+            "SUPPORTED",
+            "PARTIAL",
+            "UNSUPPORTED",
+            "NOT_APPLICABLE",
+            "STALE",
+            "BLOCKED_BY_DEPENDENCY"
+          ]
+        },
+        "gm_display": {
+          "enum": [
+            "SUPPORTED",
+            "PARTIAL",
+            "UNSUPPORTED",
+            "NOT_APPLICABLE",
+            "STALE",
+            "BLOCKED_BY_DEPENDENCY"
+          ]
+        }
+      },
+      "required": [
+        "advancement",
+        "character_sheet",
+        "gm_display",
+        "combat_execution",
+        "ai_policy"
+      ],
+      "type": "object"
+    },
+    "semver": {
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "type": "string"
+    },
+    "sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "source_binding": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "source_path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source_version": {
+          "$ref": "#/$defs/semver"
+        }
+      },
+      "required": [
+        "source_id",
+        "source_version",
+        "source_sha256",
+        "anchor"
+      ],
+      "type": "object"
+    },
+    "stable_id": {
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)+$",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tianxia:candidate:creatures:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "candidate_status": {
+      "const": "CANDIDATE_NON_AUTHORITATIVE"
+    },
+    "companions": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "ability_scores": {
+            "additionalProperties": false,
+            "properties": {
+              "charisma": {
+                "maximum": 40,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "constitution": {
+                "maximum": 40,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "dexterity": {
+                "maximum": 40,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "intelligence": {
+                "maximum": 40,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "strength": {
+                "maximum": 40,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "wisdom": {
+                "maximum": 40,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "strength",
+              "dexterity",
+              "constitution",
+              "intelligence",
+              "wisdom",
+              "charisma"
+            ],
+            "type": "object"
+          },
+          "armor_class": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "command_mode": {
+            "enum": [
+              "OWNER_COMMAND",
+              "SHARED_INITIATIVE",
+              "INDEPENDENT_TYPED_POLICY"
+            ]
+          },
+          "conditions": {
+            "items": {
+              "$ref": "#/$defs/stable_id"
+            },
+            "type": "array"
+          },
+          "controller_policy_ref": {
+            "$ref": "#/$defs/stable_id"
+          },
+          "creature_category": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "creature_id": {
+            "$ref": "#/$defs/stable_id"
+          },
+          "display_name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "encounter_tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "footprint": {
+            "additionalProperties": false,
+            "properties": {
+              "height_cells": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "width_cells": {
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "width_cells",
+              "height_cells"
+            ],
+            "type": "object"
+          },
+          "guard_rescue_relationship": {
+            "minProperties": 1,
+            "type": "object"
+          },
+          "hit_points": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "movement_modes": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "mode": {
+                  "enum": [
+                    "walk",
+                    "fly",
+                    "swim",
+                    "climb",
+                    "burrow"
+                  ]
+                },
+                "speed_feet": {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "mode",
+                "speed_feet"
+              ],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "owner_relationship": {
+            "additionalProperties": false,
+            "properties": {
+              "owner_record_id": {
+                "$ref": "#/$defs/stable_id"
+              },
+              "relationship_type": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "owner_record_id",
+              "relationship_type"
+            ],
+            "type": "object"
+          },
+          "passives": {
+            "items": {
+              "$ref": "#/$defs/stable_id"
+            },
+            "type": "array"
+          },
+          "phases": {
+            "items": {
+              "minProperties": 1,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "provenance": {
+            "minProperties": 1,
+            "type": "object"
+          },
+          "resources": {
+            "items": {
+              "minProperties": 1,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "saving_throws": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object"
+          },
+          "senses": {
+            "items": {
+              "minProperties": 1,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "size": {
+            "enum": [
+              "Tiny",
+              "Small",
+              "Medium",
+              "Large",
+              "Huge",
+              "Gargantuan"
+            ]
+          },
+          "source_binding": {
+            "$ref": "#/$defs/source_binding"
+          },
+          "target_restrictions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "team_inheritance": {
+            "type": "boolean"
+          },
+          "typed_actions": {
+            "items": {
+              "$ref": "#/$defs/stable_id"
+            },
+            "type": "array"
+          },
+          "typed_reactions": {
+            "items": {
+              "$ref": "#/$defs/stable_id"
+            },
+            "type": "array"
+          },
+          "version": {
+            "$ref": "#/$defs/semver"
+          },
+          "victory_count_behavior": {
+            "enum": [
+              "COUNTS_WITH_OWNER",
+              "COUNTS_SEPARATELY",
+              "DOES_NOT_COUNT"
+            ]
+          }
+        },
+        "required": [
+          "creature_id",
+          "version",
+          "display_name",
+          "source_binding",
+          "creature_category",
+          "size",
+          "footprint",
+          "ability_scores",
+          "armor_class",
+          "hit_points",
+          "movement_modes",
+          "saving_throws",
+          "senses",
+          "resources",
+          "typed_actions",
+          "typed_reactions",
+          "passives",
+          "conditions",
+          "phases",
+          "controller_policy_ref",
+          "encounter_tags",
+          "provenance",
+          "owner_relationship",
+          "command_mode",
+          "team_inheritance",
+          "target_restrictions",
+          "victory_count_behavior",
+          "guard_rescue_relationship"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "creatures": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "ability_scores": {
+            "additionalProperties": false,
+            "properties": {
+              "charisma": {
+                "maximum": 40,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "constitution": {
+                "maximum": 40,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "dexterity": {
+                "maximum": 40,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "intelligence": {
+                "maximum": 40,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "strength": {
+                "maximum": 40,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "wisdom": {
+                "maximum": 40,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "strength",
+              "dexterity",
+              "constitution",
+              "intelligence",
+              "wisdom",
+              "charisma"
+            ],
+            "type": "object"
+          },
+          "armor_class": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "conditions": {
+            "items": {
+              "$ref": "#/$defs/stable_id"
+            },
+            "type": "array"
+          },
+          "controller_policy_ref": {
+            "$ref": "#/$defs/stable_id"
+          },
+          "creature_category": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "creature_id": {
+            "$ref": "#/$defs/stable_id"
+          },
+          "display_name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "encounter_tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "footprint": {
+            "additionalProperties": false,
+            "properties": {
+              "height_cells": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "width_cells": {
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "width_cells",
+              "height_cells"
+            ],
+            "type": "object"
+          },
+          "hit_points": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "movement_modes": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "mode": {
+                  "enum": [
+                    "walk",
+                    "fly",
+                    "swim",
+                    "climb",
+                    "burrow"
+                  ]
+                },
+                "speed_feet": {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "mode",
+                "speed_feet"
+              ],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "passives": {
+            "items": {
+              "$ref": "#/$defs/stable_id"
+            },
+            "type": "array"
+          },
+          "phases": {
+            "items": {
+              "minProperties": 1,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "provenance": {
+            "minProperties": 1,
+            "type": "object"
+          },
+          "resources": {
+            "items": {
+              "minProperties": 1,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "saving_throws": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object"
+          },
+          "senses": {
+            "items": {
+              "minProperties": 1,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "size": {
+            "enum": [
+              "Tiny",
+              "Small",
+              "Medium",
+              "Large",
+              "Huge",
+              "Gargantuan"
+            ]
+          },
+          "source_binding": {
+            "$ref": "#/$defs/source_binding"
+          },
+          "typed_actions": {
+            "items": {
+              "$ref": "#/$defs/stable_id"
+            },
+            "type": "array"
+          },
+          "typed_reactions": {
+            "items": {
+              "$ref": "#/$defs/stable_id"
+            },
+            "type": "array"
+          },
+          "version": {
+            "$ref": "#/$defs/semver"
+          }
+        },
+        "required": [
+          "creature_id",
+          "version",
+          "display_name",
+          "source_binding",
+          "creature_category",
+          "size",
+          "footprint",
+          "ability_scores",
+          "armor_class",
+          "hit_points",
+          "movement_modes",
+          "saving_throws",
+          "senses",
+          "resources",
+          "typed_actions",
+          "typed_reactions",
+          "passives",
+          "conditions",
+          "phases",
+          "controller_policy_ref",
+          "encounter_tags",
+          "provenance"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "TianxiaContentPackCandidate.CreatureDefinitions.v1"
+    }
+  },
+  "required": [
+    "schema_version",
+    "candidate_status",
+    "creatures",
+    "companions"
+  ],
+  "type": "object"
+}
