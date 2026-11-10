@@ -1,0 +1,75 @@
+{
+  "action_priorities": {
+    "action:an_eui.first_arm": 60,
+    "action:an_eui.paired_bi_shou_assault": 48,
+    "action:an_eui.paired_strike": 35,
+    "action:an_eui.ruin_tempered_armament_quick": 38,
+    "action:an_eui.scouring_destruction_blast": 42,
+    "system:combat.dodge": 8,
+    "talent:an_eui.stomping_step": 18
+  },
+  "actor_id": "an_eui_early_book1_cl5",
+  "ally_companion_priorities": {
+    "lee_jia_early_book1_cl5": 20
+  },
+  "generic_fallback": false,
+  "low_hp_behavior": {
+    "critical_defense": 24,
+    "pressured_withdraw": 4
+  },
+  "policy_id": "policy:an_eui.gate4.local",
+  "policy_version": "1.0.0",
+  "preferred_range_bands_ft": [
+    [
+      0,
+      5
+    ],
+    [
+      30,
+      60
+    ]
+  ],
+  "prohibited_choices": [
+    "FIRST_ARM_WITHOUT_RUIN_TEMPERED"
+  ],
+  "reaction_rules": {
+    "reaction:an_eui.sheath_bone_guard": {
+      "defeat_prevention": true,
+      "minimum_packet": 7
+    },
+    "reaction:core.stamina_guard": {
+      "defeat_prevention": true,
+      "minimum_packet": 8,
+      "spend_cap": "PB"
+    }
+  },
+  "resource_reserves": {
+    "resource:an_eui.severance_edge": 0,
+    "resource:an_eui.stamina": 5
+  },
+  "role": [
+    "mobile bruiser",
+    "guard breaker",
+    "late-line survivor"
+  ],
+  "schema": "TianxiaLocalControllerPolicy.v1",
+  "source_doctrine_id": "doctrine:an_eui_early_book1_cl5.gate1",
+  "source_doctrine_sha256": "74970ce869b1dc1c7220140c7215c5136fb1bb30d5e31a744b1a1df909b3b74b",
+  "source_projection_sha256": "a5fd4e994295c140e31a62338d39b12c417cba7052b601f73c36cf37eacedebd",
+  "target_priorities": {
+    "CUI": -6,
+    "FOCUS_TARGET": 18,
+    "LOW_HP_PRIMARY": 30
+  },
+  "weights": {
+    "ally_support": 6,
+    "avoidable_risk": 8,
+    "character_policy": 10,
+    "finish": 14,
+    "immediate_effect": 10,
+    "no_progress": 6,
+    "position": 5,
+    "resource_use": 4,
+    "survival": 8
+  }
+}
