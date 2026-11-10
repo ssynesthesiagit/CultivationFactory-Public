@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "TianxiaCombatChoiceComposition.v1",
+  "title": "Tianxia Combat Typed Choice Composition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "match_id", "decision_id", "state_version", "actor_id", "candidate_id", "selected_option_ids"],
+  "properties": {
+    "schema": {"const": "TianxiaCombatChoiceComposition.v1"},
+    "match_id": {"type": "string", "minLength": 1},
+    "decision_id": {"type": "string", "minLength": 1},
+    "state_version": {"type": "integer", "minimum": 0},
+    "actor_id": {"type": "string", "minLength": 1},
+    "candidate_id": {"type": "string", "minLength": 1},
+    "selected_option_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    }
+  }
+}
