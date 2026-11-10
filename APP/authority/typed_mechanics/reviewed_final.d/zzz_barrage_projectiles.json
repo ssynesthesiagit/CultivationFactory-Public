@@ -1,0 +1,331 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_BARRAGE_NEEDLE_RAIN_BURST": {
+      "text_sha256": "f913606634e06a2ccc5858445d758b8bdf7cee3961b81ae753d3a43a77a4eac7",
+      "reviewed_by": "AUTO58 Barrage automation 2026-10-05",
+      "effects": [
+        {
+          "type": "spend_projectiles",
+          "pieces": 5,
+          "evidence": "Sbbst bgyy hkmeef of fnfgcahfre or iaca dyiuoi cwaokcs."
+        },
+        {
+          "type": "save",
+          "recipient_text": "Creatures inside make Dexterity saving throws.",
+          "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take deahsi aeuda to two kmntuu dhkrom gnrm ukuy tpks oouvkfm ansuvbhk",
+              "origin": "model",
+              "dice": {
+                "count": 2,
+                "sides": 4,
+                "weapon": true
+              }
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take half damage",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Area: 10-foot-radius sphere",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": []
+    },
+    "TAL_BARRAGE_HUNDRED_ARROW_PASSAGE": {
+      "text_sha256": "4ae99fcbb4cae362e8ec8423dac6c824e14e22c7cf8cc0bc063c825b4aabdcc2",
+      "reviewed_by": "AUTO58 Barrage automation 2026-10-05",
+      "effects": [
+        {
+          "type": "spend_projectiles",
+          "per_ft": 10,
+          "length_ft": 120,
+          "minimum": 10,
+          "evidence": "Sodbi one suackrrfms hrob or gioenl kpotgp per 10 feet of iplk, wairiwo 10 advegsrhldm."
+        },
+        {
+          "type": "save",
+          "recipient_text": "Creatures inside make Dexterity saving throws.",
+          "applies_to": "creatures_in_area",
+          "ability": "dex",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "damage",
+              "applies_to": "creatures_in_area",
+              "flat": 0,
+              "formula": "key_ability_modifier",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take gbluon suryg to uhlm hhcuwu osudfd epvw yphk dgrh eamrtek vitphprl",
+              "origin": "model",
+              "dice": {
+                "count": 4,
+                "sides": 4,
+                "weapon": true
+              }
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "until_start_of_next_turn",
+              "evidence": "lwuboo nnkh Rvmcvcntu ocscn the gwckb of rfrb khci turn",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "half_damage",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 0,
+              "on": "",
+              "duration": "instant",
+              "evidence": "Take half damage",
+              "origin": "model_v2"
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 120,
+          "on": "",
+          "duration": "instant",
+          "evidence": "Range: 120-foot line, 10 feet wide",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "Chmtstvft Ainbgshtfy may cfhghoi ahbprrwa irnrydrnnk oinpvdetby oriuhmhakefu."
+      ]
+    },
+    "TAL_BARRAGE_TEN_THOUSAND_PROJECTILE_RAIN": {
+      "text_sha256": "9899b1998b8e94eda60486acf7b5c15eb83777a5b64e997d08665a1cef8a74e4",
+      "reviewed_by": "AUTO58 Barrage automation 2026-10-05",
+      "effects": [
+        {
+          "type": "spend_projectiles",
+          "pieces": 20,
+          "evidence": "Spend at least 20 ordinary projectiles."
+        },
+        {
+          "type": "extra_targets",
+          "count": "any",
+          "who": "hostile",
+          "area_only": true,
+          "range_ft": 0,
+          "sight": false,
+          "prefer": "all_hostile",
+          "evidence": "Cfyoho nnvpked gkkladsin yvrkdd the fehu. Each ehvyav eukitlee ocrsf a Dichktvsr ntyhkn euaei.",
+          "effects": [
+            {
+              "type": "save",
+              "recipient_text": "Cfyoho nnvpked gkkladsin yvrkdd the fehu. Each ehvyav eukitlee ocrsf a Dichktvsr ntyhkn euaei.",
+              "applies_to": "target",
+              "ability": "dex",
+              "dc": "technique_save_dc",
+              "on_fail": [
+                {
+                  "type": "damage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "key_ability_modifier",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Take mcwebu bshof to cvakt mvlytt gpvucf goyn rpth loma kgsgnpa flmgbrcl",
+                  "origin": "model_v2",
+                  "dice": {
+                    "count": 8,
+                    "sides": 4,
+                    "weapon": true
+                  }
+                },
+                {
+                  "type": "speed",
+                  "applies_to": "target",
+                  "flat": -999,
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "vwitmm Ptuvmk erfph the fenup of syhd radt turn (Peipoh: Suknf igoelpp to 0)",
+                  "origin": "review sw-athletics"
+                },
+                {
+                  "type": "reaction_denied",
+                  "applies_to": "target",
+                  "duration": "until_start_of_next_turn",
+                  "evidence": "fltovy Phgiff dbrie the gvbho of avti fgov turn (Pttmmg: olernm ukyy Ratptlrgk)",
+                  "origin": "review sw-athletics"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "half_damage",
+                  "applies_to": "target",
+                  "flat": 0,
+                  "formula": "none",
+                  "damage_types": [],
+                  "ability": "none",
+                  "condition": "none",
+                  "distance_ft": 0,
+                  "on": "",
+                  "duration": "instant",
+                  "evidence": "Successful Save: Take half damage",
+                  "origin": "model_v2"
+                }
+              ],
+              "origin": "model_v2"
+            }
+          ]
+        }
+      ],
+      "riders": [
+        "Pinned: has Sslvp nyayewr to 0; ceweeu kpli Rromaiubr; may use an Auirrp to oodeyg or tfasc tlmf ahck the noukadrill nunftndh, bomwtg Pbngtk.",
+        "Slufg at amasv 20 iekunhrc sysfmobscib. Cneiiihvo Amkdeiawmf or Ssvownruh Arcypec Ielgwvsuyir may fvneskr wsnr uueoedtuoon."
+      ]
+    },
+    "TAL_BARRAGE_STAIR_SHOT": {
+      "text_sha256": "73f006c4a3ba8cd4aebe934394b660e05382900f8b80ee0fe4e4069dc4e87eae",
+      "reviewed_by": "AUTO58 Barrage automation 2026-10-05",
+      "effects": [
+        {
+          "type": "spend_projectiles",
+          "pieces": 10,
+          "allow_thrown": false,
+          "ammunition_ids": [
+            "tianxia.mortal.gear.arrows_20",
+            "tianxia.mortal.gear.bolts_20",
+            "tianxia.mortal.gear.needles_50"
+          ],
+          "stock_label": "arrows, bolts, or comparable embedding ammunition",
+          "evidence": "Sbouw 10 pgieik of yvvvsubrkl to nhnpiy a wnaooftro bikdt, pirimt, or riiam of aybhumwwgsl"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 5,
+          "on": "",
+          "duration": "special",
+          "evidence": "Sbouw 10 pgieik of yvvvsubrkl to nhnpiy a wnaooftro bikdt, pirimt, or riiam of aybhumwwgsl",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "extends up to 5 feet x CL",
+        "may travel horizontally, upward, or downward",
+        "rtdlsm luvk or chcblwg lgve pdsmsph savp 45 oduorro",
+        "dhglowvk a cwnd, lncwk, wtumlnuhk, giehl fdwbudfw, or tlcvoiyuce adggswg",
+        "supports ordinary movement at the GM's discretion",
+        "Eogwyk Mnnvawh Frkfa to wrpuci the ghdudpaec as a Rdnggvbl, vyyo as hobl vvcvvpwh a vsuhern omacglwh or mahiofae an gvmdtdpgf pshbylea.",
+        "Requirement: Aibioousce tuchmvti for kedcogoym fvpa a pwtyanu. Spsih Shot ctybvviu pvrpkvgm tsmbnd, vmoul, or llvmvtoggu tdbfmdlcga."
+      ]
+    },
+    "TAL_BARRAGE_SKY_NET_SUPPRESSION": {
+      "text_sha256": "6b9489479693bc40314260b70ecc1ed6500ab70fbda4afb1a24f657d8e2301d5",
+      "reviewed_by": "AUTO58 Barrage automation 2026-10-05",
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "enemies_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 20,
+          "on": "",
+          "duration": "until_start_of_next_turn",
+          "evidence": "Area: 20-foot-radius sphere",
+          "origin": "model_v2",
+          "triggers": [
+            {
+              "id": "sky_net_choice",
+              "name": "Sky-Net Suppression",
+              "on": [
+                "enter",
+                "start"
+              ],
+              "who": "hostile",
+              "effects": [
+                {
+                  "type": "barrage_sky_net",
+                  "evidence": "A plvrusn ffrumdmn sorc weioek the ngie for the mnelc gilg on a turn or sigosg its turn dgrnve capibdt: Slow Down or Push Tkhifkl."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "riders": []
+    }
+  }
+}
