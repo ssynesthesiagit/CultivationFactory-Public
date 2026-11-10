@@ -1,0 +1,22 @@
+.newcomer-glossary {
+  position: fixed;
+  margin: 0;
+  inset: auto;
+  z-index: 10000;
+  width: min(440px, calc(100vw - 16px));
+  max-height: min(65vh, 560px);
+  overflow: auto;
+  /* Help must never cover another control's pointer target. Wheel scrolling
+     is delegated by installGlossary; keyboard focus remains available. */
+  pointer-events: none;
+  padding: 12px;
+  box-sizing: border-box;
+  border: 1px solid var(--cf-line-strong);
+  border-radius: 10px;
+  background: var(--cf-panel);
+  color: var(--cf-text);
+  box-shadow: 0 6px 24px color-mix(in srgb, var(--cf-shadow) 53%, transparent);
+  font: calc(14px * var(--cf-text-scale, 1))/1.5 var(--cf-font-body);
+  white-space: pre-wrap;
+}
+.newcomer-glossary[hidden] { display: none; }
