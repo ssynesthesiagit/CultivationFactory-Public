@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Cultivation_Insight_Stage2_Authority_v1.schema.json",
+  "title": "CAT3 Cultivation Insight Stage 2 Authority v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "authority_complete",
+    "allowed_kinds",
+    "allowed_channels",
+    "minimum_cl",
+    "allowed_cls",
+    "insight_authority_type",
+    "insight_group",
+    "owning_canonical_sphere_ids",
+    "typed_prerequisites",
+    "ability_change",
+    "insight_ability_change",
+    "repeatability",
+    "execution_authority",
+    "source_authority",
+    "source_record_commitment_sha256",
+    "rule_id"
+  ],
+  "properties": {
+    "authority_complete": {"const": true},
+    "allowed_kinds": {"type": "array", "items": {"const": "cultivation_insight_acquisition"}, "minItems": 1, "uniqueItems": true},
+    "allowed_channels": {"type": "array", "items": {"const": "cultivation-insight-selection"}, "minItems": 1, "uniqueItems": true},
+    "minimum_cl": {"type": "integer", "minimum": 1, "maximum": 20},
+    "allowed_cls": {"type": "array", "items": {"type": "integer", "minimum": 1, "maximum": 20}, "minItems": 1, "uniqueItems": true},
+    "insight_authority_type": {"type": ["string", "null"]},
+    "insight_group": {"type": "object"},
+    "owning_canonical_sphere_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "typed_prerequisites": {"type": "array", "items": {"type": "object"}},
+    "ability_change": {"$ref": "#/$defs/abilityChange"},
+    "insight_ability_change": {"$ref": "#/$defs/abilityChange"},
+    "repeatability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "maximum", "indexing", "source_field", "source_value"],
+      "properties": {
+        "mode": {"enum": ["nonrepeatable", "finite", "open_ended"]},
+        "maximum": {"type": ["integer", "null"], "minimum": 1},
+        "indexing": {"const": "one_based_contiguous"},
+        "source_field": {"type": "string"},
+        "source_value": {}
+      }
+    },
+    "execution_authority": {"type": "object"},
+    "source_authority": {"type": "object"},
+    "source_record_commitment_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "rule_id": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "abilityChange": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["selection_mode", "allowed_abilities", "amount", "cap", "allowed_cls", "source_field", "source_value"],
+      "properties": {
+        "selection_mode": {"const": "level_selection"},
+        "allowed_abilities": {"type": "array", "items": {"enum": ["STR", "DEX", "CON", "INT", "WIS", "CHA"]}, "minItems": 1, "uniqueItems": true},
+        "amount": {"const": 1},
+        "cap": {"const": 20},
+        "allowed_cls": {"type": "array", "items": {"type": "integer", "minimum": 1, "maximum": 20}, "minItems": 1, "uniqueItems": true},
+        "source_field": {"const": "ability_options"},
+        "source_value": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}
