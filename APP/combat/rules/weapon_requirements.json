@@ -1,0 +1,142 @@
+{
+  "maneuvers": [
+    {
+      "key": "batter",
+      "name": "Batter",
+      "records": [
+        "TAL_BERSERKER_BATTER"
+      ],
+      "sphere": "tianxia.sphere.berserker",
+      "kinds": [
+        "melee",
+        "unarmed",
+        "natural",
+        "thrown"
+      ],
+      "plain": true,
+      "on_hit": [
+        {
+          "type": "batter"
+        }
+      ],
+      "one_talent": true,
+      "source_record": true
+    },
+    {
+      "key": "snipe",
+      "name": "Snipe Shot",
+      "records": [
+        "TAL_SNIPER_SNIPER_TRAINING"
+      ],
+      "sphere": "tianxia.sphere.sniper",
+      "kinds": [
+        "ranged",
+        "thrown"
+      ],
+      "plain": false,
+      "on_hit": [],
+      "one_talent": true
+    },
+    {
+      "key": "barrage",
+      "name": "Barrage",
+      "records": [],
+      "sphere": "tianxia.sphere.barrage",
+      "kinds": [
+        "ranged",
+        "thrown"
+      ],
+      "plain": true,
+      "on_hit": [],
+      "one_talent": true,
+      "follow_up": true
+    },
+    {
+      "key": "broken_rhythm",
+      "name": "Broken-Rhythm Strike",
+      "records": [
+        "TAL_DRUNKEN_STYLE_BROKEN_RHYTHM_STRIKE"
+      ],
+      "sphere": "tianxia.sphere.drunken_style",
+      "kinds": [
+        "melee",
+        "unarmed",
+        "natural"
+      ],
+      "plain": true,
+      "sphere_grants": false,
+      "one_talent": false,
+      "source_record": true,
+      "on_hit": [
+        {
+          "type": "drunken_off_rhythm",
+          "applies_to": "target"
+        }
+      ],
+      "on_miss": [
+        {
+          "type": "if_missed_by",
+          "max": 5,
+          "effects": [
+            {
+              "type": "drunken_false_opening",
+              "asked": true
+            }
+          ],
+          "evidence": "Miss by 5 or Less: You may pnfluf to vtcpwo a Ftsuf Ossnlvs for the hhrsig."
+        }
+      ]
+    }
+  ],
+  "delivery_family_words": {
+    "greatblade": [
+      "greatsword",
+      "great",
+      "zhan ma dao",
+      "da dao"
+    ],
+    "axe": [
+      "axe"
+    ],
+    "bow": [
+      "bow"
+    ],
+    "sword": [
+      "sword",
+      "jian"
+    ],
+    "saber": [
+      "saber",
+      "dao"
+    ],
+    "spear": [
+      "spear",
+      "qiang"
+    ],
+    "staff": [
+      "staff",
+      "gun"
+    ]
+  },
+  "source_families": {
+    "greatbow": "greatbow"
+  },
+  "ammunition": {
+    "arrow": [
+      "tianxia.mortal.gear.arrows_20",
+      "arrow"
+    ],
+    "bolt": [
+      "tianxia.mortal.gear.bolts_20",
+      "bolt"
+    ],
+    "bullet": [
+      "tianxia.mortal.gear.bullets_sling_20",
+      "sling bullet"
+    ],
+    "needle": [
+      "tianxia.mortal.gear.needles_50",
+      "needle"
+    ]
+  }
+}
