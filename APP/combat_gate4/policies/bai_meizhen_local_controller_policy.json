@@ -1,0 +1,74 @@
+{
+  "action_priorities": {
+    "action:bai_meizhen.blackwater_serpent_court": 54,
+    "action:bai_meizhen.command_cui": 44,
+    "action:bai_meizhen.numbing_venom_palm": 42,
+    "action:bai_meizhen.sea_risen_bearing": 26,
+    "action:bai_meizhen.water_lash": 48,
+    "system:combat.dodge": 12
+  },
+  "actor_id": "bai_meizhen_early_outer_sect_cl5",
+  "ally_companion_priorities": {
+    "bai_cui": 28,
+    "ling_qi_early_outer_sect_cl5": 20
+  },
+  "generic_fallback": false,
+  "low_hp_behavior": {
+    "critical_defense": 28,
+    "pressured_hold_formation": 12
+  },
+  "policy_id": "policy:bai_meizhen.gate4.local",
+  "policy_version": "1.0.0",
+  "preferred_range_bands_ft": [
+    [
+      10,
+      35
+    ]
+  ],
+  "prohibited_choices": [
+    "COMMAND_INACTIVE_TARGET"
+  ],
+  "reaction_rules": {
+    "reaction:bai_meizhen.sea_moon_interposition": {
+      "defeat_prevention": true,
+      "minimum_packet": 8
+    },
+    "reaction:bai_meizhen.spirit_intercession": {
+      "minimum_packet": 1,
+      "protect_cui": true
+    },
+    "reaction:bai_meizhen.water_shield": {
+      "defeat_prevention": true,
+      "minimum_packet": 8
+    }
+  },
+  "resource_reserves": {
+    "resource:bai_meizhen.moon_sea_radiance": 0,
+    "resource:bai_meizhen.qi": 2
+  },
+  "role": [
+    "formation controller",
+    "companion commander",
+    "defensive anchor"
+  ],
+  "schema": "TianxiaLocalControllerPolicy.v1",
+  "source_doctrine_id": "doctrine:bai_meizhen_early_outer_sect_cl5.gate1",
+  "source_doctrine_sha256": "d29fff5947a231fddc2b773476a3ac0e83e5548352abed91cd8e57edb61e3f20",
+  "source_projection_sha256": "ef7762104aac5ac0df4abbaae0f3627cdc4a3cf0cdc6edcc057444494680db35",
+  "target_priorities": {
+    "FOCUS_TARGET": 17,
+    "LOW_HP_PRIMARY": 24,
+    "THREAT_TO_CUI": 14
+  },
+  "weights": {
+    "ally_support": 6,
+    "avoidable_risk": 8,
+    "character_policy": 10,
+    "finish": 14,
+    "immediate_effect": 10,
+    "no_progress": 6,
+    "position": 5,
+    "resource_use": 4,
+    "survival": 8
+  }
+}
