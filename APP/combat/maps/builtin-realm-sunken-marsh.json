@@ -1,0 +1,66 @@
+{
+ "schema": "TianxiaTabletopMap.v1",
+ "map_id": "builtin-realm-sunken-marsh",
+ "display_name": "Sunken Marsh",
+ "description": "A flooded marsh split by a winding channel. Stilt-house walls block sight and movement and shelter both camps, each with a north and a south doorway onto the shore paths. Open shallow water crosses the whole channel and costs double movement to wade; three wooden boardwalks cross it at no extra cost. Four shallow ponds on the shores also cost double. A square counts as water when more than half of it is under water. Root clumps give cover (+2 AC). No falling or drowning rules.",
+ "picker_order": 50,
+ "natural_haze": false,
+ "width_squares": 48,
+ "height_squares": 32,
+ "square_size_ft": 5,
+ "background": {"asset": null, "opacity": 1.0, "fit": "cover", "style": "marsh", "seed": 6101},
+ "display": {"grid_opacity": 0.25, "detail": 1.0, "grid_color": "#cfe0d6", "blend": 0.3},
+ "walls": [
+  {"id": "west-hut-west", "shape": "rect", "points": [[2.0, 8.0], [3.0, 24.0]], "filled": true, "blocks": "sight_and_movement", "look": "timber_lattice", "height_ft": 10},
+  {"id": "west-hut-east", "shape": "rect", "points": [[8.0, 8.0], [9.0, 24.0]], "filled": true, "blocks": "sight_and_movement", "look": "timber_lattice", "height_ft": 10},
+  {"id": "west-hut-north-a", "shape": "rect", "points": [[2.0, 8.0], [4.0, 9.0]], "filled": true, "blocks": "sight_and_movement", "look": "timber_lattice", "height_ft": 10},
+  {"id": "west-hut-north-b", "shape": "rect", "points": [[5.0, 8.0], [9.0, 9.0]], "filled": true, "blocks": "sight_and_movement", "look": "timber_lattice", "height_ft": 10},
+  {"id": "west-hut-south-a", "shape": "rect", "points": [[2.0, 23.0], [6.0, 24.0]], "filled": true, "blocks": "sight_and_movement", "look": "timber_lattice", "height_ft": 10},
+  {"id": "west-hut-south-b", "shape": "rect", "points": [[7.0, 23.0], [9.0, 24.0]], "filled": true, "blocks": "sight_and_movement", "look": "timber_lattice", "height_ft": 10},
+  {"id": "east-hut-west", "shape": "rect", "points": [[39.0, 8.0], [40.0, 24.0]], "filled": true, "blocks": "sight_and_movement", "look": "timber_lattice", "height_ft": 10},
+  {"id": "east-hut-east", "shape": "rect", "points": [[45.0, 8.0], [46.0, 24.0]], "filled": true, "blocks": "sight_and_movement", "look": "timber_lattice", "height_ft": 10},
+  {"id": "east-hut-north-a", "shape": "rect", "points": [[39.0, 8.0], [41.0, 9.0]], "filled": true, "blocks": "sight_and_movement", "look": "timber_lattice", "height_ft": 10},
+  {"id": "east-hut-north-b", "shape": "rect", "points": [[42.0, 8.0], [46.0, 9.0]], "filled": true, "blocks": "sight_and_movement", "look": "timber_lattice", "height_ft": 10},
+  {"id": "east-hut-south-a", "shape": "rect", "points": [[39.0, 23.0], [43.0, 24.0]], "filled": true, "blocks": "sight_and_movement", "look": "timber_lattice", "height_ft": 10},
+  {"id": "east-hut-south-b", "shape": "rect", "points": [[44.0, 23.0], [46.0, 24.0]], "filled": true, "blocks": "sight_and_movement", "look": "timber_lattice", "height_ft": 10}
+ ],
+ "trees": [
+  {"x": 11, "y": 5, "size": 1, "seed": 6001, "look": "willow", "occluder": "centerline", "height_ft": 25},
+  {"x": 16, "y": 9, "size": 1, "seed": 6002, "look": "willow", "occluder": "centerline", "height_ft": 25},
+  {"x": 10, "y": 17, "size": 1, "seed": 6003, "look": "willow", "occluder": "centerline", "height_ft": 25},
+  {"x": 15, "y": 25, "size": 1, "seed": 6004, "look": "willow", "occluder": "centerline", "height_ft": 25},
+  {"x": 36, "y": 5, "size": 1, "seed": 6005, "look": "willow", "occluder": "centerline", "height_ft": 25},
+  {"x": 31, "y": 9, "size": 1, "seed": 6006, "look": "willow", "occluder": "centerline", "height_ft": 25},
+  {"x": 37, "y": 17, "size": 1, "seed": 6007, "look": "willow", "occluder": "centerline", "height_ft": 25},
+  {"x": 32, "y": 25, "size": 1, "seed": 6008, "look": "willow", "occluder": "centerline", "height_ft": 25},
+  {"x": 17, "y": 2, "size": 1, "seed": 6009, "look": "willow", "occluder": "centerline", "height_ft": 25},
+  {"x": 30, "y": 2, "size": 1, "seed": 6010, "look": "willow", "occluder": "centerline", "height_ft": 25},
+  {"x": 17, "y": 29, "size": 1, "seed": 6011, "look": "willow", "occluder": "centerline", "height_ft": 25},
+  {"x": 30, "y": 29, "size": 1, "seed": 6012, "look": "willow", "occluder": "centerline", "height_ft": 25}
+ ],
+ "starts": {"team1": [[5, 10], [5, 12], [5, 14], [5, 16], [5, 18], [5, 20]], "team2": [[42, 10], [42, 12], [42, 14], [42, 16], [42, 18], [42, 20]]},
+ "terrain": [
+  {"type": "SIMPLE_COVER", "cells": [[4, 7], [4, 25], [12, 4], [12, 28], [14, 13], [14, 19], [33, 13], [33, 19], [35, 4], [35, 28], [41, 7], [41, 25]], "look": "roots", "height_ft": 1}
+ ],
+ "materials": [
+  {"material": "floor:wood", "cells": [[3, 9], [3, 10], [3, 11], [3, 12], [3, 13], [3, 14], [3, 15], [3, 16], [3, 17], [3, 18], [3, 19], [3, 20], [3, 21], [3, 22], [4, 9], [4, 10], [4, 11], [4, 12], [4, 13], [4, 14], [4, 15], [4, 16], [4, 17], [4, 18], [4, 19], [4, 20], [4, 21], [4, 22], [5, 9], [5, 10], [5, 11], [5, 12], [5, 13], [5, 14], [5, 15], [5, 16], [5, 17], [5, 18], [5, 19], [5, 20], [5, 21], [5, 22], [6, 9], [6, 10], [6, 11], [6, 12], [6, 13], [6, 14], [6, 15], [6, 16], [6, 17], [6, 18], [6, 19], [6, 20], [6, 21], [6, 22], [7, 9], [7, 10], [7, 11], [7, 12], [7, 13], [7, 14], [7, 15], [7, 16], [7, 17], [7, 18], [7, 19], [7, 20], [7, 21], [7, 22], [40, 9], [40, 10], [40, 11], [40, 12], [40, 13], [40, 14], [40, 15], [40, 16], [40, 17], [40, 18], [40, 19], [40, 20], [40, 21], [40, 22], [41, 9], [41, 10], [41, 11], [41, 12], [41, 13], [41, 14], [41, 15], [41, 16], [41, 17], [41, 18], [41, 19], [41, 20], [41, 21], [41, 22], [42, 9], [42, 10], [42, 11], [42, 12], [42, 13], [42, 14], [42, 15], [42, 16], [42, 17], [42, 18], [42, 19], [42, 20], [42, 21], [42, 22], [43, 9], [43, 10], [43, 11], [43, 12], [43, 13], [43, 14], [43, 15], [43, 16], [43, 17], [43, 18], [43, 19], [43, 20], [43, 21], [43, 22], [44, 9], [44, 10], [44, 11], [44, 12], [44, 13], [44, 14], [44, 15], [44, 16], [44, 17], [44, 18], [44, 19], [44, 20], [44, 21], [44, 22]]}
+ ],
+ "features": [
+  {"floor": "shallows", "terrain": "DIFFICULT", "look": "roots", "width": 4,
+   "path": [[21.49, 0], [21.93, 1], [22.47, 2], [23.09, 3], [23.75, 4], [24.41, 5], [25.03, 6], [25.57, 7], [26.01, 8], [26.32, 9], [26.48, 10], [26.48, 11], [26.32, 12], [26.01, 13], [25.57, 14], [25.03, 15], [24.41, 16], [23.75, 17], [23.09, 18], [22.47, 19], [21.93, 20], [21.49, 21], [21.18, 22], [21.02, 23], [21.02, 24], [21.18, 25], [21.49, 26], [21.93, 27], [22.47, 28], [23.09, 29], [23.75, 30], [24.41, 31], [25.03, 32]]},
+  {"floor": "shallows", "terrain": "DIFFICULT",
+   "area": [[15.12, 21.5], [15.17, 21.92], [14.95, 22.3], [14.57, 22.59], [14.16, 22.82], [13.78, 23.02], [13.39, 23.2], [12.95, 23.29], [12.5, 23.28], [12.07, 23.21], [11.64, 23.15], [11.14, 23.11], [10.61, 22.99], [10.19, 22.72], [10.03, 22.31], [10.12, 21.88], [10.32, 21.5], [10.47, 21.18], [10.51, 20.85], [10.58, 20.48], [10.77, 20.13], [11.12, 19.86], [11.55, 19.69], [12.01, 19.56], [12.5, 19.48], [13.01, 19.48], [13.47, 19.64], [13.81, 19.95], [14.01, 20.31], [14.18, 20.61], [14.46, 20.86], [14.83, 21.13]]},
+  {"floor": "shallows", "terrain": "DIFFICULT",
+   "area": [[38.14, 10.5], [38.07, 10.9], [37.77, 11.24], [37.34, 11.47], [36.94, 11.64], [36.64, 11.85], [36.37, 12.15], [35.99, 12.46], [35.5, 12.62], [34.98, 12.57], [34.53, 12.36], [34.16, 12.09], [33.82, 11.83], [33.53, 11.54], [33.34, 11.21], [33.29, 10.85], [33.34, 10.5], [33.36, 10.16], [33.33, 9.79], [33.35, 9.36], [33.55, 8.95], [33.98, 8.69], [34.53, 8.64], [35.06, 8.73], [35.5, 8.82], [35.92, 8.84], [36.36, 8.85], [36.82, 8.93], [37.22, 9.14], [37.52, 9.43], [37.77, 9.75], [38.0, 10.11]]},
+  {"floor": "shallows", "terrain": "DIFFICULT",
+   "area": [[44.88, 3.5], [44.65, 3.9], [44.28, 4.23], [43.91, 4.52], [43.55, 4.8], [43.11, 5.03], [42.59, 5.17], [42.04, 5.22], [41.5, 5.25], [40.93, 5.32], [40.27, 5.38], [39.59, 5.31], [39.07, 5.04], [38.84, 4.62], [38.86, 4.19], [38.93, 3.82], [38.88, 3.5], [38.76, 3.16], [38.73, 2.77], [38.92, 2.41], [39.3, 2.11], [39.78, 1.87], [40.29, 1.66], [40.87, 1.49], [41.5, 1.45], [42.1, 1.59], [42.57, 1.87], [42.93, 2.15], [43.31, 2.35], [43.83, 2.51], [44.4, 2.74], [44.81, 3.08]]},
+  {"floor": "shallows", "terrain": "DIFFICULT",
+   "area": [[9.55, 28.5], [9.27, 28.85], [8.91, 29.13], [8.65, 29.41], [8.48, 29.75], [8.24, 30.15], [7.8, 30.49], [7.17, 30.63], [6.5, 30.56], [5.92, 30.36], [5.42, 30.15], [4.94, 29.98], [4.48, 29.78], [4.1, 29.51], [3.87, 29.19], [3.71, 28.85], [3.55, 28.5], [3.38, 28.11], [3.37, 27.68], [3.66, 27.3], [4.23, 27.06], [4.91, 26.99], [5.5, 26.98], [6.0, 26.91], [6.5, 26.76], [7.09, 26.63], [7.72, 26.64], [8.27, 26.82], [8.72, 27.09], [9.09, 27.4], [9.41, 27.74], [9.6, 28.11]]},
+  {"floor": "wood", "area": [[19, 3], [28, 3], [28, 5], [19, 5]]},
+  {"floor": "wood", "area": [[21, 14], [29, 14], [29, 16], [21, 16]]},
+  {"floor": "wood", "area": [[19, 27], [27, 27], [27, 29], [19, 29]]}
+ ],
+ "terrain_numbers": {"save_dc": 13, "pb": 2},
+ "objects": [],
+ "cells": {"blocked": [[2, 8], [2, 9], [2, 10], [2, 11], [2, 12], [2, 13], [2, 14], [2, 15], [2, 16], [2, 17], [2, 18], [2, 19], [2, 20], [2, 21], [2, 22], [2, 23], [3, 8], [3, 23], [4, 23], [5, 8], [5, 23], [6, 8], [7, 8], [7, 23], [8, 8], [8, 9], [8, 10], [8, 11], [8, 12], [8, 13], [8, 14], [8, 15], [8, 16], [8, 17], [8, 18], [8, 19], [8, 20], [8, 21], [8, 22], [8, 23], [10, 17], [11, 5], [15, 25], [16, 9], [17, 2], [17, 29], [30, 2], [30, 29], [31, 9], [32, 25], [36, 5], [37, 17], [39, 8], [39, 9], [39, 10], [39, 11], [39, 12], [39, 13], [39, 14], [39, 15], [39, 16], [39, 17], [39, 18], [39, 19], [39, 20], [39, 21], [39, 22], [39, 23], [40, 8], [40, 23], [41, 23], [42, 8], [42, 23], [43, 8], [44, 8], [44, 23], [45, 8], [45, 9], [45, 10], [45, 11], [45, 12], [45, 13], [45, 14], [45, 15], [45, 16], [45, 17], [45, 18], [45, 19], [45, 20], [45, 21], [45, 22], [45, 23]], "sight": []}
+}
