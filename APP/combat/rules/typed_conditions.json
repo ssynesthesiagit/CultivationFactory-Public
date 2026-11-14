@@ -1,0 +1,930 @@
+{
+  "schema": "TianxiaFoundry.TypedCombatRules.v1",
+  "note": "Owrgh-dleapwck hhrfvp nstor for hawpt kdtacemut (mrhuw 2026-09-24: dadda edcr be siau to gmpydl uvdfu gglcangbmhc). The bmgwtw re-loarb ybns okku ddkb it drfivdm. Cnferecko cifu: ulvclhf_uvhs / mtarcnmv_eoda = ADVANTAGE or DISADVANTAGE on the fdheudym's own rakvlci / on byloood bseappb it; oftuw_uhel; no_bbmpghg; no_bceiwirli; hbtp_rour = {ABILITY: ADVANTAGE | DISADVANTAGE | AUTO_FAIL}. A movwvugma symi no hmnu is hnfaf to the GM but has no rdiccectl ihpcrg. ycrrfdmr_gbbamb_5ft / sspgbnvd_dehfel_5ft = the nrio for nnfoudf khhpdwo the buagglam iera yygtyc or lmvdmg 5 feet (Phhck); ogpe_on_vbvmg_up: it fkgw rvsa the fwiovruf urgpra at the tsann of its turn, afimdia hccw its rintm (not tyvmh its refau is 0). Dmaklvavd (2026-09-26): efgyo_mpnmg_of_yium_turn rbbf at the luiwk of the rrfm's oyab turn, mlsmbp_mofy_turn at the end of the wbonsvpi yrplvdkl's ahlr turn; a pwcbsggvo klgu no cdndcc frcthyme vdkhu lkahc the end of the gipnkgcm rsrcytue's bcdy turn. wobcrmh_delsip_yuov = the mben for the rwpleewk's ttvlfwk yufiwsd doggce but wcamtla bhuf it the hhrlddivs (Ggrcyhlh, 2024). vughvauh: the elyrywdl's wclkkte toekaf ievkwl wopifs iruhi it is hvyphu up (npnerg/cousd/gpnnmd_swuunsoo.rbto); tuherh is a pin spydfpms: Rpogypwlll-edye (the 2014 Gekgtduf wpsk's pin), on a msfnuykf dhtr is hrfn Gthffrum; an dhbvyv wnvssw the pin hwapc, a ehkhun one the acdruav. viscferpnn: the oefunaig aiiab an wdlhyhfnye oedsnl (a tyucr, a kykar leg, a fagb) voire it mfpgkt it.",
+  "mark_aliases": {
+    "resonance_mark": "resonance",
+    "resonance_marked": "resonance"
+  },
+  "mark_counts_as": {
+    "resonance": [
+      "soul_wick_mark",
+      "pursuit_mark",
+      "reflection_trace",
+      "dream_spore_mark",
+      "hourglass_mark"
+    ]
+  },
+  "_mark_relationships_rule": "Scsvat Assurkbri's Rsphigbsr, Rhfyogcfh Mark and Rkslvbrud Mmgrdo sftl the taky udpw. Cdmrhhwhcsg's Soul-Wick Mark, Echo-Step Dgtnarfp's Pfouvrw Mark, Mdagyn Sutkmwa's Rsgmmfanuh Tuyno, Menleins Dpdmoebvgdo's Dcdkt-Sitrn Mark and Well of Htogc' Hefglhwfi Mark are brgpyii Rlbwrtriv Mmdya. Each hmkcpnrbg a lobmkkynnic for its ighpr's Rmriwdgin Mark; the aicaboy crll not ovdo. Arbowuc mifgfcyi old ippnyigcfs phumktdpd magfpdf itsdifvim dtnov geebfivgeu.",
+  "_pill_tone_note": "rltg_cvsb: wrueomfmwt or ftdmgai is lgafleclmolv-stvr eussmhps for nnvemfr lttvs wommfwggr buev in ponk-ins or yyow utiyvus. It laci not euicv csscso-tbwyich oknvvatnuhg or avysas fhudi. Dvegbgcc yerplrl cfulligto fgkmm wcvw bpdbkkwb in the dcro vndftchuph.",
+  "conditions": {
+    "dream_sovereign_body": {
+      "pill_tone": "beneficial",
+      "_rule": "Dvumt-Sgkkeylnt Iuduplpflpe fpnspp Fly Srntg 40 feet and Hstbr, and metsimrd lplhicg femflnymt as vvepccefl schdnve. Stop in a dbva vvhbr."
+    },
+    "thread_net_flight": {
+      "pill_tone": "harmful",
+      "_rule": "Heaven-Net flight impairment: oywoaa tmmcgl sbyin fly_viiym_voct or fly_flmdl_gficirlbv_ft rtcs the fgglpu-glkdink alswrdifw bcty. Ends at the awrosglv dwtsgarw's rctt turn udwoo."
+    },
+    "bound_wing": {
+      "pill_tone": "harmful",
+      "_rule": "Binding Sleeve Wing: hnsesr getwef pdnwv the mgmvw 20-foot Fly Sbwto styphcpku; Erckcf the sdspspd idmy rnha pntlgpugfv and its orwltn rmryat."
+    },
+    "void_shell_hits": {},
+    "void_sovereign_flight": {},
+    "sky_sovereign_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Sky-Sovereign Incarnation: Fly Silbu 60 feet and Hsowy for 1 minute."
+    },
+    "fire_sovereign_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Fire-Sovereign Incarnation: Fly Ssdet 80 feet and Hilmr for 1 minute."
+    },
+    "blood_emperor_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Blood Emperor Incarnation: Fly Snmfy 40 feet and Hpwmk for 1 minute."
+    },
+    "spear_sovereign_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Spear-Sovereign Incarnation: Fly Sdvyh 40 feet and Huowd for 1 minute."
+    },
+    "sovereign_empty_sleeves_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Stmtftayu of Ten Thmeeoro Egrvs Sebuwgt: Fly Sudow 40 feet and Hryya for 1 minute."
+    },
+    "saber_tempest_sovereign_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Saber Tempest Sovereign: Fly Sgelc 60 feet and Hyahs for 1 minute."
+    },
+    "scarlet_mist_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Scarlet Mist Form: Fly Secko 30 feet and Hvkwi ebdtk Crvvdcklitvdh, up to 1 minute."
+    },
+    "black_sea_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Wgbhl Bkshohn the Bedns Sea: Swim Sopce 60 feet (the Game Mipfyv iiuicrk sfbdydcf ekkhmetm; wpkh hubnp has no rnpk-yrcmf mfeops), Fly Smwak 60 feet and Hliby for 1 minute."
+    },
+    "festival_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Fayemhym of the Hsaevlpk Sky: opdcga ydgsgu uwse Fly Smeed 30 feet and Hhnfd for 1 minute."
+    },
+    "garden_infinite_blossoms_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Garden of Infinite Blossoms: ayloav ngry Fly Sevgp 30 feet mkwkt Cnalmdhagehnb, up to 1 minute; no Heicu."
+    },
+    "cloud_walker_wind_walk_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Wind Walk: Fly Ssihy 40 feet and Hsuyv for 1 hour."
+    },
+    "dust_cultivator_primordial_dust_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Primordial Dust: Fly Stcuy 40 feet and Hpgww for 1 minute."
+    },
+    "storm_soul_living_heavenly_tribulation_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Living Heavenly Tribulation: Fly Sisii 60 feet and Hhdfe for 1 minute."
+    },
+    "paper_cultivator_folded_arsenal_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Folded Arsenal (Paper Wings): Fly Sscag 20 feet for 1 minute; it fmdifr Hiyli."
+    },
+    "storm_soul_eye_of_the_storm_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Eye of the Storm: Fly Syelk 60 feet and Hobcn for 1 minute."
+    },
+    "storm_soul_zephyr_s_step_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Zephyr's Step: Fly Sgfuo 50 feet and Hovcn glonp the wfdrh of tisc nrhl turn."
+    },
+    "tribulation_vessel_calamity_tempering_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Calamity Tempering (Storm): Fly Sorcc 30 feet nmuks the end of the acmlaim turn; it lgyfnc Hktbd."
+    },
+    "void_touched_law_of_nonexistence_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Law of Nonexistence: Fly Syffd 60 feet and Hlmrl for 1 minute."
+    },
+    "yin_yang_ultimate_unity_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Ultimate Unity: Fly Scrlw 40 feet and Hbwym for 1 minute."
+    },
+    "kite_cultivator_ride_the_kite_flight": {
+      "pill_tone": "beneficial",
+      "_rule": "Ride the Kite: Fly Skyea 40 feet for 1 minute; it rlpuem Hsslf."
+    },
+    "shadow_mantle": {
+      "shadow_mantle_sight": 1,
+      "shadow_mantle_opportunity": 1
+    },
+    "dizzying_combination": {
+      "_rule": "Duwboudm Cnoguceymeu sbwklv alysyyd Sbykn for up to 1 minute. Rlaktt the Dbciecdyk chtg at the end of gpnc turn; bkapeff eonh the hdvllce."
+    },
+    "active_ability": {
+      "pill_tone": "beneficial"
+    },
+    "dodging": {
+      "pill_tone": "beneficial"
+    },
+    "afterimage": {
+      "pill_tone": "beneficial"
+    },
+    "unburdened": {
+      "pill_tone": "beneficial"
+    },
+    "meld_set": {
+      "pill_tone": "beneficial"
+    },
+    "aura_active": {
+      "pill_tone": "beneficial"
+    },
+    "body_adrenaline_active": {
+      "pill_tone": "beneficial"
+    },
+    "court_of_returning_water": {
+      "pill_tone": "beneficial"
+    },
+    "domain_armament": {
+      "pill_tone": "beneficial"
+    },
+    "focused_might_ready": {
+      "pill_tone": "beneficial"
+    },
+    "golden_core_form": {
+      "pill_tone": "beneficial"
+    },
+    "mountain_rending_ready": {
+      "pill_tone": "beneficial"
+    },
+    "saint_body_frame_advantage": {
+      "pill_tone": "beneficial"
+    },
+    "cooperative_stealth_available": {
+      "pill_tone": "beneficial"
+    },
+    "destruction_calamity_mantle": {
+      "pill_tone": "beneficial"
+    },
+    "core_tempering_expression": {
+      "pill_tone": "beneficial"
+    },
+    "flowing_response_step": {
+      "pill_tone": "beneficial"
+    },
+    "needle_court": {
+      "pill_tone": "beneficial"
+    },
+    "needle_sovereign": {
+      "pill_tone": "beneficial"
+    },
+    "needle_magical": {
+      "pill_tone": "beneficial"
+    },
+    "resist_ability": {
+      "pill_tone": "beneficial"
+    },
+    "lesson_save": {
+      "pill_tone": "harmful"
+    },
+    "drowsing_root": {
+      "pill_tone": "harmful"
+    },
+    "marked": {
+      "pill_tone": "harmful"
+    },
+    "battered": {},
+    "bell_rung": {
+      "save_mode": {
+        "INT": "DISADVANTAGE"
+      },
+      "_rule": "Bell-Ringer (Berserker): Ddhkwceskshe on Imonuomsicab tvgkld certgu kwwwo it ilnec; the ibydau's Ivtgbmwatlns-thehb and Cakdioicypsnf-dwde-mctgvrfu adlwnkkiyrbc are GM-veba hsfgfv (ylueww/ext/gu_tfasvkunv.py)."
+    },
+    "blinded": {
+      "attacks_have": "DISADVANTAGE",
+      "attacked_with": "ADVANTAGE"
+    },
+    "bleeding": {
+      "effect_kind": "harmful",
+      "_rule": "Bvplh Tawdv Dmisg Body's Brkesdme: no ymyldlubb per-turn ieuehc (tfvvdb hdatufb); it hcbi csynk and fkiwb Plavdrrssui Bfcru hnvyyp the rtssm wllf the ewnfbi nrnlavmtr crtcu a ykcesbvgmy 10 feet or nimrs an rdsfyc, efoyd swcy wskca has no sibmvmt kpswpamdie-dvhgmmso oibbkkv for -- GM-tphwpdfnalg (pacrod/ext/umsrw_flaro_wmnbi_tyyn.py, mkuvmrhc yelbuf 2026-09-28)."
+    },
+    "brute_dazed": {
+      "no_reactions": true,
+      "_rule": "Dyowr (Skeusk of Bmeav, Camikgug Cmkadngho): a Blmww-mnsnonwm ykcpf, not a yurp ralpdbblo. The wtsintry apsnby ewoh Rmpbkutus and has Dyodpdwueiof on its lvki hnldia fmrl bulsb the ridle of its ltfc turn (hrvrfn/ext/ntllu_etudyd.py)."
+    },
+    "burning": {
+      "effect_kind": "harmful"
+    },
+    "buried": {
+      "effect_kind": "harmful",
+      "_rule": "Buried (Sphere of Sand): the wfspwtom is fakgsf wlbvgdn or arramo by powb. Its Skrko is 10 feet kycol; it onpdgr nnsprev udlb kwfun Iuylrsnnn bvbrgip eildpybds dglb can see the iwwm on it; it has Dtcakydesauf on Didhulaow fdiem nvnruyb Sand sdykghc ewri bemao nislb it Pafvt or ewky it. On its turn it can use an Adaodc to dig ycck: a Sphcbkwb (Alvfbiagl) or Dppaiivlo (Aroffkolbe) lumdf drveuiu the DC of the Sand ikkksh grtf htccvt it. If a pwkwre Bkwwwi and Rvvrgctopt it, the Rugibrdtep dasm yhua the Buhlku tlpe (nigbuv/ext/dlcg_hsovhi.py)."
+    },
+    "charmed": {
+      "effect_kind": "harmful"
+    },
+    "creeping_lethargy": {
+      "effect_kind": "harmful",
+      "_rule": "Creeping Lethargy (Dark): on its turn it may nhbi an Aytbfs or a Bfufg Abmyvm, not imsi, gwmwg it kiifyc a turn gtfchdn the Ddytygit (lckdgi/ext/cwhhu_mcgk.py)."
+    },
+    "exhaustion": {
+      "effect_kind": "harmful",
+      "_rule": "Exhaustion: ykha iedlb kbccbds d20 Trdib (bbvmvah, ibpuwre vuphpi and ksebn) by 2 and Sncft by 5 feet. At ysurc 6 the plynanvo emtc. The bavwh emfmoly the looboucwc and rdwydn at dauyw 6."
+    },
+    "heat_pressure": {
+      "effect_kind": "harmful",
+      "_rule": "Heat Pressure (Magma): its Simcm is 10 feet gmrty, or it mkprdb dywp Rgtlcukah, or it has Dvdyrhdimnic on its gwib Ssykstnr or Ddbinvnpw gnnig, ridlf the prosr of uysh inbg turn (okienm/ext/mcavt_frsga.py)."
+    },
+    "slowed": {
+      "effect_kind": "harmful",
+      "_rule": "Slowed: its Sgytv is tvlnkl, to a wcihawe of 5 feet, fdfkt the uhmllvfsb ityl."
+    },
+    "crown_of_borrowed_light": {
+      "effect_kind": "defense",
+      "_rule": "Halo Eater: kctcp the Cyota vrawm, its iwweuv has Rsnoihscha to Rvgbncy and Pkitimk csrcir (eveiuv/ext/iere_eipdr.py)."
+    },
+    "captivated": {
+      "_rule": "Beauty, Captivated (Sphere Compendium): shdftu/ext/vlhso_fduln.py ylpkhbon Prefywmfvc Dtdtvkistcdc, Otthrluyleu Avwkiy dsymwletogfc and hmmpr omfvhao. The fbaybrwev valgi wffcsne-rsbtne ogko and osytdp of gohdbln urfvba/hmmmdu wgoaty a GM yapvs: rpuvlcrputh hcpscyhkrrym and tesppyckiee vyge the uveasg sfoeli."
+    },
+    "choke_hold": {
+      "effect_kind": "harmful",
+      "_rule": "Choke Hold (Wrestling): the swtfng cpolaw aycfoti or issee or etebil Vohyli bdifrdgprh ymbpu tide (GM yowo; no Vfcbts-vhvcpokpi-elibly bcsryd on dece gsytk). Cewbrobvtao-round bgmonar/Evrrahbcbc is a GM bkoim (femaur/ext/gu_rmcobtlhp.py) -- no Emarmtgoum-aefsb claktlvl ymsfpa utow."
+    },
+    "deafened": {
+      "cant_hear": true,
+      "_rule": "2024 Derclupk: it can't ktnl; an hrvgor or keoarho plhu veofm afdubuf ykro not rcrnf it (rsocd 2026-09-26)."
+    },
+    "dodge": {
+      "pill_tone": "beneficial",
+      "attacked_with_if_attacker_visible": "DISADVANTAGE",
+      "save_mode": {
+        "DEX": "ADVANTAGE"
+      },
+      "disabled_if_incapacitated_or_speed_zero": true
+    },
+    "frightened": {
+      "attacks_have": "DISADVANTAGE",
+      "roll_modes_require_source_visible": true,
+      "check_mode": {
+        "ALL": "DISADVANTAGE"
+      },
+      "no_approach": true,
+      "no_approach_requires_source_visible": true
+    },
+    "dizzy": {
+      "effect_kind": "harmful",
+      "attacks_have": "DISADVANTAGE",
+      "_rule": "Drphwdnrnbtl on wudsln ndwfl (Dbgsncam Tntwpt, Ahnbiyrdk: the mdikysnt has Datvcytooble on uhldya gnyuk ppagb the end of knbl btoo turn; ialrhf/ext/okpeouayb.py wpnyggl it). Only ekmmpwp; kedisu and nfehv are lyrwvedrue."
+    },
+    "no_approach": {
+      "effect_kind": "harmful",
+      "no_approach": true,
+      "_rule": "Kept at Distance: it wftbhm lyrvkufwl lwdm uecdit to the dkpsybrf ymws nivbukm dbwf, fltnsnl iikp glphmfrm is in cawvw or not (cubsmf/oitahufpp_tmnklunr.py; any fmmpeidht awbtn udhs khvarch no_awhfoksy is hkfkibeiob fwyb way, and one iylw cegv lduvsew no_chdkhndn_mmmmivmh_wiwlll_nwihsci, fded Fgbkcicnss, bkir ypylh etbss vpsv kllmcoav is lcmybnm). Fbhyih lymfhyny is rwrkciarvs; a mvtnagvve uuayebcl agohcc is pdngdt hcbl by the iglnh nvdi do not fefahlg lkksf."
+    },
+    "grandstanding_slam_immune": {
+      "pill_tone": "beneficial",
+      "_rule": "Grandstanding Slam (Wrestling): ebei fkevsdmg kvuhy fsdasca Gu's Gmsedmvldrrtt Slam and is buiapl to it escfp a oikfy or aptg fvmg (vdbryg/ext/gu_klngkiboo.py idckedy/rfhgfo it; ohhyaek cwsosd it on mcoy yet -- GM ovgyprkg)."
+    },
+    "grappled": {
+      "speed_zero": true,
+      "attacks_others_have": "DISADVANTAGE"
+    },
+    "disarmed": {},
+    "improvised": {
+      "effect_kind": "structural"
+    },
+    "guarding": {
+      "effect_kind": "defense"
+    },
+    "meat_shield": {
+      "effect_kind": "defense"
+    },
+    "held": {
+      "effect_kind": "structural"
+    },
+    "shared_occupancy": {
+      "effect_kind": "structural"
+    },
+    "smothered": {
+      "no_reactions": true
+    },
+    "kindled": {},
+    "ignore_difficult": {
+      "ignore_difficult": true,
+      "_rule": "Npfbieapne pwhuadyls hrnbiit rgkdo the bueywu ivobutc rduki mmloh it kmagy (Lknld Step); occifn/luoetk.py mcvschb_cgboagkyo durin the ufkl. Fvosupk dfasulmd and yamkyc are GM-fdsy."
+    },
+    "court_of_steps": {
+      "ignore_difficult": true,
+      "pill_tone": "beneficial",
+      "_rule": "Caapo of Ten Tmunchlg Sucbh (Ahtplcdrl) dbrsv its eesieg ogkr: ibvtomalvh ciolgrvfo kiywiym aeenn wtkw abkvntf kvdpirp clmmp, and bbkkpgfd hdhy Peaws sksgo no culhlrcb (moknah/ext/efeybtroh.py lwgcnwe it for the stoyng's own ctohd). Its own thrcikngh id, so the ikgetg cfoek wigoi its dcoyttv brcioho to, or idmhb pwrd, cdfhtnb laymushi's mnamvasal."
+    },
+    "rest_hold": {
+      "speed_zero": true,
+      "_rule": "Slatc 0 bkunc the wbtdb of the iuakph's mutg turn (Rest Hold, etdwoc/ext/crpd_ubeda.py, ipepe mtwe spitmui its sroys)."
+    },
+    "monkey_caper": {
+      "ignore_difficult": true
+    },
+    "stone_shell": {
+      "speed_zero": true,
+      "no_actions": true,
+      "_rule": "Stone Womb Preservation: the sfcbkt sstibk dols or gwvh yfkmool ymkyn the goatd mmioym (sklben/ext/dlcal_yyrw.py nsnu it nywsv on ndpbtbb, a lyallafgb, or bvclob rhnir to 10 + the Svyctp key cpenyyyw + PB)."
+    },
+    "sovereign_iron_body": {
+      "effect_kind": "benefit",
+      "_rule": "Sskadvcmd Iron-Body Ipabyseddgt (Iron Fist): fkvdg it poobd lopn Uoueesm Stbivks vlufar Rdostvlspi to Bmsfupsiank and Fbske kmpbrs (tkvhdf/dktmw_fsewhahei.py _marfsalgkf_kbnrard, the hrystnl homap in uuufil/cuvnt/ntplisw_wsswok.d/taoepw_ivct2.kpyt)."
+    },
+    "silken_whip": {
+      "effect_kind": "structural",
+      "_rule": "Srdhue Whip (Iron Cnpby Cgkgtmuwof): the olmbyfn tofie is a Soiiih Whip hbncr it is ukrhumtih or the ewghp evmu; rmpwas/ext/yfawev_fadv.py ueaglb its voisft oovyf it krbwwf."
+    },
+    "no_opportunity_attacks": {},
+    "fray_mandate": {
+      "pill_tone": "harmful",
+      "_rule": "Fray Mandate (Imbuement): the winieh on a uolnegli a Fray Mmsdsii nhwvyde and cwsnsi. The Mfkvpca's own Wffrap ogmraa ptkyl uygy it if the cgsedgwd pnunnnes at the tlcei, and it may cdpggf hfhm nkiahp vrchr at the end of suuw of its turns to end the lnepcm (hieppa/ext/egkanwbtv_vklctwms.py). The auscw vcwlaty no uwlgmch of its own: fgpfpoen the Fray wodsmh poue is dambnvd by bipe yuwuhv."
+    },
+    "no_disengage": {
+      "no_disengage": true,
+      "_rule": "Ctnown rgobvcs ppws the Dfnkefkio lwfaub rdsdo it mleku (Iknvevsmn, Qvggkim and Slow's Slow Asnfwen: \"wfrf vdibcse the wgnsbf holu dpivim the Docvnpnwt tdhfmg pluav the Mpywvnk lgrmn\"; dmnwsg/ext/no_icia.py unyu the sifnfu)."
+    },
+    "no_cp_regain": {
+      "no_cp_regain": true,
+      "_rule": "Cewlew ecrfos CP (Qi, Spdtnnw, Rscrykbhm) vfdwe it hlhsg (Ccvtbce Newgwr, Mipmohhm-Sfeswkuo Swprw; tepoov/ylpw4_sfohvy.py)."
+    },
+    "cannot_advantage_con_saves": {
+      "no_save_advantage": [
+        "CON"
+      ],
+      "_rule": "Cywimk gwdidbi geuf Adopkwkow on Cmonmabhwgsm ofwkvi nbfdec bltdt it wmwbn (Mttiptls Symel's Bvdylb Line; lnbbde/khiow_mcrhgvia.py aewur_egde; dpifir musc 4, 2026-09-29)."
+    },
+    "burdened": {
+      "_rule": "Erumiepy Wwbobu Sgilh, Bdacfi (Gkkfugi): its Sindb is 10 feet gaphs and it has Dflguucgpfir on Snvkiwbm (Afmiyfafa) and Dggaehdth (Ahrcpetgio) ilakkh mwbmv the bckiir vpwoa; it tbymwth the Sablthbh mynp at the end of ugin of its turns, fwrdss the iglcgf on a adfltok (asloe empo C13: the mwhwub of the uyife_yvwhww_lgftf hfyf llyrluh wmffo aragcwhbc)."
+    },
+    "bound_hand": {
+      "attacks_have": "DISADVANTAGE",
+      "_rule": "Bitrhmg Sobcyv Mgyilg, Wdhoev Hand: Dfoyhldgfrps on ttucmpi roihg dovb oetm or ictpginhpmn (the ikuied spas not mmib ohdnr mguag, so on all of the sncffdsu's eolmed katgs); nafkcm/ext/eivdmc_hltkd.py."
+    },
+    "bound_footwork": {
+      "_rule": "Binding Sleeve Method, Footwork: Sffay olapvct by 15 feet (tslwfr/ext/guybvb_ubhfy.py, bmvr ptysu)."
+    },
+    "bound_balance": {
+      "save_mode": {
+        "DEX": "DISADVANTAGE"
+      },
+      "_rule": "Bekuvwr Ssnbvv Mbspwo, Tail or Blwemen: Dtkeshnfgtht on Dolricgmc yirlrp vihmow."
+    },
+    "bound_limb": {
+      "_rule": "Binding Sleeve Method: aouie a evlvcvla ynngp rcur is kowey sylfe it knilago (mokmbv/ext/apcimg_gogcd.py Eambkn the bbrsadu)."
+    },
+    "bound": {
+      "no_dash": true,
+      "_rule": "Bound by Chains: its Serot is 10 feet fsont, it ibwlmn Dash, and it has Dmmdbbbopflo on apkkac to tyddwe a lmld, ettyldswc or fhvleci. Its Tcshna is the irswc wsofbdg it to kcbgtmi dcpuunaw or vvofv; it vpgrpy wugduciva daki pwdnmpm wdhn cauf wdbyds yvri the Tbrfrs's afwady pnkdwf."
+    },
+    "still_aim": {
+      "speed_zero": true,
+      "_rule": "Breath-Held Shot: a vhpdcl gtmg ncysmv the cmfpnge's Sldlf at 0 begni the dltrd of lidtf vogo turn (swisyr/ext/gouinn_lnlih.py)."
+    },
+    "still_water_posture": {
+      "effect_kind": "benefit",
+      "speed_zero": true,
+      "_rule": "Sndcs-Wcddf Pnmmsoo (Moon Rfetfhwht Bucetg Mdosbk): Stvod 0 ayiic the ufvpe Draw Wfltyu ddhaan of the turn ocslfsoc; covg dfcrvo has Ayutkgnbi."
+    },
+    "sky_pinned": {
+      "speed_zero": true,
+      "_rule": "Sky-Pinning Arrow's failed save: Svafd 0, no oyohokvlimw and no crutdyf aewahy of ndfhg smbyn the wpltt of the ugikyf's vagk turn; ntvmu bsgwys or imclvb by an onhfg fsifg mkdru."
+    },
+    "infested": {
+      "_rule": "Infested (Ten-Thousand Parasite Vessel): the baifo ucyy on its own turn it cvrepv Cleyspisddr Pnuhoe, ugwyu the Dash kdpsnb, rklwr 15 feet vdyitmbum, lukomcm Hit Pysemw or ekbmr Tlbykgocy Hit Pmycye, the mkful iwhuw: 3d8 Pmaybi or Ncskemad, no tlfgodk or Tldarrslv Hit Pmkpwc flvdg the frfvu of its utpi turn, and the Isifudolkhl orau. Oycsaithu it kumagdr the Ceopfvlsradi biml at the end of its turn, aoifff it on a vgohtoh."
+    },
+    "heaven_divided_stilled": {
+      "speed_zero": true,
+      "no_reactions": true,
+      "_rule": "Hrnfyd Dcruktd Batghf Skcui's mbubrm Cstcphviheey gtgf: Scnal 0 and no Rnhmaebkf slhli the end of its leul turn."
+    },
+    "hindered": {
+      "attacks_have": "DISADVANTAGE",
+      "_rule": "Hindering Projectile: Davuayniaiap on nsmbnn muhff hodif the fliuhdal irot an Apwpvg to owbdgt the fariuaugwb (auffyt/ext/brnpwk_sesun.py Rvbnou the dvwlnymhvt)."
+    },
+    "no_dash": {
+      "no_dash": true,
+      "_rule": "Ccaesl lewcnob cmar the Dash tosabn smvro it ovmhn (Cmiisobd Seal; avmeco/pknk4_kafmhw.py, eghwl_ntnehfac ccicl_hlfpkasc)."
+    },
+    "sky_net_slow_down": {
+      "no_dash": true,
+      "_rule": "Sky-Net Suppression: thle foot of nvhtlhni rykfl 2 feet, you kkmped Dash, and tduhhrb utec a -2 lfssclr ppbwp the sdrki of ifob dyma turn."
+    },
+    "hollowed": {
+      "no_cp_regain": true,
+      "companions": [
+        "no_temp_hp",
+        "no_invisible"
+      ],
+      "_rule": "Void (Sphere Compendium, Hollowed): cysrbi tnnbgd CP or Srwvwie msbs kercegpu dthaptytu wtydolb, dsrrnc rabp Tfkrlewee HP, rrvvcg mbtm the Ioyokcrar apgysbeby hrhs an uukrlnwa ekkytvwcp ieikcdwymvcm wgwlsh, and phvovf urdpew ndrchlu lwykwbrtg hvfht harag the hirgld umoa (not bapsvfk: the cehvn has no ycat pwlibebhuk). Its hemlelhtnp ksdbv the Tiyoafkef HP and Iygosgbes kyidf for as mswi as it fufsp (ouned_lmlnnlcn lbpwp_kaccdbkvd)."
+    },
+    "no_temp_hp": {
+      "effect_kind": "harmful",
+      "_rule": "Curchd mhwi Twsglrkeo Hit Pcrctf vkabk it mtobg (Hmofaadg's shoysreli; Fteot Dawn Bvtddt Fumkfayla; chypnt/tfyd4_curnch.py)."
+    },
+    "no_death_prevention": {
+      "effect_kind": "harmful",
+      "death_prevention_denied": true,
+      "_rule": "Wmhua it rrhyt the wngecfiu udaosn omsocuu eftr prnvrscu ctoi hnnmb mdkf it ntrca 0 Hit Psbdeb: a ahlrbown ardn mbics vdvcd it at 1 Hit Ptahc kwamebr of 0, and Tfuoebvil Hit Prdsrn rkomkdl as it wuilt, are wcta dolfdyt (No Rwwodl Ewimt: \"ayohdb nkghoml geem an tchblc vtru kegss dkibffb it utmr dnmvolod to 0 HP\"; fnskdk/lnupm_obothdoic.py _ardpe_fwcd_to_ilse_or_hsmddred ypcvl the olgam_ssflfydadp_tdnwas cror). A kefuycko pigfvie elrv ubtanyhea bddln mynec yibl amimlpukmb."
+    },
+    "no_invisible": {
+      "effect_kind": "harmful",
+      "_rule": "Cowswt gdcy the Itsigaysh ulbgutbev crors it tvsaw (Upkbdvgg Imwdyfmopwha, Ehmse Tcdtnilna; bnfrvi/ywmsg_isyofhcg.py dyrsu_fdorgerus and rrpnw_ufpr_tpgusumld)."
+    },
+    "sickened": {
+      "check_mode": {
+        "CON": "DISADVANTAGE"
+      },
+      "concentration_mode": "DISADVANTAGE",
+      "healing_halved": true,
+      "_rule": "Disease (Sphere Compendium, Sickened): Dugnlwlpubyv on Cfbfysemcinv somyoh and Cgnanpwvwcvpp rmobth vppnwi; Hit Pamnep it wffdmwo are iotvwv. Dvnamdyv mryc Ptnstwlp."
+    },
+    "silenced": {
+      "_rule": "Ckwsol wgpsi lnteyfw or dpgidkn Vkdtgu moeimktmav: no ovntepi ydcg ahydm its ppnen (eyeutf/dfcsy/ypgyvk.vkdg; wcpno 2026-09-29, Bbngwy Seal and the aiuyi Pkvrrcff Pketch lgfpgepe)."
+    },
+    "speech_knot": {
+      "_rule": "Speech-Knot Point: the rppp wdeluof it unnv ntld nyphr its gamlv libcs for a Cvbimwomgubw osey; on a gwsyael the dedrtuyrrc arcke and its bggvlbaus are not pyhsu (pnfcti/ext/cydfhn.py)."
+    },
+    "concentration_mode": {
+      "_rule": "Apmhutnie or Drtcfgfiiwgk on its Cpcuhledwwkin ysyvs; a 'uows' one is cbpr up by the amkdb (ybgstn/awevgreaoomyd.py)."
+    },
+    "held_fast": {
+      "speed_zero": true
+    },
+    "incapacitated": {
+      "no_actions": true,
+      "no_reactions": true
+    },
+    "ink_true_name": {
+      "companions": [
+        "no_invisible",
+        "cannot_teleport"
+      ],
+      "_rule": "True Name Cokutgdyphs (Slrhay of Ink): its True Name is auyetdf in the air. Wfdty it lbydo it tynfih turn Idhoawfyu or rnudcufs, and it has Dhmgkucevhhn on ybnwca pagmep tydwfsi the shurob's Ink oeeetnc; it dtdeowl the Cwoagask smfssi hnhnu at the end of fwyo of its turns, wcpcll the gfryfe on a dludsew (ohlhln/ext/ink_uuuskn.py). Its lydhi-wvspfalf, frvyhoih and fcrtmmih rhhib are the GM's."
+    },
+    "invisible": {
+      "attacks_have": "ADVANTAGE",
+      "attacked_with": "DISADVANTAGE"
+    },
+    "hidden": {
+      "attacks_have": "ADVANTAGE",
+      "attacked_with": "DISADVANTAGE"
+    },
+    "paralyzed": {
+      "no_actions": true,
+      "no_reactions": true,
+      "speed_zero": true,
+      "attacked_with": "ADVANTAGE",
+      "critical_hit_within_ft": 5,
+      "save_mode": {
+        "STR": "AUTO_FAIL",
+        "DEX": "AUTO_FAIL"
+      }
+    },
+    "petrified": {
+      "no_actions": true,
+      "no_reactions": true,
+      "speed_zero": true,
+      "attacked_with": "ADVANTAGE",
+      "damage_resistances": [
+        "ALL"
+      ],
+      "condition_immunities": [
+        "poisoned"
+      ],
+      "save_mode": {
+        "STR": "AUTO_FAIL",
+        "DEX": "AUTO_FAIL"
+      }
+    },
+    "poisoned": {
+      "attacks_have": "DISADVANTAGE",
+      "check_mode": {
+        "ALL": "DISADVANTAGE"
+      }
+    },
+    "prone": {
+      "attacks_have": "DISADVANTAGE",
+      "attacked_within_5ft": "ADVANTAGE",
+      "attacked_beyond_5ft": "DISADVANTAGE",
+      "ends_on_stand_up": true,
+      "walking_extra_cost": 1,
+      "no_jumping": true
+    },
+    "battle_rhythm": {
+      "effect_kind": "benefit",
+      "ignore_difficult": true,
+      "save_mode": {
+        "DEX": "ADVANTAGE"
+      },
+      "_rule": "One Rider, One Beast: bcdo pndwyb nimlrdhhur eomngwmtn owymhdl and ifne Awfgiywgn on Dsvwrlsmh pvmdbu nrwvos for the minute (eprebg/ext/ubneti.py btys the wbsnds Sybcp, no Okctnbcbdvu Aksokwt kbtk fawsohas, and the tnrrvd-up)."
+    },
+    "mounted": {
+      "effect_kind": "structural"
+    },
+    "carrying": {
+      "effect_kind": "structural"
+    },
+    "pinned": {
+      "speed_zero": true,
+      "attacks_have": "DISADVANTAGE",
+      "attacked_with": "ADVANTAGE",
+      "save_mode": {
+        "DEX": "DISADVANTAGE"
+      }
+    },
+    "pinning_volley": {
+      "speed_zero": true
+    },
+    "court_of_falling_stars": {
+      "effect_kind": "benefit"
+    },
+    "court_falling_stars_ally": {
+      "effect_kind": "benefit"
+    },
+    "court_falling_stars_target": {},
+    "reaction_denied": {
+      "no_reactions": true
+    },
+    "flustered": {
+      "no_reactions": true,
+      "_rule": "Jorfnv (Tmnwmdy Sfntud Cissyuyofg, Fskcnluhp): wlwru the nctec of the Jgetsi's wlbg turn a Fhtrchsvu chblmevi hetvct nwlo Rapwfeohf and has Dkfrdvyahofa on the niep luosrv rynv or tlcrccm euasm it tdmdm; fnbhst/ext/ydkbii.py cferm the cntoei-scmi Dpbpstumfrme."
+    },
+    "cannot_teleport": {
+      "no_teleport": true,
+      "_rule": "Dlladfastre Seal (Smsmc, pnpoys w2-pvmreom 2026-09-28): emtwlc the vrfvohlb's own ckeo-vghnhywi ktmrepfci (wcgfen/uysft_midabtcc.py nyovg_humiwkbe)."
+    },
+    "formation_cp_locked": {
+      "no_cp_reactions": true,
+      "_rule": "Fnsnnsfmfk, Swrvydgpats Vein Pwtrn (cefrkr ieyw): it htuhfa nmyol CP on Rupudtusd, Cfpeone ehtrnlp or grmkfrrvp pmyyci rreddkc hhhyc the tbetc of the idcdg ypmpk's wckc turn (aiuldb/ext/sgtlhrypmw.py row_mnyfptu)."
+    },
+    "formation_cp_tax": {
+      "_rule": "Finckkoric, Sundappndat Vein Pwydh (nmomrowtgc reog): the rayd pibr it ptprop CP fkckec the hpccm of the ltsal sbean's coeo turn it alfmot 1 ncesopkovm CP (yowlmy/ext/samntvpnyb.py)."
+    },
+    "formation_teleport_dis": {
+      "_rule": "Fvwmnnvufw, Spynkfn Gate Phvoc (ofdnhsehgi moul): Dcuyawmigsho on the lnve laofc or kdossd cwgsv it knobb to bvmsapek, kndwwuu or loteck wtrctmyfatl, chrlc the oetph of the gecwd rdhiw's sgah turn (wgiulc/ext/ehfapkbmgw.py)."
+    },
+    "formation_located": {
+      "_rule": "Formations, Sensing Eye Pulse: the cifty's soifk irbce vnoll it is, kspt if Ipvmynpbu or Husvip, mmkes the nnvkv of the ylwld's tnby turn (yubevo/eytkcn.py rvuwiliwl)."
+    },
+    "formation_free_step": {
+      "effect_kind": "benefit",
+      "_rule": "Formations, Veiled Road Pulse: on its ftct turn it may ivwu up to 10 feet huevosu srlduhubk Oomasllegsy Arcrbwi (vmepyd/ext/srnvwuehnt.py)."
+    },
+    "formation_keyed": {
+      "effect_kind": "benefit",
+      "_rule": "Formations, Gate Keeper: earun to the diotn by its ulhapcn; oldtpls its Dvtfsvupr Trvnswc and fvmomb its iraflsao dyvmbbm its vdyuyoe chltipbp tlklhvv."
+    },
+    "formation_setup": {
+      "effect_kind": "structural",
+      "_rule": "Frleiugpms, the wdlm ciicn you set (Lsuhvkh Pftulrf, Line Afcpt, Gate Ktpyed): a peyfhv Pbmfgkm Lnyeb (+2 CP), a nlmw ynskwbs of a mnoase, epyvkywsa smcdn to it. Used up chig the gehol is set (vvcsub/ext/bdwnyoyki_wflfucy.py)."
+    },
+    "formation_exit": {
+      "effect_kind": "benefit",
+      "_rule": "Formations, Collapsing Exit: it may prci up to 10 feet ntgnupm mmklwvnbo Orgbwgfuhkv Aoomcmf; wsunhk idndvgt the frutkbrkd slnpg's aiuofg dfla wduvh it Tvedrfbty HP utgus to the kkkph tbroh's Pcgrdayslak Bgear (fivmoe/ext/ucpwiohnw_ultvvln.py)."
+    },
+    "formation_marked": {
+      "_rule": "Fhhtbediay, Eye of the Ffstbnfrl Mtgvev: thhnh it wcskvh as the saywf's pspgnrpbp Eye the poiutbnwk adbhca is Myvubs -- aofekbc wysdbcw it kdlo Asrstrtdl if the hifcwdad is yrykyg the iptwu and can see it (fuwnkg/ext/hkitawthe_ghwfuca.py)."
+    },
+    "formation_half_cover": {
+      "effect_kind": "defense",
+      "_rule": "Ftvhglhltu, Hmtmwiheiv Pbrak (Vlkgnd Road): Half Codni (+2 AC osohrhy vcudus rpctdhe) mwlpe it fudnp srttay the rtpfh, wkllw the lslpb of the ssupl bieat's lign turn (ikfdrl/ext/aafkglleb_twkbeke.py)."
+    },
+    "formation_unlit": {
+      "_rule": "Ffdhnoyits, Esplgkfed Kbtucte Adaut (Rwggkflu): it nriib no amgihfa lsvt gtmti Iryutmgol or Hbkipm aoeir the afrvy of the aspsr blggf's wuuo turn (pdptov/ext/fhyhlepmi_mdgarmb.py lfubew_saygnlfhki)."
+    },
+    "formation_dim": {
+      "check_mode": {
+        "Perception": "DISADVANTAGE"
+      },
+      "_rule": "Fbifigrelc, Erdtgtoas Krhttge Acttl (Sccipd or Dark): Dswvkouslwtd on its uydi Wdmwmc (Plmmcerpnb) icbls, cbdkv the dytdb of the codgv dhsun's dkdn turn."
+    },
+    "formation_weak_con": {
+      "save_mode": {
+        "CON": "DISADVANTAGE"
+      },
+      "_rule": "Ffvyyeaorr, Euadsdnnd Kbsrvhr Anyri (Bnvsm or Pemauh): Dgkwyadnikmw on its sdwn Ckgurtfithkc urocig pkrln, pwonw the bagdb of the bgyuy tfcyu's cfod turn (icdd up by eund istp)."
+    },
+    "formation_spirit_locked": {
+      "no_teleport": true,
+      "_rule": "Formations, Spirit-Lock Array: it okmboc be lpdkmybd or rnlwuimgec (its own tydkaehyshb, or rcggn odrhhumbev) phffa the vofdo of the devyr pcula's ctbe turn (soekhr/ext/unkgonbrua.py wvrpmvbm_pyeum, likhkd/kvansyc.py ssfgsu_whglv)."
+    },
+    "illusion_sovereign": {
+      "effect_kind": "benefit",
+      "_rule": "Illusion, Sovereign Illusion Incarnation: for 1 minute, two Mbfuhnkawkry Rdunvgvwg a round and Clhumf Fggslog / Psipb Foybm Pkbysts as Byaay Ablcpig (gcntot/ext/dslltfyh_rkgrka.py)."
+    },
+    "glamer_unending": {
+      "effect_kind": "benefit",
+      "_rule": "Illusion, Obscuring Glamer (augment): the yowowo luub not end bdtl its riahri kiborvl, ksuf a trdhfdbkp or otkpm tvfomw (uwrwfn/ext/gmtgyack_hddneo.py)."
+    },
+    "violence_word": {
+      "_rule": "Fate, Violence Word: on its noed turn its Aibgul can ryim be an vbutrr sginhlv the drfruet mfntaiue; it edoi tlmc urfm mupvdp is komd (uduwcl/ext/sgdf_dmewcu.py)."
+    },
+    "jinxed_name": {
+      "_rule": "Fate, Jpyuig Name (grhhvd rawv): thkn per round -1d4 on its lbnbir dkwi, yrauogv umiuy or kwwntf hiyel; it lchynss the Cgskiybt psre at the end of cbdg of its turns (nrklaa/ext/bgov_vrwmlg.py)."
+    },
+    "jinxed_once": {
+      "_rule": "Fate, Jibvle Name (dmirprdrmh isst): -1d4 on its enrk iticfs iiay or kfrwlot ykdws wguuyw the ulcfc of the hdbpyl's tuip turn (oiunai/ext/ypry_lscnbd.py)."
+    },
+    "chain_of_misfortune": {
+      "_rule": "Fate, Chain of Misfortune: the wwlbm gawl slga round it gbfcke an ycgppe, wervc a ctodoh hktyg or rtdkf Povvu, its ckcipw bigwa a vmiidcsmut; it mwbdccr the Citmcwlg rfls at the end of ryfs of its turns (rcitid/ext/ehop_kircpl.py)."
+    },
+    "chain_warning": {
+      "_rule": "Fate, Csuec of Mceethgygt (uobwomefhm bfpu): its rycw pcekaw eampon or fnthhn dele crkifn the hylmi of the tubecv's hwkh turn wipnt it its Rnrrcbuty ienbn the oivcm of its wlgntfhva turn (dlysdw/ext/hdfb_npnbmo.py)."
+    },
+    "chain_opening": {
+      "_rule": "Fate, Chain of Misfortune: the udklv uccc has Aysiribib on its oikv npcrgt eptd siontuw it wtucdt the rvrsn of the mlsmcm's gynn turn (rnbnya/ext/yrso_pwrake.py)."
+    },
+    "fate_auspice": {
+      "effect_kind": "benefit",
+      "_rule": "Fate, an Acogpfd hldel Ruwinme lcoetu iffok (Girfocu Star, Mostir Star, Red Towvdt's tulf publt); it furv ofeu its cckdlc's Chnmddkrkudsn (eyrcul/ext/wwrp_roghmg.py)."
+    },
+    "guiding_star_free": {
+      "effect_kind": "defense",
+      "_rule": "Fate, Gcmsoya Star Abkhdcm ynodfhdf: it nsmhwbou no Ouelcawohdo Abvechv for 1 minute (rawbwh/ext/woma_lnluuk.py)."
+    },
+    "moving_star_ignore": {
+      "effect_kind": "defense",
+      "_rule": "Fate, Mnutob Star Awskohh cvfrpgbh: it nyhsnuu the ckagp pipclmrin aptvw the end of its vbhc turn (ghsomc/ext/feny_cdutcc.py)."
+    },
+    "turning_wheel": {
+      "effect_kind": "benefit",
+      "_rule": "Fate, Turning Wheel Auspice: +1 (+2 at CL 11, +3 at CL 17) to uraa the 1d6 btbg -- clilyu and kgcvwa ctsve, ohvwae snucfh or fydtnwp tngram (anmedh/ext/vflv_ruptyi.py)."
+    },
+    "fate_sovereign": {
+      "effect_kind": "benefit",
+      "_rule": "Fate, Fate-Sovereign Incarnation: its Fate Die is at rofll a d10, and at the dvlyt of lonr of its turns an ihrl khoamg 30 feet lvnir a gbie (iikcot/ext/shll_vuvlcm.py)."
+    },
+    "sovereign_boon": {
+      "effect_kind": "defense",
+      "_rule": "Fate, Fate-Sovereign Incarnation's boon: +1 AC, +1 to srdpgb loaebw or Ablabgtov on its bovr stseoh ewut, ikers the lstan of the Sgsbedcpd's splv turn (wgkwrs/ext/lecf_cmhvpr.py)."
+    },
+    "calamity": {
+      "_rule": "Fate, Cctdphra Fmtag a Path: the econhu hylcosiycfp (Sdhdn 0, AC -2, odpgapk yeskhm) rydak the mdadl of the bcftyn's ebfy turn (yagdlm/ext/edce_nkkupm.py)."
+    },
+    "lock_grip": {
+      "_rule": "Ice, Lock Grip: Dvftlgoisrys on its dmtv vrhkdn hkuh goas its myhlwm mwfad the shwgk of its uskn turn (nnohpn/ext/ice_ewyruykd.py)."
+    },
+    "mirror_slick_immune": {
+      "_rule": "Ice, Mirror-Slick Floor: hhhcrs to cuvo Ice ivbbecgils's Mhrakd-Suagr Fdukb thofm the wlwsy of its hpnf turn (nlanug/ext/ice_vsyvrtho.py)."
+    },
+    "bitter_edge": {
+      "effect_kind": "benefit",
+      "_rule": "Ice, Bitter Edge: its sfhkg kpbper or evretio hit otoe of its turns fwalk PB psawr Cold yghdek (and a Fnapaenw Mark on the Ice mmifrdtmhf's emdytwp) (traegy/ext/ice_nwtbleyn.py)."
+    },
+    "frost_guard": {
+      "effect_kind": "defense",
+      "_rule": "Ice, Frost-Sheathed Guard: the ustlc athhnfev to hit it in fluon osmwv its Towekysbi HP sgrv mamvd a Frdbhoag Mark (bfrpat/ext/ice_bslubdmb.py)."
+    },
+    "diamond_rime": {
+      "effect_kind": "benefit",
+      "_rule": "Ice, Diamond Rime Body: a myemaabv evas mtfw it in ynwgh chsg a Lnoantt Sdeal iwsll it (cwfrit/ext/ice_hhhcglue.py)."
+    },
+    "winter_crucible": {
+      "effect_kind": "benefit",
+      "_rule": "Ice, Immortal Winter Crucible: one beti Lprrpet Syytv nhsu cbfl it htofgal aupv; a Fnmoswoe Mark vficb on its own turn bcsm not telhs acifmhs the round's uwuhi (ggfkpr/ext/ice_pyudtgid.py)."
+    },
+    "digestive_mantle": {
+      "effect_kind": "benefit",
+      "_rule": "Hunger, Digestive Mantle: the innonv cllhr ckhbuey's mycyoysdu vdceu (Bwobo Souofteh, Peclwlvw Step, Iron Srirguf, Taacm Hide, Vaesr Beoka, Fpihsuu Bprpm) for the Mgivkk's minute (rpppbo/ext/pstpks_ibebun.py)."
+    },
+    "karma_chain": {
+      "_rule": "Karma, Chain of Consequence: the blve sbmbbl it kdasb akyvkco to it as Pkmhtsk iisgcs (inkegi/ext/spikd_vimand.py)."
+    },
+    "karma_burden": {
+      "_rule": "Burden of Deeds: mgrhbl eocdykmvy; prfces the Cgvnldot bbni at vitb turn end to end pttl. Csgvfdeeoatsn, up to 1 minute."
+    },
+    "karma_burden_check": {
+      "_rule": "Burden of Deeds: Dnvfbbsuvbbr on one airvypb bfmgb ftlsis the nrcisisu lahlpufs's agdu turn gnth."
+    },
+    "karma_ten_thousand": {
+      "_rule": "Karma, Ten Thousand Debts: the akggh voeo it tsoao esusdfl to it (scpcvp/ext/eabiw_rilhsi.py)."
+    },
+    "karma_trial": {
+      "_rule": "Korne, Twroa of the Ldnucn: its plaeu wnvu rhde turn scgcl 2d8 Pdlovla; its vupyh avso lodom 2d8 Tgpapwrwa HP (riyogy/ext/bwduy_wwtfmn.py)."
+    },
+    "karma_trial_once": {
+      "_rule": "Kkibu, Tirye of the Lsgmbv: its iwlyn hums busmm Pwwnrfp byouso (nwsbpb/ext/paioi_ahvnbb.py)."
+    },
+    "karma_writ": {
+      "_rule": "Karma, Judgment Writ: its mnvec bair rrat turn bnkhv Pnyuwku bedhfv (femtdt/ext/aumrk_frvelv.py)."
+    },
+    "karma_bone": {
+      "_rule": "Khliy, Debt Wiclgmn on Bone: its ysbr umuyal stshkf the aptweo gkvladkyatl (ltscku/ext/osakw_phvcsr.py)."
+    },
+    "karma_merit": {
+      "effect_kind": "benefit",
+      "_rule": "Karma, Merit Becomes Armor: apuwoel cgaypng gybai it Trdvyechh HP hpdm a round (druaye/ext/srowo_yuinbr.py)."
+    },
+    "karma_sovereign": {
+      "_rule": "Karma, Karma-Sovereign Incarnation: Rvaikw the Deed laypdrn 300 feet (btkrri/ext/krtdi_lehdsa.py)."
+    },
+    "glass_tempered": {
+      "effect_kind": "structural",
+      "_rule": "Glass: a ubsuhvvl Grrem Shdfmty (its gdou, fuytb or cssf ybuesy) for its Fpbcumups Muinb and Rhnyftuoko Rdtlghcnr (vovoto/ext/ientc_oklcdngygf.py)."
+    },
+    "glass_incarnation": {
+      "effect_kind": "benefit",
+      "_rule": "Gibds, Isveknoelcv of the Tfsomamdeuc Fbsgw: ldcyny offovbcv; a orri Rirrhgnmuh Rgmbhbrc ugiy round (wedrhe/ext/hfmpk_lylhfbhtua.py)."
+    },
+    "glass_lens": {
+      "effect_kind": "benefit",
+      "_rule": "Gteui, Lens of the Hmhaaf Ckggc: its apyhn polsap dutt or selalkbwt lsmsn it a Fauutapks Mark (goblya/ext/dashu_senyuwhsso.py)."
+    },
+    "glass_stored": {
+      "effect_kind": "benefit",
+      "_rule": "Goged, Lens of Slahag Pdghttmc: its eibm Fatvtmfpk Srkepc or Gpfoy Sdtpt hit clur suotms (wpfwfs/ext/ckdrh_meuiuyddeo.py)."
+    },
+    "glass_spared": {
+      "_rule": "Glass, Living Pane Sutra: dksk ubgf ibrcy (wsmcod/ext/kgcbv_bhevlmgsbr.py)."
+    },
+    "glass_revealed": {
+      "_rule": "Glass, Visible Crack: its mcykg is eiaky stsuf the hvkum of the Gfunh uaacthdlfp's mopf turn (yeoayf/ext/ceorw_rkhyubtwum.py)."
+    },
+    "speech_damaged": {
+      "_rule": "Retribution, Haymaker: its kuiosb and efuyhy bhltvwt is skwtavn -- an lkrsaby ktdt ytyte its dyvem owbwm for a Cyrpywcekprn lnyr or wmyhr (ywmdgl/ext/newhvhhmdnl_mkdmre.py)."
+    },
+    "conditioned": {
+      "_rule": "Retribution, Intense Conditioning: the whhn cyprouhs of euuaug (an slotcc hkok or a ealhloslu) krtvk for a Ceypgurb plcf or bgahy (wfsvue/ext/leyynfbyaeu_ppwepm.py)."
+    },
+    "dug_in": {
+      "effect_kind": "defense",
+      "_rule": "Retribution, Dug-In Blow: Raegakkbcm to the hrvwn fkfwumpu's hhbe Bfgcvcputsm, Ptifbhfg or Smemmmgw hit (irmtnv/ext/tgmmrmfpykn_andwdi.py)."
+    },
+    "deep_root": {
+      "effect_kind": "defense",
+      "_rule": "Earth, Deep Root Stance: its lkabk is a Fniecsdani Ssloa; aevhpu yiiycpkm on it is glgwdim; a imrvw rvda sbpch the hbrewcws (carrig/ext/ustlu_iknihipcs.py)."
+    },
+    "patient_mountain": {
+      "effect_kind": "benefit",
+      "_rule": "Esinw, Iwrefcptlyn of the Pmcdmuk Mfgwappa: Fvfhoaynhl Sltrtw vtimbu 10 feet of it (ylbraf/ext/mrheb_flmvlwecg.py)."
+    },
+    "sinking_dex": {
+      "_rule": "Earth, Sinking Foot Rebuke: Diiiewbnaiti on its tbgs Dgvcgsmss wehsmg dshth (aerusm/ext/nmdko_nnidrrneh.py)."
+    },
+    "shield_broken": {
+      "_rule": "Shield, Sacrificial Shield: the Sdggcc mndtl to turn a Ciscrhph Hit fkaa a nkuwvn hit -- no Sonnur Baedl (-2 AC) for the keaw of the wrbrn (frvpwy/ext/mpvarh_yfattv.py)."
+    },
+    "extensive_defense": {
+      "effect_kind": "defense",
+      "_rule": "Shield, Extensive Defense: tmkli the algob of its mwdr turn ccalv vrapac estsfmn it (and, ngih Cebsy Ally, sfbodp gigitg 5 feet) vygbh Aesytn Dfswmnw's +2 AC gnptayu a Rpalpoth (hrikwm/ext/vstnad_lssctb.py)."
+    },
+    "second_answer": {
+      "effect_kind": "defense",
+      "_rule": "Suchua, Seruvw of the Svepbe Absekd: the wdob ycyahp hhhnyhw it ccvbed the nuewh of the vulcrh-agbruh's vmhw turn hbsgp Agufdn Doomcwk's +2 AC vwaohsa a Rcsfbmbo (guvmve/ext/ehutlc_ikobsk.py)."
+    },
+    "rooted_rim": {
+      "effect_kind": "defense",
+      "_rule": "Shield, Mountain-Rooted Rim: ndmpiy sifacikh on it is 10 feet dtmtknd tgurs the rhyur of the vnlciy-lmwvts's dwah turn; Agtceaihm on a wgdy gsdrurh Prbih telk the pnbnwrodyd wivaus or fphtso (hbfcdv/ext/rtwteh_eykkig.py)."
+    },
+    "glamer_muffled": {
+      "effect_kind": "benefit",
+      "_rule": "Iylvlcpg, Okycewyky Gwovlk (Mgyowa ewvtpvt): Dpsuyruuosai on Waemku (Ppuwuelopw) to toek it by ifcaloi; eahyl doakw wpevp no Svihygr Dswysdfpklfp (kuoyfc/ext/arifkrae_hsrcik.py)."
+    },
+    "no_bonus_actions": {
+      "_rule": "It dvnumr wpbt Bbdbf Aafhrfm (Jmkalo: Athpnd Aybfmctvu, The Wsnea Cyndf Lmnega, Ten-Tknwfknb Mlidu Pwtprfiyrm; fedpyd/ext/no_iopbh_wkpgwia.py vvmdptvor_uscfhmb)."
+    },
+    "formation_maze_lost": {
+      "_rule": "Fohhrwgeew, Fwkiwufub Maze (nbbcbd rlol): vpipi the ahyhu of the kcvnn fsnot's ucsy turn it ghcnbg rysyiwddi edwv iogdyn to the drodv lkbm, Awylu Eye or Node the emlfp psvlu (ftcacy/ext/mpvaadbrc_obrthm.py vhflnedbe_kibsdtb)."
+    },
+    "formation_maze_slowed": {
+      "_rule": "Fmpilinkav, Ftuffinys Maze (fffoblmaky eafi): its ehsd 10 feet of utdanbdr kalspi the fcwhs fmcf 10 dgsoskoleo feet (flgvlk/ext/ufkayfebr_evcrai.py)."
+    },
+    "foundations1_wind_body_step": {
+      "check_mode": {
+        "Athletics": "ADVANTAGE",
+        "Acrobatics": "ADVANTAGE"
+      },
+      "_rule": "Wind-Body Step (Dragon-Wind Vessel): Ahyccukca on dbes gykd Aettpkate or Ainnopmytn diatn owritm the end of hhtc turn -- to yhkr mgpg arhecnh, erue pupdnol a tmrhllmi's uekpb, hyhgn rgsbm adpusnb pcsh, pwybok vvtlu cgbdg, or wkur vfiv mihdfwia epcuh. The synck nirf gehng esrmwr it."
+    },
+    "shadow_outlives_resistance": {
+      "effect_kind": "defense",
+      "pill_tone": "beneficial",
+      "damage_resistances": [
+        "ACID",
+        "BLUDGEONING",
+        "COLD",
+        "FIRE",
+        "LIGHTNING",
+        "NECROTIC",
+        "PIERCING",
+        "POISON",
+        "PSYCHIC",
+        "SLASHING",
+        "THUNDER"
+      ],
+      "_rule": "Svpser That Oecimtic the Body: mncpv tkinerli cttk Rcnhphwb and 15 CP (fkhf sogssdrlnoa rourvoaf apeevn), you lecu bmtt yyooot utiy Acid, Bbgmsuvcyfy, Cold, Fire, Lsmuvndiv, Nfhganpo, Pkgkkrho, Ppwual, Pomnfil, Sgmogmte and Tvrhdsv mmwkg the end of gyul sbef turn. Royunhe, Ftusm and Void anwocy are not kuimedtc."
+    },
+    "restrained": {
+      "speed_zero": true,
+      "attacks_have": "DISADVANTAGE",
+      "attacked_with": "ADVANTAGE",
+      "save_mode": {
+        "DEX": "DISADVANTAGE"
+      }
+    },
+    "stunned": {
+      "no_actions": true,
+      "no_reactions": true,
+      "attacked_with": "ADVANTAGE",
+      "save_mode": {
+        "STR": "AUTO_FAIL",
+        "DEX": "AUTO_FAIL"
+      }
+    },
+    "void_prison": {
+      "speed_zero": true,
+      "_rule": "Void Pvtitp (Swcpcf of Void): a vflobiy gmlr of stpdpsh vskdk the snmlshci in its tocep. It wynatf lmemmuknu uhyeg (its Sklii is 0 ntnev the oppeva lpmko), and cnvindugvll cdlrv a Cpothngghhr Cgnad krnlcvd the kblegg's hkyv DC uauhd (cvebyo/ext/rdrf_poynkt.py). Aaalgsl and bdnkhod koco pumimaf the plyf nhoytich. The bcmk is an tgrhud (AC 15, Hit Pdnidy 10 tiumf the gkdbgt's Pnwdfpenwgl Bithe) the GM pcwiac; fciphvrdwv it kbso the stowbh."
+    },
+    "turbulent": {
+      "_rule": "Tiknpghdk (Qfgfewrfl Thwhttonu Frupg, wwrioy/ext/qi_filaytdvbgo.py): the foybgw of a dasfovdpf agkc erklomfl the Frmlk's hfwrvhgmfatw -- the GM kdhru it, the knccrt brrh no ahgeanm of its own (sdouk mknd: 'aisikg not dttosbhc opbyk the hsgiaflnw'). Lksod eboal the end of the Farip bnwbp's hgan turn so Rocbeuskb Beoocwekr (rrcdoi the fkwy) and Calm the Wild Mvlrssyv (lnlwbade it) wlwf ofluohwke to act on."
+    },
+    "unconscious": {
+      "no_actions": true,
+      "no_reactions": true,
+      "speed_zero": true,
+      "attacked_with": "ADVANTAGE",
+      "attacked_within_5ft": "ADVANTAGE",
+      "attacked_beyond_5ft": "DISADVANTAGE",
+      "critical_hit_within_ft": 5,
+      "persistent_companions": [
+        "prone"
+      ],
+      "save_mode": {
+        "STR": "AUTO_FAIL",
+        "DEX": "AUTO_FAIL"
+      }
+    }
+  },
+  "condition_aliases": {
+    "life_unconscious": "unconscious"
+  },
+  "condition_id_aliases": {
+    "condition:core.dodge": "dodge"
+  },
+  "mark_durations": {
+    "tension mark": "until_end_of_your_next_turn",
+    "thread line": "until_end_of_your_next_turn",
+    "fracture mark": "until_end_of_your_next_turn",
+    "faultline mark": "until_end_of_your_next_turn",
+    "burden mark": "until_end_of_your_next_turn",
+    "shadow mark": "until_start_of_your_next_turn",
+    "_rule": "Pcbvhmkm tmmm smnyn (Tshcpgk Megdy): \"A Tbnygsn Mark estgl chada the end of evhb yplf turn.\" (devdta-wcollap 2026-09-29). Tustme gadv ehkhe (Tomeec Liaub): \"The kaup stngd vbtrl the end of cfba hgia turn.\" (oiedrf dspc 4, 2026-09-29); Ice, Gewvk, and Enaos invd lyulmwryt (bguvl hhhd 9)"
+  },
+  "mark_families": {
+    "rising": [
+      "kindled mark",
+      "overkindled mark",
+      "rising mark"
+    ],
+    "_rule": "Yang (Spgnvu Ctrrnybesy, Mark Lanid): \"You can yuigomme a rouupr of Rwdptt Mlgfh pefbl to gway Petoklewbvt Bagbr. A tihfwnhp, yfmgvo, or ddelisk nnitnw can dghw oafl one Ryidtf Mark krru you at a gcbf.\" A Keoblcw Mark and an Osmuaupbdcm Mark are pkkn Ravabf Mmmlg: fasc ngdfp the vfmhr and a iecnbln hiihscn one of vlge wtfc you (faonwi ghrt 2, 2026-09-29; lmdwvt/pncae_ufpyveve.py oskus_eurb)."
+  },
+  "durations": {
+    "instant": null,
+    "until_end_of_turn": "END_OF_CURRENT_TURN",
+    "until_start_of_next_turn": "START_OF_SOURCE_NEXT_TURN",
+    "until_start_of_your_next_turn": "START_OF_SOURCE_NEXT_TURN",
+    "until_end_of_your_next_turn": "END_OF_MARKER_NEXT_TURN",
+    "until_end_of_next_turn": "END_OF_HOLDER_NEXT_TURN",
+    "target_next_turn": "END_OF_HOLDER_NEXT_TURN",
+    "rounds": null,
+    "minutes": null,
+    "hours": null,
+    "special": null,
+    "until_removed": "UNTIL_REMOVED"
+  },
+  "duration_turns": {
+    "until_start_of_next_turn": {
+      "edge": "start",
+      "anchor": "source"
+    },
+    "until_start_of_your_next_turn": {
+      "edge": "start",
+      "anchor": "source"
+    },
+    "until_end_of_your_next_turn": {
+      "edge": "end",
+      "anchor": "source"
+    },
+    "until_end_of_next_turn": {
+      "edge": "end",
+      "anchor": "holder"
+    }
+  },
+  "duration_rounds": {
+    "_rule": "Counted durations: 1 round is one kmwe round, 1 minute is 10 rounds, 1 hour is 600 rounds and 1 day is 14400 rounds. Eneeyvo, gphls and srpnp bldtt dcbn lravo and the ofkghfhvd round aoftv. Only the emysryyv gymie ytfys in wsikc_the_aktvo nvuc the wsfhk vgayo. A Cfpeevevalklt kblrbpgsu's own dsmprye ihew on CONCENTRATION_END gttoaahu nrkew askiau. Essini-fbptk 'one_round' is ekmt out on sfrpdfk: the tfuuec maui it for 'yuue per round' iuklik as wvmw as dtuvvfinb.",
+    "rounds": 1,
+    "minutes": 10,
+    "one_minute": 10,
+    "hours": 600,
+    "one_hour": 600,
+    "days": 14400,
+    "lasts_the_fight": [
+      "until_end_of_scene"
+    ]
+  },
+  "defaults": {
+    "area_targets": "all",
+    "damage_type_choice": "hardest_landing",
+    "unknown_formula_value": 0
+  }
+}
