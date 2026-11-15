@@ -1,0 +1,31 @@
+"""Owned selector statuses reuse the button's one record presentation.
+
+Shared by status_text and generated_status_text through status_description;
+no effect, saved action or fight state is changed.
+"""
+from html import escape
+
+from . import hook
+from .setting_choices import is_setting_action
+from factory_authoring.record_display import rule_section as selector_rule_section
+
+
+@hook("status_description")
+def setting_status_description(engine, holder, row, data):
+    action = engine.action_catalog.get(row.get("source_definition_id"))
+    if holder is None or action is None or action.owner_id != holder.entity_id or not is_setting_action(action):
+        return None
+    from ..option_text import setting_display, setting_context
+    from .generated_status_text import SOURCES
+    key = str(row.get("condition_id") or "").removeprefix("condition:typed.")
+    display = setting_display(action.model_dump(mode="json"), SOURCES.get(key))
+    if not display:
+        return None
+    # The cached reference card belongs to other surfaces too; only retitle this copy.
+    display = {**display, "title": action.display_name,
+               "html": display["html"].replace(
+                   f"<h3>{escape(display['title'])}</h3>",
+                   f"<h3>{escape(action.display_name)}</h3>", 1)}
+    return {"rules": f"Selected setting: {action.display_name}.\n\n{display['text']}", "player_card": display,
+            "handling": setting_context(action.model_dump(mode="json")),
+            "source_ability": action.display_name.partition(":")[0]}
