@@ -1,0 +1,257 @@
+"""Soul Splitting must never charge the table for an unimplemented soul asset."""
+import json
+
+import pytest
+
+from combat.factory_compiler import compile_character
+from combat.gate5_service import CombatService
+from combat.tabletop_service import TabletopService
+from combat.gate4_context import build_decision_context
+from combat.gate4_policy import PolicyLibrary
+from combat.ext.soul_splitting import SOURCE, LABEL
+from tests.h1_support import ROOT, sheet
+from tests.r1i_service_support import OWNER, FOE, SECOND, fixture, candidate
+
+
+def spirit(bundles):
+    doc = sheet([SOURCE], cl=17, primary='Resonance', key='WIS')
+    doc['identity'].update(path='Spirit Awakening', display_name='Owner')
+    bundles[0] = compile_character(doc, actor_id=OWNER)
+
+
+@pytest.mark.parametrize('resonance', [0, 30])
+def test_gm_rules_button_spends_nothing_and_creates_no_fragment_after_table_commit_reload(tmp_path, resonance):
+    def prepare(bundles):
+        spirit(bundles)
+        pool = next(r for r in bundles[0]['actor_template']['resources'] if r['resource_id'] == 'resource:core.resonance')
+        pool['initial'] = resonance
+    combat, table, mid, _, commit = fixture(tmp_path, [SOURCE], bundle_transform=prepare)
+    engine = combat._load_session(mid).mechanical.engine
+    before = engine.state.actors[OWNER].model_dump(mode='json')
+    assert before['resources']['resource:core.resonance'] == resonance
+    actors = tuple(engine.state.actors)
+    commit(candidate(table, mid, LABEL))
+    fresh = CombatService(ROOT, tmp_path)
+    session = fresh._load_session(mid)
+    after = session.mechanical.engine.state.actors[OWNER].model_dump(mode='json')
+    for field in ('resources', 'action_available', 'bonus_action_available', 'conditions', 'current_hp'):
+        assert after[field] == before[field]
+    assert tuple(session.mechanical.engine.state.actors) == actors
+    assert session.mechanical.replay()['status'] == 'PASS'
+    summaries = ' '.join(e['summary'] for e in TabletopService(fresh, tmp_path).events(mid, 0)['events'])
+    assert 'Soul Splitting is GM-run' in summaries
+    assert '8 Resonance' in summaries and 'creates no fragment' in summaries
+    assert '4d10 Psychic' in summaries
+    assert 'once on each of your turns' in summaries
+    assert 'Spirit Awakening Path or Subpath feature or use Mind Spike' in summaries
+    assert candidate(TabletopService(fresh, tmp_path), mid, LABEL)
+
+
+def test_generated_table_button_text_is_a_rules_reference_not_a_kept_choice(tmp_path):
+    """The reference stores nothing, so its button text must not promise a kept choice.
+
+    tabletop.setting_button_description defaults to "Free choice, kept until you
+    change it" for any setting_only action. That default is wrong for a rules
+    reference: reading it selects nothing and configures no future activation.
+    """
+    from combat.ext.soul_splitting import REFERENCE_HEAD
+    from combat.tabletop import auto_buttons, setting_button_description
+    from tests.r1i_service_support import fixture
+
+    combat, table, mid, _, _ = fixture(tmp_path, [SOURCE], bundle_transform=spirit)
+    bundle = combat._load_session(mid).mechanical.engine.typed_bundle_documents[0]
+    rows = {row['display_name']: row for row in bundle['action_catalog']}
+    row = rows[LABEL]
+
+    # The plug-in supplies its own accurate head through the documented parameter.
+    assert row['parameters'].get('setting_description') == REFERENCE_HEAD
+    assert row['parameters']['inert'] is True
+    # Even stale choice metadata must not turn a rules reference into a selector.
+    from copy import deepcopy
+    from combat.option_text import setting_context
+    reference = deepcopy(row)
+    reference['parameters']['setting_lifetime'] = 'Kept until changed.'
+    assert setting_context(reference).startswith(REFERENCE_HEAD)
+    assert 'Kept until changed.' not in setting_context(reference)
+    head = setting_button_description(row, bundle).partition('\n\n')[0]
+    assert head == REFERENCE_HEAD
+
+    generated = [b for b in auto_buttons(bundle, {}) if b['label'] == LABEL]
+    assert len(generated) == 1
+    description = generated[0]['description']
+    # It opens the rules and says plainly that nothing is chosen or kept.
+    assert description.startswith(REFERENCE_HEAD)
+    assert 'Rules reference, not a choice' in description
+    assert 'selects nothing, keeps no setting' in description
+    # The shared selector default would teach a persistent-state mechanic.
+    for wrong in ('Free choice', 'kept until you change it', 'stays selected until',
+                  'It stays selected', 'until you change it'):
+        assert wrong not in description, wrong
+    # The default body is the reviewed card; the full printed rule remains collapsed.
+    assert 'Create one cultivated Soul Fragment' in description
+
+    # The in-fight menu button is generated for the same row: it must not claim one either.
+    service = TabletopService(CombatService(ROOT, tmp_path), tmp_path)
+    menu = [a for a in service.state(mid)['menu']['actions'] if a['label'] == LABEL]
+    assert len(menu) == 1
+    assert menu[0]['hover']['context'].startswith(REFERENCE_HEAD)
+    assert menu[0]['hover']['text'] == menu[0]['description'] == description
+    assert 'Split off one cultivated fragment' in menu[0]['hover']['player_card']['html']
+    assert '<details><summary>Rules</summary>' in menu[0]['hover']['player_card']['html']
+    for wrong in ('Free choice', 'kept until you change it', 'stays selected until',
+                  'It stays selected', 'until you change it'):
+        assert wrong not in menu[0]['description'], wrong
+
+
+def test_authored_and_generated_expression_text_preserves_own_turn_restriction():
+    from combat.ext.soul_splitting import EXPLANATION
+
+    reviewed = json.loads((ROOT / 'authority/typed_mechanics/reviewed_final.d/spirit.json').read_text())
+    generated = json.loads((ROOT / 'authority/Tianxia_Typed_Mechanics_Authority_R1.json').read_text())
+    for text in (EXPLANATION, ' '.join(reviewed['mechanics'][SOURCE]['riders']),
+                 ' '.join(generated['mechanics'][SOURCE]['riders'])):
+        assert 'once on each of your turns' in text
+        assert 'Spirit Awakening Path or Subpath feature' in text
+        assert 'Mind Spike' in text
+
+
+@pytest.mark.parametrize('ask', [False, True])
+def test_reference_is_not_an_activation_in_hostile_field_after_commit_reload(tmp_path, ask):
+    from combat.ext.well_of_hours import WELL, FIELD
+    from combat.ext.setting_choices import is_setting_action
+    from tests.test_reaction_effects_r6 import _row
+
+    def prepare(bundles):
+        spirit(bundles)
+        bundles[1] = compile_character(sheet([WELL], cl=17, primary='Resonance', key='WIS'), actor_id=FOE)
+        # A plain technique responder, with no prerequisite other than range,
+        # hostility and an available Reaction. It must never see this reference.
+        row = _row('technique_used', [{'type': 'temp_hp', 'flat': 7}], range_ft=60)
+        row['ask'] = ask
+        bundles[2]['typed_reactions'].append(row)
+        bundles[2]['reaction_plan']['ask'] = ask
+
+    combat, table, mid, send, commit = fixture(tmp_path, [SOURCE], bundle_transform=prepare)
+    while table.state(mid)['menu']['actor_id'] != FOE:
+        commit(table.state(mid)['menu']['end_turn'])
+    from tests.placement_support import square_candidate
+    commit(square_candidate(table, mid, 'The Well Has No Bottom', (3, 6)))
+    while table.state(mid)['menu']['actor_id'] != OWNER:
+        commit(table.state(mid)['menu']['end_turn'])
+
+    engine = CombatService(ROOT, tmp_path)._load_session(mid).mechanical.engine
+    field = next(c for c in engine.state.actors[FOE].conditions.values() if c.condition_id == FIELD)
+    zone = engine.state.zones[field.data['zone_id']]
+    assert zone.active and engine._footprint_intersects(engine.state.actors[OWNER], zone.affected_cells)
+    assert engine.state.actors[SECOND].reaction_available
+    assert engine.grid.distance_ft(engine.state.actors[SECOND].position, engine.state.actors[OWNER].position) <= 60
+    assert not engine.state.actors[OWNER].turn_flags.get(f'_round_c8_undertow:{FOE}')
+    reference = next(a for a in engine.action_catalog.values() if a.display_name == LABEL)
+    assert is_setting_action(reference)
+    before = engine.state.model_dump(mode='json')
+    rolls = [r.model_dump(mode='json') for r in engine.rolls]
+    event_count = len(engine.events)
+    with _action_economy_trace() as economy_changes:
+        result = send(candidate(table, mid, LABEL))
+    assert result['status'] == 'COMMITTED'  # no Ask me prompt or automatic Reaction
+    fresh = CombatService(ROOT, tmp_path)._load_session(mid)
+    assert {e.event_type for e in fresh.mechanical.engine.events[event_count:]} <= {'INTENT_ACCEPTED', 'PASSIVE_TRIGGERED'}
+    after = fresh.mechanical.engine.state.model_dump(mode='json')
+    # Only journal/version bookkeeping can change when a reference is read.
+    for key in before:
+        if key not in ('state_version', 'event_sequence'):
+            if after[key] != before[key]:
+                print(json.dumps({'field': key, 'before': before[key], 'after': after[key],
+                                  'action_economy_changes': economy_changes}, sort_keys=True))
+            assert after[key] == before[key], key
+    assert [r.model_dump(mode='json') for r in fresh.mechanical.engine.rolls] == rolls
+    assert fresh.mechanical.replay()['status'] == 'PASS'
+
+
+def test_saved_unflagged_reference_is_not_offered_after_reload(tmp_path):
+    def old_reference(bundles):
+        spirit(bundles)
+        reference = next(a for a in bundles[0]['action_catalog'] if a['display_name'] == LABEL)
+        reference['parameters'].pop('setting_only')
+
+    _, _, mid, _, _ = fixture(tmp_path, [SOURCE], bundle_transform=old_reference)
+    fresh = CombatService(ROOT, tmp_path)
+    assert not any(LABEL in g['label'] for g in TabletopService(fresh, tmp_path).state(mid)['menu']['actions'])
+    assert fresh._load_session(mid).mechanical.replay()['status'] == 'PASS'
+
+
+def test_gm_reference_is_excluded_from_builtin_ai_decisions(tmp_path):
+    combat, _, mid, _, _ = fixture(tmp_path, [SOURCE], bundle_transform=spirit)
+    engine = combat._load_session(mid).mechanical.engine
+    policy, _ = PolicyLibrary(ROOT).for_actor(OWNER)
+    context = build_decision_context(engine, policy, for_ai=True)
+    source_ids = {c.source_definition_id for c in context.legal_candidates}
+    reference = next(a for a in engine.action_catalog.values() if a.display_name == LABEL)
+    assert reference.source_definition_id not in source_ids
+
+
+def test_old_saved_paid_placeholder_is_not_offered_after_reload(tmp_path, monkeypatch):
+    def legacy(bundles):
+        spirit(bundles)
+        row = next(a for a in bundles[0]['action_catalog'] if a['display_name'] == LABEL)
+        row.update(display_name='Soul Splitting', economy='ACTION', costs=[['resource:core.resonance', 8]])
+        row['parameters']['typed'].pop('soul_splitting_reference')
+        row['parameters']['typed']['effects'] = []
+        row['parameters']['typed']['riders'] = ['The GM tracks the fragment.']
+        row['parameters']['typed']['duration'] = {'kind': 'scene'}
+    # Create a genuine pre-fix paid journal entry by isolating only this lane's
+    # hook in the test registry. Production engine/classes remain untouched.
+    from combat import ext
+    from combat.ext.soul_splitting import refuse_legacy_placeholder
+    with monkeypatch.context() as old_runtime:
+        old_runtime.setitem(ext._HOOKS, 'candidate_allowed',
+                            [f for f in ext._HOOKS['candidate_allowed'] if f is not refuse_legacy_placeholder])
+        combat, table, mid, _, commit = fixture(tmp_path, [SOURCE], bundle_transform=legacy)
+        commit(candidate(table, mid, 'Soul Splitting'))
+    commit(table.state(mid)['menu']['end_turn'])
+    fresh = CombatService(ROOT, tmp_path)
+    session = fresh._load_session(mid)
+    assert session.mechanical.replay()['status'] == 'PASS'
+    # The stored catalog still contains the paid row; load has not rewritten it.
+    old = next(a for a in session.mechanical.engine.action_catalog.values() if a.display_name == 'Soul Splitting')
+    assert old.costs
+    assert session.mechanical.engine.state.actors[OWNER].resources['resource:core.resonance'] == 22
+    while table.state(mid)['menu']['actor_id'] != OWNER:
+        commit(table.state(mid)['menu']['end_turn'])
+    assert not any('Soul Splitting' in g['label'] for g in TabletopService(CombatService(ROOT, tmp_path), tmp_path).state(mid)['menu']['actions'])
+
+
+from contextlib import contextmanager
+
+
+@contextmanager
+def _action_economy_trace():
+    """Failure diagnosis only: observe Action writes, never patch the engine."""
+    import sys
+
+    changes = []
+    previous = sys.getprofile()
+
+    def observe(frame, event, arg):
+        if event != 'call' or frame.f_code.co_name != '__setattr__':
+            return
+        local = frame.f_locals
+        if local.get('name') != 'action_available':
+            return
+        actor = local.get('self')
+        old, new = getattr(actor, 'action_available', None), local.get('value')
+        if old == new:
+            return
+        caller = frame.f_back
+        stack = []
+        while caller is not None and len(stack) < 6:
+            stack.append(f'{caller.f_code.co_filename}:{caller.f_lineno}:{caller.f_code.co_name}')
+            caller = caller.f_back
+        changes.append({'actor': getattr(actor, 'entity_id', None), 'before': old, 'after': new,
+                        'stack': stack})
+
+    sys.setprofile(observe)
+    try:
+        yield changes
+    finally:
+        sys.setprofile(previous)
