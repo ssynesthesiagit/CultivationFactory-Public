@@ -1,0 +1,105 @@
+{
+  "$id": "https://tianxia.local/schemas/method-registry-v0.6.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "counts": {
+      "properties": {
+        "legacy_methods": {
+          "const": 80
+        },
+        "new_methods": {
+          "const": 22
+        },
+        "total_methods": {
+          "const": 102
+        }
+      },
+      "required": [
+        "legacy_methods",
+        "new_methods",
+        "total_methods"
+      ],
+      "type": "object"
+    },
+    "methods": {
+      "items": {
+        "additionalProperties": true,
+        "not": {
+          "required": [
+            "foundation_interfaces"
+          ]
+        },
+        "properties": {
+          "compatibility_traits": {
+            "properties": {
+              "schema": {
+                "const": "Tianxia.MethodCompatibilityTraits.v0.6"
+              }
+            },
+            "required": [
+              "schema",
+              "method_id",
+              "granted_path_ids",
+              "ordinary_operation_tags",
+              "affinity_sphere_ids",
+              "foundation_form_affinity_tags",
+              "correction_interface_tags",
+              "transformation_mode_tags",
+              "imposed_strain_targets",
+              "method_self_risk_tags",
+              "acquisition_context_tags",
+              "trait_provenance"
+            ],
+            "type": "object"
+          },
+          "foundation_compatibility_authority": {
+            "properties": {
+              "operative_pairwise_rows": {
+                "const": 0
+              }
+            },
+            "required": [
+              "operative_pairwise_rows"
+            ],
+            "type": "object"
+          },
+          "method_id": {
+            "pattern": "^METHOD-[0-9]{3}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "method_id",
+          "name",
+          "explicit_ap_grants",
+          "per_path_resource_profiles",
+          "compatibility_traits",
+          "foundation_compatibility_authority"
+        ],
+        "type": "object"
+      },
+      "maxItems": 102,
+      "minItems": 102,
+      "type": "array"
+    },
+    "schema": {
+      "const": "Tianxia.MethodAuthorityRegistry.v0.6"
+    },
+    "status": {
+      "const": "MET1R3_SEMANTIC_SURFACE_POLARITY_AUTHORITY_READY"
+    },
+    "version": {
+      "const": "0.6"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "status",
+    "counts",
+    "methods"
+  ],
+  "title": "Tianxia Method Authority Registry v0.6",
+  "type": "object"
+}
