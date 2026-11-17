@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Service_API_Contracts.schema.json",
+  "title": "Tianxia Foundry Service API Contracts",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "response_schemas",
+    "operations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "TianxiaFoundry.ServiceContracts.v1"
+    },
+    "generated_from": {
+      "type": "string"
+    },
+    "error_schema": {
+      "type": "string"
+    },
+    "response_schemas": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "operation_id",
+          "method",
+          "path",
+          "response_schema",
+          "mutation"
+        ],
+        "properties": {
+          "operation_id": {
+            "type": "string"
+          },
+          "method": {
+            "enum": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^/"
+          },
+          "request_model": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "response_schema": {
+            "type": "string"
+          },
+          "mutation": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
