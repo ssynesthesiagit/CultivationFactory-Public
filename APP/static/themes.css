@@ -1,0 +1,344 @@
+/* Tianxia app styles (owner 2026-10-04, OPUSUI1).
+ *
+ * The ONE place colours and font roles are defined. Every page (Factory, Table, pop-out sheet,
+ * map editor) loads this file and reads these --cf-* custom properties; no other stylesheet
+ * should name a colour (tests/test_ui_themes.py checks this, with a short allow-list for map art).
+ *
+ * A style is chosen with <html data-theme="lacquer|celestial|ember|classic">, set before first
+ * paint by /static/appearance-boot.js from the player's saved choice (this device only).
+ * Night Lacquer is the default: it applies with no attribute at all. Any element can show another
+ * style inside it with data-theme-preview="<style>" (Settings uses this for the style cards).
+ *
+ * Adding a style: copy one block, give it a new data-theme name, change the values, and add it to
+ * STYLES in appearance-boot.js. Every block must define every token (the test checks).
+ *
+ * Token families
+ *   surfaces   bg, bg-deep (wells below the page), panel, panel-2 (soft/alternate panel), tile, input
+ *   lines      line, line-strong
+ *   text       text, muted (secondary), faint (labels, hints)
+ *   accent     accent (buttons, selection), accent-hover, accent-text (accent used as text on panels),
+ *              on-accent (text on an accent fill), on-accent-soft (small secondary text on an accent fill, still 4.5:1),
+ *              chip / chip-text (accent-tinted pill), link, link-hover, focus (keyboard focus ring)
+ *   brass      gold, gold-bg, gold-text (decorative frames and section numbers)
+ *   status     info, ok, warn, danger - each with -bg (pill/banner fill) and -text (text on that fill)
+ *   conditions debuff / buff with -bg and -text: the condition pills on sheets and the table
+ *   deep       deep-* : surfaces that are dark even in the light style (combat screen, GM-style
+ *              sheet, step bar). In dark styles they sit a step below the normal panels.
+ *   effects    shadow (shadow colour), scrim (overlay behind dialogs)
+ *   fonts      font-display (headings), font-body, font-mono
+ */
+
+/* Bundled fonts (SIL Open Font License; licences beside the files in /static/fonts). */
+@font-face { font-family: "Cinzel"; font-style: normal; font-weight: 600; font-display: swap; src: url("/static/fonts/cinzel-latin-600-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Cinzel"; font-style: normal; font-weight: 600; font-display: swap; src: url("/static/fonts/cinzel-latin-ext-600-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Cinzel"; font-style: normal; font-weight: 700; font-display: swap; src: url("/static/fonts/cinzel-latin-700-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Cinzel"; font-style: normal; font-weight: 700; font-display: swap; src: url("/static/fonts/cinzel-latin-ext-700-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 400; font-display: swap; src: url("/static/fonts/space-grotesk-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 400; font-display: swap; src: url("/static/fonts/space-grotesk-latin-ext-400-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 500; font-display: swap; src: url("/static/fonts/space-grotesk-latin-500-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 500; font-display: swap; src: url("/static/fonts/space-grotesk-latin-ext-500-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 600; font-display: swap; src: url("/static/fonts/space-grotesk-latin-600-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 600; font-display: swap; src: url("/static/fonts/space-grotesk-latin-ext-600-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 700; font-display: swap; src: url("/static/fonts/space-grotesk-latin-700-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 700; font-display: swap; src: url("/static/fonts/space-grotesk-latin-ext-700-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Cormorant Garamond"; font-style: normal; font-weight: 600; font-display: swap; src: url("/static/fonts/cormorant-garamond-latin-600-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Cormorant Garamond"; font-style: normal; font-weight: 600; font-display: swap; src: url("/static/fonts/cormorant-garamond-latin-ext-600-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Cormorant Garamond"; font-style: normal; font-weight: 700; font-display: swap; src: url("/static/fonts/cormorant-garamond-latin-700-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Cormorant Garamond"; font-style: normal; font-weight: 700; font-display: swap; src: url("/static/fonts/cormorant-garamond-latin-ext-700-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Marcellus"; font-style: normal; font-weight: 400; font-display: swap; src: url("/static/fonts/marcellus-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Marcellus"; font-style: normal; font-weight: 400; font-display: swap; src: url("/static/fonts/marcellus-latin-ext-400-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 400; font-display: swap; src: url("/static/fonts/figtree-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 400; font-display: swap; src: url("/static/fonts/figtree-latin-ext-400-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 500; font-display: swap; src: url("/static/fonts/figtree-latin-500-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 500; font-display: swap; src: url("/static/fonts/figtree-latin-ext-500-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 600; font-display: swap; src: url("/static/fonts/figtree-latin-600-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 600; font-display: swap; src: url("/static/fonts/figtree-latin-ext-600-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 700; font-display: swap; src: url("/static/fonts/figtree-latin-700-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 700; font-display: swap; src: url("/static/fonts/figtree-latin-ext-700-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Nunito Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url("/static/fonts/nunito-sans-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Nunito Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url("/static/fonts/nunito-sans-latin-ext-400-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Nunito Sans"; font-style: normal; font-weight: 600; font-display: swap; src: url("/static/fonts/nunito-sans-latin-600-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Nunito Sans"; font-style: normal; font-weight: 600; font-display: swap; src: url("/static/fonts/nunito-sans-latin-ext-600-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Nunito Sans"; font-style: normal; font-weight: 700; font-display: swap; src: url("/static/fonts/nunito-sans-latin-700-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Nunito Sans"; font-style: normal; font-weight: 700; font-display: swap; src: url("/static/fonts/nunito-sans-latin-ext-700-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* ------------------------------------------------------------------ Night Lacquer (default) */
+:root,
+:root[data-theme="lacquer"],
+[data-theme-preview="lacquer"] {
+  color-scheme: dark;
+  --cf-bg: #121214;
+  --cf-bg-deep: #0a0a0c;
+  --cf-panel: #1b1b1f;
+  --cf-panel-2: #202025;
+  --cf-tile: #232329;
+  --cf-input: #17171a;
+  --cf-line: #2c2c33;
+  --cf-line-strong: #4a4a52;
+  --cf-text: #ece7df;
+  --cf-muted: #b3aca2;
+  --cf-faint: #8a847b;
+  --cf-accent: #c8402f;
+  --cf-accent-hover: #b5392a;
+  --cf-accent-text: #f08a76;
+  --cf-on-accent: #fff4ee;
+  --cf-on-accent-soft: #fff4ee;
+  --cf-chip: #3a1d18;
+  --cf-chip-text: #f6a593;
+  --cf-link: #f08a76;
+  --cf-link-hover: #ffb4a6;
+  --cf-focus: #ff9e88;
+  --cf-gold: #d4a957;
+  --cf-gold-bg: #33291a;
+  --cf-gold-text: #f0d08a;
+  --cf-info: #7fa7d9;
+  --cf-info-bg: #1a2433;
+  --cf-info-text: #b9d2f0;
+  --cf-ok: #5fb88a;
+  --cf-ok-bg: #18332a;
+  --cf-ok-text: #9fe0bd;
+  --cf-warn: #e0b04f;
+  --cf-warn-bg: #3d3218;
+  --cf-warn-text: #f0d08a;
+  --cf-danger: #e05a46;
+  --cf-danger-bg: #4a1e18;
+  --cf-danger-text: #ffb4a6;
+  --cf-debuff: #e05a46;
+  --cf-debuff-bg: #4a1e18;
+  --cf-debuff-text: #ffb4a6;
+  --cf-buff: #5fb88a;
+  --cf-buff-bg: #18332a;
+  --cf-buff-text: #9fe0bd;
+  --cf-deep-bg: #0f0f11;
+  --cf-deep-panel: #17171a;
+  --cf-deep-panel-2: #1e1e23;
+  --cf-deep-line: #2c2c33;
+  --cf-deep-text: #ece7df;
+  --cf-deep-muted: #b3aca2;
+  --cf-deep-accent: #f08a76;
+  --cf-deep-gold: #d4a957;
+  --cf-deep-info: #8fb5e3;
+  --cf-deep-ok: #7fd0a4;
+  --cf-deep-danger: #ff8f7d;
+  --cf-shadow: #000000;
+  --cf-scrim: #050506;
+  --cf-font-display: "Cinzel", "Trajan Pro", Georgia, serif;
+  --cf-font-body: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --cf-font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+/* ------------------------------------------------------------------ Celestial Court */
+:root[data-theme="celestial"],
+[data-theme-preview="celestial"] {
+  color-scheme: dark;
+  --cf-bg: #0e1430;
+  --cf-bg-deep: #090e24;
+  --cf-panel: #151d40;
+  --cf-panel-2: #18214a;
+  --cf-tile: #1c2550;
+  --cf-input: #111838;
+  --cf-line: #26305c;
+  --cf-line-strong: #3d4a86;
+  --cf-text: #e9ecfb;
+  --cf-muted: #b2b9dd;
+  --cf-faint: #8a92bd;
+  --cf-accent: #d9b25b;
+  --cf-accent-hover: #e6c477;
+  --cf-accent-text: #e3bf6f;
+  --cf-on-accent: #14100a;
+  --cf-on-accent-soft: #3b3420;
+  --cf-chip: #2a2a4a;
+  --cf-chip-text: #ecc97c;
+  --cf-link: #e3bf6f;
+  --cf-link-hover: #f2d79a;
+  --cf-focus: #f2d79a;
+  --cf-gold: #d9b25b;
+  --cf-gold-bg: #3b3420;
+  --cf-gold-text: #f0d79a;
+  --cf-info: #8fb0ff;
+  --cf-info-bg: #1b2752;
+  --cf-info-text: #c5d4ff;
+  --cf-ok: #6cc79a;
+  --cf-ok-bg: #16352f;
+  --cf-ok-text: #a8e8c6;
+  --cf-warn: #e8b964;
+  --cf-warn-bg: #3b3420;
+  --cf-warn-text: #f3d79b;
+  --cf-danger: #ef7a6b;
+  --cf-danger-bg: #47202a;
+  --cf-danger-text: #ffbdb3;
+  --cf-debuff: #ef7a6b;
+  --cf-debuff-bg: #47202a;
+  --cf-debuff-text: #ffbdb3;
+  --cf-buff: #6cc79a;
+  --cf-buff-bg: #16352f;
+  --cf-buff-text: #a8e8c6;
+  --cf-deep-bg: #0a0f24;
+  --cf-deep-panel: #121a3a;
+  --cf-deep-panel-2: #18214a;
+  --cf-deep-line: #26305c;
+  --cf-deep-text: #e9ecfb;
+  --cf-deep-muted: #b2b9dd;
+  --cf-deep-accent: #e3bf6f;
+  --cf-deep-gold: #d9b25b;
+  --cf-deep-info: #a5c0ff;
+  --cf-deep-ok: #86d8ae;
+  --cf-deep-danger: #ff9a8c;
+  --cf-shadow: #02040c;
+  --cf-scrim: #03061a;
+  --cf-font-display: "Cormorant Garamond", Garamond, Georgia, serif;
+  --cf-font-body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
+  --cf-font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+/* ------------------------------------------------------------------ Ember Forge */
+:root[data-theme="ember"],
+[data-theme-preview="ember"] {
+  color-scheme: dark;
+  --cf-bg: #1a1310;
+  --cf-bg-deep: #120d0b;
+  --cf-panel: #241a15;
+  --cf-panel-2: #2a1f19;
+  --cf-tile: #2e221c;
+  --cf-input: #1f1612;
+  --cf-line: #3a2a22;
+  --cf-line-strong: #5a4233;
+  --cf-text: #f3e6da;
+  --cf-muted: #c9b3a2;
+  --cf-faint: #9c8676;
+  --cf-accent: #e0823c;
+  --cf-accent-hover: #ec9555;
+  --cf-accent-text: #f0a060;
+  --cf-on-accent: #1a1006;
+  --cf-on-accent-soft: #422711;
+  --cf-chip: #3d2617;
+  --cf-chip-text: #f4b27a;
+  --cf-link: #f0a060;
+  --cf-link-hover: #ffc490;
+  --cf-focus: #ffc490;
+  --cf-gold: #e0b25c;
+  --cf-gold-bg: #3a2c16;
+  --cf-gold-text: #f2d08f;
+  --cf-info: #8fb8d8;
+  --cf-info-bg: #1d2a33;
+  --cf-info-text: #bcd6ea;
+  --cf-ok: #7cc48f;
+  --cf-ok-bg: #1c3326;
+  --cf-ok-text: #b0e5bf;
+  --cf-warn: #e8b54f;
+  --cf-warn-bg: #3d2f14;
+  --cf-warn-text: #f4d48a;
+  --cf-danger: #ef6a52;
+  --cf-danger-bg: #4a1d14;
+  --cf-danger-text: #ffb6a6;
+  --cf-debuff: #ef6a52;
+  --cf-debuff-bg: #4a1d14;
+  --cf-debuff-text: #ffb6a6;
+  --cf-buff: #7cc48f;
+  --cf-buff-bg: #1c3326;
+  --cf-buff-text: #b0e5bf;
+  --cf-deep-bg: #120d0b;
+  --cf-deep-panel: #1f1612;
+  --cf-deep-panel-2: #2a1f19;
+  --cf-deep-line: #3a2a22;
+  --cf-deep-text: #f3e6da;
+  --cf-deep-muted: #c9b3a2;
+  --cf-deep-accent: #f0a060;
+  --cf-deep-gold: #e0b25c;
+  --cf-deep-info: #a3c8e4;
+  --cf-deep-ok: #95d4a6;
+  --cf-deep-danger: #ff8a73;
+  --cf-shadow: #060302;
+  --cf-scrim: #0a0605;
+  --cf-font-display: "Marcellus", Optima, Georgia, serif;
+  --cf-font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --cf-font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+/* ------------------------------------------------------------------ Classic light (the previous look) */
+:root[data-theme="classic"],
+[data-theme-preview="classic"] {
+  color-scheme: light;
+  --cf-bg: #f4efdf;
+  --cf-bg-deep: #e9e2cd;
+  --cf-panel: #fffdf6;
+  --cf-panel-2: #f9f5e8;
+  --cf-tile: #efe9d6;
+  --cf-input: #fffef9;
+  --cf-line: #d8d1be;
+  --cf-line-strong: #8f8d7c;
+  --cf-text: #1d2924;
+  --cf-muted: #5e665f;
+  --cf-faint: #656a5e;
+  --cf-accent: #1f5b47;
+  --cf-accent-hover: #2d7560;
+  --cf-accent-text: #1f5b47;
+  --cf-on-accent: #ffffff;
+  --cf-on-accent-soft: #dbe9e3;
+  --cf-chip: #e2eee7;
+  --cf-chip-text: #1f5b47;
+  --cf-link: #1f5b47;
+  --cf-link-hover: #133b2e;
+  --cf-focus: #156da3;
+  --cf-gold: #a97822;
+  --cf-gold-bg: #f6eaca;
+  --cf-gold-text: #6b4a10;
+  --cf-info: #416b84;
+  --cf-info-bg: #e8f0f4;
+  --cf-info-text: #2c5068;
+  --cf-ok: #2f7658;
+  --cf-ok-bg: #e3f2e8;
+  --cf-ok-text: #174f39;
+  --cf-warn: #9a5c16;
+  --cf-warn-bg: #fff1d8;
+  --cf-warn-text: #6b3d08;
+  --cf-danger: #a63333;
+  --cf-danger-bg: #fbe6e3;
+  --cf-danger-text: #8a2a22;
+  --cf-debuff: #b3322a;
+  --cf-debuff-bg: #f9e0dc;
+  --cf-debuff-text: #8a2a22;
+  --cf-buff: #2f7a4a;
+  --cf-buff-bg: #dff3e6;
+  --cf-buff-text: #1f5a36;
+  --cf-deep-bg: #131a15;
+  --cf-deep-panel: #1d2620;
+  --cf-deep-panel-2: #193a31;
+  --cf-deep-line: #36443b;
+  --cf-deep-text: #edf3ea;
+  --cf-deep-muted: #a7b5a3;
+  --cf-deep-accent: #4aa87e;
+  --cf-deep-gold: #d4b47c;
+  --cf-deep-info: #61b9ed;
+  --cf-deep-ok: #6bd49a;
+  --cf-deep-danger: #f27f70;
+  --cf-shadow: #1e2a24;
+  --cf-scrim: #0b100d;
+  --cf-font-display: Georgia, "Times New Roman", serif;
+  --cf-font-body: "Segoe UI", Inter, system-ui, sans-serif;
+  --cf-font-mono: ui-monospace, Consolas, monospace;
+}
+
+/* ------------------------------------------------------------------ player options (Settings > Appearance) */
+/* Heading font override: appearance-boot.js sets data-heading-font on <html>. */
+:root[data-heading-font="cinzel"] { --cf-font-display: "Cinzel", "Trajan Pro", Georgia, serif; }
+:root[data-heading-font="cormorant"] { --cf-font-display: "Cormorant Garamond", Garamond, Georgia, serif; }
+:root[data-heading-font="marcellus"] { --cf-font-display: "Marcellus", Optima, Georgia, serif; }
+
+/* Text size: rem-based pages grow with it; the table, sheet and map editor write every text size as
+   calc(Npx * var(--cf-text-scale, 1)). Only glyphs drawn inside a map token (its letters, badges, the
+   condition counter) and zoom-relative map labels stay fixed: they follow the map zoom instead. */
+:root { --cf-text-scale: 1; --cf-radius-sm: 8px; --cf-radius: 10px; --cf-radius-lg: 14px; }
+:root[data-text-size="large"] { font-size: 112.5%; --cf-text-scale: 1.125; }
+:root[data-text-size="xlarge"] { font-size: 125%; --cf-text-scale: 1.25; }
+
+/* Reduce motion: the player's choice, or the system setting when they haven't chosen.
+   Animations are switched off, not sped up: a fade-out that ran instantly would hide a toast or a
+   damage number at once, while with no animation it stays visible until its page removes it. */
+:root[data-motion="reduce"] *,
+:root[data-motion="reduce"] *::before,
+:root[data-motion="reduce"] *::after {
+  animation: none !important;
+  transition-duration: .001ms !important;
+  scroll-behavior: auto !important;
+}
