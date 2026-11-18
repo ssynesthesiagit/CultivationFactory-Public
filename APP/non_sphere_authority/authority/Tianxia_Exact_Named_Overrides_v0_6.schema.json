@@ -1,0 +1,102 @@
+{
+  "$id": "https://tianxia.local/schemas/exact-named-overrides-v0.6.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "override_count": {
+      "const": 22
+    },
+    "overrides": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "evidence": {
+            "additionalProperties": true,
+            "properties": {
+              "direct_quote": {
+                "minLength": 10,
+                "type": "string"
+              },
+              "evidence_class": {
+                "const": "DIRECT_AUTHORED_NAMED_RELATIONSHIP"
+              },
+              "source_parent_sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "evidence_class",
+              "direct_quote",
+              "source_field",
+              "source_parent_sha256"
+            ],
+            "type": "object"
+          },
+          "foundation_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "grants_path_ap": {
+            "const": false
+          },
+          "method_id": {
+            "pattern": "^METHOD-[0-9]{3}$",
+            "type": "string"
+          },
+          "override_id": {
+            "pattern": "^OVR-METHOD-[0-9]{3}-[0-9]{2}$",
+            "type": "string"
+          },
+          "result": {
+            "enum": [
+              "NATURAL_AFFINITY",
+              "WORKABLE",
+              "WORKABLE_WITH_FRICTION",
+              "STRAINED",
+              "INCOMPATIBLE",
+              "CORRECTIVE_OPPORTUNITY",
+              "TRANSFORMATION_OPPORTUNITY",
+              "GM_REVIEW_REQUIRED"
+            ]
+          },
+          "schema": {
+            "const": "Tianxia.ExactNamedMethodFoundationOverride.v0.6"
+          }
+        },
+        "required": [
+          "schema",
+          "override_id",
+          "method_id",
+          "foundation_id",
+          "result",
+          "evidence",
+          "grants_path_ap"
+        ],
+        "type": "object"
+      },
+      "maxItems": 22,
+      "minItems": 22,
+      "type": "array"
+    },
+    "rule": {
+      "minLength": 20,
+      "type": "string"
+    },
+    "schema": {
+      "const": "TianxiaExactNamedMethodFoundationOverrides.v0.6"
+    },
+    "status": {
+      "const": "MET1R3_SEMANTIC_SURFACE_POLARITY_AUTHORITY_READY"
+    }
+  },
+  "required": [
+    "schema",
+    "status",
+    "override_count",
+    "overrides",
+    "rule"
+  ],
+  "title": "Tianxia Exact Named Method\u2013Foundation Overrides v0.6",
+  "type": "object"
+}
