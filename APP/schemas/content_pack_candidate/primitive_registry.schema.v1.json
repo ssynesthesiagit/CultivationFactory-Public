@@ -1,0 +1,182 @@
+{
+  "$defs": {
+    "blocker": {
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "capability": {
+          "enum": [
+            "advancement",
+            "character_sheet",
+            "gm_display",
+            "combat_execution",
+            "ai_policy"
+          ]
+        },
+        "pack_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "primitive_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "record_id": {
+          "$ref": "#/$defs/stable_id"
+        }
+      },
+      "type": "object"
+    },
+    "capabilities": {
+      "additionalProperties": false,
+      "properties": {
+        "advancement": {
+          "enum": [
+            "SUPPORTED",
+            "PARTIAL",
+            "UNSUPPORTED",
+            "NOT_APPLICABLE",
+            "STALE",
+            "BLOCKED_BY_DEPENDENCY"
+          ]
+        },
+        "ai_policy": {
+          "enum": [
+            "SUPPORTED",
+            "PARTIAL",
+            "UNSUPPORTED",
+            "NOT_APPLICABLE",
+            "STALE",
+            "BLOCKED_BY_DEPENDENCY"
+          ]
+        },
+        "character_sheet": {
+          "enum": [
+            "SUPPORTED",
+            "PARTIAL",
+            "UNSUPPORTED",
+            "NOT_APPLICABLE",
+            "STALE",
+            "BLOCKED_BY_DEPENDENCY"
+          ]
+        },
+        "combat_execution": {
+          "enum": [
+            "SUPPORTED",
+            "PARTIAL",
+            "UNSUPPORTED",
+            "NOT_APPLICABLE",
+            "STALE",
+            "BLOCKED_BY_DEPENDENCY"
+          ]
+        },
+        "gm_display": {
+          "enum": [
+            "SUPPORTED",
+            "PARTIAL",
+            "UNSUPPORTED",
+            "NOT_APPLICABLE",
+            "STALE",
+            "BLOCKED_BY_DEPENDENCY"
+          ]
+        }
+      },
+      "required": [
+        "advancement",
+        "character_sheet",
+        "gm_display",
+        "combat_execution",
+        "ai_policy"
+      ],
+      "type": "object"
+    },
+    "semver": {
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "type": "string"
+    },
+    "sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "source_binding": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "source_path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source_version": {
+          "$ref": "#/$defs/semver"
+        }
+      },
+      "required": [
+        "source_id",
+        "source_version",
+        "source_sha256",
+        "anchor"
+      ],
+      "type": "object"
+    },
+    "stable_id": {
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)+$",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tianxia:candidate:primitive-registry:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "candidate_status": {
+      "const": "CANDIDATE_NON_AUTHORITATIVE"
+    },
+    "primitives": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "primitive_id": {
+            "$ref": "#/$defs/stable_id"
+          },
+          "version": {
+            "$ref": "#/$defs/semver"
+          }
+        },
+        "required": [
+          "primitive_id",
+          "version",
+          "kind"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "registry_id": {
+      "$ref": "#/$defs/stable_id"
+    },
+    "schema_version": {
+      "const": "TianxiaContentPackCandidate.PrimitiveRegistry.v1"
+    },
+    "version": {
+      "$ref": "#/$defs/semver"
+    }
+  },
+  "required": [
+    "schema_version",
+    "candidate_status",
+    "registry_id",
+    "version",
+    "primitives"
+  ],
+  "type": "object"
+}
