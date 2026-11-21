@@ -1,0 +1,384 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tianxia.local/foundry/schemas/Stage2_Advancement_Proposal_v2.schema.json",
+  "title": "Stage 2 Rules-Causal Advancement Proposal v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "expected_project_revision",
+    "expected_content_lock_hash",
+    "target_cl",
+    "idempotency_key",
+    "choices"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "TianxiaFoundry.Stage2AdvancementProposal.v2"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "expected_project_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expected_content_lock_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "target_cl": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "choices": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "effective_cl",
+          "record_id",
+          "acquisition_channel",
+          "parameters"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "starting_state",
+              "background_acquisition",
+              "background_sphere_acquisition",
+              "background_talent_acquisition",
+              "origin_insight_acquisition",
+              "cultivation_insight_acquisition",
+              "path_acquisition",
+              "sect_trial_sphere_acquisition",
+              "sect_trial_talent_acquisition",
+              "ai_bootstrap_sphere_acquisition",
+              "ai_bootstrap_talent_acquisition",
+              "level_advance",
+              "ability_score_change",
+              "level_talent_acquisition",
+              "subpath_acquisition",
+              "method_acquisition",
+              "method_activation",
+              "foundation_acquisition",
+              "foundation_expression",
+              "foundation_stage",
+              "training_source_access",
+              "sphere_training_attempt",
+              "talent_training_attempt",
+              "manual_training_attempt",
+              "creation_training_sphere_acquisition",
+              "creation_training_talent_acquisition",
+              "new_sphere_bonus_talent_acquisition",
+              "equipment_acquisition",
+              "printed_rule_grant",
+              "forged_technique_creation",
+              "immortal_art_creation",
+              "creation_recorded_art_acquisition",
+              "typed_none"
+            ]
+          },
+          "effective_cl": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 20
+          },
+          "record_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          },
+          "acquisition_channel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "ability_scores": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+                "properties": {
+                  "STR": {"type": "integer"},
+                  "DEX": {"type": "integer"},
+                  "CON": {"type": "integer"},
+                  "INT": {"type": "integer"},
+                  "WIS": {"type": "integer"},
+                  "CHA": {"type": "integer"}
+                }
+              },
+              "ability": {"enum": ["STR", "DEX", "CON", "INT", "WIS", "CHA"]},
+              "study_ability": {"enum": ["STR", "DEX", "CON", "INT", "WIS", "CHA"]},
+              "amount": {"type": "integer"},
+              "repeat_index": {"type": "integer", "minimum": 1},
+              "deltas": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "STR": {"type": "integer"},
+                  "DEX": {"type": "integer"},
+                  "CON": {"type": "integer"},
+                  "INT": {"type": "integer"},
+                  "WIS": {"type": "integer"},
+                  "CHA": {"type": "integer"}
+                }
+              },
+              "stage": {"type": "string", "minLength": 1, "maxLength": 240},
+              "access_mode": {"type": "string", "minLength": 1, "maxLength": 240},
+              "attempt_id": {"type": "string", "minLength": 1, "maxLength": 240},
+              "retry_of_attempt_id": {"type": ["string", "null"]},
+              "training_source_record_id": {"type": "string", "minLength": 1, "maxLength": 240},
+              "selected_ability": {"enum": ["STR", "DEX", "CON", "INT", "WIS", "CHA"]},
+              "time_die_result": {"type": ["integer", "null"], "minimum": 1, "maximum": 6},
+              "dc_die_result": {"type": ["integer", "null"], "minimum": 1, "maximum": 4},
+              "check_die_result": {"type": "integer"},
+              "slot": {"type": "integer", "minimum": 1, "maximum": 3},
+              "choice_type": {"enum": ["new_sphere", "known_sphere_talent"]},
+              "source": {"type": "object"},
+              "outcome": {"type": "object"},
+              "bonus_talent_id": {"type": "string", "minLength": 1, "maxLength": 240},
+              "entitlement_event_id": {"type": "string", "minLength": 1, "maxLength": 240},
+              "entitlement_attempt_id": {"type": "string", "minLength": 1, "maxLength": 240},
+              "target": {"enum": ["method", "foundation", "manuals", "equipment", "subpaths", "forged_techniques", "immortal_arts"]},
+              "reason_code": {"type": "string", "minLength": 1, "maxLength": 240},
+              "reason": {"type": "string", "minLength": 1},
+              "refill_current": {"type": "boolean"},
+              "forging_acquisition": {
+                "type": "object", "additionalProperties": false,
+                "required": [
+                  "schema", "mode", "scope", "observed_play", "live_currency_debit",
+                  "target_cl", "record_id", "record_hash", "powering_path_id",
+                  "key_ability", "pb", "ability_modifier", "dc", "research",
+                  "materials", "training_location", "completion", "attempts"
+                ],
+                "properties": {
+                  "schema": {"const": "TianxiaFoundry.ForgedTechniqueAcquisition.v1"},
+                  "authority": {
+                    "type": "object", "additionalProperties": false,
+                    "required": ["schema", "version", "issuer"],
+                    "properties": {
+                      "schema": {"const": "TianxiaFoundry.ForgedTechniqueAcquisitionAuthority.v1"},
+                      "version": {"const": "server_owned_pre_provider.v2"},
+                      "issuer": {"const": "TianxiaFoundry.CharacterCreationExecutionService.v1"}
+                    }
+                  },
+                  "mode": {"const": "creator_generated_history"},
+                  "scope": {"const": "initial_creation"},
+                  "observed_play": {"const": false},
+                  "live_currency_debit": {"const": false},
+                  "target_cl": {"type": "integer", "minimum": 1, "maximum": 20},
+                  "record_id": {"type": "string", "minLength": 1, "maxLength": 240},
+                  "record_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+                  "powering_path_id": {"type": "string", "minLength": 1, "maxLength": 240},
+                  "key_ability": {"enum": ["STR", "DEX", "CON", "INT", "WIS", "CHA"]},
+                  "pb": {"type": "integer", "minimum": 0},
+                  "ability_modifier": {"type": "integer"},
+                  "dc": {"type": "integer", "minimum": 0},
+                  "research": {
+                    "type": "object", "additionalProperties": false,
+                    "required": ["required_days", "meaningful_training_hours", "completed"],
+                    "properties": {
+                      "required_days": {"type": "integer", "minimum": 1},
+                      "meaningful_training_hours": {"type": "integer", "minimum": 1},
+                      "completed": {"const": true}
+                    }
+                  },
+                  "materials": {
+                    "type": "object", "additionalProperties": false,
+                    "required": ["required_gp", "paid_gp", "payment_complete"],
+                    "properties": {
+                      "required_gp": {"type": "integer", "minimum": 0},
+                      "paid_gp": {"type": "integer", "minimum": 0},
+                      "payment_complete": {"const": true}
+                    }
+                  },
+                  "training_location": {
+                    "type": "object", "additionalProperties": false,
+                    "required": ["mode", "scope", "suitable"],
+                    "properties": {
+                      "mode": {"const": "creator_generated_history"},
+                      "scope": {"const": "initial_creation"},
+                      "suitable": {"const": true}
+                    }
+                  },
+                  "completion": {
+                    "type": "object", "additionalProperties": false,
+                    "required": [
+                      "mode", "scope", "record_id", "record_hash",
+                      "research_complete", "payment_complete"
+                    ],
+                    "properties": {
+                      "mode": {"const": "creator_generated_history"},
+                      "scope": {"const": "initial_creation"},
+                      "record_id": {"type": "string", "minLength": 1, "maxLength": 240},
+                      "record_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+                      "research_complete": {"const": true},
+                      "payment_complete": {"const": true},
+                      "event_id": {"type": ["string", "null"], "maxLength": 240}
+                    }
+                  },
+                  "attempts": {
+                    "type": "array", "minItems": 1, "maxItems": 8,
+                    "items": {
+                      "type": "object", "additionalProperties": false,
+                      "required": [
+                        "attempt_id", "retry_of_attempt_id", "check_die_result",
+                        "research_time_hours", "materials_paid_gp"
+                      ],
+                      "properties": {
+                        "attempt_id": {"type": "string", "minLength": 1, "maxLength": 240},
+                        "retry_of_attempt_id": {"type": ["string", "null"], "maxLength": 240},
+                        "check_die_result": {"type": "integer", "minimum": 1, "maximum": 20},
+                        "research_time_hours": {"type": "integer", "minimum": 0},
+                        "materials_paid_gp": {"type": "integer", "minimum": 0}
+                      }
+                    }
+                  }
+                }
+              },
+              "immortal_refinement": {
+                "type": "object", "additionalProperties": false,
+                "required": [
+                  "schema", "mode", "scope", "observed_play", "live_currency_debit",
+                  "target_cl", "record_id", "record_hash", "path_id", "key_ability",
+                  "pb", "ability_modifier", "dc", "research", "materials",
+                  "completion", "attempts"
+                ],
+                "properties": {
+                  "schema": {"const": "TianxiaFoundry.ImmortalArtRefinement.v1"},
+                  "authority": {
+                    "type": "object", "additionalProperties": false,
+                    "required": ["schema", "version", "issuer"],
+                    "properties": {
+                      "schema": {"const": "TianxiaFoundry.ImmortalArtRefinementAuthority.v1"},
+                      "version": {"const": "server_owned_pre_provider.v1"},
+                      "issuer": {"const": "tianxia.foundry.character_creation"}
+                    }
+                  },
+                  "mode": {"const": "creator_generated_history"},
+                  "scope": {"const": "initial_creation"},
+                  "observed_play": {"const": false},
+                  "live_currency_debit": {"const": false},
+                  "target_cl": {"type": "integer", "minimum": 15, "maximum": 20},
+                  "record_id": {"type": "string", "minLength": 1, "maxLength": 240},
+                  "record_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+                  "path_id": {"type": "string", "minLength": 1, "maxLength": 240},
+                  "key_ability": {"enum": ["STR", "DEX", "CON", "INT", "WIS", "CHA"]},
+                  "pb": {"type": "integer", "minimum": 0},
+                  "ability_modifier": {"type": "integer"},
+                  "dc": {"type": "integer", "minimum": 0},
+                  "research": {
+                    "type": "object", "additionalProperties": false,
+                    "required": ["required_days", "meaningful_training_hours", "completed"],
+                    "properties": {
+                      "required_days": {"type": "integer", "minimum": 1},
+                      "meaningful_training_hours": {"type": "integer", "minimum": 1},
+                      "completed": {"const": true}
+                    }
+                  },
+                  "materials": {
+                    "type": "object", "additionalProperties": false,
+                    "required": ["required_gp", "paid_gp", "payment_complete"],
+                    "properties": {
+                      "required_gp": {"type": "integer", "minimum": 0},
+                      "paid_gp": {"type": "integer", "minimum": 0},
+                      "payment_complete": {"const": true}
+                    }
+                  },
+                  "completion": {
+                    "type": "object", "additionalProperties": false,
+                    "required": [
+                      "mode", "scope", "record_id", "record_hash",
+                      "research_complete", "payment_complete"
+                    ],
+                    "properties": {
+                      "mode": {"const": "creator_generated_history"},
+                      "scope": {"const": "initial_creation"},
+                      "record_id": {"type": "string", "minLength": 1, "maxLength": 240},
+                      "record_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+                      "research_complete": {"const": true},
+                      "payment_complete": {"const": true},
+                      "event_id": {"type": ["string", "null"], "maxLength": 240}
+                    }
+                  },
+                  "attempts": {
+                    "type": "array", "minItems": 1, "maxItems": 8,
+                    "items": {
+                      "type": "object", "additionalProperties": false,
+                      "required": [
+                        "attempt_id", "retry_of_attempt_id", "check_die_result",
+                        "research_time_hours", "materials_paid_gp"
+                      ],
+                      "properties": {
+                        "attempt_id": {"type": "string", "minLength": 1, "maxLength": 240},
+                        "retry_of_attempt_id": {"type": ["string", "null"], "maxLength": 240},
+                        "check_die_result": {"type": "integer", "minimum": 1, "maximum": 20},
+                        "research_time_hours": {"type": "integer", "minimum": 0},
+                        "materials_paid_gp": {"type": "integer", "minimum": 0}
+                      }
+                    }
+                  }
+                }
+              },
+              "native_path_progressions": {
+                "type": "array", "minItems": 1, "maxItems": 3, "uniqueItems": true,
+                "items": {
+                  "type": "object", "additionalProperties": false,
+                  "required": ["path_id", "cl", "automatic_feature_record_ids", "source"],
+                  "properties": {
+                    "path_id": {"enum": ["tianxia.path.body_refining", "tianxia.path.qi_cultivation", "tianxia.path.spirit_awakening"]},
+                    "cl": {"type": "integer", "minimum": 1, "maximum": 20},
+                    "automatic_feature_record_ids": {
+                      "type": "array", "minItems": 1, "uniqueItems": true,
+                      "items": {"type": "string", "minLength": 1, "maxLength": 240}
+                    },
+                    "source": {
+                      "type": "object", "additionalProperties": false,
+                      "required": ["path_id", "source_path", "source_hash", "authority_snapshot_hash"],
+                      "properties": {
+                        "path_id": {"enum": ["tianxia.path.body_refining", "tianxia.path.qi_cultivation", "tianxia.path.spirit_awakening"]},
+                        "source_path": {"type": "string", "minLength": 1},
+                        "source_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+                        "authority_snapshot_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+                      }
+                    }
+                  }
+                }
+              },
+              "prewritten_record_id": {"type": "string", "minLength": 1, "maxLength": 240}
+            }
+          },
+          "reason_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
