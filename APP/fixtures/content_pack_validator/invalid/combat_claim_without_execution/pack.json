@@ -1,0 +1,101 @@
+{
+  "authority_classification": "CANDIDATE_NON_AUTHORITATIVE",
+  "candidate_status": "CANDIDATE_NON_AUTHORITATIVE",
+  "capability_declarations": {
+    "advancement": "SUPPORTED",
+    "ai_policy": "SUPPORTED",
+    "character_sheet": "SUPPORTED",
+    "combat_execution": "SUPPORTED",
+    "gm_display": "SUPPORTED"
+  },
+  "checksum_identity": {
+    "algorithm": "SHA-256",
+    "manifest": "SHA256SUMS.txt"
+  },
+  "compatibility": {
+    "compiler": ">=1.0.0,<2.0.0",
+    "engine": ">=1.0.0,<2.0.0",
+    "factory": ">=6.6.9,<7.0.0"
+  },
+  "dependencies": [
+    {
+      "optional": false,
+      "pack_id": "tianxia.core.primitives",
+      "required_capabilities": [
+        "combat_execution"
+      ],
+      "version_range": ">=1.0.0,<2.0.0"
+    }
+  ],
+  "lifecycle": {
+    "migration_policy": "NONE",
+    "replaces": [],
+    "supersedes": []
+  },
+  "optional_files": [
+    "sources/authenticated_source.json"
+  ],
+  "pack_id": "tianxia.pack.fixture.cpk1",
+  "record_inventory": [
+    {
+      "count": 1,
+      "path": "authority/advancement_rules.json",
+      "record_type": "advancement_rule"
+    },
+    {
+      "count": 2,
+      "path": "creatures/creature_definitions.json",
+      "record_type": "creature_or_companion"
+    },
+    {
+      "count": 1,
+      "path": "execution/combat_definitions.json",
+      "record_type": "combat_definition"
+    },
+    {
+      "count": 1,
+      "path": "policies/controller_policies.json",
+      "record_type": "controller_policy"
+    },
+    {
+      "count": 2,
+      "path": "projection/character_sheet_rules.json",
+      "record_type": "character_sheet_rule"
+    },
+    {
+      "count": 2,
+      "path": "projection/gm_display_rules.json",
+      "record_type": "gm_display_rule"
+    },
+    {
+      "count": 2,
+      "path": "records/definitions.json",
+      "record_type": "record"
+    },
+    {
+      "count": 1,
+      "path": "tests/validation_cases.json",
+      "record_type": "validation_case"
+    }
+  ],
+  "schema_version": "TianxiaContentPackCandidate.Manifest.v1",
+  "schema_versions": {
+    "advancement": "TianxiaContentPackCandidate.AdvancementRules.v1",
+    "character_sheet": "TianxiaContentPackCandidate.CharacterSheetRules.v1",
+    "combat": "TianxiaContentPackCandidate.CombatDefinitions.v1",
+    "creatures": "TianxiaContentPackCandidate.CreatureDefinitions.v1",
+    "gm_display": "TianxiaContentPackCandidate.GMDisplayRules.v1",
+    "manifest": "TianxiaContentPackCandidate.Manifest.v1",
+    "policies": "TianxiaContentPackCandidate.ControllerPolicies.v1",
+    "records": "TianxiaContentPackCandidate.Definitions.v1",
+    "tests": "TianxiaContentPackCandidate.ValidationCases.v1"
+  },
+  "source_identity": {
+    "anchor": "fixture:pack",
+    "source_id": "tianxia.source.fixture.cpk1",
+    "source_path": "sources/authenticated_source.json",
+    "source_sha256": "9751463bf4e13ba91babd9b56a003f72eb687a06b8da969f5caece334914438e",
+    "source_version": "1.0.0"
+  },
+  "version": "1.0.0"
+}
