@@ -1,0 +1,114 @@
+"""CONCREALM1 repro: the Bible's Realm-scaled Concentration limit is the shipped default (owner ruling 2026-11-25).
+
+Synthetic Factory characters are compiled through the normal path with no mode override, so these assertions read
+the capacity the shipped combat/rules/concentration.json seals into each new bundle.
+"""
+
+from combat import concentration
+from combat.gate2_runtime_content import AN
+from tests.test_multi_concentration import _engine
+
+
+def _held(actor) -> str:
+    return f"held={concentration.sources(actor)}"
+
+
+def test_cl1_holds_one_and_the_older_one_ends():
+    engine, me = _engine(1)
+    engine._start_concentration(me, "action:a")
+    engine._start_concentration(me, "action:b")
+    assert concentration.sources(me) == ["action:b"], _held(me)
+
+
+def test_cl5_holds_two_and_a_third_start_ends_the_oldest():
+    engine, me = _engine(5)
+    for source in ("action:a", "action:b", "action:c"):
+        engine._start_concentration(me, source)
+    assert concentration.sources(me) == ["action:b", "action:c"], _held(me)
+
+
+def test_cl20_holds_five():
+    engine, me = _engine(20)
+    for i in range(6):
+        engine._start_concentration(me, f"action:{i}")
+    assert concentration.sources(me) == [f"action:{i}" for i in range(1, 6)], _held(me)
+
+
+def test_limit_for_cl_reads_the_mythic_rows_from_the_shipped_file():
+    assert concentration.limit_for_cl(21) == 6, f"CL21 limit={concentration.limit_for_cl(21)}"
+    assert concentration.limit_for_cl(40) == 10, f"CL40 limit={concentration.limit_for_cl(40)}"
+
+
+def test_failed_damage_save_ends_only_the_newest():
+    engine, me = _engine(5)
+    engine._start_concentration(me, "action:a")
+    engine._start_concentration(me, "action:b")
+    me.saving_throws["CON"] = -100  # the save fails
+    engine._commit_damage(me, 1, "BLUDGEONING", "test:hit", AN, None, reaction_depth=0)
+    assert concentration.sources(me) == ["action:a"], _held(me)
+
+
+def test_seventy_damage_uses_dc_35():
+    engine, actor = _engine(20)
+    actor.current_hp = 1000
+    engine._start_concentration(actor, "action:a")
+    before = len(engine.events)
+    engine._commit_damage(actor, 70, "BLUDGEONING", "test:hit", AN, None, reaction_depth=0)
+    saves = [e for e in engine.events[before:] if e.event_type == "SAVE_ROLLED"]
+    assert len(saves) == 1 and saves[0].payload["dc"] == 35
+
+
+def test_two_timed_copies_expire_separately_after_table_reload(tmp_path):
+    from combat import zones
+    from combat.factory_compiler import compile_character
+    from combat.gate5_service import CombatService, FACTORY_ACTOR_PREFIX
+    from tests.test_r11_review_fixup import _table
+    from tests.test_riders_lane11 import MOON, ROOT, _sheet
+
+    caster, foe = [FACTORY_ACTOR_PREFIX + p for p in ("realm-timed", "realm-timed-foe")]
+    docs = [_sheet(MOON, cl=20), _sheet(MOON)]
+    docs[1]["path_and_subpath"] = {"path_feature_record_ids": []}
+    docs[0]["ability_scores_and_statistics"]["primary_resource"] = {"name": "Qi", "maximum": 1000}
+    combat, table, mid = _table(tmp_path, docs,
+        [compile_character(doc, actor_id=aid) for doc, aid in zip(docs, (caster, foe))])
+
+    def take(candidate):
+        menu = table.state(mid)["menu"]
+        result = table.act(mid, candidate.candidate_id, menu["decision_id"], menu["state_version"], 0)
+        assert result["status"] == "COMMITTED", result
+
+    def end():
+        engine = combat._load_session(mid).engine
+        take(next(c for c in engine.legal_candidates() if c.kind.value == "END_TURN"))
+
+    while table.state(mid)["menu"]["actor_id"] != caster:
+        end()
+    owned = []
+    for _ in range(2):
+        engine = combat._load_session(mid).engine
+        candidate = next(c for c in engine.legal_candidates()
+            if c.source_definition_id in engine.action_catalog
+            and engine.action_catalog[c.source_definition_id].parameters.get("typed", {}).get("source") == MOON
+            and c.destination is not None and (c.destination.x, c.destination.y) == (3, 6))
+        take(candidate)
+        session = CombatService(ROOT, tmp_path)._load_session(mid)
+        owned = sorted((z.zone_id for z in zones.typed_zones(session.engine)),
+                       key=lambda zid: int(zid.rsplit(":", 1)[-1]))
+        if len(owned) == 1:
+            end()
+            while table.state(mid)["menu"]["actor_id"] != caster:
+                end()
+    assert len(owned) == 2
+    assert len(concentration.sources(session.engine.state.actors[caster])) == 2
+    for expected in (1, 0):
+        for _ in range(24):
+            session = CombatService(ROOT, tmp_path)._load_session(mid)
+            remaining = {z.zone_id for z in zones.typed_zones(session.engine)}
+            if len(remaining) == expected:
+                break
+            end()
+        else:
+            raise AssertionError(f"copies did not expire separately: {remaining}")
+        assert remaining == set(owned[2 - expected:])
+        assert len(concentration.sources(session.engine.state.actors[caster])) == expected
+        assert session.verify()["status"] == "PASS"
