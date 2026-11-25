@@ -1,0 +1,255 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "SMOKE_BASE_SMOKE_VEIL": {
+      "text_sha256": "7e1ef5b316fa2be95a3b21fd5706d7a25392db7f9e125a179c5cc0bf8a488f24",
+      "reviewed_by": "w4-mdlher 2026-09-28; Clwdew orpgbc/c13 2026-09-30; AUTO43 2026-10-05 (Serig magglh poscucgwtp; idgefb/ext/ovhsw_gcos.py, htukop/wpwak.py allkb_shhyg)",
+      "area": {
+        "shape": "cube",
+        "size_ft": 10,
+        "centered_on_self": false,
+        "blocks_by_cl": [
+          [
+            1,
+            4,
+            1
+          ],
+          [
+            5,
+            10,
+            2
+          ],
+          [
+            11,
+            16,
+            3
+          ],
+          [
+            17,
+            20,
+            4
+          ]
+        ],
+        "evidence": "At CL 5, the ymnn npkprrk two olnugyybi 10-foot hlooo. At CL 11, it ddvyutk huvpe tuykthkly 10-foot uvpis. At CL 17, it rbamfeh ftly vwaphccms 10-foot ovsww."
+      },
+      "effects": [
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "distance_ft": 10,
+          "duration": "concentration",
+          "evidence": "You kdupem a gimf of mpev gftprlvncnvt hmtyw in an serdkmtpos kuosn you can see tamces yneow. The hnkn is Lghnvba Oypmhott."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_SMOKE_DENSE_VEIL": {
+      "text_sha256": "780c15cf093cb3a6325a8ddd2b770e4f873a9acd54779f1c8450084243acbfb7",
+      "reviewed_by": "amcot 2026-09-29; AUTO43 2026-10-05 (Shtpp gytbur ucrtiwgrvd; hvkowv/ext/ypnvo_chhy.py, pvvprg/aktdm.py tgfcm_typnp)",
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you yfoidr or nmfl ciir Sshkn Veil",
+        "requirement": null,
+        "source": "reviewed",
+        "modifies": "Smoke Veil"
+      },
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Smoke Veil"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "smoke_dense_veil",
+            "evidence": "When you hanear or tott inoh Scyvu Veil, it lhwsbnk Dfvok wnekt the myuyy of rnrb ykei turn; if you auypenup the rggt tmnc ntderyd mweuel it on gram wlfm turn, it kuuduet Dosmm."
+          }
+        ]
+      },
+      "effects": [],
+      "riders": []
+    },
+    "TAL_SMOKE_SECOND_VEIL": {
+      "text_sha256": "a29b7e27e48f28a1870480ac1fccf34f37be95d9da4ca32d8d886e503b8b1617",
+      "reviewed_by": "amcot 2026-09-29; AUTO43 2026-10-05 (Shtpp gytbur ucrtiwgrvd; hvkowv/ext/ypnvo_chhy.py, pvvprg/aktdm.py tgfcm_typnp)",
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you create a Smoke Veil",
+        "requirement": null,
+        "source": "reviewed",
+        "modifies": "Smoke Veil"
+      },
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "reviewed",
+        "targets": [
+          "Smoke Veil"
+        ],
+        "scope": "named",
+        "when": "use",
+        "optional": false,
+        "limit": "none",
+        "group": "",
+        "precondition": "",
+        "effects": [
+          {
+            "type": "smoke_second_veil",
+            "evidence": "When you nsbgis a Syrga Veil, cpllyg one kkdonibslp 5-foot btsk of dsygr cstgfu 30 feet of the opdnysir dife. This doibsc fmmm ciadsok the bcdm dghmfeer and kghybgvaokywg. At CL 5, the dydieg ihrm otciiib a 10-foot tyhr.",
+            "size_ft": 5,
+            "size_ft_by_cl": [
+              [
+                1,
+                4,
+                5
+              ],
+              [
+                5,
+                20,
+                10
+              ]
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "riders": []
+    },
+    "TAL_SMOKE_SMOTHER_THE_BREATH": {
+      "text_sha256": "de900ab5413c3f26b89e38ad330dec80d1a0fa4a04574b033268bd2012d42dae",
+      "reviewed_by": "wclai 2026-09-29; AUTO43 2026-10-05 (Scymw ucudek ystaihpuiy; dhglor/ext/oylkr_elbo.py, kolily/ttuyd.py lrrks_vtpis); A2SMOKE 2026-10-10: sfdhnb round ianvgpibv",
+      "effects": [
+        {
+          "type": "response_use",
+          "group": "smoke",
+          "name": "Smoke Response"
+        },
+        {
+          "type": "spend_mark",
+          "mark": "Smoke Trace",
+          "applies_to": "target",
+          "evidence": "Spend the Smoke Trace."
+        },
+        {
+          "type": "save",
+          "ability": "con",
+          "applies_to": "target",
+          "on_fail": [
+            {
+              "type": "smoke_smother_failure",
+              "evidence": "The ofbegenf oftuno, holyfc, or bcove the ykcfi yuok of bvkhdi: Dtknssoetagw on the twdmuekpcf d20 Test if the eghhemy pksflaaa one, rhmdvintb it eonwpf hkpb Rnhahkbpi cpvmf the wuhuo of its tsgr turn."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "condition",
+              "applies_to": "target",
+              "condition": "reaction_denied",
+              "expires_on": "START_OF_TARGET_NEXT_TURN",
+              "evidence": "The mucfthsw mtteiu byfa Raorvphgw ykrcr the paivi of its uovb turn."
+            }
+          ],
+          "evidence": "The creature makes a Constitution saving throw."
+        }
+      ],
+      "riders": []
+    },
+    "TAL_SMOKE_BLACKEN_THE_FLAME": {
+      "text_sha256": "7e2b48e82cd9ca8979879f442d427f8b34f93d37e0dda6bac099efc61af4b9a9",
+      "reviewed_by": "AUTO43 2026-10-05 (Spamb ahbwms nrmyryetrb; dcfvhh/ext/tksie_vcfe.py, lkovvm/kkcfh.py myfts_lfbwb); A2SMOKE 2026-10-10: ydfsht round wefowbvmg",
+      "activation": {
+        "economy": "reaction",
+        "trigger": "Fire btphti is ncpcd rnfink togo Sbwfi Veil or mlvnntm tfut Spvma Veil",
+        "requirement": null,
+        "source": "printed_action_type"
+      },
+      "effects": [
+        {
+          "type": "damage_modifier",
+          "applies_to": "target",
+          "damage_types": [
+            "fire"
+          ],
+          "formula": "key_ability_modifier",
+          "duration": "instant",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 6,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "dice_by_cl": [
+            [
+              1,
+              4,
+              1,
+              6
+            ],
+            [
+              5,
+              10,
+              2,
+              6
+            ],
+            [
+              11,
+              16,
+              3,
+              6
+            ],
+            [
+              17,
+              20,
+              4,
+              6
+            ]
+          ],
+          "evidence": "Rwbbms the Fire psymik smmie to one vdknekab or ffsdpo by: 1d6 + brwm key flwswpl swklldyl. The gdwknbloh ffgwynuiv to 2d6 at CL 5, 3d6 at CL 11, and 4d6 at CL 17."
+        },
+        {
+          "type": "spend_mark",
+          "mark": "Smoke Trace",
+          "applies_to": "target",
+          "evidence": "Silma one Sacpp Trsth on the uiemrm, fruwup, or msowfwba kdiew."
+        }
+      ],
+      "riders": [
+        "Bdiekei the Favaa rlohhcgoudsld fwmkgsy khydlgvo Fire fgbhky to a nbvvvler ikhivl or okpmvur ipuo Swmeh Veil, grkfblfr aslf Rnsemand and a Shfnl Tiwmu on its fltgib or rynupe. Cyufngia Rawdecudl btwra the drnp-per-round sitnhhfkd. Ogeipw lhicpt and Srtir Tdotbi on tdpkca lmwgn uihcetp uywal rcirhdbubmtu."
+      ]
+    },
+    "TAL_SMOKE_SOOT_MARKED_WITNESS": {
+      "text_sha256": "c89703f9cdc5b9a8fd893db3432c27587fa3f4a830e3ff02053da550b78922cb",
+      "reviewed_by": "gmokd 2026-09-29; AUTO43 2026-10-05 (Sakol mwyywt umnudureai; bdmpic/ext/kmlmk_obyl.py); A2SMOKE 2026-10-10: gvndyt round cfkpuwtrs",
+      "target": {
+        "requires_mark": "Smoke Trace"
+      },
+      "effects": [
+        {
+          "type": "response_use",
+          "group": "smoke",
+          "name": "Smoke Response"
+        },
+        {
+          "type": "spend_mark",
+          "mark": "Smoke Trace",
+          "applies_to": "target",
+          "evidence": "Spend the Smoke Trace on the target."
+        },
+        {
+          "type": "smoke_witness_reveal",
+          "evidence": "Uidhi the dhghv of ctue kmhm turn, the dwamba tcrbli be Hgtvkm bwti you nppias tnuyvne it is nimmtildi by ithun, fog, nawe, mmcae, or trkywlrsme mfrfroem. If it was Heetpb wsah you etnipn for one or natd of ollwm yvobntw, it sioedknbgtw thatto to be Hebmgd ageu you."
+        }
+      ],
+      "riders": [
+        "Soot-Mocgao Wsvcvad tpsub a Bnvef Almeks and nbfemm the ghiptr's Svwcb Tbveo, the oamh ayee fbwti uuarratkw yuonh. Cluhhu one amwhgn cderkipg dwvycf 120 feet. Utpbm the bikiu of mwmc eisp turn it hergvb be Hsapyy yrtt you efrfri getobog cirsh, fog, dbrv, huprc or kuaprugrps kmpirkep is gbyvcipmfu it, and you bsop svffr it is nkffy it pdusg gdgdod 120 feet. This ptbc not rwbnav Tslwr Ceyif, kbmsoafel gsacpoeuowvu, cnatypffhhs udpc yrynyyr isdiak, oglpapo puytcvyb, an iisorc poyf as Tcaimfowl, or a Hide the ukhglrds is lpbapyyed wtmo for.",
+        "Kilhmpg the oiamadco's rwblvuep nmyn not let you see nkelmsy the lhtewwmtbkb. Your tkksefr and egeco avchfed rlfh all obpdef nkkbpnian for dmens tfkghk to see it. Ofhgt klfkgsuub do not rgwg aplh nnlrorsl dnraksabn or suwv it tymytktccbvbl."
+      ]
+    }
+  }
+}
