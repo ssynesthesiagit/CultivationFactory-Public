@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS character_creation_runs(
+  run_id TEXT PRIMARY KEY,
+  project_id TEXT NOT NULL,
+  starting_revision INTEGER NOT NULL,
+  execution_mode TEXT NOT NULL CHECK(execution_mode IN ('MANUAL_CHAT','STANDARD_API','AUTO_FINALIZE_WHEN_CLEAN')),
+  idempotency_key TEXT NOT NULL,
+  request_json TEXT NOT NULL,
+  transport_json TEXT NOT NULL DEFAULT '{}',
+  response_json TEXT NOT NULL DEFAULT '{}',
+  validation_json TEXT NOT NULL DEFAULT '{}',
+  dry_run_json TEXT NOT NULL DEFAULT '{}',
+  quality_json TEXT NOT NULL DEFAULT '{}',
+  owner_decision TEXT,
+  commit_json TEXT NOT NULL DEFAULT '{}',
+  final_revision INTEGER,
+  output_json TEXT NOT NULL DEFAULT '{}',
+  blockers_json TEXT NOT NULL DEFAULT '[]',
+  warnings_json TEXT NOT NULL DEFAULT '[]',
+  status TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  completed_at TEXT,
+  UNIQUE(project_id,idempotency_key),
+  FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE
+);
+CREATE INDEX IF NOT EXISTS idx_character_creation_runs_project ON character_creation_runs(project_id,created_at DESC);
