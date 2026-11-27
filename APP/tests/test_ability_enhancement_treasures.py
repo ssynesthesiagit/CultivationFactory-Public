@@ -1,0 +1,738 @@
+"""Ability Enhancement Treasures from the Bible through character equipment."""
+
+import pytest
+
+from tools.build_treasure_catalog_authority import CONSUMABLES, WONDROUS, build
+
+
+def test_catalog_keeps_published_ids_and_reads_printed_item_fields(tmp_path, monkeypatch):
+    from factory_authoring import treasure_catalog
+
+    treasure = tmp_path / WONDROUS
+    treasure.parent.mkdir(parents=True)
+    treasure.write_text(
+        "# Tiny treasury\n\n"
+        "| Body Slot | Typical Worn Forms | Ability Enhancement Slot |\n"
+        "|---|---|---|\n"
+        "| **Fingers (2)** | Rings *(up to two simultaneously)* | — |\n\n"
+        "### New gloves\n"
+        "**Grade:** Saint · **Type:** Wondrous Item (Hands) · "
+        "**Attunement:** 1 Attunement Slot(s) · **Appraisal:** 2,300 GT · *Spheres: Air*\n\n"
+        "You gain a **+2 enhancement bonus to Dexterity**.\n\n"
+        "### Old ring\n"
+        "**Grade:** Spiritual · **Type:** Ring · "
+        "**Attunement:** No Attunement · **Appraisal:** 300 GT · *Spheres: Space*\n\n"
+        "Stores a scroll.\n\n"
+        "### New amulet\n"
+        "**Grade:** Sovereign · **Type:** Wondrous Item (Neck) · "
+        "**Attunement:** 2 Attunement Slot(s) · **Appraisal:** 20,300 GT · *Spheres: Life*\n\n"
+        "You gain a **+4 enhancement bonus to Constitution**.\n",
+        encoding="utf-8",
+    )
+    (tmp_path / CONSUMABLES).write_text("", encoding="utf-8")
+    baseline = {"wondrous": [{"name": "Old ring", "number": 1, "treasure_id": "published-id",
+                              "grade": "Spiritual", "attunement_slots": 0, "text": "Stores a scroll."}],
+                "consumables": [], "grade_order": ["Spiritual", "Saint", "Sovereign", "Imperial"]}
+    built = build(tmp_path, baseline, expected_counts=(3, 0))
+    ring, gloves, amulet = built["wondrous"]
+    assert (ring["treasure_id"], ring["value_gt"], ring["body_slot"]) == ("published-id", 300, "Fingers")
+    assert (gloves["number"], gloves["body_slot"], gloves["attunement_slots"], gloves["value_gt"]) == (2, "Hands", 1, 2300)
+    assert (amulet["number"], amulet["body_slot"], amulet["attunement_slots"], amulet["value_gt"]) == (3, "Neck", 2, 20300)
+
+    monkeypatch.setattr(treasure_catalog, "authority", lambda: built)
+    monkeypatch.setattr(treasure_catalog, "treasure_plan", lambda *_: {
+        "realm_cap": "Imperial", "signature_used": False, "attunement_used": 0, "wondrous_budget_gt": 30_000,
+    })
+    purchases = treasure_catalog.resolve_treasure_catalog(
+        target_cl=10, background_id="test", path_id="test", wondrous_ids=[gloves["treasure_id"]], consumable_ids=[],
+    )
+    [bought] = purchases["wondrous"]
+    assert bought["ability_enhancement"] == {"ability": "DEX", "bonus": 2}
+    assert _compile(_sheet(bought))["actor_template"]["dexterity_score"] == 16
+
+    baseline["wondrous"][0]["text"] = "Stores two scrolls."
+    with pytest.raises(SystemExit, match="STOPPED: 1 existing Wondrous rows differ from the Bible"):
+        build(tmp_path, baseline, expected_counts=(3, 0))
+
+
+def _enhancement(name, ability, bonus, slot, *, attunement_slots=1):
+    return {"name": name, "treasure_id": name, "body_slot": slot, "attunement_slots": attunement_slots,
+            "ability_enhancement": {"ability": ability, "bonus": bonus}}
+
+
+def _sheet(*treasures, key="STR"):
+    return {
+        "identity": {"display_name": "Test cultivator", "cultivation_level": 10,
+                     "proficiency_bonus": 4, "key_ability": key},
+        "ability_scores_and_statistics": {
+            "abilities": [{"ability": "STR", "score": 20, "modifier": 5},
+                          {"ability": "DEX", "score": 14, "modifier": 2},
+                          {"ability": "CON", "score": 14, "modifier": 2}],
+            "armor_class": {"base_value": 12, "value": 12}, "hit_points": {"maximum": 60},
+            "initiative": {"ability": "DEX", "bonus": 2}, "speed": {"walking_ft": 30},
+            "primary_resource": {"name": "Stamina", "maximum": 30},
+            "saving_throws": {"STR": 9, "DEX": 2, "CON": 2},
+            "skills": [{"skill": "Athletics", "ability": "STR", "bonus": 9}],
+            "technique_attack_bonus": 9, "technique_save_dc": 17,
+        },
+        "equipment": [{"starting_kit": {"items": [], "resolved_treasure_purchases": {"wondrous": list(treasures)}}}],
+    }
+
+
+def _compile(sheet, **kwargs):
+    from combat.factory_compiler import compile_character
+
+    return compile_character(sheet, actor_id="actor:factory.enhancements", typed_authority={"mechanics": {}}, **kwargs)
+
+
+def test_compile_uses_highest_bonus_per_ability_without_a_cap():
+    # A traditional alternate form in a different slot can coexist with the belt.
+    sheet = _sheet(_enhancement("Giant Might", "STR", 2, "Waist"),
+                   _enhancement("Titan Might", "STR", 4, "Neck"),
+                   _enhancement("Nimble Wind", "DEX", 2, "Hands"))
+    bundle = _compile(sheet)
+    actor = bundle["actor_template"]
+    numbers = bundle["actor_numbers"]
+    assert (actor["strength_score"], actor["dexterity_score"]) == (24, 16)
+    assert actor["ability_mods"]["STR"] == 7
+    assert actor["saving_throws"]["STR"] == 11  # still includes proficiency
+    assert bundle["skills"]["Athletics"] == 11
+    assert (numbers["attack_bonus"], numbers["save_dc"]) == (11, 19)
+    assert (actor["armor_class"], actor["initiative_bonus"]) == (13, 3)
+    opportunity = next(row["parameters"]["typed"] for row in bundle["action_catalog"]
+                       if row["source_definition_id"].endswith(".opportunity_attack"))
+    assert opportunity["weapon"]["fixed_damage"] == 8  # 1 + the effective Strength modifier
+    assert _compile(sheet, attuned=["wondrous.0", "wondrous.2"])["actor_template"]["strength_score"] == 22
+    assert sheet["ability_scores_and_statistics"]["abilities"][0]["score"] == 20
+
+
+def test_compile_projects_encoded_owner_sheet_fields():
+    import json
+
+    sheet = _sheet(_enhancement("Nimble Wind", "DEX", 2, "Hands"),
+                   _enhancement("Vital Health", "CON", 2, "Neck"))
+    stats = sheet["ability_scores_and_statistics"]
+    stats["initiative"] = {"bonus": 5}  # owner sheets can omit the ability
+    stats["skills"].append({"skill": "Stealth", "ability": "DEX", "bonus": 6})
+    for field in ("abilities", "armor_class", "hit_points", "initiative", "saving_throws", "skills"):
+        stats[field] = json.dumps(stats[field])
+
+    bundle = _compile(sheet)
+    actor = bundle["actor_template"]
+    assert (actor["initiative_bonus"], actor["armor_class"], actor["maximum_hp"]) == (6, 13, 70)
+    assert actor["saving_throws"]["DEX"] == 3
+    assert bundle["skills"]["Stealth"] == 7
+    assert isinstance(stats["initiative"], str)
+
+
+def test_table_refuses_a_duplicate_body_slot_and_allows_two_rings(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+
+    from combat.tabletop import ButtonStore, TabletopError
+    from combat.tabletop_service import TabletopService
+
+    belts = [_enhancement("Giant Might", "STR", 2, "Waist"),
+             _enhancement("Titan Might", "STR", 4, "Waist", attunement_slots=2)]
+    rings = [{"name": f"Ring {n}", "body_slot": "Fingers", "attunement_slots": 1} for n in range(3)]
+    sheet = _sheet(*belts, *rings)
+    service = TabletopService.__new__(TabletopService)
+    service.buttons = ButtonStore(tmp_path / "buttons")
+    service.combat = SimpleNamespace(userdata_root=tmp_path, _factory_owner_sheet=lambda project: sheet)
+    monkeypatch.setattr(service, "sheet", service.buttons.get)
+    project = "0b2d5c1e-4f7a-4a8e-9c3d-2e1f0a9b8c7d"
+
+    for keys in (["wondrous.0", "wondrous.1"], ["wondrous.2", "wondrous.3", "wondrous.4"]):
+        with pytest.raises(TabletopError) as err:
+            service.save_attunement(project, keys)
+        assert err.value.code == "TABLETOP_BODY_SLOT_FULL"
+        assert "attuned" not in service.buttons.get(project)
+
+    keys = ["wondrous.1", "wondrous.2", "wondrous.3"]
+    assert service.save_attunement(project, keys)["attuned"] == keys
+    carrying = _compile(sheet, attuned=service.buttons.get(project)["attuned"])["carrying"]
+    assert carrying["attunement"]["used"] == 4
+    assert [item["key"] for item in carrying["items"] if item["worn"]] == keys
+
+    # A prepared character can leave the previously worn belt behind and put
+    # another in that slot; validation uses the same carried load as the fight.
+    service.save_left_behind(project, ["wondrous.1"])
+    other = ["wondrous.0", "wondrous.2", "wondrous.3"]
+    assert service.save_attunement(project, other)["attuned"] == other
+
+
+def test_published_hidden_pocket_belt_and_giant_might_use_the_same_slot():
+    from combat.factory_compiler import equipment_list
+    from combat.tabletop import TabletopError
+    from factory_authoring.treasure_catalog import authority
+
+    rows = authority()["wondrous"]
+    by_name = {row["name"]: row for row in rows}
+    sheet = _sheet(by_name["Hidden-Pocket Jade Belt"], by_name["Belt of Giant Might (+2)"])
+    with pytest.raises(TabletopError) as err:
+        equipment_list(sheet, attuned=["wondrous.0", "wondrous.1"], validate=True)
+    assert err.value.code == "TABLETOP_BODY_SLOT_FULL"
+    assert "Waist" in str(err.value)
+
+
+@pytest.mark.parametrize(("maximum", "cl_field", "athletics", "initiative", "expected_initiative"), [
+    pytest.param("60", "cultivation_level", {"skill": "Athletics", "ability": "STR", "bonus": "9"}, "5", 6,
+                 id="numeric-string-maximum"),
+    pytest.param(60, "cl", {"skill": "Athletics", "bonus": "9"}, "5", 6, id="overall-cl-alias-named-string-skill"),
+    pytest.param(60, "cultivation_level", {"skill": "Athletics", "bonus": 9}, "-1", 0,
+                 id="named-integer-skill-zero-initiative"),
+])
+def test_constitution_enhancement_preserves_damage_and_removal_has_a_floor(
+    tmp_path, maximum, cl_field, athletics, initiative, expected_initiative,
+):
+    import json
+    from pathlib import Path
+    from zipfile import ZipFile
+
+    from combat.ability_checks import skill_bonus
+    from combat.gate3_storage import load_typed_bundles
+    from combat.gate5_service import FACTORY_ACTOR_PREFIX, CombatService
+    from combat.journey import JourneyStore
+    from combat.tabletop import ButtonStore
+    from factory_authoring.treasure_catalog import authority
+
+    by_name = {row["name"]: row for row in authority()["wondrous"]}
+    sheet = _sheet(_enhancement("Vital Health", "CON", 2, "Neck"),
+                   by_name["Belt of Giant Might (+2)"], by_name["Gloves of Nimble Wind (+2)"])
+    identity = sheet["identity"]
+    identity[cl_field] = identity.pop("cultivation_level")
+    identity["effective_cultivation_level"] = 8
+    stats = sheet["ability_scores_and_statistics"]
+    stats["hit_points"] = {"maximum": maximum, "build_state_current": type(maximum)(40)}
+    stats["saving_throws"]["STR"] = "9"
+    stats["skills"] = [athletics, {"skill": "Acrobatics", "bonus": "8"}]
+    stats["initiative"] = {"bonus": initiative}
+    stats["armor_class"] = {"base_value": "12", "value": "12"}
+    stats["technique_attack_bonus"], stats["technique_save_dc"] = "9", "17"
+
+    project = "abcdef12"
+    actor_id = FACTORY_ACTOR_PREFIX + project
+    folder = tmp_path / "portable_characters" / project
+    folder.mkdir(parents=True)
+    with ZipFile(folder / "current.zip", "w") as archive:
+        archive.writestr("Tianxia_Owner_Character_Sheet_v1.json", json.dumps(sheet))
+    root = Path(__file__).resolve().parents[1]
+    ButtonStore(tmp_path / "tabletop_buttons").save_attunement(project, ["wondrous.0", "wondrous.1", "wondrous.2"])
+    service = CombatService(root, tmp_path)
+    fight = service.create_factory_match(
+        project_ids=[project], match_seed="CON-AMULET", control_modes={actor_id: "MANUAL"},
+    )
+    admitted = next(row for row in fight["state"]["actors"] if row["entity_id"] == actor_id)
+    assert (admitted["current_hp"], admitted["maximum_hp"]) == (50, 70)  # Overall CL 10, not effective CL 8
+    assert (admitted["strength_score"], admitted["ability_mods"]["STR"]) == (22, 6)
+    assert admitted["saving_throws"]["STR"] == 10
+    assert (admitted["initiative_bonus"], admitted["armor_class"]) == (expected_initiative, 13)
+
+    def assert_sealed_totals(bundle):
+        assert bundle["actor_template"]["saving_throws"]["STR"] == bundle["skills"]["Athletics"] == 10
+        assert bundle["skills"]["Acrobatics"] == 9
+        numbers = bundle["actor_numbers"]
+        assert (numbers["attack_bonus"], numbers["save_dc"]) == (10, 18)
+        for action, field in (("escape_grapple", "escape_bonus"), ("wall_collapse", "check_bonus")):
+            row = next(row for row in bundle["action_catalog"] if row["source_definition_id"].endswith("." + action))
+            action_numbers = row["parameters"]["typed"]["numbers"]
+            assert action_numbers[field] == 10
+            assert (action_numbers["attack_bonus"], action_numbers["save_dc"]) == (10, 18)
+
+    [stored] = load_typed_bundles(service._match_dir(fight["match_id"]))
+    assert_sealed_totals(stored)
+
+    loaded = CombatService(root, tmp_path)._load_session(fight["match_id"]).engine
+    equipped = loaded.state.actors[actor_id]
+    assert (equipped.current_hp, equipped.maximum_hp) == (50, 70)
+    assert equipped.saving_throws["STR"] == skill_bonus(loaded, equipped, "Athletics", 6) == 10
+    assert (equipped.initiative_bonus, equipped.armor_class) == (expected_initiative, 13)
+    [bundle] = loaded.typed_bundle_documents
+    assert_sealed_totals(bundle)
+    assert bundle["equipment_hp_bonus"] == 10
+    with ZipFile(folder / "current.zip") as archive:
+        published = json.loads(archive.read("Tianxia_Owner_Character_Sheet_v1.json"))["ability_scores_and_statistics"]
+    assert published == stats
+    assert published["saving_throws"]["STR"] == "9"
+    assert published["skills"][0] == athletics
+    assert published["initiative"]["bonus"] == initiative
+    assert (published["technique_attack_bonus"], published["technique_save_dc"]) == ("9", "17")
+
+    # The previous journey ended with this hero already wounded while wearing the amulet.
+    store = JourneyStore(tmp_path / "journeys")
+    store.root.mkdir()
+    plain = _compile(sheet, attuned=[])
+    actor = plain["actor_id"]
+    snapshot = {"maximum_hp": equipped.maximum_hp, "current_hp": 5, "equipment_hp_bonus": bundle["equipment_hp_bonus"],
+                "temporary_hp": 0, "active": 1, "life_state": "", "conditions": {}}
+    (store.root / "State.json").write_text(json.dumps({
+        "sessions": {}, "actors": {actor: {"encounter_snapshot": snapshot}},
+    }), encoding="utf-8")
+    arena = {"width_squares": 10, "height_squares": 10, "square_size_ft": 5,
+             "starting_positions": {}, "terrain_regions": []}
+    journey = store.create([plain], arena, {actor: {"x": 2, "y": 2}}, {actor: 1800})
+    cold = JourneyStore(store.root).load(journey["journey_id"]).state["actors"][actor]["encounter_snapshot"]
+    assert (cold["current_hp"], cold["maximum_hp"]) == (1, 60)
+    assert "equipment_hp_bonus" not in cold
+
+
+@pytest.mark.parametrize(("case", "attuned", "expected"), [
+    pytest.param("technique", False, (9, 17), id="technique-defaults"),
+    pytest.param("technique", True, (10, 18), id="enhanced-technique-defaults"),
+    pytest.param("technique-zero", True, (0, 0), id="shifted-zero-technique-totals"),
+    pytest.param("defense", False, (17, 1), id="legacy-unarmored-defense"),
+    pytest.param("defense", True, (18, 1), id="enhanced-legacy-unarmored-defense"),
+    pytest.param("baseline", True, (12, 0), id="tempered-flesh-does-not-boost-dex-baseline"),
+    pytest.param("initiative", False, 0, id="zero-initiative-with-no-enhancements"),
+])
+def test_table_sheet_and_cold_fight_read_the_admitted_totals(tmp_path, case, attuned, expected):
+    import json
+    from pathlib import Path
+    from zipfile import ZipFile
+
+    from combat.compiled_numbers import sealed_actor_numbers
+    from combat.display_values import effective_defenses
+    from combat.ext.eye_common import passive_perception
+    from combat.gate3_storage import load_typed_bundles
+    from combat.gate5_service import FACTORY_ACTOR_PREFIX, CombatService
+    from combat.save_dcs import save_dc
+    from combat.tabletop import ButtonStore, sheet_summary
+    from combat.tabletop_service import TabletopService
+    from factory_authoring.treasure_catalog import authority
+
+    by_name = {row["name"]: row for row in authority()["wondrous"]}
+    if case.startswith("technique"):
+        sheet = _sheet(*([by_name["Belt of Giant Might (+2)"]] if attuned else []))
+        stats = sheet["ability_scores_and_statistics"]
+        if case == "technique-zero":
+            stats["technique_attack_bonus"] = stats["technique_save_dc"] = "-1"
+        else:
+            del stats["technique_attack_bonus"]
+            del stats["technique_save_dc"]
+    elif case in ("defense", "baseline"):
+        sheet = _sheet(*([by_name["Amulet of Vital Health (+2)"]] if attuned else []), key="CON")
+        sheet["identity"]["path"] = "Body Refining"
+        sheet["path_and_subpath"] = {"path_feature_record_ids": [
+            "tianxia.path.body_refining.feature.unarmored_defense",
+            "tianxia.subpath.body.iron_shirt.feature.tempered_flesh",
+        ]}
+        sheet["ability_scores_and_statistics"]["armor_class"] = (
+            {"base_value": "16", "value": "17"} if case == "defense" else {"base_value": "12", "value": "12"}
+        )
+    else:
+        sheet = _sheet()
+        stats = sheet["ability_scores_and_statistics"]
+        stats["initiative"] = {"bonus": 0}
+        stats["skills"].append({"skill": "Perception", "bonus": 7})
+        assert sheet_summary(sheet)["initiative"] == 0
+
+    project = "abcdef12"
+    actor_id = FACTORY_ACTOR_PREFIX + project
+    folder = tmp_path / "portable_characters" / project
+    folder.mkdir(parents=True)
+    with ZipFile(folder / "current.zip", "w") as archive:
+        archive.writestr("Tianxia_Owner_Character_Sheet_v1.json", json.dumps(sheet))
+    ButtonStore(tmp_path / "tabletop_buttons").save_attunement(project, ["wondrous.0"] if attuned else [])
+    root = Path(__file__).resolve().parents[1]
+    service = CombatService(root, tmp_path)
+    table = TabletopService(service, tmp_path)
+    payload = table.sheet(project)
+    summary = payload["summary"]
+    fight = service.create_factory_match(
+        project_ids=[project], match_seed="ADMITTED-TOTALS", control_modes={actor_id: "MANUAL"},
+    )
+    admitted = next(row for row in fight["state"]["actors"] if row["entity_id"] == actor_id)
+    [stored] = load_typed_bundles(service._match_dir(fight["match_id"]))
+    engine = CombatService(root, tmp_path)._load_session(fight["match_id"]).engine
+    actor = engine.state.actors[actor_id]
+    [reloaded] = engine.typed_bundle_documents
+
+    if case.startswith("technique"):
+        assert (summary["technique_attack_bonus"], summary["technique_save_dc"]) == expected
+        for bundle in (stored, reloaded):
+            numbers = bundle["actor_numbers"]
+            assert (numbers["attack_bonus"], numbers["save_dc"]) == expected
+            grapple = next(row for row in bundle["action_catalog"]
+                           if row["source_definition_id"].endswith(".escape_grapple"))
+            numbers = grapple["parameters"]["typed"]["numbers"]
+            assert (numbers["attack_bonus"], numbers["save_dc"]) == expected
+        numbers = sealed_actor_numbers(engine, actor)
+        assert (numbers["attack_bonus"], numbers["save_dc"]) == expected
+        assert save_dc(engine, actor) == expected[1]
+    elif case in ("defense", "baseline"):
+        ac, conditional_bonus = expected
+        assert admitted["armor_class"] == summary["armor_class"] == actor.armor_class == ac
+        assert effective_defenses(engine, actor)["armor_class"] == ac
+        for bundle in (stored, reloaded):
+            terms = {term["source"]: term["value"] for term in bundle["armor_terms"]}
+            assert terms["unarmored calculation"] == ac - conditional_bonus
+            assert terms.get("standing bonuses", 0) == conditional_bonus
+    else:
+        assert admitted["initiative_bonus"] == summary["initiative"] == actor.initiative_bonus == expected
+        [roll] = [roll for roll in engine.rolls if roll.actor_id == actor_id and roll.reason == "INITIATIVE"]
+        assert roll.modifier == expected and roll.total == roll.natural_result + expected
+        button = next(row for row in payload["buttons"] if row["id"] == "roll:initiative")
+        assert button["roll"]["expression"] == "1d20+0"
+        assert next(row["bonus"] for row in summary["saves"] if row["ability"] == "STR") == actor.saving_throws["STR"] == 9
+        assert summary["passive"]["perception"] == passive_perception(engine, actor) == 17
+
+
+def _admit_skill_fight(tmp_path, sheet, *, attuned=False, opponent=None):
+    import json
+    from pathlib import Path
+    from zipfile import ZipFile
+
+    from combat.gate2_runtime_content import AN
+    from combat.gate5_service import FACTORY_ACTOR_PREFIX, CombatService
+    from combat.tabletop import ButtonStore
+    from combat.tabletop_service import TabletopService
+
+    project = "abcdef12"
+    actor_id = FACTORY_ACTOR_PREFIX + project
+    foe_project = "fedcba21"
+    documents = {project: sheet}
+    if opponent is not None:
+        documents[foe_project] = opponent
+    for pid, document in documents.items():
+        folder = tmp_path / "portable_characters" / pid
+        folder.mkdir(parents=True)
+        with ZipFile(folder / "current.zip", "w") as archive:
+            archive.writestr("Tianxia_Owner_Character_Sheet_v1.json", json.dumps(document))
+    ButtonStore(tmp_path / "tabletop_buttons").save_attunement(project, ["wondrous.0"] if attuned else [])
+    combat = CombatService(Path(__file__).resolve().parents[1], tmp_path)
+    combat.tabletop_maps.save({
+        "display_name": "Skill checks yard", "width_squares": 25, "height_squares": 15,
+        "walls": [{"shape": "rect", "points": [[10, 0], [11, 14]], "filled": True}],
+        "starts": {"team1": [[2, 5]], "team2": [[22, 5]]},
+    })
+    foe_id = FACTORY_ACTOR_PREFIX + foe_project if opponent is not None else AN
+    mid = combat.create_factory_match(
+        project_ids=[project], opponent_actor_ids=[foe_id], control_modes={actor_id: "MANUAL", foe_id: "MANUAL"},
+        arena_id="battlefield:map.skill-checks-yard", match_seed="PUBLISHED-SKILLS",
+    )["match_id"]
+    return combat, TabletopService(combat, tmp_path), mid, actor_id, project
+
+
+@pytest.mark.parametrize(("attuned", "expected"), [(False, 17), (True, 18)])
+def test_published_perception_string_agrees_in_sheet_and_passive_detection(tmp_path, attuned, expected):
+    from combat.ext.eye_common import passive_perception
+    from combat.gate5_service import CombatService
+    from combat.tabletop_service import TabletopService
+    from factory_authoring.treasure_catalog import authority
+
+    brow_jade = next(row for row in authority()["wondrous"] if row["name"] == "Brow-Jade of Serene Wisdom (+2)")
+    sheet = _sheet(*([brow_jade] if attuned else []))
+    stats = sheet["ability_scores_and_statistics"]
+    stats["abilities"].append({"ability": "WIS", "score": 14, "modifier": 2})
+    stats["skills"].append({"skill": "Perception", "bonus": "7"})
+    combat, table, mid, actor_id, project = _admit_skill_fight(tmp_path, sheet, attuned=attuned)
+
+    def assert_passive(service, view):
+        summary = view.sheet(project)["summary"]
+        engine = service._load_session(mid).engine
+        [bundle] = engine.typed_bundle_documents
+        assert bundle["skills"]["Perception"] == expected - 10
+        assert summary["passive"]["perception"] == passive_perception(engine, engine.state.actors[actor_id]) == expected
+
+    assert_passive(combat, table)
+    cold = CombatService(combat.source_root, tmp_path)
+    assert_passive(cold, TabletopService(cold, tmp_path))
+
+
+@pytest.mark.parametrize(("published", "expected"), [(None, 2), (0, 0)], ids=["missing-bonus", "explicit-zero"])
+def test_hide_records_the_modifier_for_a_missing_or_zero_skill_total(tmp_path, published, expected):
+    from combat.gate5_service import CombatService
+    from tests import auto11_service_support as fight
+
+    sheet = _sheet()
+    sheet["ability_scores_and_statistics"]["skills"].append({"skill": "Stealth", "bonus": published})
+    combat, table, mid, actor_id, _ = _admit_skill_fight(tmp_path, sheet)
+    menu = table.state(mid)["menu"]
+    if menu["actor_id"] != actor_id:
+        fight.play(table, mid, menu["end_turn"])
+    assert table.state(mid)["menu"]["actor_id"] == actor_id
+    fight.play(table, mid, fight.candidate(table, mid, "Hide"))
+
+    engine = CombatService(combat.source_root, tmp_path)._load_session(mid).engine
+    [roll] = [roll for roll in engine.rolls if roll.actor_id == actor_id and roll.reason.endswith(".hide:Stealth")]
+    assert roll.modifier == expected
+    assert roll.total == roll.natural_result + expected
+
+
+@pytest.mark.parametrize(("rows", "name", "total", "rank"), [
+    ([{"skill": "Athletics", "bonus": 13, "proficiency_multiplier": 2}], "Athletics", 13, 2),
+    ([{"skill": "Athletics", "bonus": "13", "proficiency_multiplier": 2}], "Athletics", 13, 2),
+    ([{"skill": "perception", "bonus": "7"}], "Perception", 7, None),
+    ([{"skill": "Perception", "bonus": None}], "Perception", 2, None),
+    ([{"skill": "sleight_of_hand", "bonus": "5"}], "Sleight of Hand", 5, None),
+    ([{"skill": "Stealth", "bonus": 0}], "Stealth", 0, None),
+    ([{"skill": "Stealth", "bonus": "0"}], "Stealth", 0, None),
+    ([{"skill": "sleight_of_hand", "bonus": "5"},
+      {"skill": "Sleight of Hand", "bonus": 10, "proficiency_multiplier": 2}], "Sleight of Hand", 5, None),
+    ([{"skill": "Sect Lore", "ability": "WIS", "bonus": None}], "Sect Lore", 2, None),
+])
+def test_skill_row_shapes_compile_to_one_canonical_total_and_explicit_rank(rows, name, total, rank):
+    sheet = _sheet()
+    stats = sheet["ability_scores_and_statistics"]
+    stats["abilities"].append({"ability": "WIS", "score": 14, "modifier": 2})
+    stats["skills"] = rows
+
+    bundle = _compile(sheet)
+    assert bundle["skills"] == {name: total}
+    assert bundle.get("skill_proficiency", {}) == ({name: rank} if rank is not None else {})
+
+
+@pytest.mark.parametrize(("published", "attuned", "expected"), [
+    ("7", False, 7), ("7", True, 8), (None, False, 2),
+])
+def test_lowercase_perception_agrees_in_search_and_both_passives(tmp_path, published, attuned, expected):
+    from combat.ext.eye_common import passive_perception
+    from combat.gate5_service import FACTORY_ACTOR_PREFIX, CombatService
+    from combat.tabletop_service import TabletopService
+    from factory_authoring.treasure_catalog import authority
+    from tests import auto11_service_support as fight
+    from tests.worker2_support import turn
+
+    jade = next(row for row in authority()["wondrous"] if row["name"] == "Brow-Jade of Serene Wisdom (+2)")
+    sheet = _sheet(jade)
+    stats = sheet["ability_scores_and_statistics"]
+    stats["abilities"].append({"ability": "WIS", "score": 14, "modifier": 2})
+    stats["skills"].append({"skill": "perception", "bonus": published})
+    opponent = _sheet()
+    opponent["identity"]["display_name"] = "Hidden opponent"
+    opponent["ability_scores_and_statistics"]["skills"].append({"skill": "Stealth", "bonus": 100})
+    combat, table, mid, actor_id, project = _admit_skill_fight(tmp_path, sheet, attuned=attuned, opponent=opponent)
+    foe_id = FACTORY_ACTOR_PREFIX + "fedcba21"
+
+    def assert_passives(service, view):
+        engine = service._load_session(mid).engine
+        summary = view.sheet(project)["summary"]
+        assert summary["passive"]["perception"] == passive_perception(engine, engine.state.actors[actor_id]) == 10 + expected
+
+    assert_passives(combat, table)
+    turn(table, mid, foe_id)
+    fight.play(table, mid, fight.candidate(table, mid, "Hide"))
+    turn(table, mid, actor_id)
+    cold = CombatService(combat.source_root, tmp_path)
+    cold_table = TabletopService(cold, tmp_path)
+    assert_passives(cold, cold_table)
+    fight.play(cold_table, mid, fight.candidate(cold_table, mid, "Search"))
+
+    engine = CombatService(combat.source_root, tmp_path)._load_session(mid).engine
+    [roll] = [roll for roll in engine.rolls if roll.actor_id == actor_id and roll.reason.endswith(".search:Perception")]
+    assert roll.modifier == expected
+    assert roll.total == roll.natural_result + expected
+
+
+def test_mounted_overrun_defender_keeps_string_expertise_and_cannot_release_empress(tmp_path):
+    from combat.ext import fate_riders
+    from combat.gate5_service import CombatService
+    from combat.tabletop_service import TabletopService
+    from tests import auto11_service_support as menu
+    from tests import worker2_support as fight
+    from tests.h1_support import sheet
+
+    empress = "TAL_FATE_EMPRESS_OF_HIDDEN_GROWTH_AUSPICE"
+    defender = sheet([empress], cl=15, score=20, name="Defender")
+    defender["ability_scores_and_statistics"]["skills"] = [
+        {"skill": "Athletics", "bonus": "13", "proficiency_multiplier": 2},
+    ]
+    combat, table, mid = fight.fixture(
+        tmp_path, ["BEASTMASTERY_BASE_RIDER_PACKAGE", "TAL_BEASTMASTERY_RUN_DOWN"],
+        primary="Body", owner_plan={"mount": "warhorse"}, foe_sheet=defender,
+        ally_position={"x": 4, "y": 3}, foe_position={"x": 2, "y": 6},
+    )
+    fight.turn(table, mid, fight.FOE)
+    grant = menu.candidate(table, mid, "Empress of Hidden Growth Auspice", target=fight.FOE)
+    fight.settle(table, mid, grant, choices={})
+    fight.turn(table, mid, fight.OWNER)
+
+    cold = CombatService(combat.source_root, tmp_path)
+    cold_table = TabletopService(cold, tmp_path)
+    before = cold._load_session(mid).engine
+    assert fate_riders._auspice(before.state.actors[fight.FOE], "empress") is not None
+    overrun = fight.candidate(cold, mid, "Mount: Overrun (Action)", target=fight.FOE)
+    prompts = fight.settle(cold_table, mid, overrun.candidate_id, choices={"choice:needle.empress_release": "release"})
+    assert not any(p["context"]["reaction_source_id"] == "choice:needle.empress_release" for p in prompts)
+
+    engine = fight.reload(tmp_path, mid)
+    [contest] = [e for e in engine.events if e.event_type == "CHECK_ROLLED" and e.source_definition_id == overrun.source_definition_id]
+    assert contest.payload["target_skill"] == "Athletics"
+    roll = contest.payload["target"]
+    assert roll["actor_id"] == fight.FOE
+    assert roll["modifier"] == 13
+    assert roll["total"] == roll["natural_result"] + 13
+    assert fate_riders._auspice(engine.state.actors[fight.FOE], "empress") is not None
+
+
+def _steal_to_ground(table, mid, key):
+    from tests import auto11_service_support as fight
+
+    def set_down(prompt):
+        source = prompt["context"]["reaction_source_id"]
+        if source.endswith("steal_objects"):
+            return f"fall:{key}"
+        if source.endswith("steal_spot"):
+            return next(row["id"] for row in prompt["choice"]["options"] if "at 3,5 " in row["label"])
+
+    action = fight.candidate(table, mid, "Steal Equipment (take one worn thing)", fight.VICTIM)
+    fight.play(table, mid, action, answer=set_down)
+
+
+def test_initially_worn_amulet_can_be_picked_up_and_dropped_after_steal_equipment(tmp_path):
+    from combat import carry
+    from combat.gate5_service import CombatService
+    from combat.tabletop_service import TabletopService
+    from tests import auto11_service_support as fight
+
+    amulet = _enhancement("Vital Health", "CON", 2, "Neck")
+    victim_kit = {"items": [], "resolved_treasure_purchases": {"wondrous": [amulet]}}
+    combat, table, mid = fight.fight(
+        tmp_path, ["TAL_SCOUNDREL_DIRTY_TRICK", "TAL_SCOUNDREL_STEAL", "TAL_SCOUNDREL_STEAL_EQUIPMENT"],
+        victim_kit=victim_kit, thief_skills=[{"skill": "Sleight of Hand", "ability": "DEX", "bonus": 100}],
+    )
+
+    _steal_to_ground(table, mid, "wondrous.0")
+    assert carry.dropped(fight.engine(combat, mid).state.actors[fight.VICTIM], "wondrous.0")
+
+    cold = CombatService(combat.source_root, tmp_path)
+    table = TabletopService(cold, tmp_path)
+    menu = table.state(mid)["menu"]
+    if menu["actor_id"] == fight.THIEF:
+        fight.play(table, mid, menu["end_turn"])
+    view = table.state(mid)
+    assert view["menu"]["actor_id"] == fight.VICTIM
+    def panel_item(state):
+        return next(row for row in state["carrying"][fight.VICTIM]["items"] if row["key"] == "wondrous.0")
+
+    on_ground = panel_item(view)
+    assert on_ground["on_ground"] and not on_ground["held"] and not on_ground["worn"]
+    assert on_ground["pickup"] and not on_ground["drop"]
+    fight.play(table, mid, on_ground["pickup"])
+
+    cold = CombatService(combat.source_root, tmp_path)
+    table = TabletopService(cold, tmp_path)
+    recovered = panel_item(table.state(mid))
+    reloaded = fight.engine(cold, mid)
+    assert carry.holds(reloaded, reloaded.state.actors[fight.VICTIM], "wondrous.0")
+    assert recovered["held"] and not recovered["worn"] and not recovered["on_ground"]
+    assert recovered["drop"] and not recovered["pickup"]
+    fight.play(table, mid, recovered["drop"])
+    dropped = panel_item(table.state(mid))
+    assert dropped["on_ground"] and not dropped["held"] and not dropped["worn"]
+
+
+def test_recovered_armour_does_not_qualify_as_worn_after_table_reload(tmp_path, monkeypatch):
+    import json
+
+    from combat.ext.blacksmith_forge import mark_count
+    from combat.gate4_engine import Gate4ControllerEngine
+    from combat.gate5_service import CombatService
+    from combat.tabletop_service import TabletopService
+    from combat.typed_executor import bears_mark
+    from tests import auto11_service_support as fight
+    from tests.h1_support import script
+    from tests.worker2_support import candidate
+
+    sound = "TAL_SOUND_BODY_RESONANCE_STRIKE"
+    axe = "Fu (Short Axe) attack"
+    resolve = Gate4ControllerEngine._resolve_attack_spec
+
+    def hit(engine, actor, target, spec, *args, **kwargs):
+        # Script a close hit, even with Disadvantage. Verify the actual margin below.
+        natural = target.armor_class + 1 - int(spec.get("attack_bonus") or 0)
+        assert 2 <= natural <= 19
+        script(engine, [natural, natural, *([1] * 20)])
+        return resolve(engine, actor, target, spec, *args, **kwargs)
+
+    monkeypatch.setattr(Gate4ControllerEngine, "_resolve_attack_spec", hit)
+    combat, table, mid = fight.fight(
+        tmp_path, ["TAL_SCOUNDREL_DIRTY_TRICK", "TAL_SCOUNDREL_STEAL", "TAL_SCOUNDREL_STEAL_EQUIPMENT", sound],
+        thief_kit={"items": [{"item_id": "tianxia.mortal.weapon.fu", "name": "Fu (Short Axe)", "quantity": 1}]},
+        thief_skills=[{"skill": "Sleight of Hand", "ability": "DEX", "bonus": 100}],
+        victim_kit=fight.ARMOR, victim_asks=True,
+        victim_talents=["tianxia.talent.blacksmith.armor_knows_its_owner",
+                        "tianxia.talent.blacksmith.quench_against_the_grain"],
+    )
+
+    def end_turn(actor_id):
+        menu = table.state(mid)["menu"]
+        assert menu["actor_id"] == actor_id
+        fight.play(table, mid, menu["end_turn"])
+
+    def strike(*, quench_offered):
+        sequence = fight.engine(combat, mid).state.event_sequence
+        action = candidate(combat, mid, axe + " + Body Resonance Strike (1 CP)", target=fight.VICTIM)
+        # Decline any Quench prompt so the same hit also exercises Body Resonance.
+        _, prompts = fight.play(table, mid, action.candidate_id)
+        engine = fight.engine(combat, mid)
+        events = [e for e in engine.events if e.sequence > sequence and e.target_ids == (fight.VICTIM,)]
+        [roll] = [e.payload for e in events if e.event_type == "ATTACK_ROLLED" and e.actor_id == fight.THIEF]
+        assert roll["provisional_hit"] and roll["modified_total"] - roll["target_ac"] == 1
+        assert any(e.event_type == "DAMAGE_COMMITTED" and e.payload["damage_type"] == "THUNDER" for e in events)
+        assert any(p["context"]["reaction_source_id"] == "choice:needle.blacksmith_quench"
+                   for p in prompts) == quench_offered
+        return bears_mark(engine.state.actors[fight.VICTIM], fight.THIEF, "Resonance")
+
+    def armor_knows_options():
+        menu = table.state(mid)["menu"]
+        assert menu["actor_id"] == fight.VICTIM
+        return [option for group in menu["actions"] if ".blacksmith.fit_armor.knows_" in group["source_definition_id"]
+                for option in group["options"] if fight.VICTIM in option["target_ids"]]
+
+    engine = fight.engine(combat, mid)
+    toggle = next(a for a in engine.action_catalog.values()
+                  if (spec := a.parameters.get("attack_modifier_setting")) and spec["modifier"] == sound
+                  and spec["field"] == "on" and engine.action_catalog[spec["family"]].display_name == axe)
+    fight.play(table, mid, next(c.candidate_id for c in engine.legal_candidates()
+                                if c.source_definition_id == toggle.source_definition_id))
+    end_turn(fight.THIEF)
+
+    # Armor Knows Its Owner uses a workpiece mark; Quench needs an exact suit mark.
+    hammer = candidate(combat, mid, "Hammer the Mark", target=fight.VICTIM)
+    fight.play(table, mid, hammer.candidate_id)
+    end_turn(fight.VICTIM)
+    end_turn(fight.THIEF)
+    assert armor_knows_options()
+    select = fight.candidate(table, mid, "Set current workpiece: a carried item")
+    fight.play(table, mid, select, answer=json.dumps([fight.VICTIM, fight.ARMOR_KEY]))
+    hammer = candidate(combat, mid, "Hammer the Mark", target=fight.VICTIM)
+    fight.play(table, mid, hammer.candidate_id)
+    smith = fight.engine(combat, mid).state.actors[fight.VICTIM]
+    assert mark_count(smith, fight.VICTIM, item_key=fight.ARMOR_KEY) == 1
+    end_turn(fight.VICTIM)
+
+    assert strike(quench_offered=True)
+    end_turn(fight.THIEF)
+    end_turn(fight.VICTIM)
+
+    _steal_to_ground(table, mid, fight.ARMOR_KEY)
+    end_turn(fight.THIEF)
+    ground = next(row for row in table.state(mid)["carrying"][fight.VICTIM]["items"]
+                  if row["key"] == fight.ARMOR_KEY)
+    assert ground["on_ground"] and ground["pickup"]
+    fight.play(table, mid, ground["pickup"])
+
+    combat = CombatService(combat.source_root, tmp_path)
+    table = TabletopService(combat, tmp_path)
+    [suit] = table.state(mid)["carrying"][fight.VICTIM]["items"]
+    assert suit["key"] == fight.ARMOR_KEY and suit["held"] and not suit["worn"]
+    smith = fight.engine(combat, mid).state.actors[fight.VICTIM]
+    assert smith.bonus_action_available and mark_count(smith, fight.VICTIM) > 0
+    assert smith.reaction_available and mark_count(smith, fight.VICTIM, item_key=fight.ARMOR_KEY) == 1
+    assert not armor_knows_options()
+
+    end_turn(fight.VICTIM)
+    assert not strike(quench_offered=False)
+
+
+def test_cp_maximum_uses_the_base_score_without_worn_time():
+    sheet = _sheet(_enhancement("Titan Might", "STR", 4, "Waist"))
+    stats = sheet["ability_scores_and_statistics"]
+    stats["primary_resource"]["base_formula"] = {
+        "op": "add", "terms": [{"op": "constant", "value": 25}, {"op": "ability_modifier", "ability": "STR"}],
+    }
+    bundle = _compile(sheet)
+    stamina = next(pool for pool in bundle["actor_template"]["resources"]
+                   if pool["resource_id"] == "resource:core.stamina")
+    assert bundle["actor_template"]["ability_mods"]["STR"] == 7
+    assert stamina["maximum"] == 30  # 25 + base modifier of 5, not the combat modifier of 7
