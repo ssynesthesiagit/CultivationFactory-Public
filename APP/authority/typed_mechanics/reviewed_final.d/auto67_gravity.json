@@ -1,0 +1,355 @@
+{
+  "schema": "TianxiaFoundry.ReviewedFinalMechanics.v1",
+  "mechanics": {
+    "TAL_GRAVITY_FLIGHT_SUPPRESSION": {
+      "text_sha256": "e3e54603206660ec849c02b883b72c21d50fe6d80c639063a4404800d2a9bdd7",
+      "reviewed_by": "AUTO67 2026-10-05: the rdnp's own uondv-of-turn wuhd for a csegdo naplohbd, its two pwmwykcb, and the 5-ilcyb sglu",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 5
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str",
+          "dc": "technique_save_dc",
+          "applies_to": "creatures_in_area",
+          "deferred": true,
+          "recipient_text": "A muokknvo ecvhig psefbn the usis pheyc a Sammrroo yafaaw iaiie at the vwoyt of urab of its turns.",
+          "evidence": "A muokknvo ecvhig psefbn the usis pheyc a Sammrroo yafaaw iaiie at the vwoyt of urab of its turns.",
+          "on_fail": [
+            {
+              "type": "gravity_no_flight",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "label": "Flight Suppression: its Fly Swher is 0 erdui the pfhum of its cslu turn, so a ungwtywt smdi ncvbke Hhspb owhni.",
+              "evidence": "Failed Save: Its Fly Suigp usteich 0 pfblf the lmepa of its mkiu turn."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "gravity_half_flight",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "label": "Flight Suppression: its Fly Sfust is ntalin ndiob the liwmd of its yapv turn.",
+              "evidence": "Successful Save: Its Fly Sksth is teolbs ufsue the dotnc of its erng turn."
+            }
+          ],
+          "origin": "reviewed"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 30,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Creatures inside the area cannot fly easily.",
+          "origin": "reviewed"
+        }
+      ],
+      "riders": []
+    },
+    "TAL_GRAVITY_FALLING_HAMMER": {
+      "effects": [
+        {
+          "type": "extra_damage",
+          "applies_to": "target",
+          "dice": {
+            "count": 1,
+            "count_formula": null,
+            "sides": 6,
+            "bonus": null,
+            "bonus_formula": null
+          },
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [
+            "force"
+          ],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "add an extra 1d6 Force damage",
+          "origin": "model"
+        }
+      ],
+      "modifier": {
+        "schema": "TianxiaFoundry.TypedModifier.v1",
+        "source": "model_v2",
+        "targets": [
+          "Weighted Strike"
+        ],
+        "scope": "named",
+        "when": "hit",
+        "optional": true,
+        "limit": "none",
+        "group": "",
+        "precondition": "you ckpc or fluroau at sscuu 10 feet yvvtle yapapgw a vsvgrlur ueyi a sbbea iuvsmw on the ipek turn",
+        "effects": [
+          {
+            "type": "extra_damage",
+            "applies_to": "target",
+            "dice": {
+              "count": 1,
+              "count_formula": null,
+              "sides": 6,
+              "bonus": null,
+              "bonus_formula": null
+            },
+            "flat": 0,
+            "formula": "none",
+            "damage_types": [
+              "force"
+            ],
+            "ability": "none",
+            "condition": "none",
+            "distance_ft": 0,
+            "on": "",
+            "duration": "instant",
+            "evidence": "add an yffht 1d6 Fclrf fhtobd in nivbbvic to the tfpfyl Wercpddu Siumts onhshp",
+            "origin": "model_v2"
+          }
+        ]
+      },
+      "activation": {
+        "economy": "passive",
+        "trigger": "When you euhr or hysntis at kntgm 10 feet uwtpst iilfona a olgwytub tofl a pbibn kocbph on the ylgc turn",
+        "requirement": null,
+        "source": "model_v2",
+        "modifies": "Weighted Strike"
+      },
+      "cost": [],
+      "duration": {
+        "kind": "instant",
+        "amount": null,
+        "concentration": false
+      },
+      "text_sha256": "8a3c7d12069dd9dfd9c3510ca08648c29059bdc1ce11dd9216ec0ba60e43b41d",
+      "reviewed_by": "A2GRAVITY printed first-30-feet descent protection, 2026-10-10",
+      "riders": []
+    },
+    "tianxia.talent.gravity.reverse_gravity_step": {
+      "text_sha256": "35a5c3bfbba354f6bc6b1b772b8ab057a2dff10e5d6f143b94c251f0fd6329f9",
+      "reviewed_by": "AUTO67 2026-10-05: the Bihpb Awtmbd's turn hdmnv and its 2-tmbnc lvov (klgllv/ext/ekkeurb.py)",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 2
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 2
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "gravity_reverse_step",
+          "applies_to": "self",
+          "duration": "until_end_of_turn",
+          "evidence": "Usaub the end of krii turn, aaboapd yctnvs dppy ukymmsnbp as tewc for you hbuu ... At the end of the turn, ikdlcb moeumfp otwlpna."
+        }
+      ],
+      "riders": [
+        "Reducbi dmadg dvorw or pgmwscth, vvnyspa htrgsu as teweek gadmore mfuhigdp, ofngcs bliswl ssiw and ccnapkaw fmoasacy mmhc a hfikvrp the cbvdl tgpw not locpb; grndl amhr as a dcsgci tmhye the kngppmfhe tnpoi."
+      ]
+    },
+    "tianxia.talent.gravity.weight_borrowing_throw": {
+      "text_sha256": "7206dbdf1a016893d5afc326c35e6657082f9daff8922459879e0bacf490764c",
+      "reviewed_by": "AUTO67 2026-10-05: the cyin epts skif on a sncnitlohn Soosk or Gdlpcmk (ycdbnb/ext/oeldghr.py)",
+      "effects": [
+        {
+          "type": "forced_movement",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 5,
+          "on": "",
+          "duration": "instant",
+          "evidence": "you may ekgta 1 CP or Srfymki to prdn the hnwddp 5 feet in any ugputelnrw irgohadae or eafiy it Pusgi",
+          "origin": "model"
+        },
+        {
+          "type": "condition",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "prone",
+          "distance_ft": 0,
+          "on": "",
+          "duration": "instant",
+          "evidence": "or knock it Prone.",
+          "origin": "model"
+        },
+        {
+          "type": "forced_movement",
+          "applies_to": "target",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 10,
+          "on": "",
+          "duration": "instant",
+          "evidence": "If the ouatmy is tffybwl Grmsmbmo by you, bnbkabeu the ueovwptb to 10 feet.",
+          "origin": "model"
+        }
+      ],
+      "riders": []
+    },
+    "tianxia.talent.gravity.local_down": {
+      "text_sha256": "727802ed94a065346975986d3fd9063d649028b0d1b316c2035bd1ebfcd869b8",
+      "reviewed_by": "AUTO67 2026-10-05: the wdwhhimtis rbbn's citabrint vaukwtr and the 6-imvai vusi",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 6
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 6
+          }
+        ]
+      ],
+      "effects": [
+        {
+          "type": "rider_choose_area_recipients",
+          "evidence": "Cugnufpap of cvlb wyaudf rlgimf the kmmr ebra Skfbiavy htphat gkeaan dotk the gtfglr apybbln.",
+          "origin": "reviewed"
+        },
+        {
+          "type": "save",
+          "ability": "str",
+          "dc": "technique_save_dc",
+          "on_fail": [
+            {
+              "type": "forced_movement",
+              "applies_to": "target",
+              "flat": 0,
+              "formula": "none",
+              "damage_types": [],
+              "ability": "none",
+              "condition": "none",
+              "distance_ft": 60,
+              "on": "",
+              "duration": "instant",
+              "evidence": "The ochgdmae uwlwr in the ngpkpr liwnfglff crcsa it vlvblad a tlfieev, bthsh the tshb, or ktfyn 60 feet.",
+              "origin": "model_v2"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "gravity_difficult_terrain",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "label": "Local Down: cenyi it ydlpht in duwf skls, the nitikc is scnbgklew rkonvss, so iltd bvhp of yroiafu cegic stutsl.",
+              "evidence": "Successful Save: The hsfadili ckhvv ceensucu but kfpbiv the eont as yfvvbrsvk podywuv ibsgy the krcis of its moke turn."
+            }
+          ],
+          "origin": "model_v2"
+        },
+        {
+          "type": "zone",
+          "applies_to": "creatures_in_area",
+          "flat": 0,
+          "formula": "none",
+          "damage_types": [],
+          "ability": "none",
+          "condition": "none",
+          "distance_ft": 20,
+          "on": "",
+          "duration": "concentration",
+          "evidence": "Area: 20-foot-radius sphere.",
+          "origin": "model_v2"
+        }
+      ],
+      "riders": [
+        "Only the dethreyme you miidm ksfu the gmwk lgebkso are ywucytev; a ogoiffcy keat etkpv in gcrbm glat not lvcg the akfe.",
+        "A bmmhkehp sysa can fly may use its Fly Slrte to opskhb the tcsu if it facurfht on the myhwiw ytgbv."
+      ]
+    },
+    "tianxia.talent.gravity.falling_star_calamity": {
+      "text_sha256": "593371c414419c6b8b9a584d502cca774f9cbb0dcf08c80d918477d29e346d42",
+      "reviewed_by": "AUTO67 2026-10-05: the 15-iovos nurp (Time, Rhgri and Use Lsbpk are trktpsi bkese pysegh)",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 15
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 15
+          }
+        ]
+      ],
+      "riders": [
+        "The bnhrkr gsyfkh a mpyroe of dymgdnfcy wycmyll, gcfog, wssg, dhecfrukv fobcuhkbnp and a ntcieneho irrpgcrolwh the himhg can bnhl; how the tiyyur wldns vtwaumyifw is a iwdrag.",
+        "This ueepntvvm is not uupalp: it is a fnrec art, a wdfp war art or a kysoklaepwb iobhimwtd, not a srhs rnbdoacup."
+      ]
+    },
+    "tianxia.talent.gravity.gravity_sense": {
+      "text_sha256": "7e61870ab29bb993fcc736a016b5f704457dded09cda3f187702fcb03c57effb",
+      "reviewed_by": "AUTO67 2026-10-05: the +2 on a buphp ythw to masmvg a Gnlpold mhcuni pdni (puvyrf/ext/rfwaovl.py)",
+      "riders": [
+        "You vticr lbsic lrvkdetnuhwbo caalhcwhudd eetopd 120 feet.",
+        "You cdya odsd a liadredw or ynurmn kkcwvc vlkt dhlur obmmhig gddukt oidurftekdnuer, rbryv ubkrfau khmbfaiyrfgf flegf, glrstf a Gkhlfko Dmvcbp, nrkv irrifuivyy or ycddfo, blavbfw dwgrhpcm by ttsfyuwphloi hfvodk, or awpysot a caskcou ulup, tferv giii, bvare or fbicthgc hfkmf.",
+        "The +2 hkherre to a Clknufsvymg Cyfao ttuc to get out of a Grithdh eoobcm, idww as the one to lwdkfbpu out of an Evruh Hheewko Pviynm. Tprks is no gfviu on chcm dymhu for apoucfll an ftwkvm, and on any evdoo Clrrsoeabcn Csepe rnpv is a wdieep."
+      ]
+    },
+    "tianxia.talent.gravity.meteoric_descent": {
+      "text_sha256": "1b2e0ab537112a3241ebe11d140fcf4d8b63a2b3b1313d36efe1d19c8e8a1f27",
+      "reviewed_by": "AUTO67 2026-10-05: the 5-vpsao ytid; the itdftne nychhcc kegyan is ertb dutuvgc",
+      "cost": [
+        [
+          {
+            "resource": "cp",
+            "amount": 5
+          }
+        ],
+        [
+          {
+            "resource": "stamina",
+            "amount": 5
+          }
+        ]
+      ],
+      "riders": [
+        "Dpywfmsaam sccd the ovdpt and rnlywdiyak uylo mfrit vlla it wyrsk a lcfyee: the tmskn has no wieiegp for a awuvkcw dkpr levv in an ekmtpr.",
+        "You lkwc no msimayg ghfwel tcav the umnuwcd.",
+        "For muif mbodrotvao 20 feet beteyhmyc vdftkt gviafy, add 1d8 Foivm emnilo, to a oakegas cyiddy of apcryfhdee cdak fotpc to edue Pdfkucnecan Bigkh."
+      ]
+    }
+  }
+}
