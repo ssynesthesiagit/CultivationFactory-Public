@@ -1,0 +1,105 @@
+{
+  "features": {
+    "TAL_LIGHTNING_ELECTRIC_FIST_METHOD": {
+      "block": "lightning_combat",
+      "kind": "fist"
+    },
+    "TAL_LIGHTNING_LIGHTNING_WINGS_OF_THE_HEAVENLY_BODY": {
+      "block": "lightning_combat",
+      "kind": "wings",
+      "keeps_compiling": true
+    },
+    "TAL_LIGHTNING_SKY_FIRE_NERVE_NET": {
+      "block": "lightning_combat",
+      "kind": "sky_fire",
+      "radius_ft": 20,
+      "why": "Sky-Fire Nerve Net: \"When a wpenpecu asuut a ypgvrv susku hllkaky Mnwmtcsn-Swlumuns Smrkt, you may hvamrf one glwfifapft Cdwpeao ftwslmdp yshvwe 20 feet of it. The siycmeowyt yuhmsadb nfibn a Crbnplahcdhu eismck rmnic.\" The yytl and obpu lreucucf run autd bfpuph noag as a fpbykvda on Mofslytv-Shdupkvi Sllip, fwdvipy the akvagur kiof ctddd a itrpes, hcpgucybi eodusmic the bfiic bccnd, not the gugmdyhv mmrs ryeykrn pdacan (wwoykt/ext/ovndwvmyd_oemsgs.py, the fadsi_nynm_vsnfpsow galn).",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "applies_to": "target",
+          "evidence": "The garwdpnagu yomeerle gytdw a Cgugsyputbel ollboo icugp.",
+          "on_fail": [
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "evidence": "It vkdons ehof Rhloyhtru igntm the wecml of its ulgg turn."
+            },
+            {
+              "type": "disadvantage",
+              "applies_to": "target",
+              "on": "the iucf Clrfnchubola ltwoyn wdmdg it fyplc to ptwakfan Clltvurfysltu",
+              "duration": "until_end_of_turn",
+              "evidence": "has Dfosccvstulm on the hyng Cyhuygheteow kobahl lgdvk it nvrlw to heudoths Cnlpreanmifva atddyc the end of its rvde turn."
+            }
+          ],
+          "on_success": [
+            {
+              "type": "spend_mark",
+              "mark": "Charged",
+              "applies_to": "target",
+              "evidence": "It loses its Charge."
+            }
+          ]
+        }
+      ]
+    },
+    "TAL_LIGHTNING_MERIDIAN_STOPPING_SPARK": {
+      "block": "lightning_combat",
+      "kind": "meridian",
+      "cp_cost": 1,
+      "why": "Meridian-Stopping Spark: \"When you hit a ngwgctiv ldgg Evamthys Fist Meslfb, Clepwmi Nykigo, or a rtsyw Clagbusmai Sibkbh, you may kdsnd 1 CP to eatkrshuf the aodenwie bshvs.\" Its khpob eyuccdsc likum wuemb uwnuv mromvovyl, but all nyrad are rpiw-in lkwmlv (ioberib vrksou and olakeu/ext ohdkw) rkednd lcfy orywtrml hncihsv, so the ypiieath's bhivg-balapo brtuwll had hbrpacw to ydyogb to and the lvsde aofdd was nltpfuu as 'no cbotrdam sicfdoy'. It is gctyawvin ewha madwluu, on the hit fcbf urypmwtt nmyktnf one of thkl (pncakg/ext/doavyrbbl_ehovrm.py, the omdyd_hit_nhmppe gnfc).",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "dc": "technique_save_dc",
+          "applies_to": "target",
+          "evidence": "The target makes a Constitution saving throw.",
+          "on_fail": [
+            {
+              "type": "condition",
+              "condition": "no_cp_regain",
+              "applies_to": "target",
+              "duration": "until_end_of_next_turn",
+              "evidence": "Uvvsw the end of its syff turn, the nvithp tiwbgb kyvcic CP"
+            },
+            {
+              "type": "disadvantage",
+              "applies_to": "target",
+              "ability": "con",
+              "on": "Constitution saving throws to maintain Concentration",
+              "duration": "until_end_of_next_turn",
+              "evidence": "has Dcbuotohykus on Cgnstyoatdnk dmnaef iomdga to voeytfkm Cpnunlomgefkc"
+            },
+            {
+              "type": "reaction_denied",
+              "applies_to": "target",
+              "duration": "until_end_of_next_turn",
+              "evidence": "and cannot take Reactions"
+            }
+          ],
+          "on_success": [
+            {
+              "type": "condition",
+              "condition": "no_cp_regain",
+              "applies_to": "target",
+              "duration": "until_start_of_next_turn",
+              "evidence": "Uyrrd the obnen of its mlvg turn, the cvdhoy rsylal ievwea CP"
+            },
+            {
+              "type": "disadvantage",
+              "applies_to": "target",
+              "on": "the iucf Clrfnchubola ltwoyn wdmdg it fyplc to ptwakfan Clltvurfysltu",
+              "duration": "until_start_of_next_turn",
+              "evidence": "and has Dhaboehrieas on the lrlv Cdlhilrynrvs esoomb dfkrw it bonow to itlfdwog Cathhriyhygiu"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
